@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-16T13:05:59.535364+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "READ_ONLY_S3_S4_S5_READINESS_RECONCILIATION",
+  "scope": "Scoped task/source records; not environment/account discovery, product execution or accepted final source graph.",
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-s3-s4-s5-readiness-20261116.md",
+    "bytes": 15887,
+    "sha256": "7073d04d8c28e0154c18916df863f5e9a779d090c86afe409ec121297cdb5478"
+  },
+  "parent_matrix": {
+    "cases": 24,
+    "counts": {
+      "PASS": 0,
+      "PARTIAL": 9,
+      "NOT_RUN": 15
+    },
+    "partial_case_ids": [
+      "TC-03",
+      "TC-05",
+      "TC-07",
+      "TC-08",
+      "TC-12",
+      "TC-14",
+      "TC-19",
+      "TC-20",
+      "TC-21"
+    ],
+    "changed": false
+  },
+  "s1": {
+    "task_status": "completed",
+    "archived": true,
+    "accepted_scope": "Agent identity baseline B01-B10; not whole parent24"
+  },
+  "s3": {
+    "task_status": "planning",
+    "required_artifacts_present": true,
+    "latest_planning_verdict": "PLANNING_PASS",
+    "open_planning_findings": 0,
+    "timeout_child_completed": true,
+    "activation_gate": "Finally accepted S2 source/lock/acceptance binding and refreshed existing manifests",
+    "first_regression_slice": {
+      "files": [
+        "server/internal/service/collaboration_edit_test.go",
+        "server/internal/handler/issue_revision_test.go"
+      ],
+      "reused_helpers": [
+        "lifecycleCommitBarrierStarter",
+        "waitWorkflowBlocked",
+        "server/internal/testutil"
+      ],
+      "controls": [
+        "priority-only vs priority both commit orders",
+        "priority-only vs handler both commit orders",
+        "same-key same-body recovery and changed-body conflicts",
+        "ordinary linked child explicit numeric expected_revision priority vs member assignee both orders",
+        "missing optional revision legacy control"
+      ],
+      "transfer_first_late_former_handler_status": 403,
+      "priority_first_late_transfer_status": 409,
+      "executed": false
+    },
+    "remaining_slices": [
+      "55-comment authoritative page-chain with real replacement WS auth",
+      "mixed people and typed Agent original-event notification/input replay",
+      "original upload/key/bytes and late outcome/revoked hydration controls",
+      "reviewed atomic block/repair and bounded truthful human history"
+    ],
+    "unproven_distinct_capabilities": [
+      "run-local Agent output upload",
+      "full installed Desktop Main",
+      "real model semantics"
+    ]
+  },
+  "s4": {
+    "task_status": "planning",
+    "intake": [
+      {
+        "id": "I01",
+        "name": "source_runtime",
+        "status": "UNRESOLVED",
+        "owner_role_required": "coordinator",
+        "required_fields": [
+          "source_revision_and_digest",
+          "api_web_desktop_cli_versions",
+          "owned_environment_ledger",
+          "actual_issue_and_candidate_identities"
+        ]
+      },
+      {
+        "id": "I02",
+        "name": "repository",
+        "status": "UNRESOLVED",
+        "owner_role_required": "repository_owner_admin",
+        "required_fields": [
+          "provider_instance_version",
+          "remote_repository_id_path",
+          "local_integration_and_remote_installation_ids",
+          "trust_revision",
+          "allowed_test_namespace",
+          "native_rules",
+          "read_replay_cleanup_authority"
+        ]
+      },
+      {
+        "id": "I03",
+        "name": "ci_build",
+        "status": "UNRESOLVED",
+        "owner_role_required": "ci_owner",
+        "required_fields": [
+          "workflow_revision",
+          "required_checks",
+          "native_run_job_check_attempt_ids",
+          "source_vs_merge_sha_semantics",
+          "artifact_digest_retention",
+          "failure_controls"
+        ]
+      },
+      {
+        "id": "I04",
+        "name": "payment",
+        "status": "UNRESOLVED",
+        "owner_role_required": "payment_system_owner",
+        "required_fields": [
+          "actual_system_official_contract_version",
+          "sandbox_account_merchant_tenant_target",
+          "sandbox_instrument_amount_currency",
+          "create_pay_query_compensation_contract",
+          "idempotency_scope_ttl",
+          "callback_replay_rules",
+          "charge_capture_ledger_reader"
+        ]
+      },
+      {
+        "id": "I05",
+        "name": "order_fulfillment",
+        "status": "UNRESOLVED",
+        "owner_role_required": "business_and_messaging_owners",
+        "required_fields": [
+          "order_service_contract_version",
+          "payment_linkage",
+          "order_transition_ledger",
+          "fulfillment_effect_ledger",
+          "consumer_dedup_scope",
+          "queue_identity",
+          "failure_recovery_compensation_controls"
+        ]
+      },
+      {
+        "id": "I06",
+        "name": "callback_time",
+        "status": "UNRESOLVED",
+        "owner_role_required": "system_owners",
+        "required_fields": [
+          "callback_target_routing",
+          "signing_secret_reference_generation",
+          "valid_redelivery_facility",
+          "event_attempt_ids",
+          "restricted_raw_evidence_storage",
+          "utc_clock_skew",
+          "monotonic_timer",
+          "allowed_45_second_delay_point_deadline"
+        ]
+      },
+      {
+        "id": "I07",
+        "name": "nonproduction_release",
+        "status": "UNRESOLVED",
+        "owner_role_required": "environment_operator",
+        "required_fields": [
+          "environment_name_id_url",
+          "actual_release_rollback_contract_version",
+          "current_deployment",
+          "approved_new_previous_digests",
+          "scoped_executor",
+          "operation_query_idempotency_reconciliation",
+          "health_checks"
+        ]
+      },
+      {
+        "id": "I08",
+        "name": "metrics",
+        "status": "UNRESOLVED",
+        "owner_role_required": "observability_and_environment_owners",
+        "required_fields": [
+          "metric_source_query_labels_window",
+          "baseline_threshold_rule_version",
+          "allowed_fault_injection_restore",
+          "original_sample_ids_times_hashes",
+          "rollback_target_validation"
+        ]
+      },
+      {
+        "id": "I09",
+        "name": "people_authority",
+        "status": "UNRESOLVED",
+        "owner_role_required": "project_and_business_owner",
+        "required_fields": [
+          "named_user_ids_source_membership",
+          "role_revisions_account_generations",
+          "credential_expiry",
+          "qa_release_separation",
+          "simulated_vs_formal_signer_labels"
+        ]
+      },
+      {
+        "id": "I10",
+        "name": "s2_internal_boundary",
+        "status": "UNRESOLVED",
+        "owner_role_required": "s2_2c_owner_and_s4_implementer_checker",
+        "required_fields": [
+          "actual_internal_symbol_types_migrations",
+          "integration_trust_binding",
+          "metric_binding",
+          "unknown_operation_reconciliation",
+          "evidence_current_read_policy",
+          "independent_review"
+        ]
+      }
+    ],
+    "cases": {
+      "E01": "NOT_RUN",
+      "E02": "NOT_RUN",
+      "E03": "NOT_RUN",
+      "E04": "NOT_RUN",
+      "E05": "NOT_RUN",
+      "E06": "NOT_RUN",
+      "E07": "NOT_RUN"
+    },
+    "safe_independent_work": "Internal source/handoff and intake/evidence schema preparation; real case execution only with registered actual nonproduction targets and authority",
+    "all_private_accounts_checked": false
+  },
+  "s5": {
+    "task_status": "in_progress",
+    "last_recorded_run": "rehearsal-r02",
+    "run_date": "2026-11-14",
+    "product_commit": "fb9f4c07059445cea41ed19e956b3eb1861817cc",
+    "purpose": "pre-S2-source tool rehearsal",
+    "formal_propagation_samples": 10000,
+    "formal_independent_runs": 100,
+    "pooled_propagation_p95_ms": 702.579,
+    "slowest_observer_per_event_p95_ms": 740.635,
+    "business_writeback_p95_ms": 130.694,
+    "finalization_writeback_p95_ms": 724.774,
+    "independent_rehearsal_checks": 79,
+    "tc24": "NOT_RUN",
+    "fresh_final_candidate_run_required": true,
+    "web_desktop_DOM_measured_in_rehearsal": false,
+    "final_gate": "S2-S4 required changes stable; fresh matched source/products/environment, complete denominators, independent raw recomputation and restoration; parent case/signoffs separate"
+  },
+  "proposed_reused_commands": [
+    "node --experimental-strip-types --test e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+    "node \"$TASK_RUN_ROOT/run.mjs\" \"$TASK_RUN_ROOT/perf.json\" pnpm --dir \"$TASK_SOURCE_ROOT\" exec playwright test e2e/collaboration-performance.spec.ts -g prepare --workers=1 --retries=0",
+    "node \"$TASK_RUN_ROOT/run.mjs\" \"$TASK_RUN_ROOT/perf.json\" pnpm --dir \"$TASK_SOURCE_ROOT\" exec playwright test e2e/collaboration-performance.spec.ts -g \"propagation|writeback\" --workers=1 --retries=0"
+  ],
+  "reference_capture": {
+    "meaning": "Hashes of cited bytes at report creation; not immutable final runtime graph or new product acceptance",
+    "files": [
+      {
+        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+        "bytes": 12684,
+        "sha256": "e82cf713c5633ccb029db9ef799737d5d866d8642ebc141cecc40abb5b574113"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/task.json",
+        "bytes": 758,
+        "sha256": "35780a5145b0619b8d5b59f186349a172ba5e496e86ca87754afde1349fe3472"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+        "bytes": 2498,
+        "sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+        "bytes": 4533,
+        "sha256": "c35fbd6d182b5c34d788dd3f89906dbe0e0306dec71d2c131f61542b7953782a"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+        "bytes": 3412,
+        "sha256": "cc48696f5d55546149f0a6d8537d990965c292841b6ae2b4fd9c33fa9e7c5b45"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-v2-wire-review-r05.json",
+        "bytes": 45846,
+        "sha256": "9a30ceed80b2ad6248f1a33cc96f615762abb02780210439c4e7da0a39d02c7c"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+        "bytes": 46767,
+        "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-block-contract-v2-20261114.md",
+        "bytes": 39800,
+        "sha256": "650ecd16f2bcf912b8b14e8403783fac514e8b744b28498570c028a0d6fdd1e5"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.json",
+        "bytes": 21853,
+        "sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness-followup-20261114.json",
+        "bytes": 2672,
+        "sha256": "d87470d6d3e2b8e56ee33deae0a76aa7a158831aa7ba023d13f50a3fb4d48037"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/task.json",
+        "bytes": 1177,
+        "sha256": "4418123b90843c7fa2e2766415d2585a33871e69736f7587598a30ae7500c500"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/implement.md",
+        "bytes": 7188,
+        "sha256": "3c7d244276a5c9c9420d86a6f0bed5aef343bdd6897483688c235c1dd8c17ee3"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.json",
+        "bytes": 12809,
+        "sha256": "9ecac1ccb1a504d571caedb2e503019f25c68c9ec065fbf96eebb4b1bd99fa49"
+      },
+      {
+        "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02-review.json",
+        "bytes": 50390,
+        "sha256": "da161e1d1aa2a7ad204abd7436e59d6d58470c68010a6bb6cf19b71c73327753"
+      },
+      {
+        "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+        "bytes": 3638,
+        "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60"
+      },
+      {
+        "path": ".trellis/tasks/archive/2026-11/11-13-collaboration-agent-identity-baseline/report.md",
+        "bytes": 4585,
+        "sha256": "04020af876fced413e83781088e95233a331e791bbb48aa7f83e41544700e339"
+      },
+      {
+        "path": "server/internal/service/collaboration_edit_test.go",
+        "bytes": 28109,
+        "sha256": "c25852e3946bdfe561b33422ca562ae5c692aca7a05fd8bedaf1486f686b5c30"
+      },
+      {
+        "path": "server/internal/handler/issue_revision_test.go",
+        "bytes": 38979,
+        "sha256": "e47687514a63f8d8b34b2f236a957ba5bc32380e1d55cb3edbe87bb440876e09"
+      },
+      {
+        "path": "server/internal/handler/collaboration_workflow.go",
+        "bytes": 16615,
+        "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68"
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "bytes": 20237,
+        "sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d"
+      },
+      {
+        "path": "server/internal/service/collaboration_attachments_test.go",
+        "bytes": 15324,
+        "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f"
+      },
+      {
+        "path": "server/internal/handler/collaboration_attachments_test.go",
+        "bytes": 16612,
+        "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e"
+      },
+      {
+        "path": "server/internal/service/collaboration_notifications_test.go",
+        "bytes": 4966,
+        "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec"
+      },
+      {
+        "path": "server/internal/service/collaboration_result_notifications_test.go",
+        "bytes": 11854,
+        "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e"
+      },
+      {
+        "path": "server/internal/service/collaboration_comments_test.go",
+        "bytes": 23820,
+        "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0"
+      },
+      {
+        "path": "e2e/collaboration-performance.spec.ts",
+        "bytes": 4745,
+        "sha256": "904857638743cccc59347880c63ba28ec151cbbc95e69dc32504301dc9651723"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-performance.ts",
+        "bytes": 99233,
+        "sha256": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-performance-stats.ts",
+        "bytes": 24870,
+        "sha256": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-performance-stats.node-test.mjs",
+        "bytes": 48793,
+        "sha256": "9c67395d28af9ff92354e1f7f83d1095181b5a03477e742bf607ad1cde5cc585"
+      },
+      {
+        "path": "packages/core/collaboration/content-queries.ts",
+        "bytes": 5029,
+        "sha256": "13970e519b1cc266772931b825cf44b2fb42fae0e4a5dc83f67b6475a414938b"
+      },
+      {
+        "path": "packages/core/realtime/collaboration.ts",
+        "bytes": 8099,
+        "sha256": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8"
+      },
+      {
+        "path": ".trellis/spec/server/collaboration-content.md",
+        "bytes": 15918,
+        "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e"
+      },
+      {
+        "path": ".trellis/spec/server/collaboration-realtime.md",
+        "bytes": 6341,
+        "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b"
+      },
+      {
+        "path": ".trellis/spec/server/collaboration-runtime-recovery.md",
+        "bytes": 14413,
+        "sha256": "567d1503719db0bc04e04480d292b18c1b700a4cfeed53c47ef5df64d4b5b064"
+      },
+      {
+        "path": ".trellis/spec/server/database-test-isolation.md",
+        "bytes": 28546,
+        "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8"
+      },
+      {
+        "path": ".trellis/spec/server/verification-environment.md",
+        "bytes": 17493,
+        "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f"
+      },
+      {
+        "path": ".trellis/spec/web/frontend/collaboration-performance-qa.md",
+        "bytes": 8456,
+        "sha256": "3ad402e649a22d8515f3dcac6333d6ca6dd9ddda6e36eebaa59429b1ff316c4c"
+      }
+    ]
+  },
+  "executed_actions": {
+    "product_tests": 0,
+    "builds": 0,
+    "DB_queries_or_migrations": 0,
+    "API_or_browser_calls": 0,
+    "external_or_provider_calls": 0,
+    "Git_operations": 0,
+    "task_state_changes": 0,
+    "product_or_spec_or_sibling_writes": 0
+  },
+  "written_paths": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-s3-s4-s5-readiness-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-s3-s4-s5-readiness-20261116.json"
+  ]
+}

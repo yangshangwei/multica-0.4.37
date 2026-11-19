@@ -1,0 +1,295 @@
+{
+  "at": "2026-11-16T16:43:45.609709+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "role": "trellis-implement",
+  "status": "R22_GENUINE_RED_PROVED_PRIVATE_TWO_FILE_ACCOUNT_READ_GREEN_READY_UNTESTED",
+  "scope": "RuntimeCapabilities GET and actual same-QA artifact-bound R4 concurrency",
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01",
+  "private_root": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01",
+  "source_before": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/source-before-r01.json",
+    "sha256": "bc88f12e54f0cbb7d9341fde2d62e875e1c613b72d87860cae869b887da1dc93"
+  },
+  "source_manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-source-manifest-r01.json",
+    "sha256": "97d31ea4942956cc3f1189788bb136af45012b40678ef94131e51d999bf64479"
+  },
+  "inventory": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/red-test-inventory-r03.json",
+    "sha256": "46ee80a5cb6691106b79ed0fbf43b10676f5515e46e386f8c5bec78ccecb28e2"
+  },
+  "test": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go",
+    "sha256": "d9535bfa9f9965517391fc3ba1255ed54970b6b249b049f5d0f79f67a4cc37ea",
+    "bytes": 11434,
+    "mode": "0o644"
+  },
+  "counts": {
+    "top": 4,
+    "named": 8,
+    "leaf": 7
+  },
+  "selector": "^(TestCollaborationRuntimeCapabilitiesReadThenStageEvidence|TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead|TestCollaborationRuntimeCapabilitiesReadOriginalWriterFence|TestCollaborationRuntimeCapabilitiesReadCurrentAuthority)$",
+  "expected_RED": {
+    "expected_failed_leaves": [
+      "TestCollaborationRuntimeCapabilitiesReadThenStageEvidence",
+      "TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead"
+    ],
+    "expected_passed_leaves": [
+      "TestCollaborationRuntimeCapabilitiesReadOriginalWriterFence",
+      "TestCollaborationRuntimeCapabilitiesReadCurrentAuthority/password_changed",
+      "TestCollaborationRuntimeCapabilitiesReadCurrentAuthority/disabled_account",
+      "TestCollaborationRuntimeCapabilitiesReadCurrentAuthority/binding_revoked",
+      "TestCollaborationRuntimeCapabilitiesReadCurrentAuthority/wrong_binding"
+    ],
+    "named_FAIL": 2,
+    "named_PASS": 6,
+    "leaf_FAIL": 2,
+    "leaf_PASS": 5,
+    "NOT_observed": true
+  },
+  "all_5046_existing_byte_modes_unchanged": true,
+  "new_test_file_count": 1,
+  "product_files_changed": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/managed_runtime.go",
+      "sha256": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-green-r01/server/internal/service/collaboration_runtime_preparation_capabilities.go",
+      "sha256": "e625a0286ff4e7f468f956145a149727b2c1836399d0afdeadc72320215f14b9"
+    }
+  ],
+  "ROOT_product_edits": 0,
+  "controls": [
+    "real changed-summary registration writer:55P03/zero R4 projection/exact committed next epoch/one invalidation",
+    "password-version changed",
+    "disabled current account",
+    "revoked actual managed binding",
+    "other real daemon binding"
+  ],
+  "real_fixtures": [
+    "newStageRuntimeFixture(true,stageArtifactReadFixture)",
+    "ownerSwitchNamespace(actual designated QA owner)",
+    "actual RegisterRuntimeCapabilities and fresh capability/R4 reads"
+  ],
+  "fixture_protocol": "managed cloud/Linux namespace; no native Host execution or synthetic settled state asserted",
+  "five_second_deadlines_unchanged": true,
+  "distinct_backend_PIDs_required": true,
+  "read_query_needle": "LockAgentRuntime",
+  "writer_query_needle": "LockAgentRuntime",
+  "query_needle_after_current_account_fence": true,
+  "SQL_permissions_or_results_stubbed": false,
+  "actual_R20_holder_or_four_case_acceptance_claimed": false,
+  "commands_executed": [
+    "source-control copies and retained-report preservation",
+    "original new test gofmt and GREEN two-file gofmt",
+    "physical/source-function SHA256/mode/diff/inventory checks"
+  ],
+  "Go_test_build_list_DB_API_browser_process_signal_or_Git_commands": 0,
+  "remaining": [
+    "independent private GREEN source/authority/writer-boundary review",
+    "leader-owned unused GREEN/RACE environment and exact command bindings",
+    "actual targeted normal and combined race with preserved registration controls",
+    "scoped service vet",
+    "independent quality acceptance and guarded ROOT integration",
+    "matching consuming products and original four-case/A01-A12 acceptance"
+  ],
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-implementation-20261116.md",
+    "sha256": "d38c84e46d2c9cb1df66dd36e61ecd5c734f15bc399bb016b4343238dbff1c46"
+  },
+  "correction": {
+    "reason": "Original FileCount++ produced33, rejected by protocol preparationLimits1..32 before transaction; original barrier would not fire",
+    "old_FileCount": 32,
+    "invalid_original_change": 33,
+    "valid_corrected_change": 31,
+    "changed_line": "FileCount++ -> FileCount--",
+    "patch": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/writer-control-correction-r02.patch",
+      "sha256": "8e919a74c738bbee8192a4bbcbaeeafc0638869567b2dc3ae655ba214a03c396"
+    },
+    "all_assertions_deadlines_PID_and_release_order_preserved": true,
+    "all_5046_R21_baseline_byte_modes_preserved": true,
+    "original_source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-red-r01",
+    "original_test_sha256": "d7965cbca8da0f034afa6527bde5cd2ec4b2594b01184fa8397876d482abaa11",
+    "original_boundary_status": "NOT_ACCEPTED_NOT_EXECUTED",
+    "original_report_retained": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-control-r02-implementation-report.json",
+      "sha256": "fbafa1eb72af18b6431d1d49843e6fd3b2f90e3fb9749967f5898c03c0c8c7bb"
+    },
+    "original_MD_retained": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-control-r02-implementation-report.md",
+      "sha256": "214cbb3a0e2e58b32d0797dddceb50f63750507f964347d13fbfb1640260bd1c"
+    },
+    "retention_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/control-r02-copy-and-report-retention.json",
+      "sha256": "23957d57dcba65ab008557f0d4868cac4319667477d10f70b2211773743c6896"
+    },
+    "current_task_report_paths_supersede_original_writing_checkpoint": true,
+    "actual_failed_test_execution_claimed": false
+  },
+  "prospective_GREEN_scope": "GET-only managed account fence; runtime/namespace/registration and other writer fences unchanged",
+  "previous_r02_report_retained": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-control-r03-implementation-report.json",
+    "sha256": "591b377929c25a1b62491c394b6f80bd620de5b3c579716f60ee888d068fe179"
+  },
+  "previous_r02_MD_retained": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-control-r03-implementation-report.md",
+    "sha256": "108c631d54b8b578368a89d5ccb6281e447deea139780402736c8ee0604903ce"
+  },
+  "r03_retention_receipt": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/control-r03-copy-and-report-retention.json",
+    "sha256": "7c3d2467b216b63ff53fce0d4f351a0bb0b3edf874f6437b8bc5af904ad56ef8"
+  },
+  "r02_actual_RED": {
+    "result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/database/profiles-r01/red-r02/result.json",
+      "sha256": "3716fbe02686096cef2439c196c57b280ff157611fabc678dff6ff58eacfe431"
+    },
+    "stdout": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/database/profiles-r01/red-r02/stdout.jsonl",
+      "sha256": "805de1d17c7f24a73d933ce32c12da0bf84180f2ac6988b720899054e341d02a"
+    },
+    "stderr": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/database/profiles-r01/red-r02/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "exit": 1,
+    "top": 4,
+    "named": 8,
+    "leaves": 7,
+    "classification": "SETUP_BLOCKED_ALL8NAMED_FAILED_BEFORE_REQUIRED_FENCES",
+    "raw_error": "SQLSTATE42703: collaboration_run.issue_id does not exist",
+    "raw_test_caller_lines": [
+      104,
+      137,
+      171,
+      215
+    ],
+    "read_read_or_writer_controls_proven": false,
+    "GREEN_authorized": false
+  },
+  "r03_count_identity_correction": {
+    "from_query": "SELECT count(*) FROM collaboration_run WHERE issue_id=$1",
+    "from_argument": "f.issue.Issue.ID",
+    "to_query": "SELECT count(*) FROM collaboration_run WHERE session_id=$1",
+    "to_argument": "f.issue.SessionID",
+    "actual_source_schema_and_queries": {
+      "from_query": "SELECT count(*) FROM collaboration_run WHERE issue_id=$1",
+      "from_argument": "f.issue.Issue.ID",
+      "to_query": "SELECT count(*) FROM collaboration_run WHERE session_id=$1",
+      "to_argument": "f.issue.SessionID",
+      "schema": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-control-r03/server/migrations/571_collaboration_schema.up.sql",
+        "sha256": "d799d35327b530b72fd366354bcb9c8fac9c63d748faa1a0bffd461f7dc61b5f"
+      },
+      "production_runtime_queries": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-control-r03/server/pkg/db/queries/collaboration_runtime.sql",
+        "sha256": "aee098d8467f7883735de014729c1de9d007a6353e7419298f32f887c488b7e6"
+      },
+      "fixture_access_type": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/implement/source-control-r03/server/internal/service/collaboration.go",
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7"
+      },
+      "zero_run_assertion_unchanged": true
+    },
+    "patch": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/side-effect-count-correction-r03.patch",
+      "sha256": "756169c6cce101313fbb8eb45a79fa87c7030db1120817151b765dd524a588f9"
+    },
+    "zero_run_assertion_and_all_other_controls_unchanged": true,
+    "all_5046_R21_baseline_byte_modes_unchanged": true,
+    "old_source_and_result_preserved": true
+  },
+  "fresh_RED_profile": {
+    "database": "multica_pay241_20261116_s2_capread_red_r22r03",
+    "environment_path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/database/profiles-r03/red-environment.json",
+    "allocation_sha256_supplied_by_leader": "c1858045e1560161a3f14ca461ead2b9da3549175ce72bb261620aa04c5e5fae",
+    "leader_reported_schema_versions": 853,
+    "leader_reported_indexes": 663,
+    "allocated_or_DB_verified_by_implementer": false,
+    "execution_pending_independent_boundary": true
+  },
+  "Go_test_build_list_DB_API_browser_process_signal_or_Git_commands_by_implementer": 0,
+  "original_RED": {
+    "result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/database/profiles-r03/red-r03/result.json",
+      "sha256": "93de31afa3aa69fcb2520110bbabe59ff987dde19447b7815453611083b6b0a5"
+    },
+    "exit": 1,
+    "top": 4,
+    "named": 8,
+    "leaf": 7,
+    "only_two_expected_read_coexistence_failures": [
+      "TestCollaborationRuntimeCapabilitiesReadThenStageEvidence",
+      "TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead"
+    ],
+    "writer_and_all_four_authority_controls_passed": true,
+    "skips": [],
+    "parse_errors": [],
+    "source_drift": 0,
+    "other_connections": 0,
+    "required_fixture_tables_empty_after": true,
+    "accepted_by_leader_as_valid_RED": true,
+    "actual_R20_holder_proven": false
+  },
+  "prior_reports_retained": {
+    "json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-green-r01-implementation-report.json",
+      "sha256": "22fa01c1aa5e25369532e92ac099ae91a2e433415cbddeb10de786651a2d7027"
+    },
+    "md": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/pre-green-r01-implementation-report.md",
+      "sha256": "abc34c7662c9431113835c7f49c72620884d249e7b3b3cb5c605e073fe104525"
+    },
+    "retention_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-copy-and-report-retention-r01.json",
+      "sha256": "1e949eb19056c62991f3bd8e6f2416fc97b6d5b58aa1fe8a25b9d1d5a34d0edc"
+    }
+  },
+  "private_GREEN_scope": {
+    "account_fence_only": true,
+    "existing_managed_writer_constant_false": true,
+    "existing_preparation_registration_writer_constant_false": true,
+    "only_RuntimeCapabilities_selects_true": true,
+    "shared_user_query": "LockArtifactUsers",
+    "exact_user_rows": 1,
+    "PasswordSession_Setup_Change_version_UUID_predicates_preserved": true,
+    "CheckPasswordVersion_under_account_fence": true,
+    "namespace_admission_runtime_LockAgentRuntime_needle_unchanged": true,
+    "registration_function_and_15_unaffected_functions_byte_identical": true,
+    "auth_minting_file_unchanged": true,
+    "SQL_API_response_context_or_dependency_changes": false
+  },
+  "two_file_diff": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-two-file-diff-r01.patch",
+    "sha256": "abe29f0e74dba4213cf4b15ec47c5d66b5a3e412cf5f74a127af55fc359ac74f"
+  },
+  "writer_preservation": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-writer-preservation-r01.json",
+    "sha256": "de7ee73a710272d8ab287dd790b18b23b90ecf9d570f267f295c1df8cc731cc2"
+  },
+  "all_unaffected_function_bodies": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-existing-functions-preserved-r01.json",
+    "sha256": "e28ca2ac74f35b166446379a2d25dd6ff3a14b13c8ad4a032ec0fc4f445ca641"
+  },
+  "unchanged_other_source_files": 5045,
+  "unchanged_test_sha256": "d9535bfa9f9965517391fc3ba1255ed54970b6b249b049f5d0f79f67a4cc37ea",
+  "normal_race_vet_plan": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-test-plan-r01.json",
+    "sha256": "018b0d902c201fbcd2069e18470f62a0aab398d50adb2ecf381bfc859978656d"
+  },
+  "planned_normal_inventory": {
+    "top": 4,
+    "named": 8,
+    "leaf": 7
+  },
+  "planned_race_inventory": {
+    "top": 7,
+    "named": 25,
+    "leaf": 22
+  },
+  "actual_GREEN_tests_or_builds_executed": 0,
+  "full_S2_or_actual_R20_holder_accepted": false
+}

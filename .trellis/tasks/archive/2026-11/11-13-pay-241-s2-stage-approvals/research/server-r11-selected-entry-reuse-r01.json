@@ -1,0 +1,210 @@
+{
+  "at": "2026-11-15T23:49:53.849455+00:00",
+  "reviewer": "/root/p2_r07_check",
+  "verdict": "R11_SELECTED_HANDLER99_ROUTER54_SOURCE_DEPENDENCIES_EQUIVALENT_E4_RESULTS_REUSABLE",
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r11-c54-r01/source",
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r11-c54-r01/manifest.json",
+    "sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+    "bytes": 975903
+  },
+  "lineage": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r11-c54-r01/source-lineage.json",
+    "sha256": "aba5deb0b4b3c5bd7be14449333a58d719fa8c2b8c94bff8ce5081eb68a3c78f",
+    "bytes": 3870
+  },
+  "proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/server-current-r11-c54-r01/selected-entry-dependency-proof.json",
+    "sha256": "c18ac9309c5dd161bf5307faa72cb67e154b41fc99c55aa21e614537adbf5d06",
+    "bytes": 112412
+  },
+  "source_files_checked": 5039,
+  "source_byte_mode_drift": 0,
+  "packages": [
+    {
+      "package": "./internal/handler",
+      "tops": 99,
+      "selected_source_files": 24,
+      "selected_top_byte_mode_drift": 0,
+      "actual_default_build_changed_files": [],
+      "ignored_RK_files": [],
+      "preserved_selected_name_set": true
+    },
+    {
+      "package": "./cmd/server",
+      "tops": 54,
+      "selected_source_files": 10,
+      "selected_top_byte_mode_drift": 0,
+      "actual_default_build_changed_files": [
+        "server/cmd/server/collaboration_knowledge_runtime_routes_test.go",
+        "server/cmd/server/task_knowledge_routes_test.go"
+      ],
+      "ignored_RK_files": [
+        "rk1k_codex_continuation_controls_test.go",
+        "rk1k_codex_continuation_test.go",
+        "rk1k_codex_controls_test.go",
+        "rk1k_codex_migration_test.go",
+        "rk1k_codex_provider_test.go",
+        "rk1k_codex_registration_test.go",
+        "rk1k_codex_retry_controls_test.go",
+        "rk1k_codex_retry_test.go",
+        "rk1k_entry_test.go",
+        "rk1k_evidence_test.go",
+        "rk1k_fixture_test.go",
+        "rk1k_provider_test.go",
+        "rk1k_scenarios_test.go"
+      ],
+      "preserved_selected_name_set": true
+    }
+  ],
+  "non_migrator_production_Go_drift": 0,
+  "service_package_production_and_test_files_unchanged": true,
+  "SQL_only_one_final_LF_removed_per_860_up_down": [
+    {
+      "path": "server/migrations/860_knowledge_automation_execution_policy.down.sql",
+      "old_sha256": "edb5f582e7aa442a4a30deab72c53efd2a5e5000e7f6b0ee1f8315c389fcb189",
+      "current_sha256": "29c5b405928fd4f9a52cd99322d8e05dc2f5aeeb0a35898ce4bc41db40a5c907",
+      "old_bytes": 3310,
+      "current_bytes": 3309,
+      "only_one_final_LF_removed": true,
+      "other_bytes_identical": true
+    },
+    {
+      "path": "server/migrations/860_knowledge_automation_execution_policy.up.sql",
+      "old_sha256": "55058e7ca7778f1d30deac4e7fd8b0faabce52cb2b18f3c350a976c706a3677b",
+      "current_sha256": "888169acbb03bfbcbe63840128b484957fcec955042b0a98e445b4b328311aea",
+      "old_bytes": 4877,
+      "current_bytes": 4876,
+      "only_one_final_LF_removed": true,
+      "other_bytes_identical": true
+    }
+  ],
+  "runtime_binary_compile": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/build-manifest.json",
+    "sha256": "321f74b5a9755ed348b7b198ae2b134233dee59c8276c5ba128e4a4c25b69c57",
+    "bytes": 12047
+  },
+  "runtime_products": [
+    {
+      "name": "server",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/server",
+      "sha256": "9d6a78bc474269770dc2afa4685436c497d9dfa35d5c2132414bbf31eb643547",
+      "bytes": 108780034,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-ldflags",
+        "-X main.commit=c54b25fd48d7e86b955e20c7f56e9245cf289ef0 -X main.version=0.4.37-acceptance -X main.date=2026-11-15T23:38:18.539Z",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/server",
+        "./cmd/server"
+      ],
+      "executable_invocations": 0
+    },
+    {
+      "name": "multica",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/multica",
+      "sha256": "236eb078248d627f4e789b98800e66ed266605b2d05a339def33f1388055729f",
+      "bytes": 36959698,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-ldflags",
+        "-X main.commit=c54b25fd48d7e86b955e20c7f56e9245cf289ef0 -X main.version=0.4.37-acceptance -X main.date=2026-11-15T23:38:18.539Z",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/multica",
+        "./cmd/multica"
+      ],
+      "executable_invocations": 0
+    },
+    {
+      "name": "stage-router.test",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/stage-router.test",
+      "sha256": "25684fdc414efbec731ea9e88dc67afe4471f0518900662ad89afcefd52d527f",
+      "bytes": 118457890,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-c",
+        "-ldflags",
+        "-X github.com/multica-ai/multica/server/cmd/server.commit=c54b25fd48d7e86b955e20c7f56e9245cf289ef0 -X github.com/multica-ai/multica/server/cmd/server.version=0.4.37-acceptance",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/stage-router.test",
+        "./cmd/server"
+      ],
+      "executable_invocations": 0
+    },
+    {
+      "name": "host-daemon.test",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-daemon.test",
+      "sha256": "9af0491900d83e042a440405fff954d535e5c88ba90adbb26a41a3099a6f046b",
+      "bytes": 44069954,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-daemon.test",
+        "./internal/daemon"
+      ],
+      "executable_invocations": 0
+    },
+    {
+      "name": "host-provider",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-provider",
+      "sha256": "65ec5fc984ae15f002ee3c5c537eaa22a45cfcfad2d85197fdc1805423402acb",
+      "bytes": 5530802,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-provider",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/frontend-current-r07-r01/source/e2e/fixtures/collaboration-host-provider.go"
+      ],
+      "executable_invocations": 0
+    },
+    {
+      "name": "migrate",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/migrate",
+      "sha256": "f2500add2f1c3c4e4c4359a7128dbd8fd6e0efd1a7cbc7ac6b277a878f14cd6b",
+      "bytes": 16213362,
+      "mode": 493,
+      "source_head": "c54b25fd48d7e86b955e20c7f56e9245cf289ef0",
+      "source_manifest_sha256": "0a10ec899822babed7cd3ae5d9bc5c732672129479b2b66e5aba47b8eb68c092",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/migrate",
+        "./cmd/migrate"
+      ],
+      "executable_invocations": 0
+    }
+  ],
+  "six_builds_pass_and_binary_hashes_modes_verified": true,
+  "e4_actual_entry_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/final-entry-verdict-r09-r01.json",
+    "sha256": "9fd71e644d34bd0c4f5aa2faf0c49e0f57bffa3fa771d05471d6e12e9479c968",
+    "bytes": 7758
+  },
+  "scope_limit": "Reuse only the exact selected99/54 and their unchanged default-build dependencies, plus existing service116 source/production dependency evidence; no whole-package/newRK/migrator/fullROOT acceptance. Runtime retains actualc54 build metadata even when ROOT HEAD changes with same bytes.",
+  "new_DB_API_migration_test_or_runtime_calls": 0,
+  "product_ROOT_old_graph_or_report_edits": 0,
+  "A11": "OPEN",
+  "A12": "OPEN"
+}

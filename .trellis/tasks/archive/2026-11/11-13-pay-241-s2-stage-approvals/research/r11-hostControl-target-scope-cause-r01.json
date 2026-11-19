@@ -1,0 +1,103 @@
+{
+  "at": "2026-11-16T00:24:40.197992+00:00",
+  "reviewer": "/root/p2_r07_check",
+  "finding": "FIXTURE_HOSTCONTROL_TARGET_CLICK_IS_UNSCOPED_ACROSS_TWO_VALID_TARGETS",
+  "fix_applied": false,
+  "result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r11-r01/result.json",
+    "sha256": "2cfe3e1190f9c742c08092617456a2e79a40f76dc399c90e82f329b366676873",
+    "bytes": 10904
+  },
+  "original_error_context": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r11-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/error-context.md",
+    "sha256": "ec0ffc5b0b25198199c0a43235a8bacb24eb549957d261ce3288cc6b15eb9e57",
+    "bytes": 21230
+  },
+  "original_stage_evidence": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r11-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+    "sha256": "0793e513a58455359424dd8d9a5a05d553761f6a711ba663d423da66a4f49bed",
+    "bytes": 105670
+  },
+  "helper": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/frontend-contract-r10-r01/current-test-only-overlay-r12-r01/source/e2e/fixtures/collaboration-host-runtime.ts",
+    "sha256": "88b357f0465cf6d4bb35036a683467f05173aaa64c282f24ad634df1baff3519",
+    "bytes": 57874
+  },
+  "product_markup": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/frontend-contract-r10-r01/current-overlay-r11-r02/source/packages/views/collaboration/execution-panel.tsx",
+    "sha256": "6e2e2278df74656c52acb1655007337d548396a988f3e4f889b4f10429f384f0",
+    "bytes": 15148
+  },
+  "control_semantics": {
+    "route": "POST /api/collaboration/issues/{id}/control",
+    "target_identity_in_request_and_receipt": "target_id",
+    "original_wait_created_line": 729,
+    "unscoped_click_line": 731,
+    "original_receipt_exact_target_check_line": 737
+  },
+  "target_mapping_from_actual_consents": [
+    {
+      "target_id": "d91cf319-dd65-4cd8-a513-4205d5a89823",
+      "resource_agent_id": "a8052d76-708a-4584-a655-287fbe326469",
+      "response_request_id": "2c4d6f4b-2c9c-495b-bca1-939262c6bdc6"
+    },
+    {
+      "target_id": "55159e51-ac1c-43bc-a13a-144d7f7ce5fd",
+      "resource_agent_id": "09384dca-346b-43b8-80fc-3d96b34dcae5",
+      "response_request_id": "09bdf66a-5e5b-4352-bf75-72f117246084"
+    }
+  ],
+  "retained_listitem_analysis": [
+    {
+      "start_line": 309,
+      "ref": "e304",
+      "resource_ids": [
+        "09384dca-346b-43b8-80fc-3d96b34dcae5"
+      ],
+      "resume_target_buttons": 1
+    },
+    {
+      "start_line": 325,
+      "ref": "e319",
+      "resource_ids": [
+        "a8052d76-708a-4584-a655-287fbe326469"
+      ],
+      "resume_target_buttons": 1
+    },
+    {
+      "start_line": 335,
+      "ref": "e330",
+      "resource_ids": [
+        "a8052d76-708a-4584-a655-287fbe326469"
+      ],
+      "resume_target_buttons": 0
+    },
+    {
+      "start_line": 340,
+      "ref": "e335",
+      "resource_ids": [
+        "a8052d76-708a-4584-a655-287fbe326469"
+      ],
+      "resume_target_buttons": 0
+    }
+  ],
+  "original_unscoped_resume_buttons": 2,
+  "exact_resource_and_resume_filter_candidate_count_per_target": 1,
+  "target_id_is_not_DOM_attribute": true,
+  "visible_id_is_resource_id_not_React_target_key": true,
+  "recommendation": "For target scope, select AIexecution listitem with exact rendered issue.agentId (validated existing HostIssue target/resource mapping), AND containing the exact control button; then click within that unique row. Keep issue scope panel-wide. Retain exact target_id receipt assertion and optionally assert request target_id; never use first/nth/lane index or invent a target data attribute. Fail closed if mapping is ambiguous.",
+  "locator_shape": "hostPanel(page).getByRole('listitem').filter({has:page.getByText(issue.agentId,{exact:true})}).filter({has:page.getByRole('button',{name:label,exact:true})}).getByRole('button',{name:label,exact:true})",
+  "page_closed_error": "Secondary rejected pending response after strict click error initiates cleanup; original principal click failure is retained.",
+  "limits": "Read-only DOM/source/consent evidence analysis, not a browser replay or repaired case PASS. The helper input must represent the current agent target binding.",
+  "no_first_no_server_change_no_timeout_or_assertion_relaxation": true,
+  "new_DB_API_case_or_source_writes_by_reviewer": 0,
+  "full_case_counts": {
+    "PASS": 0,
+    "FAIL": 1,
+    "NOT_RUN": 3,
+    "denominator": 4
+  },
+  "A05_prepared_report_and_remaining_three_scenarios": "NOT_RUN",
+  "A11": "OPEN",
+  "A12": "OPEN"
+}

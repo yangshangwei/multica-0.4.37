@@ -1,0 +1,642 @@
+{
+  "schema": "pay241-r31-idle-preflight-safety-check-plan/v1",
+  "query": "Minimal remaining behavioral/static checks for the conservative ordinary batch idle preflight before GREEN acceptance, without duplicate original control inventory or new predicate/time-matrix tests.",
+  "scope": "internal; filesystem/static research only; exactly two NEW research reports",
+  "date": "2026-11-18",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "minimal_safety_plan_complete; authoring/generation/final binding/execution/acceptance ROOT-owned",
+  "write_scope": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-safety-check-plan-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-safety-check-plan-20261118.json"
+  ],
+  "seal_mode": "0444",
+  "decision": {
+    "new_tests_required": 1,
+    "new_files_proposed": 1,
+    "new_counts": {
+      "top": 1,
+      "named": 1,
+      "leaf": 1
+    },
+    "new_time_query_matrix": false,
+    "new_false_to_eligible_race": false,
+    "new_dependencies": false,
+    "main_with_error_counts": {
+      "top": 19,
+      "named": 34,
+      "leaf": 29
+    },
+    "remaining_existing_controls": {
+      "cache": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "temporal_handler": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      }
+    }
+  },
+  "inputs": [
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.json",
+      "sha256": "aa2dd4e25ab19fddd9ed65718b1da73bc6479cf2eec91270498764570580584f",
+      "use": "Exact original16/27/24 inventory, selectors, sources and protected span hashes; no full inventory repeated."
+    },
+    {
+      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-independent-check-20261118.json",
+      "sha256": "49f7686df12cb6463b7181eafd26fd52b4302ff80ed2483155f994f7fbdc6ae0",
+      "use": "Accepted genuine normal RED: two idle leaf FAIL, two real-reclaim leaf PASS, zero SKIP; actual b073 source and six names."
+    }
+  ],
+  "source_observations": [
+    {
+      "file": "server/internal/service/task.go",
+      "root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+      "sha256": "bcfb7399e75040f8eeb809cada849e11095ba1a105b9553d322d450397fdd7bc",
+      "bytes": 347058,
+      "mode": "0755",
+      "observation": "Frozen GREEN after ROOT notice; byte hash independently read. Generation/test extension graph remains ROOT-owned."
+    },
+    {
+      "file": "server/pkg/db/queries/agent.sql",
+      "root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+      "sha256": "4a661a0c1374525177d4cd103b3d47aa39ea67c1a0a32c3eb4bf4067aa6494be",
+      "bytes": 138912,
+      "mode": "0755",
+      "observation": "Frozen GREEN after ROOT notice; byte hash independently read. Generation/test extension graph remains ROOT-owned."
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+      "sha256": "b07397c51e304ef51e95d3c3757143600a8a37528b96005e5641df9f765f300b",
+      "bytes": 18961,
+      "mode": "0644",
+      "observation": "Frozen GREEN after ROOT notice; byte hash independently read. Generation/test extension graph remains ROOT-owned."
+    },
+    {
+      "file": "server/pkg/db/generated/agent.sql.go",
+      "root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+      "sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+      "bytes": 384621,
+      "mode": "0755",
+      "observation": "Current generated artifact hash read after ROOT canonical generation; previous pre-generation GREEN read observed the unchanged old artifact 234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5. This report did not execute the generator."
+    }
+  ],
+  "static_green_checks": {
+    "initial_validation_and_promotion_prefix_byte_identical": true,
+    "canonical_positive_callback_byte_identical_after_single_tab_dedent": true,
+    "markchecked_and_queued_suffix_byte_identical": true,
+    "agent_sql_exactly_one_twelve_line_query_insertion": true,
+    "probe_name": "HasPotentialDispatchedReclaimForRuntimes",
+    "probe_line": 1037,
+    "probe_source": "-- name: HasPotentialDispatchedReclaimForRuntimes :one\n-- A conservative existence check only; positive results still require the\n-- canonical reclaim's current authority and writer fences.\nSELECT EXISTS (\n    SELECT 1 FROM agent_task_queue t\n    WHERE t.runtime_id = ANY(@runtime_ids::uuid[])\n      AND t.status = 'dispatched'\n      AND t.started_at IS NULL\n      AND t.dispatched_at < now() - make_interval(secs => @claim_recovery_secs::double precision)\n      AND (t.prepare_lease_expires_at IS NULL OR t.prepare_lease_expires_at < now())\n);\n",
+    "probe_definition_sha256": "0a651509c832077fed69d4344613304d3ffd69ec9a9a2763e5d77d2cae53722c",
+    "probe_returns_boolean_only_and_has_no_authority_join_or_lock": true,
+    "query_argument_contract": [
+      "complete uniqueIDs UUID array",
+      "claimResponseRecoveryWindow.Seconds()"
+    ],
+    "error_policy": "return nil, fmt.Errorf(\"check potential dispatched reclaim: %w\", err) before writer branch and MarkChecked",
+    "reliable_false_policy": "Skip only runInTx/LockManagedRuntimes/canonical reclaim; then original all-runtime MarkChecked and queued/cache/per-agent path.",
+    "reliable_true_policy": "Exact original writer callback, canonical UPDATE and task binding validation; no shared default or singular helper change.",
+    "scheduler_constants": {
+      "recovery_window_seconds": 90,
+      "retry_interval_seconds": 30,
+      "hint_safety_margin_seconds": 5,
+      "backstop_interval_seconds": 90
+    },
+    "markchecked_definition": {
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "name": "MarkChecked",
+      "line": 271,
+      "end_line": 300,
+      "definition_sha256": "433af771faa633c616633d72828c4227814d00797c1e12e1c51fe11487021227"
+    }
+  },
+  "generation": {
+    "pre_generation_observation": {
+      "file": "server/pkg/db/generated/agent.sql.go",
+      "sha256": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "state": "Initially read in GREEN unchanged/old; could not compile new symbol until ROOT generated it."
+    },
+    "post_generation_observation": {
+      "file": "server/pkg/db/generated/agent.sql.go",
+      "sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+      "state": "Current hash independently read; generator execution was ROOT-owned."
+    },
+    "root_attestation": {
+      "generator_version": "sqlc v1.31.1",
+      "actual_cached_build_sha_prefix": "931aa",
+      "generation_receipt_sha_prefix": "d206",
+      "proof_sha_prefix": "f303f",
+      "changed_generated_paths": [
+        "server/pkg/db/generated/agent.sql.go"
+      ],
+      "other_generated_files_identical": 142,
+      "independently_reexecuted_by_research": false
+    },
+    "static_signature_check": {
+      "method": "HasPotentialDispatchedReclaimForRuntimes",
+      "definition_sha256": "80e4185d5d3df81fb621c047fb8cc3ebdf0794e0a46b2434bef261b94d3f18ba",
+      "line": 5578,
+      "runtime_ids_type": "[]pgtype.UUID",
+      "claim_recovery_secs_type": "float64",
+      "returns": "(bool,error)",
+      "queryrow_argument_mapping_observed": true,
+      "bool_scan_observed": true
+    },
+    "root_required_final_gate": [
+      "Retain the actual canonical generator/tool/build receipt and source query/generated hashes; do not hand-author generated SQL or validate by a test-only SQL copy.",
+      "Review positional parameter mapping ($1 full UUID array, $2 recovery seconds), boolean Scan and original error propagation against the actual generated method and new query.",
+      "Compile/static-check the admitted generated service graph through ROOT pinned tools before DB-backed test execution; no test filter substitutes for compile-only admission.",
+      "Confirm canonical query/function/default hashes and all142 unchanged generated siblings using ROOT generation proof, not this bounded report.",
+      "Publish/freeze/hash-bind the final graph including the one new safety test, generated artifact and unchanged b073 test before updating main19/34/29 permits. No pre-generation graph is final test authorization."
+    ]
+  },
+  "verification_gaps": [
+    {
+      "id": "G1",
+      "kind": "source_static",
+      "required": true,
+      "claim": "Only a reliable negative skips Step2; error remains unavailable, not empty success.",
+      "evidence": "Frozen task.go new call uses complete uniqueIDs and claimResponseRecoveryWindow.Seconds(); %w error return occurs before potential branch and MarkChecked.",
+      "state": "source shape checked; behavioral sentinel control still to author/run"
+    },
+    {
+      "id": "G2",
+      "kind": "behavior_existing",
+      "required": true,
+      "claim": "Valid nil-cache idle polls coexist with same-Q R4; real reclaim remains exclusive and advances generation/lease once.",
+      "evidence": "Unchanged b07397... actual2top/6named/4leaf tests, with accepted genuine RED49f7686...; require GREEN normal/race PASS in main union.",
+      "state": "existing source and prior RED receipt bound; GREEN not executed by research"
+    },
+    {
+      "id": "G3",
+      "kind": "behavior_new",
+      "required": true,
+      "claim": "A failed pure preflight query cannot authorize an empty success, canonical claim, or later cache mark.",
+      "evidence": "One proposed childless TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim using real current-auth idle fixture and statement-specific failing pgx.Row. Source control separately proves cache-mark ordering.",
+      "state": "one new file/test proposed; ROOT authorizes and executes"
+    },
+    {
+      "id": "G4",
+      "kind": "behavior_existing",
+      "required": true,
+      "claim": "False reclaim precheck still proceeds to real queued/deferred/partial-prefix/capacity work; positive callbacks retain originals.",
+      "evidence": "Original16/27/24 union includes multi-runtime queued drain, deferred same-call event, cap, committed partial prefix, source/admission/capacity controls.",
+      "state": "existing inventory referenced, not duplicated"
+    },
+    {
+      "id": "G5",
+      "kind": "behavior_existing_cache",
+      "required": true,
+      "claim": "One due runtime checks potential/canonical work across the full set; successful empty canonical reclaim preserves due hint retry.",
+      "evidence": "Two Redis-backed original batch tests on ROOT dedicated Redis and exact service package allocation. EmptyReclaim test has necessary-condition-positive stale task but stale heartbeat; it checks retry scheduling, not a subsequent actual reclaim.",
+      "state": "ROOT allocated dedicated container; execution pending"
+    },
+    {
+      "id": "G6",
+      "kind": "behavior_existing_temporal",
+      "required": true,
+      "claim": "Young dispatch and live prepare lease cannot reclaim; later eligible poll can reclaim without duplicates or started-task recovery.",
+      "evidence": "Existing TestManagedBatchClaimLostResponseRecovery exercises the real managed HTTP batch path and actual DB timestamps, generation/binding/epoch/admission.",
+      "state": "exact original1/1/1 handler control; fresh handler package DB/permit required"
+    },
+    {
+      "id": "G7",
+      "kind": "source_static_generation",
+      "required": true,
+      "claim": "Canonical generated bool method binds actual UUID array/window args and propagates Scan error; no test-only SQL substitution proves generation.",
+      "evidence": "ROOT canonical cached sqlc1.31.1 generation; generated hash read2f6233...; static Params/method shape checked. ROOT retains generator142-sibling proof and final source graph.",
+      "state": "local byte/signature checks only; compile/vet/test and final binding ROOT-owned"
+    },
+    {
+      "id": "G8",
+      "kind": "source_static_scheduler",
+      "required": true,
+      "claim": "A negative at read may defer newly eligible work to a next ordinary due poll, without becoming permanent permission or lost recovery.",
+      "evidence": "MarkChecked arguments/suffix byte-identical; MarkChecked implementation unchanged with retry30s/backstop90s, future hints unchanged and errors fail open. Nil cache remains due every poll; original handler tests negative-to-eligible polls.",
+      "state": "source contract checked; no new concurrency/time matrix test required"
+    }
+  ],
+  "new_error_control": {
+    "status": "proposed; no code authored or test executed by research",
+    "file": "server/internal/service/task_idle_preflight_safety_test.go",
+    "top_name": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+    "named_names": [
+      "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim"
+    ],
+    "leaf_names": [
+      "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim"
+    ],
+    "counts": {
+      "top": 1,
+      "named": 1,
+      "leaf": 1
+    },
+    "subtests": false,
+    "external_redis_required": false,
+    "database_required": true,
+    "fixture": "Reuse r31Fixture/newStageCapabilitiesReadFixture and r31Snapshot after the real fixture/current R4 baseline exists. All selected QA-runtime ordinary tasks must be absent; positive capacity and valid current managed/password binding remain intact.",
+    "fault": "Forward real DBTX Exec/Query/QueryRow, except exact new HasPotentialDispatchedReclaimForRuntimes QueryRow returns a pgx.Row whose Scan returns a unique sentinel. Existing agentClaimFailureRow in task_batch_claim_partial_test.go:54–56 is a reusable shape. No fake bool, product result, authority, clock or other query is substituted.",
+    "observability": [
+      "Record the exact query marker, SQL digest, supplied full runtime UUID array and recovery-window argument; observe exactly one injected preflight call.",
+      "Use actual TaskService.ClaimTasksForRuntimes with current daemon context, maxTasks>0 and explicitly nil caches.",
+      "Capture Begin/transaction/account/reclaim/candidate/claim entry after the fixture baseline using existing forwarding instrumentation; require no Step2 or downstream claim entry on this failed call.",
+      "Avoid asynchronous machinery when a direct call suffices; keep any shared recorder synchronized if used by race-mode execution."
+    ],
+    "assertions": [
+      "err is non-nil and errors.Is(err,sentinel) is true; this proves the query fault, not an unrelated auth/setup/cancellation error.",
+      "Returned task slice has zero length; it must not be interpreted as successful empty polling because err remains non-nil.",
+      "Exact new query was reached once after actual valid prerequisites; invalid runtime/maxTasks0/revoked auth or a constructor/setup failure cannot count as this control.",
+      "No reclaim/queued candidate/per-agent claim transaction entered after the injected failure. Source inspection independently requires error return before MarkChecked.",
+      "The canonical post-fixture snapshot is unchanged: tasks, issues, users/credentials, managed binding/installation, task/daemon tokens and original76-relation evidence; no task/event/mint/history/lease/generation effect.",
+      "Fixture teardown follows the ordinary existing helper lifecycle, not cleanup/reset of foreign or protected records."
+    ],
+    "scope_limit": "True-idle fixture has no rows to promote or cancel. Do not assert all failed calls roll back earlier legitimate committed deferred promotion or retry cleanup; those original operations precede the probe.",
+    "coverage_limit": "With nil cache, this test does not directly inspect Redis mutation. Frozen source return-before-MarkChecked plus unchanged cache implementation supplies that boundary; two separate original Redis controls provide integration scheduling evidence.",
+    "why_meaningful": "Locks the service error/authority/effect boundary at the new I/O failure point. It would fail if an error were swallowed as false/true/empty success or if the method proceeded into writer/candidate claim behavior. It does not mirror the new SQL predicate table.",
+    "ownership": "Implementation owner writes only this new file after ROOT dispatch; not alone in the codebase. Preserve b073 regression, task.go, SQL/generated source and peer changes. No new dependencies or helper/spec/config edits."
+  },
+  "existing_control_shapes": [
+    {
+      "top_name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 173,
+      "end_line": 224,
+      "definition_sha256": "07caffd5286f5f424024d65dd8dda6daa7f2e1d16d7e454bd23ad2174bb228a7",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "A due runtime causes canonical reclaim over the complete selected machine set and aligned cache backstops."
+    },
+    {
+      "top_name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 232,
+      "end_line": 300,
+      "definition_sha256": "7ad7cc05598b257399c4cc8d24d06b34b70e683139ce0b2db1d69b468450710b",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "A successful empty reclaim retains bounded due-hint retry instead of losing recovery permanently."
+    },
+    {
+      "top_name": "TestManagedBatchClaimLostResponseRecovery",
+      "file": "server/internal/handler/managed_claim_recovery_test.go",
+      "line": 12,
+      "end_line": 76,
+      "definition_sha256": "6b1f03f08d8aaa5e74f0bf7bba6e48a0c190c91fe256d0fb826fcdc08d5ec2fb",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Real managed HTTP batch path covers young dispatch, active lease, expired lease, generation/binding/admission retention, immediate duplicate denial and started-task denial."
+    },
+    {
+      "top_name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "file": "server/internal/service/task_batch_claim_partial_test.go",
+      "line": 83,
+      "end_line": 109,
+      "definition_sha256": "6168a4bf1ad9f60bed58438f195d10158f1368524eb51ccfc95dd1d4de1068c8",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "A later agent-lock failure returns the first genuinely committed dispatched task instead of losing the partial prefix."
+    },
+    {
+      "top_name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "file": "server/internal/service/task_batch_claim_partial_test.go",
+      "line": 115,
+      "end_line": 162,
+      "definition_sha256": "7ebb9915ba89fe90b7c7f6a5755997031c5dc1b045555b5e45578fe81e7de35a",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "A candidate SELECT fault after actual stale batch reclaim returns the reclaimed committed task."
+    },
+    {
+      "top_name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 102,
+      "end_line": 147,
+      "definition_sha256": "edee1bca818f3903a7d89fe29401b97c1307f1b1594de37647c630a1403cf580",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Actual queued work drains across both selected runtimes without duplication; later call is empty."
+    },
+    {
+      "top_name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "file": "server/internal/service/task_batch_claim_deferred_test.go",
+      "line": 28,
+      "end_line": 62,
+      "definition_sha256": "f46b702c70963606a30a8ce96b1e02a912cc05a7a36aeb166a44181178e038ef",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Due deferred work is promoted and claimed in the same batch call, with exactly one queued event; the cache is nil."
+    }
+  ],
+  "reusable_helpers": [
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "name": "r31Fixture",
+      "line": 163,
+      "end_line": 174,
+      "definition_sha256": "f8c965aeaf6a89117c40269997e3de7338cd6633d550fa1d079047df299f80f5"
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "name": "r31Snapshot",
+      "line": 178,
+      "end_line": 187,
+      "definition_sha256": "05d217268af868fba515c583d07770c8174818640de9e00b052561e95f0c4cfb"
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "name": "r31NoWrites",
+      "line": 189,
+      "end_line": 193,
+      "definition_sha256": "ad2a7db93736b43e97a4969d9a53a2e35c1f970b804e727ff9765568542fc879"
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "name": "r31WantReclaimed",
+      "line": 331,
+      "end_line": 379,
+      "definition_sha256": "750d770f93dc3597cb168938240e9919b65f9cbe61d5868db4c26a7ea33c33ec"
+    },
+    {
+      "file": "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go",
+      "name": "newStageCapabilitiesReadFixture",
+      "line": 27,
+      "end_line": 55,
+      "definition_sha256": "bf4492d643ff3be179f7eab3fb2d3e1f7a587be53fa25b65a444203eaf766b76"
+    }
+  ],
+  "run_lanes": [
+    {
+      "lane": "main_with_one_error_control",
+      "package": "./internal/service",
+      "proposed_selector": "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim|TestOrdinaryReclaimPreservesAuthorityFences|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$",
+      "selector_sha256": "179dd2b95c6f3d6f96a5b4a91340e448ceb9a899038c99531cb6d391f0726d8e",
+      "expected_counts_per_mode": {
+        "top": 19,
+        "named": 34,
+        "leaf": 29
+      },
+      "modes": [
+        "normal",
+        "race"
+      ],
+      "external_redis": false,
+      "allocation": "ROOT-authorized same fresh main service source/profile; normal and race keep their separately recorded fresh package databases/permits. Include new file only after author/review/final graph update.",
+      "authority": "ROOT actual source/profile/permit/resource binding required; no command executed by research",
+      "top_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+        "TestEmptyClaimCache_NilSafe",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryIdleClaimAndR4Coexistence",
+        "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+        "TestOrdinaryReclaimPreservesAuthorityFences",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "named_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+        "TestEmptyClaimCache_NilSafe",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+        "TestOrdinaryIdleClaimAndR4Coexistence",
+        "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+        "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+        "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+        "TestOrdinaryReclaimPreservesAuthorityFences",
+        "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+        "TestEmptyClaimCache_NilSafe",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+        "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+        "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+        "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+        "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ]
+    },
+    {
+      "lane": "original_cache_controls",
+      "package": "./internal/service",
+      "proposed_selector": "^(TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet|TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry)$",
+      "selector_sha256": "afb1e5d274783d8b1e473edb686cc1b7b982dbc48673a4cf31ea8730cf2ec6f4",
+      "expected_counts_per_mode": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "modes": [
+        "normal",
+        "race"
+      ],
+      "external_redis": true,
+      "allocation": "Separate exact service package run(s) on fresh ROOT task DB profile(s), serial Redis ownership. Do not inherit/export the Redis endpoint globally into unrelated lanes.",
+      "authority": "ROOT actual source/profile/permit/resource binding required; no command executed by research",
+      "top_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "named_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ]
+    },
+    {
+      "lane": "original_temporal_handler",
+      "package": "./internal/handler",
+      "proposed_selector": "^TestManagedBatchClaimLostResponseRecovery$",
+      "selector_sha256": "8146bc8cc9fc8221a8450295df7fc5542da9a823e4619ccf81b5205c0f9175d2",
+      "expected_counts_per_mode": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "modes": [
+        "normal"
+      ],
+      "external_redis": false,
+      "allocation": "Fresh ROOT task-owned handler package DB/permit; TestMain runs even with this exact name. Race replay only if ROOT existing gate explicitly requires it; no broad handler/router run is proposed.",
+      "authority": "ROOT actual source/profile/permit/resource binding required; no command executed by research",
+      "top_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "named_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "leaf_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ]
+    }
+  ],
+  "redis_ownership": {
+    "source": "ROOT dispatch messages; no independent Redis/DB/runtime query performed by research",
+    "container": "pay241-r31-claim-cache-bz7ym-r1",
+    "image": "existing cached Redis 7-alpine; no new dependency or pull",
+    "endpoint": "127.0.0.1:51802",
+    "logical_database": 12,
+    "allocation_receipt_sha256_prefix": "2d9dea13",
+    "root_reports_owner_labels_and_ping_proof": true,
+    "helper_behavior": "newRedisTestClient uses REDIS_TEST_URL, forces DB12, Ping, FlushDB and cleanup FlushDB/Close; one owner and exact test-process env only.",
+    "recommended_lane": "Separate cache2 control normal/race run profiles; serialize ownership and retain receipts. Do not set a global REDIS_TEST_URL or touch ambient Redis."
+  },
+  "negative_to_eligible_race_decision": {
+    "required": false,
+    "no_additional_test_proposed": true,
+    "reason": "Accepted contract permits a row/clock change after the reliable absence snapshot to wait for the next normal due poll. Existing real handler negative-to-eligible sequence, unchanged all-runtime MarkChecked/Lua/TTL/backstop and complete-set original Redis test suffice for this bounded repair.",
+    "scope_limit": "This does not promise reclaim in the same in-flight poll after its negative probe, global fairness or a new elapsed-time SLA. Canonical ordering/limit/authority and existing retry/backstop policy remain unchanged.",
+    "coverage_limit": "Existing cache empty-reclaim control exercises potential=true/canonical0 due to stale heartbeat and observes hint retrigger; it does not directly execute false+concurrent-eligibility or a later actual reclaim. Source suffix/cache identity plus original handler supplies the remaining boundary."
+  },
+  "related_specs": [
+    {
+      "file": ".trellis/workflow.md",
+      "reason": "Persist research; role write isolation and parent-owned execution."
+    },
+    {
+      "file": ".trellis/spec/server/managed-installations.md",
+      "reason": "Current source/owner/binding/admission,90-second recovery/lease and immutable delivery generation."
+    },
+    {
+      "file": ".trellis/spec/server/security-boundaries.md",
+      "reason": "Original source account version, password/mint fence and unavailable-versus-invalid outcomes."
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "reason": "Same-Q R4 read authority and real writer defaults; original raw/binding reuse."
+    },
+    {
+      "file": ".trellis/spec/server/database-test-isolation.md",
+      "reason": "Fresh task-owned package DB, TestMain side effects, no SKIP acceptance and source/profile ownership."
+    },
+    {
+      "file": ".trellis/spec/server/verification-environment.md",
+      "reason": "Final generated/new-test source graph, exact package/test permits, process env and JSON named inventory."
+    }
+  ],
+  "external_references": [
+    {
+      "url": "https://docs.sqlc.dev/en/stable/",
+      "version": "sqlc v1.31.1",
+      "source": "Frozen generated header and ROOT actual cached generator attestation; no external fetch or generator execution by research."
+    },
+    {
+      "url": "https://github.com/jackc/pgx",
+      "version": "v5.9.2",
+      "source": "Existing frozen module declaration and DBTX/pgx.Row forwarding source patterns; no dependency changes."
+    },
+    {
+      "url": "https://github.com/redis/go-redis",
+      "version": "v9.18.0; ROOT Redis7-alpine instance",
+      "source": "Existing module/helper/cache source and ROOT dedicated allocation attestation; no Redis connection by research."
+    }
+  ],
+  "acceptance_policy": "ROOT must see exact required named PASS sets, zero FAIL/SKIP/missing/unfinished identities, matching normal/race service sets and final source/generated/test/profile/resource bindings. This plan has no GREEN/full S2/native acceptance authority.",
+  "historical_status_preserved": "R30 original four=2PASS/1FAIL/1NOT_RUN,retry0; historical native lock holder unknown. No R4/native diagnosis, browser/completion replay or deadline adjustment.",
+  "caveats_not_found": [
+    "One proposed error-control name/file is not an existing test until ROOT author/review/freeze. Counts19/34/29 are the exact planned denominator, conditional on that childless implementation.",
+    "Initial GREEN inspection observed old generated source; ROOT later generated agent.sql.go2f6233... and its hash was read at sealing. Final execution graph/142 sibling generation proof remains separate ROOT evidence.",
+    "Source-correct error handling is present, but generated Scan failure behavior is not yet executed by this research. One meaningful DBTX fault control supplies that new failure boundary.",
+    "Zero effects apply to the true-idle post-fixture baseline. Earlier legitimate deferred-promotion/cancel writes in other calls are not rolled back by the preflight error policy.",
+    "The nil-cache error test cannot directly assert Redis keys unchanged; source return-before-MarkChecked is independently checked. No extra Redis error test or predicate/time/race matrix is proposed.",
+    "Exact temporal handler execution needs its own fresh handler DB/permit because TestMain runs; source/service allocation alone grants no handler/router or full116 test execution.",
+    "All source reads/checks were static. No product/test/spec/config edits, Go/DB/Redis/runtime/signals/Git/dependency or recursive-agent operation occurred."
+  ],
+  "markdown": {
+    "file": "r31-idle-preflight-safety-check-plan-20261118.md",
+    "sha256": "a29ce64d447aee58f18a4c13539b23d344a8401d90e0984b87dfad80df9c66f4",
+    "bytes": 19122
+  }
+}

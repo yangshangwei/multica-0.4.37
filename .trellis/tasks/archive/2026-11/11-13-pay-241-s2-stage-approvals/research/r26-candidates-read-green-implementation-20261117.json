@@ -1,0 +1,1061 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-17T10:49:07.938952+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "verdict": "CANDIDATE_ONLY_IMPLEMENTED_STATIC_PASS_MAIN_NORMAL_PASS_INDEPENDENT_FINAL_PENDING",
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/source-green-r01",
+  "changed_files": [
+    {
+      "path": "server/internal/service/collaboration_completion_preview.go",
+      "sha256": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "mode": "0o644",
+      "size": 14141
+    },
+    {
+      "path": "server/internal/service/delivery_completion_preview.go",
+      "sha256": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "mode": "0o644",
+      "size": 16586
+    }
+  ],
+  "full_manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-implementation-source-r01.json",
+    "sha256": "11ad7f493d3d33ef411903b9d062855b8112c797aaef78491e902e35051d5a8d",
+    "input_count": 5048,
+    "protected_unchanged_count": 5046,
+    "missing": [],
+    "extra": [],
+    "mode_changes": [],
+    "original_RED_drift": []
+  },
+  "test": {
+    "path": "server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+    "sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+    "mode": "0o644",
+    "size": 32315
+  },
+  "scope": {
+    "private_product_files": 2,
+    "dispatch_changes": 5,
+    "exclusive_acquisitions_covered": 7,
+    "new_product_functions": 0,
+    "new_dependencies": 0,
+    "new_SQL_or_migrations": 0,
+    "new_marker_or_public_read_flag": false,
+    "full_preview_or_boundSubmission_repaired": false,
+    "ROOT_integrated": false
+  },
+  "ast": {
+    "schema_version": 1,
+    "type": "go_ast_product_diff",
+    "changed_functions": [
+      "ListDeliveryEvidenceCandidatesInTx",
+      "lockCompletionPreviewRoot",
+      "lockDeliveryPreviewIssue"
+    ],
+    "unchanged_functions": 7,
+    "added_or_removed_functions": [],
+    "function_signatures_unchanged": true,
+    "non_function_declarations_unchanged": true,
+    "changed_function_calls": {
+      "ListDeliveryEvidenceCandidatesInTx": [
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "deliveryCompletionError",
+          "line": 166,
+          "arguments": [
+            "err"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionInvalid",
+          "line": 168,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "parseDeliveryCandidateCursor",
+          "line": 172,
+          "arguments": [
+            "cursor"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "lockDeliveryPreviewIssue",
+          "line": 177,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access",
+            "initial"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "LockDeliveryProjectPolicy",
+          "line": 181,
+          "arguments": [
+            "ctx",
+            "tx",
+            "issue.WorkspaceID",
+            "issue.ProjectID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "CheckDeliveryCompletionSchema",
+          "line": 186,
+          "arguments": [
+            "ctx",
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "New",
+          "line": 190,
+          "arguments": [
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "ArtifactExecutionDatabaseTime",
+          "line": 191,
+          "arguments": [
+            "ctx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "Truncate",
+          "line": 195,
+          "arguments": [
+            "time.Microsecond"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UTC",
+          "line": 195,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionTime",
+          "line": 196,
+          "arguments": [
+            "upper"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 198,
+          "arguments": [
+            "issue.ID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 198,
+          "arguments": [
+            "issue.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionConflict",
+          "line": 199,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "After",
+          "line": 201,
+          "arguments": [
+            "upper"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionInvalid",
+          "line": 202,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionTime",
+          "line": 205,
+          "arguments": [
+            "upper"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionTime",
+          "line": 206,
+          "arguments": [
+            "after.CreatedAt"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "completionUUIDPG",
+          "line": 207,
+          "arguments": [
+            "after.ApprovalID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "ListDeliveryEvidenceCandidateScan",
+          "line": 209,
+          "arguments": [
+            "ctx",
+            "params"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 213,
+          "arguments": [
+            "issue.ID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 215,
+          "arguments": [
+            "issue.ProjectID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "readDeliveryArtifactInTx",
+          "line": 222,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access",
+            "issue",
+            "e"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "As",
+          "line": 225,
+          "arguments": [
+            "e2",
+            "&denied"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "Is",
+          "line": 225,
+          "arguments": [
+            "e2",
+            "pgx.ErrNoRows"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "len",
+          "line": 230,
+          "arguments": [
+            "out.Items"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "int",
+          "line": 230,
+          "arguments": [
+            "limit"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 234,
+          "arguments": [
+            "live.ApprovalID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 234,
+          "arguments": [
+            "live.ExecutionID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UTC",
+          "line": 234,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UTC",
+          "line": 234,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "deliveryReceiptValid",
+          "line": 250,
+          "arguments": [
+            "live"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "Before",
+          "line": 250,
+          "arguments": [
+            "live.ExpiresAt.Time"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "append",
+          "line": 251,
+          "arguments": [
+            "out.Items",
+            "item"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "len",
+          "line": 254,
+          "arguments": [
+            "out.Items"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "Marshal",
+          "line": 255,
+          "arguments": [
+            "deliveryCandidateCursor{IssueID: out.IssueID, IssueRevision: out.IssueRevision, WorkspaceID: util.UUIDToString(issue.WorkspaceID), ViewerID: access.Credential.Principal.UserID, UpperBound: upper, CreatedAt: last.CreatedAt, ApprovalID: last.ApprovalID}"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UUIDToString",
+          "line": 255,
+          "arguments": [
+            "issue.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "EncodeToString",
+          "line": 259,
+          "arguments": [
+            "raw"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "ArtifactExecutionDatabaseTime",
+          "line": 263,
+          "arguments": [
+            "ctx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "CheckArtifactCredentialInTx",
+          "line": 267,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access.Credential"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "UTC",
+          "line": 270,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "Before",
+          "line": 272,
+          "arguments": [
+            "out.Items[i].ExpiresAt"
+          ]
+        }
+      ],
+      "lockCompletionPreviewRoot": [
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "New",
+          "line": 64,
+          "arguments": [
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "Actor",
+          "line": 66,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionDenied",
+          "line": 68,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "PrepareArtifactTransaction",
+          "line": 70,
+          "arguments": [
+            "ctx",
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "GetIssue",
+          "line": 73,
+          "arguments": [
+            "ctx",
+            "root"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionAdminNomination",
+          "line": 78,
+          "arguments": [
+            "ctx",
+            "tx",
+            "issue",
+            "completionUUIDPG(credential.Principal.UserID)",
+            "org",
+            "true"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionUUIDPG",
+          "line": 78,
+          "arguments": [
+            "credential.Principal.UserID"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "ResolveIssueAccess",
+          "line": 80,
+          "arguments": [
+            "ctx",
+            "q",
+            "root"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "LockArtifactWorkspace",
+          "line": 85,
+          "arguments": [
+            "ctx",
+            "q",
+            "issue.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "LockArtifactUsers",
+          "line": 88,
+          "arguments": [
+            "ctx",
+            "q",
+            "issue.WorkspaceID",
+            "credential.Principal.UserID"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "CheckArtifactCredentialInTx",
+          "line": 91,
+          "arguments": [
+            "ctx",
+            "tx",
+            "credential"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "LockIssueStatusCatalogShared",
+          "line": 94,
+          "arguments": [
+            "ctx",
+            "issue.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "LockDeliveryEvidenceIssueRead",
+          "line": 97,
+          "arguments": [
+            "ctx",
+            "db.LockDeliveryEvidenceIssueReadParams{ID: root, WorkspaceID: issue.WorkspaceID}"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "TryLockCollaborationStageRootShared",
+          "line": 101,
+          "arguments": [
+            "ctx",
+            "root"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionAdminNomination",
+          "line": 105,
+          "arguments": [
+            "ctx",
+            "tx",
+            "issue",
+            "completionUUIDPG(credential.Principal.UserID)",
+            "org",
+            "true"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionUUIDPG",
+          "line": 105,
+          "arguments": [
+            "credential.Principal.UserID"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "ResolveIssueAccess",
+          "line": 107,
+          "arguments": [
+            "ctx",
+            "q",
+            "root"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "LockDeliveryEvidenceIssueRead",
+          "line": 112,
+          "arguments": [
+            "ctx",
+            "db.LockDeliveryEvidenceIssueReadParams{ID: source, WorkspaceID: issue.WorkspaceID}"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "lockCompletionPreviewRoot",
+          "callee": "completionOrdinary",
+          "line": 119,
+          "arguments": [
+            "ctx",
+            "q",
+            "child"
+          ]
+        }
+      ],
+      "lockDeliveryPreviewIssue": [
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "completionInvalid",
+          "line": 133,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "Actor",
+          "line": 135,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "completionDenied",
+          "line": 137,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "UUIDToString",
+          "line": 139,
+          "arguments": [
+            "initial.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "completionDenied",
+          "line": 140,
+          "arguments": []
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "PrepareArtifactTransaction",
+          "line": 142,
+          "arguments": [
+            "ctx",
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "New",
+          "line": 145,
+          "arguments": [
+            "tx"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "LockArtifactWorkspace",
+          "line": 146,
+          "arguments": [
+            "ctx",
+            "q",
+            "initial.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "LockArtifactUsers",
+          "line": 149,
+          "arguments": [
+            "ctx",
+            "q",
+            "initial.WorkspaceID",
+            "access.Credential.Principal.UserID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "CheckArtifactCredentialInTx",
+          "line": 152,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access.Credential"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "LockIssueStatusCatalogShared",
+          "line": 155,
+          "arguments": [
+            "ctx",
+            "initial.WorkspaceID"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "LockDeliveryEvidenceIssueRead",
+          "line": 158,
+          "arguments": [
+            "ctx",
+            "db.LockDeliveryEvidenceIssueReadParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID}"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "lockDeliveryPreviewIssue",
+          "callee": "completionOrdinary",
+          "line": 160,
+          "arguments": [
+            "ctx",
+            "q",
+            "issue"
+          ]
+        }
+      ]
+    },
+    "existing_constant_mode_wrappers": {
+      "EvaluateDeliveryEvidenceInTx": "false",
+      "evaluateDeliveryEvidenceReadInTx": "true",
+      "lockDeliveryArtifactInTx": "false",
+      "readDeliveryArtifactInTx": "true"
+    },
+    "pure_helper_callers": {
+      "lockCompletionPreviewRoot": [
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "GetCollaborationCompletionPreviewInTx",
+          "callee": "lockCompletionPreviewRoot",
+          "line": 183,
+          "arguments": [
+            "ctx",
+            "tx",
+            "root",
+            "completionUUIDPG(request.SourceIssueID)",
+            "org",
+            "credential"
+          ]
+        },
+        {
+          "path": "server/internal/service/collaboration_completion_preview.go",
+          "caller": "ListCollaborationDeliveryCandidatesInTx",
+          "callee": "lockCompletionPreviewRoot",
+          "line": 127,
+          "arguments": [
+            "ctx",
+            "tx",
+            "root",
+            "source",
+            "org",
+            "credential"
+          ]
+        }
+      ],
+      "lockDeliveryPreviewIssue": [
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "GetDeliveryCompletionPreviewInTx",
+          "callee": "lockDeliveryPreviewIssue",
+          "line": 282,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access",
+            "initial"
+          ]
+        },
+        {
+          "path": "server/internal/service/delivery_completion_preview.go",
+          "caller": "ListDeliveryEvidenceCandidatesInTx",
+          "callee": "lockDeliveryPreviewIssue",
+          "line": 177,
+          "arguments": [
+            "ctx",
+            "tx",
+            "access",
+            "initial"
+          ]
+        }
+      ]
+    },
+    "test_sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+    "matches_bounded_repair": true,
+    "test_bodies_executed": false
+  },
+  "compile_only": {
+    "schema_version": 1,
+    "type": "compile_only",
+    "command": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-c",
+      "-o",
+      "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/service-green.test",
+      "./internal/service"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/source-green-r01/server",
+    "environment_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/database/profiles-r01/green-environment.json",
+    "environment_sha256": "3aaca9025f52b8c46674e9071a12b36262d6ffd5632f0189987c33a12257f101",
+    "environment_inheritance": false,
+    "source_sha256_before": {
+      "internal/service/collaboration_completion_preview.go": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "internal/service/delivery_completion_preview.go": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "internal/service/collaboration_completion_candidates_read_concurrency_test.go": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9"
+    },
+    "started_at": "2026-11-17T10:39:02.373152+00:00",
+    "testmain_executed": false,
+    "database_tests_executed": false,
+    "completed_at": "2026-11-17T10:39:20.970525+00:00",
+    "elapsed_seconds": 18.59634341695346,
+    "exit_code": 0,
+    "source_sha256_after": {
+      "internal/service/collaboration_completion_preview.go": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "internal/service/delivery_completion_preview.go": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "internal/service/collaboration_completion_candidates_read_concurrency_test.go": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9"
+    },
+    "stdout_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01.stdout.log",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01.stderr.log",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "binary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/service-green.test",
+      "bytes": 86047314,
+      "sha256": "16fa5594a6b2b78b06f450806b28d9fb8f41a8d5320b4d6a161ac96b934bde22"
+    }
+  },
+  "vet": {
+    "schema_version": 1,
+    "type": "static_vet",
+    "command": [
+      "/opt/homebrew/bin/go",
+      "vet",
+      "./internal/service"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/source-green-r01/server",
+    "environment_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/database/profiles-r01/green-environment.json",
+    "environment_sha256": "3aaca9025f52b8c46674e9071a12b36262d6ffd5632f0189987c33a12257f101",
+    "environment_inheritance": false,
+    "source_sha256_before": {
+      "internal/service/collaboration_completion_preview.go": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "internal/service/delivery_completion_preview.go": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "internal/service/collaboration_completion_candidates_read_concurrency_test.go": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9"
+    },
+    "started_at": "2026-11-17T10:39:21.008474+00:00",
+    "testmain_executed": false,
+    "database_tests_executed": false,
+    "completed_at": "2026-11-17T10:39:23.239813+00:00",
+    "elapsed_seconds": 2.2309944580774754,
+    "exit_code": 0,
+    "source_sha256_after": {
+      "internal/service/collaboration_completion_preview.go": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "internal/service/delivery_completion_preview.go": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "internal/service/collaboration_completion_candidates_read_concurrency_test.go": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9"
+    },
+    "stdout_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01.stdout.log",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01.stderr.log",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "main_RED": {
+    "owner": "main",
+    "result_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/result.json",
+    "result_sha256": "f6ab208639390515e012d80349ed63649963c02d14a9b856914e03a0ad72aa93",
+    "named_pass": 9,
+    "named_fail": 6,
+    "named_skip": 0,
+    "coexistence_leaf_fail": 4,
+    "writer_leaf_pass": 2,
+    "authority_leaf_pass": 5,
+    "independent_review_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-independent-check-20261117.json",
+    "independent_review_sha256": "0cf27207d1cdc06235f17561cfc088a103159883a6256f4a35c59d8cdcf06686",
+    "independent_verdict": "ACCEPTED_RED_BOUNDARY",
+    "blocking_findings": 0
+  },
+  "main_normal_GREEN": {
+    "owner": "main",
+    "result_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/green-r01/result.json",
+    "result_sha256": "c36bf7b021d6df51d3d31ec8a8ce5432ebaefa30cfed1267968ec72117c9c284",
+    "exit_code": 0,
+    "top_level": 4,
+    "leaf": 11,
+    "named_pass": 15,
+    "named_fail": 0,
+    "named_skip": 0,
+    "missing": [],
+    "extra": [],
+    "pending": [],
+    "source_drift": [],
+    "reran": false,
+    "subagent_executed": false
+  },
+  "main_race": {
+    "owner": "main",
+    "state": "PASS",
+    "permit_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/race-permit-r01.json",
+    "permit_sha256": "2548f3a2b8faacd258215fefaf806e5eb50c63073dc61afd3021459e182dd377",
+    "subagent_executed": false,
+    "result_path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/race-r01/result.json",
+    "result_sha256": "57e05bb390a6b662f5e8af687d1838b057e463a5be69a7db03e823917e784043",
+    "exit_code": 0,
+    "pass": 15,
+    "fail": 0,
+    "skip": 0
+  },
+  "subagent_database_tests_executed": false,
+  "historical_holder_identified": false,
+  "whole_database_row_equality_claimed": false,
+  "fresh_filesystem_tar_audit_claimed": false,
+  "full_S2_accepted": false,
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-implementation-20261117.md",
+    "sha256": "7274a708be883c28dc6d50778232d89ab935ca772ed0fc30b808cf1428c5b5da",
+    "bytes": 8024
+  },
+  "evidence": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-implementation-before-r01.json",
+      "sha256": "b889d0e903902dd1ac6aebf9f71351ba718f9192961c8b260c8eebae01286285",
+      "bytes": 1405
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-implementation-source-r01.json",
+      "sha256": "11ad7f493d3d33ef411903b9d062855b8112c797aaef78491e902e35051d5a8d",
+      "bytes": 1059763
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-implementation-r01.diff",
+      "sha256": "93f9f21525add99852ce5133069a9b49e4ddb5bdf05d222da82c090045f80ec3",
+      "bytes": 3312
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-gofmt-r01-result.json",
+      "sha256": "608b40b9cec521f934297b3c34a081e26c356a95ded07d9e433cfcc5a00ac53e",
+      "bytes": 1231
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01-command.json",
+      "sha256": "0fd713b6dc66783ed0bca2ab58fa69bb3f010662396236208b080949e2d987c7",
+      "bytes": 1298
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01-result.json",
+      "sha256": "0a63543fa6556659472eeb130ac2c00030c1a885fd97ba32ab3cd816a2cb6353",
+      "bytes": 2619
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-compile-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01-command.json",
+      "sha256": "e065900a5143bf3459914ea2e2cf083cf64a3382a061dbff3772d5ff6516b095",
+      "bytes": 1134
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01-result.json",
+      "sha256": "695d06b463137b535e36e954b1a975469c1658146a3fa641e9fa3c51ccb5048f",
+      "bytes": 2176
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-vet-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-product-ast-r01.go",
+      "sha256": "1053bcd310b640f5b6a7f227d06d8e3a9a969e6114ca61560d6b6399831bec8c",
+      "bytes": 6032
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-product-ast-r01.json",
+      "sha256": "535fd1fe4c30bd695193b4c750602a71f5cdb65a74bb9f77baf5f72c62b90f6a",
+      "bytes": 22744
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-product-ast-r01-result.json",
+      "sha256": "e3d72945f3b3aa72a025e34c2f80a81612adffda9d0b044222672a0b532a4f1e",
+      "bytes": 1389
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-product-ast-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-static-refs-r01.log",
+      "sha256": "51eba7954871919a0dc5c2bd55efebdde6b26972bf151ee8bbc98d79f2bfa6ed",
+      "bytes": 12630
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/green-static-refs-r01-command.json",
+      "sha256": "1081ae986ffaa7491bfd0eeb74aacbaf6a0c8ba120c4a3cda1013e2dbeb3cc34",
+      "bytes": 3546
+    }
+  ],
+  "remaining": [
+    "Main race outcome if not yet completed",
+    "Independent final candidate-only review",
+    "Separate full-preview/boundSubmission/R38 witnesses",
+    "Original Web/Desktop/A01-A12/S2 and parent/S3-S5 gates remain open"
+  ]
+}

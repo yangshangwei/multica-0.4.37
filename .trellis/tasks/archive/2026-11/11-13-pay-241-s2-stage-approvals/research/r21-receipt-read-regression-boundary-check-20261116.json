@@ -1,0 +1,127 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "R21_FROZEN_RED_TEST_BOUNDARY_SOURCE_AND_PROFILES_ACCEPTED_NOT_EXECUTED",
+  "blocking_test_findings": [],
+  "actual_R20_lock_holder_proven": false,
+  "original_four_acceptance_increment": 0,
+  "product_repair_accepted_or_executed": false,
+  "test_boundary": {
+    "real_stage_review_fixture_and_packager_artifact_used": true,
+    "approved_candidate_and_original_receipt_before_concurrency": true,
+    "same_actual_actor_and_distinct_PostgreSQL_PIDs": true,
+    "pure_GET_then_R4_and_R4_then_pure_GET": true,
+    "second_context_starts_before_holder_context": true,
+    "each_read_deadline_seconds": 5,
+    "real_DecideStage_return_writer_control": true,
+    "writer_control_requires_55P03_and_zero_projection": true,
+    "writer_control_requires_exact_returned_confirmation_after_release": true,
+    "wrong_actor_404_and_disabled_account_403_controls": true,
+    "barrier_forwards_actual_SQL_and_args": true,
+    "Rows_permissions_or_SQL_returns_mocked": false,
+    "Once_buffered_closed_result_channels_and_cleanup_drains_reviewed": true,
+    "unbounded_wait_or_goroutine_test_assertion_added": false
+  },
+  "expected_inventory": {
+    "top": 4,
+    "named": 6,
+    "leaves": 5,
+    "expected_RED_leaf_PASS": 3,
+    "expected_RED_leaf_FAIL": 2,
+    "expected_RED_SKIP": 0,
+    "expectation_executed": false,
+    "top_level": [
+      "TestCollaborationWorkflowReceiptReadThenStageEvidence",
+      "TestCollaborationWorkflowStageEvidenceThenReceiptRead",
+      "TestCollaborationWorkflowReceiptReadOriginalWriterFence",
+      "TestCollaborationWorkflowReceiptReadCurrentAuthority"
+    ],
+    "children": [
+      "TestCollaborationWorkflowReceiptReadCurrentAuthority/wrong_actor",
+      "TestCollaborationWorkflowReceiptReadCurrentAuthority/disabled_account"
+    ]
+  },
+  "source_delta": {
+    "original_manifest_files": 5044,
+    "frozen_RED_manifest_files": 5045,
+    "new_test_lines": 214,
+    "only_new_path": "server/internal/service/collaboration_workflow_read_concurrency_test.go",
+    "existing_manifest_byte_mode_identities_changed": [],
+    "removed_paths": [],
+    "product_changes": 0
+  },
+  "profile_review": {
+    "distinct_profiles": ["red", "green", "race"],
+    "recorded_other_connections_each": 0,
+    "ledger_entries_each": 853,
+    "ledger_tail": "865_knowledge_automation_origin",
+    "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+    "index_records_each": 663,
+    "table_counts_each": 211,
+    "all_donor_before_after_ledger_index_table_counts_equal": true,
+    "declared_environment_clone_audit_hashes_match": true,
+    "environment_files_mode": "0600",
+    "trusted_HOME_GOTMPDIR_parent_owner_mode_inode_chains_match": true,
+    "HOME_and_GOTMPDIR_are_distinct": true,
+    "TMPDIR_TMP_TEMP_equal_GOTMPDIR": true,
+    "profile_mismatches": []
+  },
+  "runner_review": {
+    "reviewed_sha256": "dd112881fc16ccec184f2324dd8f473b5d218968ef18125c77a775deb849c162",
+    "exact_package_selector_argv_count_and_5m_budget_guarded": true,
+    "owned_profile_binding_output_and_single_command_budget_guarded": true,
+    "frozen_source_paths_hashes_modes_before_after_guarded": true,
+    "serial_PAY_flock_and_fresh_DB_admission": true,
+    "private_environment_only": true,
+    "mixed_build_events_and_service_TestEvent_package_classified": true,
+    "unknown_malformed_duplicate_or_build_failure_events_incomplete": true,
+    "initial_recorder_boundary_fixed_by_leader_before_RED": true,
+    "checker_runner_edits": 0,
+    "actual_runner_execution_by_checker": false
+  },
+  "reviewed_draft_binding": {
+    "required_references": 7,
+    "reference_mismatches": [],
+    "cwd_matches_frozen_server": true,
+    "manifest_hash_matches": true,
+    "one_original_RED_command_only": true,
+    "imported_database_auditor_bound_before_RED": true,
+    "initial_six_reference_gap_mechanically_completed_by_leader": true,
+    "final_admission_completion": "Include this accepted review when freezing the final one-command RED binding; no new test/source/profile change required."
+  },
+  "evidence": {
+    "frozen_new_test": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/implement/source-r01/server/internal/service/collaboration_workflow_read_concurrency_test.go",
+      "sha256": "9048a66130440ac64eee2bf451a1308b328fbf744b7bf14569e5f4d8dad5f20e"
+    },
+    "RED_source_manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/red-source-manifest-r01.json",
+      "sha256": "23d2a121e5e25504a79cfb088498eb0231a0ea1ce8abc703bc66b3f7524879e5"
+    },
+    "RED_inventory": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/evidence/red-test-inventory-r01.json",
+      "sha256": "4edc7fa17f1ba7c00d7051c2af9f3ee25bc1bc1b92920933fe413af642f59b00"
+    },
+    "three_profile_allocation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/profiles-r01/three-profile-allocation-r01.json",
+      "sha256": "a3d29ccb5b1e2c5fdb8d4f2912840c422e328b8669f54e809b01b40432a292d8"
+    },
+    "reviewed_RED_binding_draft": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/red-command-binding-draft-r01.json",
+      "sha256": "b89b2cab034268aa84fe7ede3c163af850362483848fc5343dcadb3542cb5d97"
+    },
+    "reviewed_runner": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/run-service-check-r01.py",
+      "sha256": "dd112881fc16ccec184f2324dd8f473b5d218968ef18125c77a775deb849c162"
+    },
+    "imported_database_auditor": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/database/db_audit_r01.py",
+      "sha256": "8b7f53d092598635c539b86914d89f9d4c7cc5d55a8614e6045c6d6302a70479"
+    }
+  },
+  "checker_executed_lint_typecheck_tests_DB_API_browser_build_signals_installs_or_Git": 0,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-regression-boundary-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-receipt-read-regression-boundary-check-20261116.json"
+  ]
+}

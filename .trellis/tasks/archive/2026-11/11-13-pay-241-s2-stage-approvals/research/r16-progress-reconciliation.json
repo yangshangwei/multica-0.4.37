@@ -1,0 +1,589 @@
+{
+  "at": "2026-11-16T02:51:40.302379+00:00",
+  "reviewer": "/root/r16_progress_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "verdict": "R15_PROGRESS_EVIDENCE_ACCEPTED_SCOPED_FULL_S2_OPEN",
+  "scope": "Read-only reconciliation of retained r15 runtime evidence and parent progress. Only this JSON and companion Markdown are written.",
+  "verification_issues": [],
+  "current_four_scenarios": {
+    "round": "r15-r01",
+    "denominator": 4,
+    "counts": {
+      "PASS": 1,
+      "FAIL": 1,
+      "NOT_RUN": 2
+    },
+    "exit_code": 1,
+    "duration_ms": 100457.294,
+    "cases": [
+      {
+        "file": "collaboration-stage-approvals.spec.ts",
+        "line": 27,
+        "title": "stage decisions and prepared test reports retain human and runtime history across Web and Desktop",
+        "result": "PASS",
+        "records": 1,
+        "retry": [
+          0
+        ],
+        "duration_ms": 75445
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 233,
+        "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+        "result": "FAIL",
+        "records": 1,
+        "retry": [
+          0
+        ],
+        "duration_ms": 23065
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 349,
+        "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+        "result": "NOT_RUN",
+        "records": 0,
+        "retry": [],
+        "duration_ms": null
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 398,
+        "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+        "result": "NOT_RUN",
+        "records": 0,
+        "retry": [],
+        "duration_ms": null
+      }
+    ],
+    "no_automatic_retry": true,
+    "same_first_case_repeated_pass_is_one_coverage_item": true
+  },
+  "parent_matrix_observed": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+    "sha256": "7fd067ae3a535f2c55149ec32574d28a478b785ecfb329b8fdfc0d5878f0accb",
+    "denominator": 24,
+    "counts": {
+      "PASS": 0,
+      "PARTIAL": 7,
+      "NOT_RUN": 17
+    }
+  },
+  "parent_recommendations": [
+    {
+      "case_id": "TC-08",
+      "observed_status": "NOT_RUN",
+      "recommended_status": "PARTIAL",
+      "current_evidence": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/attachments/stage-approvals-evidence-31e93458ad65438788e2ef621f7aacbb29227219.json; /Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r13-runtime-independent-r01/r15-latest-runtime-after-independent-handoff-review-r01.json",
+      "remaining_gap": "共享 Web/Desktop 已实测无评审批准、自评、撤权、变更 head 和签字代际拒绝及新的评审后 QA 流转；完整当前权限/到期矩阵与 A04/A11/A12 总验收仍待关闭。",
+      "basis": [
+        "409 stage_dependency_invalid without reviewer signature",
+        "403 stage_role_required for self review",
+        "409 stage_decision_revoked",
+        "409 stage_head_changed",
+        "409 stage_signer_changed",
+        "fresh reviewer signature advances to QA"
+      ]
+    },
+    {
+      "case_id": "TC-12",
+      "observed_status": "NOT_RUN",
+      "recommended_status": "PARTIAL",
+      "current_evidence": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/attachments/stage-approvals-evidence-31e93458ad65438788e2ef621f7aacbb29227219.json; /Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r13-runtime-independent-r01/r15-latest-runtime-after-independent-handoff-review-r01.json",
+      "remaining_gap": "受控 Provider 实际 CLI 报告已关联原失败 run/case/log，有权 QA 退回后显式新 run 与新版报告/QA 批准均留存；两 run 绑定同一代码版本，业务代码修改后的实际回归及完整 A05/A11/A12 仍待证明。",
+      "basis": [
+        "actual CLI T1/T2/T3",
+        "failed duplicate-callback case and two retained log entries",
+        "human QA returned decision",
+        "explicit distinct new prepared run",
+        "new human QA approved decision"
+      ]
+    }
+  ],
+  "parent_counts_after_only_recommended_status_changes": {
+    "PASS": 0,
+    "PARTIAL": 9,
+    "NOT_RUN": 15
+  },
+  "unchanged_status_requirements": {
+    "TC-13": "NOT_RUN; no actual Agent overwrite request attempted.",
+    "S4_rows": "No promotion from local/synthetic evidence.",
+    "remaining_rows": "Preserve historical fields, identities and current statuses."
+  },
+  "existing_PARTIAL_wording_refresh": [
+    "TC-03 current shared role journey now completed within controlled subset.",
+    "TC-05 exact proposal/replay journey now completed within controlled subset.",
+    "TC-07 positive Code review advance now actually HTTP200; retain original r02 timeout as history rather than current blocking gap."
+  ],
+  "qa_binding": {
+    "failed_run": "bad8d404-3571-4ebd-9591-fea90a932690",
+    "passed_run": "a3ef3c0e-64c1-4514-a427-c8cfacf089b1",
+    "failed_report": "59d74938-3195-4332-93b7-1307007b0c11",
+    "passed_report": "a345cb15-8874-45a2-b693-c11e46ba9a27",
+    "failed_cases": [
+      {
+        "id": "prepared-source",
+        "outcome": "passed",
+        "log_index": 0
+      },
+      {
+        "id": "duplicate-callback",
+        "outcome": "failed",
+        "log_index": 1
+      }
+    ],
+    "passed_cases": [
+      {
+        "id": "prepared-source",
+        "outcome": "passed",
+        "log_index": 0
+      },
+      {
+        "id": "duplicate-callback",
+        "outcome": "passed",
+        "log_index": 1
+      }
+    ],
+    "logs_per_report": [
+      2,
+      2
+    ],
+    "same_candidate_id": true,
+    "same_candidate_version": true,
+    "same_source_revision": "b5c7a7d4f1590013bc05716906f8875a36db8bc0",
+    "business_code_modification_proven": false,
+    "fault_control": "duplicate_effect -> none",
+    "qa_return": {
+      "action": "decide_stage",
+      "candidate_id": "01a1e223-d575-73b5-8503-ecf42638fa93",
+      "content_digest": "c6f753a74351d70ffe09f74bd80ce7934553ec25dd5477578dbfdbff6d35c441",
+      "decision": "returned",
+      "decision_id": "01a1e224-54b0-75c0-a2b1-5a92f3cc9768",
+      "expires_at": null,
+      "issue_id": "01a1e223-80f9-75df-80d7-d31d87fa9fc9",
+      "policy_revision": "1",
+      "role_revision": "1",
+      "step": "qa",
+      "version": "2"
+    },
+    "qa_approval": {
+      "action": "decide_stage",
+      "candidate_id": "01a1e223-d575-73b5-8503-ecf42638fa93",
+      "content_digest": "c6f753a74351d70ffe09f74bd80ce7934553ec25dd5477578dbfdbff6d35c441",
+      "decision": "approved",
+      "decision_id": "01a1e224-9899-76ce-b6a1-ab03dcf01ba3",
+      "expires_at": "2026-11-16T02:46:00Z",
+      "issue_id": "01a1e223-80f9-75df-80d7-d31d87fa9fc9",
+      "policy_revision": "1",
+      "role_revision": "1",
+      "step": "qa",
+      "version": "2"
+    }
+  },
+  "r15_failed_case": {
+    "root_issue": "01a1e224-a6de-7ea9-9d56-3c009b9c1460",
+    "candidate_id": "01a1e224-a964-769b-af29-70fbc780f8eb",
+    "reviewer_user_id": "a56c5bfb-ff4f-464c-b926-e1b59c30ac00",
+    "failure": "Code review approval Reason exists but remains disabled under fieldset; original20000ms fill deadline reached.",
+    "confirmed_source_behavior": "Reason fieldset is disabled by current read/query/pending lock. Current cached positive candidate does not override a failed current read.",
+    "ROOT_log_observation": "Same actual reviewer code GET initially200 then503 after modal open, and another503 about15seconds later; P/Q same candidate200.",
+    "uncaptured": "Original503 response body and underlying error/SQLSTATE were not captured.",
+    "root_cause_proven": false,
+    "do_not_claim_fixed": true,
+    "candidate_selection_hypothesis_rejected": true
+  },
+  "metadata_duplicate_fields_observed_0241UTC": {
+    "actual_scenarios_not_run": {
+      "observed": 3,
+      "required_for_latest_r15": 2
+    },
+    "latest_scenario_failure": {
+      "observed": "Old Host Resume selector ambiguity",
+      "required_for_latest_r15": "Reviewer current code read503 and Reason fieldset lock; 503 body/SQLSTATE uncaptured in r15."
+    },
+    "preserve_earlier_round_history": true
+  },
+  "child_metadata_sample_at_report": {
+    "phase": "new_session_handoff_r15_get503_diagnosis",
+    "observed_at": "2026-11-16T02:41:04.278251+00:00",
+    "actual_web_desktop_scenarios_passed": 1,
+    "actual_scenarios_failed": 1,
+    "actual_scenarios_not_run": 3,
+    "latest_completed_four_case_round": "r15-r01",
+    "latest_scenario_failure": "Host target-specific Resume selector matches two target controls; strict mode rejects before HTTP control request; pending page-closed is secondary cleanup error.",
+    "r15_round_state": "TERMINATED_1PASS_1FAIL_2NOTRUN_ORIGINAL_RESULT_RETAINED"
+  },
+  "cleanup_at_retained_after": {
+    "Host_runs": 10,
+    "all_settled_proof_observed": true,
+    "unsettled_Host_runs": 0,
+    "unreleased_reservations": 0,
+    "unknown_or_leased_Host_queue": 0,
+    "extra_runner_native_provider_processes": 0,
+    "synthetic_producer_rows_retained": 3,
+    "synthetic_status": "running/cloud/stage_artifact_fixture/generation1/no managedbinding_or_lease",
+    "gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "10"
+    }
+  },
+  "runtime_services": "Not live-probed by this reviewer. Retained r15 after service PIDs are historical; coordinator subsequent stop/restart receipt owns current state.",
+  "full_acceptance": {
+    "S2": false,
+    "A11": "OPEN",
+    "A12": "OPEN",
+    "A06": "Build-only partial; release approval not reached.",
+    "A07": "OPEN",
+    "A09": "OPEN",
+    "A_W_Q_denominators": {
+      "A": 12,
+      "W": 18,
+      "Q": 12
+    }
+  },
+  "source_scope_limits": {
+    "signatures": "synthetic test accounts; not business-person sign-off",
+    "connector": "synthetic local PR and CI observations; no remote provider verification",
+    "qa_not_covered": [
+      "A06 release approval",
+      "A07 rollback",
+      "A09 complete writer inventory",
+      "complete A11 platform acceptance",
+      "A12 independent phase acceptance",
+      "real payment/fulfillment",
+      "commercial models",
+      "installed Desktop Main"
+    ],
+    "real_S4_or_whole_ROOT_accepted": false,
+    "no_product_test_configuration_or_DB_mutations": true,
+    "API_DB_browser_model_migration_calls": 0
+  },
+  "verification": {
+    "output_files_rehashed": 21,
+    "core_refs_rehashed": 7,
+    "tar_archives_rehashed": 2,
+    "JSON_and_denominator_assertions": "PASS",
+    "lint_typecheck": "NOT_RUN; docs-only owned reports, no source/test edits, accepted checks intentionally not repeated."
+  },
+  "core_references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/result.json",
+      "sha256": "d236ece490d9fca4702f617fc1cd8b71540254796d1885442de3bb22b66e97c7",
+      "bytes": 8365,
+      "expected_sha256": "d236ece490d9fca4702f617fc1cd8b71540254796d1885442de3bb22b66e97c7",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/execution-after-r15-r01.json",
+      "sha256": "dc4c268ca0e1ed9be30ec5f23ced1aa791ea70ec420ba998a81f8b33d096b226",
+      "bytes": 114086,
+      "expected_sha256": "dc4c268ca0e1ed9be30ec5f23ced1aa791ea70ec420ba998a81f8b33d096b226",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r13-runtime-independent-r01/r15-latest-runtime-after-independent-handoff-review-r01.json",
+      "sha256": "1345a5d58616459dd273632d925efda0798579edc8221d3757b854eed72359b1",
+      "bytes": 16133,
+      "expected_sha256": "1345a5d58616459dd273632d925efda0798579edc8221d3757b854eed72359b1",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r13-runtime-independent-r01/r15-artifact-proof-and-form-lock-source-review-r01.json",
+      "sha256": "0fb32a29068841018193f3d0d33d32e4434ac36a418f0c88d9708b2ea177435b",
+      "bytes": 6198,
+      "expected_sha256": "0fb32a29068841018193f3d0d33d32e4434ac36a418f0c88d9708b2ea177435b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/current-r11-source-check-r01/r14-code-and-runtime-subset-a-w-q-matrix-r04.json",
+      "sha256": "440345e1d35e6ad3a44e66e61307ee3818503025a8e4d53aead98fbb4da838c1",
+      "bytes": 95578,
+      "expected_sha256": "440345e1d35e6ad3a44e66e61307ee3818503025a8e4d53aead98fbb4da838c1",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/attachments/stage-approvals-evidence-31e93458ad65438788e2ef621f7aacbb29227219.json",
+      "sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "bytes": 209539,
+      "expected_sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "sha256": "4f127394753b4ba057c9878b8686b928de9ab7f6d36822c6c1cda083d2b32f21",
+      "bytes": 50451,
+      "expected_sha256": "4f127394753b4ba057c9878b8686b928de9ab7f6d36822c6c1cda083d2b32f21",
+      "matches": true
+    }
+  ],
+  "output_files": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/command.json",
+      "sha256": "bb78b2b2e99587a4d6768f2aefb498693e9a87980cfccf48be20f65454b84b97",
+      "bytes": 3613,
+      "expected_sha256": "bb78b2b2e99587a4d6768f2aefb498693e9a87980cfccf48be20f65454b84b97",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/exit.json",
+      "sha256": "5c236be5369c90c2f448574ebbb9de1ba76de467366bbb614fbc4549e3b3ee13",
+      "bytes": 100,
+      "expected_sha256": "5c236be5369c90c2f448574ebbb9de1ba76de467366bbb614fbc4549e3b3ee13",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/playwright-report.json",
+      "sha256": "149931b9511aa5862497ca619623de6743a6bb4fec241ac1868aae18579f1aa7",
+      "bytes": 17073,
+      "expected_sha256": "149931b9511aa5862497ca619623de6743a6bb4fec241ac1868aae18579f1aa7",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/result.json",
+      "sha256": "d236ece490d9fca4702f617fc1cd8b71540254796d1885442de3bb22b66e97c7",
+      "bytes": 8365,
+      "expected_sha256": "d236ece490d9fca4702f617fc1cd8b71540254796d1885442de3bb22b66e97c7",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/runner.stderr.log",
+      "sha256": "e99a649bfe1915472ac9a709fd7020fe92048e64600c6c44c54e890924dd3920",
+      "bytes": 192,
+      "expected_sha256": "e99a649bfe1915472ac9a709fd7020fe92048e64600c6c44c54e890924dd3920",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/runner.stdout.log",
+      "sha256": "a74b3d188dd7a94c27ca5e586756134e3047a14d38cdf8a51d51e119cf61f972",
+      "bytes": 5853,
+      "expected_sha256": "a74b3d188dd7a94c27ca5e586756134e3047a14d38cdf8a51d51e119cf61f972",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/started-once.json",
+      "sha256": "fda68387dd6137169808520ec7cce657b80e943489d67f141881b52846b1dc8e",
+      "bytes": 1057,
+      "expected_sha256": "fda68387dd6137169808520ec7cce657b80e943489d67f141881b52846b1dc8e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.last-run.json",
+      "sha256": "f981305cae8a096bed316e75961e452b49921845add676de9756930a1b1703dc",
+      "bytes": 96,
+      "expected_sha256": "f981305cae8a096bed316e75961e452b49921845add676de9756930a1b1703dc",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.playwright-artifacts-0/2606d7b4dc9adba4a8fc876462995f41.png",
+      "sha256": "0a047de4de498b3b450948aaded0d79e6a2ebb2309894a939eecd70f21153a2a",
+      "bytes": 162182,
+      "expected_sha256": "0a047de4de498b3b450948aaded0d79e6a2ebb2309894a939eecd70f21153a2a",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.playwright-artifacts-0/3b4f58f64fd6fce70ad0c00e3042a9ea.png",
+      "sha256": "f06bcc5f90f644003b86decf932ff12b209ea2f50eebe8b4c87620df6abcf6b3",
+      "bytes": 166111,
+      "expected_sha256": "f06bcc5f90f644003b86decf932ff12b209ea2f50eebe8b4c87620df6abcf6b3",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.playwright-artifacts-0/44c791e1db45587573618b56e9615289.png",
+      "sha256": "2aed638f32dc2e182c68c54683ae650e6a021084c0b96fbe10bfc60f753bd96f",
+      "bytes": 172244,
+      "expected_sha256": "2aed638f32dc2e182c68c54683ae650e6a021084c0b96fbe10bfc60f753bd96f",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.playwright-artifacts-0/9fec667f71b096db139fef9ebbc5df27.png",
+      "sha256": "d86ab77f2f597e5c7ce58dfb8a738ed17666dcb74156ff64d34efa0108aad125",
+      "bytes": 407516,
+      "expected_sha256": "d86ab77f2f597e5c7ce58dfb8a738ed17666dcb74156ff64d34efa0108aad125",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/.playwright-artifacts-0/d61204e82918f4b61bdfa616def67bfc.png",
+      "sha256": "31ede37635283466bd1cf0a8983c7c1a9d948bfd64db2fbccbc89c283a33ec9e",
+      "bytes": 165363,
+      "expected_sha256": "31ede37635283466bd1cf0a8983c7c1a9d948bfd64db2fbccbc89c283a33ec9e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/attachments/stage-approvals-evidence-31e93458ad65438788e2ef621f7aacbb29227219.json",
+      "sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "bytes": 209539,
+      "expected_sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+      "sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "bytes": 209539,
+      "expected_sha256": "e60e4b6111a9a71996925fae3c69010af8870086d129c44573e960f9624f9119",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-desktop-review.png",
+      "sha256": "d86ab77f2f597e5c7ce58dfb8a738ed17666dcb74156ff64d34efa0108aad125",
+      "bytes": 407516,
+      "expected_sha256": "d86ab77f2f597e5c7ce58dfb8a738ed17666dcb74156ff64d34efa0108aad125",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-web-release.png",
+      "sha256": "b4000734773e36e1dd7309ed8ab7e757bcfe14108adda3821c1d7eb91fc31348",
+      "bytes": 183132,
+      "expected_sha256": "b4000734773e36e1dd7309ed8ab7e757bcfe14108adda3821c1d7eb91fc31348",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "sha256": "4f127394753b4ba057c9878b8686b928de9ab7f6d36822c6c1cda083d2b32f21",
+      "bytes": 50451,
+      "expected_sha256": "4f127394753b4ba057c9878b8686b928de9ab7f6d36822c6c1cda083d2b32f21",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-1.png",
+      "sha256": "d714d7a80b60c0f4fb70e10350c67e1a23cc517751c54b8b4546e4fe9e0ae64d",
+      "bytes": 167450,
+      "expected_sha256": "d714d7a80b60c0f4fb70e10350c67e1a23cc517751c54b8b4546e4fe9e0ae64d",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-2.png",
+      "sha256": "9d7ac3faa1c6036b5498715d4811e1a73745a3b9115348cb7a57f26621c417a5",
+      "bytes": 145571,
+      "expected_sha256": "9d7ac3faa1c6036b5498715d4811e1a73745a3b9115348cb7a57f26621c417a5",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-3.png",
+      "sha256": "69a213215db6ec09abdc4385f5e47d23c65fecd72df1a47ea731b23494f25662",
+      "bytes": 161194,
+      "expected_sha256": "69a213215db6ec09abdc4385f5e47d23c65fecd72df1a47ea731b23494f25662",
+      "matches": true
+    }
+  ],
+  "tar_archives": [
+    {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a887-7841-9156-4faf1def2b2b/artifact.tar",
+      "sha256": "e27a39b68f6f68c0ee1df2fe0ba6d2b4131ce27769cd6d9e9f4aa1c0b058cb08",
+      "bytes": 2048,
+      "expected_sha256": "e27a39b68f6f68c0ee1df2fe0ba6d2b4131ce27769cd6d9e9f4aa1c0b058cb08",
+      "matches": true,
+      "execution_id": "01a1e224-a887-7841-9156-4faf1def2b2b",
+      "member": "stage-regression.json",
+      "member_sha256": "06ebeac23f67cf6037a7945b4cdd615ba77c260c4032b708be1c7728bf7bf9ad",
+      "expected_member_sha256": "06ebeac23f67cf6037a7945b4cdd615ba77c260c4032b708be1c7728bf7bf9ad",
+      "request_statuses": [
+        201,
+        200,
+        200
+      ],
+      "external_deployment": false
+    },
+    {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85/artifact.tar",
+      "sha256": "bd810b43dbc73a87a8f99c846d803888fc2bdbbcefcbb51118ca5686f0a10427",
+      "bytes": 2048,
+      "expected_sha256": "bd810b43dbc73a87a8f99c846d803888fc2bdbbcefcbb51118ca5686f0a10427",
+      "matches": true,
+      "execution_id": "01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85",
+      "member": "stage-regression.json",
+      "member_sha256": "6ab0d8daef84c19a4ccc8194c7e08a643d9c369504d25936470c482bfa25481a",
+      "expected_member_sha256": "6ab0d8daef84c19a4ccc8194c7e08a643d9c369504d25936470c482bfa25481a",
+      "request_statuses": [
+        201,
+        200,
+        200
+      ],
+      "external_deployment": false
+    }
+  ],
+  "context_loaded": [
+    {
+      "path": ".trellis/spec/server/collaboration-foundation.md",
+      "bytes": 41981,
+      "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-delivery.md",
+      "bytes": 14373,
+      "sha256": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351"
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "bytes": 16158,
+      "sha256": "95d593960e679098649757f727c33153c5564bb666446eed2c6bb14f70b9cd9b"
+    },
+    {
+      "path": ".trellis/spec/server/database-test-isolation.md",
+      "bytes": 28546,
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8"
+    },
+    {
+      "path": ".trellis/spec/server/verification-environment.md",
+      "bytes": 14784,
+      "sha256": "c839200904601863c13b9aa8f62102ba54ab4766ece31e7fdfff73cad0dc9260"
+    },
+    {
+      "path": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "bytes": 21651,
+      "sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/collaboration-detail.md",
+      "bytes": 18262,
+      "sha256": "a1b195a1c77da7f83161584fd0266298e49cd15adce4cd25aeb2e5b33643c5c5"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-gates.md",
+      "bytes": 20114,
+      "sha256": "f899ec3a290829b7633fe0be08e0fc3dc61fb4a98f72914725fe1699f0cefc0e"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-gates.md",
+      "bytes": 16358,
+      "sha256": "a837a99f5afd3b757cdeb3e3470924f173034c22917d8d7c08bf5316ab8c57e5"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/verification-plan.md",
+      "bytes": 19231,
+      "sha256": "288dfaed94d645a1c636339b7004f30057d6fcfd5af84866b899167980c6edfb"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md",
+      "bytes": 21982,
+      "sha256": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-runtime-cli.md",
+      "bytes": 13235,
+      "sha256": "ab55376b7dabf1b59db1d9302a0da722f183e3d8b938bb76755b98c1b8b3c2f5"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-preparation.md",
+      "bytes": 16211,
+      "sha256": "a12b9732983ce9fc61bf4dd64270b80de5ade9ea0784ed10c41574f1bd050e1f"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/prd.md",
+      "bytes": 6210,
+      "sha256": "e836dc740301f60cef006ae094e05bdb57686eee1fe199d30d94bc65b8df7c10"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+      "bytes": 24227,
+      "sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "bytes": 33129,
+      "sha256": "fb19471e4e1d6058f682dfe07a6c4a2340e2dd5c984eae022a30286d469c6d76"
+    }
+  ]
+}

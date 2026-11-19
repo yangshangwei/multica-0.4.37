@@ -1,0 +1,1108 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-17T12:42:35.098286+00:00",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "researcher": "/root/r27_preview_research",
+  "query": "Smallest managed-submission completion-preview regression and separately admitted pure-preview/R4 read coexistence plan",
+  "scope": "internal",
+  "verdict": "STATIC_ACTIONABLE_PLAN_NOT_EXECUTED",
+  "write_ownership": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-m1-preview-regression-plan-20261117.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-m1-preview-regression-plan-20261117.json"
+  ],
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-m1-preview-regression-plan-20261117.md",
+    "sha256": "767419db461838f732d49c18a57d3fe5d18de8dc8cebf0c9719032401bd288b7",
+    "bytes": 26604,
+    "lines": 137
+  },
+  "read_source_basis": "Current ROOT source; selected server files compared read-only with main R27 private RED source. Main supplies full5048-entry source/command/database admission.",
+  "private_source": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-red-r01",
+  "retained_evidence": {
+    "r26_verdict": "ACCEPTED_R26_CANDIDATE_ONLY_NORMAL_RACE",
+    "acceptance_scope": "Candidate-only shared dispatches, unchanged674-line test; zero new preview executions by researcher",
+    "main_reported_root_integration_and_compile_vet": "completed in prior session; not rerun here",
+    "r24_r25_original_holders": "UNPROVED",
+    "r25_original_four": {
+      "PASS": 1,
+      "FAIL": 1,
+      "NOT_RUN": 2,
+      "retries": 0
+    },
+    "s2_full_acceptance": "open",
+    "s3_s4_s5": "dependent separate gates; not activated by this plan"
+  },
+  "static_defect": {
+    "source": "server/internal/service/collaboration_completion_preview.go:240",
+    "predicate": "managed facts.state nonnil, no stage blockers, target submission ID nonnil",
+    "cause": "temporary stageMutationGuard boundSubmission omitted before checkSubmission(nonzeroID)",
+    "checker": "server/internal/service/collaboration_stage_completion.go:401",
+    "predicted_original_preview": {
+      "service_error": null,
+      "adapter_success_status": 200,
+      "reason": "stage_incomplete",
+      "blockers": [
+        {
+          "stage": "verification",
+          "code": "stage_submission_unbound"
+        }
+      ],
+      "authorization_binding": null,
+      "max_expires_at": null
+    },
+    "executed": false,
+    "predicted_original_policy_modes": [
+      "enforce",
+      "off"
+    ],
+    "not_a_proven_historical_lock_cause": true
+  },
+  "initial_slice": {
+    "status": "main reports original genuine RED running, compile exit0; researcher did not execute or accept the run",
+    "new_test_path_proposal": "server/internal/service/collaboration_completion_preview_managed_submission_test.go",
+    "top_level": "TestCollaborationCompletionPreviewManagedSubmission",
+    "leaves": [
+      {
+        "name": "enforce_authorization_available",
+        "policy": "enforce",
+        "expected": "authorization_available; exact pass observation/binding; false permission flags; zero preview writes"
+      },
+      {
+        "name": "policy_off_non_authorizing",
+        "policy": "off",
+        "expected": "policy_off; null observation/binding/expiry; false permission flags; zero preview writes"
+      },
+      {
+        "name": "stale_target",
+        "policy": "enforce",
+        "expected": "service409 delivery_completion_conflict; request revision changed only"
+      },
+      {
+        "name": "wrong_actor",
+        "policy": "enforce",
+        "expected": "service403 delivery_completion_denied; actual current handler with root participation and no source membership"
+      },
+      {
+        "name": "expired_credential",
+        "policy": "enforce",
+        "expected": "service403 delivery_completion_denied; actual creator JWT expiry past; matching original password-session retained"
+      }
+    ],
+    "counts": {
+      "top_level": 1,
+      "leaf": 5,
+      "named": 6
+    },
+    "selector": "^TestCollaborationCompletionPreviewManagedSubmission$",
+    "fixture": [
+      "newStageCompletionFixture(t)",
+      "stageCompletionM1Policy(t,f,mode)",
+      "stageCompletionSubmit(t,f)"
+    ],
+    "forbidden_preview_setup": [
+      "stageCompletionM1Grant",
+      "manual ready stage/epoch writes",
+      "new role or authority bypass",
+      "test-side R4 marker",
+      "cached post-submit root revision"
+    ],
+    "target_value_helpers": [
+      "stageCompletionAcceptParams",
+      "fresh ResolveIssueAccess",
+      "completionCollaborationTargetFromWorkflow"
+    ],
+    "actual_service": "CollaborationService.GetCollaborationCompletionPreviewInTx(ctx,tx,root,pgtype.UUID{},completionRequestCredential(ctx),request)",
+    "reader": "f.ctx; actual creator/source owner/artifact initiator",
+    "source_issue": "f.stage.child",
+    "approval": "f.stage.artifact.ApprovalID",
+    "credential": "Actual finite JWT and matching stored password-session version from managed fixture; completionRequestCredential(ctx)",
+    "transaction_helpers": [
+      "beginCompletionCandidatesRead(t,f.stage,actor)",
+      "read.finalCredential()",
+      "read.tx.Commit(read.ctx)"
+    ],
+    "unchanged_read_deadline_seconds": 5,
+    "unchanged_artifact_lock_timeout_ms": 250,
+    "isolation": "preview default; R4 retains existing repeatable read",
+    "no_write_helpers": [
+      "completionCandidatesSnapshot",
+      "completionCandidatesCompareState",
+      "completionCandidatesNoWrites"
+    ],
+    "covered_table_count": 72,
+    "additional_snapshot": "stageExitServiceSnapshot",
+    "additional_in_memory_checks": [
+      "controlled source calls count",
+      "controlled source current target"
+    ],
+    "tar_path_exposed": false,
+    "initial_product_proposal_after_genuine_red": [
+      "server/internal/service/collaboration_completion_preview.go"
+    ],
+    "repair_constraint": "Generic temporary read-guard boundSubmission initializer covers submission and admin with a current submission, before unchanged row/operation/handoff checker; no access/nomination/lock helper change and no durable binding/authorization creation. Add one separate real admin_available binding regression.",
+    "names_authority": "Main supplied frozen actual AST leaf names on focused follow-up;5 leaves/6 named preserved",
+    "main_reported_red": {
+      "state": "running",
+      "compile_exit": 0,
+      "permit_prefix": "9e5c",
+      "source_sha_prefix": "f1aa77",
+      "independently_verified_by_researcher": false
+    }
+  },
+  "subsequent_slice": {
+    "gate": "Separately admitted source and read/read RED after independently accepted binding GREEN",
+    "inventory": {
+      "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence": [
+        "r4_first",
+        "preview_first"
+      ],
+      "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads": [
+        "same_creator"
+      ],
+      "TestCollaborationCompletionPreviewManagedSubmissionWriterFences": [
+        "writer_first",
+        "reader_first",
+        "stage_state_plain",
+        "stage_state_read_marker"
+      ],
+      "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority": [
+        "disabled_account",
+        "changed_password",
+        "revoked_artifact_manager",
+        "revoked_qa_issuer"
+      ],
+      "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals": [
+        "missing_stage_binding",
+        "stale_stage"
+      ]
+    },
+    "counts": {
+      "top_level": 5,
+      "leaf": 13,
+      "named": 18
+    },
+    "selector": "^TestCollaborationCompletionPreviewManagedSubmission(R4Coexistence|SiblingReads|WriterFences|CurrentAuthority|BindingRefusals)$",
+    "r4_first_holder": "holdStandingExecutionR4(t,f); actual verified fixture, release-approver read; ListStageExecutionIntents barrier after retained QA issuer/session/run/artifact locks",
+    "r4_first_witness": "distinct nonzero backend PIDs; actual second preview/final credential/commit terminal before held R4 release",
+    "preview_first_holder": "actual complete preview + final credential check on uncommitted borrowed transaction",
+    "preview_first_witness": "actual second StageCodeEvidence terminal before first preview commit",
+    "sibling_rationale": "Preview UPDATE stage-task fence is not retained by R4 getter; sibling catches preview/preview exclusives",
+    "actual_writer_controls": [
+      "stageProjectionWriterRequest + EvaluateDeliveryEvidenceInTx pass held writer first",
+      "preview held before original observer LockLifecycleIssue refusal before LockArtifactUsers",
+      "original stage facts/state writer with isolated stage task SHARE lock, plain and marked"
+    ],
+    "negative_setup": [
+      "real account/password/member mutation with own post-setup snapshot",
+      "exact fresh stage-submission deletion after genuine SubmitAcceptance",
+      "actual stageCompletionRework + fresh target observations"
+    ],
+    "product_proposal_after_genuine_red": [
+      "server/internal/service/collaboration_completion_preview.go",
+      "server/internal/service/delivery_completion_collaboration.go",
+      "server/internal/service/collaboration_stage_completion.go"
+    ],
+    "dispatch_scope": "collaboration_submission only; other kinds stay on original path unless separately tested",
+    "reused_private_reads": [
+      "readDeliveryArtifactInTx",
+      "evaluateDeliveryEvidenceReadInTx",
+      "readCompletionCollaborationAccess",
+      "stageQAReportReadAs",
+      "collaborationStageEvidenceReadTx"
+    ],
+    "stage_task_fence": "explicit same-transaction SHARE fence plus existing getter/missing-head semantics; not unlocked false mode",
+    "writer_defaults": "Original observer/access/QA/state writer paths retain exclusive defaults even when explicitly handed marked tx",
+    "sql_or_generated_changes_initially_proposed": false,
+    "migration_dependency_or_public_flag": false,
+    "expected_current_authority": {
+      "disabled_account": "initial ResolveIssueAccess404 not_found",
+      "changed_password": "initial ResolveIssueAccess404 not_found with original session version",
+      "revoked_artifact_manager": "selected artifact service403 delivery_completion_denied",
+      "revoked_qa_issuer": "stage_incomplete with defined stage_evidence_unavailable blocker and nil binding/expiry; creator remains authorized"
+    }
+  },
+  "retained_controls": [
+    "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+    "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+    "TestStageExecutionReadWriterAccessFences",
+    "TestStageExecutionRunReadFences",
+    "TestStageArtifactReadProjectionWriterFences",
+    "TestStageExecutionReadRetainedIssuerFences",
+    "TestStageCompletionAllM1ModesAndActualWriters"
+  ],
+  "separate_slices_if_changed_or_claimed": {
+    "attachments": "Initial submission fixture has empty attachments. Real upload/submission/selected attachment sibling and bind/discard writer controls required if digest/validation lock mode changes.",
+    "self": "Genuine transfer-to-creator + self result/draft/source-comment/upload validation and actual binding controls if self intent/helper read dispatch changes.",
+    "ordinary": "Actual ordinary GetDeliveryCompletionPreviewInTx + default/read observer two-order controls using existing ordinary fixture if ordinary observer dispatch changes.",
+    "admin": "For generic boundSubmission initializer add the single real admin-current-submission admin_available leaf. Existing nomination/access/organization/password and advisory lock helpers stay unchanged; retained exact wrong-org/password router controls suffice. Full R38 lock/authority matrix only if those helpers change."
+  },
+  "command_shapes": {
+    "normal": [
+      "go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=10m",
+      "./internal/service",
+      "-run",
+      "^TestCollaborationCompletionPreviewManagedSubmission$"
+    ],
+    "race": [
+      "go",
+      "test",
+      "-race",
+      "-json",
+      "-count=1",
+      "-timeout=10m",
+      "./internal/service",
+      "-run",
+      "^TestCollaborationCompletionPreviewManagedSubmission$"
+    ],
+    "runner": "Existing main-owned admitted runner; exact private cwd/config/source/database permit; fresh RED/GREEN/race service clones; no ambient command execution",
+    "repeat_r26_root_compile_vet_required": false
+  },
+  "external_references": {
+    "fetched": [],
+    "versions_from_server_go_mod": {
+      "go": "1.26.6",
+      "pgx_v5": "5.9.2"
+    }
+  },
+  "caveats": [
+    "No executed preview proof here",
+    "R24/R25 holders remain unproved",
+    "72 covered relations are not all211 tables/knowledge histories",
+    "Real archive metadata equality is not a fresh tar-byte audit without path exposure",
+    "Service internal partial DTO on error is not serialized by actual adapter",
+    "Full S2/original four/A01-A12/S3-S5 remain open"
+  ],
+  "execution_by_researcher": {
+    "tests": 0,
+    "builds": 0,
+    "sql": 0,
+    "api": 0,
+    "browser": 0,
+    "process_signals": 0,
+    "git_operations": 0,
+    "subagents_spawned": 0
+  },
+  "sources": [
+    {
+      "path": "server/internal/service/collaboration_completion_preview.go",
+      "description": "Managed candidate/preview service and unset read-guard binding",
+      "lines": [
+        18,
+        63,
+        178,
+        208,
+        228,
+        231,
+        240,
+        265
+      ],
+      "sha256": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "bytes": 14141,
+      "mode": "0o644",
+      "r27_private_sha256": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/delivery_completion_preview.go",
+      "description": "Shared candidate preparation and ordinary preview/default observer",
+      "lines": [
+        49,
+        58,
+        131,
+        277,
+        334
+      ],
+      "sha256": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "bytes": 16586,
+      "mode": "0o644",
+      "r27_private_sha256": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/delivery_completion_types.go",
+      "description": "Closed target request, numeric revisions and epoch validation",
+      "lines": [
+        61,
+        85,
+        156
+      ],
+      "sha256": "2af952d8432da909005cd51c47daa35e961109bf89b97156600c2510b759f439",
+      "bytes": 16481,
+      "mode": "0o644",
+      "r27_private_sha256": "2af952d8432da909005cd51c47daa35e961109bf89b97156600c2510b759f439",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/delivery_completion_collaboration.go",
+      "description": "Actual credential capture, read/writer access, intent, attachments and target value helper",
+      "lines": [
+        23,
+        40,
+        44,
+        115,
+        198,
+        284,
+        493,
+        543
+      ],
+      "sha256": "c92797c69ca01850ca87dea3b8f960ddc7c174ada3154084554a5423bb89cfab",
+      "bytes": 23905,
+      "mode": "0o644",
+      "r27_private_sha256": "c92797c69ca01850ca87dea3b8f960ddc7c174ada3154084554a5423bb89cfab",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/delivery_completion_authorization.go",
+      "description": "Issuer freeze checks credentials without creating an authorization",
+      "lines": [
+        556
+      ],
+      "sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+      "bytes": 36706,
+      "mode": "0o644",
+      "r27_private_sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion.go",
+      "description": "Managed state/facts, retained issuer checks and bound-submission predicate",
+      "lines": [
+        83,
+        115,
+        127,
+        160,
+        358,
+        390,
+        401
+      ],
+      "sha256": "9d47fe441cc62a7ccacb1d27358ed2adcf5107d6d0ab60adb1c347a38bd4d31c",
+      "bytes": 21555,
+      "mode": "0o644",
+      "r27_private_sha256": "9d47fe441cc62a7ccacb1d27358ed2adcf5107d6d0ab60adb1c347a38bd4d31c",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion_binding.go",
+      "description": "Original operation/receipt/handoff binding verification",
+      "lines": [
+        100,
+        102,
+        113,
+        116,
+        120
+      ],
+      "sha256": "c6d19831a6bdd294d572ec5aedd09093835da000ebb147c610bc11e5d8e2cfcb",
+      "bytes": 18606,
+      "mode": "0o644",
+      "r27_private_sha256": "c6d19831a6bdd294d572ec5aedd09093835da000ebb147c610bc11e5d8e2cfcb",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion_test.go",
+      "description": "Genuine controlled execution and verified-stage fixture",
+      "lines": [
+        48,
+        56,
+        61,
+        66
+      ],
+      "sha256": "8ad9dea5a06ec2e9d8e5f35276b1290dbf384cd4190c123fb10b1a49200e34e3",
+      "bytes": 4944,
+      "mode": "0o644",
+      "r27_private_sha256": "8ad9dea5a06ec2e9d8e5f35276b1290dbf384cd4190c123fb10b1a49200e34e3",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+      "description": "Real SubmitAcceptance, fresh target observations and existing writer controls",
+      "lines": [
+        74,
+        89,
+        152,
+        232,
+        419,
+        475,
+        689,
+        721,
+        731,
+        744
+      ],
+      "sha256": "2936724908351a44447f8e44f3d1be6bccaace255a6c11cecf1292b17b08083f",
+      "bytes": 73422,
+      "mode": "0o644",
+      "r27_private_sha256": "2936724908351a44447f8e44f3d1be6bccaace255a6c11cecf1292b17b08083f",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_fixture_test.go",
+      "description": "Authenticated synthetic integration source and real runtime/QA/release fixture",
+      "lines": [
+        32,
+        90,
+        109,
+        180,
+        226
+      ],
+      "sha256": "9c23a7b54a30ef2a3c4655653213b2ddbfa889a804448d505a43f30e0d77dab6",
+      "bytes": 15055,
+      "mode": "0o644",
+      "r27_private_sha256": "9c23a7b54a30ef2a3c4655653213b2ddbfa889a804448d505a43f30e0d77dab6",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_test.go",
+      "description": "Managed JWT/password contexts and actual code/report runtime setup",
+      "lines": [
+        27,
+        30,
+        52,
+        68
+      ],
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "bytes": 15333,
+      "mode": "0o644",
+      "r27_private_sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_test.go",
+      "description": "Stored managed installation/binding/password prerequisites and admitted runtime calls",
+      "lines": [
+        35,
+        57,
+        78
+      ],
+      "sha256": "80ad993fdecbd5c1788079e1a315f57979c8ff5d5b362e0f0986d423301e962a",
+      "bytes": 17581,
+      "mode": "0o644",
+      "r27_private_sha256": "80ad993fdecbd5c1788079e1a315f57979c8ff5d5b362e0f0986d423301e962a",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_artifact_test.go",
+      "description": "Real packager fixture, unexposed archive path and canonical manager demotion",
+      "lines": [
+        28,
+        71,
+        80,
+        93,
+        103,
+        188
+      ],
+      "sha256": "ac3290191de8af13655f05008adbb94aecee5b20354d1cffcab1accb0c92ef74",
+      "bytes": 21588,
+      "mode": "0o644",
+      "r27_private_sha256": "ac3290191de8af13655f05008adbb94aecee5b20354d1cffcab1accb0c92ef74",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+      "description": "Reusable SQL-forwarding trace, borrowed read handles,72-table snapshots and writer controls",
+      "lines": [
+        48,
+        158,
+        183,
+        247,
+        268,
+        301,
+        393,
+        521
+      ],
+      "sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+      "bytes": 32315,
+      "mode": "0o644",
+      "r27_private_sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+      "description": "SQL-forwarding R4 barrier and actual observer control request",
+      "lines": [
+        18,
+        34,
+        78,
+        115,
+        180
+      ],
+      "sha256": "2053aa790974aea910a908634a18953748279f9028659c2dac4d1b28e74630f6",
+      "bytes": 11499,
+      "mode": "0o644",
+      "r27_private_sha256": "2053aa790974aea910a908634a18953748279f9028659c2dac4d1b28e74630f6",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_read_concurrency_test.go",
+      "description": "Full standing-chain R4 barrier and plain/marked access writer controls",
+      "lines": [
+        60,
+        70,
+        78,
+        139,
+        179
+      ],
+      "sha256": "16f61b61fff07fb4cf609bf27a141093d67d46afe96f2448a9605a7c7709a75c",
+      "bytes": 8448,
+      "mode": "0o644",
+      "r27_private_sha256": "16f61b61fff07fb4cf609bf27a141093d67d46afe96f2448a9605a7c7709a75c",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_run_read_fences_test.go",
+      "description": "Plain/marked original QA-run writer fences",
+      "lines": [
+        22,
+        58,
+        64,
+        92
+      ],
+      "sha256": "6d6b93bcc98e042508b45c7f01ff9a5dbbd74fc447a2202e809419def2f32eaa",
+      "bytes": 4553,
+      "mode": "0o644",
+      "r27_private_sha256": "6d6b93bcc98e042508b45c7f01ff9a5dbbd74fc447a2202e809419def2f32eaa",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence_read.go",
+      "description": "Private concrete R4 read marker and original frozen source dispatch",
+      "lines": [
+        15,
+        21,
+        30,
+        71,
+        92
+      ],
+      "sha256": "be5a175aac2c4451f31f0e6acbb5d6c085611d5c451abdc2493b671fd92e36b9",
+      "bytes": 4665,
+      "mode": "0o644",
+      "r27_private_sha256": "be5a175aac2c4451f31f0e6acbb5d6c085611d5c451abdc2493b671fd92e36b9",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_approvals.go",
+      "description": "Retained QA issuer/read-access and exact report/run branch",
+      "lines": [
+        27,
+        93,
+        105
+      ],
+      "sha256": "c00b27e4aaa8ba8dd0afc9fecec3baf66e084d24cc4b40f0ef4e58ab2aca623b",
+      "bytes": 24410,
+      "mode": "0o644",
+      "r27_private_sha256": "c00b27e4aaa8ba8dd0afc9fecec3baf66e084d24cc4b40f0ef4e58ab2aca623b",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_qa.go",
+      "description": "Explicit read report fence; default writer remains false",
+      "lines": [
+        19,
+        23,
+        63
+      ],
+      "sha256": "5db489eb15b10d3446dedb17e55fa76dd2b6de1816c28561a5dbe50022becdf7",
+      "bytes": 11307,
+      "mode": "0o644",
+      "r27_private_sha256": "5db489eb15b10d3446dedb17e55fa76dd2b6de1816c28561a5dbe50022becdf7",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence.go",
+      "description": "Marker-aware actual artifact observer",
+      "lines": [
+        232,
+        248
+      ],
+      "sha256": "a870a7904b52e78f949af82eaca61ecbd3d9d4c14a304a386bc750ba05c5d895",
+      "bytes": 12444,
+      "mode": "0o644",
+      "r27_private_sha256": "a870a7904b52e78f949af82eaca61ecbd3d9d4c14a304a386bc750ba05c5d895",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_signer.go",
+      "description": "Current retained source/credential/signers and final database clock",
+      "lines": [
+        212,
+        267,
+        284,
+        318
+      ],
+      "sha256": "b7bd097e41d8d97ff6f81a274d9e778c6fe870473c93e120e7ca12b522f9d5d8",
+      "bytes": 13051,
+      "mode": "0o644",
+      "r27_private_sha256": "b7bd097e41d8d97ff6f81a274d9e778c6fe870473c93e120e7ca12b522f9d5d8",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_stage.go",
+      "description": "Stage task getter/update lock and unchanged missing-head semantics",
+      "lines": [
+        232,
+        238,
+        282
+      ],
+      "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "bytes": 17873,
+      "mode": "0o644",
+      "r27_private_sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "description": "Default attachment validation retains real update fence",
+      "lines": [
+        522,
+        532
+      ],
+      "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "bytes": 24398,
+      "mode": "0o644",
+      "r27_private_sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/artifact_authority.go",
+      "description": "Verified credential snapshots,250ms preparation and current database checks",
+      "lines": [
+        32,
+        72,
+        101
+      ],
+      "sha256": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+      "bytes": 14745,
+      "mode": "0o644",
+      "r27_private_sha256": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_completion_preview.go",
+      "description": "Actual five-second adapter, final credential/Commit and error-only output",
+      "lines": [
+        29,
+        87,
+        95,
+        99,
+        111
+      ],
+      "sha256": "824b2f8d3ac2a4af049cc5ecc24812295407d022cf0827348c62b1684feba151",
+      "bytes": 3748,
+      "mode": "0o644",
+      "r27_private_sha256": "824b2f8d3ac2a4af049cc5ecc24812295407d022cf0827348c62b1684feba151",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_completion_preview_integration_test.go",
+      "description": "Existing router fixture explicitly excludes verified stage positive",
+      "lines": [
+        33,
+        42,
+        95,
+        221,
+        538,
+        559,
+        569,
+        671,
+        771
+      ],
+      "sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "bytes": 54561,
+      "mode": "0o644",
+      "r27_private_sha256": "5c83a327636c4f0a9795ceed599e1f3dfef06ab6918bf40e5dff7ac8b81490ec",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/pkg/db/queries/delivery_evidence_read.sql",
+      "description": "Existing shared issue/principal/approval/execution fences",
+      "lines": [
+        4,
+        8,
+        20,
+        23
+      ],
+      "sha256": "cb02cc28424cbffc359de6377a302f8c115f6252bc9f28b76a839fbe4a1efb25",
+      "bytes": 1149,
+      "mode": "0o644",
+      "r27_private_sha256": "cb02cc28424cbffc359de6377a302f8c115f6252bc9f28b76a839fbe4a1efb25",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage.sql",
+      "description": "Shared root fence and original exclusive stage task query",
+      "lines": [
+        32,
+        39,
+        42
+      ],
+      "sha256": "57ff366abcaf8b81e86b6d281c149b5148ea3584dfccfecda2c0a09f5d62c5bb",
+      "bytes": 13691,
+      "mode": "0o644",
+      "r27_private_sha256": "57ff366abcaf8b81e86b6d281c149b5148ea3584dfccfecda2c0a09f5d62c5bb",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_stage_submission.sql",
+      "description": "Shared immutable code/submission/operation/handoff fences",
+      "lines": [
+        8,
+        13,
+        17,
+        30
+      ],
+      "sha256": "f7cbbd528644f4fe5fda27184cbdb7a97cf9f3f18b3355b194547b880ca11529",
+      "bytes": 4361,
+      "mode": "0o644",
+      "r27_private_sha256": "f7cbbd528644f4fe5fda27184cbdb7a97cf9f3f18b3355b194547b880ca11529",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_attachments.sql",
+      "description": "Original selected-attachment update query",
+      "lines": [
+        20
+      ],
+      "sha256": "76b0b8e90767596fccae049db23d24b02237d8c6550d32020958c0919ca18364",
+      "bytes": 4580,
+      "mode": "0o644",
+      "r27_private_sha256": "76b0b8e90767596fccae049db23d24b02237d8c6550d32020958c0919ca18364",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/pkg/db/queries/password.sql",
+      "description": "Canonical password credential version-CAS change",
+      "lines": [
+        11
+      ],
+      "sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "bytes": 734,
+      "mode": "0o644",
+      "r27_private_sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/go.mod",
+      "description": "Pinned toolchain contract and pgx dependency version",
+      "lines": [
+        3,
+        18
+      ],
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586,
+      "mode": "0o755",
+      "r27_private_sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "CLAUDE.md",
+      "description": "Authoritative testing/boundary rules",
+      "lines": [
+        193,
+        235
+      ],
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mode": "0o755"
+    },
+    {
+      "path": ".trellis/workflow.md",
+      "description": "Role-isolated research persistence and development workflow",
+      "lines": [
+        1
+      ],
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/index.md",
+      "description": "Server guideline index",
+      "lines": [
+        1
+      ],
+      "sha256": "e2850ded1d9a0dff3dca2ed2201daff8b80377152889fee240ecf835a50012af",
+      "bytes": 9497,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "description": "Read/current-authority/writer-default contracts",
+      "lines": [
+        13,
+        60,
+        83
+      ],
+      "sha256": "30129f9d2bd9c0b1112960b53668cd52ed32fe3bce0e56b148c43060037e11f1",
+      "bytes": 38426,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "description": "Borrowed transaction and nonauthorizing preparation reads",
+      "lines": [
+        1
+      ],
+      "sha256": "3cd624f72ba0106b6fbfed08d102cdfd7098b303b6ce896a366ccaa103ff053d",
+      "bytes": 16728,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/database-test-isolation.md",
+      "description": "Explicit fresh owned test databases and compile/execute boundary",
+      "lines": [
+        1
+      ],
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8",
+      "bytes": 28546,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/verification-environment.md",
+      "description": "Exact source/config/runner/package admission and complete inventories",
+      "lines": [
+        1
+      ],
+      "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f",
+      "bytes": 17493,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/prd.md",
+      "description": "S2 requirements and acceptance boundaries",
+      "lines": [
+        25,
+        38
+      ],
+      "sha256": "e836dc740301f60cef006ae094e05bdb57686eee1fe199d30d94bc65b8df7c10",
+      "bytes": 6210,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+      "description": "Same-transaction exact submission/M1 and stage contracts",
+      "lines": [
+        58,
+        82,
+        114
+      ],
+      "sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+      "bytes": 24227,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "description": "Main current R27 continuation and authorized scope",
+      "lines": [
+        3
+      ],
+      "sha256": "56d8e0054a4fe8c9eac20660e06b01024906235e351c8c76f0e120b2a7904257",
+      "bytes": 47219,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-read-coexistence-test-plan-20261117.md",
+      "description": "Prior preview/lock/source research, not executed preview evidence",
+      "lines": [
+        1
+      ],
+      "sha256": "212e552b0f519990de7de999370bbb31e9991da80e80bb444292f4026aa06519",
+      "bytes": 21746,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-preview-diagnosis-20261117.md",
+      "description": "Historical candidate409/capture limitations",
+      "lines": [
+        1
+      ],
+      "sha256": "6dcd7ce502057c2f64a0ce3cb0fd281b4aca4854008c99a6b45e8e8f69183c21",
+      "bytes": 22304,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-independent-check-20261117.md",
+      "description": "Sealed independent candidate-only normal/race acceptance",
+      "lines": [
+        3,
+        40,
+        86
+      ],
+      "sha256": "524d70798b8ce343a5a0c4999678f03b36d09e4e9fb0b448ebbf5ee45dc399e6",
+      "bytes": 11345,
+      "mode": "0o444"
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "description": "Current account/password source access and content-free root refusal",
+      "lines": [
+        77,
+        103,
+        108,
+        123
+      ],
+      "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+      "bytes": 19936,
+      "mode": "0o644",
+      "r27_private_sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/delivery_completion.go",
+      "description": "Content-free service error mapping",
+      "lines": [
+        88,
+        96
+      ],
+      "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "bytes": 20379,
+      "mode": "0o644",
+      "r27_private_sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_test.go",
+      "description": "Existing admin password-context and exact fresh lifecycle target parameter helper",
+      "lines": [
+        93,
+        97,
+        113
+      ],
+      "sha256": "678d28ed1d196939c40099a597186004d25b6c70d5f074b5c6be71623c76dfe5",
+      "bytes": 9268,
+      "mode": "0o644",
+      "r27_private_sha256": "678d28ed1d196939c40099a597186004d25b6c70d5f074b5c6be71623c76dfe5",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/admin_collaboration_authority_test.go",
+      "description": "Retained current admin authority and no-write root admin operation/audit snapshot",
+      "lines": [
+        52,
+        88,
+        134
+      ],
+      "sha256": "d761a884e7bb1ea8347d2b780104976afb9a93c332d16db1461adedf62e3f4f0",
+      "bytes": 29477,
+      "mode": "0o644",
+      "r27_private_sha256": "d761a884e7bb1ea8347d2b780104976afb9a93c332d16db1461adedf62e3f4f0",
+      "root_private_bytes_equal": true
+    },
+    {
+      "path": "server/internal/service/collaboration_delivery.go",
+      "description": "Actual session-event-bound current submission projection",
+      "lines": [
+        339,
+        355
+      ],
+      "sha256": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+      "bytes": 20748,
+      "mode": "0o644",
+      "r27_private_sha256": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+      "root_private_bytes_equal": true
+    }
+  ],
+  "followup_at": "2026-11-17T13:26:56.463712+00:00",
+  "admin_binding_supplement": {
+    "status": "PROPOSED_SEPARATELY_ADMITTED_NOT_EXECUTED",
+    "top_level": "TestCollaborationCompletionPreviewAdminCurrentSubmission",
+    "leaves": [
+      {
+        "name": "admin_available",
+        "expected": "authorization_available; exact pass observation/admin target/genuine current submission; admin consumer with exact org; false permission flags; zero preview effects"
+      }
+    ],
+    "counts": {
+      "top_level": 1,
+      "leaf": 1,
+      "named": 2
+    },
+    "selector": "^TestCollaborationCompletionPreviewAdminCurrentSubmission$",
+    "preserve_running_initial_source": true,
+    "prospective_combined_counts_if_separately_frozen_together": {
+      "top_level": 2,
+      "leaf": 6,
+      "named": 8
+    },
+    "fixture": "newStageCompletionFixture(t, stageCompletionIndependentArtifact, stageCompletionIndependentProductRole)",
+    "fixture_hook_order": [
+      "stageCompletionIndependentArtifact",
+      "stageCompletionIndependentProductRole"
+    ],
+    "hook_purpose": "Retained artifact initiator and original product scope signer are current reviewer, so genuine creator disable does not invalidate these signers",
+    "setup_after_verified_fixture": [
+      "stageCompletionM1Policy(t,f,\"enforce\")",
+      "submission := stageCompletionSubmit(t,f)",
+      "admin := stageCompletionAdmin(t,f)",
+      "f.fx.Member(t,f.workspace,util.UUIDToString(admin.admin),\"admin\")",
+      "stageCompletionDisableCreator(t,f,admin)"
+    ],
+    "source_membership": "Existing router fixture precedent; platform super-admin alone grants no artifact authority; no admin issue-participant insertion",
+    "fresh_params": "admin.params(t,\"complete\") after actual creator disable; reads current issue/status/catalog/collaboration revision",
+    "target_preparation_actual_calls": [
+      "begin real default-isolation borrowed preparation-only transaction",
+      "PrepareArtifactTransaction(ctx,tx)",
+      "db.New(tx).GetIssue(ctx,root)",
+      "completionAdminNomination(ctx,tx,issue,admin.admin,admin.org,true)",
+      "collaborationDeliverySummary(ctx,db.New(tx),actualAccess)",
+      "require actual summary.Current nonnil, ID equals genuine stageCompletionSubmit return, evidence available",
+      "completionAdminTarget(&collaborationWorkflowTx{collaborationQueueTx:&collaborationQueueTx{access:actualAccess}},freshParams,summary.Current)",
+      "CheckArtifactCredentialInTx(ctx,tx,completionRequestCredential(admin.adminCtx))",
+      "actual preparation Commit before new preview transaction"
+    ],
+    "no_fake_current_or_writer": "Target builder is existing pure value projection; pass actual summary.Current, not nil or a synthetic ready record; never call admin.actions.ChangeLifecycle",
+    "target": {
+      "kind": "collaboration_admin",
+      "issue_id": "current real root",
+      "expected_issue_revision": "current numeric revision after submit/disable",
+      "expected_status": "current actual status",
+      "target_status": "fresh active done target",
+      "expected_collaboration_revision": "fresh decimal revision",
+      "expected_lifecycle_epoch": "actual nomination decimal lifecycle",
+      "status_options_version": "fresh actual options version",
+      "submission_id": "genuine nonnil current submission",
+      "administration_reason": "fresh params reason",
+      "normal_participant_or_account_epochs": "absent"
+    },
+    "actual_preview": "f.svc.GetCollaborationCompletionPreviewInTx(ctx,newBorrowedTx,root,admin.org,completionRequestCredential(admin.adminCtx),request)",
+    "credential": "Actual finite admin JWT with matching password-session Kind jwt/version1 from stageCompletionAdmin",
+    "source_issue": "f.stage.child",
+    "approval": "f.stage.artifact.ApprovalID",
+    "consumer": {
+      "kind": "admin",
+      "user_id": "util.UUIDToString(admin.admin)",
+      "organization_id": "util.UUIDToString(admin.org)"
+    },
+    "no_write_baseline": [
+      "after real source membership and creator disable",
+      "completionCandidatesSnapshot(t,f.stage)",
+      "adminCollaborationStateSnapshot(t,admin)",
+      "controlled source calls/target"
+    ],
+    "additional_snapshot_rows": "Existing admin snapshot includes full root admin_operation/admin_audit_event plus original workflow/control rows",
+    "forbidden_preview_setup_or_effects": [
+      "stageCompletionM1Grant",
+      "new durable stage submission binding",
+      "admin completion operation",
+      "initiator accepted decision",
+      "status/lifecycle write",
+      "attachment binding"
+    ],
+    "conditional_controls": {
+      "new_controls_required_for_initializer_only": false,
+      "retained_exact_wrong_org": "TestCollaborationStageCompletionPreviewRouterR38Scope/workspace_organization_link_mismatch: HTTP404 not_found, zero private body/effects",
+      "retained_exact_password": "TestCollaborationStageCompletionPreviewRouterCurrentPasswordAndOrganization/password_session_changed/completion-preview: HTTP403 delivery_completion_denied",
+      "if_authority_helpers_actually_change": [
+        "wrong_organization",
+        "stale_password_session"
+      ],
+      "wrong_org_setup": "same genuine admin identity, exact wrong org argument or workspace association; no fabricated second internal tenant",
+      "stale_password_setup": "canonical real session-version CAS increment; retain original admin credential, never refresh context to bypass revocation",
+      "full_r38_lock_matrix_required": "only if nomination/access/locking helper changes",
+      "retained_runs_reexecuted_by_researcher": false
+    }
+  }
+}

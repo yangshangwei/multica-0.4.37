@@ -1,0 +1,1746 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-18T04:18:21.271332+08:00",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "researcher": "/root/r27_preview_research",
+  "query": "Bounded actual Q user-row writer contenders and cancellation for retained R29 E02; minimal optional exact claim observer and foreground contract",
+  "scope": "internal; filesystem-only static/retained evidence",
+  "status": "R30_WRITER_CANCEL_INVENTORY_READY_HISTORICAL503_HOLDER_UNPROVED",
+  "write_ownership": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.json"
+  ],
+  "sealed_output_mode": "0444",
+  "canonical_sources": {
+    "R29_GREEN": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01",
+    "FRONT": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01",
+    "ROOT_prepared_R30_RED": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-red-r01",
+    "R30_source_or_tests_changed_by_researcher": false
+  },
+  "actual_R29_original_four": {
+    "result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/runtime/four-scenarios-r01/result.json",
+      "sha256": "90f57c8605bae1503d99e973c98ba0a002d4c0a197638ffc3b260dd9ecebccfe",
+      "bytes": 7523,
+      "mode": "0o600"
+    },
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 2,
+    "retry_each": 0,
+    "no_new_execution": true
+  },
+  "identity": {
+    "root": "01a1eb06-7fce-7553-b4fa-73e0ec4df342",
+    "candidate": "01a1eb06-824a-77d7-8ada-9e4b588123d7",
+    "current_Q": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927",
+    "actors": {
+      "product": "2800f524-f886-4e8c-a039-d2ca8b7f352e",
+      "implementer": "d103f464-a584-47c5-beaf-8d8a8fe108a2",
+      "reviewer": "da30e86d-1374-4014-ad86-e38b66c72c23",
+      "qa": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927",
+      "release": "c7c482af-5e36-4ce5-94bd-8b54d54cd4c0",
+      "ordinary_source_member": "b9e0f9b5-1744-4488-a9e0-b77ca44f2d30"
+    },
+    "host_run": "5d9aed56-9dae-456e-bfe0-4fa025fbb8d4",
+    "report": "d3d0d098-616c-48ca-bf14-fd82a5f1dac2"
+  },
+  "original_E02_evidence": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+    "sha256": "419225d86c5a7c231ac8f250b2044842c5f168e5b150092b5e0be12b816d4ba9",
+    "bytes": 93404,
+    "mode": "0o600"
+  },
+  "target_Q503_HTTP": [
+    {
+      "line": 9688,
+      "recorded_time": "2026/11/18 03:40:46",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/stage/code-candidates/01a1eb06-824a-77d7-8ada-9e4b588123d7",
+      "status": 503,
+      "duration": "236.028ms",
+      "request_id": "b6b85cb3",
+      "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+    },
+    {
+      "line": 9789,
+      "recorded_time": "2026/11/18 03:40:47",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/stage/code-candidates/01a1eb06-824a-77d7-8ada-9e4b588123d7",
+      "status": 503,
+      "duration": "36.032ms",
+      "request_id": "1cecc233",
+      "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+    }
+  ],
+  "PG_narrow_window": {
+    "record": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/runtime/original-postgres-window-r01/stderr.log",
+      "sha256": "630301ce3c5fa0b04b1969b8f63c25668756e349aadfb75fe51fcdad2eb92ebc",
+      "bytes": 66301,
+      "mode": "0o600"
+    },
+    "errors": 42,
+    "selected_errors": [
+      {
+        "line": 356,
+        "pid": 60316,
+        "query_name": "LockArtifactUsers",
+        "recorded_error_line": "2026-11-17T19:40:44.011179555Z 2026-11-17 19:40:44.011 UTC [60316] ERROR:  could not obtain lock on row in relation \"user\""
+      },
+      {
+        "line": 503,
+        "pid": 60409,
+        "query_name": "GetUser",
+        "recorded_error_line": "2026-11-17T19:40:46.477206584Z 2026-11-17 19:40:46.476 UTC [60409] ERROR:  canceling statement due to user request"
+      },
+      {
+        "line": 508,
+        "pid": 60411,
+        "query_name": "GetCollaborationAccess",
+        "recorded_error_line": "2026-11-17T19:40:46.657829667Z 2026-11-17 19:40:46.657 UTC [60411] ERROR:  canceling statement due to user request"
+      },
+      {
+        "line": 529,
+        "pid": 60426,
+        "query_name": "ListCollaborationWorkbench",
+        "recorded_error_line": "2026-11-17T19:40:46.807050792Z 2026-11-17 19:40:46.806 UTC [60426] ERROR:  canceling statement due to user request"
+      },
+      {
+        "line": 575,
+        "pid": 60438,
+        "query_name": "GetUser",
+        "recorded_error_line": "2026-11-17T19:40:46.867448042Z 2026-11-17 19:40:46.867 UTC [60438] ERROR:  canceling statement due to user request"
+      },
+      {
+        "line": 580,
+        "pid": 60437,
+        "query_name": "GetPasswordCredential",
+        "recorded_error_line": "2026-11-17T19:40:46.875690250Z 2026-11-17 19:40:46.875 UTC [60437] ERROR:  canceling statement due to user request"
+      },
+      {
+        "line": 584,
+        "pid": 60444,
+        "query_name": "LockArtifactUsers",
+        "recorded_error_line": "2026-11-17T19:40:47.486750334Z 2026-11-17 19:40:47.486 UTC [60444] ERROR:  could not obtain lock on row in relation \"user\""
+      }
+    ],
+    "no_DB_request_UUID_args_SQLSTATE_correlation": true,
+    "PID60444_equals_target_request_claimed": false
+  },
+  "API_log": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/runtime/api-bridge.stderr.log",
+    "sha256": "33ef185e9a59a91ee6794b9af8fc872d268a48f142ffd909fb4688bc8093a6df",
+    "bytes": 2518170,
+    "mode": "0o600"
+  },
+  "read_diagnostics": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/runtime/read-diagnostics.jsonl",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "mode": "0o600"
+  },
+  "observed_bounded_window": {
+    "range_end_time_seconds": "2026/11/18 03:40:40..50",
+    "timestamps_are_HTTP_end_seconds_not_lock_order": true,
+    "Q_ordinary_claim_count": 46,
+    "Q_claim47_records": [
+      {
+        "line": 9769,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "457.735ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003286",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9784,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "127.966ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003312",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9790,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "46.535ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003315",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9794,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "23.729ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003320",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9797,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "18.139ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003323",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9800,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "20.057ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003326",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9803,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "21.016ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003329",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      }
+    ],
+    "claim_context_headers_or_tokens_not_copied": true,
+    "notification_list_count": 82,
+    "notification_state_POST_count": 0,
+    "heartbeat_records": [
+      {
+        "line": 8406,
+        "recorded_time": "2026/11/18 03:40:38",
+        "method": "POST",
+        "path": "/api/daemon/heartbeat",
+        "status": 200,
+        "duration": "10.566ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002797",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      }
+    ],
+    "normalized_branch_counts": [
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/capabilities",
+        "count": 46
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs",
+        "count": 46
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/<run>/context",
+        "count": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/<run>/preparation",
+        "count": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/<run>/stop-intent",
+        "count": 4
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/<run>/test-reports/by-request/52ca3b25-64e2-4c81-ad35-2f741ad2ebbc",
+        "count": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/collaboration/runtime/runs/<run>/test-subject",
+        "count": 1
+      },
+      {
+        "method": "GET",
+        "path": "/api/me/collaboration-notifications",
+        "count": 82
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/comments",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/comments/trigger-preview",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/control",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/targets/35e6a715-c7a1-4714-bc1c-7eab7e511d57/consents",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/claim",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/handoff/bind",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/handoff/snapshots",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/knowledge-context/authorize",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/knowledge-context/prepare",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/launches/<launch>/termination",
+        "count": 7
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/memory/base",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/outcome",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/permit",
+        "count": 8
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/preparation/observations",
+        "count": 2
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/proof",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/recording/seal",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/<run>/test-reports",
+        "count": 1
+      },
+      {
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "count": 46
+      }
+    ],
+    "original_mutating_HTTP_safe_records": [
+      {
+        "line": 8625,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/targets/35e6a715-c7a1-4714-bc1c-7eab7e511d57/consents",
+        "status": 201,
+        "duration": "102.962ms",
+        "request_id": "a5591c4d",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8644,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "162.571ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002889",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8704,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "94.775ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002906",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8717,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/control",
+        "status": 200,
+        "duration": "149.997ms",
+        "request_id": "24dd90e2",
+        "user_id": "2800f524-f886-4e8c-a039-d2ca8b7f352e"
+      },
+      {
+        "line": 8729,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "81.183ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002925",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8738,
+        "recorded_time": "2026/11/18 03:40:40",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "32.992ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002934",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8809,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "73.659ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002952",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8818,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "32.427ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002960",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8826,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "23.599ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002965",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8827,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/comments/trigger-preview",
+        "status": 200,
+        "duration": "15.664ms",
+        "request_id": "77684511",
+        "user_id": "2800f524-f886-4e8c-a039-d2ca8b7f352e"
+      },
+      {
+        "line": 8830,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/collaboration/issues/01a1eb06-7fce-7553-b4fa-73e0ec4df342/comments",
+        "status": 201,
+        "duration": "217.626ms",
+        "request_id": "d4a8a0d1",
+        "user_id": "2800f524-f886-4e8c-a039-d2ca8b7f352e"
+      },
+      {
+        "line": 8842,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "158.311ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002969",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8854,
+        "recorded_time": "2026/11/18 03:40:41",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/claim",
+        "status": 200,
+        "duration": "78.99ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002976",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8968,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "310.664ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002994",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 8970,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "36.206ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003019",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9016,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/f335656a-aca1-4185-b7e0-7163b0ece773/termination",
+        "status": 200,
+        "duration": "104.357ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003041",
+        "user_id": null
+      },
+      {
+        "line": 9037,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "148.454ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003042",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9038,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/6f3a9c06-2333-47b3-b0d0-2a76073ef150/termination",
+        "status": 200,
+        "duration": "17.043ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003043",
+        "user_id": null
+      },
+      {
+        "line": 9039,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "60.324ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003044",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9082,
+        "recorded_time": "2026/11/18 03:40:42",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/ec8c79db-3be8-4bfa-b82a-5c036c9e02db/termination",
+        "status": 200,
+        "duration": "90.01ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003045",
+        "user_id": null
+      },
+      {
+        "line": 9240,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "530.655ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003068",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9243,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/7498f1bc-422b-4834-b605-3a3bf0c3e73b/termination",
+        "status": 200,
+        "duration": "38.922ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003114",
+        "user_id": null
+      },
+      {
+        "line": 9244,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "67.718ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003115",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9245,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/65237e7b-9632-4a37-92a7-72820ccedc44/termination",
+        "status": 200,
+        "duration": "9.207ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003116",
+        "user_id": null
+      },
+      {
+        "line": 9246,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "42.494ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003117",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9247,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/97e48cf4-bc7f-49f9-bd7a-f0e04f37fa35/termination",
+        "status": 200,
+        "duration": "8.344ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003118",
+        "user_id": null
+      },
+      {
+        "line": 9299,
+        "recorded_time": "2026/11/18 03:40:43",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/preparation/observations",
+        "status": 200,
+        "duration": "129.643ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003119",
+        "user_id": null
+      },
+      {
+        "line": 9359,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/preparation/observations",
+        "status": 200,
+        "duration": "142.141ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003144",
+        "user_id": null
+      },
+      {
+        "line": 9406,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/memory/base",
+        "status": 200,
+        "duration": "270.168ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003159",
+        "user_id": null
+      },
+      {
+        "line": 9409,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/handoff/snapshots",
+        "status": 200,
+        "duration": "94.873ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003175",
+        "user_id": null
+      },
+      {
+        "line": 9410,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/knowledge-context/prepare",
+        "status": 200,
+        "duration": "65.452ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003176",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9411,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/permit",
+        "status": 200,
+        "duration": "49.684ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003177",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9412,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/handoff/bind",
+        "status": 200,
+        "duration": "24.183ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003178",
+        "user_id": null
+      },
+      {
+        "line": 9413,
+        "recorded_time": "2026/11/18 03:40:44",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/knowledge-context/authorize",
+        "status": 200,
+        "duration": "44.418ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003179",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9484,
+        "recorded_time": "2026/11/18 03:40:45",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/test-reports",
+        "status": 200,
+        "duration": "40.389ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003204",
+        "user_id": null
+      },
+      {
+        "line": 9532,
+        "recorded_time": "2026/11/18 03:40:45",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/launches/64c9faef-b698-462a-9871-3cdc9064a075/termination",
+        "status": 200,
+        "duration": "115.182ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003207",
+        "user_id": null
+      },
+      {
+        "line": 9555,
+        "recorded_time": "2026/11/18 03:40:46",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/outcome",
+        "status": 200,
+        "duration": "249.63ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003231",
+        "user_id": null
+      },
+      {
+        "line": 9556,
+        "recorded_time": "2026/11/18 03:40:46",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/proof",
+        "status": 200,
+        "duration": "35.534ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003232",
+        "user_id": null
+      },
+      {
+        "line": 9602,
+        "recorded_time": "2026/11/18 03:40:46",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/recording/seal",
+        "status": 200,
+        "duration": "77.932ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003234",
+        "user_id": null
+      },
+      {
+        "line": 9769,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "457.735ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003286",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9784,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "127.966ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003312",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9790,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "46.535ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003315",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9794,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "23.729ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003320",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9797,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "18.139ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003323",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9800,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "20.057ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003326",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9803,
+        "recorded_time": "2026/11/18 03:40:47",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "21.016ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003329",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9806,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "20.172ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003332",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9809,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "15.803ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003335",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9812,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "15.215ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003338",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9815,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "12.712ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003341",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9818,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "19.446ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003344",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9821,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "14.521ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003347",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9824,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "13.706ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003350",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9827,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "13.457ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003353",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9830,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "12.734ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003356",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9833,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "15.541ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003359",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9836,
+        "recorded_time": "2026/11/18 03:40:48",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "15.31ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003362",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9839,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "13.008ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003365",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9842,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "12.74ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003368",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9845,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "17.196ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003371",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9848,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "17.257ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003374",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9851,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "20.017ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003377",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9854,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "16.413ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003380",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9857,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "16.036ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003383",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9860,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "16.793ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003386",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9863,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "14.546ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003389",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9866,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "13.985ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003392",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9869,
+        "recorded_time": "2026/11/18 03:40:49",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "12.815ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003395",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9872,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "14.157ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003398",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9875,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "12.714ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003401",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9878,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "14.939ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003404",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9881,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "30.076ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003407",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9884,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "19.363ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003410",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9887,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "16.647ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003413",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9890,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "24.054ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003416",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9893,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "23.965ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003419",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      {
+        "line": 9896,
+        "recorded_time": "2026/11/18 03:40:50",
+        "method": "POST",
+        "path": "/api/daemon/tasks/claim",
+        "status": 200,
+        "duration": "22.028ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003422",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      }
+    ],
+    "response_task_counts_or_successful_lock_trace_not_present": true
+  },
+  "user_row_branches": [
+    {
+      "id": "READ-R4-USERS",
+      "entry": "Stage candidate R4/read actor + retained artifact/report/signers",
+      "scope": "user-row compatibility only; full UI/R4 chain belongs to implementation peer",
+      "source": "server/pkg/db/queries/agent_artifact_execution.sql:63-71",
+      "lock": "LockArtifactUsers -> FOR SHARE NOWAIT; password credential SHARE NOWAIT",
+      "actor_rows": [
+        {
+          "role": "current QA / report-runtime owner",
+          "id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+        },
+        {
+          "role": "retained code reviewer",
+          "id": "da30e86d-1374-4014-ad86-e38b66c72c23"
+        },
+        {
+          "role": "artifact producer owner/originator",
+          "id": "2800f524-f886-4e8c-a039-d2ca8b7f352e"
+        }
+      ],
+      "compatibility": "These SHARE user fences are pairwise compatible; ordinary GetUser/GetPasswordCredential are SELECT. Any UPDATE/NO KEY UPDATE on one required row is incompatible. The historical failing row argument was not recorded."
+    },
+    {
+      "id": "WRITE-ORDINARY-CLAIM",
+      "entry": "POST /api/daemon/tasks/claim -> ClaimTasksByRuntime -> ClaimTasksForRuntimes",
+      "observed": true,
+      "observed_Q_requests_40_50seconds": 46,
+      "source": "server/internal/handler/daemon.go:1841; server/internal/service/task.go:3992-3999,4098,3764,3798",
+      "lock_chain": [
+        "conditional due reclaim: LockManagedRuntimes",
+        "selected actual claim/finalize: LockManagedRuntime / LockPasswordSession",
+        "managed_runtime.go:186-199 -> public LockManagedRuntime:123-124 false -> private:136 LockPasswordSession",
+        "auth/password_session.go:175-188 -> LockPasswordUser:184",
+        "queries/password.sql:16-17 -> SELECT id FROM \"user\" WHERE id=$1 FOR UPDATE"
+      ],
+      "actor": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927",
+      "response_body_or_branch_result_known": false,
+      "caveat": "An empty tasks[] HTTP response alone cannot prove no account fence: due reclaim takes LockManagedRuntimes before its reclaim query. Empty maxTasks/cache fast paths and no selected candidate can avoid some branches. No actual successful lock/branch/PID was captured for these observed HTTPs."
+    },
+    {
+      "id": "WRITE-RUNTIME-PROMOTION",
+      "entry": "GET /api/collaboration/runtime/runs",
+      "observed": true,
+      "source": "server/internal/service/collaboration_runtime.go:626,645-651,684-694,119-144",
+      "lock": "When waiting promotion exists, current=true,daemon=true -> GetCollaborationWorkflowUserIDs -> LockCollaborationUsers FOR UPDATE -> managed owner FOR UPDATE",
+      "actor": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927",
+      "additional_actor_rows": "Root creator/handler/all active participants from collaboration_workflow.sql:3-10; includes P,R,Q for this real scene.",
+      "caveat": "GET spelling does not make its admitted promotion a pure read. Waiting-list empty is a pure scan path; HTTP200 lacks branch evidence."
+    },
+    {
+      "id": "WRITE-RUNTIME-CLAIM-PERMIT",
+      "entry": "actual host run claim + permit",
+      "observed": true,
+      "source": "collaboration_runtime_capabilities.go:148-151; collaboration_host_runtime.go:86-96; collaboration_runtime.go:227-240,128-144",
+      "lock": "current=true,daemon=true -> all workflow users FOR UPDATE then managed owner LockPasswordSession FOR UPDATE",
+      "actor": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927",
+      "observed_run_id": "5d9aed56-9dae-456e-bfe0-4fa025fbb8d4",
+      "observed_times": "claim03:40:41; 8 permits03:40:42-44",
+      "caveat": "Successful original operations finished before final failed Q GETs in saved second-resolution logs; do not pretend they were still holding their locks."
+    },
+    {
+      "id": "WRITE-RUNTIME-OUTCOME",
+      "entry": "POST /api/collaboration/runtime/runs/<run>/outcome",
+      "observed": true,
+      "source": "server/internal/service/collaboration_runtime_capabilities.go:428-455; collaboration_runtime.go:119-133",
+      "lock": "new outcome current=true,daemon=false -> workflow users FOR UPDATE; recorded-event acknowledgement returns before this path",
+      "actor_rows": "Root workflow users include P/R/Q; actual business token is not recorded here.",
+      "observed_record": {
+        "line": 9555,
+        "recorded_time": "2026/11/18 03:40:46",
+        "method": "POST",
+        "path": "/api/collaboration/runtime/runs/5d9aed56-9dae-456e-bfe0-4fa025fbb8d4/outcome",
+        "status": 200,
+        "duration": "249.63ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-003231",
+        "user_id": null
+      },
+      "caveat": "Read final report is usable at19:40:46.440; outcome249.63ms may be an earlier same-second contender. No physical lock-release/holder witness."
+    },
+    {
+      "id": "PROOF-WRITERS-SKIP-USERS",
+      "entry": "launch termination / proof / stop-intent",
+      "observed": true,
+      "source": "collaboration_host_runtime.go:214-225; collaboration_runtime_capabilities.go:586-594,610-633",
+      "lock": "current=false,daemon=false explicitly skips workflow user locks; other issue/session/run/terminal locks persist",
+      "caveat": "They are real writes/reads but not evidence of an exclusive global user-row holder by this prefix. No broad proof path expansion is proposed."
+    },
+    {
+      "id": "READ-CAPABILITY-GET",
+      "entry": "GET /api/collaboration/runtime/capabilities",
+      "observed": true,
+      "source": "server/internal/service/managed_runtime.go:127-175; .trellis/spec/server/collaboration-stage-approvals.md:112-124",
+      "lock": "private readAccount=true -> LockArtifactUsers([Q]) FOR SHARE NOWAIT; public LockManagedRuntime stays false for writers",
+      "caveat": "Accepted R22 read/read compatibility is retained. No new declaration that all runtime GETs are mutation-free."
+    },
+    {
+      "id": "HEARTBEAT",
+      "entry": "POST /api/daemon/heartbeat / existing runtime liveness scheduler",
+      "observed_record": {
+        "line": 8406,
+        "recorded_time": "2026/11/18 03:40:38",
+        "method": "POST",
+        "path": "/api/daemon/heartbeat",
+        "status": 200,
+        "duration": "10.566ms",
+        "request_id": "yangshangweideMac-mini.local/zQK9H7dDC0-002797",
+        "user_id": "6d1b3151-76eb-4fcd-a3d7-a89b6db85927"
+      },
+      "source": "FRONT e2e/fixtures/collaboration-stage-approvals.ts:225-232; collaboration-performance.ts:945-985; handler/daemon.go:1239-1269,1362-1392,1406-1414; queries/runtime.sql:172-207",
+      "lock": "Managed auth performs current version/binding SELECT checks; liveness heartbeat updates agent_runtime.last_seen_at/status via scheduler, not user by its hot path",
+      "timing": "One start/result19:40:38.607/38.618; interval15000ms means next scheduled request~53.618, but cleanup completed52.522. No heartbeat call46/47 observed.",
+      "caveat": "Do not nominate the plain liveness beat as the47.486 global-user holder. This does not remove account fences from actual claim/registration/minting."
+    },
+    {
+      "id": "NOTIFICATIONS",
+      "entry": "GET /api/me/collaboration-notifications vs POST read/archive",
+      "observed_list_count": 82,
+      "observed_state_POST_count": 0,
+      "source": "server/internal/service/collaboration_notifications.go:147-196,199-236",
+      "read_lock": "ListNotifications sets RR READ ONLY:157, ordinary GetUser/current authorize SELECT:134-142; no user UPDATE fence.",
+      "write_lock": "SetNotificationState locks viewer via LockCollaborationUsers FOR UPDATE:214 before notification read/archive write:226-228.",
+      "parent_notifications": "Comment/runtime notification insert itself writes collaboration_notification; it inherits the parent actual workflow/runtime user locks, not an independent user UPDATE in list/delivery.",
+      "caveat": "Neither82 GETs nor notification delivery prove a global-user writer. No state POST appears in40-50s retained API log."
+    },
+    {
+      "id": "PUBLIC-HUMAN-SETUP",
+      "entry": "human-JWT authentication / public registration-login-onboarding / fixture email setup",
+      "source": "middleware/password_auth.go:66-81; auth/password_session.go:73-95; handler/auth_password.go:223; queries/user.sql:49-76; FRONT spec:98-107",
+      "read": "JWT current check GetUser then GetPasswordCredential are plain SELECT; no LockPasswordSession in this middleware path.",
+      "write": "Login/mint/change uses explicit LockPasswordUser; profile/onboarding UPDATE user; prepareSyntheticInvitationEmails directly sets synthetic test emails before scenario setup.",
+      "observed_timing": "six register/onboarding completed03:40:33, public Web logins03:40:34-35; no matching profile/password/onboarding mutation40-50s. E03/E04 admin disable/restore never ran.",
+      "caveat": "Physical setup lock-release was not traced, but sequential completed setup requests are not evidence of retained holder11seconds later. No account secret scan or setup replay."
+    }
+  ],
+  "candidate_current_actor_user_locks_pairwise_shared": true,
+  "all_runtime_GETs_claimed_pure_read": false,
+  "actual_exclusive_writer_branches_eligible": true,
+  "historical_unique_holder_proven": false,
+  "actual_fixture_order": {
+    "source": "FRONT/e2e/collaboration-stage-execution.spec.ts:168-220",
+    "heartbeat_start": "19:40:38.607",
+    "heartbeat_result": "19:40:38.618",
+    "heartbeat_interval_ms": 15000,
+    "report_usable_at": "2026-11-17T19:40:46.440Z",
+    "report_usable_scope": "P real prepared report; not proof Q candidate GET succeeded",
+    "QA_page_navigation_anchor": 216,
+    "host_cleanup_record_at": "2026-11-17T19:40:52.522Z",
+    "normal_resource_close_source_line": 220,
+    "no_account_or_notification_state_write_observed_at40_50": true
+  },
+  "cancellation_paths": [
+    {
+      "id": "CANCEL-01",
+      "source": "packages/core/collaboration/stage-queries.ts:17-21,136-147",
+      "path": "R4 under collaboration issue Query prefix, queryFn consumes signal and forwards it to getCollaborationStageCodeCandidate",
+      "verified": "R4 and current issue query both support actual cancellation; freshness retry=false/15s polls."
+    },
+    {
+      "id": "CANCEL-02",
+      "source": "packages/core/api/client.ts:1904,2644-2695",
+      "path": "stage GET request init signal -> fetchRaw AbortSignal.any([init.signal,endpointController.signal]) -> native fetch signal",
+      "verified": "Abort can propagate to HTTP; endpoint invalidateSession:949-955 also aborts in-flight requests."
+    },
+    {
+      "id": "CANCEL-03",
+      "source": "packages/core/realtime/collaboration.ts:52-55,71-79,118-131",
+      "path": "fresh collaboration:changed/children_changed/subscribe_ack invalidates issue subtree; onAuthenticated explicitly cancelQueries scope then invalidate",
+      "verified": "Ordinary new events can restart cached-data background R4; reconnect explicit cancellation also covers a first GET with no cached data. Empty workbench tick refreshAccount excludes key[3]==issue; it alone does not invalidate R4."
+    },
+    {
+      "id": "CANCEL-04",
+      "source": "@tanstack/query-core5.96.2 src/queryClient.ts:293-328; query.ts:403-415,441-451",
+      "path": "invalidateQueries -> refetchQueries active / cancelRefetch defaults true -> Query.fetch cancels a still-fetching query only when cached data exists; otherwise reuses its current promise",
+      "verified": "A generic invalidation does not always abort every fresh first request. Reading signal marks abortSignalConsumed."
+    },
+    {
+      "id": "CANCEL-05",
+      "source": "@tanstack/query-core5.96.2 src/query.ts:359-370; FRONT e2e/fixtures/collaboration-stage-approvals.ts:140-143",
+      "path": "last observer removal with consumed signal cancels retryer; showStage uses page.goto -> document teardown/navigation can cancel prior requests",
+      "verified": "Original scene calls showStage(q) before opening QA modal atspec216; actual browser abort reasons/timestamps are missing."
+    },
+    {
+      "id": "CANCEL-06",
+      "source": "packages/core/collaboration/stage-queries.ts:116,155",
+      "path": "version/discovery synchronizers use refetch({cancelRefetch:false})",
+      "verified": "These explicit sync effects are not an abort source for an already active read."
+    },
+    {
+      "id": "CANCEL-07",
+      "source": "packages/core/collaboration/access.ts:47-69,86-89; stage-source-cache.ts:15-24,54-57",
+      "path": "current401/403/404/410/source denial cancels private projections and fences generations;503 is not source-denial classification",
+      "verified": "Keep these authority cancellations. No current source/account revocation is proven by the503 or PG user-request cancellation lines."
+    },
+    {
+      "id": "CANCEL-08",
+      "source": "PostgreSQL retained stderr503-582 vs API9688/9789",
+      "path": "PG user-request cancels GetUser/GetPasswordCredential/GetCollaborationAccess/ListWorkbench statements",
+      "verified": "Cancellation exists in the global narrow window, but no DB/requestID/user UUID/params/SQLSTATE links those backend PIDs to either target503 or one browser event."
+    }
+  ],
+  "invalidation_may_cancel_cached_background_read": true,
+  "generic_invalidation_always_cancels_first_GET": false,
+  "version_sync_cancelRefetch_false_preserved": true,
+  "empty_account_tick_alone_invalidates_R4": false,
+  "foreground_intended_contract": {
+    "R4_may_refuse_actual_writer_contention": true,
+    "contract_sources": [
+      ".trellis/spec/server/collaboration-stage-approvals.md:118,250-251",
+      "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go:170-208"
+    ],
+    "zero_partial_private_view_and_no_cached_authority_required": true,
+    "foreground_controls": "StageCodeForms carries query.error to CollaborationQueryState with explicit query.refetch and locks approval when query.isError; StageCodePanel suppresses record on query.error. retry:false remains;15s/focus/realtime refetches are separate fresh reads, not error retries.",
+    "UI_sources": [
+      "packages/views/collaboration/stage-code-forms.tsx:36-46",
+      "packages/views/collaboration/stage-code-panel.tsx:32-33,60",
+      "packages/views/collaboration/query-state.tsx:5-9"
+    ],
+    "503_target_cause_proved": false,
+    "next_minimum": "Optional exact Q claim observer plus primary R4/Query cancellation correlation; a manually initiated fresh Refresh should recover only with actual current-authority200 after relevant writer/cancel settles. Do not unlock approve/use old report eligibility, change deadlines or add auto retries to force original scene through."
+  },
+  "minimal_optional_ROOT_observer": {
+    "status": "MINIMAL_OPTIONAL_ROOT_OWNED_DIAGNOSTIC_RECOMMENDATION_NO_EDIT_OR_EXECUTION_BY_RESEARCHER",
+    "entry": "exact POST /api/daemon/tasks/claim only",
+    "principal": "One fresh scene current Q resolved from the real authenticated managed-daemon context; never accept X-User-ID as authority or hardcode this old Q into a new fixture.",
+    "additional_scope": "Bind its one declared runtime/scene QA identity through existing ROOT fixture metadata; activate only adjacent to foreground QA modal/R4. Preserve the existing primary root/R4 first-error scope.",
+    "minimal_capture": [
+      "HTTP request ID/method/path/current safe UserID/credential kind/runtime UUID + actual pgx backend PID and connection/transaction identity",
+      "Successful exact LockPasswordUser entry/end and safe target-user UUID; retain canonical SQL name/hash and TxStatus when available. First-error-only capture cannot show a successfully held writer fence.",
+      "Only surrounding actual Begin/Commit/Rollback send/end and the first real pgx/PgError if present; per-request bounded event cap; optional canonical ReclaimStaleDispatchedTasksForRuntimes label to distinguish due-reclaim branch.",
+      "Actual HTTP status plus existing content-free response byte SHA/count metadata; forward original body/headers/stream and SQL/scan destinations unchanged.",
+      "Correlate with primary R4 first failure/SQL/UUID/PID and frontend request/Query cancellation reason. Do not record passwords/bearers/token rows/raw credential args or private report content."
+    ],
+    "budget": "One QA/one runtime/exact POST, short declared window, e.g.32 adjacent matching requests with at most4 selected lifecycle/fence events each. This is a proposed bounded cap, not permission to run; no generic all-runtime capture or4096 expansion.",
+    "lock_release_limit": "QueryEnd records successful fence acquisition bounds, not release. CommitEnd is client acknowledgement and not exact PostgreSQL release time. Record Commit/Rollback dispatch plus both PIDs/TxStatus; if unique physical holder proof is needed ROOT must collect a permitted same-DB lock/xact witness or a deterministic borrowed-Tx barrier. No SQL probe is performed here.",
+    "order_limit": "If R4 has already acquired that user SHARE, a later user UPDATE must wait/fail rather than retroactively invalidate the read. A new claim transaction can affect a later/current R4 acquisition. HTTP end timestamps cannot establish that lock ordering.",
+    "decision": "No claim-fence weakening. First prove whether the target foreground request failed at a real user fence, got cancelled/superseded, or another path failed; classify actual due-reclaim vs empty/selected claim before considering a narrowly owned behavior change."
+  },
+  "canonical_tests": [
+    {
+      "package": "./internal/service",
+      "selector": "^(TestCollaborationRuntimeCapabilitiesReadThenStageEvidence|TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead|TestCollaborationRuntimeCapabilitiesReadOriginalWriterFence|TestCollaborationRuntimeCapabilitiesReadCurrentAuthority)$",
+      "source": "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go:103,136,170,212",
+      "counts_source_derived": {
+        "top_level": 4,
+        "named": 8,
+        "leaf": 7
+      },
+      "purpose": "Existing R22 same-Q capabilityGET/R4 coexistence plus actual exclusive registration writer refusal and current authority; does not prove a particular ordinary-claim/R4 pair."
+    },
+    {
+      "package": "./internal/service",
+      "selector": "^(TestStageArtifactReadProjectionConcurrentR4|TestStageArtifactReadProjectionConcurrentR4T4|TestStageArtifactReadProjectionWriterFences|TestStageArtifactReadProjectionRevocation)$",
+      "source": "server/internal/service/collaboration_stage_evidence_read_concurrency_test.go:137,159,180,231",
+      "purpose": "Retained R21 same-artifact read/read, real writer/order and RR revocation boundaries; no new execution here."
+    },
+    {
+      "package": "./internal/service",
+      "selector": "^(TestStageExecutionReadWriterAccessFences|TestStageExecutionReadRetainedIssuerFences)$",
+      "source": "server/internal/service/collaboration_stage_execution_read_concurrency_test.go:139,179",
+      "counts_source_derived": {
+        "top_level": 2,
+        "named": 8,
+        "leaf": 6
+      },
+      "purpose": "Retained plain/marked writer defaults and original issuer revocation fences."
+    },
+    {
+      "package": "./internal/service",
+      "selector": "^TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory$",
+      "source": "server/internal/service/managed_runtime_test.go:165",
+      "counts_source_derived": {
+        "top_level": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "purpose": "Current managed claim/finalize binding identity and original reclaimed history; claim-source fence contract must stay intact."
+    },
+    {
+      "package": "Core",
+      "source": "packages/core/collaboration/stage-queries.test.ts:185-198",
+      "name": "R4 protected candidate read > uses the issue invalidation prefix, forwards cancellation and erases evidence on current object denial",
+      "purpose": "Canonical signal/key/denial forwarding test; not a physical browser/server cancellation witness."
+    },
+    {
+      "package": "Core",
+      "source": "packages/core/realtime/collaboration.test.ts:53,72,171",
+      "names": [
+        "subscribes once and preserves an original comment POST through ordinary updates",
+        "refreshes source windows from issue events without copying a collaboration DTO",
+        "revalidates on reconnect with GETs only and clears a missed revocation"
+      ],
+      "purpose": "Existing read invalidation / retained POST / reconnect authority boundaries."
+    }
+  ],
+  "sources_specs_and_dependency": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348,
+      "mode": "0o644",
+      "description": "Role-isolated research persistence / ownership"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mode": "0o755",
+      "description": "Authoritative server/core/views boundaries and verification"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "e574bd544c0503f3ea6c97f678c3578913cb287d572f2e33e14cc4375af054e3",
+      "bytes": 39166,
+      "mode": "0o644",
+      "description": "Compatible reads versus real writer refusal and explicit Refresh/current authority contract"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/security-boundaries.md",
+      "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+      "bytes": 19809,
+      "mode": "0o644",
+      "description": "User-row mint/password/current principal fences"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/core/frontend/collaboration-workbench.md",
+      "sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+      "bytes": 21651,
+      "mode": "0o644",
+      "description": "Current-read cancellation/deadline/manual recovery contract"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/pkg/db/queries/agent_artifact_execution.sql",
+      "sha256": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+      "bytes": 5556,
+      "mode": "0o644",
+      "description": "Global user/member/password SHARE NOWAIT fences"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/pkg/db/queries/password.sql",
+      "sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "bytes": 734,
+      "mode": "0o644",
+      "description": "Plain password read and exclusive LockPasswordUser"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/pkg/db/queries/user.sql",
+      "sha256": "f737d6ebb052ce357d8683ce9510bbba4bde4ecda401f5e32475082c6bc652d4",
+      "bytes": 2850,
+      "mode": "0o755",
+      "description": "Plain GetUser and actual profile/onboarding user updates"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/pkg/db/queries/collaboration.sql",
+      "sha256": "52c5d0e1db3ea4456fb98dee9ef88b808c0330edba7cd49bddf9deb1c10d0589",
+      "bytes": 13301,
+      "mode": "0o644",
+      "description": "LockCollaborationUsers global sorted FOR UPDATE"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/pkg/db/queries/collaboration_workflow.sql",
+      "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+      "bytes": 4934,
+      "mode": "0o644",
+      "description": "Creator/handler/current active participant/actor target user ID set"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/middleware/password_auth.go",
+      "sha256": "8756a3ad22424fcdd1497db3ac90812009da4ec81a44f9840a5fde2a0b692446",
+      "bytes": 3535,
+      "mode": "0o644",
+      "description": "Human JWT current authority SELECT authentication"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/auth/password_session.go",
+      "sha256": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c",
+      "bytes": 5943,
+      "mode": "0o644",
+      "description": "Plain current version reads versus explicit user UPDATE credential lock"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/managed_runtime.go",
+      "sha256": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96",
+      "bytes": 10289,
+      "mode": "0o644",
+      "description": "Default exclusive account fence versus private capability-read SHARE entry"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/task.go",
+      "sha256": "28c28dfe8bc3a75bb6e38d9727ed8632d7d52ac120d3d61cb06422021625fd50",
+      "bytes": 346632,
+      "mode": "0o755",
+      "description": "Real ordinary batch claim due-reclaim/scoped claim/finalize caller order"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/handler/daemon.go",
+      "sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73",
+      "bytes": 239130,
+      "mode": "0o755",
+      "description": "Actual batch claim handler and liveness heartbeat hot path"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "bytes": 36667,
+      "mode": "0o644",
+      "description": "Runtime source current-user prefix and conditional GET promotion"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "bytes": 33552,
+      "mode": "0o644",
+      "description": "Actual host claim/outcome and proof current true/false paths"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/collaboration_host_runtime.go",
+      "sha256": "2c5b44b5f3d1a58064b38f8b682e9761fddfcd212f8cca3a710d5f892814936f",
+      "bytes": 16012,
+      "mode": "0o644",
+      "description": "Host permit true-current writer versus proof false-current prefix"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/collaboration_notifications.go",
+      "sha256": "99c7a0f1a52c347062432fac16890daa5e1395b41b37bcec5f4eb8d47c605ed4",
+      "bytes": 9163,
+      "mode": "0o644",
+      "description": "Pure notification list / explicit read-archive state writer"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/handler/admin_auth.go",
+      "sha256": "1b9d61f438bb7270194e60bcbc99cbaeea041987b3396df2ffcb67ddac1e02be",
+      "bytes": 7201,
+      "mode": "0o644",
+      "description": "Observed admin/me requests use write=false; no admin mutation is performed by that handler"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/collaboration-stage-execution.spec.ts",
+      "sha256": "6d08bb644417d3c23b579564b7110a6d234773df7e68e187bfa03ab1175573f4",
+      "bytes": 59025,
+      "mode": "0o600",
+      "description": "Original exact E02 setup/report/QA and resource close order"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "00405f3f5b6d978fe22ae54a35500a9481888a0cd4976aefe29df8a346dd3f27",
+      "bytes": 24909,
+      "mode": "0o600",
+      "description": "Original managed-Q resource heartbeat and page.goto helper"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/fixtures/collaboration-performance.ts",
+      "sha256": "75d25dc3f531fa80ca807d7f3da95a0bcc746082702bcf966f225f09b9d6471a",
+      "bytes": 99233,
+      "mode": "0o600",
+      "description": "One heartbeat in flight /15s interval / own stop signal"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/fixtures/collaboration-performance-stats.ts",
+      "sha256": "a728075a5d1c5d52ef13929dc3cda5c5427cc6cc1adb8f1874f823d0f2b3a73d",
+      "bytes": 24870,
+      "mode": "0o600",
+      "description": "Frozen heartbeat timing constants"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/collaboration/stage-queries.ts",
+      "sha256": "d59a3583b030b641f640e781ba30690a50907028c007f1b4beef7ec084890d8b",
+      "bytes": 11921,
+      "mode": "0o600",
+      "description": "R4 key/signal/retry=false and noncancelling version sync"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/collaboration/queries.ts",
+      "sha256": "429dd8178587b17ec4187cd740f944093c1b5485cbc8c0e983fb4bc7ae379ab9",
+      "bytes": 4236,
+      "mode": "0o600",
+      "description": "Current issue/workbench signal forwarding"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/collaboration/access.ts",
+      "sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9",
+      "bytes": 7995,
+      "mode": "0o600",
+      "description": "Authority/scope clear cancellation;503 is not denial"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/collaboration/stage-source-cache.ts",
+      "sha256": "6a5d3c26cea253a65ec4c4360f71e92643398c6c4eaccee39b775b17181b3e6e",
+      "bytes": 4045,
+      "mode": "0o600",
+      "description": "Private source generations/cancellation without permission revival"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/realtime/collaboration.ts",
+      "sha256": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8",
+      "bytes": 8099,
+      "mode": "0o600",
+      "description": "Exact fresh issue/reconnect callbacks and account-only exclusions"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/api/client.ts",
+      "sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+      "bytes": 366334,
+      "mode": "0o600",
+      "description": "R4 signal reaches AbortSignal.any/fetch; endpoint-session abort"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/views/collaboration/stage-code-forms.tsx",
+      "sha256": "64aab5d3e70407074f9aae83c5bf13f8d0f44feb6763793d80c57215095e080a",
+      "bytes": 24030,
+      "mode": "0o600",
+      "description": "Existing modal error/explicit Refresh and query-error approval lock"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/views/collaboration/stage-code-panel.tsx",
+      "sha256": "58009dc5a0ab43ffbce010b83195054488001d8454347941ef856ab99a91dc93",
+      "bytes": 11941,
+      "mode": "0o600",
+      "description": "Existing R4 record withheld on error and Refresh"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/views/collaboration/query-state.tsx",
+      "sha256": "36ff9010599c5b3de75593db8196d60d6649e06f731e8bd36868e6d8596fe1cd",
+      "bytes": 924,
+      "mode": "0o600",
+      "description": "Existing generic load-error/manual Refresh component"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/node_modules/@tanstack/query-core/package.json",
+      "sha256": "ceed13105a3007dd71ba085f43cf64b3e61423c92012e3401a2fb267636435b3",
+      "bytes": 2336,
+      "mode": "0o644",
+      "description": "Actual selected dependency version5.96.2"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/node_modules/@tanstack/query-core/src/queryClient.ts",
+      "sha256": "69ed302721adb82c2449c5385e33627663b23516f719ecc53405c213e1211e91",
+      "bytes": 16770,
+      "mode": "0o644",
+      "description": "Active invalidation/refetch cancelRefetch default"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/node_modules/@tanstack/query-core/src/query.ts",
+      "sha256": "5e57274f0c21807f707411451772895e0cade8b1bf398061ca64baec73909977",
+      "bytes": 20658,
+      "mode": "0o644",
+      "description": "Cached-data fetch restart, signal consumption and observer removal cancellation"
+    }
+  ],
+  "preserved_limits": {
+    "R28_original_four": {
+      "PASS": 3,
+      "FAIL": 1,
+      "NOT_RUN": 0,
+      "retry_each": 0
+    },
+    "R28_successful_original_completion_replayed": false,
+    "R29_accepted_local_service_named_each_mode": 76,
+    "R29_accepted_direct_handler_named_each_mode": 6,
+    "full_S2_or_A12_or_parent_or_S3_S4_S5_accepted_by_this_research": false
+  },
+  "external_references": {
+    "network_lookup": false,
+    "actual_query_core_version": "5.96.2",
+    "basis": "Frozen SQL/spec/test and selected installed dependency source; no historical SQLSTATE inferred"
+  },
+  "execution_by_researcher": {
+    "Go": false,
+    "test": false,
+    "test_list": false,
+    "TestMain": false,
+    "DB_connection": false,
+    "SQL": false,
+    "API": false,
+    "browser": false,
+    "test_runner": false,
+    "build": false,
+    "process_probe": false,
+    "signal": false,
+    "Git": false,
+    "subagent": false,
+    "product_edit": false,
+    "test_edit": false,
+    "spec_edit": false,
+    "progress_edit": false,
+    "task_json_edit": false,
+    "old_report_edit": false,
+    "peer_edit": false,
+    "credential_environment_scan": false
+  },
+  "caveats": [
+    "Writer eligibility is not physicalholder identity",
+    "Successful LockPasswordUser capture required; emptyresponse not enough",
+    "QueryEnd/CommitEnd are not exactPGrelease",
+    "ActualsameQcandidate503 andglobalPGcancels notcorrelated",
+    "CurrentfreshRefresh behavior needs ROOT observed evidence; preserve claimfence/noautoretry/no cached authority",
+    "UI/R4 fullchain belongs to implementation peer; not redone here"
+  ],
+  "report_markdown": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.md",
+    "sha256": "376c2f4b9d18801a29be0064b23daf9026e934798e7a61cff0f355def1ae96e8",
+    "bytes": 17857,
+    "lines": 110
+  }
+}

@@ -1,0 +1,4068 @@
+{
+  "schema_version": 1,
+  "topic": "R31 idle-claim original control inventory",
+  "query": "Exact original top/named/leaf controls and source hashes for a possible batch-only necessary-condition EXISTS that skips empty Step2 reclaim without weakening current authority or real work.",
+  "scope": "internal; filesystem/static only",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "source_root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01",
+  "comparison_root": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01",
+  "status": "static_inventory_complete; execution and GREEN acceptance owned by ROOT",
+  "write_scope": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.json"
+  ],
+  "final_modes": {
+    "markdown": "0444",
+    "json": "0444"
+  },
+  "analysis_method": {
+    "test_declarations": "Static regex of Go func Test declarations followed by source reading of explicit t.Run arguments. No Go/AST/list or test execution.",
+    "child_names": "Literal/finite-loop/map source expansion with ASCII whitespace normalized to underscore. One slash-bearing t.Run is one named leaf; no fabricated intermediate parents. Map execution order is not an asserted contract.",
+    "function_hashes": "Exact UTF-8 bytes from a gofmt top-level func declaration through its first column-zero closing-brace line, including that newline. Start/end lines and byte length recorded.",
+    "query_hashes": "Exact named SQL marker/comments/statement bytes through the final semicolon line before the next named marker, including that newline. No SQL parsed or executed.",
+    "file_hashes": "Raw complete-file SHA256. Manifest is sorted file + tab + sha256 + newline; this is a bounded read manifest, not the full frozen-source manifest.",
+    "selector_hash": "SHA256 of exact selector UTF-8 bytes without a trailing newline."
+  },
+  "primary_original_union": {
+    "counts": {
+      "top": 16,
+      "named": 27,
+      "leaf": 24
+    },
+    "top_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "named_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "leaf_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+      "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "test_ids": [
+      "./internal/service::TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "./internal/service::TestClaimTasksForRuntimes_MaxTasksCap",
+      "./internal/service::TestClaimTasksForRuntimes_EmptyInputs",
+      "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "./internal/service::TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "./internal/service::TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "./internal/service::TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "./internal/service::TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "./internal/service::TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "./internal/service::TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+      "./internal/service::TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "./internal/service::TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "./internal/service::TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+      "./internal/service::TestEmptyClaimCache_NilSafe",
+      "./internal/service::TestNewEmptyClaimCache_NilRedisReturnsNil"
+    ],
+    "selector": "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$",
+    "selector_sha256": "bd78f7b603a44d657180e491d2fc21786c9d46bfa644b41151fd9bbda20f220d",
+    "external_redis_required": false,
+    "database_required": true,
+    "target_package": "./internal/service",
+    "normal_proposed_argv": [
+      "go",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$",
+      "-count=1",
+      "-json"
+    ],
+    "race_proposed_argv": [
+      "go",
+      "test",
+      "-race",
+      "./internal/service",
+      "-run",
+      "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$",
+      "-count=1",
+      "-json"
+    ],
+    "execution_authority": "ROOT only, through separately admitted recorded R31 service source/profile/permit. These argv are research proposals and were not executed.",
+    "required_terminal_policy": "Exact expected top/named/leaf sets must run and PASS in each mode; zero FAIL/SKIP/unfinished identities. Normal/race sets must be identical. Build events are not named tests."
+  },
+  "smaller_base_without_admission": {
+    "counts": {
+      "top": 15,
+      "named": 24,
+      "leaf": 22
+    },
+    "top_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "named_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "leaf_names": [
+      "TestClaimTasksForRuntimes_EmptyInputs",
+      "TestClaimTasksForRuntimes_MaxTasksCap",
+      "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "TestEmptyClaimCache_NilSafe",
+      "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+      "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+      "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+      "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+      "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+    ],
+    "test_ids": [
+      "./internal/service::TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "./internal/service::TestClaimTasksForRuntimes_MaxTasksCap",
+      "./internal/service::TestClaimTasksForRuntimes_EmptyInputs",
+      "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "./internal/service::TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "./internal/service::TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "./internal/service::TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "./internal/service::TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "./internal/service::TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "./internal/service::TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "./internal/service::TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "./internal/service::TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+      "./internal/service::TestEmptyClaimCache_NilSafe",
+      "./internal/service::TestNewEmptyClaimCache_NilRedisReturnsNil"
+    ],
+    "recommendation": "Not the preferred GREEN union: retain the batch-capable admission top because Step2 reclaim is the optimized operation."
+  },
+  "new_implement_owned_tests_proposed": {
+    "status": "Proposed in the separate authority-scope report; implement-owned test not inspected by this inventory.",
+    "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+    "top_names": [
+      "TestOrdinaryIdleClaimAndR4Coexistence",
+      "TestOrdinaryReclaimPreservesAuthorityFences"
+    ],
+    "named_names": [
+      "TestOrdinaryIdleClaimAndR4Coexistence",
+      "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+      "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences",
+      "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+    ],
+    "leaf_names": [
+      "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+      "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+    ],
+    "counts": {
+      "top": 2,
+      "named": 6,
+      "leaf": 4
+    },
+    "primary_plus_proposed_counts": {
+      "top": 18,
+      "named": 33,
+      "leaf": 28
+    },
+    "caveat": "ROOT must replace the proposed names/counts with the actual frozen new test inventory before admitting a combined run. No proposed test is an original control or execution proof."
+  },
+  "groups": [
+    {
+      "id": "batch_db_originals",
+      "title": "DB-only original batch claims",
+      "fresh_primary": true,
+      "activation": "Primary for batch Step2-only gating; preserves queued work, complete returned prefix, cap, deferred side effects and original trivial short circuits.",
+      "counts": {
+        "top": 6,
+        "named": 6,
+        "leaf": 6
+      },
+      "top_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ],
+      "named_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ],
+      "test_ids": [
+        "./internal/service::TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "./internal/service::TestClaimTasksForRuntimes_MaxTasksCap",
+        "./internal/service::TestClaimTasksForRuntimes_EmptyInputs",
+        "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "./internal/service::TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ]
+    },
+    {
+      "id": "batch_redis_originals",
+      "title": "Redis-backed batch reclaim schedule controls",
+      "fresh_primary": false,
+      "activation": "Conditional fresh exact service permit when the repair changes due-hint/MarkChecked/backstop semantics or ROOT chooses broader cache integration proof; dedicated task-owned Redis required.",
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "top_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "named_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "test_ids": [
+        "./internal/service::TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "./internal/service::TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ]
+    },
+    {
+      "id": "capacity_primary",
+      "title": "Pertinent namespace capacity top",
+      "fresh_primary": true,
+      "activation": "Use the complete top to retain the actual batch leaf plus agent/runtime/SQL siblings without slash-selector ambiguity.",
+      "counts": {
+        "top": 1,
+        "named": 5,
+        "leaf": 4
+      },
+      "top_names": [
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof"
+      ],
+      "named_names": [
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql"
+      ],
+      "leaf_names": [
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql"
+      ],
+      "test_ids": [
+        "./internal/service::TestOrdinaryClaimsWaitForCollaborationNamespaceProof"
+      ]
+    },
+    {
+      "id": "capacity_sibling_optional",
+      "title": "Other capacity originals",
+      "fresh_primary": false,
+      "activation": "Source-retained for a batch-only negative precheck. Fresh if shared claim, namespace locking or reservation/capacity queries change.",
+      "counts": {
+        "top": 3,
+        "named": 3,
+        "leaf": 3
+      },
+      "top_names": [
+        "TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+        "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+        "TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ],
+      "named_names": [
+        "TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+        "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+        "TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ],
+      "leaf_names": [
+        "TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+        "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+        "TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ],
+      "test_ids": [
+        "./internal/service::TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+        "./internal/service::TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+        "./internal/service::TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ]
+    },
+    {
+      "id": "managed_runtime_primary",
+      "title": "Current managed source and historical claim provenance",
+      "fresh_primary": true,
+      "activation": "Primary current-source guard supplement. The claim/history top and revoked-namespace claim leaf are singular controls, not direct batch coverage.",
+      "counts": {
+        "top": 3,
+        "named": 8,
+        "leaf": 7
+      },
+      "top_names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy"
+      ],
+      "named_names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential"
+      ],
+      "leaf_names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential"
+      ],
+      "test_ids": [
+        "./internal/service::TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "./internal/service::TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "./internal/service::TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory"
+      ]
+    },
+    {
+      "id": "managed_runtime_optional",
+      "title": "Legacy validation and first-bind registration originals",
+      "fresh_primary": false,
+      "activation": "Source-retained unless validation/default writer/registration scope changes; then activate exact original tests.",
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "top_names": [
+        "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT",
+        "TestManagedRuntimeAllowsUnboundLegacyNamespace"
+      ],
+      "named_names": [
+        "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT",
+        "TestManagedRuntimeAllowsUnboundLegacyNamespace"
+      ],
+      "leaf_names": [
+        "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT",
+        "TestManagedRuntimeAllowsUnboundLegacyNamespace"
+      ],
+      "test_ids": [
+        "./internal/service::TestManagedRuntimeAllowsUnboundLegacyNamespace",
+        "./internal/service::TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT"
+      ]
+    },
+    {
+      "id": "admission_primary",
+      "title": "Batch-capable previously admitted recovery",
+      "fresh_primary": true,
+      "activation": "Primary because the optimized step is reclaim: true directly exercises batch recovery under stopped admission and missing historical proof; false retains the singular sibling.",
+      "counts": {
+        "top": 1,
+        "named": 3,
+        "leaf": 2
+      },
+      "top_names": [
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence"
+      ],
+      "named_names": [
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true"
+      ],
+      "test_ids": [
+        "./internal/service::TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence"
+      ]
+    },
+    {
+      "id": "admission_optional",
+      "title": "Other admission and stale-delivery originals",
+      "fresh_primary": false,
+      "activation": "Source-retained unless shared admission, generation, finalization, comment receipt, requeue or canonical SQL changes. No whole admission package is implied.",
+      "counts": {
+        "top": 4,
+        "named": 8,
+        "leaf": 7
+      },
+      "top_names": [
+        "TestManagedAdmissionOperationCASReplayAndAuditRollback",
+        "TestManagedAdmissionStopSerializesBeforeClaim",
+        "TestManagedAdmissionStopsEveryClaimPrimitive",
+        "TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ],
+      "named_names": [
+        "TestManagedAdmissionOperationCASReplayAndAuditRollback",
+        "TestManagedAdmissionStopSerializesBeforeClaim",
+        "TestManagedAdmissionStopsEveryClaimPrimitive",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/agent",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/batch",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/runtime",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/sql",
+        "TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionOperationCASReplayAndAuditRollback",
+        "TestManagedAdmissionStopSerializesBeforeClaim",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/agent",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/batch",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/runtime",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/sql",
+        "TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ],
+      "test_ids": [
+        "./internal/service::TestManagedAdmissionStopsEveryClaimPrimitive",
+        "./internal/service::TestManagedAdmissionStopSerializesBeforeClaim",
+        "./internal/service::TestManagedAdmissionOperationCASReplayAndAuditRollback",
+        "./internal/service::TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ]
+    },
+    {
+      "id": "cache_no_external",
+      "title": "Nil and closed-client cache originals",
+      "fresh_primary": true,
+      "activation": "Primary five childless tests; none calls newRedisTestClient. RedisFailureFallsBackToEveryRuntime uses a closed local client, not a service.",
+      "counts": {
+        "top": 5,
+        "named": 5,
+        "leaf": 5
+      },
+      "top_names": [
+        "TestEmptyClaimCache_NilSafe",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "named_names": [
+        "TestEmptyClaimCache_NilSafe",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_NilSafe",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "test_ids": [
+        "./internal/service::TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "./internal/service::TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "./internal/service::TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+        "./internal/service::TestEmptyClaimCache_NilSafe",
+        "./internal/service::TestNewEmptyClaimCache_NilRedisReturnsNil"
+      ]
+    },
+    {
+      "id": "cache_external",
+      "title": "External Redis cache originals",
+      "fresh_primary": false,
+      "activation": "Conditional cache helper/scheduling/version/TTL/invalidation changes; activate only on a dedicated task-owned Redis instance, DB12, with one owner.",
+      "counts": {
+        "top": 12,
+        "named": 12,
+        "leaf": 12
+      },
+      "top_names": [
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+        "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+        "TestEmptyClaimCache_RuntimeIsolation",
+        "TestEmptyClaimCache_StaleMarkRejected",
+        "TestEmptyClaimCache_TTL",
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+        "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+        "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+        "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+        "TestReclaimCheckCache_TrackLaterAndForget"
+      ],
+      "named_names": [
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+        "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+        "TestEmptyClaimCache_RuntimeIsolation",
+        "TestEmptyClaimCache_StaleMarkRejected",
+        "TestEmptyClaimCache_TTL",
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+        "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+        "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+        "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+        "TestReclaimCheckCache_TrackLaterAndForget"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+        "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+        "TestEmptyClaimCache_RuntimeIsolation",
+        "TestEmptyClaimCache_StaleMarkRejected",
+        "TestEmptyClaimCache_TTL",
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+        "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+        "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+        "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+        "TestReclaimCheckCache_TrackLaterAndForget"
+      ],
+      "test_ids": [
+        "./internal/service::TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+        "./internal/service::TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "./internal/service::TestReclaimCheckCache_TrackLaterAndForget",
+        "./internal/service::TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+        "./internal/service::TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+        "./internal/service::TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+        "./internal/service::TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+        "./internal/service::TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+        "./internal/service::TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "./internal/service::TestEmptyClaimCache_StaleMarkRejected",
+        "./internal/service::TestEmptyClaimCache_TTL",
+        "./internal/service::TestEmptyClaimCache_RuntimeIsolation"
+      ]
+    },
+    {
+      "id": "notify_no_external",
+      "title": "No-external-Redis notification control",
+      "fresh_primary": false,
+      "activation": "Conditional notification/wakeup/tracking scope only; not needed for an untouched notification path.",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "top_names": [
+        "TestNotifyTasksFinished_CoalescesByRuntime"
+      ],
+      "named_names": [
+        "TestNotifyTasksFinished_CoalescesByRuntime"
+      ],
+      "leaf_names": [
+        "TestNotifyTasksFinished_CoalescesByRuntime"
+      ],
+      "test_ids": [
+        "./internal/service::TestNotifyTasksFinished_CoalescesByRuntime"
+      ]
+    },
+    {
+      "id": "notify_external",
+      "title": "External Redis notification originals",
+      "fresh_primary": false,
+      "activation": "Conditional enqueue/finish/invalidation/wakeup changes; requires dedicated task-owned Redis DB12.",
+      "counts": {
+        "top": 4,
+        "named": 4,
+        "leaf": 4
+      },
+      "top_names": [
+        "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+        "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+        "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+        "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+      ],
+      "named_names": [
+        "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+        "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+        "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+        "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+      ],
+      "leaf_names": [
+        "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+        "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+        "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+        "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+      ],
+      "test_ids": [
+        "./internal/service::TestNotifyTaskAvailable_BumpsBeforeWakeup",
+        "./internal/service::TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+        "./internal/service::TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+        "./internal/service::TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+      ]
+    },
+    {
+      "id": "handler_batch_originals",
+      "title": "Direct batch handler adapter originals",
+      "fresh_primary": false,
+      "activation": "Conditional exact handler permit for HTTP signature/body/auth/wiring/finalization/receipt changes. Unchanged adapter source can retain prior binding; no fresh handler99 is implied.",
+      "counts": {
+        "top": 13,
+        "named": 13,
+        "leaf": 13
+      },
+      "top_names": [
+        "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+        "TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+        "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+        "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+        "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+        "TestClaimTasksByRuntime_RepairsStaleCommentPlan",
+        "TestClaimTasksByRuntime_RequiresDaemonID",
+        "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+        "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+        "TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+        "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+        "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+        "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask"
+      ],
+      "named_names": [
+        "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+        "TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+        "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+        "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+        "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+        "TestClaimTasksByRuntime_RepairsStaleCommentPlan",
+        "TestClaimTasksByRuntime_RequiresDaemonID",
+        "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+        "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+        "TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+        "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+        "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+        "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+        "TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+        "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+        "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+        "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+        "TestClaimTasksByRuntime_RepairsStaleCommentPlan",
+        "TestClaimTasksByRuntime_RequiresDaemonID",
+        "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+        "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+        "TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+        "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+        "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+        "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask"
+      ],
+      "test_ids": [
+        "./internal/handler::TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+        "./internal/handler::TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+        "./internal/handler::TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+        "./internal/handler::TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+        "./internal/handler::TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask",
+        "./internal/handler::TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+        "./internal/handler::TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+        "./internal/handler::TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+        "./internal/handler::TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+        "./internal/handler::TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+        "./internal/handler::TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+        "./internal/handler::TestClaimTasksByRuntime_RequiresDaemonID",
+        "./internal/handler::TestClaimTasksByRuntime_RepairsStaleCommentPlan"
+      ]
+    },
+    {
+      "id": "handler_temporal_original",
+      "title": "Managed lost-response time and lease control",
+      "fresh_primary": false,
+      "activation": "Strong exact handler supplement if ROOT needs original production-path temporal eligibility proof for the new probe or changes recovery/finalization. No Redis required, but handler TestMain still needs a task-owned DB.",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "top_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "named_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "leaf_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "test_ids": [
+        "./internal/handler::TestManagedBatchClaimLostResponseRecovery"
+      ]
+    },
+    {
+      "id": "handler_auth_original",
+      "title": "Password reset versus claim finalization",
+      "fresh_primary": false,
+      "activation": "Conditional exact handler permit if finalization, minting or current password-source behavior changes.",
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "top_names": [
+        "TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ],
+      "named_names": [
+        "TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ],
+      "leaf_names": [
+        "TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ],
+      "test_ids": [
+        "./internal/handler::TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ]
+    },
+    {
+      "id": "router_managed_original",
+      "title": "Managed router identity and recovery control",
+      "fresh_primary": false,
+      "activation": "Conditional router permit if route/auth/cache wiring changes; this top is not direct batch router coverage. No fresh router54 is implied.",
+      "counts": {
+        "top": 1,
+        "named": 4,
+        "leaf": 3
+      },
+      "top_names": [
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery"
+      ],
+      "named_names": [
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/desktop",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/forged_declared_id",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/web"
+      ],
+      "leaf_names": [
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/desktop",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/forged_declared_id",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/web"
+      ],
+      "test_ids": [
+        "./cmd/server::TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery"
+      ]
+    },
+    {
+      "id": "source_boundary_conditional",
+      "title": "Canonical ordinary source/admission tops",
+      "fresh_primary": false,
+      "activation": "Source-retained for a conservative Step2-only probe. Fresh exact tops if ordinary source/triage/lock_issue_execution/candidate/preparation boundaries change; do not count slash-only intermediate labels as named tests.",
+      "counts": {
+        "top": 2,
+        "named": 75,
+        "leaf": 73
+      },
+      "top_names": [
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries"
+      ],
+      "named_names": [
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/start"
+      ],
+      "leaf_names": [
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/start"
+      ],
+      "test_ids": [
+        "./internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "./internal/service::TestTriageAdmissionEnqueueAndRuntimeBoundaries"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "./cmd/server::TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery",
+      "package": "./cmd/server",
+      "top_name": "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery",
+      "file": "server/cmd/server/managed_installation_test.go",
+      "line": 31,
+      "end_line": 182,
+      "definition_sha256": "9f72ce3125f142f50762a9034c590cdc4488c516140379c5c227256005ce3c16",
+      "definition_bytes": 10431,
+      "raw_child_names": [
+        "desktop",
+        "web",
+        "forged_declared_id"
+      ],
+      "normalized_child_names": [
+        "desktop",
+        "web",
+        "forged_declared_id"
+      ],
+      "t_run_callsite_lines": [
+        141
+      ],
+      "named_names": [
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/desktop",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/forged_declared_id",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/web"
+      ],
+      "leaf_names": [
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/desktop",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/forged_declared_id",
+        "TestManagedInstallationRouterEnrollmentBindingRenewalAndRecovery/web"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 4,
+        "leaf": 3
+      },
+      "external_redis": false,
+      "purpose": "Actual router enrollment/binding/renewal/recovery plus desktop, web and forged-declared-id attribution; not a direct batch router test.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing",
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "line": 224,
+      "end_line": 260,
+      "definition_sha256": "bd79172691985b3bf7873fec4959158dfd7262c8ff93a8f6d0845f6d520c5cf6",
+      "definition_bytes": 1577,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_CancelsTaskWhenRuntimeOwnerMissing"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_IncludesActiveSiblingRun",
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "line": 98,
+      "end_line": 154,
+      "definition_sha256": "9303c0c0cdf337c8418ba5d3331dbd71bfa66d96cf5271e84d04c563e0c3c3fb",
+      "definition_bytes": 2735,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_IncludesActiveSiblingRun"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_IncludesActiveSiblingRun"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 55,
+      "end_line": 64,
+      "definition_sha256": "c253d5cbb6424111d1f3985f06c4d2dabdf7894f2450d284323e520a35d7233b",
+      "definition_bytes": 419,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_MaxTasksNegativeIsBadRequest"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 24,
+      "end_line": 51,
+      "definition_sha256": "71fc012d24023a4bbf641765e2c1e9a3e5070e2325000116ba43999d129da245",
+      "definition_bytes": 1016,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_MaxTasksZeroClaimsNothing"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 134,
+      "end_line": 164,
+      "definition_sha256": "02a82221009efe46a0aa1cb343302e6d854e8bbd9438360c9347096bd8975f8b",
+      "definition_bytes": 1095,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_PersistsCommentDeliveryReceipt"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_RepairsStaleCommentPlan",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_RepairsStaleCommentPlan",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 280,
+      "end_line": 349,
+      "definition_sha256": "a0493699893a8d1dba7a130d64ae86b7794a6dbec05dc6a2ff2731def2c686bb",
+      "definition_bytes": 2973,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_RepairsStaleCommentPlan"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_RepairsStaleCommentPlan"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_RequiresDaemonID",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_RequiresDaemonID",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 261,
+      "end_line": 273,
+      "definition_sha256": "1d2c39b8feb8366d81c50854d4cc219dc2a0512ac70c3a6a07bf42af948202b9",
+      "definition_bytes": 516,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_RequiresDaemonID"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_RequiresDaemonID"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens",
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "line": 62,
+      "end_line": 96,
+      "definition_sha256": "0a5065a834bda68a732effc834ef36269de54592619c51a05c995708bd96560e",
+      "definition_bytes": 1285,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_RoutesAcrossRuntimesAndMintsTokens"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime",
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "line": 159,
+      "end_line": 218,
+      "definition_sha256": "90adc5db3324d125ebac070c2d349095e61b808359a00632bec1124fa56d291d",
+      "definition_bytes": 3152,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_SkipsCrossWorkspaceRuntime"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_SkipsInvalidRuntimeID",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 69,
+      "end_line": 89,
+      "definition_sha256": "b6760592af987bafe7ebd86a21a8135776429534d6386f1840c82b8308f1923f",
+      "definition_bytes": 853,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_SkipsInvalidRuntimeID"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_SkipsInvalidRuntimeID"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 217,
+      "end_line": 257,
+      "definition_sha256": "72596a4bc951229582d516fba37405d24b41c52e2725c6aa197f0880a694a34c",
+      "definition_bytes": 1801,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_SkipsRuntimeOwnedByAnotherDaemon"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+      "package": "./internal/handler",
+      "top_name": "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt",
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "line": 170,
+      "end_line": 211,
+      "definition_sha256": "e574e131cb571f48221055e80b434ca7f0916bdc47a227a4d3119ee8567d59f3",
+      "definition_bytes": 1793,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt"
+      ],
+      "leaf_names": [
+        "TestClaimTasksByRuntime_StaleReclaimRecordsDeliveryReceipt"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask",
+      "package": "./internal/handler",
+      "top_name": "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask",
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "line": 266,
+      "end_line": 316,
+      "definition_sha256": "08901fb7ac633c8b54d69657d1178c6338d973b3e6685ea00efdeed90956d175",
+      "definition_bytes": 1824,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask"
+      ],
+      "leaf_names": [
+        "TestFailClaimedTaskBeforeLaunchSettlesDispatchedTask"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestManagedBatchClaimLostResponseRecovery",
+      "package": "./internal/handler",
+      "top_name": "TestManagedBatchClaimLostResponseRecovery",
+      "file": "server/internal/handler/managed_claim_recovery_test.go",
+      "line": 12,
+      "end_line": 76,
+      "definition_sha256": "6b1f03f08d8aaa5e74f0bf7bba6e48a0c190c91fe256d0fb826fcdc08d5ec2fb",
+      "definition_bytes": 3396,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "leaf_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Real managed HTTP batch path covers young dispatch, active lease, expired lease, generation/binding/admission retention, immediate duplicate denial and started-task denial.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/handler::TestPasswordBlockedTaskAndDaemonMintRejectsReset",
+      "package": "./internal/handler",
+      "top_name": "TestPasswordBlockedTaskAndDaemonMintRejectsReset",
+      "file": "server/internal/handler/password_claim_test.go",
+      "line": 16,
+      "end_line": 103,
+      "definition_sha256": "5600365341bf75ad82b90ce24afd0b526e09e9052f862c4967ae11e570b9998d",
+      "definition_bytes": 4160,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ],
+      "leaf_names": [
+        "TestPasswordBlockedTaskAndDaemonMintRejectsReset"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Actual handler finalization prevents task/daemon credential mint after a password reset wins its source fence.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 173,
+      "end_line": 224,
+      "definition_sha256": "07caffd5286f5f424024d65dd8dda6daa7f2e1d16d7e454bd23ad2174bb228a7",
+      "definition_bytes": 1663,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "A due runtime causes canonical reclaim over the complete selected machine set and aligned cache backstops.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_EmptyInputs",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_EmptyInputs",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 303,
+      "end_line": 315,
+      "definition_sha256": "b1d47a9f0bb909b538f6964dca51e868ae1c286fefbec1d1f3f658e637f0d4f9",
+      "definition_bytes": 566,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Nil runtime set and max_tasks zero retain their existing trivial short circuits; these are not true-idle authority tests.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 232,
+      "end_line": 300,
+      "definition_sha256": "7ad7cc05598b257399c4cc8d24d06b34b70e683139ce0b2db1d69b468450710b",
+      "definition_bytes": 2703,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "A successful empty reclaim retains bounded due-hint retry instead of losing recovery permanently.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_MaxTasksCap",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_MaxTasksCap",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 151,
+      "end_line": 166,
+      "definition_sha256": "4f5f8d89b7f7b1d44c80a99c8cef45ed6561d4fa37f4b42a0e89a4f5cc9879c5",
+      "definition_bytes": 494,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_MaxTasksCap"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_MaxTasksCap"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "One machine-level max_tasks cap bounds real returned claims.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "line": 102,
+      "end_line": 147,
+      "definition_sha256": "edee1bca818f3903a7d89fe29401b97c1307f1b1594de37647c630a1403cf580",
+      "definition_bytes": 1491,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Actual queued work drains across both selected runtimes without duplication; later call is empty.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+      "file": "server/internal/service/task_batch_claim_partial_test.go",
+      "line": 115,
+      "end_line": 162,
+      "definition_sha256": "7ebb9915ba89fe90b7c7f6a5755997031c5dc1b045555b5e45578fe81e7de35a",
+      "definition_bytes": 2291,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "A candidate SELECT fault after actual stale batch reclaim returns the reclaimed committed task.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+      "file": "server/internal/service/task_batch_claim_partial_test.go",
+      "line": 83,
+      "end_line": 109,
+      "definition_sha256": "6168a4bf1ad9f60bed58438f195d10158f1368524eb51ccfc95dd1d4de1068c8",
+      "definition_bytes": 1124,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "A later agent-lock failure returns the first genuinely committed dispatched task instead of losing the partial prefix.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "package": "./internal/service",
+      "top_name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+      "file": "server/internal/service/task_batch_claim_deferred_test.go",
+      "line": 28,
+      "end_line": 62,
+      "definition_sha256": "f46b702c70963606a30a8ce96b1e02a912cc05a7a36aeb166a44181178e038ef",
+      "definition_bytes": 1059,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ],
+      "leaf_names": [
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Due deferred work is promoted and claimed in the same batch call, with exactly one queued event; the cache is nil.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_BumpInvalidatesPriorMark",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 94,
+      "end_line": 109,
+      "definition_sha256": "b9bf5a55ef5dc4967d95ff552143b66b290b7058361c3e3b015c9a5fc7cc2db5",
+      "definition_bytes": 465,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 63,
+      "end_line": 73,
+      "definition_sha256": "5f03d5fc21896fc459623eeb3e000073115b9bf2686986a3d9cc8a7ef59f0beb",
+      "definition_bytes": 273,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_EmptyRuntimeIDIsNoOp"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 75,
+      "end_line": 88,
+      "definition_sha256": "9c1407499dd254a531939e99123272d25ab90b032a24d1ba44e461c355ed8211",
+      "definition_bytes": 398,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_MarkAndIsEmptyVersionMatched"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_NilSafe",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_NilSafe",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 43,
+      "end_line": 55,
+      "definition_sha256": "02f9efaebd2bc35336ea8aeabac72384ad2bca09c034362d009a461a748f3456",
+      "definition_bytes": 392,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_NilSafe"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_NilSafe"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Nil queued cache reports a miss/version zero and supports nil-safe mark/invalidate.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_RuntimeIsolation",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_RuntimeIsolation",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 149,
+      "end_line": 165,
+      "definition_sha256": "c83660196f838c0d0534c1585c792f72c65938c8cb4d5f36f97ed387f6b380f7",
+      "definition_bytes": 463,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_RuntimeIsolation"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_RuntimeIsolation"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_StaleMarkRejected",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_StaleMarkRejected",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 115,
+      "end_line": 132,
+      "definition_sha256": "2765dfd2097ca6463d7509357abea49a40e4c4c62b1d83ebf20cd5d51f76fe6e",
+      "definition_bytes": 511,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_StaleMarkRejected"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_StaleMarkRejected"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestEmptyClaimCache_TTL",
+      "package": "./internal/service",
+      "top_name": "TestEmptyClaimCache_TTL",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 134,
+      "end_line": 147,
+      "definition_sha256": "9b20659eb0543186963b4927fd7e77023fde1e9f67e7dbcba468b4c03c45389f",
+      "definition_bytes": 411,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestEmptyClaimCache_TTL"
+      ],
+      "leaf_names": [
+        "TestEmptyClaimCache_TTL"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+      "package": "./internal/service",
+      "top_name": "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+      "file": "server/internal/service/legacy_execution_boundary_test.go",
+      "line": 139,
+      "end_line": 216,
+      "definition_sha256": "14aff4f4a73398da60004f0abf766932e2b5d14a9b3917aefd2316684fcf4a20",
+      "definition_bytes": 3547,
+      "raw_child_names": [
+        "collaboration/insert",
+        "collaboration/deferred",
+        "collaboration/claim",
+        "collaboration/runtime",
+        "collaboration/batch",
+        "collaboration/start",
+        "collaboration/sql_start",
+        "collaboration/retry",
+        "collaboration/promote",
+        "collaboration/reclaim",
+        "collaboration/link",
+        "ordinary/insert",
+        "ordinary/deferred",
+        "ordinary/claim",
+        "ordinary/runtime",
+        "ordinary/batch",
+        "ordinary/start",
+        "ordinary/sql_start",
+        "ordinary/retry",
+        "ordinary/promote",
+        "ordinary/reclaim",
+        "ordinary/link",
+        "ordinary_child/insert",
+        "ordinary_child/deferred",
+        "ordinary_child/claim",
+        "ordinary_child/runtime",
+        "ordinary_child/batch",
+        "ordinary_child/start",
+        "ordinary_child/sql_start",
+        "ordinary_child/retry",
+        "ordinary_child/promote",
+        "ordinary_child/reclaim",
+        "ordinary_child/link"
+      ],
+      "normalized_child_names": [
+        "collaboration/insert",
+        "collaboration/deferred",
+        "collaboration/claim",
+        "collaboration/runtime",
+        "collaboration/batch",
+        "collaboration/start",
+        "collaboration/sql_start",
+        "collaboration/retry",
+        "collaboration/promote",
+        "collaboration/reclaim",
+        "collaboration/link",
+        "ordinary/insert",
+        "ordinary/deferred",
+        "ordinary/claim",
+        "ordinary/runtime",
+        "ordinary/batch",
+        "ordinary/start",
+        "ordinary/sql_start",
+        "ordinary/retry",
+        "ordinary/promote",
+        "ordinary/reclaim",
+        "ordinary/link",
+        "ordinary_child/insert",
+        "ordinary_child/deferred",
+        "ordinary_child/claim",
+        "ordinary_child/runtime",
+        "ordinary_child/batch",
+        "ordinary_child/start",
+        "ordinary_child/sql_start",
+        "ordinary_child/retry",
+        "ordinary_child/promote",
+        "ordinary_child/reclaim",
+        "ordinary_child/link"
+      ],
+      "t_run_callsite_lines": [
+        142
+      ],
+      "named_names": [
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start"
+      ],
+      "leaf_names": [
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/collaboration/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary/start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/batch",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/claim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/deferred",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/insert",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/link",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/promote",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/reclaim",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/retry",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/runtime",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/sql_start",
+        "TestLegacyExecutionSQLBoundaryAndOrdinaryChild/ordinary_child/start"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 34,
+        "leaf": 33
+      },
+      "external_redis": false,
+      "purpose": "Canonical ordinary/ordinary-child versus collaboration source boundary across 33 explicit named leaves, including three batch leaves.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedAdmissionOperationCASReplayAndAuditRollback",
+      "package": "./internal/service",
+      "top_name": "TestManagedAdmissionOperationCASReplayAndAuditRollback",
+      "file": "server/internal/service/managed_admission_test.go",
+      "line": 146,
+      "end_line": 195,
+      "definition_sha256": "3da359580817bdf7394f41aa12dd01fabb3bf586942f0d81f3d140726f331bb0",
+      "definition_bytes": 2720,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedAdmissionOperationCASReplayAndAuditRollback"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionOperationCASReplayAndAuditRollback"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Admission operation keeps CAS, exact original-key replay and audit rollback.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+      "package": "./internal/service",
+      "top_name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+      "file": "server/internal/service/managed_admission_test.go",
+      "line": 197,
+      "end_line": 248,
+      "definition_sha256": "8e41f11bc6ea89ade8098fdffd91ec844c2e2e85f1a6bd6e337558201dcae73f",
+      "definition_bytes": 2772,
+      "raw_child_names": [
+        "false",
+        "true"
+      ],
+      "normalized_child_names": [
+        "false",
+        "true"
+      ],
+      "t_run_callsite_lines": [
+        199
+      ],
+      "named_names": [
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 3,
+        "leaf": 2
+      },
+      "external_redis": false,
+      "purpose": "Previously admitted execution recovers while stopped; missing admission refuses while stopped and accepting restores historical compatibility. The true leaf performs real batch reclaim.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedAdmissionStopSerializesBeforeClaim",
+      "package": "./internal/service",
+      "top_name": "TestManagedAdmissionStopSerializesBeforeClaim",
+      "file": "server/internal/service/managed_admission_test.go",
+      "line": 90,
+      "end_line": 144,
+      "definition_sha256": "909033ddb4104d53e89c89aa6c13c33386cc7fce424edf0a0c85520eadf96ca8",
+      "definition_bytes": 2081,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedAdmissionStopSerializesBeforeClaim"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionStopSerializesBeforeClaim"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Actual singular queued claim cannot pass an uncommitted installation-stop fence.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedAdmissionStopsEveryClaimPrimitive",
+      "package": "./internal/service",
+      "top_name": "TestManagedAdmissionStopsEveryClaimPrimitive",
+      "file": "server/internal/service/managed_admission_test.go",
+      "line": 22,
+      "end_line": 63,
+      "definition_sha256": "4b4efee0769160ae8fbfe2f18190185baafa877437e1c7587ae0b9921d9dd3ed",
+      "definition_bytes": 1844,
+      "raw_child_names": [
+        "agent",
+        "runtime",
+        "batch",
+        "sql"
+      ],
+      "normalized_child_names": [
+        "agent",
+        "runtime",
+        "batch",
+        "sql"
+      ],
+      "t_run_callsite_lines": [
+        24
+      ],
+      "named_names": [
+        "TestManagedAdmissionStopsEveryClaimPrimitive",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/agent",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/batch",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/runtime",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/sql"
+      ],
+      "leaf_names": [
+        "TestManagedAdmissionStopsEveryClaimPrimitive/agent",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/batch",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/runtime",
+        "TestManagedAdmissionStopsEveryClaimPrimitive/sql"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 5,
+        "leaf": 4
+      },
+      "external_redis": false,
+      "purpose": "Stopped installation admits no new queued execution through agent, runtime, batch or direct SQL claims.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "package": "./internal/service",
+      "top_name": "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+      "file": "server/internal/service/managed_runtime_test.go",
+      "line": 165,
+      "end_line": 238,
+      "definition_sha256": "92cea790a386a778048b0edb7c05b9b3c987f210ac50e5a9e4834f98efc32b66",
+      "definition_bytes": 4984,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory"
+      ],
+      "leaf_names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Actual singular claim/reclaim/finalize captures current binding, advances generation once, preserves unknown historical identity/admission and checks current credential mint provenance.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedReclaimRejectsEarlierDeliveryRollback",
+      "package": "./internal/service",
+      "top_name": "TestManagedReclaimRejectsEarlierDeliveryRollback",
+      "file": "server/internal/service/managed_admission_test.go",
+      "line": 250,
+      "end_line": 286,
+      "definition_sha256": "c6c44010462d862bbfa01af66af4b9c26cbe5de66c69cf34a5c876ac91b2556f",
+      "definition_bytes": 2506,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ],
+      "leaf_names": [
+        "TestManagedReclaimRejectsEarlierDeliveryRollback"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Direct/singular reclaim advances delivery generation; stale finalization, comment receipt and requeue cannot affect the newer delivery.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT",
+      "package": "./internal/service",
+      "top_name": "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT",
+      "file": "server/internal/service/managed_runtime_test.go",
+      "line": 240,
+      "end_line": 299,
+      "definition_sha256": "9127eee9226920d463e60291aa3cd634554871d53fe89c641f04b7c1efa30037",
+      "definition_bytes": 2217,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT"
+      ],
+      "leaf_names": [
+        "TestManagedRegistrationCannotCrossFirstBindWithLegacyPAT"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Real first-bind versus legacy PAT registration race cannot cross owner/namespace authority.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedRuntimeAllowsUnboundLegacyNamespace",
+      "package": "./internal/service",
+      "top_name": "TestManagedRuntimeAllowsUnboundLegacyNamespace",
+      "file": "server/internal/service/managed_runtime_test.go",
+      "line": 86,
+      "end_line": 101,
+      "definition_sha256": "1d7c997e41dd36f3b0cd5e9f12d12649d3679e810164f8798fe183042fb23012",
+      "definition_bytes": 690,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedRuntimeAllowsUnboundLegacyNamespace"
+      ],
+      "leaf_names": [
+        "TestManagedRuntimeAllowsUnboundLegacyNamespace"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Unbound legacy namespace retains its existing validation compatibility.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "package": "./internal/service",
+      "top_name": "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+      "file": "server/internal/service/managed_runtime_test.go",
+      "line": 49,
+      "end_line": 85,
+      "definition_sha256": "3e8ac0792e89f5654afb2dbd423947107507c423b4f78e14ce320b5cc962274e",
+      "definition_bytes": 1779,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner"
+      ],
+      "leaf_names": [
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Current validation rejects PAT, wrong owner/workspace and revoked managed binding; no claim is performed in this top.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "package": "./internal/service",
+      "top_name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+      "file": "server/internal/service/managed_runtime_test.go",
+      "line": 103,
+      "end_line": 163,
+      "definition_sha256": "711d4d9aa5485aa6ec823727c79faf5e0721553e6db696f67e2b635eb774b804",
+      "definition_bytes": 2615,
+      "raw_child_names": [
+        "owner PAT",
+        "unbound daemon credential",
+        "legacy context",
+        "registration",
+        "claim"
+      ],
+      "normalized_child_names": [
+        "owner_PAT",
+        "unbound_daemon_credential",
+        "legacy_context",
+        "registration",
+        "claim"
+      ],
+      "t_run_callsite_lines": [
+        121,
+        128,
+        138
+      ],
+      "named_names": [
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential"
+      ],
+      "leaf_names": [
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 6,
+        "leaf": 5
+      },
+      "external_redis": false,
+      "purpose": "Revoked managed namespace cannot become legacy for owner PAT, unbound daemon credential, legacy context, registration or singular claim.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "package": "./internal/service",
+      "top_name": "TestNewEmptyClaimCache_NilRedisReturnsNil",
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "line": 57,
+      "end_line": 61,
+      "definition_sha256": "d936c9e3b26bf2609d2cc18c866f66888acc1a93c8eccdbcee6250cc446fe5d6",
+      "definition_bytes": 179,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNewEmptyClaimCache_NilRedisReturnsNil"
+      ],
+      "leaf_names": [
+        "TestNewEmptyClaimCache_NilRedisReturnsNil"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Nil Redis constructor stays nil.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "package": "./internal/service",
+      "top_name": "TestNewReclaimCheckCache_NilRedisReturnsNil",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 26,
+      "end_line": 30,
+      "definition_sha256": "1a954c27347b328acee72a022e401b896d669fdd9a172253936a4fa8fdeb35f5",
+      "definition_bytes": 188,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNewReclaimCheckCache_NilRedisReturnsNil"
+      ],
+      "leaf_names": [
+        "TestNewReclaimCheckCache_NilRedisReturnsNil"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Nil Redis constructor stays nil.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNotifyTaskAvailable_BumpsBeforeWakeup",
+      "package": "./internal/service",
+      "top_name": "TestNotifyTaskAvailable_BumpsBeforeWakeup",
+      "file": "server/internal/service/task_notify_test.go",
+      "line": 31,
+      "end_line": 69,
+      "definition_sha256": "2f9ece9bd1bd2aab958ad819966c5e90131c71fb4d942d3ef49dc00434497ca9",
+      "definition_bytes": 1190,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNotifyTaskAvailable_BumpsBeforeWakeup"
+      ],
+      "leaf_names": [
+        "TestNotifyTaskAvailable_BumpsBeforeWakeup"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+      "package": "./internal/service",
+      "top_name": "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp",
+      "file": "server/internal/service/task_notify_test.go",
+      "line": 78,
+      "end_line": 103,
+      "definition_sha256": "863cfe8fa70280b2d34652d2ae64e31540269c0ff17c0fd8ae5a7a4b4692f9c7",
+      "definition_bytes": 718,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp"
+      ],
+      "leaf_names": [
+        "TestNotifyTaskAvailable_InvalidWithoutRuntimeIsNoOp"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+      "package": "./internal/service",
+      "top_name": "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict",
+      "file": "server/internal/service/task_notify_test.go",
+      "line": 182,
+      "end_line": 218,
+      "definition_sha256": "9288dc8e8fa8b2e03917039879c507910f1b76a3d73d27b1488c6a305f2b4e98",
+      "definition_bytes": 1768,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+      ],
+      "leaf_names": [
+        "TestNotifyTaskEnqueued_UnwiredServiceCannotInvalidateClaimVerdict"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+      "package": "./internal/service",
+      "top_name": "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup",
+      "file": "server/internal/service/task_notify_test.go",
+      "line": 109,
+      "end_line": 138,
+      "definition_sha256": "71ad2dcafd3c37c56461049b48d393dec56192dd6ef2509060e6ba3a47ebcfd3",
+      "definition_bytes": 1066,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+      ],
+      "leaf_names": [
+        "TestNotifyTaskFinished_BumpsBeforeRuntimeWakeup"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestNotifyTasksFinished_CoalescesByRuntime",
+      "package": "./internal/service",
+      "top_name": "TestNotifyTasksFinished_CoalescesByRuntime",
+      "file": "server/internal/service/task_notify_test.go",
+      "line": 140,
+      "end_line": 164,
+      "definition_sha256": "3b9dda8705cf7a76ad09cbfdb68a3d1b3575225c40bfc71492872abf52c4e4fe",
+      "definition_bytes": 852,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestNotifyTasksFinished_CoalescesByRuntime"
+      ],
+      "leaf_names": [
+        "TestNotifyTasksFinished_CoalescesByRuntime"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "No-external-Redis notification coalescing for one runtime; conditional on notification wiring changes.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+      "package": "./internal/service",
+      "top_name": "TestOrdinaryCapacityCountsRetainedCollaborationReservation",
+      "file": "server/internal/service/task_collaboration_capacity_test.go",
+      "line": 61,
+      "end_line": 73,
+      "definition_sha256": "b0a82543cfb863a13354d73c496bea01867e55bca0ab2ce322310e6324e188ed",
+      "definition_bytes": 678,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestOrdinaryCapacityCountsRetainedCollaborationReservation"
+      ],
+      "leaf_names": [
+        "TestOrdinaryCapacityCountsRetainedCollaborationReservation"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Capacity counts retained occupancy even when its live resource rows are absent.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+      "package": "./internal/service",
+      "top_name": "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace",
+      "file": "server/internal/service/task_collaboration_capacity_test.go",
+      "line": 122,
+      "end_line": 129,
+      "definition_sha256": "86df57f65a3b0fb27e938bdad68a96f5983a4c9fc2711d4ed5f9c661b8c77d06",
+      "definition_bytes": 381,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace"
+      ],
+      "leaf_names": [
+        "TestOrdinaryClaimIgnoresAnotherCollaborationNamespace"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Singular ordinary claim is not blocked by a different namespace.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestOrdinaryClaimRechecksReservationAfterNamespaceLock",
+      "package": "./internal/service",
+      "top_name": "TestOrdinaryClaimRechecksReservationAfterNamespaceLock",
+      "file": "server/internal/service/task_collaboration_capacity_test.go",
+      "line": 131,
+      "end_line": 183,
+      "definition_sha256": "05ceb59b35c92aa11c6056566358a83ba6e76e4f5475004b1b89b1dcf215a00e",
+      "definition_bytes": 1635,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ],
+      "leaf_names": [
+        "TestOrdinaryClaimRechecksReservationAfterNamespaceLock"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Singular claim rechecks reservation after the original namespace lock.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "package": "./internal/service",
+      "top_name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+      "file": "server/internal/service/task_collaboration_capacity_test.go",
+      "line": 75,
+      "end_line": 120,
+      "definition_sha256": "c0bff5c5c644f3a25253d48b14b07974ffccfaf37477f6a02e52ab8ac78cab1f",
+      "definition_bytes": 1647,
+      "raw_child_names": [
+        "agent",
+        "runtime",
+        "batch",
+        "sql"
+      ],
+      "normalized_child_names": [
+        "agent",
+        "runtime",
+        "batch",
+        "sql"
+      ],
+      "t_run_callsite_lines": [
+        77
+      ],
+      "named_names": [
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql"
+      ],
+      "leaf_names": [
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 5,
+        "leaf": 4
+      },
+      "external_redis": false,
+      "purpose": "Retained same-namespace collaboration occupancy denies ordinary work until its reservation is released; the batch leaf uses ClaimTasksForRuntimes.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 79,
+      "end_line": 130,
+      "definition_sha256": "f7f639693266c4f7ab075da8a2476eb0d69f5f62703a62a3dd4b615e5b92f443",
+      "definition_bytes": 2378,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_CollectionCheckAlignsBackstops",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 168,
+      "end_line": 200,
+      "definition_sha256": "d871fa7e11a2b5ea104fd316cf3dfb996d99edbe8491e07b46e87d4b407b69db",
+      "definition_bytes": 1209,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 202,
+      "end_line": 221,
+      "definition_sha256": "71ba590f18530d8fc0693f8c393db544acfb0ebf199335f7b95aa8abc5083d07",
+      "definition_bytes": 723,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_DueRuntimeIDsPreservesInputOrder"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 223,
+      "end_line": 251,
+      "definition_sha256": "d9c08dc0c77d6baaaf4e954f860346fd6dfddb0c76e9cc7c3fd54ce0339c3108",
+      "definition_bytes": 1143,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_MarkCheckedBatchLimitFailsOpen"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 13,
+      "end_line": 24,
+      "definition_sha256": "e1487edb85fa9196cee1a7407a4a47038f1d967ad1a54374d98c03006f5999e2",
+      "definition_bytes": 658,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "Nil cache always returns every runtime due, with nil-safe tracking and MarkChecked.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 45,
+      "end_line": 77,
+      "definition_sha256": "0260a44b2646530696b6c885383bd531f5ca31bbb0c3ca4f8c190b2d1531caff",
+      "definition_bytes": 1280,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_ProductionWindowHintOutlivesDeadline"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 32,
+      "end_line": 43,
+      "definition_sha256": "879fc92e0daad50e937ec8742ebb183b0307d6b11f632544fd99e88b9b7f38c6",
+      "definition_bytes": 524,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": false,
+      "purpose": "A client closed before use fails open to every runtime; it does not connect to external Redis.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestReclaimCheckCache_TrackLaterAndForget",
+      "package": "./internal/service",
+      "top_name": "TestReclaimCheckCache_TrackLaterAndForget",
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "line": 132,
+      "end_line": 166,
+      "definition_sha256": "e78cada042c27eabb45699d5881c746831436a260e2f8b2b00d33c2a2cb6553e",
+      "definition_bytes": 1562,
+      "raw_child_names": [],
+      "normalized_child_names": [],
+      "t_run_callsite_lines": [],
+      "named_names": [
+        "TestReclaimCheckCache_TrackLaterAndForget"
+      ],
+      "leaf_names": [
+        "TestReclaimCheckCache_TrackLaterAndForget"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "external_redis": true,
+      "purpose": "Original cache/notification/HTTP control; retain the exact source assertions and existing behavior.",
+      "execution_status": "not_executed_by_research"
+    },
+    {
+      "id": "./internal/service::TestTriageAdmissionEnqueueAndRuntimeBoundaries",
+      "package": "./internal/service",
+      "top_name": "TestTriageAdmissionEnqueueAndRuntimeBoundaries",
+      "file": "server/internal/service/triage_admission_test.go",
+      "line": 34,
+      "end_line": 101,
+      "definition_sha256": "2765f05857727aa817c03246db9f9c9e75d94fc3927c0a8e764952466354632c",
+      "definition_bytes": 2601,
+      "raw_child_names": [
+        "pending/enqueue",
+        "pending/claim",
+        "pending/runtime",
+        "pending/batch",
+        "pending/start",
+        "pending/retry",
+        "pending/promote",
+        "pending/rerun",
+        "rejected/enqueue",
+        "rejected/claim",
+        "rejected/runtime",
+        "rejected/batch",
+        "rejected/start",
+        "rejected/retry",
+        "rejected/promote",
+        "rejected/rerun",
+        "duplicate/enqueue",
+        "duplicate/claim",
+        "duplicate/runtime",
+        "duplicate/batch",
+        "duplicate/start",
+        "duplicate/retry",
+        "duplicate/promote",
+        "duplicate/rerun",
+        "not_required/enqueue",
+        "not_required/claim",
+        "not_required/runtime",
+        "not_required/batch",
+        "not_required/start",
+        "not_required/retry",
+        "not_required/promote",
+        "not_required/rerun",
+        "accepted/enqueue",
+        "accepted/claim",
+        "accepted/runtime",
+        "accepted/batch",
+        "accepted/start",
+        "accepted/retry",
+        "accepted/promote",
+        "accepted/rerun"
+      ],
+      "normalized_child_names": [
+        "pending/enqueue",
+        "pending/claim",
+        "pending/runtime",
+        "pending/batch",
+        "pending/start",
+        "pending/retry",
+        "pending/promote",
+        "pending/rerun",
+        "rejected/enqueue",
+        "rejected/claim",
+        "rejected/runtime",
+        "rejected/batch",
+        "rejected/start",
+        "rejected/retry",
+        "rejected/promote",
+        "rejected/rerun",
+        "duplicate/enqueue",
+        "duplicate/claim",
+        "duplicate/runtime",
+        "duplicate/batch",
+        "duplicate/start",
+        "duplicate/retry",
+        "duplicate/promote",
+        "duplicate/rerun",
+        "not_required/enqueue",
+        "not_required/claim",
+        "not_required/runtime",
+        "not_required/batch",
+        "not_required/start",
+        "not_required/retry",
+        "not_required/promote",
+        "not_required/rerun",
+        "accepted/enqueue",
+        "accepted/claim",
+        "accepted/runtime",
+        "accepted/batch",
+        "accepted/start",
+        "accepted/retry",
+        "accepted/promote",
+        "accepted/rerun"
+      ],
+      "t_run_callsite_lines": [
+        37
+      ],
+      "named_names": [
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/start"
+      ],
+      "leaf_names": [
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/accepted/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/duplicate/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/not_required/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/pending/start",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/batch",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/claim",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/enqueue",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/promote",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/rerun",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/retry",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/runtime",
+        "TestTriageAdmissionEnqueueAndRuntimeBoundaries/rejected/start"
+      ],
+      "counts": {
+        "top": 1,
+        "named": 41,
+        "leaf": 40
+      },
+      "external_redis": false,
+      "purpose": "Five formal/nonformal admission states across eight paths, including five batch leaves; no phantom state-only named tests.",
+      "execution_status": "not_executed_by_research"
+    }
+  ],
+  "source_files": [
+    {
+      "file": "server/cmd/server/managed_installation_test.go",
+      "sha256": "0222a3c70f59882ea04c5a86af8873339e594d26a6f262a438df27d21fe46d17",
+      "bytes": 11430,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/managed_installation_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/cmd/server/router.go",
+      "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+      "bytes": 151540,
+      "description": "Actual router construction, current-auth routes and both claim-cache factories.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/router.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/go.mod",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586,
+      "description": "Frozen local Go/pgx/Redis dependency versions; no miniredis dependency.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/go.mod",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/auth/password_session.go",
+      "sha256": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c",
+      "bytes": 5943,
+      "description": "Original account/version validation and exclusive password-session fence.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/auth/password_session.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/handler/daemon.go",
+      "sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73",
+      "bytes": 239130,
+      "description": "Actual HTTP batch adapter and singular adapter; conditional scope fence.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/handler/daemon.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/handler/daemon_batch_claim_finalize_test.go",
+      "sha256": "f66fb053c5864d6ab26ee8d5cf0c350046ac8ad7fc0069ebe5ae091201d6d381",
+      "bytes": 14466,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/handler/daemon_batch_claim_finalize_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/handler/daemon_batch_claim_test.go",
+      "sha256": "65df76992d12e70a368978112127388c2291f7e339a598f4c0f11d0b6bc1f7cf",
+      "bytes": 13548,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/handler/daemon_batch_claim_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/handler/managed_claim_recovery_test.go",
+      "sha256": "e85a824c8f13ef97f5dd4bb7cd65eb5b035252730d427fecc6e1a48d11c41460",
+      "bytes": 3727,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/handler/managed_claim_recovery_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/handler/password_claim_test.go",
+      "sha256": "b373720af4d5950f3b67d937049054cce97362672d9c29ffc5332276c7431281",
+      "bytes": 4443,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/handler/password_claim_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/empty_claim_cache.go",
+      "sha256": "71d40bbf6d1b936532868c6562ad3b3147170f6552f16fdfaf5e408652841430",
+      "bytes": 7739,
+      "description": "Queued negative cache version, miss, mark and invalidation semantics.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/empty_claim_cache.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/empty_claim_cache_test.go",
+      "sha256": "d7671491440c8e37bc9943b17656ba82858161670df6e93205a7752d9d5d43dd",
+      "bytes": 4495,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/empty_claim_cache_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/legacy_execution_boundary_test.go",
+      "sha256": "60d6e09f12461df0599a49346f7e79c6ce681508deae3d58f519aef56008792b",
+      "bytes": 19512,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/legacy_execution_boundary_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/managed_admission_test.go",
+      "sha256": "1536e327a6e8f6fb1bb8161fd78e7a8cc4b44d2d957b2ebad585e1c7cf52ca0d",
+      "bytes": 13050,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/managed_admission_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/managed_runtime.go",
+      "sha256": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96",
+      "bytes": 10289,
+      "description": "Current source validation, exclusive writer default and namespace/admission/runtime ordering.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/managed_runtime.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/managed_runtime_test.go",
+      "sha256": "ade350bbe3d64aa3021d920b7e32d06959982269adcf1b7dbc8b63b8fdf27da0",
+      "bytes": 14312,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/managed_runtime_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "sha256": "7fa0f3a8ec6568e4d6bf3abcdc2088ac131f79656715f19fead5ea78b0c8dfe3",
+      "bytes": 10998,
+      "description": "Nil/failure due behavior and Redis schedule/backstop/MarkChecked policy.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/reclaim_check_cache.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/reclaim_check_cache_test.go",
+      "sha256": "4fb2b4965d108d499ed2a826f498ffaeff8988bb6a5714ad65e393a50b5d5f12",
+      "bytes": 9786,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/reclaim_check_cache_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task.go",
+      "sha256": "28c28dfe8bc3a75bb6e38d9727ed8632d7d52ac120d3d61cb06422021625fd50",
+      "bytes": 346632,
+      "description": "Batch Step2 control flow; singular/shared claim, finalization, tracking and notification defaults.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_batch_claim_deferred_test.go",
+      "sha256": "7166c5b63baf90bf157e89328d081ce5e776798599209c9989f819f1176d8a00",
+      "bytes": 5257,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_batch_claim_deferred_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_batch_claim_partial_test.go",
+      "sha256": "0c8f0f56fe85efb73866ac59efc54604a17b590ab7f1d2482658c08fd34f980e",
+      "bytes": 6526,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_batch_claim_partial_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_batch_claim_test.go",
+      "sha256": "5e26de4c2953b80518d4de275995551af7c3278b433a20b48fe80d6d4857c4f8",
+      "bytes": 12328,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_batch_claim_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_claim_race_test.go",
+      "sha256": "2c6f64965557e263167b17a0d182fbfa3013f9057a09c61873f05e2123fc16b2",
+      "bytes": 6921,
+      "description": "Original DB-pool helper: implicit local fallback and setup SKIP behavior; not executed.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_claim_race_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_collaboration_capacity_test.go",
+      "sha256": "0c918a7c36a1c269b60c66f14bd0bdb175ec066ce0ec00dd7b05e6366c0cf68d",
+      "bytes": 6602,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_collaboration_capacity_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/task_notify_test.go",
+      "sha256": "8529b37553ea806f0de134036824e4c5b980e96ddef1cfbc4f0db5c4ec285154",
+      "bytes": 8500,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task_notify_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/internal/service/triage_admission_test.go",
+      "sha256": "d99a2bdb034a5d011631ef3dd321565c4b4d24844eb17bca68d792493ca09f67",
+      "bytes": 15092,
+      "description": "Original bounded test source; complete or selected top inventory recorded below.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/triage_admission_test.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/pkg/db/generated/agent.sql.go",
+      "sha256": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "bytes": 383550,
+      "description": "Frozen generated agent queries and sqlc v1.31.1 header.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/generated/agent.sql.go",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/pkg/db/queries/agent.sql",
+      "sha256": "4d900ec193fb94e9b3c8f4835224ab64035872a85788bb2b42526cd0ea3999a1",
+      "bytes": 138366,
+      "description": "Canonical claims/reclaims/candidates/capacity/lease/generation SQL and location for any proposed new EXISTS.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/agent.sql",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/pkg/db/queries/managed_admission.sql",
+      "sha256": "6e444d1b5a231ed1d6ffd728875cd8ecc9a807dd6b38acae6295925427d3f977",
+      "bytes": 1093,
+      "description": "Installation admission read lock query.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/managed_admission.sql",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/pkg/db/queries/managed_installation.sql",
+      "sha256": "cf5d12b86d21aaa3120823e7b37c1922b5fc3b933be9119a568cef927779a181",
+      "bytes": 4830,
+      "description": "Installation namespace lock query.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/managed_installation.sql",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/pkg/db/queries/password.sql",
+      "sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "bytes": 734,
+      "description": "Original LockPasswordUser FOR UPDATE query.",
+      "mode": "0644",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/password.sql",
+        "status": "equal"
+      }
+    },
+    {
+      "file": "server/sqlc.yaml",
+      "sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4",
+      "bytes": 3678,
+      "description": "PostgreSQL/pgx-v5 generation configuration; no generator executed here.",
+      "mode": "0755",
+      "r30_comparison": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/sqlc.yaml",
+        "status": "equal"
+      }
+    }
+  ],
+  "bounded_source_manifest_sha256": "1f69f05391112121c35c936a56e978ded4314404fa7d2878d849d319373d8d62",
+  "protected_functions": [
+    {
+      "name": "ClaimTasksForRuntimes",
+      "file": "server/internal/service/task.go",
+      "start_line": 3915,
+      "end_line": 4125,
+      "definition_sha256": "ba76d1b9359141f74e23a8970ca43a96bf04d69cd6447fbcdc3cdd17307dac12",
+      "definition_bytes": 8546,
+      "retention": "Batch entry may change only through a separately admitted conservative Step2 probe; exact original singular/shared/writer/HTTP/cache behavior remains a fence."
+    },
+    {
+      "name": "ClaimTask",
+      "file": "server/internal/service/task.go",
+      "start_line": 3415,
+      "end_line": 3417,
+      "definition_sha256": "1ccd651234d1e645f3f132a04e2953d6df728cf2c4e2f51fb10fe0d3a4e450f8",
+      "definition_bytes": 155,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "claimTask",
+      "file": "server/internal/service/task.go",
+      "start_line": 3424,
+      "end_line": 3574,
+      "definition_sha256": "20a5751f24f48cd7cc056d5c1876487d50f6c3d9628e529791e076eb9722c02b",
+      "definition_bytes": 5598,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ClaimTaskForRuntime",
+      "file": "server/internal/service/task.go",
+      "start_line": 3584,
+      "end_line": 3726,
+      "definition_sha256": "bb0d242d70a4ca2ff259df5bfca632fee8034576462dbaf8e3c82ba5bbe421c3",
+      "definition_bytes": 4398,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "FinalizeTaskClaim",
+      "file": "server/internal/service/task.go",
+      "start_line": 3734,
+      "end_line": 3866,
+      "definition_sha256": "13967e7d08183eca36539679388c2af63073345348d3baa5d6e46c51ab0a5ab2",
+      "definition_bytes": 5173,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "trackTaskForReclaim",
+      "file": "server/internal/service/task.go",
+      "start_line": 212,
+      "end_line": 228,
+      "definition_sha256": "6227d64e3b9a65281c1c9c12a7b8a58a10551ccfd41e77c53bcde8bbd22875c2",
+      "definition_bytes": 769,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NotifyTaskEnqueued",
+      "file": "server/internal/service/task.go",
+      "start_line": 6937,
+      "end_line": 6940,
+      "definition_sha256": "67c778e019e1085f9af2d03584d9c6f7a05933868a59ab5ea1e1655a6761dc76",
+      "definition_bytes": 151,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NotifyTaskFinished",
+      "file": "server/internal/service/task.go",
+      "start_line": 6947,
+      "end_line": 6950,
+      "definition_sha256": "1504939442309432ed17d6dadd7d7f71f76f61f2afa5840ff7d279b46b0ec07e",
+      "definition_bytes": 144,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ValidateManagedNamespace",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 25,
+      "end_line": 61,
+      "definition_sha256": "813d126906808787396ba73fee2bddcd4d062ab998edee29e84a1002b7b55d2f",
+      "definition_bytes": 1549,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ValidateManagedRuntime",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 63,
+      "end_line": 79,
+      "definition_sha256": "5c73acf3d0b2c25936bb1a2399d05572110bb8a3f2ba7cd0b8d9a4167216c318",
+      "definition_bytes": 671,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "LockManagedDaemonRegistration",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 83,
+      "end_line": 119,
+      "definition_sha256": "8afe862612f67754b319f9decfee68cf2f982f5847d7ab13f6d4ce87c052cb91",
+      "definition_bytes": 1351,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "LockManagedRuntime",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 123,
+      "end_line": 125,
+      "definition_sha256": "ff2655df2742936ab8cf7a78018776520b5388d5ef9db253a6accf3ba55e436e",
+      "definition_bytes": 190,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "lockManagedRuntime",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 129,
+      "end_line": 164,
+      "definition_sha256": "146a1094c482bad06e4c799c6d1168a8adef8cf5e282596c28c3314601ba27a5",
+      "definition_bytes": 1375,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "lockManagedRuntimeAccountRead",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 166,
+      "end_line": 184,
+      "definition_sha256": "3d632faf0f06c174af9bfd17d3a6381a6080a6536bcc569feeff145e114e7f90",
+      "definition_bytes": 588,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "LockManagedRuntimes",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 186,
+      "end_line": 204,
+      "definition_sha256": "7c642a7878962f7934e75363497c9a9b327e8ff1283b90220166e886499e5c80",
+      "definition_bytes": 639,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "lockManagedTaskSource",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 206,
+      "end_line": 223,
+      "definition_sha256": "be6784489ddae07dfecc802a28e6890fc9139f415493871ac6cc1b7f6d8afe82",
+      "definition_bytes": 601,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ValidateManagedTaskBinding",
+      "file": "server/internal/service/managed_runtime.go",
+      "start_line": 225,
+      "end_line": 234,
+      "definition_sha256": "362cd6b1da136632e3ae4ac627ca24d4d9be57737716c803b160123d9b10e932",
+      "definition_bytes": 375,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NewReclaimCheckCache",
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "start_line": 70,
+      "end_line": 75,
+      "definition_sha256": "dbf6f2a90f3fe7aeda6be6f9d05b342b7fa755f5a512db395b3325ccea9fca24",
+      "definition_bytes": 138,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "DueRuntimeIDs",
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "start_line": 97,
+      "end_line": 190,
+      "definition_sha256": "5148184003d7dd1f1b80ebdfb396ef4f1c2c4970456ddcc2f5a75c34f897a05b",
+      "definition_bytes": 2677,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "Track",
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "start_line": 196,
+      "end_line": 198,
+      "definition_sha256": "8b8c1e93c8933395c786cde16dbf8cc8dec61969a078633e475df4486b1e93f7",
+      "definition_bytes": 159,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "TrackLater",
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "start_line": 205,
+      "end_line": 207,
+      "definition_sha256": "f5682550aa8392781ad308457450e4ed733879677db00b5950397f9a47d38656",
+      "definition_bytes": 163,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "MarkChecked",
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "start_line": 271,
+      "end_line": 300,
+      "definition_sha256": "433af771faa633c616633d72828c4227814d00797c1e12e1c51fe11487021227",
+      "definition_bytes": 994,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NewEmptyClaimCache",
+      "file": "server/internal/service/empty_claim_cache.go",
+      "start_line": 78,
+      "end_line": 83,
+      "definition_sha256": "4d4058850b1520e532cf5d824f3fd884428a88228beb7cbe2d0f8070a8dbccb0",
+      "definition_bytes": 132,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "IsEmpty",
+      "file": "server/internal/service/empty_claim_cache.go",
+      "start_line": 124,
+      "end_line": 155,
+      "definition_sha256": "153f6c38073a0c0692cb128a8440468237a2162899af820b40fc8df7ce04367d",
+      "definition_bytes": 987,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "CurrentVersion",
+      "file": "server/internal/service/empty_claim_cache.go",
+      "start_line": 101,
+      "end_line": 118,
+      "definition_sha256": "e2b6a0d6e0e525bea8d3a651456e460d353b8ea6678c389f9371b02afca9e47d",
+      "definition_bytes": 606,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "MarkEmpty",
+      "file": "server/internal/service/empty_claim_cache.go",
+      "start_line": 166,
+      "end_line": 175,
+      "definition_sha256": "5ecca007302ae4564e9b999ad7d8c9c100284a3e665e2721fd8ccc16728d5188",
+      "definition_bytes": 391,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "Bump",
+      "file": "server/internal/service/empty_claim_cache.go",
+      "start_line": 185,
+      "end_line": 197,
+      "definition_sha256": "1b4bcb8d2a29ffcf1d28d6f13d16182b302b8ea509f06b3bde2f2cb20cf85337",
+      "definition_bytes": 445,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "LockPasswordSession",
+      "file": "server/internal/auth/password_session.go",
+      "start_line": 175,
+      "end_line": 189,
+      "definition_sha256": "eec40ab694bfa2a29b2e69708fbaa57d8d142c3aed81a54d18d977283ab1e0ed",
+      "definition_bytes": 454,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "CheckPasswordVersion",
+      "file": "server/internal/auth/password_session.go",
+      "start_line": 58,
+      "end_line": 64,
+      "definition_sha256": "a641fe49c984d7408c9f58e6eee92a44c5e66e9c47eaf937acf75b131834c274",
+      "definition_bytes": 302,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ClaimTasksByRuntime",
+      "file": "server/internal/handler/daemon.go",
+      "start_line": 1740,
+      "end_line": 1945,
+      "definition_sha256": "0260e0ac15bbd5619e707c2c9385cca597397c6e35bc48983dfebd0fd27bb0ab",
+      "definition_bytes": 8934,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "ClaimTaskByRuntime",
+      "file": "server/internal/handler/daemon.go",
+      "start_line": 3525,
+      "end_line": 3706,
+      "definition_sha256": "74f220ff13e3e961e3fc827ebcc8bbd988279ff744dd1770dc6e14755615febe",
+      "definition_bytes": 7596,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NewRouter",
+      "file": "server/cmd/server/router.go",
+      "start_line": 215,
+      "end_line": 218,
+      "definition_sha256": "dec29aff0993e3f95053fc7a3b57512376cbd8b9ac5fd1c1968e2e25ec392971",
+      "definition_bytes": 234,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    },
+    {
+      "name": "NewRouterWithOptions",
+      "file": "server/cmd/server/router.go",
+      "start_line": 405,
+      "end_line": 2762,
+      "definition_sha256": "aaea3f07433805d50db07ebbadff4d127fa86aa2bc6290b1523f6d884e9d5138",
+      "definition_bytes": 128009,
+      "retention": "Keep definition unchanged for a batch-only precheck; otherwise widen and re-review the actual scope."
+    }
+  ],
+  "protected_queries": [
+    {
+      "name": "ClaimAgentTask",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 808,
+      "end_line": 917,
+      "definition_sha256": "d1ea513bc10ad6f2c98e1fd75077d1bfa2247ea775509ec725b6d1f5c3bddb13",
+      "definition_bytes": 5687,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "ReclaimStaleDispatchedTaskForRuntime",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 965,
+      "end_line": 1035,
+      "definition_sha256": "694e167579f8bf3e90c7626836a5e46c9d13d26a908ae9baf2b1f3955e5c2bd1",
+      "definition_bytes": 3717,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "ReclaimStaleDispatchedTasksForRuntimes",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 1037,
+      "end_line": 1109,
+      "definition_sha256": "74da17d33a9cb8fffa94dbc7136fc2640b3890f57ac46bdd6df1f46fb002ee40",
+      "definition_bytes": 3927,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "ListQueuedClaimCandidatesByRuntimes",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 2415,
+      "end_line": 2449,
+      "definition_sha256": "3511b3a0ad5408314bad159751e1b9a457d1164a069181e0e9bd10f7c23ac80e",
+      "definition_bytes": 1594,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "CountRunningTasks",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 1892,
+      "end_line": 1906,
+      "definition_sha256": "42b1eec9238d8a555140ba2ec3b5a231866cf82e8efa3b30fbc458ca96893643",
+      "definition_bytes": 883,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "GetAgentForClaimUpdate",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 1908,
+      "end_line": 1911,
+      "definition_sha256": "c4f5975e8db37683544c104e55264ef1e3e4a62ce12a8b34bae045a92b3c039e",
+      "definition_bytes": 83,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "SetTaskDeliveredCommentIDs",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 919,
+      "end_line": 944,
+      "definition_sha256": "aab4552b0365c0666f2d4d15e9dc8055d5abe6bb4948448afb3f4f2009207c8c",
+      "definition_bytes": 1208,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "RequeueAgentTaskAfterClaimFailure",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 946,
+      "end_line": 963,
+      "definition_sha256": "c9a95d31f55735d1cc0abe68bb3e6c16c345bc05e643356fb6cc4cf0187b8c1e",
+      "definition_bytes": 737,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "ExtendAgentTaskPrepareLease",
+      "file": "server/pkg/db/queries/agent.sql",
+      "line": 1111,
+      "end_line": 1122,
+      "definition_sha256": "3d31bfcff0d402f7d6d166d13201e20a8eefa0b91de9e64aa96a90e0a5391706",
+      "definition_bytes": 570,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "LockPasswordUser",
+      "file": "server/pkg/db/queries/password.sql",
+      "line": 16,
+      "end_line": 17,
+      "definition_sha256": "c183f7fa2de00ffddcf5df23b6e2091bac22fc0271cad6660c056d0005064ef4",
+      "definition_bytes": 79,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "LockInstallationNamespace",
+      "file": "server/pkg/db/queries/managed_installation.sql",
+      "line": 16,
+      "end_line": 17,
+      "definition_sha256": "722758430f2e0d766be3adc8a5744af9809ee5929b61d1ff24a5e65232bc4d11",
+      "definition_bytes": 109,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    },
+    {
+      "name": "LockManagedInstallationForAdmissionRead",
+      "file": "server/pkg/db/queries/managed_admission.sql",
+      "line": 1,
+      "end_line": 2,
+      "definition_sha256": "c189aceba6683ea5299157a92122675178b3b46b1dd4e8e33698fd9474d0a1cb",
+      "definition_bytes": 112,
+      "retention": "Canonical existing query stays byte-identical for a separate necessary-condition EXISTS; the boolean must not replace this positive path."
+    }
+  ],
+  "related_specs": [
+    {
+      "file": ".trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "reason": "Research persistence/role separation and parent-owned lifecycle.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": "CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "reason": "Go conventions, narrow verification, test fixtures, migrations and package boundaries.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/index.md",
+      "sha256": "e2850ded1d9a0dff3dca2ed2201daff8b80377152889fee240ecf835a50012af",
+      "reason": "Server authority and verification guide index.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/managed-installations.md",
+      "sha256": "637282c9698b9e5e1966626817dccfefb42fc58f290b9e82ad56367ab391e20e",
+      "reason": "Current MDT/PAT/binding/owner authority, user-to-namespace ordering, admission and delivery history/generation/90-second lease recovery.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/security-boundaries.md",
+      "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+      "reason": "Current source account version, password reset/minting lock and unavailable-versus-invalid distinctions.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "e574bd544c0503f3ea6c97f678c3578913cb287d572f2e33e14cc4375af054e3",
+      "reason": "Same-Q R4/current-source read authority and unchanged real writer defaults; bounded source/raw reuse.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/database-test-isolation.md",
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8",
+      "reason": "Explicit task-owned DB, TestMain side effects, source/profile/resource proof and zero skipped named acceptance.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/verification-environment.md",
+      "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f",
+      "reason": "Process-specific env, source/configuration/ownership binding and exact mixed JSON inventory.",
+      "source": "workspace guidance read-only"
+    },
+    {
+      "file": ".trellis/spec/server/triage.md",
+      "sha256": "d30fec32777b08a0059869b9296b52b57dd4362b661566b7c22328647d83645d",
+      "reason": "Formal source admission and canonical no-execution fences.",
+      "source": "workspace guidance read-only"
+    }
+  ],
+  "auxiliary_command_reference": {
+    "file": "/Volumes/artisan/code/2026/multica-0.4.37/Makefile",
+    "sha256": "02db245b6fc53efd75119b897fd5aad832141f6fed770156e165d9e5c0bd9260",
+    "line": 406,
+    "finding": "go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate",
+    "caveat": "Auxiliary live workspace command reference only; root Makefile is absent from the frozen source snapshot."
+  },
+  "external_references": [
+    {
+      "name": "Go module version",
+      "version": "1.26.6",
+      "source": "server/go.mod:3",
+      "url": "https://go.dev/doc/modules/gomod-ref",
+      "access": "No external retrieval; version observed in frozen source."
+    },
+    {
+      "name": "sqlc generator",
+      "version": "v1.31.1",
+      "source": "server/pkg/db/generated/agent.sql.go:3; workspace Makefile:406",
+      "url": "https://docs.sqlc.dev/en/stable/",
+      "access": "No external retrieval or generator execution; local source/version references only."
+    },
+    {
+      "name": "go-redis",
+      "version": "v9.18.0",
+      "source": "server/go.mod",
+      "url": "https://github.com/redis/go-redis",
+      "access": "Frozen module declaration only."
+    },
+    {
+      "name": "redismock",
+      "version": "v9.2.0",
+      "source": "server/go.mod",
+      "url": "https://github.com/go-redis/redismock",
+      "access": "Frozen module declaration only; no miniredis dependency in this module."
+    },
+    {
+      "name": "pgx",
+      "version": "v5.9.2",
+      "source": "server/go.mod",
+      "url": "https://github.com/jackc/pgx",
+      "access": "Frozen module declaration only."
+    }
+  ],
+  "fences": [
+    {
+      "fence": "Initial current runtime/source validation",
+      "code": [
+        "server/internal/service/task.go:3938",
+        "server/internal/service/managed_runtime.go:25",
+        "server/internal/service/managed_runtime.go:63"
+      ],
+      "contract": "Keep ValidateManagedRuntime before any no-work branch. Reliable absence never grants binding/PAT/owner/workspace/account authority."
+    },
+    {
+      "fence": "Original real writer defaults and lock order",
+      "code": [
+        "server/internal/service/managed_runtime.go:123",
+        "server/internal/service/managed_runtime.go:129",
+        "server/internal/service/managed_runtime.go:186",
+        "server/internal/auth/password_session.go:175",
+        "server/pkg/db/queries/password.sql:16"
+      ],
+      "contract": "LockManagedRuntime delegates false. Canonical positive reclaim still uses exclusive password user, namespace, current runtime/binding and installation admission before task locks; no shared-mode/public flag or singular rewrite."
+    },
+    {
+      "fence": "Necessary-condition probe only",
+      "code": [
+        "server/internal/service/task.go:3989",
+        "server/pkg/db/queries/agent.sql:1037"
+      ],
+      "contract": "Only a reliable necessary-condition negative may skip Step2. True/unknown/error must follow the separately admitted canonical/error policy. Probe is read-only and non-authorizing; it must not call lock_issue_execution or return private rows."
+    },
+    {
+      "fence": "Complete set and due-hint/backstop policy",
+      "code": [
+        "server/internal/service/task.go:3986",
+        "server/internal/service/task.go:4009",
+        "server/internal/service/reclaim_check_cache.go:97",
+        "server/internal/service/reclaim_check_cache.go:271"
+      ],
+      "contract": "Any due runtime still triggers complete uniqueIDs canonical work when potential rows exist. Nil/failed cache remains conservative; retain retry/backstop schedule and do not forget due hints for a skipped/locked positive candidate."
+    },
+    {
+      "fence": "Queued work and deferred side effects",
+      "code": [
+        "server/internal/service/task.go:3960",
+        "server/internal/service/task.go:4035",
+        "server/internal/service/task.go:4053",
+        "server/internal/service/task.go:4102",
+        "server/internal/service/task_batch_claim_deferred_test.go:28"
+      ],
+      "contract": "Do not return the whole method early after a negative reclaim probe. Continue original cache version sampling, queued candidates, per-agent claims, routing, cap and same-call deferred promotion events."
+    },
+    {
+      "fence": "Temporal/lease/started fences",
+      "code": [
+        "server/pkg/db/queries/agent.sql:1079",
+        "server/internal/handler/managed_claim_recovery_test.go:12"
+      ],
+      "contract": "Potential predicate must be a conservative superset using the DB clock and necessary dispatched/never-started/recovery/expired-or-absent lease predicates. Canonical UPDATE remains unchanged; active lease/young dispatch/started task never becomes an authorized reclaim."
+    },
+    {
+      "fence": "Binding/admission/generation/history",
+      "code": [
+        "server/internal/service/managed_admission_test.go:197",
+        "server/internal/service/managed_runtime_test.go:165",
+        "server/internal/service/managed_admission_test.go:250",
+        "server/pkg/db/queries/agent.sql:1058"
+      ],
+      "contract": "Previously admitted stopped recovery keeps original binding/epoch/admission. Unknown history is never backfilled. Real reclaim advances generation and finalization/receipt/requeue CAS continue to reject older delivery."
+    },
+    {
+      "fence": "Committed partial prefix",
+      "code": [
+        "server/internal/service/task_batch_claim_partial_test.go:83",
+        "server/internal/service/task_batch_claim_partial_test.go:115",
+        "server/internal/service/task.go:4055",
+        "server/internal/service/task.go:4110"
+      ],
+      "contract": "Return genuinely committed earlier claims/reclaims when a later candidate/agent claim fails; never convert that partial success to an empty failure."
+    },
+    {
+      "fence": "Retained capacity/source admission",
+      "code": [
+        "server/internal/service/task_collaboration_capacity_test.go:75",
+        "server/internal/service/legacy_execution_boundary_test.go:139",
+        "server/internal/service/triage_admission_test.go:34",
+        "server/pkg/db/queries/agent.sql:1892"
+      ],
+      "contract": "Retained same-namespace reservation still blocks ordinary queued work until proof. Preserve ordinary source/triage/lock_issue_execution admission; a pure negative precheck grants no execution."
+    },
+    {
+      "fence": "Unchanged HTTP/router and original acceptance",
+      "code": [
+        "server/internal/handler/daemon.go:1740",
+        "server/cmd/server/router.go:1316",
+        "server/cmd/server/router.go:1320"
+      ],
+      "contract": "Service profile allocation alone does not admit handler/router execution. Retain unchanged adapter/source/finalization bindings and R30 2PASS/1FAIL/1NOT_RUN,retry0; do not claim new R4/native/full S2 acceptance."
+    }
+  ],
+  "caveats_not_found": [
+    "All counts are static source-derived inventories, not PASS results. No Go/AST/test-list/TestMain/SQL/DB/Redis/API/browser/runtime/signals/Git/dependency or agent operation was executed.",
+    "The original batch test file has exactly five top-level tests. DB-only batch originals total six across the main/partial/deferred files. Primary original union is 16/27/24, not an estimate based on a sixth nonexistent main-file test.",
+    "newRedisTestClient reads REDIS_TEST_URL, forces DB12, Ping/FlushDB and cleanup FlushDB/Close; unset/unreachable endpoints skip. Dedicated task-owned Redis is required for conditional external controls. Never export a global endpoint or reset foreign Redis.",
+    "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime closes a 127.0.0.1:0 client before use and belongs in the no-external-Redis union. TestEmptyClaimCache_EmptyRuntimeIDIsNoOp uses the external helper despite its name.",
+    "newTaskClaimRacePool still falls back to an implicit local database and skips on parse/Ping failure. ROOT must load the recorded explicit owned DB/profile and reject SKIP; no environment or fixture edits were made here.",
+    "Singular managed-history and revoked-claim controls protect shared source/provenance defaults; they do not establish that a batch-only optimization fixes singular idle polls.",
+    "No existing standalone necessary-condition EXISTS or named probe-error/negative-clock regression was found in the frozen bounded source. Any new probe needs ROOT-reviewed true/false/error and clock-boundary tests appropriate to the admitted behavior; proposed names are not invented as originals.",
+    "No direct batch router test was found in the bounded source inventory. The listed router top covers managed enrollment/provenance/recovery, while direct HTTP batch coverage lives in handler tests.",
+    "No fresh full116/handler99/router54, R4/native diagnosis, original browser retry, deadline adjustment or successful-completion replay is justified by this static inventory alone.",
+    "Root Makefile is absent from the frozen snapshot; sqlc v1.31.1 is established by the frozen generated header and separately read workspace Makefile:406, not by generator execution or a frozen Makefile hash.",
+    "Only this new report pair may be created and sealed0444; source files, specs, manifests, configuration, peer files and historical reports are preserved. The bounded source hashes do not replace ROOT full source/configuration/resource binding."
+  ],
+  "execution_claims": {
+    "tests_run": false,
+    "green_accepted": false,
+    "external_redis_used": false,
+    "db_used": false,
+    "source_changed": false,
+    "peer_test_inspected": false,
+    "agents_spawned": false,
+    "git_used": false
+  },
+  "historical_acceptance_preserved": "R30 original4=2PASS/1FAIL/1NOT_RUN,retry0. No R4/native diagnosis or browser/completion replay performed.",
+  "markdown": {
+    "file": "r31-idle-claim-original-control-inventory-20261118.md",
+    "sha256": "05d60a95ea086300fa28fd8e344146b02208677e29757b388fd2637627acacce",
+    "bytes": 44300
+  }
+}

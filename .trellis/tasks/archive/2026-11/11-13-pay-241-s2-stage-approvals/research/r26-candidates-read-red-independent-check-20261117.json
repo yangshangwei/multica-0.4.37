@@ -1,0 +1,922 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-17T10:41:04.549421+00:00",
+  "reviewer": "/root/r26_red_boundary_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "verdict": "ACCEPTED_RED_BOUNDARY",
+  "acceptance_scope": "Genuine unchanged-product service RED for current-human collaboration candidates, R4 and sibling reads; bounded two-file candidate repair may be dispatched by main.",
+  "blocking_RED_boundary_findings_open": 0,
+  "product_findings_open": 1,
+  "product_repair_implemented_by_reviewer": false,
+  "GREEN_accepted": false,
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-independent-check-20261117.md",
+    "sha256": "cd59be6d1332acefd82c50d46a7578495a657042ea8d9f22655bdcb6870a1b7a",
+    "bytes": 12385,
+    "mode": "0o444"
+  },
+  "independent_support": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/red-independent-check/audit-result-r01.json",
+    "sha256": "fd0fd0d939e2b53d003b89bbf6139418c8758a41ccf6f3913f0e7951650008b1",
+    "bytes": 98693,
+    "mode": "0o400"
+  },
+  "support_script": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/red-independent-check/audit_red.py",
+    "sha256": "1b6d4f6044606fa188c95c3630d8b349b583ab974c47b56d1fcf5741e1152968",
+    "bytes": 17132,
+    "mode": "0o400"
+  },
+  "reviewed_inputs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/result.json",
+      "sha256": "f6ab208639390515e012d80349ed63649963c02d14a9b856914e03a0ad72aa93",
+      "bytes": 2700,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-permit-r01.json",
+      "sha256": "13be3d737b83a3934793ebf97f1dae2b70cf3ca9ca81e85af92de765609c0fa2",
+      "bytes": 1416408,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/command.json",
+      "sha256": "34bc1df02009fab2e41a69efd31a0fa59882f24a3adb4ebd99b9904c1b2374ce",
+      "bytes": 1103,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/source-before.json",
+      "sha256": "cc305a0ed216b390fb60e28c61fdbf43c176e6464c09cb1bf0dfd17005d1e03d",
+      "bytes": 1058739,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-read-coexistence-test-plan-20261117.json",
+      "sha256": "0cc6121e5e237b5352f02ce479e457352a0e782564ae01fcb3cb145545406a28",
+      "bytes": 31325,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-m1-read-coexistence-test-plan-20261117.md",
+      "sha256": "212e552b0f519990de7de999370bbb31e9991da80e80bb444292f4026aa06519",
+      "bytes": 21746,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-red-implementation-20261117.json",
+      "sha256": "bca51aea9f659d284856aeb65a3fdb00b4995a58fed843bf12ee8a7df5e1b8ef",
+      "bytes": 12829,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/source/server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+      "sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+      "bytes": 32315,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/candidate-read-ast-r01.json",
+      "sha256": "78f0ec37326c590cd9094425da770856c419cd3e97a090282f3d0d42f806cf40",
+      "bytes": 1155,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/stdout.jsonl",
+      "sha256": "24780be5f35dd181401534d9d3b7380ef401860d67b61836dee325dfa878a38c",
+      "bytes": 106191,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/database-before.json",
+      "sha256": "ca19ac349c8133ff33080146c4a058608a35170b5dc2cda517e938e8f7122f51",
+      "bytes": 219861,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/verification/red-r01/database-after.json",
+      "sha256": "625bf7107d35fc6e1213de71d3bfe59b00dce30a9233bb4666ec7f5de722c4fb",
+      "bytes": 219861,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/database/profiles-r01/red-environment.json",
+      "sha256": "02d6bc6bfa34f965ff5993c61a77264c092182677b65d01edaca0327f31ab485",
+      "bytes": 3033,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/compile-r01-result.json",
+      "sha256": "6abb8ad0ba401d145b9edaa570523a9d456310975f8ecbcc49fbbc38a8657bf6",
+      "bytes": 2118,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/service-red.test",
+      "sha256": "6f57745cb014dc5fffe7ab54da08658c15bdd60fdac9da23a9052bce4177005a",
+      "bytes": 86030802,
+      "mode": "0o755"
+    }
+  ],
+  "source_check": {
+    "original_paths": 5047,
+    "RED_paths": 5048,
+    "only_new_path": "server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+    "new_test_sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9",
+    "new_test_lines": 674,
+    "source_byte_mode_mismatches": [],
+    "permit_references_checked": 5053,
+    "permit_input_mismatches": [],
+    "plan_source_pairs": [
+      {
+        "relative_path": "server/internal/service/collaboration_completion_preview.go",
+        "sha256": "0056a14cbbc5e826a38a41b727c54f1d434d6286b9ee190a9cb34fb802dca573",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/delivery_completion_preview.go",
+        "sha256": "a33096e9fedec4367b45b5152fbe92a484a5c62d5a97dc4094f406f39d348ef1",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/delivery_evidence.go",
+        "sha256": "1a714f0e4a9d8d002c483c9cdd4f86172c66cca051233c9d3fc31a2f00a577df",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/artifact_authority.go",
+        "sha256": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/delivery_completion_collaboration.go",
+        "sha256": "c92797c69ca01850ca87dea3b8f960ddc7c174ada3154084554a5423bb89cfab",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/delivery_completion_authorization.go",
+        "sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/delivery_completion.go",
+        "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_completion.go",
+        "sha256": "9d47fe441cc62a7ccacb1d27358ed2adcf5107d6d0ab60adb1c347a38bd4d31c",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_evidence_read.go",
+        "sha256": "be5a175aac2c4451f31f0e6acbb5d6c085611d5c451abdc2493b671fd92e36b9",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_evidence.go",
+        "sha256": "a870a7904b52e78f949af82eaca61ecbd3d9d4c14a304a386bc750ba05c5d895",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_execution_approvals.go",
+        "sha256": "c00b27e4aaa8ba8dd0afc9fecec3baf66e084d24cc4b40f0ef4e58ab2aca623b",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_qa.go",
+        "sha256": "5db489eb15b10d3446dedb17e55fa76dd2b6de1816c28561a5dbe50022becdf7",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage_signer.go",
+        "sha256": "b7bd097e41d8d97ff6f81a274d9e778c6fe870473c93e120e7ca12b522f9d5d8",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_stage.go",
+        "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_delivery.go",
+        "sha256": "59982f3e2d792a5261b7ff02192cbba508ea51021b21e5ea37c833a2f263d7df",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/service/collaboration_attachments.go",
+        "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/handler/collaboration_completion_preview.go",
+        "sha256": "824b2f8d3ac2a4af049cc5ecc24812295407d022cf0827348c62b1684feba151",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/handler/delivery_completion_preview.go",
+        "sha256": "24388feb9bd9e575939aa74fad715002bec874ea8aa899d01aafaac1f306453b",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/handler/delivery_policy.go",
+        "sha256": "97bde61992f28bb278c5ec27ae71b361ed6a371ad27cc49649dc28bebbb366f8",
+        "equals_sealed_R25": true
+      },
+      {
+        "relative_path": "server/internal/handler/agent_artifact.go",
+        "sha256": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e",
+        "equals_sealed_R25": true
+      }
+    ]
+  },
+  "command_check": {
+    "argv": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=10m",
+      "./internal/service",
+      "-run",
+      "^(TestCollaborationCompletionCandidatesR4Coexistence|TestCollaborationCompletionCandidatesSiblingReads|TestCollaborationCompletionCandidatesWriterFences|TestCollaborationCompletionCandidatesCurrentAuthority)$"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/source/server",
+    "environment_hash": "02d6bc6bfa34f965ff5993c61a77264c092182677b65d01edaca0327f31ab485",
+    "ambient_inherited": false,
+    "expected_actual_database": "multica_pay241_20261117_s2_m1read_red_r26",
+    "pool_auth_root_overrides": []
+  },
+  "raw_inventory": {
+    "raw_sha256": "24780be5f35dd181401534d9d3b7380ef401860d67b61836dee325dfa878a38c",
+    "raw_lines": 171,
+    "actions": {
+      "start": 1,
+      "run": 15,
+      "output": 139,
+      "fail": 7,
+      "pass": 9
+    },
+    "top_level": 4,
+    "leaf": 11,
+    "named": 15,
+    "results": {
+      "pass": [
+        "TestCollaborationCompletionCandidatesWriterFences/writer_first",
+        "TestCollaborationCompletionCandidatesWriterFences/reader_first",
+        "TestCollaborationCompletionCandidatesWriterFences",
+        "TestCollaborationCompletionCandidatesCurrentAuthority/wrong_workspace_child",
+        "TestCollaborationCompletionCandidatesCurrentAuthority/outside_participant",
+        "TestCollaborationCompletionCandidatesCurrentAuthority/disabled_account",
+        "TestCollaborationCompletionCandidatesCurrentAuthority/expired_credential",
+        "TestCollaborationCompletionCandidatesCurrentAuthority/revoked_artifact_manager",
+        "TestCollaborationCompletionCandidatesCurrentAuthority"
+      ],
+      "fail": [
+        "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+        "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first",
+        "TestCollaborationCompletionCandidatesR4Coexistence",
+        "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+        "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+        "TestCollaborationCompletionCandidatesSiblingReads"
+      ],
+      "skip": []
+    },
+    "run_counts": {
+      "TestCollaborationCompletionCandidatesR4Coexistence": 1,
+      "TestCollaborationCompletionCandidatesR4Coexistence/r4_first": 1,
+      "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first": 1,
+      "TestCollaborationCompletionCandidatesSiblingReads": 1,
+      "TestCollaborationCompletionCandidatesSiblingReads/same_creator": 1,
+      "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers": 1,
+      "TestCollaborationCompletionCandidatesWriterFences": 1,
+      "TestCollaborationCompletionCandidatesWriterFences/writer_first": 1,
+      "TestCollaborationCompletionCandidatesWriterFences/reader_first": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority/wrong_workspace_child": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority/outside_participant": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority/disabled_account": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority/expired_credential": 1,
+      "TestCollaborationCompletionCandidatesCurrentAuthority/revoked_artifact_manager": 1
+    },
+    "package_terminal": [
+      "fail"
+    ],
+    "package_exit": 1,
+    "parse_errors": [],
+    "shape_errors": [],
+    "pending": [],
+    "missing": [],
+    "extra": [],
+    "duplicates": []
+  },
+  "concurrent_cases": [
+    {
+      "test": "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+      "first": 38898,
+      "second": 38906,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": true,
+      "raw_failure": [
+        {
+          "test": "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+          "output": "collaboration_completion_candidates_read_concurrency_test.go:426: candidate GET contended with a real held R4: first_pg=&{Query:LockLifecycleIssue SQLSHA256:c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e UUIDArgs:[c74c4822-ef50-4e20-ad00-17576ce1e6a6 2ee36add-0558-4e8e-a035-ffebf7d6eba6] Phase:row_scan BackendPID:38906 SQLState:55P03 OuterType:*pgconn.PgError Message:could not obtain lock on row in relation \"issue\" Detail: Where: Table: Constraint: RecordedAt:2026-11-17 10:19:59.636823 +0000 UTC} domain=delivery_completion_conflict"
+        }
+      ],
+      "first_pg_witness": [
+        {
+          "test": "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+          "label": "r4_first_second_terminal_before_release",
+          "actor": "4c536d71-8f4f-49c7-b2ed-d92e39c5a46e",
+          "backend_pid": 38906,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "c74c4822-ef50-4e20-ad00-17576ce1e6a6",
+              "2ee36add-0558-4e8e-a035-ffebf7d6eba6"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 38906,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T10:19:59.636823Z"
+          }
+        }
+      ]
+    },
+    {
+      "test": "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first",
+      "first": 38908,
+      "second": 38915,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": true,
+      "raw_failure": [
+        {
+          "test": "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first",
+          "output": "collaboration_completion_candidates_read_concurrency_test.go:461: authorized R4 contended with a candidate reader: SQLSTATE=55P03 err=ERROR: could not obtain lock on row in relation \"issue\" (SQLSTATE 55P03)"
+        }
+      ],
+      "first_pg_witness": []
+    },
+    {
+      "test": "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+      "first": 38917,
+      "second": 38924,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": true,
+      "raw_failure": [
+        {
+          "test": "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+          "output": "collaboration_completion_candidates_read_concurrency_test.go:517: two real candidate readers contended: first_pg=&{Query:LockLifecycleIssue SQLSHA256:c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e UUIDArgs:[01a1e905-4af2-701b-81c0-6def139922cc 8a7d2b6c-7699-49f3-b7d9-7e49c9549273] Phase:row_scan BackendPID:38924 SQLState:55P03 OuterType:*pgconn.PgError Message:could not obtain lock on row in relation \"issue\" Detail: Where: Table: Constraint: RecordedAt:2026-11-17 10:20:01.214149 +0000 UTC} domain=delivery_completion_conflict"
+        }
+      ],
+      "first_pg_witness": [
+        {
+          "test": "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+          "label": "sibling_second_terminal_before_first_commit",
+          "actor": "3ba9297b-f810-4146-9337-23ccb62f6a85",
+          "backend_pid": 38924,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "01a1e905-4af2-701b-81c0-6def139922cc",
+              "8a7d2b6c-7699-49f3-b7d9-7e49c9549273"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 38924,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T10:20:01.214149Z"
+          }
+        }
+      ]
+    },
+    {
+      "test": "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+      "first": 38926,
+      "second": 38933,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": true,
+      "raw_failure": [
+        {
+          "test": "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+          "output": "collaboration_completion_candidates_read_concurrency_test.go:518: two real candidate readers contended: first_pg=&{Query:LockLifecycleIssue SQLSHA256:c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e UUIDArgs:[01a1e905-4de0-7d4a-9f5c-94515bc3910e a6645b0d-3881-4c2d-beb6-dc31178e13e2] Phase:row_scan BackendPID:38933 SQLState:55P03 OuterType:*pgconn.PgError Message:could not obtain lock on row in relation \"issue\" Detail: Where: Table: Constraint: RecordedAt:2026-11-17 10:20:01.940998 +0000 UTC} domain=delivery_completion_conflict"
+        }
+      ],
+      "first_pg_witness": [
+        {
+          "test": "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+          "label": "sibling_second_terminal_before_first_commit",
+          "actor": "dd9a79d6-8f7f-4c62-8bec-a57bb66c2e78",
+          "backend_pid": 38933,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "01a1e905-4de0-7d4a-9f5c-94515bc3910e",
+              "a6645b0d-3881-4c2d-beb6-dc31178e13e2"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 38933,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T10:20:01.940998Z"
+          }
+        }
+      ]
+    },
+    {
+      "test": "TestCollaborationCompletionCandidatesWriterFences/writer_first",
+      "first": 38937,
+      "second": 38951,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": false,
+      "raw_failure": [],
+      "first_pg_witness": [
+        {
+          "test": "TestCollaborationCompletionCandidatesWriterFences/writer_first",
+          "label": "writer_first_reader_terminal_before_release",
+          "actor": "e15f1677-7ba0-4aaf-afbb-e1925a67ab20",
+          "backend_pid": 38951,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "7613d8dd-9f93-4f94-9a60-0dd3ddec547e",
+              "7b091116-ffdd-4361-b776-324724873f48"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 38951,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T10:20:02.677611Z"
+          }
+        }
+      ]
+    },
+    {
+      "test": "TestCollaborationCompletionCandidatesWriterFences/reader_first",
+      "first": 38958,
+      "second": 38972,
+      "actual_second_terminal_before_first_release": true,
+      "source_order_reviewed": true,
+      "is_coexistence_leaf": false,
+      "raw_failure": [],
+      "first_pg_witness": [
+        {
+          "test": "TestCollaborationCompletionCandidatesWriterFences/reader_first",
+          "label": "reader_first_writer_terminal_before_reader_commit",
+          "actor": "b2c8ade6-3ee7-49b9-8a8d-83533fcd422a",
+          "backend_pid": 38972,
+          "error_type": "*pgconn.PgError",
+          "status": 0,
+          "code": "",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "0fc7181c-0eef-4096-bc07-03e728eec401",
+              "91106ac8-3ac3-4fa8-bb5c-42cb6797691c"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 38972,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T10:20:03.467402Z"
+          }
+        }
+      ]
+    }
+  ],
+  "canonical_pg_failure": {
+    "query": "LockLifecycleIssue",
+    "sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+    "phase": "row_scan",
+    "sqlstate": "55P03",
+    "reverse_R4_query_capture": false
+  },
+  "authority_controls": {
+    "wrong_workspace_child": {
+      "terminal": "pass",
+      "domain": "delivery_completion",
+      "status": 404,
+      "code": "delivery_completion_not_found",
+      "partial_page": false
+    },
+    "outside_participant": {
+      "terminal": "pass",
+      "actual_root_participant": true,
+      "source_member": false,
+      "domain": "delivery_completion",
+      "status": 403,
+      "code": "delivery_completion_denied",
+      "partial_page": false
+    },
+    "disabled_account": {
+      "terminal": "pass",
+      "domain": "collaboration",
+      "status": 404,
+      "code": "not_found",
+      "partial_page": false
+    },
+    "expired_credential": {
+      "terminal": "pass",
+      "domain": "delivery_completion",
+      "status": 403,
+      "code": "delivery_completion_denied",
+      "partial_page": false
+    },
+    "revoked_artifact_manager": {
+      "terminal": "pass",
+      "actual_role_change": "admin_to_member",
+      "root_source_read_retained": true,
+      "candidate_items": 0
+    }
+  },
+  "methodology": {
+    "new_file_only_for_RED": true,
+    "canonical_pgx_SQL_arguments_rows_Scan_destinations_forwarded": true,
+    "fake_rows_or_errors": false,
+    "actual_borrowed_candidate_tx": true,
+    "actual_R4_forwarding_barrier": true,
+    "distinct_nonzero_backend_pairs": 6,
+    "candidate_transaction_isolation": "handler_default",
+    "R4_transaction_isolation": "existing_repeatable_read",
+    "reader_timeout_seconds": 5,
+    "artifact_lock_timeout_milliseconds": 250,
+    "package_timeout": "10m",
+    "pool_defaults_preserved": true,
+    "SQL_READ_ONLY": false,
+    "unheld_candidate_and_R4_baselines_per_leaf": 11,
+    "unheld_baseline_first_pg_errors": 0,
+    "different_manager_positive_baseline": true,
+    "real_observer_writer_controls_both_orders": true,
+    "reader_first_observer_refuses_before_LockArtifactUsers": true,
+    "cleanup_release_cancel_drain_rollback_before_final_snapshots": true,
+    "credential_fixture": "Synthetic finite verified-JWT service contexts with actual current user/member/participant rows; no password-mode override or fabricated admin org.",
+    "artifact_fixture": "Existing real packager/canonical spec with test-seeded retained approval and execution rows; approval HTTP journey not claimed."
+  },
+  "no_write_proof": {
+    "snapshot_pairs": 22,
+    "relations_per_pair": 72,
+    "actual_rows_and_counts_asserted_inside_frozen_test": true,
+    "all_before_after_digests_equal": true,
+    "stage_exit_snapshot_included": true,
+    "snapshot_receipts": [
+      {
+        "test": "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+        "label": "unheld_baselines",
+        "before_sha256": "a1045d13ebd5caeee02c4c915b687889beacd2af2bac3ca8cfb32681795a9da7",
+        "after_sha256": "a1045d13ebd5caeee02c4c915b687889beacd2af2bac3ca8cfb32681795a9da7",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesR4Coexistence/r4_first",
+        "label": "read/control",
+        "before_sha256": "a1045d13ebd5caeee02c4c915b687889beacd2af2bac3ca8cfb32681795a9da7",
+        "after_sha256": "a1045d13ebd5caeee02c4c915b687889beacd2af2bac3ca8cfb32681795a9da7",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first",
+        "label": "unheld_baselines",
+        "before_sha256": "9456e252dc3598d89e7018c59693976e8a21b5ff1e302a73f8e8d88cc927a671",
+        "after_sha256": "9456e252dc3598d89e7018c59693976e8a21b5ff1e302a73f8e8d88cc927a671",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesR4Coexistence/candidates_first",
+        "label": "read/control",
+        "before_sha256": "9456e252dc3598d89e7018c59693976e8a21b5ff1e302a73f8e8d88cc927a671",
+        "after_sha256": "9456e252dc3598d89e7018c59693976e8a21b5ff1e302a73f8e8d88cc927a671",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+        "label": "unheld_baselines",
+        "before_sha256": "76d0f28f89a0ea122137eee9a69f750fe800d54a2d43ef9f08b9fca164bfe801",
+        "after_sha256": "76d0f28f89a0ea122137eee9a69f750fe800d54a2d43ef9f08b9fca164bfe801",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesSiblingReads/same_creator",
+        "label": "read/control",
+        "before_sha256": "76d0f28f89a0ea122137eee9a69f750fe800d54a2d43ef9f08b9fca164bfe801",
+        "after_sha256": "76d0f28f89a0ea122137eee9a69f750fe800d54a2d43ef9f08b9fca164bfe801",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+        "label": "unheld_baselines",
+        "before_sha256": "629ecda0bb5f24ead8e59a0c0d7865272f315bacd89809d4705970244011cf7f",
+        "after_sha256": "629ecda0bb5f24ead8e59a0c0d7865272f315bacd89809d4705970244011cf7f",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesSiblingReads/different_current_managers",
+        "label": "read/control",
+        "before_sha256": "629ecda0bb5f24ead8e59a0c0d7865272f315bacd89809d4705970244011cf7f",
+        "after_sha256": "629ecda0bb5f24ead8e59a0c0d7865272f315bacd89809d4705970244011cf7f",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesWriterFences/writer_first",
+        "label": "unheld_baselines",
+        "before_sha256": "91fe78711d2970fd4b7b62b653e3b9d048a5b778c5d89a70f08de9036b8e6b8c",
+        "after_sha256": "91fe78711d2970fd4b7b62b653e3b9d048a5b778c5d89a70f08de9036b8e6b8c",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesWriterFences/writer_first",
+        "label": "read/control",
+        "before_sha256": "91fe78711d2970fd4b7b62b653e3b9d048a5b778c5d89a70f08de9036b8e6b8c",
+        "after_sha256": "91fe78711d2970fd4b7b62b653e3b9d048a5b778c5d89a70f08de9036b8e6b8c",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesWriterFences/reader_first",
+        "label": "unheld_baselines",
+        "before_sha256": "a32b82863598b79bb12ceaf3d741386ec9126a848194c078464cabb30eed402d",
+        "after_sha256": "a32b82863598b79bb12ceaf3d741386ec9126a848194c078464cabb30eed402d",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesWriterFences/reader_first",
+        "label": "read/control",
+        "before_sha256": "a32b82863598b79bb12ceaf3d741386ec9126a848194c078464cabb30eed402d",
+        "after_sha256": "a32b82863598b79bb12ceaf3d741386ec9126a848194c078464cabb30eed402d",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/wrong_workspace_child",
+        "label": "unheld_baselines",
+        "before_sha256": "f4621bbbb1bd440d7993a91cae75192ff457693ae4d9aaf769d2890ed99d0a0a",
+        "after_sha256": "f4621bbbb1bd440d7993a91cae75192ff457693ae4d9aaf769d2890ed99d0a0a",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/wrong_workspace_child",
+        "label": "read/control",
+        "before_sha256": "397c739c57a6fe19a3d5300a84940bd10962addd2f8b267dd172eae911cd7fba",
+        "after_sha256": "397c739c57a6fe19a3d5300a84940bd10962addd2f8b267dd172eae911cd7fba",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/outside_participant",
+        "label": "unheld_baselines",
+        "before_sha256": "a10cd698559b626f3b369983d208be41a9bb79bd04e6174e3dac41d4b2dbecad",
+        "after_sha256": "a10cd698559b626f3b369983d208be41a9bb79bd04e6174e3dac41d4b2dbecad",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/outside_participant",
+        "label": "read/control",
+        "before_sha256": "a10cd698559b626f3b369983d208be41a9bb79bd04e6174e3dac41d4b2dbecad",
+        "after_sha256": "a10cd698559b626f3b369983d208be41a9bb79bd04e6174e3dac41d4b2dbecad",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/disabled_account",
+        "label": "unheld_baselines",
+        "before_sha256": "f17b9e1ea446cdb220c8eee6ef3a377dc1d92258393cfff428e4518aa37efae6",
+        "after_sha256": "f17b9e1ea446cdb220c8eee6ef3a377dc1d92258393cfff428e4518aa37efae6",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/disabled_account",
+        "label": "read/control",
+        "before_sha256": "508021340e3567cc7485631429958621978c7a0c4f380ab97024f7192f9bc3dc",
+        "after_sha256": "508021340e3567cc7485631429958621978c7a0c4f380ab97024f7192f9bc3dc",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/expired_credential",
+        "label": "unheld_baselines",
+        "before_sha256": "5ae098e27b01b2e8892d244823d9a64a36508857bab1e8255fc0574513d50959",
+        "after_sha256": "5ae098e27b01b2e8892d244823d9a64a36508857bab1e8255fc0574513d50959",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/expired_credential",
+        "label": "read/control",
+        "before_sha256": "5ae098e27b01b2e8892d244823d9a64a36508857bab1e8255fc0574513d50959",
+        "after_sha256": "5ae098e27b01b2e8892d244823d9a64a36508857bab1e8255fc0574513d50959",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/revoked_artifact_manager",
+        "label": "unheld_baselines",
+        "before_sha256": "44ca876ea62394de24a47012c58127770bf63d721c02409262e0d37b4846f741",
+        "after_sha256": "44ca876ea62394de24a47012c58127770bf63d721c02409262e0d37b4846f741",
+        "relation_count": 72
+      },
+      {
+        "test": "TestCollaborationCompletionCandidatesCurrentAuthority/revoked_artifact_manager",
+        "label": "read/control",
+        "before_sha256": "ac839b65efbd78b40940d57e12e1bf4a9206e4ce46ae8b4e37e01c74d720c9bd",
+        "after_sha256": "ac839b65efbd78b40940d57e12e1bf4a9206e4ce46ae8b4e37e01c74d720c9bd",
+        "relation_count": 72
+      }
+    ],
+    "authority_setup_changes_before_own_control_baseline": true,
+    "fresh_tar_bytes_audit": false,
+    "tar_path_exposed_by_fixture": false,
+    "whole_database_row_equality_claimed": false
+  },
+  "retained_database_audit": {
+    "database": "multica_pay241_20261117_s2_m1read_red_r26",
+    "before_other_connections": 0,
+    "after_other_connections": 0,
+    "ledger_count": 853,
+    "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+    "index_count": 663,
+    "ledger_indexes_equal": true,
+    "public_table_count": 211,
+    "fixture_lifetime_count_deltas": {
+      "collaboration_config_invalidation": {
+        "before": 21,
+        "after": 43
+      },
+      "collaboration_knowledge_invalidation": {
+        "before": 18,
+        "after": 51
+      }
+    },
+    "whole_database_row_equality_claimed": false
+  },
+  "candidate_only_repair_boundary": {
+    "product_files": [
+      "server/internal/service/collaboration_completion_preview.go",
+      "server/internal/service/delivery_completion_preview.go"
+    ],
+    "reuse": [
+      "existing shared root fence and current-authority reread",
+      "LockDeliveryEvidenceIssueRead",
+      "readDeliveryArtifactInTx",
+      "LockDeliveryArtifactPrincipalsRead",
+      "LockDeliveryArtifactApprovalRead",
+      "LockDeliveryArtifactExecutionRead",
+      "collaborationStageEvidenceReadTx private read marker"
+    ],
+    "preserve": [
+      "actual unmarked production writers",
+      "default EvaluateDeliveryEvidenceInTx and lockDeliveryArtifactInTx",
+      "source/current credential/account/participant/role checks",
+      "canonical spec/request/receipt/producer generation",
+      "schema/project/policy/expiry/final database clock",
+      "R38 nomination and original admin/global fences",
+      "five-second read and ten-minute package bounds",
+      "protected keys/history and no automatic retry"
+    ],
+    "excluded": [
+      "managed boundSubmission repair",
+      "full ordinary/collaboration completion-preview acceptance",
+      "attachment/stage final-writer or R38 refactor"
+    ],
+    "required_followup": [
+      "same 15 names and exact new-test bytes in fresh normal GREEN",
+      "same GREEN/test source in separate fresh race allocation",
+      "original read and actual writer controls",
+      "affected helper/caller identity review",
+      "independent GREEN review and final source/environment/resource audit",
+      "separate genuine managed-preview regression"
+    ],
+    "complete_old_A_W_Q_replay_required_for_this_RED_scope": false
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "R26-C01",
+      "status": "CONFIRMED_RED_PRODUCT_FINDING",
+      "issue": "Authorized candidate/R4 and sibling reads contend on retained exclusive candidate preparation locks.",
+      "reason_not_fixed": "Read-only evidence ownership; actual lock-mode design and implementation belong to the main-dispatched owner.",
+      "recommendation": "Bound candidate-only repair to the two proposed product files using existing shared read helpers while preserving all real writer defaults."
+    },
+    {
+      "id": "R26-PREVIEW-FOLLOWUP",
+      "status": "SEPARATE_PRIOR_STATIC_GAP_NOT_EXECUTED_BY_RED",
+      "issue": "The sealed plan records additional preview/managed-submission paths and missing boundSubmission initialization.",
+      "reason_not_fixed": "Outside the genuine candidate RED scope; no preview branch or R38 reproduction in this run.",
+      "recommendation": "Use a separate real managed-submission regression and bounded preview review; do not bundle into candidate GREEN."
+    }
+  ],
+  "verification": {
+    "Lint": {
+      "state": "NOT_RUN_BY_CHECKER",
+      "reason": "Read-only dispatch prohibited tests/build/source changes.",
+      "retained_gofmt_only_exit": 0,
+      "full_lint_or_go_vet_claimed": false
+    },
+    "TypeCheck": {
+      "state": "NOT_RUN_BY_CHECKER",
+      "retained_compile_only": {
+        "record": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/compile-r01-result.json",
+          "sha256": "6abb8ad0ba401d145b9edaa570523a9d456310975f8ecbcc49fbbc38a8657bf6",
+          "bytes": 2118,
+          "mode": "0o600"
+        },
+        "exit_code": 0,
+        "TestMain_executed": false,
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/evidence/service-red.test",
+          "sha256": "6f57745cb014dc5fffe7ab54da08658c15bdd60fdac9da23a9052bce4177005a",
+          "bytes": 86030802,
+          "mode": "0o755"
+        },
+        "RED_executed_this_binary_claimed": false
+      }
+    },
+    "Tests": {
+      "state": "GENUINE_RED_EXPECTED_FAILURE_VERIFIED",
+      "executed_by_checker": false,
+      "original_exit": 1,
+      "top_level": 4,
+      "leaf": 11,
+      "named": 15,
+      "pass": 9,
+      "fail": 6,
+      "skip": 0
+    },
+    "Independent_file_and_raw_evidence_audit": {
+      "state": "PASS",
+      "report": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r26-m1-candidates-read-r01/red-independent-check/audit-result-r01.json",
+        "sha256": "fd0fd0d939e2b53d003b89bbf6139418c8758a41ccf6f3913f0e7951650008b1",
+        "bytes": 98693,
+        "mode": "0o400"
+      }
+    }
+  },
+  "spec_sync_recommendation": "Main owner may document the accepted candidate read-helper exception after GREEN integration. Preserve explicit read versus writer mode, current authority and no-bypass boundaries; this reviewer edited no specs.",
+  "limits": {
+    "historical_R24_M1_holder_identified": false,
+    "historical_R25_QA_holder_identified": false,
+    "fresh_tar_bytes_audited": false,
+    "password_HTTP_journey_proved": false,
+    "full_preview_fixed": false,
+    "managed_boundSubmission_fixed": false,
+    "R38_fixed": false,
+    "GREEN_accepted": false,
+    "full_S2_parent_S3_S4_S5_accepted": false
+  },
+  "reviewer_operations": {
+    "source_edits": 0,
+    "SQL": 0,
+    "API": 0,
+    "tests": 0,
+    "builds": 0,
+    "signals": 0,
+    "Git": 0,
+    "network": 0,
+    "subagents": 0,
+    "new_task_reports": 2,
+    "new_private_support_files": 2
+  },
+  "full_S2_parent_S3_S4_S5_accepted": false
+}

@@ -1,0 +1,237 @@
+{
+  "schema": "pay241-r32-final-admin-policy-conflict-diagnosis-v1",
+  "date": "2026-11-18",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "SEALED_DIAGNOSIS_POLICY_ONLY_OBSERVER_RECOMMENDED_NATIVE_CAUSE_UNPROVEN",
+  "scope": "Internal frozen-source and original-trace inspection; only this new research pair is writable",
+  "markdown": "r32-final-admin-policy-conflict-diagnosis-20261118.md",
+  "source": {
+    "r31": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+    "r32": "/Volumes/artisan/.multica-acceptance/pay241-r32-policy-read-20261118-24y0i9dv/source-red-r01",
+    "accepted_manifest_files_coordinator_supplied": 5055,
+    "bounded_six_file_comparison_equal": true,
+    "full_manifest_reaudited": false,
+    "files": [
+      {
+        "path": "server/internal/handler/delivery_policy.go",
+        "sha256": "97bde61992f28bb278c5ec27ae71b361ed6a371ad27cc49649dc28bebbb366f8"
+      },
+      {
+        "path": "server/internal/handler/agent_artifact.go",
+        "sha256": "8a153b06bb7e462da2639cee19cb4af5862973f7fb7eb76f422d81089b874d5e"
+      },
+      {
+        "path": "server/internal/service/delivery_policy.go",
+        "sha256": "c794c984afdde0bd5323581a9da3fdbd548efc221bc8cf8c023e7149aaec4082"
+      },
+      {
+        "path": "server/pkg/db/queries/delivery_policy.sql",
+        "sha256": "3cdd43c157d89fa152d53cfbc887036d08a00bf30a76736da6852f56a9d1a6c8"
+      },
+      {
+        "path": "server/cmd/server/pay241_read_diagnostics_test.go",
+        "sha256": "326e53f91153e08762929c85f1b83246f35c5f6b649a0279e527402ef48a1dd6"
+      },
+      {
+        "path": "server/cmd/server/pay241_read_diagnostics_scope_test.go",
+        "sha256": "1fa8a5ec3f709b7b98b4d53ec5a31bff3cc56b7583d1fe396b84bf6c45431c1e"
+      }
+    ]
+  },
+  "original_evidence": {
+    "runtime_root": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/runtime",
+    "four_scenarios": {
+      "path": "four-scenarios-r01/result.json",
+      "sha256": "84b4618216823e6b7c1fc5e9f7ea030f953f2f1ad704615830d8fff630d561dd",
+      "pass": 3,
+      "fail": 1,
+      "not_run": 0,
+      "retry": 0
+    },
+    "e04": {
+      "path": "four-scenarios-r01/test-results/collaboration-stage-execut-365ef-nistrative-or-project-exits-chromium/stage-execution-evidence.json",
+      "sha256": "fb3aa951345c482e39ec4b228368e207f7d16c6a9038d62ca01ec69784aa9214",
+      "original_completion_and_recovery_reached": true,
+      "actual_final_api_writes": 1,
+      "final_status": "done",
+      "assertions_reached": "573-583",
+      "failure_spec_line": 587,
+      "failure_fixture_line": 356,
+      "final_policy409_fact_retained": false,
+      "r38_account_administration_reached": false
+    },
+    "api_log": {
+      "path": "api-bridge.stderr.log",
+      "sha256": "b75de296f18b5ef4a7c299ed0e4a38da0cde12d8a8bc5d52262a9636fd0728de",
+      "get_line": 16925,
+      "get_status": 200,
+      "put_line": 16950,
+      "put_status": 409,
+      "same_project_and_verified_actor": true,
+      "response_body_present": false
+    },
+    "diagnostics": {
+      "path": "read-diagnostics.jsonl",
+      "sha256": "5becd4b8e0795dea971440d35c8c66c5e8b2ab7379d0ff73637687f558490026",
+      "policy_route_admitted": false,
+      "event_capacity": 4096,
+      "capture_limit_line": 4097,
+      "capture_limit_at": "2026-11-17T22:20:58.15722Z",
+      "complete": false
+    },
+    "pg_window": {
+      "path": "original-policy-pg-window-r01/result.json",
+      "sha256": "74ae7b011348a956d2fdd343b1b3c775c48646d3870c4cdfce5508261c984362",
+      "project_lock_error_at": "2026-11-17T22:21:02.745Z",
+      "backend_pid": 53791,
+      "query_name": "LockDeliveryPolicyProject",
+      "lock_sql": "FOR UPDATE NOWAIT",
+      "strength": "strong_candidate_only",
+      "exact_http_attribution": false,
+      "missing": [
+        "database identity",
+        "HTTP request ID",
+        "project/workspace parameters",
+        "explicit SQLSTATE",
+        "holder transaction"
+      ]
+    }
+  },
+  "branches": [
+    {
+      "name": "busy",
+      "source": "server/internal/handler/agent_artifact.go:54",
+      "native_sqlstates": [
+        "55P03",
+        "40P01"
+      ],
+      "http_status": 409,
+      "code": "artifact_authority_busy",
+      "project_failure_before_cas": "server/internal/handler/delivery_policy.go:135",
+      "actual_failed_request_branch_proven": false
+    },
+    {
+      "name": "stale_cas",
+      "source": "server/internal/handler/delivery_policy.go:147",
+      "http_status": 409,
+      "code": "delivery_policy_revision_conflict",
+      "get_and_put_separate_transactions": true,
+      "actual_failed_request_branch_proven": false
+    }
+  ],
+  "recommendation": {
+    "product_repair_justified": false,
+    "private_test_write_scope": [
+      "server/cmd/server/pay241_read_diagnostics_test.go",
+      "server/cmd/server/pay241_read_diagnostics_scope_test.go"
+    ],
+    "observer_change": "Only pay241DiagnosticPath",
+    "capture_methods": [
+      "GET",
+      "PUT"
+    ],
+    "capture_predicate": {
+      "split_segments": 5,
+      "segments": [
+        "",
+        "api",
+        "projects",
+        "canonical nonzero UUID via existing stageControlUUID",
+        "delivery-policy"
+      ],
+      "fixed_original_project_uuid": false
+    },
+    "old_root_r4_m1_and_all_other_routes_excluded": true,
+    "offline_inventory": {
+      "top": 2,
+      "leaf": 9,
+      "named": 11,
+      "execution_claimed": false,
+      "scope_top": "TestPAY241PolicyDiagnosticExactScope",
+      "scope_leaves": [
+        "policy_get",
+        "policy_put",
+        "other_method",
+        "invalid_identity",
+        "other_route",
+        "stage_routes_excluded"
+      ],
+      "forwarding_top": "TestPAY241PolicyDiagnosticResponsePreservation",
+      "forwarding_leaves": [
+        "success_passthrough",
+        "auth_refusal_passthrough",
+        "policy_conflict_passthrough"
+      ],
+      "both_methods_exercised_inside_forwarding_leaves": true,
+      "coverage": [
+        "canonical exact route positives and negative boundary matrix",
+        "original status/headers/body and chunk write results",
+        "request body/query/request-ID/cancellation/current principal/session unchanged",
+        "direct/nil/excluded/admitted forwarding and one callback",
+        "1MiB prefix/full digest/completeness",
+        "4096 event positions/limit marker/ignored tail",
+        "HTTP-only callbacks invent no SQLSTATE/PID/query/identity witness"
+      ],
+      "synthetic_offline_payloads_are_not_native_evidence": true,
+      "actual_authored_inventory_must_be_frozen": true
+    },
+    "unchanged": [
+      "harness enablement",
+      "exclusive0600 sink and0700 parent",
+      "4096 events and1MiB capture",
+      "safe request context and original PID/query/error tracer",
+      "HTTP pass-through and request body",
+      "product handlers/services/SQL/schema",
+      "read/write/current-authority fences and CAS",
+      "pool and retries",
+      "original four scenario bodies/assertions and5/20/480-second deadlines"
+    ],
+    "next_native_run": "Coordinator-owned matched original four scenarios once with new numbered binding after independent test-only acceptance; workers1/retries0/maxFailures1",
+    "no_original_successful_write_replay": true,
+    "required_native_evidence": [
+      "actual policy GET revision/body",
+      "actual policy PUT status/body/code",
+      "correlated safe request trace and actual backend PID/query error when present"
+    ],
+    "holder_identification_not_implied_by_busy_response": true
+  },
+  "coordinator_preparation": {
+    "boundary_draft": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r32-policy-read-20261118-24y0i9dv/evidence/policy-diagnostic-boundary-draft-r01.json",
+      "sha256": "578faca787c0e90352013fb154721a611c99b35dbc4041d9b74a11db112649f4",
+      "read_and_hash_verified": true
+    },
+    "router_profiles": {
+      "relative_path_supplied": "database/router-profiles-r01/two-router-profile-allocation-r01.json",
+      "sha256_supplied": "d8e1b9a8ca09f6cf4c7e572c637ca64dd5f11a4e4116b009268abd7009ded786",
+      "researcher_reaudited": false,
+      "preparation_is_execution_evidence": false
+    },
+    "parent24": {
+      "pass": 0,
+      "partial": 9,
+      "not_run": 15,
+      "coordinator_supplied": true
+    },
+    "full_s2": false
+  },
+  "context_limit": "No research.jsonl exists; role forbids implement.jsonl/check.jsonl. Reported upward; used prd.md then design.md then implement.md and relevant specs/narrow source.",
+  "dependencies_local_primary": {
+    "go": "1.26.6",
+    "pgx_v5": "5.9.2",
+    "chi_v5": "5.3.0",
+    "external_lookup_needed": false,
+    "new_dependencies": false
+  },
+  "researcher_execution": {
+    "go": 0,
+    "tests": 0,
+    "database": 0,
+    "api": 0,
+    "browser": 0,
+    "application_process_control": 0,
+    "product_test_config_edits": 0
+  },
+  "final_permissions_requested": "0444",
+  "markdown_sha256": "42774516b19bf3a4a040fbb7c6bc4ad63994801bdd1aac188561e51e15259c6a"
+}

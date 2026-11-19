@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "type": "r29_consumed_read_red_implementation_r02",
+  "status": "CORRECTED_PRE_EXECUTION_SOURCE_FROZEN_READY_FOR_MAIN_AST_COMPILE_RED",
+  "at": "2026-11-17T17:46:34.713243+00:00",
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118-r02.md",
+    "sha256": "81a866957cc44582f22800f5b7d68dbf8ec2377334abe3b67e073f0f8b1abdd7"
+  },
+  "source_root": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01",
+  "new_test": {
+    "path": "server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+    "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+    "mode": "0o644"
+  },
+  "lines": 558,
+  "source_files": 5052,
+  "protected_files_compared": 5051,
+  "protected_mismatches": 0,
+  "sole_extra_path": "server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+  "canonical_source_manifest_sha256": "8b75897917a1d02f04aad1cc881bb2dc06d5e41ca14c0982be11499f31285998",
+  "protected_manifest_sha256": "5a96a6a074f0898abd6079aba76a34da1f9547212f4dfdaca7d6df5fdc3f4ad4",
+  "inventory_method": "static literal function-body inventory; main owns real Go AST",
+  "inventory": {
+    "top_level": 3,
+    "leaf": 10,
+    "named": 13,
+    "tests": {
+      "TestDeliveryCompletionConsumedGetReadCoexistence": [
+        "r4_first",
+        "authorization_first",
+        "same_grant_siblings",
+        "operation_first",
+        "operation_after_authorization"
+      ],
+      "TestDeliveryCompletionConsumedGetWriterFences": [
+        "writer_first",
+        "reader_first"
+      ],
+      "TestDeliveryCompletionConsumedGetCurrentAuthority": [
+        "wrong_actor",
+        "changed_password",
+        "source_revoked"
+      ]
+    }
+  },
+  "pre_run_correction": {
+    "main_explicitly_authorized": true,
+    "only_delta": "writer_first consumed-GET actual grant row-lock witness",
+    "requirements": [
+      "real SQLSTATE55P03",
+      "captured PID equals actual reader backend",
+      "UUIDArgs exactly singleton genuine grant UUID",
+      "canonical valid SQLSHA256",
+      "actual authorization row-lock SQL or matching lock/read/get intent"
+    ],
+    "old_query_name_accepted": true,
+    "arbitrary409_accepted": false,
+    "SQL_or_result_rewritten": false,
+    "reader_first_Revoke_original_name_and_hits0_unchanged": true,
+    "all_other_assertions_setup_budgets_inventory_unchanged": true,
+    "Go_execution_before_correction": 0
+  },
+  "preserved_r01": {
+    "draft": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01.go.txt",
+      "sha256": "d0633ca0e78712c49c1b40856cfc5a4a80ef065212e9198fac3742a76493071d"
+    },
+    "main_preservation_json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01-preserved.json",
+      "sha256": "4b9d6102962bcb1bba15772ee6a8d963ff25b40d95a70940ee8d297f338b4f09"
+    },
+    "markdown_sha256": "5b964b42a0ef561711450d5ea4b4d55f2b344c39f659aa43f8df4a2d98a03d92",
+    "json_sha256": "6e70a958f2f626044c25d1e0d09ae3a4ce24804cc343cf50d3368d7cae5e8145"
+  },
+  "genuine_setup": [
+    "bare newStageCompletionFixture",
+    "M1 enforce",
+    "real stageCompletionSubmit confirmation",
+    "stageCompletionAcceptParams",
+    "sameP issuer/consumer stageCompletionM1ForLifecycle(f.ctx)",
+    "one real ChangeLifecycle with binding",
+    "exact consumed grant/request/artifact/terminal/before-after status receipt and own completed-operation checks before baseline"
+  ],
+  "no_preview_fixture_or_pre_registered_baseline_reused": true,
+  "negative_setup_before_baseline": true,
+  "read_controls": {
+    "same_borrowed_real_tx_and_credentials": true,
+    "second_real_terminal_before_first_release": true,
+    "distinct_nonzero_PIDs_required": true,
+    "postcompletion_R4_actual_stable_baseline_without_current_QA_reset": true,
+    "realP_operation_barrier_not_reviewer_generic_holder": true,
+    "operation_two_orders_expected_PASS": true,
+    "real_Revoke_consumed_terminal_semantic409_retains_UPDATE": true,
+    "row_scans_forwarded_without_rewrite": true,
+    "read_context_seconds": 5,
+    "artifact_lock_timeout_ms": 250,
+    "default_pool_isolation_unchanged": true,
+    "LIFO_release_cancel_drain_rollback_before_snapshots": true
+  },
+  "effect_checks": "existing72relations+stage-exit/admin/actualadapter projections; no new archive-byte or all-table audit",
+  "diagnosis_markdown_sha256": "780cb85add6cbf815f58f7906fedd0066b78a50c0419cf0a902ebf16c1325479",
+  "historical_holder_proven": false,
+  "product_fixture_existing_test_SQL_dependency_changes": 0,
+  "executions_by_implementer": {
+    "gofmt": 2,
+    "static_literal_inventory": 2,
+    "Go_AST_run": 0,
+    "Go_build_compile_tests_list_TestMain": 0,
+    "DB_SQL_API_browser_signals_Git": 0,
+    "spawned_agents": 0
+  },
+  "main_compile_command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-c",
+    "-o",
+    "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/service-consumed-read-red.test",
+    "./internal/service"
+  ],
+  "main_RED_command": [
+    "/opt/homebrew/bin/go",
+    "test",
+    "-json",
+    "-count=1",
+    "-timeout=10m",
+    "./internal/service",
+    "-run",
+    "^(TestDeliveryCompletionConsumedGetReadCoexistence|TestDeliveryCompletionConsumedGetWriterFences|TestDeliveryCompletionConsumedGetCurrentAuthority)$"
+  ],
+  "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server",
+  "execution_environment": "main recorded decoded RED JSON profile, no inherited variables",
+  "compiler_actual_RED": "NOT_EXECUTED_BY_IMPLEMENTER_MAIN_OWNED",
+  "source_frozen_until_main_new_instruction": true
+}

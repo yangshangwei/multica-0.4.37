@@ -1,0 +1,557 @@
+{
+  "schema_version": 1,
+  "type": "r29_consumed_read_regression_boundary_independent_check",
+  "status": "ACCEPTED_R29_CONSUMED_READ_REGRESSION_BOUNDARY_PRE_RUN_ONLY",
+  "at": "2026-11-17T18:00:57.184Z",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r27_submission_check",
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.md",
+    "sha256": "a6cfee9965549014fbb71156cb07b4c4b999eaec579389b760351a7c8db727a6"
+  },
+  "write_ownership": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.json"
+  ],
+  "accepted_scope": [
+    "frozen_regression_source_boundary",
+    "authorized_pre_execution_writer_first_assertion_correction",
+    "retained_main_format_AST_compile_prerequisites"
+  ],
+  "not_accepted": [
+    "business_RED",
+    "any_product_GREEN_or_repair",
+    "current_live_database_or_resource_health",
+    "original_R28_physical_holder",
+    "full_S2_A01_A12",
+    "parent24_S3_S4_S5"
+  ],
+  "blocking_findings": [],
+  "reviewer_source_fixes": [],
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01",
+    "accepted_R28_root": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-green-r01",
+    "protected_manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/source-before.json",
+      "sha256": "5a96a6a074f0898abd6079aba76a34da1f9547212f4dfdaca7d6df5fdc3f4ad4"
+    },
+    "protected_files_compared": 5051,
+    "protected_byte_mode_type_mismatches": [],
+    "accepted_R28_byte_mode_mismatches": [],
+    "current_files": 5052,
+    "nonregular_files": [],
+    "sole_addition": {
+      "path": "server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+      "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "mode": "0o644",
+      "type": "file"
+    },
+    "lines": 558,
+    "canonical_source_manifest_sha256": "8b75897917a1d02f04aad1cc881bb2dc06d5e41ca14c0982be11499f31285998",
+    "canonicalization": "sorted-key compact JSON rows, sorted by path components as pathlib.Path ordering, trailing newline",
+    "source_capture_matches": true,
+    "existing_product_helper_test_SQL_generated_default_changes": 0,
+    "dependencies_added": 0
+  },
+  "preserved_correction": {
+    "old_source_sha256": "d0633ca0e78712c49c1b40856cfc5a4a80ef065212e9198fac3742a76493071d",
+    "old_lines": 550,
+    "new_source_sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+    "new_lines": 558,
+    "identical_prefix_lines": 454,
+    "identical_suffix_lines": 96,
+    "old_block_lines": 1,
+    "new_block_lines": 9,
+    "only_delta": "writer_first GET error witness at455–463",
+    "required_witness": [
+      "actual55P03",
+      "actual_reader_backend_PID",
+      "exactly_single_original_grant_UUID",
+      "canonical_hex64_SQL_hash",
+      "authorization_row_Lock_Read_Get_intent_or_explicit_ID_ROW_SHARE_KEY_SHARE_UPDATE_NOWAIT"
+    ],
+    "old_query_name_accepted": true,
+    "arbitrary409_query_other_row_PID_accepted": false,
+    "SQL_results_or_credentials_fabricated": false,
+    "reader_first_original_Revoke_query_and_hits0_unchanged": true,
+    "original_source_product_defaults_unchanged": true,
+    "pre_execution_timing": "main preservation record states Go_build_test_commands_started0"
+  },
+  "inventory": {
+    "top_level": 3,
+    "leaf": 10,
+    "named": 13,
+    "groups": {
+      "TestDeliveryCompletionConsumedGetReadCoexistence": [
+        "r4_first",
+        "authorization_first",
+        "same_grant_siblings",
+        "operation_first",
+        "operation_after_authorization"
+      ],
+      "TestDeliveryCompletionConsumedGetWriterFences": [
+        "writer_first",
+        "reader_first"
+      ],
+      "TestDeliveryCompletionConsumedGetCurrentAuthority": [
+        "wrong_actor",
+        "changed_password",
+        "source_revoked"
+      ]
+    },
+    "expected_test_names": [
+      "TestDeliveryCompletionConsumedGetReadCoexistence",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+      "TestDeliveryCompletionConsumedGetWriterFences",
+      "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+      "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked"
+    ],
+    "leaf_names": [
+      "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+      "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+      "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked"
+    ],
+    "matches_literal_AST_sealed_plan": true,
+    "forbidden_test_calls": [],
+    "operation_controls_expected_PASS_not_forced_RED": [
+      "operation_first",
+      "operation_after_authorization"
+    ]
+  },
+  "source_review": {
+    "genuine_setup": "bare_stageCompletion_fixture→M1enforce→real_stage_submit_target→sameP_authorization→exactly_one_real_ChangeLifecycle",
+    "setup_identity_checks": [
+      "actual_grant_request_target_consumer_digest",
+      "actual_artifact_approval_execution_spec_source_receipt_producer",
+      "actual_consumed_terminal_actor_operation_submission_before_after_status_revisions",
+      "actual_unheld_consumed_GetByID_final_credential_commit",
+      "actual_own_completed_operation_exact_confirmation",
+      "one_consumed_terminal_and_original_stage_submission"
+    ],
+    "setup_before_equality_baseline": true,
+    "no_preview_fixture_pre_registered_equality_or_epoch_reset": true,
+    "R4_baseline": "actual_unheld_post_completion_projection_staleness_allowed",
+    "actual_borrowed_transaction_and_credentials": true,
+    "second_real_terminal_before_first_release_required": true,
+    "distinct_nonzero_backend_PIDs_required": true,
+    "original_read_seconds": 5,
+    "original_artifact_lock_timeout_ms": 250,
+    "default_pool_isolation_unchanged": true,
+    "real_Revoke_consumed_terminal_scan_and_update_hold": true,
+    "writer_first_semantic409_hits1_no_pg_error": true,
+    "reader_first_exact_Revoke_update_hits0_55P03": true,
+    "post_release_original_semantic409_hits1_recovery": true,
+    "authority_controls": {
+      "wrong_actor": "actual different current readable participant D expects404/delivery_completion_not_found",
+      "changed_password": "canonical CAS increments real password version, old P session unchanged expects403/delivery_completion_denied",
+      "source_revoked": "canonical DeleteMember confirmed count0 expects403/delivery_completion_denied; own operation remains readable"
+    },
+    "intentional_authority_changes_before_baseline": true,
+    "authority_errors_require_zero_private_view_and_no_pg_error": true,
+    "effects": "existing72relations+stage_exit+admin_audit_control+actualadapter_calls_target_invocation",
+    "cleanup": "LIFO release/cancel/drain/rollback precedes equality snapshots",
+    "new_all_table_or_archive_byte_audit_claimed": false,
+    "source_comments_English": true,
+    "no_template_or_detection_touchpoint_change": true
+  },
+  "verification": {
+    "lint": {
+      "status": "NOT_RUN",
+      "reason": "reviewer filesystem-only/no process authority",
+      "retained_gofmt_l_status": "PASS",
+      "exit": 0,
+      "stdout_stderr_empty_and_hash_verified": true
+    },
+    "typecheck": {
+      "status": "PASS_RETAINED_COMPILE_ONLY",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/result.json",
+      "result_sha256": "a449ce0a14dc59efcb19ca8b2ea0aef5acd2f014611d9b886e6e02c06ed75e47",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/service.test",
+        "./internal/service"
+      ],
+      "exit": 0,
+      "source_before_after_files": 5052,
+      "source_before_after_sha256": "b33f59b46b3ff1fa9d2fe297d8dd7fa9d873a10893f3117344dfe5c886f21e32",
+      "captured_test_source_sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "binary": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/service.test",
+        "sha256": "3c93ac66d10d9032c45cb1d13c07d947d78729ea7f96150a7ca014665e8ffcc7",
+        "bytes": 86281250
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+        "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178"
+      },
+      "ambient_environment_inherited": false,
+      "TestMain_or_test_bodies_executed": false
+    },
+    "AST": {
+      "status": "PASS_RETAINED_MAIN_GO_PARSER",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01-result.json",
+      "result_sha256": "02f4e2e3e01f0d699d624a251c500d57a1fb5d0081e8c6311f8eee7631a7e50d",
+      "source_sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "sealed_plan_sha256": "1e6de7fcbea2310938e0ad322624ff457ef857a477b53d1425c23a4fae9cbc83",
+      "stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01.stdout.json",
+        "sha256": "c5ca2356cc81f5cf19e3401d34bc0d232216f86da7c4a57506fadd1433673e13"
+      },
+      "inventory_matches": true,
+      "TestMain_or_test_bodies_executed": false
+    },
+    "tests": {
+      "status": "NOT_RUN_GENUINE_RED_GREEN",
+      "no_business_red_claim": true,
+      "no_product_repair_claim": true
+    },
+    "retained_failed_preparation": {
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r01/result.json",
+      "sha256": "8361481595949b534aa6f28b9d08872d3a150f2bf5de0f017a9a54fa44dae179",
+      "status": "FAILED_PRE_GO_MANIFEST_MODE_REPRESENTATION_GUARD",
+      "cause": "recorded octal-string mode compared to new integer representation; actual bytes/modes match",
+      "Go_build_TestMain_or_test_execution": 0,
+      "is_business_RED": false
+    }
+  },
+  "report_references": [
+    {
+      "name": "r29-completion-receipt-diagnosis-20261118",
+      "markdown": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.md",
+        "sha256": "780cb85add6cbf815f58f7906fedd0066b78a50c0419cf0a902ebf16c1325479",
+        "mode": "0o644"
+      },
+      "json": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.json",
+        "sha256": "43d62d177883296f701c475ebe042ea233d84c07507f1f79db5adbbb24779ab9",
+        "mode": "0o644"
+      },
+      "recordedMarkdownSHA": "780cb85add6cbf815f58f7906fedd0066b78a50c0419cf0a902ebf16c1325479",
+      "markdownHashMatches": true,
+      "jsonKeys": [
+        "schema_version",
+        "at",
+        "date",
+        "timezone",
+        "active_task",
+        "researcher",
+        "query",
+        "scope",
+        "verdict",
+        "write_ownership",
+        "report",
+        "canonical_sources",
+        "actual_original_four",
+        "original_identity",
+        "recorded_http_sequence",
+        "exact_failure",
+        "prior_consumed_and_operation",
+        "frontend_order",
+        "completed_vs_unreached",
+        "getter_path",
+        "lock_inventory",
+        "historical_holder_evidence",
+        "dispatched_red_test",
+        "repair_after_genuine_red",
+        "original_affected_controls",
+        "main_stopped_state_reported",
+        "related_specs",
+        "external_references",
+        "execution_by_researcher",
+        "caveats",
+        "sources"
+      ]
+    },
+    {
+      "name": "r29-consumed-read-red-implementation-20261118",
+      "markdown": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118.md",
+        "sha256": "5b964b42a0ef561711450d5ea4b4d55f2b344c39f659aa43f8df4a2d98a03d92",
+        "mode": "0o644"
+      },
+      "json": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118.json",
+        "sha256": "6e70a958f2f626044c25d1e0d09ae3a4ce24804cc343cf50d3368d7cae5e8145",
+        "mode": "0o600"
+      },
+      "recordedMarkdownSHA": "5b964b42a0ef561711450d5ea4b4d55f2b344c39f659aa43f8df4a2d98a03d92",
+      "markdownHashMatches": true
+    },
+    {
+      "name": "r29-consumed-read-red-implementation-20261118-r02",
+      "markdown": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118-r02.md",
+        "sha256": "81a866957cc44582f22800f5b7d68dbf8ec2377334abe3b67e073f0f8b1abdd7",
+        "mode": "0o644"
+      },
+      "json": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118-r02.json",
+        "sha256": "90b3d3ede668d49c0eea7e79a1858975ee484bdee92093f7c2593d73867304e5",
+        "mode": "0o600"
+      },
+      "recordedMarkdownSHA": "81a866957cc44582f22800f5b7d68dbf8ec2377334abe3b67e073f0f8b1abdd7",
+      "markdownHashMatches": true
+    },
+    {
+      "name": "r29-grant-control-inventory-20261118",
+      "markdown": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.md",
+        "sha256": "9f007c9806f824947accdf6fdcc8d8feee809cafae662b4edcc46826efabbd91",
+        "mode": "0o600"
+      },
+      "json": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.json",
+        "sha256": "f3ead924979f79b41addc81d729f384eaeb54b1567578fd8e49396013e143423",
+        "mode": "0o600"
+      },
+      "recordedMarkdownSHA": "9f007c9806f824947accdf6fdcc8d8feee809cafae662b4edcc46826efabbd91",
+      "markdownHashMatches": true,
+      "jsonKeys": [
+        "schema_version",
+        "at",
+        "date",
+        "timezone",
+        "active_task",
+        "researcher",
+        "query",
+        "scope",
+        "status",
+        "canonical_source",
+        "comparison_source_R28_accepted",
+        "write_ownership",
+        "inventory_method",
+        "original_handler_five",
+        "conditional_router_three",
+        "supplemental_direct_GetByID_handler_tops",
+        "minimal_direct_GetByID_handler_cut",
+        "optional_combined_handler_baseline_cut",
+        "original_handler_writer_controls_eligible_for_retention",
+        "original_explicit_issuer_credential_control",
+        "service63",
+        "required_execution_after_main_bounded_GREEN",
+        "command_shapes_recommendation_only",
+        "retention_bindings",
+        "by_key_and_consumer_GET_coverage_limits",
+        "allocation_clone_schema",
+        "TestMain_startup_prerequisites",
+        "function_source_bindings",
+        "sources",
+        "prior_R29_diagnosis_sha256_untouched",
+        "related_specs",
+        "external_references",
+        "execution_by_researcher",
+        "caveats",
+        "report"
+      ]
+    }
+  ],
+  "evidence_bindings": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/source-before.json",
+      "sha256": "5a96a6a074f0898abd6079aba76a34da1f9547212f4dfdaca7d6df5fdc3f4ad4",
+      "mode": "0o600",
+      "bytes": 908346
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/r29-test-inventory-r01.json",
+      "sha256": "35095f218191eedb6603a68c16151e6aa9e906fbe9e85cc73c7038435366881e",
+      "mode": "0o600",
+      "bytes": 1851
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01.go.txt",
+      "sha256": "d0633ca0e78712c49c1b40856cfc5a4a80ef065212e9198fac3742a76493071d",
+      "mode": "0o600",
+      "bytes": 26661
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01-preserved.json",
+      "sha256": "4b9d6102962bcb1bba15772ee6a8d963ff25b40d95a70940ee8d297f338b4f09",
+      "mode": "0o600",
+      "bytes": 731
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r01/result.json",
+      "sha256": "8361481595949b534aa6f28b9d08872d3a150f2bf5de0f017a9a54fa44dae179",
+      "mode": "0o600",
+      "bytes": 645
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/result.json",
+      "sha256": "a449ce0a14dc59efcb19ca8b2ea0aef5acd2f014611d9b886e6e02c06ed75e47",
+      "mode": "0o600",
+      "bytes": 2562
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/source-before.json",
+      "sha256": "b33f59b46b3ff1fa9d2fe297d8dd7fa9d873a10893f3117344dfe5c886f21e32",
+      "mode": "0o600",
+      "bytes": 908550
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/source-after.json",
+      "sha256": "b33f59b46b3ff1fa9d2fe297d8dd7fa9d873a10893f3117344dfe5c886f21e32",
+      "mode": "0o600",
+      "bytes": 908550
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/test-source.go.txt",
+      "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "mode": "0o600",
+      "bytes": 27469
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01.go",
+      "sha256": "7bb5d4de220ea75108d8ee191ab56c80d1358be6ec066e04235cc0d15d91c70f",
+      "mode": "0o600",
+      "bytes": 2904
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01-result.json",
+      "sha256": "02f4e2e3e01f0d699d624a251c500d57a1fb5d0081e8c6311f8eee7631a7e50d",
+      "mode": "0o600",
+      "bytes": 1540
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01.stdout.json",
+      "sha256": "c5ca2356cc81f5cf19e3401d34bc0d232216f86da7c4a57506fadd1433673e13",
+      "mode": "0o600",
+      "bytes": 1015
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-sealed-ast-plan-r01.json",
+      "sha256": "1e6de7fcbea2310938e0ad322624ff457ef857a477b53d1425c23a4fae9cbc83",
+      "mode": "0o600",
+      "bytes": 558
+    }
+  ],
+  "retained_reference_hash_checks": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+      "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178",
+      "matches": true,
+      "bytes": 3023,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/service.test",
+      "sha256": "3c93ac66d10d9032c45cb1d13c07d947d78729ea7f96150a7ca014665e8ffcc7",
+      "matches": true,
+      "bytes": 86281250,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01.stdout.json",
+      "sha256": "c5ca2356cc81f5cf19e3401d34bc0d232216f86da7c4a57506fadd1433673e13",
+      "matches": true,
+      "bytes": 1015,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/consumed-read-test-ast-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "bytes": 0,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+      "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178",
+      "matches": true,
+      "bytes": 3023,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/gofmt.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "bytes": 0,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/gofmt.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "bytes": 0,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/compile.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "bytes": 0,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/compile.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true,
+      "bytes": 0,
+      "mode": "0o600"
+    }
+  ],
+  "verification_gaps": [
+    "main genuine RED with complete13named outcomes and first_pg/before_release/equality/source_profile_resource evidence",
+    "separately approved bounded repair then fresh normal/race affected_original_controls",
+    "no fresh live_DB/current_connections/lint_vet established by this review",
+    "full_runtime_and_S2_acceptance"
+  ],
+  "spec_sync": {
+    "spec_files_unchanged": true,
+    "new_convention_not_created_by_test_preparation": true,
+    "later_GetByID_read_contract_may_need_sync_after_real_RED_GREEN": true
+  },
+  "preserved_runtime_limits": {
+    "original_four": {
+      "PASS": 3,
+      "FAIL": 1,
+      "NOT_RUN": 0,
+      "retries": 0
+    },
+    "Desktop_original_completion_and_consumed_GET": 200,
+    "Web_original_operation_GET": 200,
+    "Web_subsequent_grant_GET": 409,
+    "Web_requests_actually_sequential": true,
+    "early_project_exit_probes_executed": true,
+    "final_assertions_screenshot_and_administrator_block_unreached": true,
+    "successful_completion_replayed": false,
+    "historical_SQLSTATE_and_physical_holder_proven": false,
+    "parent24": {
+      "PASS": 0,
+      "PARTIAL": 9,
+      "NOT_RUN": 15
+    },
+    "full_S2_S3_S4_S5_open": true
+  },
+  "execution_by_reviewer_R29": {
+    "filesystem_read_hash_compare": true,
+    "Go_go_list_TestMain_builds": 0,
+    "DB_SQL_API_browser": 0,
+    "process_signals_Git": 0,
+    "spawned_agents": 0,
+    "source_test_config_old_report_writes": 0,
+    "new_report_files": 2
+  },
+  "sealed_output_mode": "0444"
+}

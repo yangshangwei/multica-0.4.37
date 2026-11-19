@@ -1,0 +1,311 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "date": "2026-11-16",
+  "scope": "read-only source and exact retained research/tracer files",
+  "status": "REACHABLE_CAPABILITY_GET_READ_FENCE_CANDIDATE_IDENTIFIED_REGRESSION_NOT_EXECUTED",
+  "ROOT_workflow_shared_read_already_present": true,
+  "ROOT_workflow_sha256": "51e7eb2b52462fa5e771014b2000173752f30eaa07997f5c66d170054d5f5d09",
+  "original_R20_holder_proved": false,
+  "capability_GET": {
+    "method": "GET",
+    "path": "/api/collaboration/runtime/capabilities?runtime_id=<issued runtime>",
+    "client_call": "server/internal/daemon/collaborationrun/client_preparation.go:31",
+    "matching_summary_returns_without_POST": "server/internal/daemon/collaborationrun/client_preparation.go:68-73",
+    "poll_before_list": "server/internal/daemon/collaboration.go:280,303",
+    "chain": [
+      "CollaborationService.RuntimeCapabilities (collaboration_runtime_preparation_capabilities.go:145)",
+      "collaborationRuntimeMutation (same file:146)",
+      "lockPreparationRuntime (same file:56)",
+      "LockManagedRuntime (managed_runtime.go:123)",
+      "auth.LockPasswordSession (password_session.go:175)",
+      "LockPasswordUser FOR UPDATE (password.sql:16)"
+    ],
+    "durable_rows_written": false,
+    "scan_cursor_mutation": false,
+    "implicit_registration_POST": false,
+    "later_current_runtime_exclusive_fence": "collaboration_runtime_preparation_capabilities.go:64",
+    "later_original_namespace_advisory_fence": "managed_runtime.go:131",
+    "independent_read_read_gap_expected_but_not_observed": true
+  },
+  "remaining_recovery_GET_exclusive_user_fences": [
+    {
+      "function": "GetCreationResult",
+      "source": "server/internal/service/collaboration_creation_result.go:150"
+    },
+    {
+      "function": "GetCommandOperation",
+      "source": "server/internal/service/collaboration_command_operation.go:34"
+    },
+    {
+      "function": "getCollaborationResourceOperation",
+      "source": "server/internal/service/collaboration_switch_view.go:234"
+    }
+  ],
+  "runtime_writer_limits": {
+    "full_user_fence": "server/internal/service/collaboration_runtime.go:133",
+    "promotion_requires_real_waiting_input": "server/pkg/db/queries/collaboration_runtime.sql:88-96",
+    "settled_run_candidates_excluded": "server/pkg/db/queries/collaboration_runtime.sql:62",
+    "empty_list_scan_not_itself_full_participant_user_writer": true,
+    "idle_poller_still_capability_GET_exclusive_account_candidate": true,
+    "all_original_writer_fences_preserved": true
+  },
+  "proposed_regression": {
+    "executed": false,
+    "real_same_QA_or_reviewer_owner": true,
+    "artifact_bound_pre_read_required": true,
+    "orders": [
+      "actual capability GET held then same-owner actual R4",
+      "actual R4 held then same-owner capability GET"
+    ],
+    "original_read_budget_seconds": 5,
+    "distinct_actual_backend_PIDs": true,
+    "barrier_candidate": "LockAgentRuntime after LockManagedRuntime; verify actual needle reached",
+    "negative_control": "actual exclusive account/password writer prevents private shared reader projection",
+    "authority_controls": [
+      "anonymous",
+      "human/task credential",
+      "wrong runtime or owner/binding/workspace",
+      "revoked binding",
+      "disabled user",
+      "stale password version"
+    ],
+    "read_no_write_audit": [
+      "capability bytes and epoch",
+      "invalidation counts",
+      "runtime cursor and operation counts"
+    ],
+    "manual_settled_or_permission_report_version_manufacture": false
+  },
+  "fixture_recipe": {
+    "password_stage": "newStageRuntimeFixture(t, true, stageArtifactReadFixture)",
+    "standing_QA_report": "newStageExecutionFixture(t); real service passed/settled report, synthetic Linux proof",
+    "same_QA_namespace": "ownerSwitchNamespace(t, fixture.managedCollaborationFixture, fixture.stage.qa, name)",
+    "authority_context": "auth.WithPasswordSession with exact persisted daemon_token owner/version/workspace/daemon/binding/epoch",
+    "ManagementPrincipal_symbol_found": false,
+    "held_QA_R4": "local fixture copy using qaCtx as reviewerCtx; preserve shared holdStageArtifactR4 helper",
+    "Host_protocol_helpers": [
+      "hostCapabilityRegistration",
+      "actual target registration and owner consent",
+      "hostClaimRequest",
+      "hostPermitRequest",
+      "actual RecordRuntimeOutcome",
+      "AcceptRuntimeProof with hostFinalProof"
+    ],
+    "native_OS_Host_execution_proved_by_service_fixture": false
+  },
+  "prospective_product_boundary_after_actual_RED": {
+    "expected_files": [
+      "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go (new test; name subject to implementer)",
+      "server/internal/service/collaboration_runtime_preparation_capabilities.go",
+      "server/internal/service/managed_runtime.go"
+    ],
+    "GET_only_private_account_read_variant": true,
+    "reusable_user_lock": "LockArtifactUsers FOR SHARE NOWAIT",
+    "unchanged_current_session_preconditions": [
+      "session exists",
+      "Setup false",
+      "Change false",
+      "positive Version",
+      "valid subject UUID"
+    ],
+    "post_shared_user_lock_authority": "auth.CheckPasswordVersion with exact original PasswordSession context",
+    "preserved_fences": [
+      "original LockManagedRuntime/auth.LockPasswordSession writer behavior",
+      "daemon namespace advisory",
+      "current runtime and owner identity",
+      "installation admission"
+    ],
+    "reusable_optional_shared_queries": [
+      "TryLockCollaborationAuthorityBinding",
+      "TryLockCollaborationAuthorityInstallation",
+      "TryLockCollaborationAuthorityRuntimes"
+    ],
+    "new_SQL_generated_API_dependency_or_global_auth_change_proposed": false,
+    "same_namespace_or_same_runtime_read_matrix_claimed": false
+  },
+  "passive_tracer_gap": {
+    "capability_GET_or_operation_routes_captured": false,
+    "background_contexts_captured": false,
+    "successful_LockPasswordUser_or_LockCollaborationUsers_captured": false,
+    "successful_lock_allowlist": [
+      "LockLifecycleIssue"
+    ],
+    "holder_proof_requires": [
+      "actual exclusive acquisition",
+      "same target/owner",
+      "same still-active transaction",
+      "real lock edge or equivalent same-target proof"
+    ],
+    "empty_NOWAIT_blocker_list_proves_absence": false,
+    "relation_RowShareLock_proves_exclusive_tuple_owner": false,
+    "instrumentation_changes_executed": false
+  },
+  "source_references": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/daemon/collaboration.go",
+      "sha256": "ab92baecb348ca71319adbc499e220f0f370cb40ec1723b3f1624039b05d44e6",
+      "bytes": 15258
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/daemon/collaborationrun/client_preparation.go",
+      "sha256": "e7541e5b5d1c5f995e2d43a63802c88297e21b67a2a1e22e997b28f93e1c823c",
+      "bytes": 7990
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_workflow.go",
+      "sha256": "51e7eb2b52462fa5e771014b2000173752f30eaa07997f5c66d170054d5f5d09",
+      "bytes": 33551
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_creation_result.go",
+      "sha256": "369d6fabc1dcec1e5df01c68d1e94dc91653a955a827e0fa021f6e02996e71c2",
+      "bytes": 7417
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_command_operation.go",
+      "sha256": "919796a2f9bbeb6e6966a364d70d03e4f578cf26ae9f179cb429ba07f5ac48ac",
+      "bytes": 2840
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_switch_view.go",
+      "sha256": "626e89e785c34dcb3e2ec61d047a9d424631a61c490ec6f28330a7d968ed4648",
+      "bytes": 12077
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_preparation_capabilities.go",
+      "sha256": "ef9047dbf11e9836d64cb0de15aef9ad2e25309f2780cc7c9cdf348958b394da",
+      "bytes": 8125
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/managed_runtime.go",
+      "sha256": "768925aac9df0a05bd21f6d8c33918d7f238a037d3305b2ff0d1460dc1c0a785",
+      "bytes": 9243
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/auth/password_session.go",
+      "sha256": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c",
+      "bytes": 5943
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/auth/managed_binding.go",
+      "sha256": "1ec2cc9e5203ecc61dadc44213fbe3754afe621e17b044a22968b4d328cf7ba8",
+      "bytes": 4369
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/queries/password.sql",
+      "sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "bytes": 734
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/queries/agent_artifact_execution.sql",
+      "sha256": "f6273e79150bec4ef15cedf926b3b7cc3c96ad1232fbe2b5cae30584dad0b58f",
+      "bytes": 5556
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/queries/collaboration_authority.sql",
+      "sha256": "e93071ea811eb4df6735ee897b47fb1a65e674fddd5575933c599e5b8effb33b",
+      "bytes": 4770
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/queries/managed_admission.sql",
+      "sha256": "6e444d1b5a231ed1d6ffd728875cd8ecc9a807dd6b38acae6295925427d3f977",
+      "bytes": 1093
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "bytes": 36667
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/queries/collaboration_runtime.sql",
+      "sha256": "aee098d8467f7883735de014729c1de9d007a6353e7419298f32f887c488b7e6",
+      "bytes": 18326
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_evidence_read.go",
+      "sha256": "be5a175aac2c4451f31f0e6acbb5d6c085611d5c451abdc2493b671fd92e36b9",
+      "bytes": 4665
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_evidence.go",
+      "sha256": "1a714f0e4a9d8d002c483c9cdd4f86172c66cca051233c9d3fc31a2f00a577df",
+      "bytes": 16974
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/delivery_completion_collaboration.go",
+      "sha256": "c92797c69ca01850ca87dea3b8f960ddc7c174ada3154084554a5423bb89cfab",
+      "bytes": 23905
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_qa.go",
+      "sha256": "5db489eb15b10d3446dedb17e55fa76dd2b6de1816c28561a5dbe50022becdf7",
+      "bytes": 11307
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_test_report_test.go",
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "bytes": 15333
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_execution_fixture_test.go",
+      "sha256": "9c23a7b54a30ef2a3c4655653213b2ddbfa889a804448d505a43f30e0d77dab6",
+      "bytes": 15055
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_owner_departure_targets_test.go",
+      "sha256": "b04abb1716ed2fff890cd76b5ca709aeaaa61c7444baba60a18beb7d982ab900",
+      "bytes": 21765
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_host_runtime_test.go",
+      "sha256": "54a64654c04224f094a4ef3d31816b3062ff0914120c22deb2cd04846988fe24",
+      "bytes": 34843
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+      "sha256": "2053aa790974aea910a908634a18953748279f9028659c2dac4d1b28e74630f6",
+      "bytes": 11499
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/collaboration/stage-code-forms.tsx",
+      "sha256": "64aab5d3e70407074f9aae83c5bf13f8d0f44feb6763793d80c57215095e080a",
+      "bytes": 24030
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-qa-form-read-failure-diagnosis-20261116.json",
+      "sha256": "8636b25ec377f4cc3adfab04cb6d6c04ac1463ad7a010660507a4f7299868f95",
+      "bytes": 7467
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-poller-qa-applicability-20261116.json",
+      "sha256": "8b79b53c7a8694e395f2d23fabda55b8b3fe001340f3e61cce0ed925c9dece88",
+      "bytes": 3047
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r21-runtime-product-entry-independent-check-20261116.json",
+      "sha256": "e3cb1e9090b712d950f93a02793ee51fe7cb4558502c01deea898723e2a26f74",
+      "bytes": 5406
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-read-lock-next-step-20261116.md",
+      "sha256": "86efefe52ba7500f41befed06b6dad5e0094b9ffa160cabc9ff9150cbc78d836",
+      "bytes": 16471
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r21-receipt-read-concurrency-r01/runtime/build-source-r01/server/cmd/server/pay241_read_diagnostics_test.go",
+      "sha256": "c960ff3f49264426ef2a65708650cbe05bcdbf7d8eaa0b2217bc0bbd29e5bd74",
+      "bytes": 8089
+    }
+  ],
+  "executed_DB_API_browser_test_build_signal_Git_or_credential_discovery_commands": 0,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-read-lock-next-step-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-read-lock-next-step-20261116.json"
+  ],
+  "caveats": [
+    "Source-backed reachable contender is independent from unproved original R20 holder.",
+    "Original R20/R21 results and parent acceptance state were not changed.",
+    "No new regression or actual runtime outcome observed by researcher.",
+    "Service synthetic protocol settlement is separate from native Host and full S2 product acceptance."
+  ]
+}

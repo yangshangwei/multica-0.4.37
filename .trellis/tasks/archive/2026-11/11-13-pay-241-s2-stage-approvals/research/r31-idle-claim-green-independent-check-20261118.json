@@ -1,0 +1,3599 @@
+{
+  "schema": "pay241-r31-idle-claim-green-independent-check/v1",
+  "captured_at": "2026-11-17T21:59:42.063Z",
+  "date_local": "2026-11-18",
+  "agent": "/root/r27_submission_check",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "ACCEPTED_R31_BATCH_IDLE_PREFLIGHT_PRIVATE_GREEN_NORMAL_RACE",
+  "acceptance_scope": "private batch idle-preflight GREEN, canonical generation, new error control, exact service/temporal/cache normal and race evidence",
+  "private_green_accepted": true,
+  "ROOT_integration_accepted": false,
+  "matching_builds_accepted": false,
+  "runtime_business_cases_accepted": false,
+  "full_S2_accepted": false,
+  "ownership": {
+    "new_reports": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.md",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.json"
+    ],
+    "mode": "0o444",
+    "reviewer_source_test_config_spec_old_report_edits": 0
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "blocking_findings": [],
+  "scope_limits": [
+    "Singular sibling retains its original behavior; accepted repair is batch-only.",
+    "ROOT integration/five matching programs/runtime original four-case acceptance remain separate.",
+    "New probe spec sync is a ROOT follow-on recommendation outside this report-only write scope."
+  ],
+  "references": {
+    "complete_ROOT_verification": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/complete-green-verification-r01.json",
+      "sha256": "fd18a18ac0527f45bf579a6a15779fed63e2dc2e74400c347e333eafd9f355df"
+    },
+    "genuine_RED_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-claim-red-r01/result.json",
+      "sha256": "bc6e509b2211d7117229a87cb94de8a1c13a44a97b009d80a566f728232496b5"
+    },
+    "genuine_RED_acceptance": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-independent-check-20261118.json",
+      "sha256": "49f7686df12cb6463b7181eafd26fd52b4302ff80ed2483155f994f7fbdc6ae0"
+    },
+    "product_owner": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-implementation-20261118.json",
+      "sha256": "e244dc85efe0e4615325fa7bb9c5b335dbf508cbe89028fc11c72d9e049a389b",
+      "mode": "0o444"
+    },
+    "error_control_owner": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-preflight-error-control-implementation-20261118.json",
+      "sha256": "20a9d62fc051318c42ececa6f3dafd047f786b7fa12e4b5ff0028e97d775f12c",
+      "mode": "0o444"
+    },
+    "original_inventory": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.json",
+      "sha256": "aa2dd4e25ab19fddd9ed65718b1da73bc6479cf2eec91270498764570580584f"
+    },
+    "canonical_generation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/canonical-generated-agent-installation-r01.json",
+      "sha256": "f303f602053b9cc6720bfdc1970d07503dcb956954727acc32ab5ef2d024b02f"
+    },
+    "generator_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-workspace-r02/result.json",
+      "sha256": "d2063751403ca98197df8a9499de068c00ca8573b60185edbbc6be99927cbd9f"
+    },
+    "tool_build": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-tool-r02/result.json",
+      "sha256": "931aa57644418387d78a3a94928c76cff313325b0705859990d98b75d0daf625"
+    },
+    "static_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/result.json",
+      "sha256": "7b1939fb6f16c79528494ed5876fc4f3f5316dfa014d8c4e646ae82ee819521a"
+    },
+    "redis_allocation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/private-redis-r01/allocation.json",
+      "sha256": "2d9dea13c862f0e563196d6204c70ce587a6bbf35e9b7d309afe046424e482ea"
+    },
+    "cache_profile_reconciliation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/cache-service-profiles-r01/two-service-profile-allocation-r02.json",
+      "sha256": "08540b5d40d72fd28e575cf99a506dc3d6710ec8848ae00e3f4c6f23d485e8d8"
+    },
+    "redis_stopped": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/private-redis-r01/stopped.json",
+      "sha256": "eebce7565211f07dfb5da625440db53f0f4b184b3177e37fd15fe7c52064bb0c"
+    }
+  },
+  "source_boundary": {
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01",
+    "files": 5055,
+    "baseline_RED_files": 5054,
+    "changed_existing_products": 3,
+    "new_error_controls": 1,
+    "unchanged_files_and_modes_from_RED": 5051,
+    "removed_paths": [],
+    "nonregular_paths": [],
+    "current_canonical_manifest_sha256": "762d6c078873ac70186e44b20a6056f0846d70ccb693973de0d7ba417e5ead97",
+    "manifest_encoding": "path-sorted compact sorted-key JSON UTF8 no newline",
+    "complete_records_bound_in_error_owner_json": true,
+    "static_before": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/source-before.json",
+      "sha256": "b7abeb50e52af6ab4726933d539161da0e9aa4992d164e7d4626e14e9aefd9e2"
+    },
+    "static_after": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/source-after.json",
+      "sha256": "b7abeb50e52af6ab4726933d539161da0e9aa4992d164e7d4626e14e9aefd9e2"
+    },
+    "static_before_after_current_records_equal": true,
+    "static_traversal_order_only_difference": true,
+    "changed_paths": [
+      {
+        "path": "server/internal/service/task.go",
+        "sha256": "bcfb7399e75040f8eeb809cada849e11095ba1a105b9553d322d450397fdd7bc",
+        "mode": "0o755"
+      },
+      {
+        "path": "server/internal/service/task_idle_claim_preflight_failure_test.go",
+        "sha256": "1cb4fac1359b96fd29a0b4812a7e461250752b42b1eb7d56e1f750a3c8c8db8a",
+        "mode": "0o644"
+      },
+      {
+        "path": "server/pkg/db/generated/agent.sql.go",
+        "sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+        "mode": "0o755"
+      },
+      {
+        "path": "server/pkg/db/queries/agent.sql",
+        "sha256": "4a661a0c1374525177d4cd103b3d47aa39ea67c1a0a32c3eb4bf4067aa6494be",
+        "mode": "0o755"
+      }
+    ],
+    "retained_original_regression": {
+      "path": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "sha256": "b07397c51e304ef51e95d3c3757143600a8a37528b96005e5641df9f765f300b",
+      "mode": "0o644",
+      "lines": 471,
+      "bytes": 18961,
+      "top": 2,
+      "leaf": 4,
+      "named": 6
+    },
+    "new_error_regression": {
+      "path": "server/internal/service/task_idle_claim_preflight_failure_test.go",
+      "sha256": "1cb4fac1359b96fd29a0b4812a7e461250752b42b1eb7d56e1f750a3c8c8db8a",
+      "mode": "0o644",
+      "lines": 108,
+      "bytes": 4150,
+      "top": 1,
+      "leaf": 1,
+      "named": 1
+    }
+  },
+  "structural_proofs": {
+    "outside_batch_bytes_equal": true,
+    "changed_task_functions": [
+      "ClaimTasksForRuntimes"
+    ],
+    "positive_block_same_after_one_indent": true,
+    "positive_original_sha256": "6deced67582891cab8ae2bc58f685d5c432e37660914596bc5c539453dae75cb",
+    "MarkChecked_through_batch_end_equal": true,
+    "new_query_single_insertion": true,
+    "canonical_reclaim_generated_SQL_equal": true,
+    "generated_only_new_getter_block": true,
+    "new_generated_block_lines": 25,
+    "new_generated_probe_SQL_sha256": "9251a0f76b272961327c34f858b421ac373060717e3d29cc87dbf29c872870f5"
+  },
+  "probe_semantics": {
+    "name": "HasPotentialDispatchedReclaimForRuntimes",
+    "result": "bool EXISTS",
+    "non_authorizing": true,
+    "complete_runtime_set": "normalized uniqueIDs",
+    "conditions": [
+      "runtimeANY",
+      "statusdispatched",
+      "started_atNULL",
+      "dispatched_at<DBnow-original90srecoverywindow",
+      "leaseNULLor<DBnow"
+    ],
+    "authority_joins": false,
+    "explicit_row_locks": false,
+    "lock_issue_execution": false,
+    "writes": false,
+    "private_row_output": false,
+    "reliable_false": "skiponlyStep2reclaimTx;continueoriginalqueuedpath",
+    "true": "exactoldLockManagedRuntimes(false)/canonicalUPDATE/ValidateManagedTaskBinding",
+    "error": "returnnilwrappedcheckerrorbeforeMarkChecked/furtherclaims",
+    "initial_runtime_credential_and_deferred_prefix_unchanged": true,
+    "MarkChecked_parameters_and_remaining_batch_unchanged": true,
+    "singular_and_all_actual_writer_defaults_unchanged": true
+  },
+  "canonical_generation": {
+    "installation": {
+      "at": "2026-11-17T21:41:07.670853+00:00",
+      "status": "R31_CANONICAL_GENERATED_AGENT_ONLY_INSTALLED",
+      "generator_result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-workspace-r02/result.json",
+        "sha256": "d2063751403ca98197df8a9499de068c00ca8573b60185edbbc6be99927cbd9f"
+      },
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/pkg/db/generated/agent.sql.go",
+      "mode": "0o755",
+      "before_sha256": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+      "after_sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+      "patch": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/generated-agent-delta.patch",
+        "sha256": "ee828f3fbf14fcdf632ab14626e0095d0914a1842e31e4dda04663f8a61bda37"
+      },
+      "unrelated_isolated_output_differences_not_installed": [],
+      "fullgenerator_outputs": 143,
+      "product_generated_targets_installed": 1,
+      "query_source_sha256": "4a661a0c1374525177d4cd103b3d47aa39ea67c1a0a32c3eb4bf4067aa6494be",
+      "DB_or_business_operations": 0
+    },
+    "generator_result_SHA": "d2063751403ca98197df8a9499de068c00ca8573b60185edbbc6be99927cbd9f",
+    "tool_build_SHA": "931aa57644418387d78a3a94928c76cff313325b0705859990d98b75d0daf625",
+    "pinned_cached_module": "github.com/sqlc-dev/sqlc@v1.31.1",
+    "tool": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-tool-r02/sqlc",
+      "sha256": "a3da067519c3fbe11be1c96ac019d7f44527fb1e3aaa26c2644c66433e28a8a6"
+    },
+    "outputs_hashed": 143,
+    "all_output_hashes_and_current_GREEN_match": true,
+    "other_outputs_match_RED": 142,
+    "only_output_changed_and_installed": "agent.sql.go",
+    "new_getter_lines": 25,
+    "original_generated_file_reconstructed_after_removal": true,
+    "original_canonical_reclaim_SQL_unchanged": true,
+    "prior_versioned_go_run_deprecation_failure_preserved": true,
+    "DATABASE_URL_absent": true,
+    "DB_operations": 0
+  },
+  "verification": {
+    "lint": {
+      "status": "PASS_RETAINED_SCOPED_GOFMT_SERVICE_VET",
+      "records": [
+        {
+          "name": "gofmt",
+          "argv": [
+            "/opt/homebrew/bin/gofmt",
+            "-l",
+            "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task_idle_claim_read_concurrency_test.go",
+            "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task_idle_claim_preflight_failure_test.go",
+            "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task.go",
+            "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/pkg/db/generated/agent.sql.go"
+          ],
+          "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+          "exit": 0,
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/gofmt.stdout.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/gofmt.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "name": "vet",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "vet",
+            "./internal/service"
+          ],
+          "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+          "exit": 0,
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/vet.stdout.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/vet.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "logs": [
+        {
+          "name": "gofmt",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        },
+        {
+          "name": "gofmt",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        },
+        {
+          "name": "vet",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        },
+        {
+          "name": "vet",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        }
+      ]
+    },
+    "typecheck": {
+      "status": "PASS_RETAINED_EXACT_GO_SERVICE_COMPILE_ONLY",
+      "record": {
+        "name": "compile",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/service.test",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "exit": 0,
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/compile.stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-green-r01/compile.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "logs": [
+        {
+          "name": "compile",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        },
+        {
+          "name": "compile",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "matched": true
+        }
+      ]
+    },
+    "tests": {
+      "status": "PASS_ALL_REQUESTED_NORMAL_AND_RACE",
+      "per_mode": {
+        "service": {
+          "top": 19,
+          "named": 34,
+          "leaf": 29
+        },
+        "temporal_handler": {
+          "top": 1,
+          "named": 1,
+          "leaf": 1
+        },
+        "owned_Redis_cache_service": {
+          "top": 2,
+          "named": 2,
+          "leaf": 2
+        },
+        "package_qualified_distinct_named": 37
+      },
+      "normal_race_sets_equal": true,
+      "all_six_runs_zero_fail_skip_missing_unexpected_pending_drift_parse": true,
+      "distinct_fresh_database_count": 6,
+      "all_before_after_other_connections_zero": true
+    },
+    "spec_sync": {
+      "status": "NO_REVIEWER_SPEC_WRITE_AUTHORIZED",
+      "recommendation": "Record batch-only non-authorizing negative probe, exact error/queued/positive-writer policy and preserved timing/cache controls after ROOT integration."
+    }
+  },
+  "runs": [
+    {
+      "label": "service_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/result.json",
+        "sha256": "5d763b8b7aa6541d9b3f4c3803e499c03109f575cea6fd99a3a70e40b1ffa82d"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 19,
+        "leaf": 29,
+        "named": 34
+      },
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+        "TestEmptyClaimCache_NilSafe",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+        "TestOrdinaryIdleClaimAndR4Coexistence",
+        "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+        "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+        "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+        "TestOrdinaryReclaimPreservesAuthorityFences",
+        "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "starts": [
+        {
+          "name": "TestEmptyClaimCache_NilSafe",
+          "time": "2026-11-18T05:46:49.069923+08:00"
+        },
+        {
+          "name": "TestNewEmptyClaimCache_NilRedisReturnsNil",
+          "time": "2026-11-18T05:46:49.070086+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+          "time": "2026-11-18T05:46:49.070121+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+          "time": "2026-11-18T05:46:49.070137+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+          "time": "2026-11-18T05:46:49.544247+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+          "time": "2026-11-18T05:46:49.984925+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+          "time": "2026-11-18T05:46:50.305634+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+          "time": "2026-11-18T05:46:50.591194+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+          "time": "2026-11-18T05:46:50.59194+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+          "time": "2026-11-18T05:46:50.592345+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+          "time": "2026-11-18T05:46:50.592764+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+          "time": "2026-11-18T05:46:50.594794+08:00"
+        },
+        {
+          "name": "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+          "time": "2026-11-18T05:46:50.656837+08:00"
+        },
+        {
+          "name": "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+          "time": "2026-11-18T05:46:51.131689+08:00"
+        },
+        {
+          "name": "TestNewReclaimCheckCache_NilRedisReturnsNil",
+          "time": "2026-11-18T05:46:51.131764+08:00"
+        },
+        {
+          "name": "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+          "time": "2026-11-18T05:46:51.131805+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+          "time": "2026-11-18T05:46:51.132146+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+          "time": "2026-11-18T05:46:51.267431+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+          "time": "2026-11-18T05:46:51.413947+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+          "time": "2026-11-18T05:46:51.612829+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MaxTasksCap",
+          "time": "2026-11-18T05:46:51.817324+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyInputs",
+          "time": "2026-11-18T05:46:51.959729+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+          "time": "2026-11-18T05:46:52.06936+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+          "time": "2026-11-18T05:46:52.069396+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+          "time": "2026-11-18T05:46:52.201242+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+          "time": "2026-11-18T05:46:52.345853+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+          "time": "2026-11-18T05:46:52.491408+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "time": "2026-11-18T05:46:52.626388+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence",
+          "time": "2026-11-18T05:46:53.460591+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "time": "2026-11-18T05:46:53.46061+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "time": "2026-11-18T05:46:54.316485+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences",
+          "time": "2026-11-18T05:46:55.232544+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "time": "2026-11-18T05:46:55.232556+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "time": "2026-11-18T05:46:56.318961+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestEmptyClaimCache_NilSafe",
+          "action": "pass",
+          "time": "2026-11-18T05:46:49.070077+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestNewEmptyClaimCache_NilRedisReturnsNil",
+          "action": "pass",
+          "time": "2026-11-18T05:46:49.070113+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+          "action": "pass",
+          "time": "2026-11-18T05:46:49.544228+08:00",
+          "elapsed": 0.47
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+          "action": "pass",
+          "time": "2026-11-18T05:46:49.9849+08:00",
+          "elapsed": 0.44
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+          "action": "pass",
+          "time": "2026-11-18T05:46:49.98491+08:00",
+          "elapsed": 0.91
+        },
+        {
+          "name": "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.305616+08:00",
+          "elapsed": 0.32
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.591934+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.59234+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.592762+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.594782+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.624939+08:00",
+          "elapsed": 0.03
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+          "action": "pass",
+          "time": "2026-11-18T05:46:50.65683+08:00",
+          "elapsed": 0.35
+        },
+        {
+          "name": "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.131655+08:00",
+          "elapsed": 0.47
+        },
+        {
+          "name": "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.131755+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestNewReclaimCheckCache_NilRedisReturnsNil",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.1318+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.132139+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.267406+08:00",
+          "elapsed": 0.14
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.413923+08:00",
+          "elapsed": 0.15
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.612813+08:00",
+          "elapsed": 0.2
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.817317+08:00",
+          "elapsed": 0.2
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MaxTasksCap",
+          "action": "pass",
+          "time": "2026-11-18T05:46:51.959713+08:00",
+          "elapsed": 0.14
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyInputs",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.069311+08:00",
+          "elapsed": 0.11
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.20123+08:00",
+          "elapsed": 0.13
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.345827+08:00",
+          "elapsed": 0.14
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.491382+08:00",
+          "elapsed": 0.15
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.626359+08:00",
+          "elapsed": 0.13
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+          "action": "pass",
+          "time": "2026-11-18T05:46:52.626382+08:00",
+          "elapsed": 0.56
+        },
+        {
+          "name": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "action": "pass",
+          "time": "2026-11-18T05:46:53.460584+08:00",
+          "elapsed": 0.83
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "action": "pass",
+          "time": "2026-11-18T05:46:54.316467+08:00",
+          "elapsed": 0.86
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "action": "pass",
+          "time": "2026-11-18T05:46:55.232489+08:00",
+          "elapsed": 0.92
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence",
+          "action": "pass",
+          "time": "2026-11-18T05:46:55.232511+08:00",
+          "elapsed": 1.77
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "action": "pass",
+          "time": "2026-11-18T05:46:56.318955+08:00",
+          "elapsed": 1.09
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "action": "pass",
+          "time": "2026-11-18T05:46:57.570717+08:00",
+          "elapsed": 1.25
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences",
+          "action": "pass",
+          "time": "2026-11-18T05:46:57.570737+08:00",
+          "elapsed": 2.34
+        }
+      ],
+      "raw_event_count": 197,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/stdout.jsonl",
+          "sha256": "bfaa8343016ea78afcb4a03322498e3297ca49dd072d816808e20541d5c5df27",
+          "actual_sha256": "bfaa8343016ea78afcb4a03322498e3297ca49dd072d816808e20541d5c5df27",
+          "bytes": 71424,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/database-before.json",
+          "sha256": "c4236175c54feebc176c34e198673e7acb98343360995b71bc6828f275046fc9",
+          "actual_sha256": "c4236175c54feebc176c34e198673e7acb98343360995b71bc6828f275046fc9",
+          "bytes": 219866,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/database-after.json",
+          "sha256": "4e1539c3bc5a9b71450bdf1dc8d18c81e4d4d7b158575181ab23442310037143",
+          "actual_sha256": "4e1539c3bc5a9b71450bdf1dc8d18c81e4d4d7b158575181ab23442310037143",
+          "bytes": 219866,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/command.json",
+        "sha256": "6e3da596f0ca42c0982a623466d691828b16f1548147af0c7a45764102d9a858",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=180s",
+          "./internal/service",
+          "-run",
+          "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim|TestOrdinaryReclaimPreservesAuthorityFences|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/green-service-union-permit-r01.json",
+        "sha256": "c9d8908c2940ab70894771a71c358831cb82c9da52e156efc72316602fb91465"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/service-profiles-r01/green-environment.json",
+        "sha256": "591fceed406593908636456dc7bb1b7932f732b34382c63e897df2452a441c61"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idleclaim_green_r31",
+        "before": "multica_pay241_20261117_s2_idleclaim_green_r31",
+        "after": "multica_pay241_20261117_s2_idleclaim_green_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 91
+          },
+          {
+            "table": "collaboration_knowledge_invalidation",
+            "before": 18,
+            "after": 33
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    },
+    {
+      "label": "service_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/result.json",
+        "sha256": "0206354a77861c8fd1f07095e60f703e013e0b971f3697b863a9aeeb734dc095"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 19,
+        "leaf": 29,
+        "named": 34
+      },
+      "passed": 34,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestClaimTasksForRuntimes_EmptyInputs",
+        "TestClaimTasksForRuntimes_MaxTasksCap",
+        "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+        "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+        "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+        "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+        "TestEmptyClaimCache_NilSafe",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+        "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+        "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+        "TestOrdinaryIdleClaimAndR4Coexistence",
+        "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+        "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+        "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+        "TestOrdinaryReclaimPreservesAuthorityFences",
+        "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime"
+      ],
+      "starts": [
+        {
+          "name": "TestEmptyClaimCache_NilSafe",
+          "time": "2026-11-18T05:48:36.522236+08:00"
+        },
+        {
+          "name": "TestNewEmptyClaimCache_NilRedisReturnsNil",
+          "time": "2026-11-18T05:48:36.522455+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+          "time": "2026-11-18T05:48:36.522496+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+          "time": "2026-11-18T05:48:36.522564+08:00"
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+          "time": "2026-11-18T05:48:38.046516+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+          "time": "2026-11-18T05:48:39.397249+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+          "time": "2026-11-18T05:48:40.605738+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+          "time": "2026-11-18T05:48:41.768307+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+          "time": "2026-11-18T05:48:41.769233+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+          "time": "2026-11-18T05:48:41.769778+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+          "time": "2026-11-18T05:48:41.770289+08:00"
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+          "time": "2026-11-18T05:48:41.772548+08:00"
+        },
+        {
+          "name": "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+          "time": "2026-11-18T05:48:41.845437+08:00"
+        },
+        {
+          "name": "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+          "time": "2026-11-18T05:48:43.243491+08:00"
+        },
+        {
+          "name": "TestNewReclaimCheckCache_NilRedisReturnsNil",
+          "time": "2026-11-18T05:48:43.243644+08:00"
+        },
+        {
+          "name": "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+          "time": "2026-11-18T05:48:43.243728+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+          "time": "2026-11-18T05:48:43.244791+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+          "time": "2026-11-18T05:48:43.415012+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+          "time": "2026-11-18T05:48:43.587037+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+          "time": "2026-11-18T05:48:43.750032+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MaxTasksCap",
+          "time": "2026-11-18T05:48:43.93962+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyInputs",
+          "time": "2026-11-18T05:48:44.105519+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+          "time": "2026-11-18T05:48:44.227633+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+          "time": "2026-11-18T05:48:44.227721+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+          "time": "2026-11-18T05:48:44.377236+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+          "time": "2026-11-18T05:48:44.550596+08:00"
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+          "time": "2026-11-18T05:48:44.714905+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "time": "2026-11-18T05:48:44.853483+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence",
+          "time": "2026-11-18T05:48:45.954253+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "time": "2026-11-18T05:48:45.954283+08:00"
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "time": "2026-11-18T05:48:47.012732+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences",
+          "time": "2026-11-18T05:48:48.041022+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "time": "2026-11-18T05:48:48.041058+08:00"
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "time": "2026-11-18T05:48:49.193981+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestEmptyClaimCache_NilSafe",
+          "action": "pass",
+          "time": "2026-11-18T05:48:36.522449+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestNewEmptyClaimCache_NilRedisReturnsNil",
+          "action": "pass",
+          "time": "2026-11-18T05:48:36.522483+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/false",
+          "action": "pass",
+          "time": "2026-11-18T05:48:38.046479+08:00",
+          "elapsed": 1.52
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence/true",
+          "action": "pass",
+          "time": "2026-11-18T05:48:39.397207+08:00",
+          "elapsed": 1.35
+        },
+        {
+          "name": "TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence",
+          "action": "pass",
+          "time": "2026-11-18T05:48:39.397245+08:00",
+          "elapsed": 2.87
+        },
+        {
+          "name": "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+          "action": "pass",
+          "time": "2026-11-18T05:48:40.605719+08:00",
+          "elapsed": 1.21
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/owner_PAT",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.769214+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/unbound_daemon_credential",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.769764+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/legacy_context",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.770279+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/registration",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.77252+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy/claim",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.806484+08:00",
+          "elapsed": 0.03
+        },
+        {
+          "name": "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy",
+          "action": "pass",
+          "time": "2026-11-18T05:48:41.845431+08:00",
+          "elapsed": 1.24
+        },
+        {
+          "name": "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.24315+08:00",
+          "elapsed": 1.4
+        },
+        {
+          "name": "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.243627+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestNewReclaimCheckCache_NilRedisReturnsNil",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.24372+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.244461+08:00",
+          "elapsed": 0
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.414997+08:00",
+          "elapsed": 0.17
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.587024+08:00",
+          "elapsed": 0.17
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.750014+08:00",
+          "elapsed": 0.16
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MultiRuntimeDrain",
+          "action": "pass",
+          "time": "2026-11-18T05:48:43.93957+08:00",
+          "elapsed": 0.19
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_MaxTasksCap",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.105506+08:00",
+          "elapsed": 0.17
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyInputs",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.227535+08:00",
+          "elapsed": 0.12
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/agent",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.37721+08:00",
+          "elapsed": 0.15
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/runtime",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.550584+08:00",
+          "elapsed": 0.17
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/batch",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.714893+08:00",
+          "elapsed": 0.16
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof/sql",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.853373+08:00",
+          "elapsed": 0.14
+        },
+        {
+          "name": "TestOrdinaryClaimsWaitForCollaborationNamespaceProof",
+          "action": "pass",
+          "time": "2026-11-18T05:48:44.853414+08:00",
+          "elapsed": 0.63
+        },
+        {
+          "name": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "action": "pass",
+          "time": "2026-11-18T05:48:45.954245+08:00",
+          "elapsed": 1.1
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "action": "pass",
+          "time": "2026-11-18T05:48:47.012716+08:00",
+          "elapsed": 1.06
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "action": "pass",
+          "time": "2026-11-18T05:48:48.040992+08:00",
+          "elapsed": 1.03
+        },
+        {
+          "name": "TestOrdinaryIdleClaimAndR4Coexistence",
+          "action": "pass",
+          "time": "2026-11-18T05:48:48.041002+08:00",
+          "elapsed": 2.09
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "action": "pass",
+          "time": "2026-11-18T05:48:49.193975+08:00",
+          "elapsed": 1.15
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "action": "pass",
+          "time": "2026-11-18T05:48:50.639077+08:00",
+          "elapsed": 1.44
+        },
+        {
+          "name": "TestOrdinaryReclaimPreservesAuthorityFences",
+          "action": "pass",
+          "time": "2026-11-18T05:48:50.63909+08:00",
+          "elapsed": 2.6
+        }
+      ],
+      "raw_event_count": 197,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/stdout.jsonl",
+          "sha256": "a6fd6f6ced3b4ea1d8c2c5b805a1524a11d621e0d1189734001b74f5d1a5375b",
+          "actual_sha256": "a6fd6f6ced3b4ea1d8c2c5b805a1524a11d621e0d1189734001b74f5d1a5375b",
+          "bytes": 71427,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/database-before.json",
+          "sha256": "04f1c7cfb7628267780ee0a6144c55c88497f08ffec6c8ffba73e008b5088bd2",
+          "actual_sha256": "04f1c7cfb7628267780ee0a6144c55c88497f08ffec6c8ffba73e008b5088bd2",
+          "bytes": 219865,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/database-after.json",
+          "sha256": "34545c97c42e02c8beead1ed3f18274e6a02e4bc81b3af82d84d0850f91f2f01",
+          "actual_sha256": "34545c97c42e02c8beead1ed3f18274e6a02e4bc81b3af82d84d0850f91f2f01",
+          "bytes": 219865,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/command.json",
+        "sha256": "cae422652400b7e70f853fe4090478a343249f5e1d59548e714ca4651010354c",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=180s",
+          "-race",
+          "./internal/service",
+          "-run",
+          "^(TestClaimTasksForRuntimes_EmptyInputs|TestClaimTasksForRuntimes_MaxTasksCap|TestClaimTasksForRuntimes_MultiRuntimeDrain|TestClaimTasksForRuntimes_PartialSuccessOnCandidateQueryFailureAfterReclaim|TestClaimTasksForRuntimes_PartialSuccessOnSecondAgentClaimFailure|TestClaimTasksForRuntimes_PromotesDeferredAndEmitsQueuedEvent|TestEmptyClaimCache_NilSafe|TestManagedAdmissionReclaimsOnlyPreviouslyAdmittedFence|TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy|TestNewEmptyClaimCache_NilRedisReturnsNil|TestNewReclaimCheckCache_NilRedisReturnsNil|TestOrdinaryClaimsWaitForCollaborationNamespaceProof|TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim|TestOrdinaryReclaimPreservesAuthorityFences|TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/race-service-union-permit-r01.json",
+        "sha256": "093f7b74bb59048ba6eb1c035d4e7ac0250a3d14fa33a15b29abbe273f073c7d"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/service-profiles-r01/race-environment.json",
+        "sha256": "cddf109f788a1286e27a91b27443e7787ee6310df0f384d6b18d8c111ed1b7c3"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idleclaim_race_r31",
+        "before": "multica_pay241_20261117_s2_idleclaim_race_r31",
+        "after": "multica_pay241_20261117_s2_idleclaim_race_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 91
+          },
+          {
+            "table": "collaboration_knowledge_invalidation",
+            "before": 18,
+            "after": 33
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    },
+    {
+      "label": "temporal_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/result.json",
+        "sha256": "0835f94401ee635037597c0c05087854b11cfd1347fab56966b2fe8f632f6f47"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "starts": [
+        {
+          "name": "TestManagedBatchClaimLostResponseRecovery",
+          "time": "2026-11-18T05:49:58.398077+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestManagedBatchClaimLostResponseRecovery",
+          "action": "pass",
+          "time": "2026-11-18T05:49:58.71907+08:00",
+          "elapsed": 0.32
+        }
+      ],
+      "raw_event_count": 15,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/stdout.jsonl",
+          "sha256": "dfeef431a21b451b2a497c9c9d76c72e945b4935086db72eebc2980c68c38dcb",
+          "actual_sha256": "dfeef431a21b451b2a497c9c9d76c72e945b4935086db72eebc2980c68c38dcb",
+          "bytes": 3687,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/database-before.json",
+          "sha256": "3b737344d1a26bd9a12602dcd07953b9a6d67cbd8ad97f182b1e8ced8e3795a7",
+          "actual_sha256": "3b737344d1a26bd9a12602dcd07953b9a6d67cbd8ad97f182b1e8ced8e3795a7",
+          "bytes": 219870,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/database-after.json",
+          "sha256": "f1a6e4ccb9c04930da49e90f911f81cde5ef2e077685c58de9bfdda7b96b69ce",
+          "actual_sha256": "f1a6e4ccb9c04930da49e90f911f81cde5ef2e077685c58de9bfdda7b96b69ce",
+          "bytes": 219870,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/command.json",
+        "sha256": "f16d80223ee1f83159c615d21a2334a3eb5ad35a170feb69cd7719b45f423519",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=120s",
+          "./internal/handler",
+          "-run",
+          "^TestManagedBatchClaimLostResponseRecovery$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/temporal-handler-normal-permit-r01.json",
+        "sha256": "dd13828264917e20a0d170110aca696d4973c04af8f7ea70aafe521b5962052b"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/handler-profiles-r01/normal-environment.json",
+        "sha256": "62d4586b160a5f5af698eb453d56ef5101eb74755ca6308a48ea579e3fa56c3c"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idletemporal_normal_r31",
+        "before": "multica_pay241_20261117_s2_idletemporal_normal_r31",
+        "after": "multica_pay241_20261117_s2_idletemporal_normal_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "agent_invocation_target",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 26
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    },
+    {
+      "label": "temporal_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/result.json",
+        "sha256": "925cc54146aa6eceb2d2dd5682e31001f100308883a91b7c49bef927093ad092"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestManagedBatchClaimLostResponseRecovery"
+      ],
+      "starts": [
+        {
+          "name": "TestManagedBatchClaimLostResponseRecovery",
+          "time": "2026-11-18T05:50:59.74828+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestManagedBatchClaimLostResponseRecovery",
+          "action": "pass",
+          "time": "2026-11-18T05:51:00.916237+08:00",
+          "elapsed": 1.17
+        }
+      ],
+      "raw_event_count": 15,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/stdout.jsonl",
+          "sha256": "696e68a6a0aa5a5a3cc54fc10243317691bec59053f96325ff7aacb974e990b7",
+          "actual_sha256": "696e68a6a0aa5a5a3cc54fc10243317691bec59053f96325ff7aacb974e990b7",
+          "bytes": 3699,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/database-before.json",
+          "sha256": "dbd18e3aa1bddd759a1e58a3ef48d7d03ad4af537fdbd41c2f692cdaa8e8909c",
+          "actual_sha256": "dbd18e3aa1bddd759a1e58a3ef48d7d03ad4af537fdbd41c2f692cdaa8e8909c",
+          "bytes": 219868,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/database-after.json",
+          "sha256": "3047a2db680570803c2a24ab47c5e89545b34b0b9373ed2c1c5db8db85187c4d",
+          "actual_sha256": "3047a2db680570803c2a24ab47c5e89545b34b0b9373ed2c1c5db8db85187c4d",
+          "bytes": 219868,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/command.json",
+        "sha256": "debcf409e046cba468d71346b5fd0b3fa81ac675acffda9ab9a502e3dea19bdb",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=120s",
+          "-race",
+          "./internal/handler",
+          "-run",
+          "^TestManagedBatchClaimLostResponseRecovery$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/temporal-handler-race-permit-r01.json",
+        "sha256": "5e8170bcd15eec51793aef4d76147b03f02d41381c198cd28fea6d2f908aeeac"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/handler-profiles-r01/race-environment.json",
+        "sha256": "e7939cb56fe66eaaca091db18530bd60e94df8965188509d96c638ef98e4b86c"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idletemporal_race_r31",
+        "before": "multica_pay241_20261117_s2_idletemporal_race_r31",
+        "after": "multica_pay241_20261117_s2_idletemporal_race_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "agent_invocation_target",
+            "before": 0,
+            "after": 1
+          },
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 26
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    },
+    {
+      "label": "cache_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/result.json",
+        "sha256": "89bc19b57260fa728cee3dfbe27eedd179bd0fedda1c6a4365e4de3814d250a1"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "starts": [
+        {
+          "name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+          "time": "2026-11-18T05:52:15.647845+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+          "time": "2026-11-18T05:52:15.857213+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+          "action": "pass",
+          "time": "2026-11-18T05:52:15.85717+08:00",
+          "elapsed": 0.21
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+          "action": "pass",
+          "time": "2026-11-18T05:52:16.062009+08:00",
+          "elapsed": 0.2
+        }
+      ],
+      "raw_event_count": 14,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/stdout.jsonl",
+          "sha256": "234356732d7eab1ad279018004a68f460363b28558dae49036ac0b3274a0e976",
+          "actual_sha256": "234356732d7eab1ad279018004a68f460363b28558dae49036ac0b3274a0e976",
+          "bytes": 3404,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/database-before.json",
+          "sha256": "2c9b8606eb8bad0bf4cb87056754e7d2dac6db25c8b3760dfdc5a7debb44ae00",
+          "actual_sha256": "2c9b8606eb8bad0bf4cb87056754e7d2dac6db25c8b3760dfdc5a7debb44ae00",
+          "bytes": 219867,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/database-after.json",
+          "sha256": "4ebd35e642a95cd529f277d567b3ba59750fb2a8504129ed1f75d17ea24aff8f",
+          "actual_sha256": "4ebd35e642a95cd529f277d567b3ba59750fb2a8504129ed1f75d17ea24aff8f",
+          "bytes": 219867,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/command.json",
+        "sha256": "df29b00e8c42cac1a813ff1c5583bb77f0db149705055472ba430b33a8141d3c",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=120s",
+          "./internal/service",
+          "-run",
+          "^(TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet|TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/cache-service-normal-permit-r01.json",
+        "sha256": "6a778e80173af253cd8e93282086e1aa513b945c078043984b6bb160712fae6c"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/cache-service-profiles-r01/normal-owned-redis-environment-r01.json",
+        "sha256": "708398e1971d81393f43aa410c86353f960681a81d4b553b7517caebccd47b7e"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idlecache_normal_r31",
+        "before": "multica_pay241_20261117_s2_idlecache_normal_r31",
+        "after": "multica_pay241_20261117_s2_idlecache_normal_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 29
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    },
+    {
+      "label": "cache_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/result.json",
+        "sha256": "ffe72d45d7e73be766f7261f3df0d983a2955f9a704dc67265b6ef6f8cca0894"
+      },
+      "exit": 0,
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "expected_names": [
+        "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+        "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+      ],
+      "starts": [
+        {
+          "name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+          "time": "2026-11-18T05:53:38.943703+08:00"
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+          "time": "2026-11-18T05:53:39.175359+08:00"
+        }
+      ],
+      "terminals": [
+        {
+          "name": "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+          "action": "pass",
+          "time": "2026-11-18T05:53:39.175281+08:00",
+          "elapsed": 0.23
+        },
+        {
+          "name": "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry",
+          "action": "pass",
+          "time": "2026-11-18T05:53:39.362911+08:00",
+          "elapsed": 0.19
+        }
+      ],
+      "raw_event_count": 14,
+      "parse_errors": [],
+      "missing": [],
+      "unexpected": [],
+      "pending": [],
+      "input_drift": [],
+      "suite_reran": false,
+      "refs": {
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/stdout.jsonl",
+          "sha256": "dda07c4b261841594537591bf6c9dbf8acdd5778384a47af3fa9d48141991388",
+          "actual_sha256": "dda07c4b261841594537591bf6c9dbf8acdd5778384a47af3fa9d48141991388",
+          "bytes": 3408,
+          "matched": true
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0,
+          "matched": true
+        },
+        "database_before": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/database-before.json",
+          "sha256": "9acf58f1d1305f913608658df052943eff8f3c290d4a9293f6cfcb4891d4c32b",
+          "actual_sha256": "9acf58f1d1305f913608658df052943eff8f3c290d4a9293f6cfcb4891d4c32b",
+          "bytes": 219865,
+          "matched": true
+        },
+        "database_after": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/database-after.json",
+          "sha256": "099182dc6f6959304f43a34df6b230289aa69008b7b2424663612ce82157f89b",
+          "actual_sha256": "099182dc6f6959304f43a34df6b230289aa69008b7b2424663612ce82157f89b",
+          "bytes": 219865,
+          "matched": true
+        }
+      },
+      "command": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/command.json",
+        "sha256": "4b9e0263aafe5f1b981b14a87cf0b14ec13ceeb6af2d3600b8cd8dd4d9930b19",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=120s",
+          "-race",
+          "./internal/service",
+          "-run",
+          "^(TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet|TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server",
+        "ambient_environment_inherited": false
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/cache-service-race-permit-r01.json",
+        "sha256": "91b1ae4e4b523930023463e870b7436d834c54d72845726b7734e4faef3c1bb3"
+      },
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/cache-service-profiles-r01/race-owned-redis-environment-r01.json",
+        "sha256": "c107e142e2ab48fef919dd60ac967d5f4196373734e63c84180e25d6d6704549"
+      },
+      "database": {
+        "expected": "multica_pay241_20261117_s2_idlecache_race_r31",
+        "before": "multica_pay241_20261117_s2_idlecache_race_r31",
+        "after": "multica_pay241_20261117_s2_idlecache_race_r31",
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "before_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "after_ledger": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "count_changes": [
+          {
+            "table": "collaboration_config_invalidation",
+            "before": 21,
+            "after": 29
+          }
+        ]
+      },
+      "names_match_permit": true,
+      "result_lists_match_raw": true
+    }
+  ],
+  "run_binding_checks": [
+    {
+      "label": "service_normal",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "service_race",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "temporal_normal",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "temporal_race",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "cache_normal",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    },
+    {
+      "label": "cache_race",
+      "command_sha_match": true,
+      "permit_sha_match": true,
+      "environment_sha_match": true,
+      "argv_matches_permit": true,
+      "source_matches": true,
+      "all_terminal_names_pass": true,
+      "before_after_ledger_match": true,
+      "before_after_connections": [
+        0,
+        0
+      ]
+    }
+  ],
+  "operational": {
+    "normal": {
+      "witnesses": [
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "a37f7868-e974-4eb2-8862-90b64bcb2a45",
+            "backend_pid": 33808,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "",
+            "account_sql_sha256": "",
+            "account_uuid_args": [],
+            "actor": "a37f7868-e974-4eb2-8862-90b64bcb2a45",
+            "backend_pid": 0,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "idle_first_after_R4_terminal",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "",
+            "account_sql_sha256": "",
+            "account_uuid_args": [],
+            "actor": "ae38c299-e9c8-4468-ab9f-c8fa92cd63db",
+            "backend_pid": 0,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "r4_first_claim_terminal_before_R4_release",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "70fb4593-289c-4fcc-a573-f5d020a9dc0b",
+            "backend_pid": 33836,
+            "error": "ERROR: could not obtain lock on row in relation \"user\" (SQLSTATE 55P03)",
+            "error_type": "*pgconn.PgError",
+            "first_pg_error": {
+              "query": "LockArtifactUsers",
+              "sql_sha256": "43bdd2c80bda2504391b87839ea62ff27895c1bbf8f6e87e1f8da02ac3f10d04",
+              "uuid_args": [],
+              "phase": "rows_err",
+              "backend_pid": 33836,
+              "sqlstate": "55P03",
+              "outer_type": "*pgconn.PgError",
+              "message": "could not obtain lock on row in relation \"user\"",
+              "detail": "",
+              "where": "",
+              "table": "",
+              "constraint": "",
+              "recorded_at": "2026-11-17T21:46:56.142416Z"
+            },
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "70fb4593-289c-4fcc-a573-f5d020a9dc0b"
+            ],
+            "actor": "70fb4593-289c-4fcc-a573-f5d020a9dc0b",
+            "backend_pid": 33827,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "reclaim_first_committed",
+            "tasks": 1
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "70fb4593-289c-4fcc-a573-f5d020a9dc0b",
+            "backend_pid": 33827,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "context canceled",
+            "account_error_type": "*errors.errorString",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "540b5bdb-e3e5-4017-baea-0a0ae083e037"
+            ],
+            "actor": "540b5bdb-e3e5-4017-baea-0a0ae083e037",
+            "backend_pid": 33846,
+            "error": "reclaim stale dispatched tasks: context canceled",
+            "error_type": "*fmt.wrapError",
+            "first_pg_error": null,
+            "label": "real_reclaim_blocked_before_R4_release",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "540b5bdb-e3e5-4017-baea-0a0ae083e037"
+            ],
+            "actor": "540b5bdb-e3e5-4017-baea-0a0ae083e037",
+            "backend_pid": 33839,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "real_reclaim_after_R4_release",
+            "tasks": 1
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "test": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "label": "ordinary preflight error",
+          "before_sha256": "a0ee07658dc7110adf7585dd03fa4afd86a0ba1c5d3d8adad2dc495b2188ffd2",
+          "after_sha256": "a0ee07658dc7110adf7585dd03fa4afd86a0ba1c5d3d8adad2dc495b2188ffd2",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "label": "ordinary idle claim/read",
+          "before_sha256": "0e1c6b122beb18721fa98c265a56fbff74259f74c9c51472a9176796919ef420",
+          "after_sha256": "0e1c6b122beb18721fa98c265a56fbff74259f74c9c51472a9176796919ef420",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "label": "ordinary idle claim/read",
+          "before_sha256": "13a6bb78ba024f63a87eb1e6c0c0ac9b0a36f65a9dae1db4f6d4b66314093d97",
+          "after_sha256": "13a6bb78ba024f63a87eb1e6c0c0ac9b0a36f65a9dae1db4f6d4b66314093d97",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "label": "uncommitted real reclaim",
+          "before_sha256": "92f79d1102aca43b55dae67dff6d9c02ddeb9322327970d72fa265d5896b0c84",
+          "after_sha256": "92f79d1102aca43b55dae67dff6d9c02ddeb9322327970d72fa265d5896b0c84",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 2,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "label": "real reclaim other relations",
+          "before_sha256": "fa325a386099afede539361403ac0622c15228fe8c745edc357fdbede025aeb1",
+          "after_sha256": "fa325a386099afede539361403ac0622c15228fe8c745edc357fdbede025aeb1",
+          "equal": true,
+          "relations": 75,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "label": "blocked real reclaim",
+          "before_sha256": "7fea8cad67214e9bab9a4033c8c2198e408b9efa44fa7e4c421254791aaccfab",
+          "after_sha256": "7fea8cad67214e9bab9a4033c8c2198e408b9efa44fa7e4c421254791aaccfab",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 2,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "label": "real reclaim other relations",
+          "before_sha256": "0bd0f78a3c47058bac09d546e4803709f71d56bbc92e016b3e47ef4864af1f3a",
+          "after_sha256": "0bd0f78a3c47058bac09d546e4803709f71d56bbc92e016b3e47ef4864af1f3a",
+          "equal": true,
+          "relations": 75,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        }
+      ],
+      "waits": [
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "pid": 33846,
+          "reader_pid": 33839,
+          "query": "LockPasswordUser",
+          "blocked": true
+        }
+      ],
+      "preflightErrors": [
+        {
+          "test": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "hits": 1,
+          "scans": 1,
+          "sql_sha256": "9251a0f76b272961327c34f858b421ac373060717e3d29cc87dbf29c872870f5",
+          "runtime_count": 1,
+          "recovery_secs": 90,
+          "transactions": 0,
+          "tasks": 0,
+          "error_type": "*fmt.wrapError"
+        }
+      ]
+    },
+    "race": {
+      "witnesses": [
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "ad58b41b-09bb-4ae5-aaaf-4f4d440c8ecc",
+            "backend_pid": 34860,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "",
+            "account_sql_sha256": "",
+            "account_uuid_args": [],
+            "actor": "ad58b41b-09bb-4ae5-aaaf-4f4d440c8ecc",
+            "backend_pid": 0,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "idle_first_after_R4_terminal",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "",
+            "account_sql_sha256": "",
+            "account_uuid_args": [],
+            "actor": "eb3a98d6-017e-431e-b05a-a5a17ba094c7",
+            "backend_pid": 0,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "r4_first_claim_terminal_before_R4_release",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "b1754bc1-09d0-4c30-9972-3ef7785aa014",
+            "backend_pid": 34891,
+            "error": "ERROR: could not obtain lock on row in relation \"user\" (SQLSTATE 55P03)",
+            "error_type": "*pgconn.PgError",
+            "first_pg_error": {
+              "query": "LockArtifactUsers",
+              "sql_sha256": "43bdd2c80bda2504391b87839ea62ff27895c1bbf8f6e87e1f8da02ac3f10d04",
+              "uuid_args": [],
+              "phase": "rows_err",
+              "backend_pid": 34891,
+              "sqlstate": "55P03",
+              "outer_type": "*pgconn.PgError",
+              "message": "could not obtain lock on row in relation \"user\"",
+              "detail": "",
+              "where": "",
+              "table": "",
+              "constraint": "",
+              "recorded_at": "2026-11-17T21:48:48.97694Z"
+            },
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "b1754bc1-09d0-4c30-9972-3ef7785aa014"
+            ],
+            "actor": "b1754bc1-09d0-4c30-9972-3ef7785aa014",
+            "backend_pid": 34882,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "reclaim_first_committed",
+            "tasks": 1
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "kind": "R4",
+          "witness": {
+            "actor": "b1754bc1-09d0-4c30-9972-3ef7785aa014",
+            "backend_pid": 34882,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "R31_current_QA_R4_terminal"
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "context canceled",
+            "account_error_type": "*errors.errorString",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "7eca80a6-85ad-4e89-a907-13684c60a762"
+            ],
+            "actor": "7eca80a6-85ad-4e89-a907-13684c60a762",
+            "backend_pid": 34904,
+            "error": "reclaim stale dispatched tasks: context canceled",
+            "error_type": "*fmt.wrapError",
+            "first_pg_error": null,
+            "label": "real_reclaim_blocked_before_R4_release",
+            "tasks": 0
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "kind": "CLAIM",
+          "witness": {
+            "account_error": "<nil>",
+            "account_error_type": "<nil>",
+            "account_query": "LockPasswordUser",
+            "account_sql_sha256": "a68ab03fd570aef97e0c37f65a25e1c2bb7e1ee88d525c6173fe943210025880",
+            "account_uuid_args": [
+              "7eca80a6-85ad-4e89-a907-13684c60a762"
+            ],
+            "actor": "7eca80a6-85ad-4e89-a907-13684c60a762",
+            "backend_pid": 34894,
+            "error": "<nil>",
+            "error_type": "<nil>",
+            "first_pg_error": null,
+            "label": "real_reclaim_after_R4_release",
+            "tasks": 1
+          }
+        }
+      ],
+      "snapshots": [
+        {
+          "test": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "label": "ordinary preflight error",
+          "before_sha256": "475b01fc7f3bb92a85c5e99cf4601a2b8b3a82342200b2c3083f7ed566b6541a",
+          "after_sha256": "475b01fc7f3bb92a85c5e99cf4601a2b8b3a82342200b2c3083f7ed566b6541a",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+          "label": "ordinary idle claim/read",
+          "before_sha256": "8b6461fc4a6d277edd067288d853f464e98aa2afe2403dddaec0e2b1ab59f088",
+          "after_sha256": "8b6461fc4a6d277edd067288d853f464e98aa2afe2403dddaec0e2b1ab59f088",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+          "label": "ordinary idle claim/read",
+          "before_sha256": "f056b656c64b78b8fa724c155d88f6101a20ea5e7b7c2b7d14b99ec0b6478564",
+          "after_sha256": "f056b656c64b78b8fa724c155d88f6101a20ea5e7b7c2b7d14b99ec0b6478564",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 1,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 2,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "label": "uncommitted real reclaim",
+          "before_sha256": "ae335fcf837d2af81c2088eee3250b5c35a3a488dca88d0bbb510cdeb9791424",
+          "after_sha256": "ae335fcf837d2af81c2088eee3250b5c35a3a488dca88d0bbb510cdeb9791424",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 2,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+          "label": "real reclaim other relations",
+          "before_sha256": "c70db6c4b684ed97e6239c4c74fcb52e5291c50856e3a7c78fa523a15178fd72",
+          "after_sha256": "c70db6c4b684ed97e6239c4c74fcb52e5291c50856e3a7c78fa523a15178fd72",
+          "equal": true,
+          "relations": 75,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "label": "blocked real reclaim",
+          "before_sha256": "125f3686f3f8bb993c0dfb49024ccee6d56a09d002b70a6e84310a4bcebb4c2f",
+          "after_sha256": "125f3686f3f8bb993c0dfb49024ccee6d56a09d002b70a6e84310a4bcebb4c2f",
+          "equal": true,
+          "relations": 76,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "agent_task_queue": 2,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        },
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "label": "real reclaim other relations",
+          "before_sha256": "735100a7dc925d00e851fc8b1ed94c20d4a1dd3bf637215f8d4214bb719475cc",
+          "after_sha256": "735100a7dc925d00e851fc8b1ed94c20d4a1dd3bf637215f8d4214bb719475cc",
+          "equal": true,
+          "relations": 75,
+          "counts": {
+            "activity_log": 0,
+            "agent": 3,
+            "agent_approval_request": 1,
+            "agent_artifact_execution": 1,
+            "agent_runtime": 3,
+            "collaboration_account_fence": 5,
+            "collaboration_account_invalidation": 0,
+            "collaboration_attachment": 0,
+            "collaboration_attachment_reference": 0,
+            "collaboration_attempt": 0,
+            "collaboration_batch": 0,
+            "collaboration_business_capability": 0,
+            "collaboration_channel": 1,
+            "collaboration_command": 0,
+            "collaboration_delegation": 0,
+            "collaboration_event": 14,
+            "collaboration_execution_gate": 1,
+            "collaboration_execution_group": 0,
+            "collaboration_grant": 2,
+            "collaboration_group_dependency": 0,
+            "collaboration_group_input": 0,
+            "collaboration_notification": 34,
+            "collaboration_operation": 14,
+            "collaboration_run": 0,
+            "collaboration_run_event": 0,
+            "collaboration_runtime_enrollment": 0,
+            "collaboration_runtime_reservation": 0,
+            "collaboration_session": 1,
+            "collaboration_stage_candidate": 1,
+            "collaboration_stage_child": 1,
+            "collaboration_stage_decision": 2,
+            "collaboration_stage_execution_intent": 0,
+            "collaboration_stage_execution_observation": 0,
+            "collaboration_stage_revocation": 0,
+            "collaboration_stage_role": 1,
+            "collaboration_stage_rollback_observation": 0,
+            "collaboration_stage_submission": 0,
+            "collaboration_stage_task": 1,
+            "collaboration_target": 1,
+            "collaboration_termination": 0,
+            "collaboration_test_subject": 0,
+            "comment": 0,
+            "daemon_token": 0,
+            "delivery_completion_authorization": 0,
+            "delivery_completion_terminal": 0,
+            "delivery_evidence_evaluation": 0,
+            "delivery_project_change": 0,
+            "github_installation": 1,
+            "github_pull_request": 1,
+            "github_pull_request_check_run": 1,
+            "inbox_item": 0,
+            "installation_daemon_binding": 2,
+            "issue": 3,
+            "issue_collaboration": 1,
+            "issue_handoff": 0,
+            "issue_participant": 5,
+            "issue_pull_request": 1,
+            "issue_status": 0,
+            "issue_vcs_pull_request": 0,
+            "iteration_event": 0,
+            "iteration_notification": 0,
+            "managed_installation": 1,
+            "member": 5,
+            "personal_access_token": 0,
+            "project": 1,
+            "project_delivery_policy": 0,
+            "project_stage_policy": 1,
+            "task_token": 0,
+            "task_usage": 0,
+            "task_usage_hourly": 0,
+            "user": 6,
+            "user_password_credential": 5,
+            "vcs_connection": 0,
+            "vcs_pull_request": 0,
+            "workspace": 2
+          }
+        }
+      ],
+      "waits": [
+        {
+          "test": "TestOrdinaryReclaimPreservesAuthorityFences/r4_first",
+          "pid": 34904,
+          "reader_pid": 34894,
+          "query": "LockPasswordUser",
+          "blocked": true
+        }
+      ],
+      "preflightErrors": [
+        {
+          "test": "TestOrdinaryIdlePreflightFailureDoesNotAuthorizeClaim",
+          "hits": 1,
+          "scans": 1,
+          "sql_sha256": "9251a0f76b272961327c34f858b421ac373060717e3d29cc87dbf29c872870f5",
+          "runtime_count": 1,
+          "recovery_secs": 90,
+          "transactions": 0,
+          "tasks": 0,
+          "error_type": "*fmt.wrapError"
+        }
+      ]
+    },
+    "true_idle_empty_success_no_account_transaction_both_orders": true,
+    "actual_R4_baseline_projection_retained": true,
+    "real_reclaim_writer_55P03_and_blocked_context_cancel_preserved": true,
+    "exact_reclaim_generation_lease_history_and_unrelated_rows_assertions_pass": true,
+    "error_control_actual_fixture_and_forwarded_other_SQL": true,
+    "error_control_only_probe_Scan_sentinel_injected": true,
+    "error_control_errors_Is_and_exact_wrapping_pass": true,
+    "error_control_one_hit_one_scan_normalized_duplicate_runtime_90s_zero_Tx_tasks_subsequent_SQL": true,
+    "error_control_not_native_PgError_proof": true,
+    "covered_state_records_per_mode": 7,
+    "all_state_record_before_after_hashes_equal": true,
+    "scope_relations": 76,
+    "post_reclaim_other_relations": 75,
+    "target_task_separately_checked": true,
+    "whole_database_zero_change_claim": false
+  },
+  "temporal_handler": {
+    "test": "TestManagedBatchClaimLostResponseRecovery",
+    "source_sha256": "e85a824c8f13ef97f5dd4bb7cd65eb5b035252730d427fecc6e1a48d11c41460",
+    "normal_race_pass": true,
+    "assertion_sequence": [
+      "initialqueuedmanageddispatch/binding",
+      "immediateretryempty",
+      "expiredleaseinyoungwindowempty",
+      "staledispatchactiveleaseempty",
+      "eligibleexacttaskcredentialgenerationhistoryrecovery",
+      "immediateduplicateempty",
+      "startedtaskdenial/runningpersisted"
+    ],
+    "fixture_timestamps_only_aged": true,
+    "extra_named_business_cases": 0
+  },
+  "cache_controls": {
+    "names": [
+      "TestClaimTasksForRuntimes_AnyDueRuntimeChecksTheCompleteSet",
+      "TestClaimTasksForRuntimes_EmptyReclaimDefersHintForRetry"
+    ],
+    "normal_race_pass": true,
+    "complete_runtime_set_when_any_runtime_due": true,
+    "positive_ineligible_empty_reclaim_retains_hint_and_retriggers_at_original_retry": true,
+    "Redis_not_skipped": true,
+    "owned_allocation_sha256": "2d9dea13c862f0e563196d6204c70ce587a6bbf35e9b7d309afe046424e482ea",
+    "host": "127.0.0.1",
+    "port": 51802,
+    "DB": 12,
+    "container_id": "4ab01a83d1bb0b85474a3a53d70f5c329eb32b8202cd8125bcc774158f99acca",
+    "labels": {
+      "multica.acceptance.owner": "/root",
+      "multica.acceptance.task": "pay241-r31"
+    },
+    "environment_proofs": [
+      {
+        "purpose": "normal",
+        "actual_ref_hash_match": true,
+        "base_ref_hash_match": true,
+        "base_key_count": 15,
+        "added_keys": [
+          "REDIS_TEST_URL"
+        ],
+        "removed_keys": [],
+        "changed_base_keys": [],
+        "redis_url_matches_owned_allocation": true,
+        "redis_allocation_ref_match": true,
+        "only_task_owned_DB12": true
+      },
+      {
+        "purpose": "race",
+        "actual_ref_hash_match": true,
+        "base_ref_hash_match": true,
+        "base_key_count": 15,
+        "added_keys": [
+          "REDIS_TEST_URL"
+        ],
+        "removed_keys": [],
+        "changed_base_keys": [],
+        "redis_url_matches_owned_allocation": true,
+        "redis_allocation_ref_match": true,
+        "only_task_owned_DB12": true
+      }
+    ],
+    "transient_allocation_failure_retained": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/cache-service-profiles-r01/allocation-failure-current-read-only-audit-r01.json",
+      "sha256": "fa6e46ce069c7de0acb39a91d2a2768fb93c0840d84ea6a4987bd9b22c96f5e7"
+    },
+    "no_database_history_deleted": true,
+    "no_unowned_connection_signaled": true,
+    "stop_record": {
+      "at": "2026-11-17T21:55:12.545052+00:00",
+      "status": "OWNED_R31_CACHE_REDIS_STOPPED_DATA_AND_RECORDS_RETAINED",
+      "container_id": "4ab01a83d1bb0b85474a3a53d70f5c329eb32b8202cd8125bcc774158f99acca",
+      "name": "pay241-r31-claim-cache-bz7ym-r1",
+      "allocation_sha256": "2d9dea13c862f0e563196d6204c70ce587a6bbf35e9b7d309afe046424e482ea",
+      "stop_intent": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/private-redis-r01/stop-intent.json",
+        "sha256": "f44dd0e64edf19cb04f1d0b0cb6f6cb4c8ae0e29a5d0803a1a784451c3476437"
+      },
+      "normal_result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/result.json",
+        "sha256": "89bc19b57260fa728cee3dfbe27eedd179bd0fedda1c6a4365e4de3814d250a1"
+      },
+      "race_result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/result.json",
+        "sha256": "ffe72d45d7e73be766f7261f3df0d983a2955f9a704dc67265b6ef6f8cca0894"
+      },
+      "exit_code": 0,
+      "running": false,
+      "container_removed": false,
+      "terminal_log": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/private-redis-r01/terminal.log",
+        "sha256": "d744c60f30978902e2b9d766c10d387f897003ab191ad2851f38853256f3baf1"
+      },
+      "foreign_or_repeated_commands": 0
+    },
+    "reviewer_Redis_operations": 0
+  },
+  "limits": [
+    "Private GREEN only; ROOT integration/matching builds/runtime original business four cases not accepted.",
+    "Singular fallback sibling remains unchanged; no broader claim guarantee.",
+    "Probe error is controlled Scan failure, not native SQL failure evidence.",
+    "Claim PID0 denotes no captured account transaction, not absence of all DB reads.",
+    "Per-call row-state proofs do not erase separate fixture/TestMain retained invalidation histories.",
+    "New fixture PIDs/users do not identify old R30 physical holder."
+  ],
+  "preserved_original_outcomes": {
+    "R30_original_four": {
+      "pass": 2,
+      "fail": 1,
+      "not_run": 1,
+      "retries": 0
+    },
+    "business_denominator_expanded": false,
+    "R28_successful_completion_replayed": false,
+    "full_S2_parent24_A01_A12_S3_S4_S5_open": true
+  },
+  "not_executed_by_reviewer": [
+    "Go/AST/list/TestMain/compile/vet/test/build",
+    "SQL/DB/Redis/API/browser",
+    "runtime/process/signals/Git",
+    "recursive agents"
+  ],
+  "markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.md",
+    "sha256": "4949623389c898241ee37fe2180f459e7dc66f0080d61b2aaf181f2beec8ea0c",
+    "mode": "0o444"
+  }
+}

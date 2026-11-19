@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "type": "r29_consumed_read_red_implementation_draft_r01",
+  "status": "PRESERVED_PRE_RUN_DRAFT_SUPERSEDED_BY_AUTHORIZED_R02_WITNESS_CORRECTION",
+  "at": "2026-11-17T17:39:30.768615+00:00",
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-implementation-20261118.md",
+    "sha256": "5b964b42a0ef561711450d5ea4b4d55f2b344c39f659aa43f8df4a2d98a03d92"
+  },
+  "preserved_test": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01.go.txt",
+    "sha256": "d0633ca0e78712c49c1b40856cfc5a4a80ef065212e9198fac3742a76493071d",
+    "lines": 550,
+    "original_mode": "0o644"
+  },
+  "main_draft_preservation": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/test-draft-r01-preserved.json",
+    "sha256": "4b9d6102962bcb1bba15772ee6a8d963ff25b40d95a70940ee8d297f338b4f09"
+  },
+  "source_files_before_r02": 5052,
+  "protected_files_compared": 5051,
+  "protected_mismatches": 0,
+  "inventory": {
+    "top_level": 3,
+    "leaf": 10,
+    "named": 13,
+    "tests": {
+      "TestDeliveryCompletionConsumedGetReadCoexistence": [
+        "r4_first",
+        "authorization_first",
+        "same_grant_siblings",
+        "operation_first",
+        "operation_after_authorization"
+      ],
+      "TestDeliveryCompletionConsumedGetWriterFences": [
+        "writer_first",
+        "reader_first"
+      ],
+      "TestDeliveryCompletionConsumedGetCurrentAuthority": [
+        "wrong_actor",
+        "changed_password",
+        "source_revoked"
+      ]
+    }
+  },
+  "diagnosis_markdown_sha256": "780cb85add6cbf815f58f7906fedd0066b78a50c0419cf0a902ebf16c1325479",
+  "gofmt_pass": true,
+  "compile_tests_AST_DB_execution_by_implementer": 0,
+  "correction_reason": "writer_first GET witness must identify the actual grant row lock, not require the pre-repair UPDATE query name; retain55P03/backend/exactUUID/SQLhash and original Revoke name pin",
+  "product_fixture_existing_test_SQL_changes": 0,
+  "original_report_and_draft_preserved": true,
+  "r02_report_will_bind_current_source": true
+}

@@ -1,5 +1,11 @@
 # PAY-241 当前会话进度
 
+## 2026-11-19 当前：S1/S2/S3 已归档，后续验收继续
+
+S2 已完成 R33 独立验收、剩余源码提交和归档，见 [S2 最终报告](../archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md)。三个代码提交 `726c6fce2`、`2bd043c06`、`2e706092a` 已推送；远端在本轮起点核实为 `f9e273584`。同分支核心UI任务随后独立完成并提交，其验收记录与本轮S2隔离候选分别保留。
+
+父矩阵仍 **7 PASS /10 PARTIAL /7 NOT_RUN**。下一步核对 TC-01/02/13 等不依赖外部环境的剩余精确断言，并按[真实输入清单](../11-13-pay-241-s4-external-integrations/research/next-inputs-20261119.md)准备S4，最终完成S5和业务签字。quick-create等未完成改动保留，不并入PAY提交。以下为过程历史。
+
 ## 2026-11-19：剩余已验收 S2 代码提交与远端同步准备
 
 按当前用户要求核对可提交内容，完成三个定向本地提交：`726c6fce2` 后端37路径、`2bd043c06` 共享前端9路径、`2e706092a` E2E/规范8路径。50个源码路径中47个与R33接受源一致，3个与已提交S3的组合已核对；本轮未修改产品逻辑。
@@ -114,7 +120,7 @@ TC-23 在 R08 完整验证：Web、Desktop 各 6/6 个子场景通过，零 Play
 
 S2代码与合成验收已独立接受，产品阻挡项0，12A/18W/12Q全部核对。
 原四场景本轮4PASS/0FAIL/0NOT_RUN、retry0，包含Web/Desktop原授权完成和回执恢复、M1策略off、管理员禁用/R38阶段拒绝/恢复。完整报告
-`../11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json`
+`../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json`
 SHA `cb5120ea32a92ad4cd11445103ea2b6af3322476b311d382ae647e09c34e69f7`。
 
 父矩阵已落实为 **2PASS/11PARTIAL/11NOT_RUN**：TC05/08通过，TC06/13/17/18补为PARTIAL，其余状态和全部历史字段保留。真实支付、远端CI、业务代码修改后的回归、精确post-QA覆盖请求与最终性能仍未闭合。停止后0连接、epoch90恢复、76run结算/62制品完整、租约/预留0；467路径保留。当前完成截图可读，Earlier拒绝截图保留。
@@ -125,13 +131,13 @@ SHA `cb5120ea32a92ad4cd11445103ea2b6af3322476b311d382ae647e09c34e69f7`。
 
 R31真实空claim竞争RED与最小必要条件预检已独立接受；每模式34service/1 temporal handler/2缓存控制全部PASS，ROOT三产品和两测试整合、五匹配程序构建通过。新原四最新 **3PASS/1FAIL/0NOT_RUN，retry0**：前三旅程PASS，第四项原Web/Desktop授权完成和消费回执恢复、收尾断言已通过；在下一步spec587切M1策略off时PUT409预期200，尚未管理员禁用/R38。最终策略正文未留存，诊断此前触cap，R32只读精确诊断进行中，已完成写入不能重放。
 
-所属API/bridge正常停止，连接0、gateepoch74恢复、64结算run/48完整制品、租约预留0，Web/Desktop保留；338旧制品路径完整。R31运行后独立审计继续，旧R30/R29/R28所有失败保留。父24仍0PASS/9PARTIAL/15NOT_RUN，完整S2/A12及S3–S5开放。见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)与[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
+所属API/bridge正常停止，连接0、gateepoch74恢复、64结算run/48完整制品、租约预留0，Web/Desktop保留；338旧制品路径完整。R31运行后独立审计继续，旧R30/R29/R28所有失败保留。父24仍0PASS/9PARTIAL/15NOT_RUN，完整S2/A12及S3–S5开放。见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)与[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
 
 ## 2026-11-18 R30原请求取证与R31空claim边界
 
 R30测试专用root/R4取证11项普通/race及独立准备接受，实际API/管理员/CLI前检通过。原四最新 **2PASS/1FAIL/1NOT_RUN，retry0**：角色审批历史与发布回滚完整PASS；第三项准备QA时“Approve QA”入口缺失，原20秒动作超时，尚未进入迟到部署，第四项未运行。
 
-本轮首次将E03当前QA的原R4请求、trace、PID、`LockArtifactUsers`共享用户锁55P03与HTTP503相互绑定；最后root仍200，之前R4曾`qa.allowed=true`。当前holder未证明，R31只读研究后台无工作claim与生产/harness缓存初始化；UI既有Refresh和writer拒绝保持。所属API3961/bridge3958正常一次SIGTERM停止，连接0、gateepoch66恢复、58结算run/41完整制品、租约/预留0；310旧制品保留，Web/Desktop继续在场。旧R29/R28所有失败及原成功完成均保留不重放。父24仍0PASS/9PARTIAL/15NOT_RUN；S2/A12及S3–S5开放。见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)及[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
+本轮首次将E03当前QA的原R4请求、trace、PID、`LockArtifactUsers`共享用户锁55P03与HTTP503相互绑定；最后root仍200，之前R4曾`qa.allowed=true`。当前holder未证明，R31只读研究后台无工作claim与生产/harness缓存初始化；UI既有Refresh和writer拒绝保持。所属API3961/bridge3958正常一次SIGTERM停止，连接0、gateepoch66恢复、58结算run/41完整制品、租约/预留0；310旧制品保留，Web/Desktop继续在场。旧R29/R28所有失败及原成功完成均保留不重放。父24仍0PASS/9PARTIAL/15NOT_RUN；S2/A12及S3–S5开放。见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)及[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
 
 ## 2026-11-18 R29局部修复接受与实际复验，转R30诊断
 
@@ -139,13 +145,13 @@ R29已消费授权读取修复独立接受，service76命名/direct-Get handler6
 
 最新原四场景为 **1PASS/1FAIL/2NOT_RUN，retry0**：首项阶段审批历史PASS；第二项发布/回滚停在QA表单按钮禁用的原5秒断言。截图显示协作加载错误、可用报告，原日志同一QA候选GET503；wrong-member报告404是原负例。SQLSTATE/持锁者尚无原证据；R30只读诊断与最小真实同层RED规划正在推进，后两项M1/admin和迟到部署未执行。R28原3/1/0及其Desktop原键完成/消费200、Web操作200/授权409事实保留，不重放成功写入。
 
-所属API87493/bridge87488已仅一次SIGTERM正常停止、harness PASS，原Web86953/renderer86966保留。连接0、门禁恢复epoch60 false/true/false、53run结算、37制品完整、租约/预留0；旧任务状态按实际runtime自然转移，旧109f9fd1失败及其attempt2重试均发生在SIGTERM之前，未normalize/reset。10,111绑定引用、5,052后端权限、1,961链接无漂移，292旧制品保留、两新槽位冻结0500；首审计漏output根的FAIL保留，修正r02核310路径通过。父24仍0PASS/9PARTIAL/15NOT_RUN，完整S2/A01–A12与S3–S5开放。见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)和[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
+所属API87493/bridge87488已仅一次SIGTERM正常停止、harness PASS，原Web86953/renderer86966保留。连接0、门禁恢复epoch60 false/true/false、53run结算、37制品完整、租约/预留0；旧任务状态按实际runtime自然转移，旧109f9fd1失败及其attempt2重试均发生在SIGTERM之前，未normalize/reset。10,111绑定引用、5,052后端权限、1,961链接无漂移，292旧制品保留、两新槽位冻结0500；首审计漏output根的FAIL保留，修正r02核310路径通过。父24仍0PASS/9PARTIAL/15NOT_RUN，完整S2/A01–A12与S3–S5开放。见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)和[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
 
 ## 2026-11-18 R29 真实RED接受与最小GREEN验证
 
 R29的真实回归已独立接受：13命名9PASS/4FAIL、10叶7PASS/3FAIL；三个读并发在源child／授权行锁捕获55P03，两个原操作顺序、两个Revoke写锁和三个当前权限拒绝全部PASS。十组72关系读前读后快照相同，实际夹具创建的handoff/job/invalidation历史保留。原R28物理持锁者仍未证明，原完成不重放。
 
-私有GREEN只修改授权读取及协作源child的两个Go文件，原校验主体、写入口默认和558行测试保持；格式／编译／servicevet通过。新13+原63的76命名普通联合验证已启动，fresh race、direct-Get handler普通/race与独立检查随后执行。ROOT产品整合、匹配程序和新完整四场景仍待完成；最新原四场景保持R28的3PASS/1FAIL/0NOT_RUN，完整S2及父24条不提前升级。见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)与[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
+私有GREEN只修改授权读取及协作源child的两个Go文件，原校验主体、写入口默认和558行测试保持；格式／编译／servicevet通过。新13+原63的76命名普通联合验证已启动，fresh race、direct-Get handler普通/race与独立检查随后执行。ROOT产品整合、匹配程序和新完整四场景仍待完成；最新原四场景保持R28的3PASS/1FAIL/0NOT_RUN，完整S2及父24条不提前升级。见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)与[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
 
 ## 2026-11-18 R28 实测与 R29 回执读取续接
 
@@ -153,7 +159,7 @@ R28 提交预览共享读取修复已独立接受，联合回归普通／竞态�
 
 最新原四场景实际一次执行 **3 PASS / 1 FAIL / 0 NOT_RUN，retry0**。前三个角色评审／QA、发布回滚和迟到部署场景通过。第四项早期项目退出／删除探针已执行，Web真实提交并签发M1原授权，Desktop以同一账号、原键和原请求体完成任务，授权引用／完成／已消费回执均200；随后Web按Core顺序读取原操作GET200、已消费授权GET409，在原spec第572行停止。失败后的收尾断言／截图和管理员禁用／接管／恢复块尚未执行。独立补审纠正此前将Desktop完成及早期项目退出探针也列为未执行的概括；原完成、授权及全部失败证据保留，不重放已成功写入。
 
-所属 API／bridge 已正常停止，数据库其他连接0、门禁恢复 epoch56、49次 Host run 结算、35份制品完整，无活动租约或未释放预留，原 Web／renderer 保留。R29 继续精确回执读取诊断和新隔离库同层回归，真实 RED 后才修复所属读入口，再普通／竞态、独立检查和新完整四场景。父24条仍 **0 PASS / 9 PARTIAL / 15 NOT_RUN**，S2／A01–A12与S3–S5开放。见[最新进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)和[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
+所属 API／bridge 已正常停止，数据库其他连接0、门禁恢复 epoch56、49次 Host run 结算、35份制品完整，无活动租约或未释放预留，原 Web／renderer 保留。R29 继续精确回执读取诊断和新隔离库同层回归，真实 RED 后才修复所属读入口，再普通／竞态、独立检查和新完整四场景。父24条仍 **0 PASS / 9 PARTIAL / 15 NOT_RUN**，S2／A01–A12与S3–S5开放。见[最新进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261118.md)和[推进计划](../../../docs/plans/2026-11-18-pay-241-continuation.md)。
 
 以下均为保留的历史检查点。
 
@@ -161,25 +167,25 @@ R28 提交预览共享读取修复已独立接受，联合回归普通／竞态�
 
 R27提交绑定/UTC到期修复已独立接受，普通/竞态各 **6叶/8命名 PASS，0FAIL/SKIP**；有效提交、M1 off、原拒绝控制与实际密码管理员当前提交均通过，无授权/完成写入。两个产品局部改动与两份回归已ROOT接入，ROOT格式、编译和servicevet通过。原提交RED、管理员RED、时区FAIL/未运行race及分配收据名碰撞记录保留。
 
-当前已准备R28新的源码和三个service专库，继续真实standing-R4/preview并发、同目标预览、原writer/当前权限和缺失绑定/真实退回阶段回归，真实RED后最小纯读修复，再独立接受/匹配产品/原四场景与A01–A12。最近原R25仍 **1PASS/1FAIL/2NOT_RUN，retry0**；父24条仍 **0PASS/9PARTIAL/15NOT_RUN**，S2整阶段及S3–S5尚未关闭。详见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
+当前已准备R28新的源码和三个service专库，继续真实standing-R4/preview并发、同目标预览、原writer/当前权限和缺失绑定/真实退回阶段回归，真实RED后最小纯读修复，再独立接受/匹配产品/原四场景与A01–A12。最近原R25仍 **1PASS/1FAIL/2NOT_RUN，retry0**；父24条仍 **0PASS/9PARTIAL/15NOT_RUN**，S2整阶段及S3–S5尚未关闭。详见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
 
 ## 2026-11-17 R27 预览回归与进度补齐
 
 重新核对封存证据后，R26 候选读取增量已独立接受：普通/竞态各 **4顶层/11叶/15命名 PASS，0FAIL/SKIP**。两个产品文件和一份674行回归已接入ROOT，当前字节一致；ROOT编译/vet实际exit0记录已取得。父进度此前仍停在“测试准备”，现已同步为候选增量完成、完整预览继续。
 
-最近原四场景仍为 **R25：1PASS/1FAIL/2NOT_RUN，retry0**。本次继续现有S2，准备真实managed-submission完成预览的提交绑定和两连接纯读回归，真实RED后最小修复，再normal/race/独立接受与匹配产品四场景/A01–A12。R24成功提交、全部原失败与制品历史保留，候选通过不关闭S2。父24条仍 **0PASS/9PARTIAL/15NOT_RUN**；后续为S3恢复→真实S4→最终S5与业务签字。详见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)及[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
+最近原四场景仍为 **R25：1PASS/1FAIL/2NOT_RUN，retry0**。本次继续现有S2，准备真实managed-submission完成预览的提交绑定和两连接纯读回归，真实RED后最小修复，再normal/race/独立接受与匹配产品四场景/A01–A12。R24成功提交、全部原失败与制品历史保留，候选通过不关闭S2。父24条仍 **0PASS/9PARTIAL/15NOT_RUN**；后续为S3恢复→真实S4→最终S5与业务签字。详见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)及[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
 
 本轮R27真实提交预览已复现并独立接受RED：5叶中两个合法正例误报“提交未绑定”，三个版本/权限/凭据拒绝控制通过，72关系与阶段/适配器无写入，测试库连接0。现在单文件初始化临时guard的精确提交ID，并补实际密码管理员接管当前提交的同分支回归；原四场景和完整S2仍开放，不改变父24条结论。
 
 ## 2026-11-17 R26 确定性读并发推进
 
-最新R25原四场景为 **1PASS/1FAIL/2NOT_RUN，retry0**；第二项QA读取提前失败，M1候选诊断未到达，旧R24的3/1与成功submission保留。R25自有API/bridge正常停止，连接0、门禁epoch48、43run结算/28artifact完整。当前改用已封存的真实双连接候选/R4回归（4顶层/11叶），新同层测试与三个空service库准备中；原代码RED之后才最小候选纯读修复，preview额外边界单独回归。完整S2/A01–A12/S3–S5和父24条仍开放，父账本0PASS/9PARTIAL/15NOT_RUN。详见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
+最新R25原四场景为 **1PASS/1FAIL/2NOT_RUN，retry0**；第二项QA读取提前失败，M1候选诊断未到达，旧R24的3/1与成功submission保留。R25自有API/bridge正常停止，连接0、门禁epoch48、43run结算/28artifact完整。当前改用已封存的真实双连接候选/R4回归（4顶层/11叶），新同层测试与三个空service库准备中；原代码RED之后才最小候选纯读修复，preview额外边界单独回归。完整S2/A01–A12/S3–S5和父24条仍开放，父账本0PASS/9PARTIAL/15NOT_RUN。详见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与[推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)。
 
 ## 2026-11-17 R24 实际结果与 R25 续接
 
 R24工具栏操作修复独立接受，匹配来源/运行预检通过后原四场景实际一次执行 **3PASS/1FAIL/0NOT_RUN，retry0**。第四项已真实提交结果200，旧菜单遮挡已解决；新停止点为M1完成预览helper选择Artifact evidence后等待20秒响应超时。当前正在核对实际请求路径/选择时序，不将该超时直接归因为后端失败。原结果`9ed5f3d5…`、真实submission及全部旧失败保留。
 
-本次API/bridge已正常停止，harness终结PASS，停止后连接0、gate恢复epoch44、39run结算/26artifact完整，无租约或未释放预留；来源与产物无漂移。独立运行后恢复检查和新最小修复继续，完整S2/A01–A12及S3–S5尚未接受。父24条保持 **0PASS/9PARTIAL/15NOT_RUN**。当前计划见[2026-11-17推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)，详细证据见[最新进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)。
+本次API/bridge已正常停止，harness终结PASS，停止后连接0、gate恢复epoch44、39run结算/26artifact完整，无租约或未释放预留；来源与产物无漂移。独立运行后恢复检查和新最小修复继续，完整S2/A01–A12及S3–S5尚未接受。父24条保持 **0PASS/9PARTIAL/15NOT_RUN**。当前计划见[2026-11-17推进计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)，详细证据见[最新进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)。
 
 ## 2026-11-17 R24 最新运行核实与继续推进
 
@@ -187,7 +193,7 @@ R24工具栏操作修复独立接受，匹配来源/运行预检通过后原四�
 
 最小单文件测试修复已由实施代理写入，保留全部业务断言、当前权限与20秒/480秒期限，静态检查和独立复核继续。当前旧 API/bridge 不存在，旧 socket/ready 保留且正常停机收据缺失；新只读 DB 核对连接0、epoch36门禁恢复、33run结算、19artifact完整、无租约/未释放预留，原188制品路径和unknown意图保留。
 
-推进计划已更新为 [2026-11-17 计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)：单文件检查 → 新八槽位与来源/运行绑定 → 完整四场景 → A01–A12/正常停机独立接受 → S3并发/CAS及恢复 → 真实S4 → 最终S5/父24条。父账本暂保持 **0 PASS、9 PARTIAL、15 NOT_RUN**；不将受控场景或旧性能演练作为真实外部验收。详见 [最新进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)。
+推进计划已更新为 [2026-11-17 计划](../../../docs/plans/2026-11-17-pay-241-continuation.md)：单文件检查 → 新八槽位与来源/运行绑定 → 完整四场景 → A01–A12/正常停机独立接受 → S3并发/CAS及恢复 → 真实S4 → 最终S5/父24条。父账本暂保持 **0 PASS、9 PARTIAL、15 NOT_RUN**；不将受控场景或旧性能演练作为真实外部验收。详见 [最新进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)。
 
 以下均为保留的历史检查点。
 
@@ -195,7 +201,7 @@ R24工具栏操作修复独立接受，匹配来源/运行预检通过后原四�
 
 恢复现有 S2 `in_progress`，继续已有任务树。R23 两文件协议修复的独立最终检查已封存 ACCEPTED、阻挡项0；本次按原字节/权限守卫完成 ROOT 与新隔离测试副本接入，接入后的16例、strict类型及实际两文件lint已独立通过。R22的145路径/12tar与实际停止后历史独立封存通过；新8个槽位、来源/配置与程序核对完成，before-API完整行保持，等待单一API准入及实际预检。S3/S4研究已给出下一切片和八组缺失外部输入，S3实施等待最终S2接受。
 
-最新已完成的原四场景仍为 R22 **1 PASS / 1 FAIL / 2 NOT_RUN**，父账本仍为 **24条：0 PASS / 9 PARTIAL / 15 NOT_RUN**。下一步完成当前来源核对、新八槽位/配置准备，执行原四场景一次，再核销A01–A12和后续S3–S5。详见[当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)及[推进计划](../../../docs/plans/2026-11-16-pay-241-continuation.md)。
+最新已完成的原四场景仍为 R22 **1 PASS / 1 FAIL / 2 NOT_RUN**，父账本仍为 **24条：0 PASS / 9 PARTIAL / 15 NOT_RUN**。下一步完成当前来源核对、新八槽位/配置准备，执行原四场景一次，再核销A01–A12和后续S3–S5。详见[当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)及[推进计划](../../../docs/plans/2026-11-16-pay-241-continuation.md)。
 
 ## 2026-11-17 R22 实际结果与 R23 协议修复
 
@@ -203,7 +209,7 @@ R22 原四场景已实际执行：**1 PASS、1 FAIL、2 NOT_RUN**。完整 Web/D
 
 W10 普通 CLI 拒绝边界已独立接受，实际候选 GET/更新 PUT 均返回预期 409，完整状态及八项写入计数保持。R22 自有 API/bridge 已停止，停止后连接0、gate 恢复 epoch28、27 个运行结算、12 份制品完整；145 个制品路径与历史 tar 核对通过，独立最终恢复检查封存中。原回滚请求不能重放。
 
-父 **24 条：0 PASS、9 PARTIAL、15 NOT_RUN** 保持；完整 S2/A01–A12、S3 剩余恢复、S4 真实输入及 S5 最终验收继续开放。下一步：接入 R23 → 新八槽位/来源绑定 → 原四场景 → S2 最终证据 → S3 → 真实 S4 → 最终 S5。见 [最新进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与 [推进计划](../../../docs/plans/2026-11-16-pay-241-continuation.md)。以下各节为历史检查点。
+父 **24 条：0 PASS、9 PARTIAL、15 NOT_RUN** 保持；完整 S2/A01–A12、S3 剩余恢复、S4 真实输入及 S5 最终验收继续开放。下一步：接入 R23 → 新八槽位/来源绑定 → 原四场景 → S2 最终证据 → S3 → 真实 S4 → 最终 S5。见 [最新进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md)与 [推进计划](../../../docs/plans/2026-11-16-pay-241-continuation.md)。以下各节为历史检查点。
 
 ## 2026-11-17 R22 读锁修复已整合
 
@@ -247,9 +253,9 @@ S3 的超时证明子项与 S1 已归档；S3 剩余恢复、S4 的 I02–I09 �
 
 新会话 `01a1e232-4890-7bb0-9671-23089bc4587b` 已恢复现有 S2 指针，保留 epoch10、三条合成 producer、两个制品执行及全部输入历史。生产 Web39744/renderer39748 已恢复并核验构建，平台继续保持运行。与续接线程 `01a1e245-2abd-7f41-972a-ea4670420be1` 已约定单一执行责任：对方持有 API 和诊断场景，本线程保留平台并核对证据；本线程 API/场景执行为 0。
 
-对方补充的原 PostgreSQL 日志保留了两次 `LockLifecycleIssue / FOR NO KEY UPDATE NOWAIT` 取锁失败，时间与 reviewer 503 对应，[原始窗口独立核对](../11-13-pay-241-s2-stage-approvals/research/r16-original-postgres-window-check.md)已通过。仍需完整 HTTP 正文、SQLSTATE 和锁持有者证明；对方正在独立检查 test-only tracer 和被动响应记录。两线程的新 generation 均保留，实际 API 只选择对方的一组；本线程未编译的诊断草稿已停止，不重复构建或执行。
+对方补充的原 PostgreSQL 日志保留了两次 `LockLifecycleIssue / FOR NO KEY UPDATE NOWAIT` 取锁失败，时间与 reviewer 503 对应，[原始窗口独立核对](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r16-original-postgres-window-check.md)已通过。仍需完整 HTTP 正文、SQLSTATE 和锁持有者证明；对方正在独立检查 test-only tracer 和被动响应记录。两线程的新 generation 均保留，实际 API 只选择对方的一组；本线程未编译的诊断草稿已停止，不重复构建或执行。
 
-证据：[r16 独立进度核对](../11-13-pay-241-s2-stage-approvals/research/r16-progress-reconciliation.md)、[r15 交接入口](../11-13-pay-241-s2-stage-approvals/research/new-session-handoff-20261116-r15.md)。
+证据：[r16 独立进度核对](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r16-progress-reconciliation.md)、[r15 交接入口](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/new-session-handoff-20261116-r15.md)。
 
 ## 历史快照
 
@@ -285,7 +291,7 @@ r02 的实际共享界面与 HTTP 子断言经独立复核，TC-03（角色责�
 - 仅修共享 E2E `workflowAuthority` 的字段选择；先新私有副本与独立复查，再绑定修正版运行。生产 strict decoder、断言、超时、四场景范围不变。知识完整输入已封存，本修正作为封存后独立差分登记。
 - A01–A12 与完整 S2 未关闭，父 24 例仍 4 PARTIAL、20 NOT_RUN。S3 完整恢复等稳定 S2；S4 真实支付/履约/远端 CI/非生产部署和人类签字输入仍未取得，S5 原演练不升级为最终候选结果。
 
-证据：[S2 当前进度](../11-13-pay-241-s2-stage-approvals/research/progress-20261116.md)、[P2 独立检查](../11-13-pay-241-s2-stage-approvals/research/p2-r09-independent-check-20261115.md)、[联合服务独立检查](../11-13-pay-241-s2-stage-approvals/research/joint-service-r09-independent-check-20261115.md)、[前端构建](../11-13-pay-241-s2-stage-approvals/research/frontend-r07-current-build-20261115.md)。
+证据：[S2 当前进度](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/progress-20261116.md)、[P2 独立检查](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/p2-r09-independent-check-20261115.md)、[联合服务独立检查](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/joint-service-r09-independent-check-20261115.md)、[前端构建](../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/frontend-r07-current-build-20261115.md)。
 
 ## 2026-11-15 r07 本次继续推进
 

@@ -1,0 +1,357 @@
+{
+  "schema": "pay241-r31-idle-claim-red-boundary-independent-check/v1",
+  "captured_at": "2026-11-17T21:25:02.492Z",
+  "date_local": "2026-11-18",
+  "agent": "/root/r27_submission_check",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "ACCEPTED_R31_RED_TEST_BOUNDARY_READY_NO_PRODUCT_REPAIR",
+  "acceptance_scope": "frozen RED test preparation and retained scoped compile verification only",
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "blockers": [],
+  "actual_red_accepted": false,
+  "product_repair_authorized": false,
+  "full_s2_accepted": false,
+  "write_scope": {
+    "new_reports": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-boundary-independent-check-20261118.md",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-boundary-independent-check-20261118.json"
+    ],
+    "mode": "0o444",
+    "source_test_product_config_spec_old_report_edits": 0
+  },
+  "inputs": {
+    "owner_json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-implementation-20261118.json",
+      "sha256": "e4a781ec726c392290904ba81df851d27654f78d7dcc4bbb88b04c208221dda8",
+      "mode": "0o444"
+    },
+    "owner_markdown": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-implementation-20261118.md",
+      "sha256": "2697f258754ac0e9f0b70a89bb723438bc6918fa1bdb7fda96d9e3b0ac9c5606",
+      "mode": "0o444"
+    },
+    "boundary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/selected-idle-claim-red-boundary-r02.json",
+      "sha256": "3601418afd1153670d4a022999c421ab84c7e89f0fe77c7b0e416e8c0efa66f9",
+      "bytes": 3517,
+      "mode": "0o600"
+    },
+    "preparation": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/source-preparation-r01.json",
+      "sha256": "2fffbba375539a07b5ab5b19ad11a447d1e432ef2d96f78e97c6c43d7c23472a",
+      "bytes": 894,
+      "mode": "0o600"
+    },
+    "scope_research": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.json",
+      "sha256": "cee0eda6db99b4539a55ba041aceafcd3fe75bd30123ff1ea10c1e4f9194aa60",
+      "bytes": 23308,
+      "mode": "0o444"
+    },
+    "native_E03_diagnosis": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-qa-entry-native-failure-diagnosis-20261118.json",
+      "sha256": "9063ee41e2a25562508a6a3674faa1b592353ba4d413a0fc0cb3feb20c637299",
+      "bytes": 133320,
+      "mode": "0o444"
+    },
+    "fresh_service_profiles": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/service-profiles-r01/three-service-profile-allocation-r01.json",
+      "sha256": "9c92f08a8ac79881bebfb2f28d2894ac1092f561ca035b5eb6d204f6b73831c0",
+      "bytes": 10876,
+      "mode": "0o644"
+    },
+    "accepted_source_manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/build-final-r02/source-after.json",
+      "sha256": "153d396c7b2d4a9a94da9a2ecbf10cedc8305784be25c3560fea5717b7002087",
+      "bytes": 908732,
+      "mode": "0o600"
+    },
+    "static_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/result.json",
+      "sha256": "5d438933eb11f324078f1274ddd2111b16871624301963227411815bc06a7aac"
+    },
+    "compile_environment": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/compile-only-environment-r01.json",
+      "sha256": "be67f06dfa877865c09c7dcf9c684dc98722c415b938f77f4bb141a3dcbe2930",
+      "DATABASE_URL_present": false
+    },
+    "static_runner": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/run-red-static-r02.py",
+      "sha256": "18bab1a80649cecd070c21a30db456d188a0cae05ef091b6c70a48d32840f8c6"
+    },
+    "red_permit_draft": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/evidence/real-red-service-permit-draft-r01.json",
+      "sha256": "caf9b1c84a197d63f5153ec7d996fa663b854026e510c298f230ea2d19d77203"
+    }
+  },
+  "frozen_test": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01/server/internal/service/task_idle_claim_read_concurrency_test.go",
+    "sha256": "b07397c51e304ef51e95d3c3757143600a8a37528b96005e5641df9f765f300b",
+    "bytes": 18961,
+    "lines": 471,
+    "mode": "0o644",
+    "top": 2,
+    "leaf": 4,
+    "named": 6,
+    "selector": "^(TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryReclaimPreservesAuthorityFences)$",
+    "names": [
+      "TestOrdinaryIdleClaimAndR4Coexistence",
+      "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+      "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences",
+      "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+    ],
+    "inventory_kind": "source literal inventory; no execution by reviewer"
+  },
+  "source_audit": {
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01",
+    "current_files": 5054,
+    "accepted_baseline_files": 5053,
+    "protected_bytes_modes_identical": 5053,
+    "new_paths": [
+      "server/internal/service/task_idle_claim_read_concurrency_test.go"
+    ],
+    "removed_paths": [],
+    "nonregular_paths": [],
+    "product_deltas": 0,
+    "hash_mode_errors": [],
+    "current_canonical_manifest_sha256": "4dadec9c0bd4a6ad7ac5a2abf8e47b73b50392fec926dab0f007166b7a2feea6",
+    "manifest_encoding": "path-sorted compact sorted-key JSON UTF8 no newline",
+    "complete_records_bound_in_owner_json": true,
+    "root_static_before": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/source-before.json",
+      "sha256": "510767e5600b76a71c4a8718ce443d8e6c8f7bf152862692fab11e04f61c5fd0"
+    },
+    "root_static_after": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/source-after.json",
+      "sha256": "510767e5600b76a71c4a8718ce443d8e6c8f7bf152862692fab11e04f61c5fd0"
+    },
+    "static_before_after_current_path_hash_mode_equal": true,
+    "traversal_order_only_difference": true
+  },
+  "code_path_checks": {
+    "same_Q_real_stage_artifact_baseline": true,
+    "selected_runtime_all_ordinary_rows_zero": true,
+    "online_current_heartbeat_real_QA_owner_private_agent_positive_capacity": true,
+    "current_session_binding_id_epoch": true,
+    "no_Redis_supported_nil_cache": true,
+    "max_tasks": 1,
+    "real_claim_and_R4_services": true,
+    "real_forwarding_borrowed_transactions": true,
+    "actual_account_scan_before_reclaim_query_hold": true,
+    "active_transaction_and_distinct_PIDs": true,
+    "future_no_work_empty_terminal_without_old_barrier_allowed": true,
+    "actual_blocking_LockPasswordUser_wait_observed": true,
+    "cancelled_test_context_not_synthetic_55P03": true,
+    "account_query_digest_singleton_QA_and_error_retained": true,
+    "actual_stale_dispatched_reclaim_only_in_writer_controls": true,
+    "actual_binding_installation_and_accepting_null_admission_eligibility": true,
+    "canonical_reclaim_SQL_authority_unchanged": true,
+    "writer_fence_zero_R4_projection_and_real_query_failure": true,
+    "exact_generation_lease_task_history_delta": true,
+    "unrelated_tasks_and_remaining_relations_equal": true,
+    "baseline_after_fixture_and_intentional_seed": true,
+    "covered_relations": 76,
+    "stage_exit_snapshot_retained": true,
+    "idempotent_request_drain_cleanup": true
+  },
+  "verification": {
+    "lint": {
+      "status": "PASS_RETAINED_SCOPED_GOFMT_AND_GO_VET",
+      "records": [
+        {
+          "name": "gofmt",
+          "argv": [
+            "/opt/homebrew/bin/gofmt",
+            "-l",
+            "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01/server/internal/service/task_idle_claim_read_concurrency_test.go"
+          ],
+          "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01/server",
+          "exit": 0,
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/gofmt.stdout.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/gofmt.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        {
+          "name": "vet",
+          "argv": [
+            "/opt/homebrew/bin/go",
+            "vet",
+            "./internal/service"
+          ],
+          "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01/server",
+          "exit": 0,
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/vet.stdout.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/vet.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      ],
+      "logs_verified": [
+        {
+          "name": "gofmt",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        },
+        {
+          "name": "gofmt",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        },
+        {
+          "name": "vet",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        },
+        {
+          "name": "vet",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        }
+      ]
+    },
+    "typecheck": {
+      "status": "PASS_RETAINED_GO_SERVICE_COMPILE_ONLY",
+      "record": {
+        "name": "compile",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/service.test",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-red-r01/server",
+        "exit": 0,
+        "stdout": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/compile.stdout.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/compile.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "logs_verified": [
+        {
+          "name": "compile",
+          "stream": "stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        },
+        {
+          "name": "compile",
+          "stream": "stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "match": true
+        }
+      ],
+      "binary": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/static-red-r01/service.test",
+        "sha256": "e8d293a7d31e1e3a9303bf732ecafe4e3a6b0efc7fd763cd26bb85fcaddeca9f",
+        "bytes": 86370914
+      }
+    },
+    "tests": {
+      "status": "NOT_RUN_PRE_RED_BOUNDARY",
+      "actual_terminals_available": 0,
+      "required_names": [
+        "TestOrdinaryIdleClaimAndR4Coexistence",
+        "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+        "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences",
+        "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+        "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+      ]
+    },
+    "spec_sync": {
+      "status": "NO_PRODUCT_IMPLEMENTATION_OR_SPEC_WRITE_IN_SCOPE"
+    }
+  },
+  "permit_review": {
+    "source_reference_count": 5054,
+    "other_checked_reference_count": 5,
+    "total_draft_required_references": 5059,
+    "hash_mismatches": [],
+    "environment_ref_hash_verified": true,
+    "maximum_commands": 1,
+    "normal_only": true,
+    "argv": [
+      "/opt/homebrew/bin/go",
+      "test",
+      "-json",
+      "-count=1",
+      "-timeout=120s",
+      "./internal/service",
+      "-run",
+      "^(TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryReclaimPreservesAuthorityFences)$"
+    ],
+    "database_name": "multica_pay241_20261117_s2_idleclaim_red_r31",
+    "profile_environment": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/database/service-profiles-r01/red-environment.json",
+      "sha256": "b0e44807f28b24fe05fbb9b2563fa9af8af064e4a6d6fce7c08efab443319d15"
+    },
+    "final_permit_must_bind_this_check": true,
+    "ROOT_live_database_preflight_required": true
+  },
+  "preserved_controls": {
+    "same_Q_capability_and_current_authority": {
+      "package": "./internal/service",
+      "selector": "^(TestCollaborationRuntimeCapabilitiesReadThenStageEvidence|TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead|TestCollaborationRuntimeCapabilitiesReadOriginalWriterFence|TestCollaborationRuntimeCapabilitiesReadCurrentAuthority)$",
+      "top": 4,
+      "named": 8,
+      "leaves": 7,
+      "status": "existing canonical source; not executed here"
+    },
+    "real_managed_claim_and_history": {
+      "package": "./internal/service",
+      "selector": "^(TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory|TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner|TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy)$",
+      "status": "preserve current binding/password/namespace/generation and no-backfill semantics; ROOT decides affected normal/race selection"
+    },
+    "nil_cache_no_Redis": {
+      "package": "./internal/service",
+      "selector": "^(TestReclaimCheckCache_NilFallsBackToEveryRuntime|TestNewReclaimCheckCache_NilRedisReturnsNil|TestEmptyClaimCache_NilSafe|TestNewEmptyClaimCache_NilRedisReturnsNil)$",
+      "status": "canonical nil behavior; no Redis allocation or execution by this author"
+    },
+    "redis_backed_existing_tests": "not admitted by service DB profiles alone; use task-owned Redis if ROOT selects them, never inherited Redis"
+  },
+  "remaining_gates": [
+    "Actual normal RED six named terminals/native failure and effect witnesses",
+    "No product/query/generated repair before genuine RED acceptance and ROOT dispatch",
+    "Separate actual current-authority/cache/real-work controls and normal/race acceptance after any repair",
+    "Historical R30 holder unproved; full S2 and parent/S3–S5 gates unchanged"
+  ],
+  "not_executed_by_reviewer": [
+    "Go/AST/list/TestMain/compile/vet/test/build",
+    "SQL/database/Redis/API/browser",
+    "runtime/process/signals/Git",
+    "recursive agents"
+  ],
+  "markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-red-boundary-independent-check-20261118.md",
+    "sha256": "f05ae7129e4605407cf0a38603ceb934f4b91184e56ff437f0355d55223f5ad8",
+    "mode": "0o444"
+  }
+}

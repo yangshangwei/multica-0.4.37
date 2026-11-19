@@ -1,0 +1,386 @@
+{
+  "schema_version": 1,
+  "type": "r27_binding_r01_independent_check_failed",
+  "at": "2026-11-17T13:58:45.845094+00:00",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r27_submission_check",
+  "r27_root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm",
+  "verdict": "NOT_ACCEPTED_R27_BINDING_R01_UTC",
+  "normal_race_accepted": false,
+  "binding_initializer_functionally_confirmed": true,
+  "generic_admin_current_submission_genuinely_exercised": true,
+  "full_preview_accepted": false,
+  "full_S2_accepted": false,
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-independent-check-20261117.md",
+    "sha256": "7f8c0c67b071056773263a703d29c21964550feff51390ed195c468ef7da75e2"
+  },
+  "private_support": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/binding-green-independent-check/source-reconciliation-r01.json",
+      "sha256": "d3daf6cc659e7d7c1aa30d7c8eb6cd175b2fa4e8b164da3bd703b73e8ca61120"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/binding-green-independent-check/static-and-admin-red-reconciliation-r01.json",
+      "sha256": "0066c46e5b9f820a37e09510edf28ea0ed1cb140df3127bcc662f918f2fe1969"
+    }
+  ],
+  "checks": {
+    "admin_source_5050_exact": true,
+    "green_source_5050_exact": true,
+    "admin_RED_initial_5049_preserved": true,
+    "single_exact_initializer_and_patch": true,
+    "all_three_permit_5056_hashes": true,
+    "old_initial_review_bytes_preserved": true,
+    "retained_static_artifacts_match": true,
+    "retained_compile_vet_pass": true,
+    "normal_raw_8_names": true,
+    "admin_raw_2_names": true,
+    "normal_first_genuine_failure_retained": true,
+    "admin_genuine_RED_retained": true,
+    "every_no_write_72_relation_hash_equal": true,
+    "no_M1_authorization_terminal_evaluation": true,
+    "no_original_PgError_or_effect_assertion": true,
+    "both_database_before_after_connection_zero": true
+  },
+  "source": {
+    "schema_version": 1,
+    "type": "r27_binding_green_preliminary_source_reconciliation",
+    "at": "2026-11-17T13:49:47.742263+00:00",
+    "actual_source": {
+      "admin_red": {
+        "root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-admin-red-r01",
+        "manifest": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/binding-admin-red-source-r01.json",
+        "manifest_sha256": "8ad2a07a2c424ba194c4366938be2c565c4d80596925cf0ecef355bfe0aa351d",
+        "count": 5050,
+        "actual_count": 5050,
+        "byte_mode_mismatches": [],
+        "missing": [],
+        "extra": []
+      },
+      "green": {
+        "root": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/source-green-r01",
+        "manifest": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/evidence/binding-green-source-r01.json",
+        "manifest_sha256": "eb89d5bc5414c786e1ca5202331d231fb84e200361dd651fc85eb57c6faa3fe2",
+        "count": 5050,
+        "actual_count": 5050,
+        "byte_mode_mismatches": [],
+        "missing": [],
+        "extra": []
+      }
+    },
+    "initial_to_admin": {
+      "protected_count": 5049,
+      "protected_changes": [],
+      "sole_extra": [
+        "server/internal/service/collaboration_completion_preview_admin_submission_test.go"
+      ]
+    },
+    "admin_to_green": {
+      "count": 5050,
+      "delta_paths": [
+        "server/internal/service/collaboration_completion_preview.go"
+      ],
+      "extra": [],
+      "one_initializer_exact_bytes": true,
+      "recorded_patch_exact": true,
+      "old_product_sha256": "07637fee75dc894a50dd32eaa2beee3254784f015f0096fdd8cd3b44410fd0fe",
+      "green_product_sha256": "9272930e7d665f61eb7ad1c8bafbd412e02651aa77138c682678fa8765cdd3ba"
+    },
+    "permit_inputs": [
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/admin-submission-red-permit-r01.json",
+        "sha256": "7946f21a5d3456d4d629aea5d712dacfc9648c4368d458542824fd5f19280862",
+        "expected_sha256": "7946f21a5d3456d4d629aea5d712dacfc9648c4368d458542824fd5f19280862",
+        "hash_matches": true,
+        "required_count": 5056,
+        "required_hash_mismatches": [],
+        "maximum_commands": 1
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/binding-green-permit-r01.json",
+        "sha256": "449bc69691827727325b9bebf9d34f50c5a8ff9d99bda20f8dee4268b20bec65",
+        "expected_sha256": "449bc69691827727325b9bebf9d34f50c5a8ff9d99bda20f8dee4268b20bec65",
+        "hash_matches": true,
+        "required_count": 5056,
+        "required_hash_mismatches": [],
+        "maximum_commands": 1
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/binding-race-permit-r01.json",
+        "sha256": "766ce84835b0333f0c11a75ecfee937d125f3ea7b3246095ec79a12379eee577",
+        "expected_sha256": "766ce84835b0333f0c11a75ecfee937d125f3ea7b3246095ec79a12379eee577",
+        "hash_matches": true,
+        "required_count": 5056,
+        "required_hash_mismatches": [],
+        "maximum_commands": 1
+      }
+    ],
+    "initial_accepted_reports": [
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.md",
+        "sha256": "4c91e6a6614dc765b1abf803fc637d5a51c7ef99e354e4a1905a4ebce0ed5525",
+        "expected_sha256": "4c91e6a6614dc765b1abf803fc637d5a51c7ef99e354e4a1905a4ebce0ed5525",
+        "matches": true,
+        "mode": "0o644"
+      },
+      {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-submission-red-independent-check-20261117.json",
+        "sha256": "220ede46e03a78ced815ef5e9d4364b6de4f9dfeade958386c776eb2e97990f9",
+        "expected_sha256": "220ede46e03a78ced815ef5e9d4364b6de4f9dfeade958386c776eb2e97990f9",
+        "matches": true,
+        "mode": "0o644"
+      }
+    ],
+    "reviewer_product_test_DB_SQL_API_browser_build_vet_Git_executions": 0
+  },
+  "retained_admin_RED": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/admin-submission-red-r01/result.json",
+    "sha256": "0684d9b12408e829710712e3e25394e5fc51ad028f32906a24f534190959f2aa",
+    "counts": {
+      "pass": 0,
+      "fail": 2,
+      "skip": 0
+    },
+    "original_product_unbound_failure": true,
+    "actual_nomination_and_preview_committed": true
+  },
+  "retained_normal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/binding-green-r01/result.json",
+    "sha256": "994848fffaa0e8bf575c5845bf43116700a61777434afc9b573fde7c67e30415",
+    "counts": {
+      "pass": 4,
+      "fail": 4,
+      "skip": 0
+    },
+    "inventory": {
+      "top_level": 2,
+      "leaf": 6,
+      "named": 8
+    },
+    "missing": 0,
+    "extra": 0,
+    "pending": 0,
+    "parse": 0,
+    "drift": 0,
+    "reruns": 0,
+    "leaf_results": [
+      {
+        "test": "TestCollaborationCompletionPreviewAdminCurrentSubmission/admin_available",
+        "result": "fail",
+        "read_status": 0,
+        "read_code": "",
+        "reason": "authorization_available",
+        "stage_blockers": [],
+        "checked_at": "2026-11-17T13:44:55.08363Z",
+        "max_expires_at": "2026-11-17T21:45:54.105619+08:00",
+        "original_PgError": null,
+        "assertion_errors": [
+          "    collaboration_completion_preview_admin_submission_test.go:171: R38 preview renewed or lost saved evidence/credential/release expiry: got=2026-11-17 21:45:54.105619 +0800 CST want=2026-11-17 21:45:54.105619 +0800 CST checked=2026-11-17 13:44:55.08363 +0000 UTC\n"
+        ],
+        "no_writes_hash": "a1bf575c393bbd8a268d451d902af34081667b64af6d3004c4c98736362bd08c"
+      },
+      {
+        "test": "TestCollaborationCompletionPreviewManagedSubmission/enforce_authorization_available",
+        "result": "fail",
+        "read_status": 0,
+        "read_code": "",
+        "reason": "authorization_available",
+        "stage_blockers": [],
+        "checked_at": "2026-11-17T13:44:57.206146Z",
+        "max_expires_at": "2026-11-17T21:45:56.538884+08:00",
+        "original_PgError": null,
+        "assertion_errors": [
+          "    collaboration_completion_preview_managed_submission_test.go:68: preview did not preserve exact evidence/credential/release expiry: got=2026-11-17 21:45:56.538884 +0800 CST want=2026-11-17 21:45:56.538884 +0800 CST checked=2026-11-17 13:44:57.206146 +0000 UTC\n"
+        ],
+        "no_writes_hash": "81099eff9d44b991929bf53fbf966602ed8c7658b4e569b2cdcc9759bed19745"
+      },
+      {
+        "test": "TestCollaborationCompletionPreviewManagedSubmission/policy_off_non_authorizing",
+        "result": "pass",
+        "read_status": 0,
+        "read_code": "",
+        "reason": "policy_off",
+        "stage_blockers": [],
+        "checked_at": "2026-11-17T13:44:59.348688Z",
+        "max_expires_at": null,
+        "original_PgError": null,
+        "assertion_errors": [],
+        "no_writes_hash": "d62ef1a9def4482c6c0a1b45afdf4f5208461ff8edb8cd691b7d14a344ae1c0c"
+      },
+      {
+        "test": "TestCollaborationCompletionPreviewManagedSubmission/stale_target",
+        "result": "pass",
+        "read_status": 409,
+        "read_code": "delivery_completion_conflict",
+        "reason": "",
+        "stage_blockers": null,
+        "checked_at": "0001-01-01T00:00:00Z",
+        "max_expires_at": null,
+        "original_PgError": null,
+        "assertion_errors": [],
+        "no_writes_hash": "62f461c69beb24897742c5e8ca22c3f6c84db7baf14184e8f06163771d5f8f43"
+      },
+      {
+        "test": "TestCollaborationCompletionPreviewManagedSubmission/wrong_actor",
+        "result": "pass",
+        "read_status": 403,
+        "read_code": "delivery_completion_denied",
+        "reason": "",
+        "stage_blockers": null,
+        "checked_at": "0001-01-01T00:00:00Z",
+        "max_expires_at": null,
+        "original_PgError": null,
+        "assertion_errors": [],
+        "no_writes_hash": "51ad092b2f6bd74eb3428efb9f097d21caae9c0dc4747cac33ed7e74b33143b3"
+      },
+      {
+        "test": "TestCollaborationCompletionPreviewManagedSubmission/expired_credential",
+        "result": "pass",
+        "read_status": 403,
+        "read_code": "delivery_completion_denied",
+        "reason": "",
+        "stage_blockers": null,
+        "checked_at": "0001-01-01T00:00:00Z",
+        "max_expires_at": null,
+        "original_PgError": null,
+        "assertion_errors": [],
+        "no_writes_hash": "db52f3930bc1e73f28542a77098b91c0cf5aead94b13fb0bb35b43f3af77a5f8"
+      }
+    ]
+  },
+  "retained_race": {
+    "status": "NOT_RUN",
+    "reason": "Main explicitly kept original race permit unused after first normal failure; separate R02 correction/fresh execution required",
+    "main_status_source": "2026-11-17 main follow-up message authorizing R02 UTC normalization",
+    "permit_path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/binding-race-permit-r01.json",
+    "permit_sha256": "766ce84835b0333f0c11a75ecfee937d125f3ea7b3246095ec79a12379eee577",
+    "command_record_present": false,
+    "result_present": false,
+    "counts": null
+  },
+  "findings_fixed": [
+    {
+      "id": "R27-SUB-C01",
+      "file": "server/internal/service/collaboration_completion_preview.go",
+      "line": 241,
+      "fixed_by": "implementation owner on source-green-r01",
+      "fix": "Only temporary guard boundSubmission initializer",
+      "actual_effect": "human/admin enforced previews authorization_available and no stage blockers",
+      "checker_product_edits": 0
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "R27-BIND-C01",
+      "severity": "P2",
+      "file": "server/internal/service/collaboration_completion_preview.go",
+      "line": 294,
+      "issue": "Returned final expiry keeps DB local timezone, violating existing RFC3339 UTC API contract",
+      "evidence": "Only human line68/admin line171 UTC conditions fail; exact saved instant unchanged, expiry after checked_at",
+      "contract": "task research/wire-contract.md:65",
+      "existing_reference": "delivery_completion_preview.go:358 expiry.UTC().Truncate(time.Microsecond)",
+      "recommendation": "Main-authorized separate R02 same-file final UTC microsecond normalization after all horizon minima and before expiry comparison; tests unchanged",
+      "not_fixed_reason": "Read-only checker ownership and separate source revision"
+    },
+    {
+      "id": "R27-BIND-G01",
+      "issue": "No passing R01 normal/race acceptance; R02 requires separate evidence/review; full preview locking and broader acceptance still open",
+      "not_fixed_reason": "Separate future verification scope"
+    }
+  ],
+  "authorized_R02_steering": {
+    "by_main": true,
+    "new_source": "source-green-r02",
+    "change": "expiry.UTC().Truncate(time.Microsecond) after all horizon minima before expiry.After(clock.Time)",
+    "bound_initializer_preserved": true,
+    "tests_and_other_files_unchanged": true,
+    "old_R01_sources_results_preserved": true,
+    "R02_accepted_by_this_report": false
+  },
+  "no_effect_evidence": {
+    "relations": 72,
+    "complete_rows_counts_and_stage_exit": true,
+    "all_7_RED_normal_leaf_hashes_match": true,
+    "admin_snapshot_and_adapter_assertions_no_failure": true,
+    "M1_authorization_terminal_evaluation_rows": 0,
+    "no_original_PgError": true,
+    "admin_database": {
+      "before_other_connections": 0,
+      "after_other_connections": 0,
+      "same_database": true,
+      "same_ledger": true,
+      "same_indexes": true,
+      "post_fixture_cleanup_count_changes": {
+        "issue_handoff": {
+          "before": 0,
+          "after": 1
+        },
+        "collaboration_config_invalidation": {
+          "before": 21,
+          "after": 26
+        },
+        "collaboration_knowledge_invalidation": {
+          "before": 18,
+          "after": 22
+        }
+      }
+    },
+    "normal_database": {
+      "before_other_connections": 0,
+      "after_other_connections": 0,
+      "same_database": true,
+      "same_ledger": true,
+      "same_indexes": true,
+      "post_fixture_cleanup_count_changes": {
+        "issue_handoff": {
+          "before": 0,
+          "after": 6
+        },
+        "collaboration_config_invalidation": {
+          "before": 21,
+          "after": 51
+        },
+        "collaboration_knowledge_invalidation": {
+          "before": 18,
+          "after": 37
+        }
+      }
+    },
+    "all_database_tables_audited": false,
+    "archive_filesystem_bytes_audited": false
+  },
+  "verification": {
+    "lint": "NO_NEW_RUN_RETAINED_SERVICE_VET_EXIT_0",
+    "typecheck": "NO_NEW_RUN_RETAINED_ISOLATED_GO_COMPILE_EXIT_0",
+    "tests": "NORMAL_FAIL_4_PASS_4_FAIL_NAMED; RACE_NOT_RUN",
+    "binary_sha256": "a2ad369a96e9a7e3bc3513cbc6b0f191b6755925655fc2f7ff178c43f01a05f2",
+    "checker_product_test_TestMain_DB_SQL_API_browser_build_process_management_Git_subagent_executions": 0
+  },
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-independent-check-20261117.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-green-independent-check-20261117.json",
+    "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/binding-green-independent-check/source-reconciliation-r01.json",
+    "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/binding-green-independent-check/static-and-admin-red-reconciliation-r01.json"
+  ],
+  "simplifications_by_checker": [],
+  "old_evidence_changed": false,
+  "historical_R24_R25_holders_proven": false,
+  "parent_24_cases": {
+    "pass": 0,
+    "partial": 9,
+    "not_run": 15
+  },
+  "remaining_gates": [
+    "R02 fresh source/normal/race/static/independent binding acceptance",
+    "full preview/R4 extra-lock regressions",
+    "missing-binding negative",
+    "self/admin concurrency",
+    "matching production Web/Desktop original four scenarios and A01-A12",
+    "normal recovery and final S2 acceptance",
+    "S3",
+    "real S4",
+    "final S5",
+    "parent 24-case acceptance"
+  ]
+}

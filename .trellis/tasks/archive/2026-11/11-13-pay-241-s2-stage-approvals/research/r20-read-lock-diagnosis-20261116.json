@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-16",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "STATIC_DISPLAY_GAP_WITH_RETAINED_AUTHORITATIVE_DENIAL_REGRESSION_PENDING",
+  "read_only_research": true,
+  "latest_original_round": "r19-metric-freshness-fixture-r01",
+  "original_cases": {"PASS": 0, "FAIL": 1, "NOT_RUN": 3},
+  "original_failure": {
+    "file": "e2e/collaboration-stage-approvals.spec.ts",
+    "line": 351,
+    "assertion_timeout_ms": 5000,
+    "behavior": "source-denial banner visible after reviewer source membership removal and reload"
+  },
+  "raw_evidence": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/evidence/four-scenarios-read-diagnostics-r01.jsonl",
+  "authoritative_denial_before_terminal_failure": [
+    {"line": 820, "trace": 275, "at": "2026-11-16T12:01:26.109018Z", "endpoint": "R1", "http_status": 200, "children_can_open": false, "child_content_digest": null},
+    {"line": 825, "trace": 276, "at": "2026-11-16T12:01:26.146042Z", "endpoint": "R4", "http_status": 200, "baseline": null, "blocked_evidence": 1, "private_arrays_empty": true},
+    {"line": 859, "trace": 290, "at": "2026-11-16T12:01:26.739337Z", "endpoint": "R1", "http_status": 200, "children_can_open": false, "child_content_digest": null},
+    {"line": 868, "trace": 293, "at": "2026-11-16T12:01:26.783603Z", "endpoint": "R1", "http_status": 200, "children_can_open": false, "child_content_digest": null}
+  ],
+  "member_lock_observation": {
+    "line": 805,
+    "trace": 270,
+    "at": "2026-11-16T12:01:26.005911Z",
+    "query": "LockArtifactMembers",
+    "sqlstate": "55P03",
+    "actual_existing_lock": "FOR SHARE NOWAIT",
+    "reader_reader_incompatibility_proved": false,
+    "exact_competing_holder_proved": false,
+    "change_sql_recommended": false
+  },
+  "display_gap": {
+    "file": "packages/views/collaboration/stage-code-panel.tsx",
+    "record_derivation_line": 33,
+    "record_required_banner_lines": [62, 64],
+    "existing_authoritative_predicate": "collaborationStageSourceDenied",
+    "predicate_file": "packages/core/collaboration/stage-presentation.ts",
+    "predicate_line": 10,
+    "public_export": "packages/core/collaboration/index.ts:108",
+    "r1_denial_scrubs_secondary_read": true,
+    "first_r1_denial_precedes_late_r4_ms": 37.024,
+    "fresh_deterministic_regression_run": false,
+    "recommended_scope": [
+      "packages/views/collaboration/stage-code-panel.tsx",
+      "packages/views/collaboration/stage-code-panel.test.tsx"
+    ]
+  },
+  "diagnostic_contract": {
+    "actual_source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r18-stage-execution-read-lock-fix-r01/runtime/build-source-r01/server/cmd/server/pay241_read_diagnostics_test.go",
+    "kind": "pgx.QueryTracer",
+    "rows_scan_wrapper": false,
+    "diagnostic_sql_reentry": false,
+    "direct_contract_defect_found": false,
+    "connLockError_exact_state_proved": false,
+    "generic_failure_cancellation_proved": false,
+    "deep_error_classification_owner": "r20_evidence_check"
+  },
+  "root_matches_actual_frozen_build_source": {
+    "scope_only": true,
+    "files": [
+      "server/internal/service/collaboration_stage_evidence_read.go",
+      "server/internal/service/collaboration_stage_signer.go",
+      "server/internal/service/collaboration_stage_review_view.go",
+      "server/internal/service/collaboration_stage_execution_view.go",
+      "server/internal/service/collaboration_stage_qa.go",
+      "server/internal/service/collaboration_stage_execution_approvals.go",
+      "server/internal/service/delivery_completion_collaboration.go",
+      "server/internal/service/delivery_evidence.go",
+      "server/pkg/db/queries/delivery_evidence_read.sql",
+      "server/pkg/db/generated/delivery_evidence_read.sql.go"
+    ],
+    "matches": 10,
+    "mismatches": 0
+  },
+  "required_controls_retained": [
+    "same RR snapshot and concrete private marker",
+    "shared exact-authority read fences",
+    "public writer constant-false mode entries",
+    "current original signer/member/credential generations",
+    "source-cache cancellation and private-data scrubbing",
+    "no cached readable evidence after current denial/error",
+    "original request/recovery identities",
+    "query error and retry UI",
+    "original form and approval locks",
+    "five-second original banner assertion",
+    "workers1 retries0 maxFailures1 original four cases"
+  ],
+  "verification_executed": {
+    "static_source_and_raw_files": true,
+    "database": false,
+    "api": false,
+    "browser": false,
+    "go_tests": false,
+    "typescript_tests": false,
+    "builds": false,
+    "migrations": false,
+    "git": false
+  },
+  "acceptance_claims": {"S2_complete": false, "A01_A12_complete": false, "parent24_updated": false},
+  "report": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-read-lock-diagnosis-20261116.md"
+}

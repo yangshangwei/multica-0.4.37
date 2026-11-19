@@ -1,0 +1,944 @@
+{
+  "schema_version": 1,
+  "type": "r28_preview_read_GREEN_independent_check",
+  "at": "2026-11-17T15:53:17.675Z",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r27_submission_check",
+  "r28_root": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y",
+  "verdict": "ACCEPTED_R28_SUBMISSION_READ_GREEN_NORMAL_RACE",
+  "accepted_scope": "Frozen private three-file submission-preview read repair with union26 actual normal/race",
+  "full_preview_or_S2_accepted": false,
+  "ROOT_or_five_products_or_original_four_cases_accepted": false,
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.md",
+    "sha256": "6d1fcd90b80d105252bcefc18651511d3cf43f7c9adfe8b4bb55e2a3b261bace"
+  },
+  "private_support": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/read-green-independent-check/source-caller-and-union-reconciliation-r01.json",
+    "sha256": "b19e63a9decad97e67a1f3bfcc0a5b684a22b824ced94f4bc00103b854245b4e"
+  },
+  "checks": {
+    "actual_source_5051_three_deltas_5048_unchanged": true,
+    "all_three_patches_exact_over_RED": true,
+    "unchanged_new_and_retained_tests": true,
+    "all_owner_static_evidence_hashes_match": true,
+    "actual_source_default_and_read_dispatch_audit": true,
+    "real_product_AST_caller_false_true_marker_audit": true,
+    "all_original_AST_signatures_unchanged": true,
+    "both_5057_permit_sets_and_profile_commands_bound": true,
+    "both_actual_7top_19leaf_26named_pass_once": true,
+    "no_missing_pending_parse_drift_retry": true,
+    "three_successful_read_orders_with_distinct_held_PIDs": true,
+    "all_64_no_write_comparisons_72_zero_effect_rows": true,
+    "all_actual_body_assertions_pass_binding_authority_expiry_and_adapter": true,
+    "actual_normal_race_refs_and_terminal_hashes": true,
+    "retained_compile_vet_exit0": true,
+    "final_connections_zero_and_schema_ledger_retained": true,
+    "RED_report_preserved": true
+  },
+  "source": {
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-green-r01",
+    "manifest_sha256": "5a96a6a074f0898abd6079aba76a34da1f9547212f4dfdaca7d6df5fdc3f4ad4",
+    "actual_count": 5051,
+    "manifest_count": 5051,
+    "changed_paths": [
+      "server/internal/service/collaboration_completion_preview.go",
+      "server/internal/service/collaboration_stage_completion.go",
+      "server/internal/service/delivery_completion_collaboration.go"
+    ],
+    "unchanged_count": 5048,
+    "byte_mode_mismatches": [],
+    "missing": [],
+    "extra": [],
+    "accepted_RED_report_sha256": "e7ae346c98677f38577fc8d9599c22a90d012ce94fefbef0a00dbc33fe41b5c9",
+    "test_hashes": {
+      "R28": "31885022def923d4d4d07a27855ab7d7e19f51776a69682ba61a2c1cc0993bf8",
+      "managed": "f1aa77c0749504ee1826942c1511e5ad751a2254c8385ac69c2b0514ebc865e7",
+      "admin": "658bb12c83611a78cb6974bc054e82bbb872a3d9a8ee51bfbb5a195db64be925"
+    }
+  },
+  "accepted_product_hashes": {
+    "server/internal/service/collaboration_completion_preview.go": {
+      "before_sha256": "5fc937a4627c9271be1698847221be1abc4391934072ae87d117b8dc3b6b91ba",
+      "after_sha256": "b7ea8fe6ef2490e95e405b78b265154bab69511fc5aaf2519c1babde1b2ae6da",
+      "mode": "0o644",
+      "exact_reconstruction_matches": true
+    },
+    "server/internal/service/delivery_completion_collaboration.go": {
+      "before_sha256": "c92797c69ca01850ca87dea3b8f960ddc7c174ada3154084554a5423bb89cfab",
+      "after_sha256": "20fc764b20edbfae356db7785f82ac17c0d12a71d23f9a0dcf318624a71e0084",
+      "mode": "0o644",
+      "exact_reconstruction_matches": true
+    },
+    "server/internal/service/collaboration_stage_completion.go": {
+      "before_sha256": "9d47fe441cc62a7ccacb1d27358ed2adcf5107d6d0ab60adb1c347a38bd4d31c",
+      "after_sha256": "cce754252303652d27a10c335e1e1279906a6b20a543d61b4822baf3a31ce7cb",
+      "mode": "0o644",
+      "exact_reconstruction_matches": true
+    }
+  },
+  "unchanged_original_signatures_and_unrelated_bodies": true,
+  "new_private_functions": 5,
+  "public_interfaces_types_SQL_generated_dependencies_changed": false,
+  "caller_AST": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/evidence/preview-read-green-product-ast-r02.stdout.json",
+    "sha256": "3cafd1dc5b6282d2d7bf54b632be15d5f7a10ac5a58d5aacc91d83c5e27996b9",
+    "evidence": {
+      "actual_same_tx_task_share_with_original_absent_head": true,
+      "caller_references": {
+        "completionCollaborationIntent": [
+          "collaboration_completion_preview.go:GetCollaborationCompletionPreviewInTx",
+          "delivery_completion_collaboration.go:completionFreezeCollaboration",
+          "delivery_completion_collaboration.go:completionRecheckCollaborationIntent"
+        ],
+        "completionCollaborationIntentInTx": [
+          "delivery_completion_collaboration.go:completionCollaborationIntent",
+          "delivery_completion_collaboration.go:readCompletionCollaborationIntent"
+        ],
+        "readCompletionCollaborationIntent": [
+          "collaboration_completion_preview.go:GetCollaborationCompletionPreviewInTx"
+        ],
+        "readStageCompletionFacts": [
+          "collaboration_completion_preview.go:GetCollaborationCompletionPreviewInTx"
+        ],
+        "stageCompletionFacts": [
+          "collaboration_completion_preview.go:GetCollaborationCompletionPreviewInTx",
+          "collaboration_stage_completion.go:prepareStageMutation",
+          "collaboration_stage_completion_tx_test.go:TestStageCompletionCandidateHeadLocksInOwningTransaction"
+        ],
+        "stageCompletionFactsInTx": [
+          "collaboration_stage_completion.go:readStageCompletionFacts",
+          "collaboration_stage_completion.go:stageCompletionFacts",
+          "collaboration_stage_completion.go:stageCompletionFactsWithFinalCheck"
+        ],
+        "stageCompletionFactsWithFinalCheck": [
+          "collaboration_stage_completion.go:FinishStageMutationInTx"
+        ],
+        "stageCompletionState": [
+          "collaboration_completion_preview_read_concurrency_test.go:r28StageStateFence",
+          "collaboration_stage_completion.go:FinishStageMutationInTx",
+          "collaboration_stage_completion.go:prepareStageMutation"
+        ],
+        "stageCompletionStateInTx": [
+          "collaboration_stage_completion.go:stageCompletionFactsInTx",
+          "collaboration_stage_completion.go:stageCompletionState"
+        ]
+      },
+      "files": {
+        "collaboration_completion_preview.go": {
+          "added_private_functions": [],
+          "changed_bodies": [
+            "GetCollaborationCompletionPreviewInTx"
+          ],
+          "original_signatures_unchanged": true,
+          "unchanged_functions": [
+            "ListCollaborationDeliveryCandidatesInTx",
+            "ParseCollaborationCompletionPreview",
+            "lockCompletionPreviewRoot",
+            "stageCompletionMatchesM1"
+          ]
+        },
+        "collaboration_stage_completion.go": {
+          "added_private_functions": [
+            "readStageCompletionFacts",
+            "stageCompletionFactsInTx",
+            "stageCompletionStateInTx"
+          ],
+          "changed_bodies": [
+            "stageCompletionFacts",
+            "stageCompletionFactsWithFinalCheck",
+            "stageCompletionState"
+          ],
+          "original_signatures_unchanged": true,
+          "unchanged_functions": [
+            "Error",
+            "FinishStageMutationInTx",
+            "Unwrap",
+            "bindSubmission",
+            "checkStageSubmissionSchema",
+            "checkSubmission",
+            "prepareStageMutation",
+            "selectedArtifact",
+            "stageCompletionRefusal"
+          ]
+        },
+        "delivery_completion_collaboration.go": {
+          "added_private_functions": [
+            "completionCollaborationIntentInTx",
+            "readCompletionCollaborationIntent"
+          ],
+          "changed_bodies": [
+            "completionCollaborationIntent"
+          ],
+          "original_signatures_unchanged": true,
+          "unchanged_functions": [
+            "completionAdminNomination",
+            "completionAdminTarget",
+            "completionCollaborationAccess",
+            "completionCollaborationAccessInTx",
+            "completionCollaborationConsumer",
+            "completionCollaborationFinished",
+            "completionCollaborationTargetFromWorkflow",
+            "completionFreezeCollaboration",
+            "completionIntentDigest",
+            "completionIsCollaboration",
+            "completionRecheckCollaborationIntent",
+            "completionRequestCredential",
+            "completionSelfInput",
+            "completionSourceIssue",
+            "completionTargetEqual",
+            "completionValidateStoredCollaboration",
+            "completionWorkflowRefusal",
+            "readCompletionCollaborationAccess"
+          ]
+        }
+      },
+      "marker_same_borrowed_value_after_current_version_check": true,
+      "private_read_entries_only_preview_caller": true,
+      "read_entries_constant_true": true,
+      "read_intent_submission_only": true,
+      "test_product_DB_execution": false,
+      "type": "r28_product_go_ast_caller_audit",
+      "writer_entries_constant_false": true
+    }
+  },
+  "source_manual_audit": {
+    "preview_marker_after_current_version_check": true,
+    "preview_submission_condition": true,
+    "four_dispatches_present": true,
+    "default_intent_false": true,
+    "default_state_false": true,
+    "default_facts_false": true,
+    "default_final_callback_false": true,
+    "task_actual_SHARE_getter_branch": true,
+    "UTC_boundID_retained": true
+  },
+  "retained_actual_runs": [
+    {
+      "name": "preview-read-green-r01",
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-green-r01/result.json",
+      "result_sha256": "d016f60680e3175d86ef8a7f1bdc77db5a23d881c0254e1c0aab22c23d794e81",
+      "counts": {
+        "top_level": 7,
+        "leaf": 19,
+        "named": 26,
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "command": {
+        "at": "2026-11-17T15:29:13.828004+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-timeout=10m",
+          "./internal/service",
+          "-run",
+          "^(TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals|TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority|TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence|TestCollaborationCompletionPreviewManagedSubmissionSiblingReads|TestCollaborationCompletionPreviewManagedSubmissionWriterFences|TestCollaborationCompletionPreviewManagedSubmission|TestCollaborationCompletionPreviewAdminCurrentSubmission)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-green-r01/server",
+        "environment": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/database/profiles-r01/green-environment.json",
+          "sha256": "caf5fab0b231415876c45449397796bb8c822766b4b1b2383773d26c8893f06f"
+        },
+        "permit": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-green-permit-r01.json",
+          "sha256": "515f02a4810edf36ae6a153a504f0d915c46f9be5d6ae487d01854e55ac415d1"
+        },
+        "ambient_environment_inherited": false
+      },
+      "read_order_witnesses": [
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/r4_first",
+          "pair": {
+            "first": 15422,
+            "second": 15445,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:29:36.044341+08:00",
+          "first_commit_at": null,
+          "second_before_first_commit": null,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/preview_first",
+          "pair": {
+            "first": 15449,
+            "second": 15473,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:29:38.832432+08:00",
+          "first_commit_at": "2026-11-17T23:29:38.834027+08:00",
+          "second_before_first_commit": true,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads/same_creator",
+          "pair": {
+            "first": 15477,
+            "second": 15499,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:29:41.502494+08:00",
+          "first_commit_at": "2026-11-17T23:29:41.504215+08:00",
+          "second_before_first_commit": true,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        }
+      ],
+      "current_authority_binding_controls": [
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/disabled_account",
+          "last_read": {
+            "label": "R28_current_authority_disabled_account",
+            "actor": "5160a4b8-0a55-4287-9327-504a19058462",
+            "backend_pid": 15601,
+            "error_type": "*service.CollaborationError",
+            "status": 404,
+            "code": "not_found",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_disabled_account",
+            "reason": "",
+            "stage_blockers": null,
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea20-f85f-7042-b8c8-42ba5641245a",
+              "kind": "collaboration_submission",
+              "status_options_version": "90b0318a9cfd0f1701d556c9567af132717b97d40680972558f37beaa981ff5c",
+              "submission_id": "6cf4c2c0-0ec4-42d6-a0a5-8c89a0098d40",
+              "target_status": "done"
+            },
+            "source_issue_id": "233cf191-a3d4-4c46-b5d2-8d0967ee21df",
+            "approval_id": "50f626c0-66c8-42fa-9b35-e061a59af406",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/changed_password",
+          "last_read": {
+            "label": "R28_current_authority_changed_password",
+            "actor": "1f76fa27-34ff-4c96-9c18-c83dc13bb207",
+            "backend_pid": 15621,
+            "error_type": "*service.CollaborationError",
+            "status": 404,
+            "code": "not_found",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_changed_password",
+            "reason": "",
+            "stage_blockers": null,
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea21-00a6-7a87-b404-8e2b01d140c5",
+              "kind": "collaboration_submission",
+              "status_options_version": "e5881d3484c5b91431d0d69ccc754edec609cfa33ad344653d6b579f0748590e",
+              "submission_id": "98ac5501-0208-41a6-8457-cd7e5354fb2d",
+              "target_status": "done"
+            },
+            "source_issue_id": "214e0659-66de-4a41-a5f7-beae9a21b14f",
+            "approval_id": "270e8d12-84bd-47cc-b34c-f57b6dae54bd",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_artifact_manager",
+          "last_read": {
+            "label": "R28_current_authority_revoked_artifact_manager",
+            "actor": "9df675fa-738d-4e95-8efb-a5581c089abc",
+            "backend_pid": 15646,
+            "error_type": "service.DeliveryCompletionError",
+            "status": 403,
+            "code": "delivery_completion_denied",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_revoked_artifact_manager",
+            "reason": "",
+            "stage_blockers": [],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea21-0afc-7027-bdbf-ee974ce35859",
+              "kind": "collaboration_submission",
+              "status_options_version": "20491401f6e86375dd38feed0b641bed338ec1c690a7bebc002e08537693c767",
+              "submission_id": "84a25125-e742-4c47-839e-0b95af40422b",
+              "target_status": "done"
+            },
+            "source_issue_id": "82aff1d5-fe83-46dd-992a-d342ef987590",
+            "approval_id": "94fb0623-fd5a-4499-ae43-5f2cea55f4fb",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_qa_issuer",
+          "last_read": {
+            "label": "R28_current_authority_revoked_qa_issuer",
+            "actor": "9975e036-931c-49fa-9557-e90a61cc3fc0",
+            "backend_pid": 15668,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_revoked_qa_issuer",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_evidence_unavailable",
+                "stage": "verification"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea21-1387-741e-ad49-55565e776e7c",
+              "kind": "collaboration_submission",
+              "status_options_version": "d0e35b6d0a73ff2bf337eb96b63f6f2c42ed4a8008d5a99abfba27ea8fd29a6b",
+              "submission_id": "2298587d-d569-49da-9cfe-e87501fbb78d",
+              "target_status": "done"
+            },
+            "source_issue_id": "3cae1de5-03c5-4d12-8499-c1c5912f8de8",
+            "approval_id": "f5e5b9d6-d3da-4f82-91cb-32fa2e6cf5a8",
+            "checked_at": "2026-11-17T15:30:00.712338Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/missing_stage_binding",
+          "last_read": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "actor": "94629f3a-97f6-4ade-a73a-bcc708f6f752",
+            "backend_pid": 15688,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_submission_unbound",
+                "stage": "verification"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea21-1c36-775e-8832-e809da6e1f7d",
+              "kind": "collaboration_submission",
+              "status_options_version": "26ad5dfa939ef0d7d2c00dff55e3fd75272b4c18b1867292e1e5695ca6187276",
+              "submission_id": "04a03dc9-486b-44ac-8338-fda1fb57243a",
+              "target_status": "done"
+            },
+            "source_issue_id": "abeb7b1f-1ac7-4244-872a-3f5f1154f23a",
+            "approval_id": "da97c746-0d38-4c2f-9dea-6274bb1e7406",
+            "checked_at": "2026-11-17T15:30:02.912754Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/stale_stage",
+          "last_read": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "actor": "39ce13a8-2111-4dc8-a4a2-2ff72c789c47",
+            "backend_pid": 15710,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_not_reached",
+                "stage": "development"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "17",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea21-24d9-78f4-b03c-142e03439457",
+              "kind": "collaboration_submission",
+              "status_options_version": "dbbf5f5681e63fde94112bdcd67a4f4f25ec0d31b12fcab5967213e140031d71",
+              "submission_id": "2e942d35-dd79-4a1d-a22f-e7f090eb97f2",
+              "target_status": "done"
+            },
+            "source_issue_id": "b79c0630-6c99-43af-94b1-6e6e0f87e418",
+            "approval_id": "d0cc7b63-a196-45a5-9fde-f81993994c2d",
+            "checked_at": "2026-11-17T15:30:05.440508Z",
+            "max_expires_at": null
+          }
+        }
+      ],
+      "database_metadata": {
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "same_ledger": true,
+        "same_indexes": true,
+        "post_fixture_cleanup_count_changes": {
+          "issue_handoff": {
+            "before": 0,
+            "after": 19
+          },
+          "collaboration_config_invalidation": {
+            "before": 21,
+            "after": 116
+          },
+          "collaboration_knowledge_invalidation": {
+            "before": 18,
+            "after": 76
+          }
+        }
+      }
+    },
+    {
+      "name": "preview-read-race-r01",
+      "result_path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-race-r01/result.json",
+      "result_sha256": "294428bfa6397002b8fbcdf06c511c77fdcc6fe44572c45bd7d87661d1f646b8",
+      "counts": {
+        "top_level": 7,
+        "leaf": 19,
+        "named": 26,
+        "pass": 26,
+        "fail": 0,
+        "skip": 0
+      },
+      "command": {
+        "at": "2026-11-17T15:33:36.240641+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=10m",
+          "./internal/service",
+          "-run",
+          "^(TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals|TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority|TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence|TestCollaborationCompletionPreviewManagedSubmissionSiblingReads|TestCollaborationCompletionPreviewManagedSubmissionWriterFences|TestCollaborationCompletionPreviewManagedSubmission|TestCollaborationCompletionPreviewAdminCurrentSubmission)$"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-green-r01/server",
+        "environment": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/database/profiles-r01/race-environment.json",
+          "sha256": "a7f0325e13dfb23b2deea14b767e6a9d01dd542d2713f290a13db7121fbae039"
+        },
+        "permit": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/verification/preview-read-race-permit-r01.json",
+          "sha256": "c8b023934cb39b9e76a5051a74a648038d458169a48b3773ec6174ef13b745bf"
+        },
+        "ambient_environment_inherited": false
+      },
+      "read_order_witnesses": [
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/r4_first",
+          "pair": {
+            "first": 18127,
+            "second": 18155,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:34:29.616365+08:00",
+          "first_commit_at": null,
+          "second_before_first_commit": null,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionR4Coexistence/preview_first",
+          "pair": {
+            "first": 18160,
+            "second": 18189,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:34:33.300413+08:00",
+          "first_commit_at": "2026-11-17T23:34:33.303056+08:00",
+          "second_before_first_commit": true,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionSiblingReads/same_creator",
+          "pair": {
+            "first": 18196,
+            "second": 18222,
+            "distinct": true
+          },
+          "second_service_success": true,
+          "second_terminal_at": "2026-11-17T23:34:36.735911+08:00",
+          "first_commit_at": "2026-11-17T23:34:36.737919+08:00",
+          "second_before_first_commit": true,
+          "R4_hold_release_order_and_Tx_status_assertions_passed": true
+        }
+      ],
+      "current_authority_binding_controls": [
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/disabled_account",
+          "last_read": {
+            "label": "R28_current_authority_disabled_account",
+            "actor": "c128c5d8-27b7-48d4-87ae-7e1e87163d79",
+            "backend_pid": 18348,
+            "error_type": "*service.CollaborationError",
+            "status": 404,
+            "code": "not_found",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_disabled_account",
+            "reason": "",
+            "stage_blockers": null,
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-8226-72fd-ab81-179cffed21fe",
+              "kind": "collaboration_submission",
+              "status_options_version": "9a28c844c16034cf18c6f423b6a50e80fc62fd7f959fb2caa16b9397886aa763",
+              "submission_id": "9144308f-965c-4a15-bb5c-c8e6378e9260",
+              "target_status": "done"
+            },
+            "source_issue_id": "81fd8a41-b8fd-4c4f-83a9-e9c8a4eeb146",
+            "approval_id": "270f0889-0291-4cd7-a873-d338e07168d5",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/changed_password",
+          "last_read": {
+            "label": "R28_current_authority_changed_password",
+            "actor": "266fedb4-9492-489e-913c-afce2ec0d8d9",
+            "backend_pid": 18373,
+            "error_type": "*service.CollaborationError",
+            "status": 404,
+            "code": "not_found",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_changed_password",
+            "reason": "",
+            "stage_blockers": null,
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-8ce2-74c2-b13e-ca74c297101d",
+              "kind": "collaboration_submission",
+              "status_options_version": "00c1e2533f9981a9300142df2f6b768e4971b9d8e1f4308b1bb5888ba29c11ad",
+              "submission_id": "54a9f9a7-433a-4017-9674-9043c20bacf2",
+              "target_status": "done"
+            },
+            "source_issue_id": "2f7832dc-255b-4336-a3a8-33896e45f109",
+            "approval_id": "c110c05a-6e16-4c36-b90e-d9a38e050471",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_artifact_manager",
+          "last_read": {
+            "label": "R28_current_authority_revoked_artifact_manager",
+            "actor": "e58d0645-a3c0-4af7-9aca-47512615fe06",
+            "backend_pid": 18405,
+            "error_type": "service.DeliveryCompletionError",
+            "status": 403,
+            "code": "delivery_completion_denied",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_revoked_artifact_manager",
+            "reason": "",
+            "stage_blockers": [],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-9a94-75c8-80eb-5f36639cecec",
+              "kind": "collaboration_submission",
+              "status_options_version": "3f1a162a5637160847a114fc530954e488f196bed2a72da27e7a03ad55282dd1",
+              "submission_id": "7c5f3257-3b05-406b-8a05-bee65405b863",
+              "target_status": "done"
+            },
+            "source_issue_id": "e4f20b61-cfd5-4f53-a0f8-ec3d50751295",
+            "approval_id": "9fab67f2-a6d3-46eb-a9ad-b2838769d931",
+            "checked_at": "0001-01-01T00:00:00Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionCurrentAuthority/revoked_qa_issuer",
+          "last_read": {
+            "label": "R28_current_authority_revoked_qa_issuer",
+            "actor": "434fc402-1194-4db2-899f-3daef563d2b2",
+            "backend_pid": 18431,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_current_authority_revoked_qa_issuer",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_evidence_unavailable",
+                "stage": "verification"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-a55f-77a8-b047-24a6a193787e",
+              "kind": "collaboration_submission",
+              "status_options_version": "1485766dc7b16f753cf9074dc5347a374559a80fc53b2d4a677e977582bc6667",
+              "submission_id": "f8a1da1a-e4b6-4c39-a41d-e9d0cc19c842",
+              "target_status": "done"
+            },
+            "source_issue_id": "16c7c30b-db2f-4b8b-8b1d-fc0a55d5614c",
+            "approval_id": "2dfeb278-9430-4bda-bb48-88b06967eb47",
+            "checked_at": "2026-11-17T15:35:00.656007Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/missing_stage_binding",
+          "last_read": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "actor": "488c39fa-03cd-4152-9f1b-48a6f9a43458",
+            "backend_pid": 18457,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_submission_unbound",
+                "stage": "verification"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "15",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-aff7-712c-b2a3-1d99949ff710",
+              "kind": "collaboration_submission",
+              "status_options_version": "e30d686bd392990ca6b58237873c807e2ef8128126d90de6407e10f703a86e9a",
+              "submission_id": "4faf94f3-c54b-4a15-848b-ce020fa2b541",
+              "target_status": "done"
+            },
+            "source_issue_id": "e6e9d5d9-6f62-415d-a5ca-b7d2ee1bb641",
+            "approval_id": "9e771b73-b3f7-4690-bf73-dbbd3bbee3a6",
+            "checked_at": "2026-11-17T15:35:03.644775Z",
+            "max_expires_at": null
+          }
+        },
+        {
+          "test": "TestCollaborationCompletionPreviewManagedSubmissionBindingRefusals/stale_stage",
+          "last_read": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "actor": "2e641c10-edcc-49cf-9ead-068dad91a2cf",
+            "backend_pid": 18485,
+            "error_type": "<nil>",
+            "status": 0,
+            "code": "",
+            "first_pg_error": null
+          },
+          "last_preview": {
+            "label": "R28_exact_binding_or_stage_refusal",
+            "reason": "stage_incomplete",
+            "stage_blockers": [
+              {
+                "code": "stage_not_reached",
+                "stage": "development"
+              }
+            ],
+            "target": {
+              "acceptance_note": "Accept only this exact result",
+              "expected_account_epoch": "1",
+              "expected_collaboration_revision": "17",
+              "expected_issue_revision": 4,
+              "expected_lifecycle_epoch": "1",
+              "expected_participant_epoch": "1",
+              "expected_status": "in_review",
+              "issue_id": "01a1ea25-bbc3-7d61-bace-9402f2cf8547",
+              "kind": "collaboration_submission",
+              "status_options_version": "4f2ad95350c0dbcf713cdc73d23b0a7645e9062962d8a70c559c1aa5a552e6e2",
+              "submission_id": "8a93a60d-b3f9-49f2-995b-d0b9707d6709",
+              "target_status": "done"
+            },
+            "source_issue_id": "6b49060e-382f-46f6-97a5-b8e065777c85",
+            "approval_id": "cf62fcbb-daca-4048-9196-92c8c82de71e",
+            "checked_at": "2026-11-17T15:35:07.066082Z",
+            "max_expires_at": null
+          }
+        }
+      ],
+      "database_metadata": {
+        "before_other_connections": 0,
+        "after_other_connections": 0,
+        "same_ledger": true,
+        "same_indexes": true,
+        "post_fixture_cleanup_count_changes": {
+          "issue_handoff": {
+            "before": 0,
+            "after": 19
+          },
+          "collaboration_config_invalidation": {
+            "before": 21,
+            "after": 116
+          },
+          "collaboration_knowledge_invalidation": {
+            "before": 18,
+            "after": 76
+          }
+        }
+      }
+    }
+  ],
+  "findings_fixed": [
+    {
+      "id": "R28-READ-C01",
+      "fixed_by": "implementation owner in three frozen private files",
+      "issue": "Genuine submission-preview/R4 and sibling read contention",
+      "fix": "After existing version checks construct exact value marker only for submission; use four private read dispatches; explicit false-default intent/state/facts factoring; same-Tx task SHARE/current getter and canonical child shared fence",
+      "evidence": "Three actual held-before-second-success orders pass normal/race; exact identity/expiry/effects and writer controls pass"
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "id": "R28-ADDITIONAL-ORIGINAL-CONTROLS",
+      "issue": "Separate7top/58named/38leaf original completion/default control suites and five matching product builds not claimed by this union26 check",
+      "reason": "Separate main-owned verification scope; no automatic116 repeat or current116 claim"
+    },
+    {
+      "id": "R28-FULL-PREVIEW-AND-ACCEPTANCE",
+      "issue": "Nonempty attachments, self/admin/ordinary/advisory read compatibility, ROOT/final runtime/original four/A01-A12/S2/parent/S3-S5 acceptance remain open",
+      "reason": "Original dispatches unchanged and wider gates outside this selected repair"
+    }
+  ],
+  "additional_defects_in_reviewed_scope": [],
+  "marker_and_writer_contract": {
+    "marker": "collaborationStageEvidenceReadTx",
+    "exact_value_only_after_current_version_checks": true,
+    "same_physical_borrowed_transaction_with_no_Begin_or_isolation_override": true,
+    "private_read_entries_only_validated_submission_preview": true,
+    "original_intent_state_facts_finalcheck_constant_false_even_marked": true,
+    "QA_access_observer_defaults_unchanged": true,
+    "task_SHARE_id_only_literal_and_original_getter_virtual_absent_head": true,
+    "absence_error_preserves_development_nonauthorizing_head_with_root_SHARE_schema_guards": true,
+    "all_current_epoch_capability_status_catalog_source_read_clock_checks_preserved": true,
+    "source_report_run_retained_signer_chain_same_marker": true,
+    "submission_operation_handoff_binding_and_UTC_expiry_flags_unchanged": true,
+    "ordinary_self_admin_attachments_advisory_original_paths": true
+  },
+  "no_effects": {
+    "normal_race_compares": 64,
+    "relations_each": 72,
+    "stage_exit_admin_control_adapter_comparisons_pass": true,
+    "M1_authorization_terminal_evaluation_rows": 0,
+    "fixture_setup_cleanup_count_growth_preserved": true,
+    "new_archive_bytes_or_all_database_no_effect_audit": false
+  },
+  "tooling_history": {
+    "r01_AST_utility_failure": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/evidence/preview-read-green-product-ast-r01.stderr.log",
+      "sha256": "15910c668f879c61c6b571063829d42d4ae18de883c707ccf0991bbc8c312ff2",
+      "reason": "go/printer unsupported *ast.FieldList",
+      "classification": "tooling-only failure retained; r02 utility fix did not change product"
+    },
+    "r02_AST_pass": true,
+    "only_new_utility_changed_to_handle_FieldList": true,
+    "product_source_or_tests_changed_for_tool_failure": false
+  },
+  "verification": {
+    "lint": "RETAINED_GOFMT_SERVICE_VET_PASS_NO_CHECKER_RERUN",
+    "typecheck": "RETAINED_SINGLE_GO_COMPILE_EXIT0_BINARY_f9ec53f6fa624f06e05aec6788cae81cd7ba8cfb6c62bccab36d5665434eee3d",
+    "tests": "ACTUAL_NORMAL_AND_RACE_EACH26_NAMED_PASS_ZERO_FAIL_SKIP",
+    "checker_DB_SQL_tests_build_API_browser_signals_Git_subagent_executions": 0
+  },
+  "old_RED_history_and_reports_unchanged": true,
+  "historical_R24_R25_holders_attributed": false,
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.json",
+    "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/read-green-independent-check/source-caller-and-union-reconciliation-r01.json"
+  ],
+  "simplifications": "Owner factors two existing validators into private common bodies with explicit writer/read dispatch; reviewer made no product edits",
+  "source_configuration_old_history_edits_by_checker": false,
+  "remaining_gates": [
+    "separate7top58named38leaf original completion/default controls normal/race",
+    "five matching products and ROOT integration verification",
+    "separately admitted nonempty attachment/self/admin/ordinary read scopes",
+    "matching original four and A01-A12/final S2",
+    "parent and S3-S5"
+  ]
+}

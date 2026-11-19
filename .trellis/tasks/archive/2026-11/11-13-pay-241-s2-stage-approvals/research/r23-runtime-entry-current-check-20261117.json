@@ -1,0 +1,1748 @@
+{
+  "at": "2026-11-17T03:40:08.220927+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r23_restoration_check",
+  "verdict": "READY_FOR_MAIN_SINGLE_MATCHING_API_ADMISSION_AND_LIVE_PREFLIGHT",
+  "blocking_findings": [],
+  "draft": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/api-start-plan-draft-current-r01.json",
+    "sha256": "f23b0de94b5d92ea72df29fa9a2d2cb0d394cdf005660fb3d7a99e30aefe1f69"
+  },
+  "draft_required_refs": 19,
+  "generation_counts": {
+    "accepted_prior": 145,
+    "new_empty0700": 8,
+    "current": 153,
+    "staging_root_mode": "0500"
+  },
+  "generation_actual": {
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output",
+      "inode": 178338283,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-4804-77bc-a9e5-113e8a008f2a": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-4804-77bc-a9e5-113e8a008f2a",
+      "inode": 178530187,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-4804-77bc-a9e5-113e8a008f2a/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-4804-77bc-a9e5-113e8a008f2a/artifact.tar",
+      "inode": 178530188,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "7a86a46dadef2bc6dc83b60f366eca8c8d598ddcb5402fee72314c24834f299b",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/e0368c45-2e16-4c04-bea1-e5e4f9c99203": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/e0368c45-2e16-4c04-bea1-e5e4f9c99203",
+      "inode": 178338291,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a49c-7743-a731-042f9cee38c3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a49c-7743-a731-042f9cee38c3",
+      "inode": 178817753,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a49c-7743-a731-042f9cee38c3/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a49c-7743-a731-042f9cee38c3/artifact.tar",
+      "inode": 178817754,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "60943f59f79eb25da63cdb407dd224b0e2b1eef5fa8c5d55b8b958b21ef9dae0",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-969d-7acd-99e6-93c4c37f229d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-969d-7acd-99e6-93c4c37f229d",
+      "inode": 178665743,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-969d-7acd-99e6-93c4c37f229d/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-969d-7acd-99e6-93c4c37f229d/artifact.tar",
+      "inode": 178665744,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "2032b567c6227cb3dddee5f2717cb967a84a40c56c46d3b7172a35861d2c6d2a",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-47b1-709c-8f4f-f9f654fdf302": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-47b1-709c-8f4f-f9f654fdf302",
+      "inode": 178530180,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-47b1-709c-8f4f-f9f654fdf302/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e33a-47b1-709c-8f4f-f9f654fdf302/artifact.tar",
+      "inode": 178530181,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "f02f0c8263fa4de0b6c229893a9f450bd615048903bf07322de766c10f0b2819",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/e1068590-8a11-4f47-b4f3-78e3f0bd7e24": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/e1068590-8a11-4f47-b4f3-78e3f0bd7e24",
+      "inode": 178338290,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d68e-7ce4-acbf-3482409c475b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d68e-7ce4-acbf-3482409c475b",
+      "inode": 178582633,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d68e-7ce4-acbf-3482409c475b/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d68e-7ce4-acbf-3482409c475b/artifact.tar",
+      "inode": 178582634,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "3b7d11ac9f62e1bbea9d46f872a1beee93f1032206dcc49a01f2b96b775da8bf",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a443-7937-9e8c-52d3be761978": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a443-7937-9e8c-52d3be761978",
+      "inode": 178817743,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a443-7937-9e8c-52d3be761978/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e574-a443-7937-9e8c-52d3be761978/artifact.tar",
+      "inode": 178817744,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-964f-73b1-b077-50c8f5301348": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-964f-73b1-b077-50c8f5301348",
+      "inode": 178665736,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-964f-73b1-b077-50c8f5301348/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e4a1-964f-73b1-b077-50c8f5301348/artifact.tar",
+      "inode": 178665737,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "deb797a943bd9d6edff37595936ac859884b56ab13612324214b698c86dbc665",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-ff45-7c6f-b563-dc65d88ef564": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-ff45-7c6f-b563-dc65d88ef564",
+      "inode": 178443668,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-ff45-7c6f-b563-dc65d88ef564/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-ff45-7c6f-b563-dc65d88ef564/artifact.tar",
+      "inode": 178443669,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "10fffa72c056a2913662c3b145dd875502335b3413c34f9172f624a2bbd1d4c9",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/dd4057a8-d4db-4a15-8d4b-806de914c1a9": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/dd4057a8-d4db-4a15-8d4b-806de914c1a9",
+      "inode": 178338287,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/21b7381b-196e-417b-8dc5-1ba5fc4eaabf": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/21b7381b-196e-417b-8dc5-1ba5fc4eaabf",
+      "inode": 178338288,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/5d036197-f4a5-478f-8967-3353e74510f3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/5d036197-f4a5-478f-8967-3353e74510f3",
+      "inode": 178338294,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85",
+      "inode": 178409226,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85/artifact.tar",
+      "inode": 178409227,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "bd810b43dbc73a87a8f99c846d803888fc2bdbbcefcbb51118ca5686f0a10427",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/4a125789-d922-4345-b561-5135f061e17b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/4a125789-d922-4345-b561-5135f061e17b",
+      "inode": 178338292,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a887-7841-9156-4faf1def2b2b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a887-7841-9156-4faf1def2b2b",
+      "inode": 178409219,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a887-7841-9156-4faf1def2b2b/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e224-a887-7841-9156-4faf1def2b2b/artifact.tar",
+      "inode": 178409220,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "e27a39b68f6f68c0ee1df2fe0ba6d2b4131ce27769cd6d9e9f4aa1c0b058cb08",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/347127a2-fdab-4f80-aac0-2d1df20a74a3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/347127a2-fdab-4f80-aac0-2d1df20a74a3",
+      "inode": 178338289,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/8e134fb1-1255-4d50-a987-7a15f19c43e0": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/8e134fb1-1255-4d50-a987-7a15f19c43e0",
+      "inode": 178338293,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-fff8-744d-9b6e-c4083be4aa42": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-fff8-744d-9b6e-c4083be4aa42",
+      "inode": 178443676,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-fff8-744d-9b6e-c4083be4aa42/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e269-fff8-744d-9b6e-c4083be4aa42/artifact.tar",
+      "inode": 178443677,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "5b8bdbc839a300ec1513f602b9de4d269456dab2fd38437f1333431e49680594",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d632-7c0d-880c-8221e184df2d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d632-7c0d-880c-8221e184df2d",
+      "inode": 178582626,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d632-7c0d-880c-8221e184df2d/artifact.tar": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/output/01a1e3db-d632-7c0d-880c-8221e184df2d/artifact.tar",
+      "inode": 178582627,
+      "uid": 501,
+      "mode": 384,
+      "type": "file",
+      "sha256": "00cff1a7a668203d37b07792acaf870994d55a0b25031615cfa81af0ef4711a9",
+      "size": 2048
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging",
+      "inode": 178338282,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4b16700d-1c51-41c8-9fab-e61ee1a70fc2": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4b16700d-1c51-41c8-9fab-e61ee1a70fc2",
+      "inode": 178427078,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/811459ed-78d0-45f0-8589-dd7696c80335": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/811459ed-78d0-45f0-8589-dd7696c80335",
+      "inode": 178389759,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e0368c45-2e16-4c04-bea1-e5e4f9c99203": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e0368c45-2e16-4c04-bea1-e5e4f9c99203",
+      "inode": 178382267,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/396a3610-3158-434b-a65d-f61f3f114916": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/396a3610-3158-434b-a65d-f61f3f114916",
+      "inode": 178537513,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/52c3ce35-89ee-43da-85d7-2c1e9878820f": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/52c3ce35-89ee-43da-85d7-2c1e9878820f",
+      "inode": 178427074,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f6d8624c-1dba-433f-88d1-ecb550ab315d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f6d8624c-1dba-433f-88d1-ecb550ab315d",
+      "inode": 178501459,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3385e519-808e-429e-ac44-089504b76f71": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3385e519-808e-429e-ac44-089504b76f71",
+      "inode": 178589254,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4ddcae80-1c60-400b-adad-d3e93c411eac": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4ddcae80-1c60-400b-adad-d3e93c411eac",
+      "inode": 178653465,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4aa40f66-5453-4c7d-bb92-ac12e39a3825": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4aa40f66-5453-4c7d-bb92-ac12e39a3825",
+      "inode": 178428163,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b7b4fc15-b65e-422c-828f-c7cb69a9a692": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b7b4fc15-b65e-422c-828f-c7cb69a9a692",
+      "inode": 179012683,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/94ea1a16-bb30-4bcf-a56c-28317d5d647a": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/94ea1a16-bb30-4bcf-a56c-28317d5d647a",
+      "inode": 178501463,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0a44e5c7-b73e-4f58-a0a8-98de1acd9c9d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0a44e5c7-b73e-4f58-a0a8-98de1acd9c9d",
+      "inode": 178501460,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/abb52b81-dd81-4b64-8a76-d050f0e09e37": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/abb52b81-dd81-4b64-8a76-d050f0e09e37",
+      "inode": 179012682,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/fa18255a-f4b5-4462-ae79-2e258f252c6c": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/fa18255a-f4b5-4462-ae79-2e258f252c6c",
+      "inode": 178427073,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/eee17079-db59-4aba-97a0-8bc0590a7333": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/eee17079-db59-4aba-97a0-8bc0590a7333",
+      "inode": 178389763,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4140b8b4-41c2-46e4-ad49-789a0a69ebf8": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4140b8b4-41c2-46e4-ad49-789a0a69ebf8",
+      "inode": 178537512,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f",
+      "inode": 178740914,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/files",
+      "inode": 178817747,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/files/stage-regression.json",
+      "inode": 178817748,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "bddee3d37cdfc1617610ee98a73282653a9d8ec801b7e18a0375167ee26fb0ea",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a7bb6cf9-8100-4f23-a850-7b9c52a6430f/manifest.json",
+      "inode": 178817749,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "0127562263928ba21b030d288e3e988a8e971f51c6999897e0e40a686efd2956",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/56cb94ab-a4a9-49a4-b190-93197d5b6584": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/56cb94ab-a4a9-49a4-b190-93197d5b6584",
+      "inode": 178740919,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/00eb9f2d-470c-4fe5-8518-3d76050fa79c": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/00eb9f2d-470c-4fe5-8518-3d76050fa79c",
+      "inode": 178740920,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/cf053c11-23f4-47d6-9d9e-2b5fedc2d31d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/cf053c11-23f4-47d6-9d9e-2b5fedc2d31d",
+      "inode": 178589256,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e3bf1281-63e0-4352-aba8-df86c1bcf734": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e3bf1281-63e0-4352-aba8-df86c1bcf734",
+      "inode": 178537511,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ebd6ee66-34b8-439a-814d-d5b2925bb248": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ebd6ee66-34b8-439a-814d-d5b2925bb248",
+      "inode": 178740915,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/767290b4-f2e6-4656-9655-b0db4d76f3e8": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/767290b4-f2e6-4656-9655-b0db4d76f3e8",
+      "inode": 178740918,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/920fd249-517a-4727-86d9-66dc2667e04e": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/920fd249-517a-4727-86d9-66dc2667e04e",
+      "inode": 178589251,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e1068590-8a11-4f47-b4f3-78e3f0bd7e24": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e1068590-8a11-4f47-b4f3-78e3f0bd7e24",
+      "inode": 178382266,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097",
+      "inode": 178653461,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/files",
+      "inode": 178665733,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/files/stage-regression.json",
+      "inode": 178665734,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "26ce767f16788b5dd0a5e2a58493fda70915c8921df55905ec1e5994a6dd6e04",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d59d4384-14e1-47e8-b1f1-c13aedcad097/manifest.json",
+      "inode": 178665735,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "66caf9458036f933424f94162524129d2879394509923afe9cccd03bc0d510ba",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d",
+      "inode": 178653462,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/files",
+      "inode": 178665740,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/files/stage-regression.json",
+      "inode": 178665741,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "ae017f1a60d05fcf9012faf8aff77df7801d09de946fb61d3cc4692529c98cb3",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0024b1b-2e6a-4a8b-b62f-e0330743685d/manifest.json",
+      "inode": 178665742,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "5ad50ff2813fb20d5ef315383cd33b3b12e19c25eec621232647571ff7167d02",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e0f3c47f-420b-4fc8-9dd0-06d9f96baea9": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e0f3c47f-420b-4fc8-9dd0-06d9f96baea9",
+      "inode": 178427079,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371",
+      "inode": 178428157,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/files",
+      "inode": 178443665,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/files/stage-regression.json",
+      "inode": 178443666,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "bb320bf861dd61ad848695bebcc72e76b2988e84a5201d69470fcff081121e0e",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/6cd263dc-0d04-4c25-bb94-124e76451371/manifest.json",
+      "inode": 178443667,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "310f15db1260938ada41248c9843d6479b6099842f0b35779dd3472b9c4bc5fd",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/7472ee4c-2673-4501-9490-16f4c019b814": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/7472ee4c-2673-4501-9490-16f4c019b814",
+      "inode": 178589249,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9e0c9056-9faa-4e9d-9085-63f6486b8699": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9e0c9056-9faa-4e9d-9085-63f6486b8699",
+      "inode": 179012687,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9558ff92-7e2d-4b91-99c1-18ed4007f19b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9558ff92-7e2d-4b91-99c1-18ed4007f19b",
+      "inode": 179012681,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/414a783a-5597-4178-be34-af22d1b2b4b3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/414a783a-5597-4178-be34-af22d1b2b4b3",
+      "inode": 178428159,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc",
+      "inode": 178537510,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/files",
+      "inode": 178582630,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/files/stage-regression.json",
+      "inode": 178582631,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "6b571289b455e31fc2004d969c324cea4e1cb01c8df640762cb8bbfff11ea2fe",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3043c2b1-dc77-4103-b7a7-cf54592c53cc/manifest.json",
+      "inode": 178582632,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "7a027d8b276a087d26b61bd9a3fa32e5f38a684d938ba347bde46ef9f992cd66",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3b052b0e-72a5-4538-9e3c-4b698655dac5": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3b052b0e-72a5-4538-9e3c-4b698655dac5",
+      "inode": 178389760,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/022d48a4-b070-483c-876a-f8b70e124380": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/022d48a4-b070-483c-876a-f8b70e124380",
+      "inode": 178653467,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d016176f-4856-4e82-a113-2e1d764f4229": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/d016176f-4856-4e82-a113-2e1d764f4229",
+      "inode": 178537516,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dba5d5a5-f525-4d9b-95bc-e1596e08d2c6": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dba5d5a5-f525-4d9b-95bc-e1596e08d2c6",
+      "inode": 178501461,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ddc986f5-501a-45d4-9cc4-37c29b65d536": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ddc986f5-501a-45d4-9cc4-37c29b65d536",
+      "inode": 178653466,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9",
+      "inode": 178382263,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/files",
+      "inode": 178388785,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/files/stage-regression.json",
+      "inode": 178388786,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "9a8bf053cd214563e524a3da95577f102d5b98cd8878b2310fe352ddae56dd73",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dd4057a8-d4db-4a15-8d4b-806de914c1a9/manifest.json",
+      "inode": 178388787,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "3ec46f5bb6ea0cbfd6c2ec6c673085387540aaf63e217328fcf53455c7fa4673",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/21b7381b-196e-417b-8dc5-1ba5fc4eaabf": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/21b7381b-196e-417b-8dc5-1ba5fc4eaabf",
+      "inode": 178382264,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9050c4c7-c407-4bf5-a524-effbd1f8bc6c": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9050c4c7-c407-4bf5-a524-effbd1f8bc6c",
+      "inode": 178428160,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/81aa5ae1-b812-4f95-9688-022d700c35e5": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/81aa5ae1-b812-4f95-9688-022d700c35e5",
+      "inode": 178653464,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef",
+      "inode": 178389757,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/files",
+      "inode": 178409216,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/files/stage-regression.json",
+      "inode": 178409217,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "06ebeac23f67cf6037a7945b4cdd615ba77c260c4032b708be1c7728bf7bf9ad",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a5907eb5-fe50-4f42-878e-412bf3b584ef/manifest.json",
+      "inode": 178409218,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "c0b01016850e4db647c685e07ab3980d83873e789b4cc7beb2334a58404a10a1",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/5d036197-f4a5-478f-8967-3353e74510f3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/5d036197-f4a5-478f-8967-3353e74510f3",
+      "inode": 178382270,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0309b52f-b4bc-4b26-9e2e-068973d2c5e6": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0309b52f-b4bc-4b26-9e2e-068973d2c5e6",
+      "inode": 178501458,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40",
+      "inode": 178501457,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/files",
+      "inode": 178530184,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/files/stage-regression.json",
+      "inode": 178530185,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "71c8d635e4d13dc060fc8de8a5790cff373036bdf59bfcc218e7d8df3772635d",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/bf4b3529-e307-4791-84b6-d269a2532d40/manifest.json",
+      "inode": 178530186,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "18c75d474322371938810abe2e69ca4ed5ed735a3eed1abf2d37d8c4a6c6de7a",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/309be27a-674d-4572-918b-2692a364200b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/309be27a-674d-4572-918b-2692a364200b",
+      "inode": 178501462,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dcb2a6a2-0f4a-4962-a496-2a9f1a88dbe5": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/dcb2a6a2-0f4a-4962-a496-2a9f1a88dbe5",
+      "inode": 178427077,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ef7c9be3-d28f-4210-b7a6-e181e6ca2de8": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/ef7c9be3-d28f-4210-b7a6-e181e6ca2de8",
+      "inode": 179012686,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9c2883c6-1430-4ca9-ba28-68f86ebcfdf2": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9c2883c6-1430-4ca9-ba28-68f86ebcfdf2",
+      "inode": 178389762,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f2054b62-580f-456a-b616-c5776a7642c5": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f2054b62-580f-456a-b616-c5776a7642c5",
+      "inode": 178427076,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b6aa588d-def7-4543-a3ac-db6289883c63": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b6aa588d-def7-4543-a3ac-db6289883c63",
+      "inode": 178537515,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f57c36e6-cd61-4905-9acf-943237978cfa": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f57c36e6-cd61-4905-9acf-943237978cfa",
+      "inode": 178537514,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9",
+      "inode": 178428158,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/files",
+      "inode": 178443672,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/files/stage-regression.json",
+      "inode": 178443673,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "91f84724a96f67e5487b9bd179d59dec267f7979bb550c64a0e144d39c3821c9",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b0822585-d162-45f1-a5fa-9e03f6f14ed9/manifest.json",
+      "inode": 178443674,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "308441be6b05cecd3420e4470fa108c641b69640a855637b8b1fcacdb0b16b51",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4a125789-d922-4345-b561-5135f061e17b": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4a125789-d922-4345-b561-5135f061e17b",
+      "inode": 178382268,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0df66424-6b1a-4ae9-8026-4d38c224afb0": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/0df66424-6b1a-4ae9-8026-4d38c224afb0",
+      "inode": 178589250,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/62c445ea-3446-463f-82f8-f0cc78180bfc": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/62c445ea-3446-463f-82f8-f0cc78180bfc",
+      "inode": 178740916,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780",
+      "inode": 178389758,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/files",
+      "inode": 178409223,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/files/stage-regression.json",
+      "inode": 178409224,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "6ab0d8daef84c19a4ccc8194c7e08a643d9c369504d25936470c482bfa25481a",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/88916b77-4164-4b8b-b6a7-93745ff0b780/manifest.json",
+      "inode": 178409225,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "07e0626f3452a7f3b5309013a0c42c12a86b943fa30c1c7385b2edf73f58205d",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/347127a2-fdab-4f80-aac0-2d1df20a74a3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/347127a2-fdab-4f80-aac0-2d1df20a74a3",
+      "inode": 178382265,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/8e134fb1-1255-4d50-a987-7a15f19c43e0": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/8e134fb1-1255-4d50-a987-7a15f19c43e0",
+      "inode": 178382269,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e191cac1-e1ff-43cf-a441-ba09c7e252b6": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e191cac1-e1ff-43cf-a441-ba09c7e252b6",
+      "inode": 178428161,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b4024918-e103-4c67-87a5-4e1afe2a5ea3": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/b4024918-e103-4c67-87a5-4e1afe2a5ea3",
+      "inode": 178589255,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9b27dda9-46ea-43c6-a1d4-bfbc2facbfd2": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9b27dda9-46ea-43c6-a1d4-bfbc2facbfd2",
+      "inode": 178653463,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3527df5d-bd89-4ac3-b3e0-906e1f7ae1d4": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3527df5d-bd89-4ac3-b3e0-906e1f7ae1d4",
+      "inode": 178589253,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4bcab661-cc4e-4f08-8f59-7749aac03540": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/4bcab661-cc4e-4f08-8f59-7749aac03540",
+      "inode": 178427075,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a84a3b1b-f312-43b2-a1a9-62fa145be523": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a84a3b1b-f312-43b2-a1a9-62fa145be523",
+      "inode": 178427080,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9d194ce6-9bab-4cd7-b54a-04cbd77ae3c2": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/9d194ce6-9bab-4cd7-b54a-04cbd77ae3c2",
+      "inode": 178428164,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e9930afd-5684-4931-8fc2-0e70f1937181": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e9930afd-5684-4931-8fc2-0e70f1937181",
+      "inode": 178653468,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/661689e8-33cd-41a1-9947-19d1217ad592": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/661689e8-33cd-41a1-9947-19d1217ad592",
+      "inode": 178589252,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f2966f6b-ec9b-4fee-b189-f65b914b085d": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f2966f6b-ec9b-4fee-b189-f65b914b085d",
+      "inode": 179012685,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9",
+      "inode": 178740913,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/files",
+      "inode": 178817740,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/files/stage-regression.json",
+      "inode": 178817741,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "55d2d6359f855f49df987c08771953ff50f14d6e5f3c186c0b303f56771f53a2",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/710cd971-43eb-4514-aeaa-358879dc54e9/manifest.json",
+      "inode": 178817742,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "f946d2135d30d011e9a450c9326523d98d50c2a1cc77467fd696e13e11f4702c",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e1ea6603-015b-4284-8bc9-eaa358a10655": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e1ea6603-015b-4284-8bc9-eaa358a10655",
+      "inode": 178428162,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e75dfb3f-9bd5-452f-99a3-154b9f27cc0a": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/e75dfb3f-9bd5-452f-99a3-154b9f27cc0a",
+      "inode": 178389761,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/44d732a1-3c77-42fe-862a-fd7bac4fa1e4": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/44d732a1-3c77-42fe-862a-fd7bac4fa1e4",
+      "inode": 179012684,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee",
+      "inode": 178537509,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/files",
+      "inode": 178582623,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/files/stage-regression.json",
+      "inode": 178582624,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "c2cd5fd0037cabf1f816e4835fa5fcf02ab24f5659715e1d7bd397fc11c904f2",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/a105ae5d-3b2c-423c-be72-29d10ea0deee/manifest.json",
+      "inode": 178582625,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "729e5a1f82df7e25535eba2d00bd3fe629850d3510fbf2f529167ccc1e982bfa",
+      "size": 379
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/7dada83f-1f05-40fd-9eb9-5a3133d284bf": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/7dada83f-1f05-40fd-9eb9-5a3133d284bf",
+      "inode": 178389764,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f7ebe3f2-436a-4d7f-80ac-30a26c8194a2": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/f7ebe3f2-436a-4d7f-80ac-30a26c8194a2",
+      "inode": 179012688,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/60b742d7-df95-4f16-91bb-323909eb9562": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/60b742d7-df95-4f16-91bb-323909eb9562",
+      "inode": 178740917,
+      "uid": 501,
+      "mode": 448,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47",
+      "inode": 178501456,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/files": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/files",
+      "inode": 178530177,
+      "uid": 501,
+      "mode": 320,
+      "type": "directory"
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/files/stage-regression.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/files/stage-regression.json",
+      "inode": 178530178,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "fff3214b818e5cb2461dcc2be98ddda089b78481fb2420227e76377cc9c97b04",
+      "size": 105
+    },
+    "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/manifest.json": {
+      "path": "/Users/artisan/.multica/pay241-r11/runtime-r01/artifacts/staging/3d3cf6fe-e9dc-440b-bc9c-3c6375542d47/manifest.json",
+      "inode": 178530179,
+      "uid": 501,
+      "mode": 256,
+      "type": "file",
+      "sha256": "21639de6d4f232cfa58560f9e18dddc38f69a6994ca7d7937484c8c3fff8ba28",
+      "size": 379
+    }
+  },
+  "private_config_comparison": {
+    "bridge_changed_fields": [
+      "env",
+      "logPrefix",
+      "readyPath",
+      "socketPath"
+    ],
+    "bridge_env_changed_fields": [
+      "MULTICA_TEST_PAY241_READ_DIAGNOSTICS"
+    ],
+    "browser_changed_fields": [
+      "COLLABORATION_ELECTRON_SOURCE_ROOT",
+      "COLLABORATION_STAGE_ARTIFACT_SLOTS",
+      "COLLABORATION_STAGE_CONTROL_SOCKET"
+    ],
+    "existing_administrator_password_cookie_auth_unchanged": true,
+    "constructor_identity_roots_unchanged": true,
+    "five_model_keys_blank": true,
+    "credentials_printed": false
+  },
+  "source_binding": {
+    "input_files": 3359,
+    "new_delta_inputs": {
+      "e2e/fixtures/collaboration-stage-control.ts": "a6e433acdb92f943cbe0c1288908ffcfe5ab667b2a0771106c7a090979e51c96",
+      "e2e/fixtures/collaboration-stage-control.node-test.mjs": "479bc8b47e5d533a6cb1db728b857529c7a48b09ecf3b77b1fc03cf46334f3dc"
+    },
+    "dependency_links": 1961,
+    "relocated_internal_links": [
+      {
+        "path": "apps/desktop/node_modules/@multica/core",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/core",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/core"
+      },
+      {
+        "path": "apps/desktop/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "apps/desktop/node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "apps/desktop/node_modules/@multica/ui",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/ui",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/ui"
+      },
+      {
+        "path": "apps/desktop/node_modules/@multica/views",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/views",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/views"
+      },
+      {
+        "path": "apps/web/node_modules/@multica/core",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/core",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/core"
+      },
+      {
+        "path": "apps/web/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "apps/web/node_modules/@multica/ui",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/ui",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/ui"
+      },
+      {
+        "path": "apps/web/node_modules/@multica/views",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/views",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/views"
+      },
+      {
+        "path": "node_modules/@multica/core",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/core",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/core"
+      },
+      {
+        "path": "node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "node_modules/@multica/plugin-sdk",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/plugin-sdk",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/plugin-sdk"
+      },
+      {
+        "path": "node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "node_modules/@multica/ui",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/ui",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/ui"
+      },
+      {
+        "path": "node_modules/@multica/views",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/views",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/views"
+      },
+      {
+        "path": "packages/core/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "packages/core/node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "packages/plugin-sdk/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "packages/plugin-sdk/node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "packages/ui/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "packages/ui/node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "packages/views/node_modules/@multica/core",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/core",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/core"
+      },
+      {
+        "path": "packages/views/node_modules/@multica/eslint-config",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/eslint-config",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/eslint-config"
+      },
+      {
+        "path": "packages/views/node_modules/@multica/plugin-sdk",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/plugin-sdk",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/plugin-sdk"
+      },
+      {
+        "path": "packages/views/node_modules/@multica/tsconfig",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/tsconfig",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/tsconfig"
+      },
+      {
+        "path": "packages/views/node_modules/@multica/ui",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/packages/ui",
+        "after": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/frontend-base-r01/packages/ui"
+      }
+    ],
+    "accepted_unchanged_outputs": 1676,
+    "accepted_Go_inputs": 5047,
+    "accepted_Go_products": 4,
+    "old_complete_consumer_reaudit_repeated": false
+  },
+  "adapter_derivations": [
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/playwright-four-scenarios-r02.config.mjs",
+        "sha256": "f1e4af55a6763be4ca878ad26906e5f59ff4914c1e7a139ebe183e01acd7b995"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/playwright-four-scenarios-r01.config.mjs",
+        "sha256": "24c9d7360d8f1c60b97dc324e9ab10981bbe455786c843299ded23142b339ab4"
+      },
+      "changes": [
+        "fresh runtime/source constants"
+      ],
+      "exact_transformation_matches": true
+    },
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/run-original-four-scenarios-r02.mjs",
+        "sha256": "7004aa948222e67d14ab218afad451bbf1902b8222cda17206f23bf1b922ee10"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/run-original-four-scenarios-r01.mjs",
+        "sha256": "0bfd277678df436ac644cf29549e77e057fbb3f11aefe6be0bb69f0f9488e9c7"
+      },
+      "changes": [
+        "fresh runtime/source constants",
+        "fresh config filename constant"
+      ],
+      "exact_transformation_matches": true
+    },
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/collect-runtime-database-r03.mjs",
+        "sha256": "4732257e8e3ee5ef779168fd33a711bc4e3a26f19c27ffc55e20de9d14012ab2"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/collect-runtime-database-r01.mjs",
+        "sha256": "3a808651ce0ff674d29ce097c4eb3c8fe40ed334fc83ee747def5875520d36c4"
+      },
+      "changes": [
+        "fresh source/appname/snapshot suffix constants",
+        "readonly before-stop phase"
+      ],
+      "exact_transformation_matches": true
+    },
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/runtime-audit-queries-r01.json",
+        "sha256": "a5999661b6ef9662552b98babaf08bce246bb5f6e371d34386701b16722394f9"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/runtime-audit-queries-r01.json",
+        "sha256": "a5999661b6ef9662552b98babaf08bce246bb5f6e371d34386701b16722394f9"
+      },
+      "changes": [
+        "byte-identical readonly query binding"
+      ],
+      "exact_transformation_matches": true
+    },
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/probe-live-surfaces-and-admin-r01.py",
+        "sha256": "6e7bc98e49461de73b00792090611e51a77e686156a01de14268c39fda47bbf1"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/probe-live-surfaces-and-admin-r01.py",
+        "sha256": "89aa860eb99dbfee9bfab4a2bcc5b5bdc9736b77d9bcb0aaacb2309e0486f64b"
+      },
+      "changes": [
+        "new report status label only; source comes from bound new config"
+      ],
+      "exact_transformation_matches": true
+    },
+    {
+      "original": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/launch-api.py",
+        "sha256": "71c7d84f6b6bbeb7b8629efe05279a07d194d0b352092f4f8e1f3d248df9a9c8"
+      },
+      "new": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/launch-api.py",
+        "sha256": "71c7d84f6b6bbeb7b8629efe05279a07d194d0b352092f4f8e1f3d248df9a9c8"
+      },
+      "changes": [
+        "byte-identical launch guards; plan/paths resolved from new private root"
+      ],
+      "exact_transformation_matches": true
+    }
+  ],
+  "launcher_only_owner_thread_changed": true,
+  "recorded_database_before_API": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/database-before-api-r01.json",
+    "sha256": "03df6c25e687f8e68b5376927a3ef01adf7a53c376671883cf0f2dc2587e1420"
+  },
+  "recorded_database_summary": {
+    "database": "multica_pay241_20261116_s2_runtime_r11",
+    "other_connections": 0,
+    "gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": "28"
+    },
+    "queue_rows": 15,
+    "queue_status_counts": {
+      "failed": 13,
+      "deferred": 1,
+      "running": 1
+    },
+    "leased_or_bound": 0,
+    "host_runs": 27,
+    "unsettled": 0,
+    "unreleased": 0,
+    "artifacts": 12,
+    "incomplete_artifacts": 0,
+    "stage_intents": 4,
+    "stage_observations": 6,
+    "unresolved_stage_intents": 1,
+    "rollback_metrics": 3
+  },
+  "fresh_API_port_observation": {
+    "port": 64922,
+    "exit": 1,
+    "stdout": "",
+    "stderr": "",
+    "listener_present": false
+  },
+  "new_test_suites_builds_SQL_network_or_signals": 0,
+  "lint_typecheck_tests": "RETAINED_INTEGRATED16_TAP_STRICT_TYPECHECK_AND_2FILE_LINT_VERIFIED_NO_RERUN",
+  "original_case_body_assertions_deadlines_retries_changed": false,
+  "original_R22_result": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 2
+  },
+  "admission_limits": "Main must create ROOT_ADMITTED_SINGLE_STAGE_API plan with unchanged exact refs; launcher verifies guards immediately. Then perform actual owned listener/password/admin/platform preflight. No original cases have started and no final four-case/S2 acceptance is claimed.",
+  "full_S2_A01_A12_parent_realS4_accepted": false,
+  "references": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-20261115-continuation/runtime-r05/bridge.mjs",
+      "sha256": "1f0663a8c16c77414929ce39949e7130c2d2424a63c9d772c145db744b4e9b40",
+      "expected_sha256": "1f0663a8c16c77414929ce39949e7130c2d2424a63c9d772c145db744b4e9b40",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/input-binding-green-r01.json",
+      "sha256": "0e67ada056c5adf29c4410dc97b7ff5ccfce932ec6c9c0f369f7dc5de96dbabc",
+      "expected_sha256": "0e67ada056c5adf29c4410dc97b7ff5ccfce932ec6c9c0f369f7dc5de96dbabc",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/frontend-products-r01.json",
+      "sha256": "2b182dc5deab6180eab175011f3731326d99ad9e93084c60ec25d37ce12a88d8",
+      "expected_sha256": "2b182dc5deab6180eab175011f3731326d99ad9e93084c60ec25d37ce12a88d8",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/final-code-review-r01.json",
+      "sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "expected_sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-source-manifest-r01.json",
+      "sha256": "97d31ea4942956cc3f1189788bb136af45012b40678ef94131e51d999bf64479",
+      "expected_sha256": "97d31ea4942956cc3f1189788bb136af45012b40678ef94131e51d999bf64479",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/bridge-config.json",
+      "sha256": "5a2d06025a32420e353d4c2c85e6a3d6a8bdfbe35e6f90e1e2878c2e318be8dc"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/browser-env-current-products.json",
+      "sha256": "7bb45deb3e78b166604448df2d45e9a20c4c1d7a9aeb0b4351942ae4cd43aaf7"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/host-daemon.test",
+      "sha256": "035d6df4fa0ebe7960d9eb4f18ccae957818fc26d40910095538c6a222dd8188",
+      "expected_sha256": "035d6df4fa0ebe7960d9eb4f18ccae957818fc26d40910095538c6a222dd8188",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/multica",
+      "sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+      "expected_sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/products.json",
+      "sha256": "b2d1179108dbf50311cb1f367dd1011649d2a7fdedc9f6307e2163816d01f79b",
+      "expected_sha256": "b2d1179108dbf50311cb1f367dd1011649d2a7fdedc9f6307e2163816d01f79b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/server",
+      "sha256": "9c950c93b534339c0f3fe67f46b5abaf8fb9f55918288bd2ad4df59b497774c4",
+      "expected_sha256": "9c950c93b534339c0f3fe67f46b5abaf8fb9f55918288bd2ad4df59b497774c4",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/stage-router.test",
+      "sha256": "535e6d7b258f88c0cb8e75e00e0436c60dd4058153c033344656cf979c0c683e",
+      "expected_sha256": "535e6d7b258f88c0cb8e75e00e0436c60dd4058153c033344656cf979c0c683e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/collect-runtime-database-r03.mjs",
+      "sha256": "4732257e8e3ee5ef779168fd33a711bc4e3a26f19c27ffc55e20de9d14012ab2"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-after-stop-r05.json",
+      "sha256": "d0398103ea9ec1e2d63ae97ebe71f9e7d0d89992ec4b7f7e5aafbbbc94b1a6df",
+      "expected_sha256": "d0398103ea9ec1e2d63ae97ebe71f9e7d0d89992ec4b7f7e5aafbbbc94b1a6df",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/launch-api.py",
+      "sha256": "71c7d84f6b6bbeb7b8629efe05279a07d194d0b352092f4f8e1f3d248df9a9c8"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/playwright-four-scenarios-r02.config.mjs",
+      "sha256": "f1e4af55a6763be4ca878ad26906e5f59ff4914c1e7a139ebe183e01acd7b995"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/probe-live-surfaces-and-admin-r01.py",
+      "sha256": "6e7bc98e49461de73b00792090611e51a77e686156a01de14268c39fda47bbf1"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/run-original-four-scenarios-r02.mjs",
+      "sha256": "7004aa948222e67d14ab218afad451bbf1902b8222cda17206f23bf1b922ee10"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/runtime-audit-queries-r01.json",
+      "sha256": "a5999661b6ef9662552b98babaf08bce246bb5f6e371d34386701b16722394f9"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/check-restoration-current-r01/acceptance-seal.json",
+      "sha256": "bbffd09de1059a1aa6241f984d2edbb9c5bcc77114a6df808ae66019d2f83bd6",
+      "expected_sha256": "bbffd09de1059a1aa6241f984d2edbb9c5bcc77114a6df808ae66019d2f83bd6",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/check-restoration-current-r01/artifact-current.json",
+      "sha256": "704249bcf9c012851ff83551f3e6d2beab1afab22bf7fd7af9fc7f2271cbaa70",
+      "expected_sha256": "704249bcf9c012851ff83551f3e6d2beab1afab22bf7fd7af9fc7f2271cbaa70",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/check-runtime-entry-current-r01/audit.py",
+      "sha256": "d5d5d0b13b62e62c6bcaa557a0cfca00f31c59ddc5fddf99dc5d808871d75405"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/lint/result.json",
+      "sha256": "ae16e1a099ff4c9d82156b583d9eb5e64ca9fbc4fcc891e85215364c213a9777",
+      "expected_sha256": "ae16e1a099ff4c9d82156b583d9eb5e64ca9fbc4fcc891e85215364c213a9777",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/lint/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/lint/stdout.log",
+      "sha256": "4816870cbec04ffc11b29efe5e28c08d7d90831f0eaeec87f12ecc66120831c4",
+      "expected_sha256": "4816870cbec04ffc11b29efe5e28c08d7d90831f0eaeec87f12ecc66120831c4",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/summary.json",
+      "sha256": "68384142fbc9cccffc32fc60d7fc66b66621174f1ddad691ecd86b57999e8ab8"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/tests/result.json",
+      "sha256": "5583da6abb7b8e2abc1c568e53b2f0de5a067f8e4a750f14e03507e5669383ae",
+      "expected_sha256": "5583da6abb7b8e2abc1c568e53b2f0de5a067f8e4a750f14e03507e5669383ae",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/tests/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/tests/stdout.log",
+      "sha256": "2e05249f4c75ea6092bbf37e2ca050f24ff23fe970a16c0b354957571c0f965e",
+      "expected_sha256": "2e05249f4c75ea6092bbf37e2ca050f24ff23fe970a16c0b354957571c0f965e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/typecheck/result.json",
+      "sha256": "77e790d5784ac84ce0285277f0a0ff75ba6291576375e1d8bf760d2285ba3ae5",
+      "expected_sha256": "77e790d5784ac84ce0285277f0a0ff75ba6291576375e1d8bf760d2285ba3ae5",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/typecheck/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/integrated-codec-check-current-r01/typecheck/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/root-integration-current-r02/integration-proof.json",
+      "sha256": "307ffdcc8fc649f7b07a716dc29df465da1f03cd6875f462667e0a58185b18f5",
+      "expected_sha256": "307ffdcc8fc649f7b07a716dc29df465da1f03cd6875f462667e0a58185b18f5",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/adapter-preparation-r01.json",
+      "sha256": "6c8118f5fffbafce01e4cc688298c6f3a3fa7d32bb2509686d246602f5f84ad6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/api-start-plan-draft-current-r01.json",
+      "sha256": "f23b0de94b5d92ea72df29fa9a2d2cb0d394cdf005660fb3d7a99e30aefe1f69"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/audit-current-consuming-source-r01.py",
+      "sha256": "aa9ba6441ddba48c23785eae82b080c63322b85f4817da3097863026788b244d",
+      "expected_sha256": "aa9ba6441ddba48c23785eae82b080c63322b85f4817da3097863026788b244d",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/bridge-config.json",
+      "sha256": "fc33481d2db19437f7069d86dadee5ebad143d4696e6ea8cdf8308b613e2e002"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/browser-env-current-products.json",
+      "sha256": "08dd46df6ff7381bbdfc08e93f52a0f06c75ef74f93da1581b3decd80c1deb14",
+      "expected_sha256": "08dd46df6ff7381bbdfc08e93f52a0f06c75ef74f93da1581b3decd80c1deb14",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/collect-runtime-database-r01.mjs",
+      "sha256": "3a808651ce0ff674d29ce097c4eb3c8fe40ed334fc83ee747def5875520d36c4",
+      "expected_sha256": "3a808651ce0ff674d29ce097c4eb3c8fe40ed334fc83ee747def5875520d36c4",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/current-consuming-source-before-api-r01.json",
+      "sha256": "c84b78cfc2478865a2081b13ec1e3c28e73cb422e0d6dc49c7e4a712e30dc9b6",
+      "expected_sha256": "c84b78cfc2478865a2081b13ec1e3c28e73cb422e0d6dc49c7e4a712e30dc9b6",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/database-before-api-r01.json",
+      "sha256": "03df6c25e687f8e68b5376927a3ef01adf7a53c376671883cf0f2dc2587e1420"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/frontend-inputs-current-r01.json",
+      "sha256": "841358b7ea6799ba50a75dfee693c167e08cf1a4e85f8a54cfa0ee8dcc2cb0ea"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/generation-config-preparation-current-r01.json",
+      "sha256": "0eb8743dea23b0e44258ddac2ac2297dbcb4adb9f05bf6b13e858da03cd129aa",
+      "expected_sha256": "0eb8743dea23b0e44258ddac2ac2297dbcb4adb9f05bf6b13e858da03cd129aa",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/launch-api-current-r02.py",
+      "sha256": "e4ce8fcc23ff00e07841e594a18d9d581b324b6d0c3c2511a56ef1015ae2812e",
+      "expected_sha256": "e4ce8fcc23ff00e07841e594a18d9d581b324b6d0c3c2511a56ef1015ae2812e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/launch-api.py",
+      "sha256": "71c7d84f6b6bbeb7b8629efe05279a07d194d0b352092f4f8e1f3d248df9a9c8",
+      "expected_sha256": "71c7d84f6b6bbeb7b8629efe05279a07d194d0b352092f4f8e1f3d248df9a9c8",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/playwright-four-scenarios-r01.config.mjs",
+      "sha256": "24c9d7360d8f1c60b97dc324e9ab10981bbe455786c843299ded23142b339ab4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/probe-live-surfaces-and-admin-r01.py",
+      "sha256": "89aa860eb99dbfee9bfab4a2bcc5b5bdc9736b77d9bcb0aaacb2309e0486f64b"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/run-original-four-scenarios-r01.mjs",
+      "sha256": "0bfd277678df436ac644cf29549e77e057fbb3f11aefe6be0bb69f0f9488e9c7"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/runtime/runtime-audit-queries-r01.json",
+      "sha256": "a5999661b6ef9662552b98babaf08bce246bb5f6e371d34386701b16722394f9",
+      "expected_sha256": "a5999661b6ef9662552b98babaf08bce246bb5f6e371d34386701b16722394f9",
+      "matches": true
+    }
+  ],
+  "private_seal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/check-runtime-entry-current-r01/acceptance-seal.json",
+    "sha256": "1c6c20f6b8b566bf27ef7ee039b5939d33816a513cac0f0887073a544dd91b0d"
+  },
+  "reference_count": 49,
+  "verification_command": {
+    "argv": [
+      "python3",
+      "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r23-control-opaque-version-r01/check-runtime-entry-current-r01/audit.py"
+    ],
+    "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "exit": 0,
+    "new_test_suites": 0,
+    "new_API_or_DB_requests": 0
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [],
+  "only_repository_writes": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-runtime-entry-current-check-20261117.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-runtime-entry-current-check-20261117.json"
+  ]
+}
