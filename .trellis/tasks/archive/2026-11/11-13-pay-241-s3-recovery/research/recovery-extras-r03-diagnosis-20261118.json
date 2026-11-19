@@ -1,0 +1,168 @@
+{
+  "at": "2026-11-18T12:04:53.587656+00:00",
+  "owner": "/root/s3_extras_fix_r04",
+  "status": "TEST_ONLY_REQUEST_TIME_MULTIPART_REPAIR_STATIC_PASS_RUNTIME_PENDING",
+  "diagnosis": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-extras-r03-diagnosis-20261118.md",
+    "sha256": "87a572be16880aed7d51e68595dcc9281f30ae818476533595f0aa5375e44b60",
+    "bytes": 5547,
+    "mode": "0o644"
+  },
+  "repair_seal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/repair-completion-r04.json",
+    "sha256": "ec6982498a9c35709bc8b4e86e105bc7f1e4a041ae8abe66da8259b51841f886",
+    "bytes": 18398,
+    "mode": "0o600"
+  },
+  "source_before": [
+    {
+      "path": "e2e/collaboration-recovery.spec.ts",
+      "sha256": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+      "bytes": 3473,
+      "mode": "0o644",
+      "before_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/before/e2e/collaboration-recovery.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery.ts",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "bytes": 76868,
+      "mode": "0o644",
+      "before_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/before/e2e/fixtures/collaboration-recovery.ts"
+    },
+    {
+      "path": "e2e/collaboration-recovery-extras.spec.ts",
+      "sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "bytes": 1710,
+      "mode": "0o644",
+      "before_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/before/e2e/collaboration-recovery-extras.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "9003c65a7ccd2143e180b58def76dce9a314efcdfab292c2be5ffb04cb7537c4",
+      "bytes": 74513,
+      "mode": "0o644",
+      "before_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/before/e2e/fixtures/collaboration-recovery-extras.ts"
+    }
+  ],
+  "source_after": [
+    {
+      "path": "e2e/collaboration-recovery.spec.ts",
+      "sha256": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+      "bytes": 3473,
+      "mode": "0o644",
+      "after_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/after/e2e/collaboration-recovery.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery.ts",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "bytes": 76868,
+      "mode": "0o644",
+      "after_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/after/e2e/fixtures/collaboration-recovery.ts"
+    },
+    {
+      "path": "e2e/collaboration-recovery-extras.spec.ts",
+      "sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "bytes": 1710,
+      "mode": "0o644",
+      "after_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/after/e2e/collaboration-recovery-extras.spec.ts"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "c86229ef94f3444118affe0a9d0138a4586e1fc73d166ff8e41800bbd984ae1f",
+      "bytes": 76668,
+      "mode": "0o644",
+      "after_copy": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r04/after/e2e/fixtures/collaboration-recovery-extras.ts"
+    }
+  ],
+  "changed_source_paths": [
+    "e2e/fixtures/collaboration-recovery-extras.ts"
+  ],
+  "simplification": "Extend/reuse one existing multipart hold barrier for lost ACK and natural retry/ordinary upload; remove all late response.request() multipart reads.",
+  "proven_R03_failure": "Late uploadFact(response.request()) introspection after actual retry201 and canonical attachment equality; missing raw or content-type condition unresolved by old combined error.",
+  "R03_retry_response_body_separately_checkpointed": false,
+  "R03_tops": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 4
+  },
+  "R03_subcases": {
+    "PASS": 4,
+    "FAIL": 1,
+    "NOT_RUN": 13
+  },
+  "R03_retry": 0,
+  "R03_remains_not_accepted": true,
+  "R04_planned_tops": 6,
+  "R04_planned_subcases": 18,
+  "R04_runtime": "NOT_RUN_BY_CHILD",
+  "static_verification": {
+    "at": "2026-11-18T11:59:40.107944+00:00",
+    "source_before_matches_after": true,
+    "source_files": 639,
+    "tool_config_before_matches_after": true,
+    "tool_config_files": 15,
+    "roots": [
+      "e2e/collaboration-recovery-extras.spec.ts",
+      "e2e/fixtures/collaboration-recovery-extras.ts"
+    ],
+    "results": {
+      "typecheck": {
+        "started_at": "2026-11-18T11:59:33.403555+00:00",
+        "ended_at": "2026-11-18T11:59:40.078101+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      },
+      "eslint": {
+        "started_at": "2026-11-18T11:59:33.403895+00:00",
+        "ended_at": "2026-11-18T11:59:36.472430+00:00",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 0,
+        "stderr_bytes": 0
+      }
+    },
+    "child_DB_API_browser_Provider_execution": 0,
+    "scope": "targeted strict TypeScript graph plus explicit two-file ESLint",
+    "NODE_ENV": "test"
+  },
+  "eslint_import_config_supplement": {
+    "started_at": "2026-11-18T12:01:43.473385+00:00",
+    "ended_at": "2026-11-18T12:01:45.179420+00:00",
+    "exit_code": 0,
+    "input_files": 15,
+    "source_config_tool_drift": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 0,
+    "stderr_bytes": 0,
+    "child_DB_API_browser_Provider_TestMain_execution": 0
+  },
+  "extras_fixture_sha256": "c86229ef94f3444118affe0a9d0138a4586e1fc73d166ff8e41800bbd984ae1f",
+  "preserved_failure_artifact_count": 9,
+  "original_R03_failure_artifacts_unchanged": true,
+  "ordinary_reply_transport": "route.continue unchanged request with exact Request response waiter; no fetch/fulfill",
+  "original_ACK_loss_transport": "actual route.fetch maxRetries0 then abort; preserved",
+  "new_missing_observation_errors": [
+    "actual intercepted upload multipart body not observable",
+    "actual intercepted upload no multipart Content-Type"
+  ],
+  "no_database_environment": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/nodb-client-tests-r01.json",
+    "sha256": "bf3c46269fc6c7e277bfe0395861589f8d4984695de860a40873e2ebf975ccb6",
+    "NODE_ENV": "test",
+    "DATABASE_URL_present": false
+  },
+  "child_DB_API_browser_Provider_TestMain_execution": 0,
+  "product_defect_established": false,
+  "parent_pending": [
+    "fresh complete R04 current API/production Web/matching Desktop",
+    "actual ciphertext/object/draft/request audit",
+    "independent Trellis check",
+    "matrix and increment commit",
+    "remaining blocking and full S3"
+  ]
+}

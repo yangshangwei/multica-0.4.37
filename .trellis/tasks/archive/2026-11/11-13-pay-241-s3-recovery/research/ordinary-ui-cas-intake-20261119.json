@@ -1,0 +1,377 @@
+{
+  "status": "SOURCE_BASED_INTAKE_ONLY",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "owner": "/root/agent_output_e2e_implement",
+  "generated_at": "2026-11-19T10:16:38.567779+00:00",
+  "write_scope": [
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-intake-20261119.md",
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-intake-20261119.json"
+  ],
+  "implementation_or_execution_authorized_here": false,
+  "main_ownership": "Design/plan, private allocation, product/test implementation release, Git, database, builds, API/browser/Provider execution, integration and final acceptance.",
+  "partial_draft": {
+    "sha256_before_revision": "cb77986f8439cd7425753e5672d891d888f6271e5cf0b233648f6093dceb67ce",
+    "bytes_before_revision": 19284,
+    "disposition": "Source findings retained by a focused Markdown update; detail-only recommendation superseded by Main latest all-single-issue scope, missing-revision compatibility and common-revision batch scope."
+  },
+  "main_reported_prerequisite": {
+    "output_round": "R03",
+    "status": "FORMALLY_ACCEPTED",
+    "tops": 2,
+    "subcases": 16,
+    "blockers": 0,
+    "integrated_product_paths": 43,
+    "independently_recertified_here": false
+  },
+  "recommendation": {
+    "approach": "A: existing request token at every rendered ordinary priority/assignee owner",
+    "product_path_count": 8,
+    "helper_placement": "Existing packages/core/issues/mutations.ts, adjacent to UpdateIssueMutationInput at line 63; export through its existing module path.",
+    "helper_inputs": "Supplied ordinary Issue and updates; the batch caller may use the first selected Issue only after proving every selected observation equals its known positive revision.",
+    "helper_rules": [
+      "Preserve an explicitly supplied updates.expected_revision.",
+      "Attach only a known positive integer Issue.revision for ordinary priority/assignee picker writes, including Agent/squad assignments before their existing gate.",
+      "Do not synthesize missing revisions or attach aggregate CAS to every status/title/relationship/completion/move write.",
+      "Do not consult QueryClient, Core onMutate previous detail, findSourceIssue, or collaboration decimal authority to grant a newer token."
+    ],
+    "missing_revision_behavior": "Preserve current omission/older-backend compatibility.",
+    "batch_behavior": "Use one existing common token only for genuinely equal positive rendered observations; heterogeneous/missing observations retain current legacy semantics.",
+    "new_dependency": false,
+    "new_protocol": false,
+    "backend_change": false,
+    "fan_out": false
+  },
+  "alternative": {
+    "approach": "B: optional observed revision in IssueSurfaceMutationOptions",
+    "cost": "Wider surface interface/callers, duplicates the existing request token, and still requires direct SubIssueRow and gate/modal handling. Never default to current cache. Not preferred for this bounded scope."
+  },
+  "proposed_product_paths": [
+    {
+      "path": "packages/core/issues/mutations.ts",
+      "lines": [
+        63,
+        127,
+        162,
+        481
+      ],
+      "change": "Place a small pure observation helper adjacent to UpdateIssueMutationInput; reuse existing UpdateIssueRequest.expected_revision. Do not auto-fill inside useUpdateIssue or change hooks/cache behavior.",
+      "tests": [
+        "packages/core/issues/mutations.test.tsx"
+      ],
+      "test_shape": "Reuse existing caller-token forwarding, optimistic metadata exclusion and rollback/reconciliation controls; exercise helper behavior through the leaf request tests rather than duplicating its implementation."
+    },
+    {
+      "path": "packages/views/issues/actions/use-issue-actions.ts",
+      "lines": [
+        91,
+        96,
+        112,
+        126,
+        146
+      ],
+      "change": "Attach the supplied ordinary Issue observation before gate and direct/surface delegation. This owns detail, shared dropdown and captured context-menu priority/assignee writes.",
+      "tests": [
+        "packages/views/issues/actions/__tests__/use-issue-actions.test.tsx"
+      ],
+      "test_shape": "Priority/member/clear at R, captured UI R with newer cache R+1, explicit token preservation, omitted revision, Agent/squad intent retention and unchanged status/completion routing."
+    },
+    {
+      "path": "packages/views/issues/components/board-card.tsx",
+      "lines": [
+        78,
+        85
+      ],
+      "change": "Use the rendered card Issue when attaching the token; callback dependencies must track that observation. Preserve existing direct assignment routing.",
+      "tests": [
+        "packages/views/issues/components/board-card-assignee-picker.test.tsx"
+      ],
+      "test_shape": "Inline priority and assignee callbacks retain card R, revision prop changes refresh the captured observation, and missing revisions remain omitted."
+    },
+    {
+      "path": "packages/views/issues/components/table-view.tsx",
+      "lines": [
+        1126,
+        2154,
+        2156,
+        2161
+      ],
+      "change": "Use the rendered row Issue argument before the existing run-confirm gate and surface delegation discard it.",
+      "tests": [
+        "packages/views/issues/components/table-view-editing.test.tsx"
+      ],
+      "test_shape": "Inline priority/assignee payloads and existing Agent/squad intents retain row R; custom-status/promotion decisions remain unchanged."
+    },
+    {
+      "path": "packages/views/issues/components/issue-detail.tsx",
+      "lines": [
+        711,
+        715,
+        875,
+        2176,
+        2420,
+        2426
+      ],
+      "change": "Change only the direct SubIssueRow assignee leaf: use rendered child R and existing localized revision-conflict feedback. Main detail/menu writes are already owned by use-issue-actions. Preserve current status/completion and assignment routing.",
+      "tests": [
+        "packages/views/issues/components/issue-detail.test.tsx"
+      ],
+      "test_shape": "Child assignee payload uses child R, absent revision remains omitted, and a genuine revision conflict reaches existing feedback without automatic token replacement."
+    },
+    {
+      "path": "packages/views/issues/actions/run-confirm-gate.ts",
+      "lines": [
+        6,
+        12,
+        73,
+        85,
+        106
+      ],
+      "change": "Allow optional issueRevision on the existing intent variants and echo only supplied updates.expected_revision. Do not add revision to GateIssue or derive a token from issue/cache.",
+      "tests": [
+        "packages/views/issues/actions/run-confirm-gate.test.ts"
+      ],
+      "test_shape": "Supplied and absent tokens across existing assign/promote/backlog/custom-category decisions; retention adds no gate or run-start rule."
+    },
+    {
+      "path": "packages/views/modals/run-confirm.tsx",
+      "lines": [
+        62,
+        75,
+        164,
+        183,
+        193,
+        199,
+        207
+      ],
+      "change": "Consume existing unused RunConfirmData.issueRevision in applyTo; retain captured token through existing single/batch Go, suppress-run and handoff-note submissions.",
+      "tests": [
+        "packages/views/modals/run-confirm.test.tsx"
+      ],
+      "test_shape": "Single and common-batch captured R survives both footer actions and handoff; no-token/status-only compatibility, cancel/no-write and revision-conflict controls stay intact."
+    },
+    {
+      "path": "packages/views/issues/components/batch-action-toolbar.tsx",
+      "lines": [
+        60,
+        107,
+        137,
+        150
+      ],
+      "change": "For priority/assignee only, prove every nonempty selected rendered Issue has the same positive revision before using the helper and existing common token. Carry it into the existing Agent/squad modal branch before handleBatchUpdate; omit for heterogeneous/missing revisions.",
+      "tests": [
+        "packages/views/issues/components/batch-action-toolbar.test.tsx",
+        "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx"
+      ],
+      "test_shape": "One/equal-positive selection, heterogeneous/missing/empty selection, direct and confirmed assignee paths, all-backlog/status bypass, mixed-collaboration refusal and partial/unknown selection controls."
+    }
+  ],
+  "existing_contracts": [
+    {
+      "source": "packages/core/types/issue.ts",
+      "lines": [
+        215
+      ],
+      "finding": "Ordinary Issue.revision is optional for older backends."
+    },
+    {
+      "source": "packages/core/api/schemas.ts",
+      "lines": [
+        1352
+      ],
+      "finding": "Ordinary revision schema is optional positive integer; distinct from collaboration decimal authority."
+    },
+    {
+      "source": "packages/core/types/api.ts",
+      "lines": [
+        118,
+        62,
+        68
+      ],
+      "finding": "Existing aggregate expected_revision token; batch options contain completion bindings, while result revision is an outcome."
+    },
+    {
+      "source": "packages/core/api/client.ts",
+      "lines": [
+        3484,
+        3677
+      ],
+      "finding": "Existing PUT forwards supplied updates; batch freezes ordered IDs and validates partial/unknown results."
+    },
+    {
+      "source": "packages/core/issues/mutations.ts",
+      "lines": [
+        127,
+        132,
+        162,
+        240,
+        481
+      ],
+      "finding": "Ordinary wire forwards token unchanged, optimistic patches exclude it, rollback/invalidation exist, and bound completion accepts only status plus completion. Keep synchronous cancellation."
+    },
+    {
+      "source": "packages/core/issues/source-collaboration.ts",
+      "lines": [
+        25
+      ],
+      "finding": "Highest-revision/collaboration-projection cache lookup is classification/guard authority, not necessarily the rendered UI observation."
+    },
+    {
+      "source": "packages/views/issues/surface/use-issue-surface-actions.ts",
+      "lines": [
+        74,
+        87,
+        92,
+        112
+      ],
+      "finding": "Current classification and localized revision-conflict handling already exist; ordinary leaf-supplied updates are forwarded. No interface change is needed."
+    },
+    {
+      "source": "server/internal/handler/issue.go",
+      "lines": [
+        4232,
+        4435,
+        5091,
+        5640
+      ],
+      "finding": "Optional positive ordinary CAS emits revision_conflict; batch uses the same common update token for each item."
+    },
+    {
+      "source": "server/pkg/db/queries/issue.sql",
+      "lines": [
+        204,
+        239,
+        253
+      ],
+      "finding": "Precondition is checked on the locked row; meaningful change increments once, no-op may not."
+    }
+  ],
+  "run_confirm_retention": {
+    "current_field": "RunConfirmData.issueRevision?: number at run-confirm.tsx:75 exists but is not populated or consumed.",
+    "gate_mapping": "Caller updates.expected_revision -> optional intent.issueRevision only; GateIssue remains unchanged.",
+    "modal_mapping": "Captured data.issueRevision -> payload expected_revision in applyTo; single and common-batch branches already exist.",
+    "preserve": [
+      "Go/suppress-run/handoff-note",
+      "current Agent/squad and backlog/custom-category gates",
+      "cancel/no-write behavior",
+      "status-only promotion remains versionless unless a caller explicitly supplied a token",
+      "current localized revision-conflict feedback"
+    ],
+    "fresh_cache_at_submit": false
+  },
+  "batch_boundary": {
+    "selected_observation": "selectedIds intersect rendered universe -> nonempty selectedIssues",
+    "common_token_condition": "Every selected Issue carries the same known positive numeric R.",
+    "missing_or_heterogeneous": "Omit automatic token and retain current behavior; not a universal S3 bulk CAS mandate.",
+    "preserve": [
+      "ordered partial/unknown outcomes",
+      "selection retention",
+      "updated success count",
+      "mixed collaboration refusal",
+      "batch status behavior",
+      "all-backlog assignment bypass",
+      "existing Agent/squad confirmation"
+    ],
+    "do_not_add": [
+      "per-issue revision map",
+      "completion-binding repurpose",
+      "backend protocol",
+      "per-item PUT fan-out",
+      "max/min cache revision inference"
+    ]
+  },
+  "e2e_proposal": {
+    "new_paths": [
+      "e2e/collaboration-recovery-ordinary-ui.spec.ts",
+      "e2e/fixtures/collaboration-recovery-ordinary-ui.ts"
+    ],
+    "existing_reuse_path": "e2e/fixtures/collaboration-recovery.ts",
+    "reuse_lines": [
+      397,
+      413,
+      717,
+      726,
+      749,
+      754,
+      769
+    ],
+    "reuse": [
+      "RecoveryEvidence",
+      "seedRecovery",
+      "withSessions",
+      "HeldRequest",
+      "actual openOrdinaryChild drawer/link navigation if Main releases export-only helper ownership"
+    ],
+    "planned_denominator": "Two complete tops (production Web and matching native Desktop), each with two separately seeded commit orders: priority-first and assignee-first.",
+    "baseline": "Fresh ordinary child, low priority, human member assignee, known R, same current authorized actor in two real sessions; no Agent/status promotion.",
+    "steps": [
+      "Observe each actual child UI read UUID/revision/displayed fields explicitly; existing parent-collaboration observer is not an ordinary-child denominator.",
+      "Install two holds before picker clicks; click actual priority High and assignee clear, await both actual PUTs before forwarding, require expected_revision R and original authentication/field/UUID.",
+      "RED: genuine current UI requests omit token; request assertion must fail. Do not inject CAS or substitute page.evaluate/API requests. Release/join holds on failure.",
+      "GREEN: naturally forward named first PUT for 200; forward second for exact 409 revision_conflict with expected R/actual R+1. Use route.continue and exact Response/Request association, never native fetch/fulfill.",
+      "Assert winner field/R+1, loser field unchanged, real localized conflict feedback and authoritative refreshed visible state; retain original failed request/body/result.",
+      "After a real refreshed R+1 view, make an explicit fresh picker choice; actual new PUT uses R+1, succeeds at R+2/high/unassigned, both windows converge.",
+      "Repeat other order on separate child; reconcile parent fields/history/execution unchanged and zero new run/command/dispatch. Separately labelled versionless API control retains omission compatibility."
+    ],
+    "legacy_fixture_limit": "exerciseRecoveryOrdinary sends explicit API CAS and ordinaryUIUpdate later asserts UI omission at line 749. Coordinate only current assertion/name and separately labelled versionless API control in future released ownership; preserve old accepted reports. Existing body is not new UI CAS proof.",
+    "current_report_executes_it": false
+  },
+  "retained_controls": [
+    "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx:49 keeps R58 position-only ordinary numeric revision and mixed-collaboration refusal.",
+    "No dedicated registered priority/assignment keyboard action was found; keyboard picker activation uses these same callbacks.",
+    "Drag/drop grouping/move, relationship/project writes, other OS and universal bulk guarantees remain outside this priority/assignee picker increment."
+  ],
+  "source_snapshot": {
+    "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+    "head_previously_inspected": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+    "authority": "Working-tree bytes; HEAD alone is not the source binding.",
+    "sha256": {
+      "packages/core/issues/mutations.ts": "d53b3b2d7c75510ae06625088625d0048b51a974d9ea6a927c3d624ac8f0fde0",
+      "packages/views/issues/actions/use-issue-actions.ts": "db51b3841750d2617af35f4be92cdfffedcab718e48dc92ffd21a1dad8eacbda",
+      "packages/views/issues/components/board-card.tsx": "7bcd40f2b89243eeafcc0e4c9fb1f36c2144c8b4b3a3d22846ba27ed78ea603f",
+      "packages/views/issues/components/table-view.tsx": "b287e03497d080398534f541415b8c440e1f74ed6cb3edec5d0d7fbe1e44c396",
+      "packages/views/issues/components/issue-detail.tsx": "04c2420bdacbfe43640317699aeb78c24cfcfed21bfc4cfd2f2cd152cd1facd1",
+      "packages/views/issues/actions/run-confirm-gate.ts": "89f18c3c13dd5baf4923c59a8ec031c195bc1b5f6f0f297d1444898964fccfe7",
+      "packages/views/modals/run-confirm.tsx": "f65f352a52629b173baa35d34e277004a55353806c2c0b1e72040c157e3fb08e",
+      "packages/views/issues/components/batch-action-toolbar.tsx": "d8ae26c591674a8d999d4747492aba9a7a0d84f82616f6cad05138bb136963c9",
+      "packages/core/types/issue.ts": "3160d6fce212c1cc9e996c14121788f71a9a0352f83f3fcfe9c7862c31be4165",
+      "packages/core/types/api.ts": "872e6913415700fc86f21a7f94f34ebba50710c72358a10ef2a8d6dd9455c503",
+      "packages/core/api/schemas.ts": "d34a4bc6896a2cc7d562cd218cc218e23c170615a698a0427b87d112c2eac763",
+      "packages/core/api/client.ts": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+      "packages/core/issues/source-collaboration.ts": "f94412af1985bfe8457e27be2390d013ed03bb6296e2719155b157d390d2c82d",
+      "packages/views/issues/surface/use-issue-surface-actions.ts": "d3cd10f898ecb978c5a6aa9a900be2fdb6261766e3fa76d8d4f9059f7795c4b3",
+      "server/internal/handler/issue.go": "df3abff6e56a65404fe8b818f32c344f503150bb20a07201499368fdbee18f43",
+      "server/pkg/db/queries/issue.sql": "1a83e00afbfab08d8d75a1cf9c1d9269a209216f9fa24c1e2cc6a2980d98583e",
+      "e2e/fixtures/collaboration-recovery.ts": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "packages/core/issues/mutations.test.tsx": "abd1d0ce071b0fa05d8e3667350b687159ffacb7a46b9a233915ef53621dd8f9",
+      "packages/views/issues/actions/__tests__/use-issue-actions.test.tsx": "8f064486d17cd2b5d3dea9f72183ad7b650a5a76833d6f90eb49a876a7bbc5bb",
+      "packages/views/issues/components/board-card-assignee-picker.test.tsx": "89dba3b11d247367d8bfc37efb4cfed8dbd9df0eb4b1f1fc6fa546c2c400a649",
+      "packages/views/issues/components/table-view-editing.test.tsx": "b5f110b991685fd6898159e7d0f14ece59020f0d7654bdb97f952e6201c08525",
+      "packages/views/issues/components/issue-detail.test.tsx": "528e634eeb670d8e38fa3ab869dd58504bd3dfab44861310783e52437351156c",
+      "packages/views/issues/actions/run-confirm-gate.test.ts": "9c9c1e75116ab9cb92e1eeb6d37cee611f649642103ceb9b00b2b7789b2f7448",
+      "packages/views/modals/run-confirm.test.tsx": "c9990bba6552676e590f7cea873dccaebde48a6c7ffd3908f879cb0762f85545",
+      "packages/views/issues/components/batch-action-toolbar.test.tsx": "1a4a4042a7c832e07320ab279847c204f7ce02145572acaf74808cb0795d4052",
+      "packages/views/issues/components/batch-action-toolbar.confirm.test.tsx": "2e574865976e4a0026c66a139a884b1f3862e5c3786110d5563565119c27c0f8",
+      "packages/views/issues/surface/use-issue-surface-actions.collaboration.test.tsx": "a4adef8cb82299a457adabb974a449ab4298e25d4a5dba0fbaa00dc4cc307cba"
+    }
+  },
+  "verification": {
+    "performed": [
+      "read-only task/spec/source inspection",
+      "write-owner, request/batch/SQL and existing test/helper review",
+      "exact existing run-confirm field/use check",
+      "SHA-256 source snapshot",
+      "JSON parse, exactly eight unique product paths, current line/test path existence, Markdown cross-reference and unchanged source-hash check"
+    ],
+    "product_implementation": false,
+    "lint": false,
+    "typecheck": false,
+    "tests": false,
+    "red_green": false,
+    "go_api_database_browser_provider_model": false,
+    "changed_files": [
+      "ordinary-ui-cas-intake-20261119.md",
+      "ordinary-ui-cas-intake-20261119.json"
+    ]
+  },
+  "remaining_work": "Main finalizes design/plan and releases private implementation/test/allocation scope; real RED/GREEN and independent review determine TC-16. Full S3/R09 is still open."
+}

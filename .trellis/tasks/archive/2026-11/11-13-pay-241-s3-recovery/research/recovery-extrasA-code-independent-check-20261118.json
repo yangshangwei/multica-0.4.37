@@ -1,0 +1,87 @@
+{
+  "task": "11-13-pay-241-s3-recovery",
+  "reviewer": "/root/s3_check_batch_block",
+  "status": "NOT_ACCEPTED_CURRENT_EXTRAS_A_R01",
+  "blocking_findings": 3,
+  "demonstrated_product_defects": 0,
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "EXA-R01-01",
+      "kind": "observed fixture failure",
+      "file": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "line": 275,
+      "fix_scope": "Exact original notification ID, real Mark read POST200/receipt/timestamp; refreshed existing link/anchor.",
+      "why_not_fixed": "Implement-owned source; reviewer read-only."
+    },
+    {
+      "id": "EXA-R01-02",
+      "kind": "unexecuted source-confirmed fixture blocker",
+      "file": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "line": 770,
+      "fix_scope": "Source-only read/comment/reorder and real membership/null epochs; no manager edit claim.",
+      "why_not_fixed": "Implement-owned source; reviewer read-only."
+    },
+    {
+      "id": "EXA-R01-03",
+      "kind": "unexecuted source-confirmed fixture blocker",
+      "file": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "line": 786,
+      "related_line": 791,
+      "fix_scope": "Ordinary survivor read/comment + stable participation + source reorder loss; field-options403 both phases, current source workspace200->403/404.",
+      "why_not_fixed": "Implement-owned source; reviewer read-only."
+    }
+  ],
+  "verification": {
+    "lint": "AUTHOR_TARGETED_PASS; reviewer NOT_RUN",
+    "typecheck": "AUTHOR_TARGETED_PASS; reviewer NOT_RUN",
+    "tests": "EXISTING_R01_FAIL; reviewer NOT_RUN",
+    "tops": {
+      "planned": 6,
+      "pass": 0,
+      "fail": 1,
+      "not_run": 5
+    },
+    "subcases": {
+      "planned": 18,
+      "pass": 0,
+      "fail": 1,
+      "not_run": 17
+    },
+    "retries": 0,
+    "source_rehash_entries": 243,
+    "source_drift": 0
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/harness-extrasA-manifest-r01.json",
+    "sha256": "d192aff19ceeb8299b9903f937a9ebc08a5f05671f8b18e02ebbfb65ba4e1b76",
+    "bytes": 66244
+  },
+  "support": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/recovery-extrasA-code-r01/reconciliation-r01.json",
+    "sha256": "084c36bea97b744305933bc7b423617ddcd76e75a2279b5822f749f981ddc6c3",
+    "bytes": 14633
+  },
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-extrasA-code-independent-check-20261118.md",
+    "sha256": "2f0dba25ebe56f9e4733435d62bc1435980c04460f0be0307b1337476008693a",
+    "bytes": 7769
+  },
+  "raw_report": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r01/playwright-report.json",
+    "sha256": "754706272fb293f6a9643e5ea7bd18f3311eb98f2c7cfbd16c7a084d152aceed",
+    "bytes": 12519
+  },
+  "raw_case": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r01/test-results/collaboration-recovery-ext-55e12-events-and-owner-withdrawal-chromium/web-extras-notifications.json",
+    "sha256": "4131c449e2f9ba591e43e0d36735635e93c95e4610380f3266d0e4dd6d0443fa",
+    "bytes": 83565
+  },
+  "closure": {
+    "matrix_updated": false,
+    "task_archived": false,
+    "full_S3_accepted": false,
+    "existing_failures_retained": true,
+    "batch_commit_separate": "72c207f72"
+  }
+}

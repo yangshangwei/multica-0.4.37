@@ -1,0 +1,2262 @@
+{
+  "status": "R04_NOT_ACCEPTED_FAILURE_AUDIT_COMPLETE",
+  "reviewer": "/root/notification_runtime_check",
+  "checked_at": "2026-11-19T01:39:13.517886+00:00",
+  "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly",
+  "reviewer_execution": {
+    "DB_API_browser_Provider_bodies": 0,
+    "process_control": 0,
+    "source_config_changes": 0
+  },
+  "full_S3_accepted": false,
+  "runtime_B_acceptance": "NOT_RUN",
+  "findings": {
+    "OS_P01": "R03_BROAD_SEND_LOCATOR_FAILURE_PENDING_OWNER_FIX_AND_NEW_ROUND",
+    "OS_P02": "CLOSED_STATIC_FOR_R04_EXACT_TWO_CONFIRMED_QUERY_POSTS_RUNTIME_FINAL_EQUALITY_NOT_REACHED",
+    "OS_P03": "R04_EDITOR_BOUND_COMPOSER_LOCATOR_MATCHES_ZERO_NO_PRODUCT_BUNDLE_MISMATCH_ESTABLISHED"
+  },
+  "rounds": {
+    "subscriptions-runtime-r01": {
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02/node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/playwright-subscriptions-r02.config.mjs",
+        "--workers=1",
+        "--retries=0",
+        "--max-failures=0",
+        "--reporter=json",
+        "--output",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r01/results"
+      ],
+      "pid": 33802,
+      "config_sha256": "25f9dcbec1a149ca2a9a94e10016e080c24f49aa8e95c136fa6d9e57697d6e74",
+      "exit": 1,
+      "command_sha256": "83e21df76284bedbc56109c21c800175c17efbb20335c922547172612dcd47d0",
+      "result_sha256": "6e46abe3262f569a97f61818ccd19bcf6ed4e3c2d7256b3237b54be7b2c5a3c8",
+      "stdout_sha256": "169960dee0400912770c4a35c72b5d544743a758a079e7eb43735233c69ba8c7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_before_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "source_after_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stats": {
+        "startTime": "2026-11-19T00:31:49.219Z",
+        "duration": 11713.813999999998,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_inventory": [
+        {
+          "name": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 981,
+              "error_messages_sha256": [
+                "fab7894b0bebb9f323f18bfb27a8c194f1af382a586314cd8b6d601ff84da3df"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 6627,
+              "error_messages_sha256": [
+                "fa2097b19ff2ca1e8f28773a3af791628467f1c84f8420dd5cd2f5ac6bbd7a51"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "subscriptions-runtime-r02": {
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r03",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r03/node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/playwright-subscriptions-r03.config.mjs",
+        "--workers=1",
+        "--retries=0",
+        "--max-failures=0",
+        "--reporter=json",
+        "--output",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r02/results"
+      ],
+      "pid": 48419,
+      "config_sha256": "298226b9143cc9e801f071e7f6499c8fa2c949a81e68b842920caa35d0badaef",
+      "exit": 1,
+      "command_sha256": "21ed607614e5c175fe2880cdf2b22a4220eeb99dd4583c570d4914e5b99ce4ce",
+      "result_sha256": "816fb1dd9007851ac6eb556b26b16fb32b16cad28ac2f52bb83e5314c2ef3a40",
+      "stdout_sha256": "a4552ce47c4554f4ec6e41b81cb77699ba4ce86036e1b353f4ecc28c918d19e9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_before_sha256": "6ee8766febfe61c6cd26afcd70f44c27d6f58d0356733d4a061147f87eff6f70",
+      "source_after_sha256": "6ee8766febfe61c6cd26afcd70f44c27d6f58d0356733d4a061147f87eff6f70",
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stats": {
+        "startTime": "2026-11-19T00:44:26.125Z",
+        "duration": 31148.066,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_inventory": [
+        {
+          "name": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 11228,
+              "error_messages_sha256": [
+                "a614af23725fd0085a356cff16dadc808007d410c810d5924d3bb298950f6c07"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 14101,
+              "error_messages_sha256": [
+                "02594b1ce9029c16a21a6b4dd5f5c47dcbbf689c308ff8bf0c6b07106d69e317"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "subscriptions-runtime-r03": {
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r04",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r04/node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/playwright-subscriptions-r04.config.mjs",
+        "--workers=1",
+        "--retries=0",
+        "--max-failures=0",
+        "--reporter=json",
+        "--output",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results"
+      ],
+      "pid": 5868,
+      "config_sha256": "06fafd19e3a21b753038f39447a9d0a6e6d644344c64b884b3690f236eb43b78",
+      "exit": 1,
+      "command_sha256": "e2ea11a3464c0413fb7617a0f14c6fe007b806bbe0bbd35d34e2c21383d28539",
+      "result_sha256": "56843173b52c8a3b0ace6952c4df890a98111147069410fa503234159f2eba04",
+      "stdout_sha256": "cf8fee69beff956315388e797c3c30e8e9a8155d673a89dd1687a27920a481c5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_before_sha256": "efc60300e6dc1e9fb2ce9f362fb710b8957a46b0b3db2f88ca757d822d012d47",
+      "source_after_sha256": "efc60300e6dc1e9fb2ce9f362fb710b8957a46b0b3db2f88ca757d822d012d47",
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stats": {
+        "startTime": "2026-11-19T01:09:33.797Z",
+        "duration": 24413.513,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_inventory": [
+        {
+          "name": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 8513,
+              "error_messages_sha256": [
+                "018e557006e44a5d030c708d223a2880f17379262e0bf009fe08b1b4572772fd"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration_ms": 11134,
+              "error_messages_sha256": [
+                "2f25fba90c72570880edb919e8ef84c888e40fbc59cf684da80ec123f596c48e"
+              ]
+            }
+          ]
+        }
+      ],
+      "partial_evidence": {
+        "Desktop": {
+          "final_evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results/collaboration-recovery-sub-06392-nect-reload-and-unsubscribe-chromium/desktop-ordinary-subscriptions.json",
+          "final_sha256": "9ae8e12ee8052e4737eda76ddef9220eed09d8fd53a40c547a4578bd1f9e937d",
+          "attachment": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results/collaboration-recovery-sub-06392-nect-reload-and-unsubscribe-chromium/attachments/desktop-ordinary-subscriptions-b249297ec7358cb98d1a24704dd457467f57be5e.json",
+          "attachment_sha256": "f94bae13626d22edd4f7ea8700d6762c0822e3ca0ce395ee1761466e82705fc8",
+          "attachment_checkpoint_session_parity": true,
+          "status": "FAILED_OR_INCOMPLETE",
+          "active_phase": "second_comment_after_unsubscribe",
+          "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r04",
+          "workspace_id": "6e6f4268-ef65-45bb-848d-07309571d4c6",
+          "parent_issue_id": "01a1f15a-450c-7a1d-b56a-1908dab18dd4",
+          "child_issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+          "actors": {
+            "commenter": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+            "watcher": "45271955-489b-48f2-836c-2068ce0071e6",
+            "nonwatcher": "786a3c11-7462-469c-923a-79187ca63ede",
+            "optout": "117b9e5f-ace2-46f4-baf0-e3672a715a63"
+          },
+          "first_comment": {
+            "at": "2026-11-19T01:09:53.790Z",
+            "stage": "first_comment_original_comment_identity",
+            "id": "01a1f15a-5da1-76f1-9401-a30328eb6776",
+            "issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+            "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+            "revision": 1,
+            "content_sha256": "abbcd87876d7cba74e30888dfd5027555691c25d0554dfacd329018900714584",
+            "created_at": "2026-11-19T09:09:53+08:00",
+            "transport": "ACTUAL_UNKEYED_ORDINARY_COMPOSER",
+            "mentions": 0,
+            "attachments": 0
+          },
+          "API_recipients": {
+            "8cf581fd-a6a0-4038-a3d8-1b492f7515a7": [],
+            "45271955-489b-48f2-836c-2068ce0071e6": [
+              {
+                "id": "2c42e72e-fa3f-50aa-831f-8ff1cc2a5018",
+                "issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+                "recipient_type": "member",
+                "recipient_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                "type": "new_comment",
+                "actor_type": "member",
+                "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+                "comment_id": "01a1f15a-5da1-76f1-9401-a30328eb6776",
+                "read": false,
+                "archived": false,
+                "created_at": "2026-11-19T09:09:53+08:00",
+                "title_sha256": "5c740c8e42148385780e988c059abd73718bfedcb113fb79e3a89fdc8ff30599",
+                "body_sha256": "abbcd87876d7cba74e30888dfd5027555691c25d0554dfacd329018900714584"
+              }
+            ],
+            "786a3c11-7462-469c-923a-79187ca63ede": [],
+            "117b9e5f-ace2-46f4-baf0-e3672a715a63": []
+          },
+          "manual_subscriber": {
+            "issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+            "workspace_id": "6e6f4268-ef65-45bb-848d-07309571d4c6",
+            "user_type": "member",
+            "user_id": "45271955-489b-48f2-836c-2068ce0071e6",
+            "reason": "manual",
+            "created_at": "2026-11-19 01:09:53.210738+00",
+            "unsubscribed_at": null,
+            "opt_out_scope": null,
+            "member_id": "6edcda6f-8e84-4e96-86f4-c42ca0097b5c"
+          },
+          "final_watcher_tombstone": {
+            "issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+            "workspace_id": "6e6f4268-ef65-45bb-848d-07309571d4c6",
+            "user_type": "member",
+            "user_id": "45271955-489b-48f2-836c-2068ce0071e6",
+            "reason": "manual",
+            "created_at": "2026-11-19 01:09:53.210738+00",
+            "unsubscribed_at": "2026-11-19 01:09:57.527148+00",
+            "opt_out_scope": "issue",
+            "member_id": "6edcda6f-8e84-4e96-86f4-c42ca0097b5c"
+          },
+          "final_original_inbox": [
+            {
+              "id": "2c42e72e-fa3f-50aa-831f-8ff1cc2a5018",
+              "workspace_id": "6e6f4268-ef65-45bb-848d-07309571d4c6",
+              "recipient_type": "member",
+              "recipient_id": "45271955-489b-48f2-836c-2068ce0071e6",
+              "type": "new_comment",
+              "severity": "info",
+              "issue_id": "01a1f15a-4534-7d69-8f3c-ed9046261c57",
+              "actor_type": "member",
+              "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+              "comment_id": "01a1f15a-5da1-76f1-9401-a30328eb6776",
+              "title_sha256": "5c740c8e42148385780e988c059abd73718bfedcb113fb79e3a89fdc8ff30599",
+              "body_sha256": "abbcd87876d7cba74e30888dfd5027555691c25d0554dfacd329018900714584",
+              "details_sha256": "29b8f460ccf21b99cab1f9324c096b759d4777b5706257d53decf03119220056",
+              "read": true,
+              "archived": false,
+              "created_at": "2026-11-19 01:09:53.706951+00"
+            }
+          ],
+          "snapshots": {
+            "seeded_complete_rows": {
+              "rows_sha256": "32fc98e48f438e063e86ea7f5fc4efacc27bbf5c19e749d9a8e02778b5ae55a8",
+              "counts": {
+                "issues": 2,
+                "subscribers": 2,
+                "inbox": 0,
+                "comments": 0,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "manual_subscription_rows": {
+              "rows_sha256": "069c56a6a3dd041c872241f7465c30636c23a5c403f2e63a65e2559bf92e9491",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 0,
+                "comments": 0,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "first_comment_all_persisted_recipients": {
+              "rows_sha256": "a5c9cb4137adf902cba05b58353f498e233db83de3eed1a61f8da1bd7a7993ed",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "original_notice_read_state": {
+              "rows_sha256": "b8a444dddc4373a2140a52b53058e0fcd77c8e0cd352433925daec80db4c8174",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "genuine_reconnect_reload_complete_rows": {
+              "rows_sha256": "b8a444dddc4373a2140a52b53058e0fcd77c8e0cd352433925daec80db4c8174",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "manual_subscription_tombstone": {
+              "rows_sha256": "9f37d3c81e27d9f22ecde66208a0b62c6b97fc1868e246fd8e47d61a7b5e677b",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            }
+          },
+          "reconnect_all_17_sets_equal": true,
+          "read_changes_only_inbox_read": true,
+          "tombstone_original_inbox_comments_preserved": true,
+          "parent_relations_preserved": {
+            "collaboration": true,
+            "sessions": true,
+            "events": true,
+            "operations": true,
+            "notifications": true
+          },
+          "reconnect": {
+            "at": "2026-11-19T01:09:57.480Z",
+            "stage": "genuine_reconnect_reload_kept_original_notice",
+            "comment_id": "01a1f15a-5da1-76f1-9401-a30328eb6776",
+            "inbox_id": "2c42e72e-fa3f-50aa-831f-8ff1cc2a5018",
+            "read": true,
+            "archived": false,
+            "original_socket_id": "5956.157",
+            "reconnect_socket_id": "5956.221",
+            "reload_socket_id": "5956.398",
+            "all_observed_socket_ids": [
+              "5956.121",
+              "5956.157",
+              "5956.221",
+              "5956.381",
+              "5956.398"
+            ],
+            "additional_business_writes": 0,
+            "workspace_handshake": true,
+            "literal_event_replay_claimed": false
+          },
+          "ordinary_transport": [
+            {
+              "at": "2026-11-19T01:09:57.742Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:09:53.752Z",
+                  "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-4534-7d69-8f3c-ed9046261c57/comments",
+                  "payload_sha256": "e54c6ade56b3cddc36bac770f26947ece8a586c7e35bf50831e0d681c5710944",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                }
+              ],
+              "socket_bindings": [
+                {
+                  "id": "5941.154",
+                  "at": "2026-11-19T01:09:52.147Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "scope": null
+                }
+              ]
+            },
+            {
+              "at": "2026-11-19T01:09:57.743Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:09:53.224Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-4534-7d69-8f3c-ed9046261c57/subscribe",
+                  "payload_sha256": "f98dec545488bccbe96a3ef6c57adf38497a69435d99d7aa9686a5b37913f72a",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.299Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/facets",
+                  "payload_sha256": "73b159ccdcf1fa6c46183cc5b6552171f21db79eb2c2b5ebf7da512296fc0e34",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.300Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/facets",
+                  "payload_sha256": "c04b8958e7cdf18cd3ff61402304f0f67c8a9e7cb62ce5c012c20e65747b9e74",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.306Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "1835d9ae4242adcd721988d1e9486e0ab00189b7478eb65c77a66d923a9325db",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.307Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "0d8ef67e1d345c0b82a3681b58e30476271d2fa0b782a1749a2df7de6dc56c5d",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.311Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "9cc747ac7cade0d030a09166b3d26a35212111c4fe0739e94e1b472988255e8a",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.312Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "7551afa8b9bd8db518c9144e92b5e864862e75ab00cefdd086e22c4587d52195",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.314Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "d1338d5db52087eae068fc002c026e9286059cc5bc729220d043f99b4ec79021",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.315Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "17a61da83f2ac3247c96f6c19a321e616531c3a59f621b01c43614d3df3c7e27",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.316Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/table/rows",
+                  "payload_sha256": "7415c516a95c09be920873667888c04a298d9f9bf388f53d4b13da775d22b178",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:54.530Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/inbox/2c42e72e-fa3f-50aa-831f-8ff1cc2a5018/read",
+                  "payload_sha256": null,
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:57.550Z",
+                  "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-4534-7d69-8f3c-ed9046261c57/unsubscribe",
+                  "payload_sha256": "f98dec545488bccbe96a3ef6c57adf38497a69435d99d7aa9686a5b37913f72a",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                }
+              ],
+              "socket_bindings": [
+                {
+                  "id": "5956.157",
+                  "at": "2026-11-19T01:09:52.777Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "scope": null
+                },
+                {
+                  "id": "5956.221",
+                  "at": "2026-11-19T01:09:55.882Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "scope": null
+                },
+                {
+                  "id": "5956.381",
+                  "at": "2026-11-19T01:09:57.044Z",
+                  "workspace_slug": null,
+                  "scope": "account"
+                },
+                {
+                  "id": "5956.398",
+                  "at": "2026-11-19T01:09:57.094Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmurteq4270",
+                  "scope": null
+                }
+              ]
+            }
+          ],
+          "session_closure": [
+            {
+              "actor_id": "8cf581fd-a6a0-4038-a3d8-1b492f7515a7",
+              "lifecycle": {
+                "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r03/profiles/pay241-s3-client-SPOv65",
+                "native_pid": 5928,
+                "page_closed_at": "2026-11-19T01:09:58.023Z",
+                "context_closed_at": "2026-11-19T01:09:58.111Z",
+                "native_exit": {
+                  "at": "2026-11-19T01:09:58.111Z",
+                  "code": 0,
+                  "signal": null
+                },
+                "close_started_at": "2026-11-19T01:09:57.898Z",
+                "close_ended_at": "2026-11-19T01:09:58.148Z"
+              },
+              "page_errors": [],
+              "comment_page_errors": [],
+              "cleanup_errors": [],
+              "socket_ids": [
+                "5941.121",
+                "5941.154"
+              ]
+            },
+            {
+              "actor_id": "45271955-489b-48f2-836c-2068ce0071e6",
+              "lifecycle": {
+                "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r03/profiles/pay241-s3-client-SGCbwr",
+                "native_pid": 5951,
+                "page_closed_at": "2026-11-19T01:09:58.014Z",
+                "context_closed_at": "2026-11-19T01:09:58.112Z",
+                "native_exit": {
+                  "at": "2026-11-19T01:09:58.111Z",
+                  "code": 0,
+                  "signal": null
+                },
+                "close_started_at": "2026-11-19T01:09:57.898Z",
+                "close_ended_at": "2026-11-19T01:09:58.122Z"
+              },
+              "page_errors": [],
+              "comment_page_errors": [],
+              "cleanup_errors": [],
+              "socket_ids": [
+                "5956.121",
+                "5956.157",
+                "5956.221",
+                "5956.381",
+                "5956.398"
+              ]
+            }
+          ],
+          "all_sessions_cleanup": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "attachment_outcomes": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "primary_failure_preserved": true,
+          "second_comment_emitted": false
+        },
+        "Web": {
+          "final_evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results/collaboration-recovery-sub-5e032-nect-reload-and-unsubscribe-chromium/web-ordinary-subscriptions.json",
+          "final_sha256": "3d9ee4b8a31e39c97339b913e0073e7e85a6ad650fdda1c176694246c482c094",
+          "attachment": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results/collaboration-recovery-sub-5e032-nect-reload-and-unsubscribe-chromium/attachments/web-ordinary-subscriptions-d4a02ea876d51836a6217d6c21580fd203cb48cb.json",
+          "attachment_sha256": "1cd282e74332f350c43ba63f177c521563bb413afe269720b04bb544b3521544",
+          "attachment_checkpoint_session_parity": true,
+          "status": "FAILED_OR_INCOMPLETE",
+          "active_phase": "second_comment_after_unsubscribe",
+          "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r04",
+          "workspace_id": "1b53808e-ed1f-4cab-972a-22ed6b93d848",
+          "parent_issue_id": "01a1f15a-1fc2-70fa-9c5d-ba7c52c6dc4a",
+          "child_issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+          "actors": {
+            "commenter": "322149f0-0841-4a2c-b020-b1a29071472f",
+            "watcher": "a1234d48-4815-46c0-b7a4-783cd0178814",
+            "nonwatcher": "76b66df0-ada3-413a-8ca1-e0d694795434",
+            "optout": "8613b8a0-d557-4c01-b406-0edb692369a8"
+          },
+          "first_comment": {
+            "at": "2026-11-19T01:09:42.283Z",
+            "stage": "first_comment_original_comment_identity",
+            "id": "01a1f15a-308e-77a5-a2f3-7ac19df6c4df",
+            "issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+            "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+            "revision": 1,
+            "content_sha256": "36a3c5298e83fbabe2261f599a67491f15653c5125efeadb11866626899493ae",
+            "created_at": "2026-11-19T09:09:42+08:00",
+            "transport": "ACTUAL_UNKEYED_ORDINARY_COMPOSER",
+            "mentions": 0,
+            "attachments": 0
+          },
+          "API_recipients": {
+            "322149f0-0841-4a2c-b020-b1a29071472f": [],
+            "a1234d48-4815-46c0-b7a4-783cd0178814": [
+              {
+                "id": "073dcfdf-7016-51ea-9301-47ce52f72cd5",
+                "issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+                "recipient_type": "member",
+                "recipient_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+                "type": "new_comment",
+                "actor_type": "member",
+                "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+                "comment_id": "01a1f15a-308e-77a5-a2f3-7ac19df6c4df",
+                "read": false,
+                "archived": false,
+                "created_at": "2026-11-19T09:09:42+08:00",
+                "title_sha256": "2290077551da177a33ab363c8d0f46f3b2433789e41d1d1b627df72d4919fe8f",
+                "body_sha256": "36a3c5298e83fbabe2261f599a67491f15653c5125efeadb11866626899493ae"
+              }
+            ],
+            "76b66df0-ada3-413a-8ca1-e0d694795434": [],
+            "8613b8a0-d557-4c01-b406-0edb692369a8": []
+          },
+          "manual_subscriber": {
+            "issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+            "workspace_id": "1b53808e-ed1f-4cab-972a-22ed6b93d848",
+            "user_type": "member",
+            "user_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+            "reason": "manual",
+            "created_at": "2026-11-19 01:09:41.709328+00",
+            "unsubscribed_at": null,
+            "opt_out_scope": null,
+            "member_id": "e0b3a54f-b313-4f2f-b4f7-22c8effb786b"
+          },
+          "final_watcher_tombstone": {
+            "issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+            "workspace_id": "1b53808e-ed1f-4cab-972a-22ed6b93d848",
+            "user_type": "member",
+            "user_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+            "reason": "manual",
+            "created_at": "2026-11-19 01:09:41.709328+00",
+            "unsubscribed_at": "2026-11-19 01:09:45.587148+00",
+            "opt_out_scope": "issue",
+            "member_id": "e0b3a54f-b313-4f2f-b4f7-22c8effb786b"
+          },
+          "final_original_inbox": [
+            {
+              "id": "073dcfdf-7016-51ea-9301-47ce52f72cd5",
+              "workspace_id": "1b53808e-ed1f-4cab-972a-22ed6b93d848",
+              "recipient_type": "member",
+              "recipient_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+              "type": "new_comment",
+              "severity": "info",
+              "issue_id": "01a1f15a-200c-701f-a24b-9d0cb980b0bb",
+              "actor_type": "member",
+              "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+              "comment_id": "01a1f15a-308e-77a5-a2f3-7ac19df6c4df",
+              "title_sha256": "2290077551da177a33ab363c8d0f46f3b2433789e41d1d1b627df72d4919fe8f",
+              "body_sha256": "36a3c5298e83fbabe2261f599a67491f15653c5125efeadb11866626899493ae",
+              "details_sha256": "8317d3817c35a9dc77829611b9cdf880b2de2906a6f41d8d3cb359f7751202da",
+              "read": true,
+              "archived": false,
+              "created_at": "2026-11-19 01:09:42.191968+00"
+            }
+          ],
+          "snapshots": {
+            "seeded_complete_rows": {
+              "rows_sha256": "47a6eb674b74af7b2408d37a63efdf583c5d30a88de6a351cdeb26ba9c9297f2",
+              "counts": {
+                "issues": 2,
+                "subscribers": 2,
+                "inbox": 0,
+                "comments": 0,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "manual_subscription_rows": {
+              "rows_sha256": "fbc4e87e87c7b4a2e8c88d09c4ee57b2df37d09f87903bf95459076069c5a740",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 0,
+                "comments": 0,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "first_comment_all_persisted_recipients": {
+              "rows_sha256": "9fce7a655d21273d3db006cdf2f46389ef7a18f5dbbd3a1ae04426c0f46b7827",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "original_notice_read_state": {
+              "rows_sha256": "b5013a59414f8ca4b7c5a97eec9e5908d3096e2740dc5c558e01a600d8995a70",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "genuine_reconnect_reload_complete_rows": {
+              "rows_sha256": "b5013a59414f8ca4b7c5a97eec9e5908d3096e2740dc5c558e01a600d8995a70",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            },
+            "manual_subscription_tombstone": {
+              "rows_sha256": "b2e213399193276cf03c0118d5486dfede0587576aef60a7950a5b043eec12f3",
+              "counts": {
+                "issues": 2,
+                "subscribers": 3,
+                "inbox": 1,
+                "comments": 1,
+                "activities": 1,
+                "collaboration": 1,
+                "sessions": 1,
+                "events": 1,
+                "operations": 0,
+                "notifications": 0,
+                "commands": 0,
+                "groups": 0,
+                "runs": 0,
+                "dispatches": 0,
+                "attachments": 0,
+                "collaboration_attachments": 0,
+                "delegation_receipts": 0
+              },
+              "SQL_row_hashes_match": true,
+              "SQL_bindings_match": true,
+              "all_row_bounds_128": true
+            }
+          },
+          "reconnect_all_17_sets_equal": true,
+          "read_changes_only_inbox_read": true,
+          "tombstone_original_inbox_comments_preserved": true,
+          "parent_relations_preserved": {
+            "collaboration": true,
+            "sessions": true,
+            "events": true,
+            "operations": true,
+            "notifications": true
+          },
+          "reconnect": {
+            "at": "2026-11-19T01:09:45.550Z",
+            "stage": "genuine_reconnect_reload_kept_original_notice",
+            "comment_id": "01a1f15a-308e-77a5-a2f3-7ac19df6c4df",
+            "inbox_id": "073dcfdf-7016-51ea-9301-47ce52f72cd5",
+            "read": true,
+            "archived": false,
+            "original_socket_id": "5887.297",
+            "reconnect_socket_id": "5887.382",
+            "reload_socket_id": "5887.713",
+            "all_observed_socket_ids": [
+              "5887.274",
+              "5887.297",
+              "5887.382",
+              "5887.696",
+              "5887.713"
+            ],
+            "additional_business_writes": 0,
+            "workspace_handshake": true,
+            "literal_event_replay_claimed": false
+          },
+          "ordinary_transport": [
+            {
+              "at": "2026-11-19T01:09:45.786Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:09:42.235Z",
+                  "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-200c-701f-a24b-9d0cb980b0bb/comments",
+                  "payload_sha256": "28f9d53f655b7381c564bc29ac1bb8560150472a6d0c4e31a87e4251fdb3bd86",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                }
+              ],
+              "socket_bindings": [
+                {
+                  "id": "5886.297",
+                  "at": "2026-11-19T01:09:40.111Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "scope": null
+                }
+              ]
+            },
+            {
+              "at": "2026-11-19T01:09:45.787Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:09:41.725Z",
+                  "actor_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-200c-701f-a24b-9d0cb980b0bb/subscribe",
+                  "payload_sha256": "cdd3f52c4277e498a1c00492f881f0721bbb7a903e710d59ecc8361954bfa031",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:42.736Z",
+                  "actor_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+                  "method": "POST",
+                  "path": "/api/inbox/073dcfdf-7016-51ea-9301-47ce52f72cd5/read",
+                  "payload_sha256": null,
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                },
+                {
+                  "at": "2026-11-19T01:09:45.608Z",
+                  "actor_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f15a-200c-701f-a24b-9d0cb980b0bb/unsubscribe",
+                  "payload_sha256": "cdd3f52c4277e498a1c00492f881f0721bbb7a903e710d59ecc8361954bfa031",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                }
+              ],
+              "socket_bindings": [
+                {
+                  "id": "5887.297",
+                  "at": "2026-11-19T01:09:41.183Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "scope": null
+                },
+                {
+                  "id": "5887.382",
+                  "at": "2026-11-19T01:09:44.097Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "scope": null
+                },
+                {
+                  "id": "5887.696",
+                  "at": "2026-11-19T01:09:45.187Z",
+                  "workspace_slug": null,
+                  "scope": "account"
+                },
+                {
+                  "id": "5887.713",
+                  "at": "2026-11-19T01:09:45.236Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmurlz5b7b3",
+                  "scope": null
+                }
+              ]
+            }
+          ],
+          "session_closure": [
+            {
+              "actor_id": "322149f0-0841-4a2c-b020-b1a29071472f",
+              "lifecycle": {
+                "profile": null,
+                "native_pid": null,
+                "page_closed_at": "2026-11-19T01:09:45.879Z",
+                "context_closed_at": "2026-11-19T01:09:45.881Z",
+                "native_exit": null,
+                "close_started_at": "2026-11-19T01:09:45.866Z",
+                "close_ended_at": "2026-11-19T01:09:45.881Z"
+              },
+              "page_errors": [],
+              "comment_page_errors": [],
+              "cleanup_errors": [],
+              "socket_ids": [
+                "5886.274",
+                "5886.297"
+              ]
+            },
+            {
+              "actor_id": "a1234d48-4815-46c0-b7a4-783cd0178814",
+              "lifecycle": {
+                "profile": null,
+                "native_pid": null,
+                "page_closed_at": "2026-11-19T01:09:45.873Z",
+                "context_closed_at": "2026-11-19T01:09:45.875Z",
+                "native_exit": null,
+                "close_started_at": "2026-11-19T01:09:45.866Z",
+                "close_ended_at": "2026-11-19T01:09:45.875Z"
+              },
+              "page_errors": [],
+              "comment_page_errors": [],
+              "cleanup_errors": [],
+              "socket_ids": [
+                "5887.274",
+                "5887.297",
+                "5887.382",
+                "5887.696",
+                "5887.713"
+              ]
+            }
+          ],
+          "all_sessions_cleanup": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "attachment_outcomes": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "primary_failure_preserved": true,
+          "second_comment_emitted": false
+        }
+      },
+      "final_round_inventory": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r03/results/ordinary-subscription-round-inventory.json",
+        "sha256": "406cadd30cea77eb46a2222fe70b628120e7a2cf937ee3aa04e7250f01ad1e32",
+        "value": {
+          "planned_tops": 2,
+          "workers": 1,
+          "retries": 0,
+          "tests": [
+            {
+              "name": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+              "status": "FAILED_OR_INCOMPLETE",
+              "result": null,
+              "error_type": "Error"
+            },
+            {
+              "name": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+              "status": "FAILED_OR_INCOMPLETE",
+              "result": null,
+              "error_type": "Error"
+            }
+          ]
+        }
+      },
+      "api_closure": {
+        "ready.json": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-api-r03/ready.json",
+          "sha256": "39d61bcd8ebfd092b0ce0c7fa14fda380289db2b8dc51741f251a0ff4d8589e7",
+          "value": {
+            "at": "2026-11-19T01:03:46.025351+00:00",
+            "pid": 71510,
+            "pgid": 71510,
+            "port": 64940,
+            "response_sha256": "88deba804d97e68cf2db99e70b9651e92104631bcb6c6668b7c7491a1548ab8c",
+            "config_sha256": "695e1fe0ecada928cd43c2d37c66add514000d44253faa70ed0f0b0e466188e2",
+            "observations": [
+              {
+                "at": "2026-11-19T01:03:45.264745+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:03:45.467995+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:03:45.674152+00:00",
+                "error_type": "URLError"
+              }
+            ],
+            "health": {
+              "status": "ok",
+              "pid": 71510,
+              "commit": "b1901a48f",
+              "started_at": "2026-11-19T01:03:45Z"
+            },
+            "readiness": {
+              "status": "ok",
+              "checks": {
+                "db": "ok",
+                "migrations": "ok"
+              }
+            },
+            "binary_sha256": "0c8ca9898c5b022df40bf2230849c956ac2c14ee5fe59d4d87b02f805306f999",
+            "deployment_id": "6a2385c8-355c-4018-ac90-6689713165db"
+          }
+        },
+        "stopped.json": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-api-r03/stopped.json",
+          "sha256": "b5a93231f48b82abd038ba60119b6f97ac31a62d5e6139e413bd15cf760a6c0c",
+          "value": {
+            "at": "2026-11-19T01:14:10.942910+00:00",
+            "pid": 71510,
+            "pgid": 71510,
+            "signal": "SIGTERM",
+            "listener_absent": true,
+            "config_sha256": "695e1fe0ecada928cd43c2d37c66add514000d44253faa70ed0f0b0e466188e2"
+          }
+        }
+      },
+      "after_database_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/subscription-runtime-after-r03.json",
+        "sha256": "6b77b7ee2da5b002d384b24c713c61699f1833d741f9ccd9e1ef06d57b06c3a9",
+        "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r04",
+        "gate": {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        },
+        "ledger_count": 855,
+        "ledger_sha256": "1b9ed7aca1e61810b434d4b55c95203f7d0d4f2c24fe07ba8a3f1c0437ef80fe",
+        "index_count": 663,
+        "all_indexes_ready_valid": true,
+        "table_counts": {
+          "user": 8,
+          "agent": 0,
+          "issue": 4,
+          "skill": 0,
+          "squad": 0,
+          "member": 8,
+          "comment": 2,
+          "project": 0,
+          "feedback": 0,
+          "autopilot": 0,
+          "iteration": 0,
+          "workspace": 2,
+          "attachment": 0,
+          "inbox_item": 2,
+          "issue_view": 0,
+          "skill_file": 0,
+          "task_token": 0,
+          "task_usage": 0,
+          "admin_alert": 0,
+          "agent_skill": 0,
+          "issue_label": 0,
+          "pinned_item": 0,
+          "activity_log": 2,
+          "chat_message": 0,
+          "chat_session": 0,
+          "daemon_token": 0,
+          "issue_status": 14,
+          "issue_triage": 0,
+          "organization": 1,
+          "quick_action": 0,
+          "squad_member": 0,
+          "task_message": 0,
+          "agent_runtime": 0,
+          "autopilot_run": 0,
+          "issue_handoff": 0,
+          "plugin_secret": 0,
+          "triage_action": 0,
+          "agent_to_label": 0,
+          "issue_property": 0,
+          "issue_reaction": 0,
+          "issue_to_label": 0,
+          "plugin_package": 0,
+          "plugin_storage": 0,
+          "project_update": 0,
+          "skill_to_label": 0,
+          "vcs_connection": 0,
+          "admin_operation": 0,
+          "iteration_event": 0,
+          "report_snapshot": 0,
+          "runtime_profile": 0,
+          "agent_mcp_server": 0,
+          "agent_task_queue": 0,
+          "comment_reaction": 0,
+          "issue_dependency": 0,
+          "issue_subscriber": 6,
+          "project_resource": 0,
+          "vcs_pull_request": 0,
+          "webhook_delivery": 0,
+          "admin_audit_event": 0,
+          "autopilot_trigger": 0,
+          "chat_pinned_agent": 0,
+          "collaboration_run": 0,
+          "daemon_connection": 0,
+          "installation_user": 0,
+          "issue_participant": 2,
+          "lark_installation": 0,
+          "lark_user_binding": 0,
+          "plugin_invocation": 0,
+          "schema_migrations": 855,
+          "task_usage_hourly": 0,
+          "triage_import_row": 0,
+          "vcs_commit_status": 0,
+          "verification_code": 0,
+          "chat_draft_restore": 0,
+          "client_usage_daily": 2,
+          "issue_pull_request": 0,
+          "iteration_snapshot": 0,
+          "lark_binding_token": 0,
+          "lark_inbound_audit": 0,
+          "agent_builder_draft": 0,
+          "collaboration_batch": 0,
+          "collaboration_event": 2,
+          "collaboration_grant": 0,
+          "github_installation": 0,
+          "github_pull_request": 0,
+          "issue_collaboration": 2,
+          "iteration_operation": 0,
+          "plugin_installation": 0,
+          "plugin_package_file": 0,
+          "sys_cron_executions": 3,
+          "triage_import_batch": 0,
+          "triage_notification": 0,
+          "autopilot_subscriber": 0,
+          "channel_installation": 0,
+          "channel_user_binding": 0,
+          "collaboration_target": 0,
+          "dingtalk_group_route": 0,
+          "issue_source_context": 0,
+          "managed_installation": 0,
+          "plugin_hook_schedule": 0,
+          "project_stage_policy": 0,
+          "project_state_change": 0,
+          "seat_capacity_outbox": 0,
+          "workspace_invitation": 0,
+          "workspace_mcp_server": 0,
+          "workspace_share_link": 2,
+          "channel_binding_token": 0,
+          "channel_inbound_audit": 0,
+          "channel_task_delivery": 0,
+          "collaboration_attempt": 0,
+          "collaboration_channel": 0,
+          "collaboration_command": 0,
+          "collaboration_session": 2,
+          "contact_sales_inquiry": 0,
+          "dingtalk_bot_identity": 0,
+          "issue_view_preference": 0,
+          "personal_access_token": 0,
+          "platform_role_binding": 0,
+          "triage_intake_request": 0,
+          "agent_approval_request": 0,
+          "autopilot_collaborator": 0,
+          "autopilot_quota_period": 0,
+          "autopilot_rule_version": 0,
+          "installation_challenge": 0,
+          "issue_vcs_pull_request": 0,
+          "iteration_notification": 0,
+          "organization_workspace": 2,
+          "plugin_package_version": 0,
+          "project_update_request": 0,
+          "agent_invocation_target": 0,
+          "collaboration_operation": 2,
+          "collaboration_run_event": 0,
+          "delivery_project_change": 0,
+          "dingtalk_group_presence": 0,
+          "iteration_participation": 0,
+          "notification_preference": 0,
+          "project_delivery_policy": 0,
+          "project_update_revision": 0,
+          "report_snapshot_control": 0,
+          "task_usage_hourly_dirty": 0,
+          "agent_artifact_execution": 0,
+          "channel_outbound_message": 0,
+          "collaboration_attachment": 0,
+          "collaboration_delegation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_task": 0,
+          "project_knowledge_policy": 0,
+          "user_composio_connection": 0,
+          "user_password_credential": 8,
+          "collaboration_group_input": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_termination": 0,
+          "lark_chat_session_binding": 0,
+          "workspace_triage_settings": 0,
+          "admin_alert_detector_state": 0,
+          "collaboration_notification": 0,
+          "collaboration_test_subject": 0,
+          "comment_delegation_receipt": 0,
+          "github_pending_check_suite": 0,
+          "installation_report_cursor": 0,
+          "lark_inbound_message_dedup": 0,
+          "lark_outbound_card_message": 0,
+          "autopilot_quota_reservation": 0,
+          "collaboration_account_fence": 2,
+          "collaboration_knowledge_job": 0,
+          "github_pending_installation": 0,
+          "installation_daemon_binding": 0,
+          "project_update_notification": 0,
+          "channel_chat_session_binding": 0,
+          "channel_media_pending_object": 0,
+          "collaboration_execution_gate": 1,
+          "collaboration_memory_version": 0,
+          "collaboration_resource_offer": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_switch_consent": 0,
+          "delivery_completion_terminal": 0,
+          "delivery_evidence_evaluation": 0,
+          "workspace_iteration_settings": 0,
+          "channel_inbound_message_dedup": 0,
+          "channel_outbound_card_message": 0,
+          "collaboration_execution_group": 0,
+          "collaboration_knowledge_batch": 0,
+          "collaboration_stage_candidate": 0,
+          "collaboration_switch_proposal": 0,
+          "github_pull_request_check_run": 0,
+          "platform_admin_initialization": 0,
+          "collaboration_group_dependency": 0,
+          "collaboration_knowledge_target": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_submission": 0,
+          "task_usage_hourly_rollup_state": 1,
+          "channel_chat_context_generation": 0,
+          "collaboration_knowledge_attempt": 0,
+          "collaboration_runtime_challenge": 0,
+          "github_pull_request_check_suite": 0,
+          "collaboration_knowledge_validity": 0,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_business_capability": 0,
+          "collaboration_config_invalidation": 0,
+          "collaboration_knowledge_candidate": 0,
+          "collaboration_runtime_reservation": 0,
+          "collaboration_runtime_scan_cursor": 0,
+          "delivery_completion_authorization": 0,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_knowledge_evaluation": 0,
+          "issue_source_context_object_intent": 0,
+          "collaboration_knowledge_invalidation": 6,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_execution_observation": 0
+        },
+        "other_connections": 0
+      }
+    },
+    "subscriptions-runtime-r04": {
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r05",
+      "fixture_sha256": "f62c310bc84f02eba054c85e490bbf0c84054ad95fba332eead696bca62755b0",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r05/node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/playwright-subscriptions-r05.config.mjs",
+        "--workers=1",
+        "--retries=0",
+        "--max-failures=0",
+        "--reporter=json",
+        "--output",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r04/results"
+      ],
+      "pid": 25882,
+      "config_sha256": "bc69557623b4db1e83da97c36f3ad9df2b6645628951879b804d90f2e0d3bebb",
+      "exit": 1,
+      "command_sha256": "3b9cf225b096a96925b4eac0ca9388b033fb14fc705f1dd4475da4f18d6b6284",
+      "result_sha256": "fb3e7c28c80517f914e0268eb60afffa0ecdaa870958498fba182af63599e89b",
+      "stdout_sha256": "ca28e1fd513db8d6e39ecad33804a939187b01a5eede0963e5f986850f25e8ec",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stats": {
+        "startTime": "2026-11-19T01:28:44.517Z",
+        "duration": 27204.508,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "test_inventory": [
+        {
+          "name": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "error_messages_sha256": [
+                "b20ceceeb30a329cd63f5a690ea80868b56db8aa6af508688cfcb837bbe90336"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+          "status": "unexpected",
+          "attempts": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "error_messages_sha256": [
+                "b20ceceeb30a329cd63f5a690ea80868b56db8aa6af508688cfcb837bbe90336"
+              ]
+            }
+          ]
+        }
+      ],
+      "partial_evidence": {
+        "Desktop": {
+          "evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r04/results/collaboration-recovery-sub-06392-nect-reload-and-unsubscribe-chromium/desktop-ordinary-subscriptions.json",
+          "evidence_sha256": "90ddf5c2e607e5a44d56efabee27b05308e2900bb6296f6ab3582fb9226cf0f3",
+          "attachment": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r04/results/collaboration-recovery-sub-06392-nect-reload-and-unsubscribe-chromium/attachments/desktop-ordinary-subscriptions-586f4f29dedfb0580c2f33cf84068d92ac8a2ec0.json",
+          "attachment_sha256": "674ee2d14d3866d9988b5f9c0def62093ccc919b80f9aeef570828f76820f80e",
+          "attachment_checkpoint_session_parity": true,
+          "status": "FAILED_OR_INCOMPLETE",
+          "active_phase": "manual_subscription_rows",
+          "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r05",
+          "child_issue_id": "01a1f16b-d937-7659-b382-9abc037358ef",
+          "actors": {
+            "commenter": "ab6318e9-2a10-48de-a42b-438e75f9d240",
+            "watcher": "6c84a37f-0ebc-45cb-994e-2441f23ee9df",
+            "nonwatcher": "713ab523-1070-402f-805d-ed532a9b3889",
+            "optout": "24e1d36d-3731-4558-b0e0-6b2ccd023198"
+          },
+          "completed_non_SQL_checkpoints": [
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "public_source_membership_and_ordinary_child_setup",
+            "seeded_complete_rows",
+            "seeded_complete_rows_audit_connection_closed",
+            "actual_Subscribe_control",
+            "manual_subscription_rows",
+            "manual_subscription_rows_audit_connection_closed",
+            "complete_ordinary_client_transport_inventory",
+            "complete_ordinary_client_transport_inventory",
+            "ordinary_observer_cleanup",
+            "original_failure_before_owned_teardown"
+          ],
+          "ordinary_transport": [
+            {
+              "at": "2026-11-19T01:29:11.103Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "ab6318e9-2a10-48de-a42b-438e75f9d240",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:29:06.515Z",
+                  "actor_id": "ab6318e9-2a10-48de-a42b-438e75f9d240",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f16b-d937-7659-b382-9abc037358ef/comments/trigger-preview",
+                  "payload_sha256": "d3e55efc60685a3eea4e620197db5c61c5fae96137aeb23c7ab8aead395c242b",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmvgi7hc43e",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                }
+              ],
+              "query_read_facts": [],
+              "socket_bindings": [
+                {
+                  "id": "26727.154",
+                  "at": "2026-11-19T01:29:04.391Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmvgi7hc43e",
+                  "scope": null
+                }
+              ]
+            },
+            {
+              "at": "2026-11-19T01:29:11.104Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "6c84a37f-0ebc-45cb-994e-2441f23ee9df",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:29:05.743Z",
+                  "actor_id": "6c84a37f-0ebc-45cb-994e-2441f23ee9df",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f16b-d937-7659-b382-9abc037358ef/subscribe",
+                  "payload_sha256": "4d7a1f362619433fe31d51fb6d467c2a1e98e48d3c0246a3d22073c64d04f4a6",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-desktop-mwmvgi7hc43e",
+                  "authentication": {
+                    "cookie": false,
+                    "csrf": false,
+                    "bearer": true
+                  }
+                }
+              ],
+              "query_read_facts": [],
+              "socket_bindings": [
+                {
+                  "id": "26734.154",
+                  "at": "2026-11-19T01:29:05.395Z",
+                  "workspace_slug": "s3-subscriptions-desktop-mwmvgi7hc43e",
+                  "scope": null
+                }
+              ]
+            }
+          ],
+          "session_closures": [
+            {
+              "actor_id": "ab6318e9-2a10-48de-a42b-438e75f9d240",
+              "lifecycle": {
+                "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r04/profiles/pay241-s3-client-lTWXr5",
+                "native_pid": 26720,
+                "page_closed_at": "2026-11-19T01:29:11.519Z",
+                "context_closed_at": "2026-11-19T01:29:11.626Z",
+                "native_exit": {
+                  "at": "2026-11-19T01:29:11.626Z",
+                  "code": 0,
+                  "signal": null
+                },
+                "close_started_at": "2026-11-19T01:29:11.378Z",
+                "close_ended_at": "2026-11-19T01:29:11.649Z"
+              },
+              "page_errors": [],
+              "cleanup_errors": []
+            },
+            {
+              "actor_id": "6c84a37f-0ebc-45cb-994e-2441f23ee9df",
+              "lifecycle": {
+                "profile": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly/subscriptions-r04/profiles/pay241-s3-client-ilzSlR",
+                "native_pid": 26729,
+                "page_closed_at": "2026-11-19T01:29:11.507Z",
+                "context_closed_at": "2026-11-19T01:29:11.610Z",
+                "native_exit": {
+                  "at": "2026-11-19T01:29:11.609Z",
+                  "code": 0,
+                  "signal": null
+                },
+                "close_started_at": "2026-11-19T01:29:11.378Z",
+                "close_ended_at": "2026-11-19T01:29:11.622Z"
+              },
+              "page_errors": [],
+              "cleanup_errors": []
+            }
+          ],
+          "all_sessions_cleanup": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "first_saved_comment_observed": false,
+          "primary_failure_preserved": true
+        },
+        "Web": {
+          "evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r04/results/collaboration-recovery-sub-5e032-nect-reload-and-unsubscribe-chromium/web-ordinary-subscriptions.json",
+          "evidence_sha256": "f00f443e46ce1065e3434354183f4278e6f5e9b112b4a4f0f2a01a624f475c21",
+          "attachment": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-r04/results/collaboration-recovery-sub-5e032-nect-reload-and-unsubscribe-chromium/attachments/web-ordinary-subscriptions-28dacc5d22ba71c45dff09e78b75b65099f407ae.json",
+          "attachment_sha256": "aa96677e55bccbac247f8b50c912d2ac3cb062e2b573c974d26f9128fb5c79bb",
+          "attachment_checkpoint_session_parity": true,
+          "status": "FAILED_OR_INCOMPLETE",
+          "active_phase": "manual_subscription_rows",
+          "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r05",
+          "child_issue_id": "01a1f16b-aedb-7cb9-8b31-5f80208a7c0c",
+          "actors": {
+            "commenter": "25c2961a-ed20-4dbf-b013-504e2a5e17be",
+            "watcher": "4c051c70-02dd-4fc3-b666-ab2680dd69eb",
+            "nonwatcher": "66433c1d-d379-4cf7-86e9-0638907fb5e9",
+            "optout": "bb270aaa-85d2-4cf5-9aae-f771babf8c75"
+          },
+          "completed_non_SQL_checkpoints": [
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "actual_password_actor_registered",
+            "actual_password_actor_onboarded",
+            "public_source_membership_and_ordinary_child_setup",
+            "seeded_complete_rows",
+            "seeded_complete_rows_audit_connection_closed",
+            "actual_Subscribe_control",
+            "manual_subscription_rows",
+            "manual_subscription_rows_audit_connection_closed",
+            "complete_ordinary_client_transport_inventory",
+            "complete_ordinary_client_transport_inventory",
+            "ordinary_observer_cleanup",
+            "original_failure_before_owned_teardown"
+          ],
+          "ordinary_transport": [
+            {
+              "at": "2026-11-19T01:28:57.423Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "25c2961a-ed20-4dbf-b013-504e2a5e17be",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:28:52.852Z",
+                  "actor_id": "25c2961a-ed20-4dbf-b013-504e2a5e17be",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f16b-aedb-7cb9-8b31-5f80208a7c0c/comments/trigger-preview",
+                  "payload_sha256": "e9c4ac556531fb4b4a53a4d669c6d1752348175c0c68e364c677c6c1a70af93d",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmvg9svae8b",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                }
+              ],
+              "query_read_facts": [],
+              "socket_bindings": [
+                {
+                  "id": "25940.297",
+                  "at": "2026-11-19T01:28:51.053Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmvg9svae8b",
+                  "scope": null
+                }
+              ]
+            },
+            {
+              "at": "2026-11-19T01:28:57.426Z",
+              "stage": "complete_ordinary_client_transport_inventory",
+              "actor_id": "4c051c70-02dd-4fc3-b666-ab2680dd69eb",
+              "writes": [
+                {
+                  "at": "2026-11-19T01:28:52.191Z",
+                  "actor_id": "4c051c70-02dd-4fc3-b666-ab2680dd69eb",
+                  "method": "POST",
+                  "path": "/api/issues/01a1f16b-aedb-7cb9-8b31-5f80208a7c0c/subscribe",
+                  "payload_sha256": "0365e0e7b3aa7d86186048a751221aa84e7580bf38bedcaa65687449c0dcfef9",
+                  "request_id": null,
+                  "workspace_id": null,
+                  "workspace_slug": "s3-subscriptions-web-mwmvg9svae8b",
+                  "authentication": {
+                    "cookie": true,
+                    "csrf": true,
+                    "bearer": false
+                  }
+                }
+              ],
+              "query_read_facts": [],
+              "socket_bindings": [
+                {
+                  "id": "25949.303",
+                  "at": "2026-11-19T01:28:51.801Z",
+                  "workspace_slug": "s3-subscriptions-web-mwmvg9svae8b",
+                  "scope": null
+                }
+              ]
+            }
+          ],
+          "session_closures": [
+            {
+              "actor_id": "25c2961a-ed20-4dbf-b013-504e2a5e17be",
+              "lifecycle": {
+                "profile": null,
+                "native_pid": null,
+                "page_closed_at": "2026-11-19T01:28:57.552Z",
+                "context_closed_at": "2026-11-19T01:28:57.558Z",
+                "native_exit": null,
+                "close_started_at": "2026-11-19T01:28:57.537Z",
+                "close_ended_at": "2026-11-19T01:28:57.558Z"
+              },
+              "page_errors": [],
+              "cleanup_errors": []
+            },
+            {
+              "actor_id": "4c051c70-02dd-4fc3-b666-ab2680dd69eb",
+              "lifecycle": {
+                "profile": null,
+                "native_pid": null,
+                "page_closed_at": "2026-11-19T01:28:57.559Z",
+                "context_closed_at": "2026-11-19T01:28:57.559Z",
+                "native_exit": null,
+                "close_started_at": "2026-11-19T01:28:57.537Z",
+                "close_ended_at": "2026-11-19T01:28:57.560Z"
+              },
+              "page_errors": [],
+              "cleanup_errors": []
+            }
+          ],
+          "all_sessions_cleanup": [
+            {
+              "status": "fulfilled"
+            },
+            {
+              "status": "fulfilled"
+            }
+          ],
+          "first_saved_comment_observed": false,
+          "primary_failure_preserved": true
+        }
+      },
+      "api_closure": {
+        "ready.json": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-api-r04/ready.json",
+          "sha256": "4fb81fdff2fa8b17381ccfa73232e5b19a6e25627810202c69615b0416580c8c",
+          "value": {
+            "at": "2026-11-19T01:27:51.086623+00:00",
+            "pid": 25659,
+            "pgid": 25659,
+            "port": 64940,
+            "response_sha256": "6dbc46b886f33afb2480a8735fc17d6ca1e39058af9097a1ef95bb4dbbe2f5c7",
+            "config_sha256": "587d3c96fe7fd50fd3c4414828dbadd498278f349179c2401b97e650a1dd29d8",
+            "observations": [
+              {
+                "at": "2026-11-19T01:27:49.875519+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:27:50.080148+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:27:50.284008+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:27:50.490436+00:00",
+                "error_type": "URLError"
+              },
+              {
+                "at": "2026-11-19T01:27:50.692479+00:00",
+                "error_type": "URLError"
+              }
+            ],
+            "health": {
+              "status": "ok",
+              "pid": 25659,
+              "commit": "b1901a48f",
+              "started_at": "2026-11-19T01:27:50Z"
+            },
+            "readiness": {
+              "status": "ok",
+              "checks": {
+                "db": "ok",
+                "migrations": "ok"
+              }
+            },
+            "binary_sha256": "0c8ca9898c5b022df40bf2230849c956ac2c14ee5fe59d4d87b02f805306f999",
+            "deployment_id": "11b20849-a2cf-40ff-aef6-a5d5ae5c4b65"
+          }
+        },
+        "stopped.json": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/runtime/subscriptions-api-r04/stopped.json",
+          "sha256": "f05387d71461a9269e1a611eaf39d266a5de1db4e1902da72e31359421b14266",
+          "value": {
+            "at": "2026-11-19T01:33:35.087888+00:00",
+            "pid": 25659,
+            "pgid": 25659,
+            "signal": "SIGTERM",
+            "listener_absent": true,
+            "config_sha256": "587d3c96fe7fd50fd3c4414828dbadd498278f349179c2401b97e650a1dd29d8"
+          }
+        }
+      },
+      "after_database_audit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/subscription-runtime-after-r04.json",
+        "sha256": "79c4b91e10a0fd9f19d05a5ef9225175d7c13190da8c1dc7ad8d8b0dc45a7c59",
+        "before": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/subscriptions-database-admitted-r05.json",
+        "before_sha256": "cb67eb7bb61a4a632811aa8a5d8d379781b13ff2b299b38646bcf862e5d91c51",
+        "database": "multica_pay241_s3n_20261119_uwkcehly_subscriptions_r05",
+        "gate_equal": true,
+        "gate": {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        },
+        "ledger_count": 855,
+        "ledger_equal": true,
+        "index_count": 663,
+        "indexes_equal": true,
+        "all_indexes_ready_valid": true,
+        "table_counts": {
+          "user": 8,
+          "agent": 0,
+          "issue": 4,
+          "skill": 0,
+          "squad": 0,
+          "member": 8,
+          "comment": 0,
+          "project": 0,
+          "feedback": 0,
+          "autopilot": 0,
+          "iteration": 0,
+          "workspace": 2,
+          "attachment": 0,
+          "inbox_item": 0,
+          "issue_view": 0,
+          "skill_file": 0,
+          "task_token": 0,
+          "task_usage": 0,
+          "admin_alert": 0,
+          "agent_skill": 0,
+          "issue_label": 0,
+          "pinned_item": 0,
+          "activity_log": 2,
+          "chat_message": 0,
+          "chat_session": 0,
+          "daemon_token": 0,
+          "issue_status": 14,
+          "issue_triage": 0,
+          "organization": 1,
+          "quick_action": 0,
+          "squad_member": 0,
+          "task_message": 0,
+          "agent_runtime": 0,
+          "autopilot_run": 0,
+          "issue_handoff": 0,
+          "plugin_secret": 0,
+          "triage_action": 0,
+          "agent_to_label": 0,
+          "issue_property": 0,
+          "issue_reaction": 0,
+          "issue_to_label": 0,
+          "plugin_package": 0,
+          "plugin_storage": 0,
+          "project_update": 0,
+          "skill_to_label": 0,
+          "vcs_connection": 0,
+          "admin_operation": 0,
+          "iteration_event": 0,
+          "report_snapshot": 0,
+          "runtime_profile": 0,
+          "agent_mcp_server": 0,
+          "agent_task_queue": 0,
+          "comment_reaction": 0,
+          "issue_dependency": 0,
+          "issue_subscriber": 6,
+          "project_resource": 0,
+          "vcs_pull_request": 0,
+          "webhook_delivery": 0,
+          "admin_audit_event": 0,
+          "autopilot_trigger": 0,
+          "chat_pinned_agent": 0,
+          "collaboration_run": 0,
+          "daemon_connection": 0,
+          "installation_user": 0,
+          "issue_participant": 2,
+          "lark_installation": 0,
+          "lark_user_binding": 0,
+          "plugin_invocation": 0,
+          "schema_migrations": 855,
+          "task_usage_hourly": 0,
+          "triage_import_row": 0,
+          "vcs_commit_status": 0,
+          "verification_code": 0,
+          "chat_draft_restore": 0,
+          "client_usage_daily": 2,
+          "issue_pull_request": 0,
+          "iteration_snapshot": 0,
+          "lark_binding_token": 0,
+          "lark_inbound_audit": 0,
+          "agent_builder_draft": 0,
+          "collaboration_batch": 0,
+          "collaboration_event": 2,
+          "collaboration_grant": 0,
+          "github_installation": 0,
+          "github_pull_request": 0,
+          "issue_collaboration": 2,
+          "iteration_operation": 0,
+          "plugin_installation": 0,
+          "plugin_package_file": 0,
+          "sys_cron_executions": 2,
+          "triage_import_batch": 0,
+          "triage_notification": 0,
+          "autopilot_subscriber": 0,
+          "channel_installation": 0,
+          "channel_user_binding": 0,
+          "collaboration_target": 0,
+          "dingtalk_group_route": 0,
+          "issue_source_context": 0,
+          "managed_installation": 0,
+          "plugin_hook_schedule": 0,
+          "project_stage_policy": 0,
+          "project_state_change": 0,
+          "seat_capacity_outbox": 0,
+          "workspace_invitation": 0,
+          "workspace_mcp_server": 0,
+          "workspace_share_link": 2,
+          "channel_binding_token": 0,
+          "channel_inbound_audit": 0,
+          "channel_task_delivery": 0,
+          "collaboration_attempt": 0,
+          "collaboration_channel": 0,
+          "collaboration_command": 0,
+          "collaboration_session": 2,
+          "contact_sales_inquiry": 0,
+          "dingtalk_bot_identity": 0,
+          "issue_view_preference": 0,
+          "personal_access_token": 0,
+          "platform_role_binding": 0,
+          "triage_intake_request": 0,
+          "agent_approval_request": 0,
+          "autopilot_collaborator": 0,
+          "autopilot_quota_period": 0,
+          "autopilot_rule_version": 0,
+          "installation_challenge": 0,
+          "issue_vcs_pull_request": 0,
+          "iteration_notification": 0,
+          "organization_workspace": 2,
+          "plugin_package_version": 0,
+          "project_update_request": 0,
+          "agent_invocation_target": 0,
+          "collaboration_operation": 2,
+          "collaboration_run_event": 0,
+          "delivery_project_change": 0,
+          "dingtalk_group_presence": 0,
+          "iteration_participation": 0,
+          "notification_preference": 0,
+          "project_delivery_policy": 0,
+          "project_update_revision": 0,
+          "report_snapshot_control": 0,
+          "task_usage_hourly_dirty": 0,
+          "agent_artifact_execution": 0,
+          "channel_outbound_message": 0,
+          "collaboration_attachment": 0,
+          "collaboration_delegation": 0,
+          "collaboration_stage_role": 0,
+          "collaboration_stage_task": 0,
+          "project_knowledge_policy": 0,
+          "user_composio_connection": 0,
+          "user_password_credential": 8,
+          "collaboration_group_input": 0,
+          "collaboration_stage_child": 0,
+          "collaboration_termination": 0,
+          "lark_chat_session_binding": 0,
+          "workspace_triage_settings": 0,
+          "admin_alert_detector_state": 0,
+          "collaboration_notification": 0,
+          "collaboration_test_subject": 0,
+          "comment_delegation_receipt": 0,
+          "github_pending_check_suite": 0,
+          "installation_report_cursor": 0,
+          "lark_inbound_message_dedup": 0,
+          "lark_outbound_card_message": 0,
+          "autopilot_quota_reservation": 0,
+          "collaboration_account_fence": 2,
+          "collaboration_knowledge_job": 0,
+          "github_pending_installation": 0,
+          "installation_daemon_binding": 0,
+          "project_update_notification": 0,
+          "channel_chat_session_binding": 0,
+          "channel_media_pending_object": 0,
+          "collaboration_execution_gate": 1,
+          "collaboration_memory_version": 0,
+          "collaboration_resource_offer": 0,
+          "collaboration_stage_decision": 0,
+          "collaboration_switch_consent": 0,
+          "delivery_completion_terminal": 0,
+          "delivery_evidence_evaluation": 0,
+          "workspace_iteration_settings": 0,
+          "channel_inbound_message_dedup": 0,
+          "channel_outbound_card_message": 0,
+          "collaboration_execution_group": 0,
+          "collaboration_knowledge_batch": 0,
+          "collaboration_stage_candidate": 0,
+          "collaboration_switch_proposal": 0,
+          "github_pull_request_check_run": 0,
+          "platform_admin_initialization": 0,
+          "collaboration_group_dependency": 0,
+          "collaboration_knowledge_target": 0,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_submission": 0,
+          "task_usage_hourly_rollup_state": 1,
+          "channel_chat_context_generation": 0,
+          "collaboration_knowledge_attempt": 0,
+          "collaboration_runtime_challenge": 0,
+          "github_pull_request_check_suite": 0,
+          "collaboration_knowledge_validity": 0,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_business_capability": 0,
+          "collaboration_config_invalidation": 0,
+          "collaboration_knowledge_candidate": 0,
+          "collaboration_runtime_reservation": 0,
+          "collaboration_runtime_scan_cursor": 0,
+          "delivery_completion_authorization": 0,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_knowledge_evaluation": 0,
+          "issue_source_context_object_intent": 0,
+          "collaboration_knowledge_invalidation": 6,
+          "collaboration_stage_execution_intent": 0,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_execution_observation": 0
+        },
+        "other_connections": 0
+      },
+      "static_receipts": {
+        "subscription-typecheck-r05": {
+          "result_sha256": "609043f71d951500e707404698cdf3ae32f71c51a1d736dddba531415b3db39b",
+          "exit": 0,
+          "stdout_sha256": "19b68d10dfaa2a21e79bc909db5029014ebe2d093b8e79f2b53e553e48cb9b58",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "subscription-eslint-r05": {
+          "result_sha256": "cab75f0034aa485137703b1f01668f014615672ef2e5cc6136fd9bc491e206f3",
+          "exit": 0,
+          "stdout_sha256": "8c3908b359c041f5d4c8dcb7323ce88f52cd1ab5a65a49f47e0b1b54f78b5f99",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "subscription-list-r05": {
+          "result_sha256": "9ab2817d60714af18b55df20efc4ced413bb9eb11a2b804d4cac4511847bcd0f",
+          "exit": 0,
+          "stdout_sha256": "63824575c5a30193d34b6f9d99ac0fbeeb90d7e1ee544768c4085f13b7029933",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    }
+  },
+  "confirmed_query_POST_routes": {
+    "method": "POST",
+    "exact_pathnames": [
+      "/api/issues/table/rows",
+      "/api/issues/table/facets"
+    ],
+    "server_source": "source/server-green-r02",
+    "router": "cmd/server/router.go:2259",
+    "rows_handler": "internal/handler/issue_table_rows.go:221",
+    "facets_handler": "internal/handler/issue_table_facets.go:340",
+    "readonly_snapshot": "internal/handler/issue_table_query.go:43",
+    "classification_not_a_general_table_exemption": true
+  },
+  "markdown_sha256": "4afb06cb62f844614c0047e4cbbf78e0bb15ec14da9e5b324e4b564ef307db61",
+  "R04_failure_audit_complete": true
+}

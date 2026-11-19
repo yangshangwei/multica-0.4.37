@@ -1,0 +1,166 @@
+{
+  "at": "2026-11-18T08:54:29.013471+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "owner": "/root/s3_block_client_implement",
+  "status": "CLIENT_INTAKE_READY_PRIVATE_IMPLEMENTATION_AUTHORIZED",
+  "work_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r01",
+  "public_freeze": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-public-dto-20261118.json",
+  "public_freeze_sha256": "88f0d43a6add03296d9a0accdc282db157417f7e3ef79273210fc47e964813e1",
+  "wire_sha256": "d91b502add1df6c59bef69320ef348d7adb97133c25bd5f93b1e92e7614124d0",
+  "source_refs": [
+    {
+      "path": "packages/core/collaboration/schema.ts",
+      "work_source_sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/action.ts",
+      "work_source_sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/operation.ts",
+      "work_source_sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/presentation.ts",
+      "work_source_sha256": "c52d6ce8368e16c402973955bcbe2fd693c4a605f25a7c53614b9a08d3e833db",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/creation-schema.ts",
+      "work_source_sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/creation.ts",
+      "work_source_sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/access.ts",
+      "work_source_sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/draft.ts",
+      "work_source_sha256": "591036cf1a5a28d87560d4c8b0fc691ab713dc86d6340b67654ed4e20139eb99",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/pending.ts",
+      "work_source_sha256": "5644f58186272c6ad4a5932cbcdcb71327fc90f7a2eb31aa73db75ff38096bb0",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/delivery-queries.ts",
+      "work_source_sha256": "b79f0046054e00ef633f4121aca7f77d0ffbaad79e165a2ba38342fc751e540e",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/activity-schema.ts",
+      "work_source_sha256": "793ee6958ff5b776b422c4f597cb65864dc961578d0da430f76e4932bef63997",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/collaboration/index.ts",
+      "work_source_sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "work_source_sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+      "mode": "0o755",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/collaboration/workflow.tsx",
+      "work_source_sha256": "cbd6085bef297f95be2935a641b54985f428cb563fc77f9278e77bd7c7e2d706",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.tsx",
+      "work_source_sha256": "cd66d988e200ea9d7267165714f023842be3e2d7a36f8268263b1aeeda16509f",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/collaboration/activity.tsx",
+      "work_source_sha256": "03b9055038661f320a35bd7a932bb0afc54375bba90c36dace3025765aec5940",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/collaboration/labels.ts",
+      "work_source_sha256": "60616d45f4b9abeca7fc49acd4fbd1007d6e5b3a7d03c028c42e1bfc922bbb50",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/collaboration/detail-auxiliary.tsx",
+      "work_source_sha256": "e5485c006e64fa8e11c72f30904cf9aa7da63a8f4b2fbe681bdd18a4b9cc5ecb",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/locales/en/collaboration.json",
+      "work_source_sha256": "19e2fd18c11e81a363e482615d7370efe33957d79242d8616a5a55dd19aa9e53",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    },
+    {
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "work_source_sha256": "c0f5223eeba3a7bca952875808874c2bb63f1e10ff0ff20bed0c6bbea7b043fa",
+      "mode": "0o644",
+      "ROOT_matches_work": true
+    }
+  ],
+  "no_product_edits_before_intake": true,
+  "product_tests_DB_API_browser_build": {
+    "status": "NOT_RUN",
+    "count": 0
+  },
+  "readiness": [
+    "strict_information_schema_leaf",
+    "existing_operation_draft_owner",
+    "protected_optional_history_queries",
+    "existing_workflow_and_presentation_affordances",
+    "project_correlated_creation_GET_only",
+    "shared_information_history_and_existing_activity"
+  ],
+  "known_hazards": [
+    "locale files include preexisting S2 WIP; main hunk integration only",
+    "stage schemas/panels/labels are other-owner WIP and read-only",
+    "generic action GET404 fallback must not silently apply to new repair"
+  ],
+  "proposed_new_files": [
+    "packages/core/collaboration/information-schema.ts",
+    "packages/core/collaboration/information-queries.ts",
+    "packages/views/collaboration/information-block.tsx",
+    "packages/views/collaboration/information-history.tsx"
+  ],
+  "proposed_tests": [
+    "information-schema.test.ts",
+    "information-queries.test.ts",
+    "information-action.test.ts",
+    "workflow information/repair wiring regression",
+    "creation project-observation wiring regression",
+    "information-history.test.tsx"
+  ],
+  "ROOT_server_runtime_write_authorized": false,
+  "new_dependencies": false
+}

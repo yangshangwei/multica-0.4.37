@@ -1,0 +1,899 @@
+{
+  "schema_version": 1,
+  "mapping_date": "2026-11-19",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "PLANNING_REQUIREMENTS_MAP_NOT_ACCEPTANCE",
+  "author": "/root/ordinary_subscription_e2e",
+  "acceptance_owner": "Main and independent trellis-check; this author cannot self-accept its subscription/runtime fixture evidence",
+  "markdown_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-remaining-acceptance-map-20261119.md",
+  "markdown_sha256": "9ba1e71fae98c52c260c001a6a87b91fab0a75233c46f3db8bb69e2639115d77",
+  "source_documents": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "3f360a2dcc88223891471accda2ca270f46cb395f1c2b61e94bb93f8762b09ae",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "6ecd7badb61dff11558fba99a890efa5a6c1bc29e0d3b7259750644addd27938",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "007ac0054bb432ffd22189548acae7c74a9b76db7e1cf3a5b9e95bdb2d44644a",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+      "sha256": "727d1bec94571aff9eda4a81777eb8dde02d2cf6dfff2348eae858867f85657b",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "ac6d73351c306805d154050b246e094e4cac6ef5a4707de1e482aecf68176e73",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "sha256": "be495cfc95ad40b36f9aa02e3939ab79d548747ef802d622117ea16bcdcba4bd",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/client-field-r06-independent-check-20261118.md",
+      "sha256": "f713216e8843277745df665ce0ae46b033ed435d711fcdfbfe388c44d1d80516",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/comment-batch-r01-independent-check-20261118.md",
+      "sha256": "b662526f5079e5dd9e6638c52c76889e7424107b8f7e0d9c6022695e8e43745d",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/extras-a-r05-independent-check-20261118.md",
+      "sha256": "a5a3b7d61d33e0a2ae36b20bd329eed98ff8d762f82c591380f2ea6314a5f193",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-20261118.md",
+      "sha256": "a16d3709bfac2c4cd1b3d1feb5d194981f50428eea8df428079d3fe8db999e85",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "sha256": "45c81697d44b2b5cb5ae2c2d11b8190c76107f314511519a0ec1824908c5b6d0",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+      "sha256": "e3b8dd821c738761b0a3646c806d165f909b04cb7846b03c1e713b53e987cb10",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-gaps.md",
+      "sha256": "b2145885f0eac50dd459623521daa454c6034e84aada25897f8b4534800f38f7",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-implementation-20261118.md",
+      "sha256": "07370bc01439bb1eed7136a828ccf588d2dd2744f87dc8c0f352198d4138d9ad",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+      "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+      "scope": "document/report statements; no new runtime or product acceptance audit"
+    }
+  ],
+  "namespace_note": "S3 R01-R09 differ from parent R01-R12; case IDs refer to the parent 24-case matrix.",
+  "parent_matrix_snapshot": {
+    "rows": 24,
+    "PASS": 4,
+    "PARTIAL": 13,
+    "NOT_RUN": 7,
+    "requested_cases": {
+      "TC-14": "PARTIAL",
+      "TC-16": "PARTIAL",
+      "TC-20": "PARTIAL",
+      "TC-21": "PARTIAL",
+      "TC-22": "PARTIAL"
+    },
+    "already_accepted_cases": [
+      "TC-15",
+      "TC-23"
+    ],
+    "promotions_made_by_this_map": 0
+  },
+  "accepted_evidence": [
+    {
+      "ref": "T",
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "status": "ACCEPTED_BOUNDED",
+      "scope": [
+        "real controlled 15-second timeout",
+        "both Stop/timeout orders",
+        "original committed outcome/proof ACK and same-ledger different-PID recovery",
+        "explicit new successful command with original failure retained"
+      ],
+      "source_qualification": "feb87aee7 plus original recorded overlay",
+      "limits": [
+        "input-file retention only",
+        "no Agent output upload",
+        "no real vendor-model or installed Main proof"
+      ]
+    },
+    {
+      "ref": "F",
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/client-field-r06-independent-check-20261118.md",
+      "status": "ACCEPTED_BOUNDED",
+      "tops": 4,
+      "subcases": 8,
+      "retry": 0,
+      "scope": [
+        "collaboration actual same-observation UI conflicts",
+        "authority-first403 and stale409",
+        "ordinary explicit numeric API CAS",
+        "fresh original-receipt continuation"
+      ],
+      "limits": [
+        "ordinary actual UI omits optional expected_revision",
+        "no mandatory ordinary UI CAS proof",
+        "empty execution lanes"
+      ]
+    },
+    {
+      "ref": "B",
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/comment-batch-r01-independent-check-20261118.md",
+      "status": "ACCEPTED_BOUNDED",
+      "tops": 2,
+      "subcases": 2,
+      "retry": 0,
+      "persistent_ids": 114,
+      "per_platform": {
+        "offline_originals": 55,
+        "controls": 2,
+        "complete_passes": 2,
+        "observed_pages_per_pass": [
+          50,
+          7
+        ],
+        "authenticated_sockets": 3,
+        "additional_failed_offline_sockets": 1
+      },
+      "scope": [
+        "complete persisted/page/current-version/final-UI recovery",
+        "real reauthentication",
+        "zero recovery business write/dispatch"
+      ],
+      "limits": [
+        "no guarantee of every WS frame delivery",
+        "no frozen snapshot claim across concurrent changing page requests"
+      ]
+    },
+    {
+      "ref": "A",
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/extras-a-r05-independent-check-20261118.md",
+      "status": "ACCEPTED_BOUNDED",
+      "tops": 6,
+      "subcases": 18,
+      "retry": 0,
+      "original_human_uploads": 6,
+      "all_attachment_objects_including_controls": 10,
+      "runtime_reader_denominator": 0,
+      "scope": [
+        "typed collaboration people/Agent mentions",
+        "original recipient/notification identity and edit delta",
+        "human multipart original-ID/bytes/reference recovery",
+        "human participant/source withdrawal and surviving-participant control"
+      ],
+      "limits": [
+        "no Agent run-local output upload",
+        "held authorized stale response cancelled at fence rather than delivered to renderer",
+        "no actual run/permit/business-token reader denominator"
+      ]
+    },
+    {
+      "ref": "K",
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "status": "ACCEPTED_BOUNDED",
+      "tops": 2,
+      "subcases": 12,
+      "retry": 0,
+      "linked_information_history_items": 48,
+      "original_operations": 70,
+      "scope": [
+        "four required block fields",
+        "exact return/repair actor and UTC time",
+        "saved restored status",
+        "legacy/nested/removed-requester/pending-result boundaries"
+      ],
+      "limits": [
+        "no new execution or full parent/S3 acceptance",
+        "retained unattributed earlier503 remains separate"
+      ]
+    },
+    {
+      "ref": "N",
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+      "status": "ACCEPTED_BOUNDED",
+      "normal": {
+        "tops": 35,
+        "names": 57
+      },
+      "race": {
+        "tops": 35,
+        "names": 57
+      },
+      "scope": [
+        "valid nonzero original new_comment UUID delivery tuple",
+        "sequential/concurrent/fresh-bus literal event replay",
+        "legacy/read/archived row preservation",
+        "ordinary current actor/recipient/Agent/mute/opt-out/nonwatcher controls"
+      ],
+      "limits": [
+        "current ordinary subscribers recomputed",
+        "no generic bus/direct ordinary mentioned guarantee",
+        "no old/new mixed writer fence",
+        "no deletion of historical duplicates",
+        "no automatic ordinary-composer original-request guarantee"
+      ]
+    }
+  ],
+  "s3_requirements": [
+    {
+      "id": "R01",
+      "parent_cases": [
+        "TC-14"
+      ],
+      "mapping_status": "CONTROLLED_TIMEOUT_AND_CURRENT_RUNTIME_PROOF_ACCEPTED_FINAL_SOURCE_QUALIFICATION_REMAINS",
+      "accepted": [
+        "T",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Final coherent R09 source/resource qualification",
+        "Affected final-source timeout regression only if shared supervisor/Stop changes invalidate original T reuse"
+      ],
+      "outside_s3_pass": [
+        "real vendor-model timeout/quality"
+      ],
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    },
+    {
+      "id": "R02",
+      "parent_cases": [
+        "TC-14"
+      ],
+      "mapping_status": "AGREED_CONTROLLED_L1_L2_ACCEPTED_AGENT_OUTPUT_UPLOAD_UNCLAIMED",
+      "accepted": [
+        "T",
+        "A",
+        "N",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Agent run-local output upload capability plus added current fences and independent file/comment/result effect proof"
+      ],
+      "caution": "Runtime outcome replay, Agent comments, human uploads and Agent output attachments are separate effects.",
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row",
+      "controlled_L1_L2_authority": "current_main_reviewer_followup.controlled_L1_L2",
+      "missing_new_controlled_stimulus": false
+    },
+    {
+      "id": "R03",
+      "parent_cases": [
+        "TC-15"
+      ],
+      "mapping_status": "ACCEPTED_SCOPED_COMPLETE",
+      "accepted": [
+        "B"
+      ],
+      "provisional": [],
+      "remaining": [
+        "R09 final-source coherence only; no additional batch body identified"
+      ],
+      "initial_prd_checked": true,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    },
+    {
+      "id": "R04",
+      "parent_cases": [
+        "TC-16"
+      ],
+      "mapping_status": "ACCEPTED_EXPLICIT_CAS_WITH_OPEN_ORDINARY_UI_CASE",
+      "accepted": [
+        "F"
+      ],
+      "provisional": [],
+      "remaining": [
+        "actual ordinary UI no-silent-overwrite subassertion or explicit bounded S3R04 acceptance disposition"
+      ],
+      "contract_to_preserve": [
+        "optional numeric ordinary expected_revision",
+        "version-less legacy/API compatibility",
+        "collaboration current-authority403 versus stale409"
+      ],
+      "recommended_parent_completion": "Opt current ordinary priority/assignee intents into existing numeric CAS and verify genuine two-client conflicts; do not globally require server CAS by inference.",
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    },
+    {
+      "id": "R05",
+      "parent_cases": [
+        "TC-21"
+      ],
+      "mapping_status": "AGREED_HUMAN_AND_ORIGINAL_RUNTIME_TOKEN_SCOPE_ACCEPTED_TC21_MAIN_APPLIED_PASS",
+      "accepted": [
+        "A",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Final coherent R09 candidate qualification",
+        "Any added output capability must supply its new relevant current-authority fences"
+      ],
+      "limit_to_preserve": "A proves cancellation at the fence, not delivery of a stale private body to the renderer.",
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row",
+      "Main_applied_parent_case": "TC-21 PASS; unproved_required=[] for agreed scope"
+    },
+    {
+      "id": "R06",
+      "parent_cases": [
+        "TC-22"
+      ],
+      "mapping_status": "AGREED_MENTION_ORDINARY_AND_RUNTIME_NOTIFICATION_SCOPE_ACCEPTED_TC22_MAIN_APPLIED_PASS",
+      "accepted": [
+        "A",
+        "N",
+        "P-SUB",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Final coherent R09 candidate qualification; preserve existing narrow event/version scope"
+      ],
+      "contract_to_preserve": [
+        "frozen collaboration terminal recipients",
+        "current ordinary subscribers",
+        "N narrow valid new_comment fixed-writer guarantee"
+      ],
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row",
+      "Main_applied_parent_case": "TC-22 PASS; unproved_required=[] for agreed scope"
+    },
+    {
+      "id": "R07",
+      "parent_cases": [
+        "TC-23"
+      ],
+      "mapping_status": "ACCEPTED_SCOPED_COMPLETE",
+      "accepted": [
+        "K"
+      ],
+      "provisional": [],
+      "remaining": [
+        "R09 integration/source qualification only"
+      ],
+      "separate_retained_diagnostic": "earlier first legal history-read503; not reclassified by newer PASS",
+      "initial_prd_checked": true,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    },
+    {
+      "id": "R08",
+      "parent_cases": [
+        "TC-20"
+      ],
+      "mapping_status": "CURRENT_COVERED_RECOVERY_PROVENANCE_ACCEPTED_OUTPUT_WRITER_AND_FINAL_SCOPE_REMAIN",
+      "accepted": [
+        "T",
+        "F",
+        "B",
+        "A",
+        "K",
+        "P-SUB",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Any added Agent-output writer must supply immutable source/request identity",
+        "Final coherent R09 per-required-action source qualification; wider parent TC20 S4 scope remains separate"
+      ],
+      "limits": [
+        "content-free old receipts do not authorize private hydration",
+        "full parent TC20 also needs later real S4 actions"
+      ],
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    },
+    {
+      "id": "R09",
+      "parent_cases": [
+        "TC-14",
+        "TC-16",
+        "TC-20",
+        "TC-21",
+        "TC-22"
+      ],
+      "mapping_status": "CURRENT_INCREMENT_CHECKS_ACCEPTED_FINAL_COHERENT_S3_SCOPE_PENDING",
+      "accepted": [
+        "T",
+        "F",
+        "B",
+        "A",
+        "K",
+        "N",
+        "P-SUB",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "remaining": [
+        "Complete final required S3 AC dispositions after remaining output/R04 deltas",
+        "Final coherent source/config/executable/API/production-Web/renderer/preload and owned gate/PID/native/connection qualification"
+      ],
+      "rerun_policy": "Reuse unaffected source-bound evidence; run additional affected checks rather than indiscriminately replaying all historical bodies.",
+      "initial_prd_checked": false,
+      "current_task_checkbox_state": "Not re-read or edited in this follow-up",
+      "followup_authority": "Main/reviewer formal acceptance and applied-case receipt, where current evidence changes this row"
+    }
+  ],
+  "parent_case_dispositions": [
+    {
+      "id": "TC-14",
+      "current": "PARTIAL",
+      "accepted": [
+        "T",
+        "A",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "still_open": [
+        "Agent-output attachment capability/effect proof",
+        "Separate real-model timeout condition outside scoped S3 pass"
+      ],
+      "automatic_promotion": false,
+      "current_state_authority": "Main/reviewer follow-up and parent-case-update-applied-r01.json",
+      "controlled_L1_L2": "Accepted for the agreed current controlled scope; no missing new stimulus identified"
+    },
+    {
+      "id": "TC-16",
+      "current": "PARTIAL",
+      "accepted": [
+        "F"
+      ],
+      "provisional": [],
+      "still_open": [
+        "ordinary actual UI optional-version omission and full no-silent-overwrite subassertion"
+      ],
+      "automatic_promotion": false,
+      "current_state_authority": "Main/reviewer follow-up and parent-case-update-applied-r01.json"
+    },
+    {
+      "id": "TC-20",
+      "current": "PARTIAL",
+      "accepted": [
+        "T",
+        "F",
+        "B",
+        "A",
+        "K",
+        "P-SUB",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "still_open": [
+        "covered S3 action inventory review",
+        "real S4 full-flow input/output/source audit"
+      ],
+      "automatic_promotion": false,
+      "current_state_authority": "Main/reviewer follow-up and parent-case-update-applied-r01.json"
+    },
+    {
+      "id": "TC-21",
+      "current": "PASS",
+      "accepted": [
+        "A",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "limits": [
+        "delayed response cancelled rather than delivered",
+        "new output-file paths need coverage if introduced"
+      ],
+      "automatic_promotion": false,
+      "current_state_authority": "Main/reviewer follow-up and parent-case-update-applied-r01.json",
+      "Main_applied": true,
+      "unproved_required": []
+    },
+    {
+      "id": "TC-22",
+      "current": "PASS",
+      "accepted": [
+        "A",
+        "N",
+        "P-SUB",
+        "P-RUN"
+      ],
+      "provisional": [],
+      "limits": [
+        "no generic bus or direct ordinary mentioned replay expansion",
+        "no mixed-version writer guarantee",
+        "no automatic ordinary-composer keyed recovery"
+      ],
+      "automatic_promotion": false,
+      "current_state_authority": "Main/reviewer follow-up and parent-case-update-applied-r01.json",
+      "Main_applied": true,
+      "unproved_required": []
+    }
+  ],
+  "next_slices": [
+    {
+      "id": "I01",
+      "kind": "AGENT_OUTPUT_CAPABILITY_AND_VERIFICATION",
+      "owner": "One server/runtime protocol owner, then shared client/E2E owner as required",
+      "action": "Add/inventory the Agent-output write capability and verify its own writer/fence/file/comment/result effects; existing controlled L1/L2 outcome proof does not claim uploads.",
+      "reuse": [
+        "encrypted storage",
+        "file/request fingerprints",
+        "current attempt/capability fences",
+        "existing receipts"
+      ],
+      "required": [
+        "unknown commit",
+        "concurrent repeat",
+        "changed bytes",
+        "withdrawal and late retry",
+        "winning object plus exact comment/result references"
+      ],
+      "forbidden_substitutes": [
+        "human uploader impersonation",
+        "input-file read only",
+        "parallel retry ledger"
+      ]
+    },
+    {
+      "id": "I02",
+      "kind": "CURRENT_ORDINARY_UI_CAS",
+      "owner": "Shared Core/Views owner and bounded current-client verifier",
+      "action": "For full parent TC16, send the existing numeric observation in current ordinary field intents and verify actual two-client conflicts.",
+      "preserve": [
+        "version-less legacy/API compatibility",
+        "current-authority-first behavior",
+        "fresh explicit continuation"
+      ],
+      "alternative_disposition": "If keeping a bounded S3R04 scope, acceptance owner must document it and retain parent TC16 PARTIAL; this map cannot waive the parent case."
+    },
+    {
+      "id": "V03",
+      "kind": "FINAL_S3_SCOPE_AND_SOURCE_CHECK",
+      "owner": "Main and independent trellis-check",
+      "depends_on": [
+        "Agent-output capability/effect coverage",
+        "ordinary current-UI CAS or explicit bounded R04 disposition"
+      ],
+      "action": "Complete S3R01-R09 evidence and source/resource mapping after remaining deltas; archive only its achieved own ACs.",
+      "preserve": [
+        "original RED/incomplete rounds",
+        "unattributed503 diagnostic",
+        "separate F2 baseline limitations"
+      ],
+      "scope_excludes": [
+        "real S4 execution",
+        "final S5 performance",
+        "whole parent acceptance"
+      ],
+      "completed_prerequisites": [
+        "Current ordinary R05 and runtime R03 formal checks",
+        "Agreed current controlled L1/L2 proof mapping"
+      ]
+    }
+  ],
+  "archival_recommendation": {
+    "archive_full_s3_now": false,
+    "reason": "Current increment checks and agreed controlled L1/L2 are formally accepted. Remaining Main plan is Agent-output capability/fence/effects, ordinary current-UI CAS or bounded R04 disposition, and final coherent R09.",
+    "finite_closure_conditions": [
+      "Added required Agent-output writer/fence/independent file/comment/result effect proof",
+      "Ordinary current-UI CAS or explicit bounded R04 disposition",
+      "Final coherent independent S3R01-R09 candidate/source/resource acceptance"
+    ],
+    "not_automatic_s3_archive_gates": [
+      "real vendor-model timeout/quality",
+      "payment and fulfilment integration",
+      "production publish/rollback",
+      "100-collaborator final performance",
+      "installed production Main beyond accepted renderer/preload fixture scope",
+      "parent business signatures"
+    ],
+    "parent_remains_open_after_s3": [
+      "real S4 I02-I09 inputs and execution",
+      "final-candidate S5 sampling",
+      "business signatures",
+      "wider parent TC14/TC20 conditions"
+    ],
+    "no_scope_waiver_authority": "Unsupported required capabilities and ordinary UI no-silent-overwrite cannot be relabelled PASS by this mapping.",
+    "already_closed_current_prerequisites": [
+      "Ordinary R05 and controlled R03 formal acceptance",
+      "Agreed TC21/22 unproved_required=[] and Main-applied PASS",
+      "Finite current controlled L1/L2 proof; no missing new stimulus"
+    ]
+  },
+  "verification_performed": [
+    "current requirement/report reading",
+    "parent CSV count",
+    "document byte fingerprints",
+    "two owned research outputs",
+    "Explicitly attributed Main/reviewer follow-up and exact original sealed-map retention; no raw re-review"
+  ],
+  "execution_performed": {
+    "tests": 0,
+    "builds": 0,
+    "services": 0,
+    "DB": 0,
+    "API": 0,
+    "browser": 0,
+    "provider": 0,
+    "process_control": 0,
+    "new_E2E_runtime_review": 0,
+    "agents_spawned": 0
+  },
+  "writable_outputs": [
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-remaining-acceptance-map-20261119.md",
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-remaining-acceptance-map-20261119.json"
+  ],
+  "other_state_changes": 0,
+  "source_documents_basis": "INITIAL_HISTORICAL_READ_SNAPSHOT; original paths/hashes preserved, not current file-state claims",
+  "parent_matrix_snapshot_basis": "INITIAL_HISTORICAL_4_PASS_13_PARTIAL_7_NOT_RUN",
+  "original_sealed_map_retention": {
+    "markdown": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.md",
+      "sha256": "07c98565d44a8231e23e632f9f437ddc19f09bd2a96aca5c1707cdddc6dfbeca",
+      "mode": "0644"
+    },
+    "json": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json",
+      "sha256": "135d659176e7fceeeaa88c8cd0228e7dd4b89648c499482ce3c7a2c84999974c",
+      "mode": "0644"
+    },
+    "authority": "Main explicitly requested exact retention before this follow-up"
+  },
+  "initial_main_reported_provisional_evidence": [
+    {
+      "ref": "P-SUB",
+      "round": "ordinary subscription R05",
+      "authority": "parent dispatch summary only",
+      "tops_passed": 2,
+      "retry": 0,
+      "independent_acceptance": "PENDING_IN_THIS_MAPPING",
+      "potential_scope": [
+        "actual ordinary manual subscribe/read/unsubscribe on Web/Desktop",
+        "original ordinary comment/recipient/inbox/anchor identity",
+        "real reconnect/reload preserves original notice and state",
+        "distinct post-unsubscribe comment does not deliver to opted-out watcher"
+      ],
+      "not_claimed": [
+        "independent acceptance by this author",
+        "literal event replay replacing N",
+        "passes assembled from earlier failed rounds"
+      ]
+    },
+    {
+      "ref": "P-RUN",
+      "round": "controlled runtime R03",
+      "authority": "parent dispatch summary and declared scenario scope only",
+      "tops_passed": 4,
+      "subcases_passed": 10,
+      "retry": 0,
+      "controlled_provider_turns": 10,
+      "original_inputs": 12,
+      "ledger_histories": 10,
+      "independent_acceptance": "PENDING_IN_THIS_MAPPING",
+      "potential_scope": [
+        "actual failure then explicit fresh success then Stop",
+        "same-original receipt/ledger recovery",
+        "proven result notifications",
+        "original business-token queued-author/live-resource-grant withdrawal on both platforms"
+      ],
+      "not_claimed": [
+        "Agent-output-upload counts or capability",
+        "all-subprocess count",
+        "all L1/L2 assertions inferred from history count",
+        "independent runtime review by this author"
+      ]
+    }
+  ],
+  "current_main_reviewer_accepted_evidence": [
+    {
+      "ref": "P-SUB",
+      "round": "ordinary subscription R05",
+      "authority": "Explicit Main/reviewer formal follow-up; no raw re-review or self-acceptance by mapper",
+      "tops_passed": 2,
+      "retry": 0,
+      "independent_acceptance": "FORMALLY_ACCEPTED_BY_INDEPENDENT_REVIEWER_AND_MAIN",
+      "not_claimed": [
+        "independent acceptance by this author",
+        "literal event replay replacing N",
+        "passes assembled from earlier failed rounds"
+      ],
+      "accepted_scope": [
+        "actual ordinary manual subscribe/read/unsubscribe on Web/Desktop",
+        "original ordinary comment/recipient/inbox/anchor identity",
+        "real reconnect/reload preserves original notice and state",
+        "distinct post-unsubscribe comment does not deliver to opted-out watcher"
+      ],
+      "independent_report": {
+        "round": "ordinary subscription R05",
+        "json_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-runtime-independent-check-20261119.json",
+        "json_sha256": "68f5c6fcc4b5cc47b5cb8568ca1952547aabd2d64b1f9c08eb637c4a184e386f"
+      },
+      "initial_provisional_summary_preserved": true
+    },
+    {
+      "ref": "P-RUN",
+      "round": "controlled runtime R03",
+      "authority": "Explicit Main/reviewer formal follow-up; no raw re-review or self-acceptance by mapper",
+      "tops_passed": 4,
+      "subcases_passed": 10,
+      "retry": 0,
+      "controlled_provider_turns": 10,
+      "original_inputs": 12,
+      "ledger_histories": 10,
+      "independent_acceptance": "FORMALLY_ACCEPTED_BY_INDEPENDENT_REVIEWER_AND_MAIN",
+      "not_claimed": [
+        "Agent-output-upload counts or capability",
+        "all-subprocess count",
+        "independent runtime review by this author"
+      ],
+      "accepted_scope": [
+        "actual failure then explicit fresh success then Stop",
+        "same-original receipt/ledger recovery",
+        "proven result notifications",
+        "original business-token queued-author/live-resource-grant withdrawal on both platforms"
+      ],
+      "independent_report": {
+        "round": "controlled runtime R03",
+        "json_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r01-independent-check-20261119.json",
+        "json_sha256": "db4acee13872ed7f4dee02b3cedfead714e9be91d0fee272018d32fc5092f89a",
+        "markdown_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r01-independent-check-20261119.md",
+        "markdown_sha256": "31ee573450a7ae8e9e610b88589bbf4a9548cceb4cce304a8716826bd5770d50"
+      },
+      "initial_provisional_summary_preserved": true
+    }
+  ],
+  "current_main_reviewer_followup": {
+    "authority": "Main explicit task update attributing formal independent checks and Main applied-case decisions",
+    "independent_reports": {
+      "P-SUB": {
+        "round": "ordinary subscription R05",
+        "json_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-runtime-independent-check-20261119.json",
+        "json_sha256": "68f5c6fcc4b5cc47b5cb8568ca1952547aabd2d64b1f9c08eb637c4a184e386f"
+      },
+      "P-RUN": {
+        "round": "controlled runtime R03",
+        "json_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r01-independent-check-20261119.json",
+        "json_sha256": "db4acee13872ed7f4dee02b3cedfead714e9be91d0fee272018d32fc5092f89a",
+        "markdown_path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r01-independent-check-20261119.md",
+        "markdown_sha256": "31ee573450a7ae8e9e610b88589bbf4a9548cceb4cce304a8716826bd5770d50"
+      }
+    },
+    "parent_case_update_receipt": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/parent-case-update-applied-r01.json",
+    "parent_matrix_sha256": "e7a6de09c5bfe58cfe87d332c7672994f21b7d3488173b53f04234aff5cb4510",
+    "parent_matrix": {
+      "rows": 24,
+      "PASS": 6,
+      "PARTIAL": 11,
+      "NOT_RUN": 7
+    },
+    "Main_applied_cases": {
+      "TC-21": "PASS",
+      "TC-22": "PASS"
+    },
+    "unproved_required_by_agreed_case": {
+      "TC-21": [],
+      "TC-22": []
+    },
+    "unproved_required_scope": "Only the agreed TC21/22 requirements, not all S3 or all parent requirements",
+    "controlled_L1_L2": {
+      "authority": "Main/reviewer accepted controlled R03 follow-up",
+      "recorded_natural_outcome_content_free_ACK": {
+        "count": 4,
+        "status": 200
+      },
+      "changed_original_outcome": {
+        "count": 4,
+        "status": 409,
+        "code": "outcome_conflict"
+      },
+      "fresh_late_events": {
+        "count": 10,
+        "status": 403,
+        "code": "business_capability_required"
+      },
+      "unchanged_replay_late_audit_pairs": 12,
+      "preserved_prior_facts": 6,
+      "recovery_launches": 0,
+      "locally_staged_Stop_withdrawal_outcomes": "Refused; not claimed as actually recorded original ACKs",
+      "missing_new_stimulus_for_agreed_controlled_scope": false,
+      "Agent_output_upload": "Unclaimed; added writer/fence/independent-effect tests remain required",
+      "raw_re_review_by_mapper": false
+    },
+    "remaining_Main_plan": [
+      "Agent-output capability/writer/fence/effect coverage",
+      "ordinary current-UI CAS or explicit bounded R04 disposition",
+      "final coherent R09 acceptance"
+    ],
+    "mapping_only_not_standalone_acceptance": true
+  },
+  "initial_s3_requirements": {
+    "basis": "Exact sealed initial map retained before follow-up",
+    "source_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json",
+    "source_sha256": "135d659176e7fceeeaa88c8cd0228e7dd4b89648c499482ce3c7a2c84999974c",
+    "json_pointer": "/s3_requirements"
+  },
+  "initial_parent_case_dispositions": {
+    "basis": "Exact sealed initial map retained before follow-up",
+    "source_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json",
+    "source_sha256": "135d659176e7fceeeaa88c8cd0228e7dd4b89648c499482ce3c7a2c84999974c",
+    "json_pointer": "/parent_case_dispositions"
+  },
+  "current_parent_matrix": {
+    "rows": 24,
+    "PASS": 6,
+    "PARTIAL": 11,
+    "NOT_RUN": 7,
+    "requested_cases": {
+      "TC-14": "PARTIAL",
+      "TC-16": "PARTIAL",
+      "TC-20": "PARTIAL",
+      "TC-21": "PASS",
+      "TC-22": "PASS"
+    },
+    "sha256": "e7a6de09c5bfe58cfe87d332c7672994f21b7d3488173b53f04234aff5cb4510",
+    "authority_receipt": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/parent-case-update-applied-r01.json",
+    "promotions_performed_by_Main": 2,
+    "promotions_performed_by_mapper": 0
+  },
+  "initial_next_slices": {
+    "basis": "Exact sealed initial map retained before follow-up",
+    "source_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json",
+    "source_sha256": "135d659176e7fceeeaa88c8cd0228e7dd4b89648c499482ce3c7a2c84999974c",
+    "json_pointer": "/next_slices"
+  },
+  "completed_current_scope_slices": [
+    {
+      "id": "V01",
+      "status": "FORMAL_CHECKS_ACCEPTED_BY_MAIN_REVIEWER",
+      "reports_pointer": "/current_main_reviewer_followup/independent_reports"
+    },
+    {
+      "id": "V02",
+      "status": "AGREED_CONTROLLED_L1_L2_MAPPED_NO_MISSING_NEW_STIMULUS",
+      "proof_pointer": "/current_main_reviewer_followup/controlled_L1_L2"
+    }
+  ],
+  "initial_archival_recommendation": {
+    "basis": "Exact sealed initial map retained before follow-up",
+    "source_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json",
+    "source_sha256": "135d659176e7fceeeaa88c8cd0228e7dd4b89648c499482ce3c7a2c84999974c",
+    "json_pointer": "/archival_recommendation"
+  },
+  "retained_original_outputs": [
+    "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.md",
+    "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/intake/planning-map-original-r01/s3-remaining-acceptance-map-20261119.json"
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "owner": "/root/s3_block_e2e_implement",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "recorded_at": "2026-11-18T11:19:57.063627+00:00",
+  "status": "AUTHORED_INTAKE_NOT_RUNTIME_ACCEPTANCE",
+  "wire_sha256": "d91b502add1df6c59bef69320ef348d7adb97133c25bd5f93b1e92e7614124d0",
+  "markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/information-recovery-client-intake-20261118.md",
+    "sha256": "f8b0dea97b893c2d61ab50f82ad45b478f1e526239e235b18a7dee4f74a08a30"
+  },
+  "source_inputs": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/CLAUDE.md",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4",
+      "bytes": 2498,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "6a796f9f5d22c60e53fe51b687af668dec54e6c5551891c3379b5c53b1882bfd",
+      "bytes": 5088,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "e9c500f91b3e6182cf1822c426a42c56ec72acbedf7950d987d610afd65169f4",
+      "bytes": 10334,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-public-dto-20261118.json",
+      "sha256": "88f0d43a6add03296d9a0accdc282db157417f7e3ef79273210fc47e964813e1",
+      "bytes": 30040,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery.ts",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "bytes": 76868,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "fa19a851184f7781be0b4609a9eb09b52264083b5124adea2d9f0e3f08483956",
+      "bytes": 23034,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-multi-account-closure.ts",
+      "sha256": "d40059ca4bc003dd343d19ccfb86c23bf9f57f9d65348fc727d6ea583eee73f5",
+      "bytes": 9520,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-disclosures.ts",
+      "sha256": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+      "bytes": 2106,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures.ts",
+      "sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "bytes": 16085,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/env.ts",
+      "sha256": "4ef226a0f4fed5834fc41a7164b7ecf77a8061df4a8f53a810cdfe0ebb518040",
+      "bytes": 303,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r02/packages/core/collaboration/information-schema.ts",
+      "sha256": "494fe0239e921c15ecf31a43ab1d5454971ab083e434adaa5cebed0880ac7845",
+      "bytes": 13116,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r02/packages/core/collaboration/schema.ts",
+      "sha256": "cf4fa2eb5a722d720c8b66b870c34fc9d201f24cc0cc63238adf3517644b67cc",
+      "bytes": 25320,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r02/packages/core/collaboration/creation-schema.ts",
+      "sha256": "bf3ae63f755ac053e64a4b2cb05eb3b3022665436ccfc6fa99f84b93834e664c",
+      "bytes": 5886,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r02/packages/core/collaboration/stage-schema.ts",
+      "sha256": "0dd55d6324aa207e3cfc9b2ebb8d109ca61cf3ae4082350bf4dfa481ad39e7ed",
+      "bytes": 64721,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r02/packages/core/collaboration/index.ts",
+      "sha256": "4629844149489009f9b43e19cf67c3387166eea008c377a5a03adb8d187354d7",
+      "bytes": 12401,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_handoff.go",
+      "sha256": "771011a05b678e861236cea5ca19d88297931538ff949a72057fc3d3de872c9a",
+      "bytes": 21243,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_information_repair.go",
+      "sha256": "35dcc025a6c876369d128c375ffb4b71d65ec460346c06d8c752294f6c1815ce",
+      "bytes": 11723,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_information_state.go",
+      "sha256": "af6368242f4fbb252548f2b9966a00c0efd2eaa3984ae539936e8c4360ff04ca",
+      "bytes": 19119,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_stage_policy.go",
+      "sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+      "bytes": 12118,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_stage_completion.go",
+      "sha256": "cce754252303652d27a10c335e1e1279906a6b20a543d61b4822baf3a31ce7cb",
+      "bytes": 22978,
+      "mode": "0o644"
+    }
+  ],
+  "planned_platform_tops": 2,
+  "planned_subcases_per_platform": [
+    "A",
+    "B",
+    "C",
+    "E",
+    "F",
+    "G"
+  ],
+  "code_writes_at_intake": 0,
+  "runtime_executions_by_author": {
+    "database": 0,
+    "api": 0,
+    "browser_bodies": 0,
+    "build": 0,
+    "provider": 0
+  },
+  "scope": [
+    "two_new_e2e_files",
+    "real_password_public_setup",
+    "normal_route_continue",
+    "repair_ack_loss_fetch_abort_only",
+    "original_get_recovery",
+    "independent_B2",
+    "exact_protected_human_history"
+  ],
+  "limits": [
+    "G_real_unmanaged_pending_to_managed_transition_not_new_full_S2_stage_submission",
+    "disabled_account_R38_requires_main_input",
+    "short_UI_history_not_51_plus_denominator",
+    "no_author_environment_or_git_mutation"
+  ]
+}

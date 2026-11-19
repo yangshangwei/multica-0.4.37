@@ -1,0 +1,39 @@
+{
+  "at": "2026-11-18T10:50:28.028413+00:00",
+  "status": "PLAN_WRITTEN_BEFORE_TWO_TEST_EDITS",
+  "owner": "/root/s3_block_fixture_r03",
+  "work_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03",
+  "baseline_sha256": "53f827c76eb54bd7d3d29c35cb637b8f59e4c9180540d33122f23020ad4b9389",
+  "allowed_test_paths": [
+    "server/internal/service/collaboration_information_repair_test.go",
+    "server/internal/handler/collaboration_information_test.go"
+  ],
+  "cleanup_sql": "DELETE FROM issue_handoff WHERE issue_id=$1",
+  "cleanup_register_at": "immediately after newStageCompletionFixture in both new pending tests, before first business mutation",
+  "cleanup_api": "t.Cleanup callback -> existing checked f.fx.Exec; Fixture.Cleanup intentionally ignores errors",
+  "route_api": "existing testutil.WithURLParams freshJSONRequest with id and handoffID pairs once",
+  "old_service_functional_PASS_not_accepted": {
+    "tops": 16,
+    "names": 43,
+    "modes": [
+      "normal",
+      "race"
+    ],
+    "handoff_residue_each": 5
+  },
+  "old_handler_not_accepted": {
+    "tops": 3,
+    "pass": 2,
+    "fail": 1,
+    "status": "400 invalid issue_id"
+  },
+  "raw_failure_preserved": true,
+  "new_child_DB_or_TestMain_execution": false,
+  "required_main_acceptance": [
+    "fresh complete service normal/race43 named",
+    "fresh handler normal/race3 named",
+    "actual full relation cleanup and gate/connection audit",
+    "independent check"
+  ],
+  "plan_md_sha256": "efbdd0a7deefcb431ac83a7fe44f0782379cefe934ccd0bd389b7d77795974f0"
+}

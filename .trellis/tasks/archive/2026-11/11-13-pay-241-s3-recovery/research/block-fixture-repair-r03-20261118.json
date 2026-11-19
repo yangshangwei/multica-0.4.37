@@ -1,0 +1,99 @@
+{
+  "at": "2026-11-18T10:56:02.034807+00:00",
+  "owner": "/root/s3_block_fixture_r03",
+  "status": "TWO_TEST_REPAIR_AND_STATIC_PASS_DATABASE_ACCEPTANCE_PENDING",
+  "work_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03",
+  "plan": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-fixture-cleanup-plan-20261118.md",
+    "sha256": "efbdd0a7deefcb431ac83a7fe44f0782379cefe934ccd0bd389b7d77795974f0"
+  },
+  "changes": [
+    {
+      "path": "server/internal/handler/collaboration_information_test.go",
+      "before_sha256": "1a16f2d2f3d4c7e843b969722df35a355552ba30b0bab82a888a4f747a278a39",
+      "sha256": "0eb00a049f57537171617bb29204c3feec4ae8660b923d590af6dceb202b5d14",
+      "before_mode": "0o644",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_information_repair_test.go",
+      "before_sha256": "1645ab42269176cf1c3b0156f6c5933bcb666e6e558431e9937e3b0629dfb305",
+      "sha256": "f04b88fc758fd905a27e08809bda5c5806bda3e3fe5809be7fde7af7f689077a",
+      "before_mode": "0o644",
+      "mode": "0o644"
+    }
+  ],
+  "actual_causes": {
+    "service": "New pending tests use managed-stage fixture lacking new handoff teardown; three plus two orphan records remained after parent deletion",
+    "handler": "Second withURLParam replaced route context and removed id before the real handler parsed it"
+  },
+  "checked_cleanup": "t.Cleanup invokes existing fx.Exec with only the exact fixture issue ID, registered before submission",
+  "request_context": "one existing testutil.WithURLParams on fresh JSONRequest carrying both id and handoffID",
+  "runtime_protected_unchanged": [
+    "server/internal/service/collaboration_handoff_snapshot.go",
+    "server/pkg/protocol/collaboration_handoff.go",
+    "server/internal/handler/collaboration_runtime_handoff.go",
+    "server/internal/handler/collaboration_runtime_handoff_source_test.go",
+    "server/internal/service/collaboration_runtime_handoff_budget_test.go",
+    "server/internal/service/collaboration_runtime_handoff_source_test.go",
+    "server/internal/service/collaboration_runtime_handoff_test.go"
+  ],
+  "production_query_scanner_migration_wire_changed": false,
+  "old_raw_refs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-service-normal-r02/stdout.log",
+      "sha256": "88694cdc0b9583d3fd937116f82e09c7a81d45e9c4e4de98152ff778ab30a750"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-service-race-r02/stdout.log",
+      "sha256": "34d549969bb5e84e8f238ee5034b65b435ce9c1034ac25a9397a2c9bb666c145"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-handler-normal-r01/stdout.log",
+      "sha256": "cd1c6d15136742985b4de4e7166782297b1167c3707a14c27d351a37b3f959e7"
+    }
+  ],
+  "old_failed_databases_not_mutated": true,
+  "static": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-fixture-repair-r03-checks/result.json",
+    "sha256": "60995e855b097f5a42d2b735e0068cc4af89f0fd828bc973a419d1c537b864d6",
+    "profiles": 5,
+    "all_exit_zero": true,
+    "source_before_after_identical": true,
+    "service_test_binary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-fixture-repair-r03-checks/service.test",
+      "sha256": "fdc3e3b15530b361d4a2044edce4707a9c0e74272f267d0e65faf54f42607379"
+    },
+    "handler_test_binary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-fixture-repair-r03-checks/handler.test",
+      "sha256": "e3730410b1725d5b5ca2073e0b853df3424348111155c70f1e80493729d057a5"
+    }
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/block-server-candidate-manifest-r03.json",
+    "sha256": "538e4f92de2707285d285a98238260edf2acc3930512056b2f560ba01db6ad36",
+    "files": 5077
+  },
+  "delta": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/block-server-delta-r02-to-r03.json",
+    "sha256": "b193b85602b5cb399aa2826de8f57b2c9e6cd167a1e5dcd539138a1f17c1db8e",
+    "existing_changed": 2,
+    "new": 0,
+    "removed": 0
+  },
+  "named_inventory": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/block-server-test-inventory-r03.json",
+    "sha256": "8d38249ba16897312ae3e16f91f616b33460030b675ca6f32f6a73afa0ebe342",
+    "service_database_tops": 16,
+    "service_database_names": 43,
+    "handler_names": 3,
+    "migration_names": 5
+  },
+  "expected_names": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/block-server-expected-names-r03.json",
+    "sha256": "5cdac9f06aa7bbccac4179a96fb8314fbc86d510b77586efd3a397257b7154bf"
+  },
+  "DB_TestMain_or_test_body_execution": 0,
+  "pure_or_migration_tests_repeated": false,
+  "full_S3_accepted": false
+}

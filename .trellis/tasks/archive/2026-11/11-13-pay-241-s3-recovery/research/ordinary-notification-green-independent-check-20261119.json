@@ -1,0 +1,1316 @@
+{
+  "status": "ACCEPTED_BOUNDED_ORDINARY_COMMENT_NOTIFICATION_INCREMENT",
+  "reviewer": "/root/notification_runtime_check",
+  "checked_at": "2026-11-19T00:33:21.812124+00:00",
+  "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly",
+  "execution_by_reviewer": {
+    "database_api_browser_provider_bodies": 0,
+    "suite_reruns": 0,
+    "source_config_changes": 0,
+    "read_only_gofmt": {
+      "exit": 0,
+      "unformatted": []
+    }
+  },
+  "blocking_ordinary_code_findings_open": 0,
+  "full_s3_accepted": false,
+  "runtime_acceptance": "NOT_RUN",
+  "ordinary_client_acceptance": "NOT_RUN",
+  "sources": {
+    "notification-red-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-red-r02",
+      "command_sha256": "62c8a81dd5336653575c94f0a410778273f3e5ef002e86065b3f165846f0607c",
+      "result_sha256": "a9f37c7c25c3405eb76f5eac4a1b34763e0728cef36e5d426683d90c1babaedc",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-mod=readonly",
+        "-count=1",
+        "-run",
+        "^Test(Notification|Subscriber)",
+        "./cmd/server"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-red-r02",
+      "pid": 12244,
+      "configuration_sha256": "00235e205036ea4d2163b5cf2ffa211315e0b095998551e5ce32692a078d5406",
+      "exit": 1,
+      "source_before_sha256": "1796e6d8d103d1c3c4f14f6d9b700368c328650ce36298d433ad7a3a48c3f026",
+      "source_after_sha256": "1796e6d8d103d1c3c4f14f6d9b700368c328650ce36298d433ad7a3a48c3f026",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "3e47117edbcc58dc800a4e6bd0a234d425f938ceb6bac38da270f64be193ed44",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true,
+      "independent_inventory": {
+        "tops": 35,
+        "names": 57,
+        "new_tops": 7,
+        "new_leaves": 22,
+        "run_names": [
+          "TestNotificationCommentReplayConcurrent",
+          "TestNotificationCommentReplayConcurrent/independent_buses",
+          "TestNotificationCommentReplayConcurrent/shared_bus",
+          "TestNotificationCommentReplayDistinctTuples",
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients",
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources",
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields",
+          "TestNotificationCommentReplayLegacyFallback",
+          "TestNotificationCommentReplayLegacyFallback/empty_identity",
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7",
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity",
+          "TestNotificationCommentReplayLegacyFallback/zero_identity",
+          "TestNotificationCommentReplayLegacyRows",
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained",
+          "TestNotificationCommentReplayLegacyRows/random_v4_read",
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived",
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id",
+          "TestNotificationCommentReplayRecipientControls",
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe",
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers",
+          "TestNotificationCommentReplayRetainedState",
+          "TestNotificationCommentReplayRetainedState/archived",
+          "TestNotificationCommentReplayRetainedState/read",
+          "TestNotificationCommentReplayRetainedState/read_and_archived",
+          "TestNotificationCommentReplaySequential",
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid",
+          "TestNotificationCommentReplaySequential/fresh_bus",
+          "TestNotificationCommentReplaySequential/identical_event",
+          "TestNotificationCommentReplaySequential/map_payload",
+          "TestNotification_AssigneeChanged",
+          "TestNotification_CommentCreated",
+          "TestNotification_DueDateChanged",
+          "TestNotification_IssueCreated_AssigneeNotified",
+          "TestNotification_IssueCreated_NoAssignee",
+          "TestNotification_IssueCreated_SelfAssign",
+          "TestNotification_ParentBubble_NewCommentSuppressed",
+          "TestNotification_ParentBubble_PriorityChangeSuppressed",
+          "TestNotification_ParentBubble_StatusChanged",
+          "TestNotification_PriorityChanged",
+          "TestNotification_StartDateChanged",
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed",
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed",
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed",
+          "TestNotification_StatusChanged",
+          "TestNotification_StatusChanged_Muted",
+          "TestNotification_SystemCommentSkipsInboxAndMentions",
+          "TestNotification_TaskCompleted",
+          "TestNotification_TaskFailed",
+          "TestSubscriberAddedEventPublished",
+          "TestSubscriberCommentCreated_CommenterSubscribed",
+          "TestSubscriberIssueCreated_AutopilotMapPayload",
+          "TestSubscriberIssueCreated_CreatorAndAssignee",
+          "TestSubscriberIssueCreated_CreatorSubscribed",
+          "TestSubscriberIssueCreated_SelfAssign",
+          "TestSubscriberIssueUpdated_AssigneeChanged",
+          "TestSubscriberIssueUpdated_NoAssigneeChange",
+          "TestSubscriberSystemCommentDoesNotSubscribe"
+        ],
+        "terminal_counts": {
+          "fail": 23,
+          "pass": 34
+        },
+        "terminals": {
+          "TestNotificationCommentReplayConcurrent": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayConcurrent/independent_buses": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayConcurrent/shared_bus": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayDistinctTuples": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayLegacyFallback": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/empty_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/zero_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v4_read": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRecipientControls": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRetainedState/archived": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRetainedState/read": [
+            "fail"
+          ],
+          "TestNotificationCommentReplayRetainedState/read_and_archived": [
+            "fail"
+          ],
+          "TestNotificationCommentReplaySequential": [
+            "fail"
+          ],
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid": [
+            "fail"
+          ],
+          "TestNotificationCommentReplaySequential/fresh_bus": [
+            "fail"
+          ],
+          "TestNotificationCommentReplaySequential/identical_event": [
+            "fail"
+          ],
+          "TestNotificationCommentReplaySequential/map_payload": [
+            "fail"
+          ],
+          "TestNotification_AssigneeChanged": [
+            "pass"
+          ],
+          "TestNotification_CommentCreated": [
+            "pass"
+          ],
+          "TestNotification_DueDateChanged": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_AssigneeNotified": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_NoAssignee": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_NewCommentSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_PriorityChangeSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_PriorityChanged": [
+            "pass"
+          ],
+          "TestNotification_StartDateChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged_Muted": [
+            "pass"
+          ],
+          "TestNotification_SystemCommentSkipsInboxAndMentions": [
+            "pass"
+          ],
+          "TestNotification_TaskCompleted": [
+            "pass"
+          ],
+          "TestNotification_TaskFailed": [
+            "pass"
+          ],
+          "TestSubscriberAddedEventPublished": [
+            "pass"
+          ],
+          "TestSubscriberCommentCreated_CommenterSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_AutopilotMapPayload": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorAndAssignee": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_AssigneeChanged": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_NoAssigneeChange": [
+            "pass"
+          ],
+          "TestSubscriberSystemCommentDoesNotSubscribe": [
+            "pass"
+          ]
+        },
+        "duplicate_runs": [],
+        "duplicate_terminals": [],
+        "unfinished": [],
+        "race_diagnostics_present": false,
+        "package_terminals": [
+          "fail"
+        ]
+      }
+    },
+    "notification-normal-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-normal-r02",
+      "command_sha256": "895d5c4ee28eba0f5aa0b10e79c92d56bededfd88198ebae525a93fb310bcb1b",
+      "result_sha256": "9a02a9e0f9081b69c944539e2b0ca4286367a7cafea17e4dc64dbf4c5cdc7682",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-mod=readonly",
+        "-count=1",
+        "-run",
+        "^Test(Notification|Subscriber)",
+        "./cmd/server"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 17758,
+      "configuration_sha256": "e07b6da607f0b70cd7eace3babc50a0f4624ff375a9bcc9c67f2a3be1a2d82a6",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "c381e722b3c42c504acbfaa306efa63c89e8fcef5067d85895dffcde8327f0fa",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true,
+      "independent_inventory": {
+        "tops": 35,
+        "names": 57,
+        "new_tops": 7,
+        "new_leaves": 22,
+        "run_names": [
+          "TestNotificationCommentReplayConcurrent",
+          "TestNotificationCommentReplayConcurrent/independent_buses",
+          "TestNotificationCommentReplayConcurrent/shared_bus",
+          "TestNotificationCommentReplayDistinctTuples",
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients",
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources",
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields",
+          "TestNotificationCommentReplayLegacyFallback",
+          "TestNotificationCommentReplayLegacyFallback/empty_identity",
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7",
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity",
+          "TestNotificationCommentReplayLegacyFallback/zero_identity",
+          "TestNotificationCommentReplayLegacyRows",
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained",
+          "TestNotificationCommentReplayLegacyRows/random_v4_read",
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived",
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id",
+          "TestNotificationCommentReplayRecipientControls",
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe",
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers",
+          "TestNotificationCommentReplayRetainedState",
+          "TestNotificationCommentReplayRetainedState/archived",
+          "TestNotificationCommentReplayRetainedState/read",
+          "TestNotificationCommentReplayRetainedState/read_and_archived",
+          "TestNotificationCommentReplaySequential",
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid",
+          "TestNotificationCommentReplaySequential/fresh_bus",
+          "TestNotificationCommentReplaySequential/identical_event",
+          "TestNotificationCommentReplaySequential/map_payload",
+          "TestNotification_AssigneeChanged",
+          "TestNotification_CommentCreated",
+          "TestNotification_DueDateChanged",
+          "TestNotification_IssueCreated_AssigneeNotified",
+          "TestNotification_IssueCreated_NoAssignee",
+          "TestNotification_IssueCreated_SelfAssign",
+          "TestNotification_ParentBubble_NewCommentSuppressed",
+          "TestNotification_ParentBubble_PriorityChangeSuppressed",
+          "TestNotification_ParentBubble_StatusChanged",
+          "TestNotification_PriorityChanged",
+          "TestNotification_StartDateChanged",
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed",
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed",
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed",
+          "TestNotification_StatusChanged",
+          "TestNotification_StatusChanged_Muted",
+          "TestNotification_SystemCommentSkipsInboxAndMentions",
+          "TestNotification_TaskCompleted",
+          "TestNotification_TaskFailed",
+          "TestSubscriberAddedEventPublished",
+          "TestSubscriberCommentCreated_CommenterSubscribed",
+          "TestSubscriberIssueCreated_AutopilotMapPayload",
+          "TestSubscriberIssueCreated_CreatorAndAssignee",
+          "TestSubscriberIssueCreated_CreatorSubscribed",
+          "TestSubscriberIssueCreated_SelfAssign",
+          "TestSubscriberIssueUpdated_AssigneeChanged",
+          "TestSubscriberIssueUpdated_NoAssigneeChange",
+          "TestSubscriberSystemCommentDoesNotSubscribe"
+        ],
+        "terminal_counts": {
+          "pass": 57
+        },
+        "terminals": {
+          "TestNotificationCommentReplayConcurrent": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayConcurrent/independent_buses": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayConcurrent/shared_bus": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/empty_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/zero_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v4_read": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/read": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/read_and_archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/fresh_bus": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/identical_event": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/map_payload": [
+            "pass"
+          ],
+          "TestNotification_AssigneeChanged": [
+            "pass"
+          ],
+          "TestNotification_CommentCreated": [
+            "pass"
+          ],
+          "TestNotification_DueDateChanged": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_AssigneeNotified": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_NoAssignee": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_NewCommentSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_PriorityChangeSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_PriorityChanged": [
+            "pass"
+          ],
+          "TestNotification_StartDateChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged_Muted": [
+            "pass"
+          ],
+          "TestNotification_SystemCommentSkipsInboxAndMentions": [
+            "pass"
+          ],
+          "TestNotification_TaskCompleted": [
+            "pass"
+          ],
+          "TestNotification_TaskFailed": [
+            "pass"
+          ],
+          "TestSubscriberAddedEventPublished": [
+            "pass"
+          ],
+          "TestSubscriberCommentCreated_CommenterSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_AutopilotMapPayload": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorAndAssignee": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_AssigneeChanged": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_NoAssigneeChange": [
+            "pass"
+          ],
+          "TestSubscriberSystemCommentDoesNotSubscribe": [
+            "pass"
+          ]
+        },
+        "duplicate_runs": [],
+        "duplicate_terminals": [],
+        "unfinished": [],
+        "race_diagnostics_present": false,
+        "package_terminals": [
+          "pass"
+        ]
+      }
+    },
+    "notification-race-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-race-r02",
+      "command_sha256": "cc19a749b9bc7d791c3b5f5e7523d6e0f9dc55662a14b6e86b91016d95945baa",
+      "result_sha256": "69eb4ff8fad9423eaf08217d9ad4cc6e2affefb3a38860f7fd119286844406c7",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-race",
+        "-mod=readonly",
+        "-count=1",
+        "-run",
+        "^Test(Notification|Subscriber)",
+        "./cmd/server"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 22590,
+      "configuration_sha256": "035a1d7ab443dcf266671f746683e6ce4e10fb766c3c2a72cda77679cc6bbdb6",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "7bf7e23d3e397397e8d4787931bae8b1bd6074e2a037c6121668475fe94ae91a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true,
+      "independent_inventory": {
+        "tops": 35,
+        "names": 57,
+        "new_tops": 7,
+        "new_leaves": 22,
+        "run_names": [
+          "TestNotificationCommentReplayConcurrent",
+          "TestNotificationCommentReplayConcurrent/independent_buses",
+          "TestNotificationCommentReplayConcurrent/shared_bus",
+          "TestNotificationCommentReplayDistinctTuples",
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients",
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources",
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields",
+          "TestNotificationCommentReplayLegacyFallback",
+          "TestNotificationCommentReplayLegacyFallback/empty_identity",
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7",
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity",
+          "TestNotificationCommentReplayLegacyFallback/zero_identity",
+          "TestNotificationCommentReplayLegacyRows",
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained",
+          "TestNotificationCommentReplayLegacyRows/random_v4_read",
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived",
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id",
+          "TestNotificationCommentReplayRecipientControls",
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe",
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers",
+          "TestNotificationCommentReplayRetainedState",
+          "TestNotificationCommentReplayRetainedState/archived",
+          "TestNotificationCommentReplayRetainedState/read",
+          "TestNotificationCommentReplayRetainedState/read_and_archived",
+          "TestNotificationCommentReplaySequential",
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid",
+          "TestNotificationCommentReplaySequential/fresh_bus",
+          "TestNotificationCommentReplaySequential/identical_event",
+          "TestNotificationCommentReplaySequential/map_payload",
+          "TestNotification_AssigneeChanged",
+          "TestNotification_CommentCreated",
+          "TestNotification_DueDateChanged",
+          "TestNotification_IssueCreated_AssigneeNotified",
+          "TestNotification_IssueCreated_NoAssignee",
+          "TestNotification_IssueCreated_SelfAssign",
+          "TestNotification_ParentBubble_NewCommentSuppressed",
+          "TestNotification_ParentBubble_PriorityChangeSuppressed",
+          "TestNotification_ParentBubble_StatusChanged",
+          "TestNotification_PriorityChanged",
+          "TestNotification_StartDateChanged",
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed",
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed",
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed",
+          "TestNotification_StatusChanged",
+          "TestNotification_StatusChanged_Muted",
+          "TestNotification_SystemCommentSkipsInboxAndMentions",
+          "TestNotification_TaskCompleted",
+          "TestNotification_TaskFailed",
+          "TestSubscriberAddedEventPublished",
+          "TestSubscriberCommentCreated_CommenterSubscribed",
+          "TestSubscriberIssueCreated_AutopilotMapPayload",
+          "TestSubscriberIssueCreated_CreatorAndAssignee",
+          "TestSubscriberIssueCreated_CreatorSubscribed",
+          "TestSubscriberIssueCreated_SelfAssign",
+          "TestSubscriberIssueUpdated_AssigneeChanged",
+          "TestSubscriberIssueUpdated_NoAssigneeChange",
+          "TestSubscriberSystemCommentDoesNotSubscribe"
+        ],
+        "terminal_counts": {
+          "pass": 57
+        },
+        "terminals": {
+          "TestNotificationCommentReplayConcurrent": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayConcurrent/independent_buses": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayConcurrent/shared_bus": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_comments_and_recipients": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/distinct_workspace_sources": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayDistinctTuples/unrelated_retained_tuple_fields": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/empty_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/generic_status_writer_keeps_random_v7": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/invalid_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyFallback/zero_identity": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/existing_duplicates_retained": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v4_read": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/random_v7_archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayLegacyRows/uppercase_legacy_id": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls/current_late_subscriber_and_unsubscribe": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRecipientControls/ordinary_delivery_tiers": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/read": [
+            "pass"
+          ],
+          "TestNotificationCommentReplayRetainedState/read_and_archived": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/case_equivalent_uuid": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/fresh_bus": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/identical_event": [
+            "pass"
+          ],
+          "TestNotificationCommentReplaySequential/map_payload": [
+            "pass"
+          ],
+          "TestNotification_AssigneeChanged": [
+            "pass"
+          ],
+          "TestNotification_CommentCreated": [
+            "pass"
+          ],
+          "TestNotification_DueDateChanged": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_AssigneeNotified": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_NoAssignee": [
+            "pass"
+          ],
+          "TestNotification_IssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_NewCommentSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_PriorityChangeSuppressed": [
+            "pass"
+          ],
+          "TestNotification_ParentBubble_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_PriorityChanged": [
+            "pass"
+          ],
+          "TestNotification_StartDateChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ArchivesStaleTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_NonTerminalKeepsTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged": [
+            "pass"
+          ],
+          "TestNotification_StatusChanged_Muted": [
+            "pass"
+          ],
+          "TestNotification_SystemCommentSkipsInboxAndMentions": [
+            "pass"
+          ],
+          "TestNotification_TaskCompleted": [
+            "pass"
+          ],
+          "TestNotification_TaskFailed": [
+            "pass"
+          ],
+          "TestSubscriberAddedEventPublished": [
+            "pass"
+          ],
+          "TestSubscriberCommentCreated_CommenterSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_AutopilotMapPayload": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorAndAssignee": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_CreatorSubscribed": [
+            "pass"
+          ],
+          "TestSubscriberIssueCreated_SelfAssign": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_AssigneeChanged": [
+            "pass"
+          ],
+          "TestSubscriberIssueUpdated_NoAssigneeChange": [
+            "pass"
+          ],
+          "TestSubscriberSystemCommentDoesNotSubscribe": [
+            "pass"
+          ]
+        },
+        "duplicate_runs": [],
+        "duplicate_terminals": [],
+        "unfinished": [],
+        "race_diagnostics_present": false,
+        "package_terminals": [
+          "pass"
+        ]
+      }
+    },
+    "notification-vet-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-vet-r02",
+      "command_sha256": "0bfae428dfeba01f9ed63eaa1851a99d5e6521a6de2a8ede87e7f12319a2846a",
+      "result_sha256": "06822a3bc0d14c8d72b56e36889bdd593d183ea13565fd0d89318279e2b220cc",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./cmd/server"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 17755,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "build-api-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/build-api-r02",
+      "command_sha256": "2d9e0b9888fa69183a610c37a8233d3928b51e9343b6951b99298fde17feffbc",
+      "result_sha256": "5e35583bde8e0255c7a84ea4a50ae1974bf387a5454e8d5fa578c0a6cd4a2293",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-mod=readonly",
+        "-ldflags",
+        "-X main.commit=b1901a48f",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/build/api-r02",
+        "./cmd/server"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 17757,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "build-host-daemon-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/build-host-daemon-r02",
+      "command_sha256": "4e2cc8a970471c09647f7453dcb49357c3e7c4e08424e7078f3e27afc4caa3d4",
+      "result_sha256": "74cfdf138252e801e193898c0086efc280d84488c836542ed852f26b3dbf562d",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-c",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/build/s3-host-daemon-r02.test",
+        "./internal/daemon"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 17756,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "build-host-cli-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/build-host-cli-r02",
+      "command_sha256": "39640818ab0d24bde4dd7b02704d7946215de521c7cbb164cfd8bdd1541122f5",
+      "result_sha256": "39f60b340af488600a780f2c177f75618348ce241aa921feb97507be7e49e847",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "build",
+        "-mod=readonly",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/build/s3-host-cli-r02",
+        "./cmd/multica"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-green-r02",
+      "pid": 17762,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "source_after_sha256": "de1cbe926878a9d4827eec4e89164e66e86adb38b7503ffee3bbf5f4d993d1c6",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "notification-sqlc-generate-r01": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-sqlc-generate-r01",
+      "command_sha256": "05886915d996471e188af14946ff1d8da642a24fb863cb8c1a2b56cfe5b91cb6",
+      "result_sha256": "4c22058c6adc5ca681217aa26e6bac5518fa1a9b8bfd9ff0aadbf224fdb62819",
+      "argv": [
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/build/sqlc-r01",
+        "generate"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/sqlc-work-r01",
+      "pid": 86781,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "8ca0d933a71d4ce641b87fb44bf4d812699c72e27b7b18cf4e4fc89f983064ef",
+      "source_after_sha256": "310c956cd1827df415712f54d739abf6090aeb76d2648f75d3af278e2f19de88",
+      "entries_before": 5078,
+      "entries_after": 5078,
+      "before_after_equal": false,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "clients-typecheck-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/clients-typecheck-r02",
+      "command_sha256": "1650a7e4b18b62f7f268ff18b644903f1143dc34bc909ef6290489ce41fbe508",
+      "result_sha256": "d341d9ec262d9f90c3192adf851c0e5f1ddeb982d6ad136505d1352a2deabd0c",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02/node_modules/typescript/bin/tsc",
+        "-p",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/tsconfig-clients-r02.json",
+        "--pretty",
+        "false",
+        "--listFiles"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02",
+      "pid": 94662,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "source_after_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "entries_before": 257,
+      "entries_after": 257,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "0c7f4cacf7d12416cfac61c2aa45c8f8710ddadd9a34594a296f4acac0e379e3",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "clients-eslint-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/clients-eslint-r02",
+      "command_sha256": "7f342e83c223f808d33ce9d13475844683aed54b46fc6f4463a17f5011afbdc2",
+      "result_sha256": "8a8ded5d2ecbf8f861cea215369d729f8cbb90279048b4ac63c925e6c78b9c97",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02/node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/eslint-clients-r02.config.mjs",
+        "--no-ignore",
+        "--max-warnings",
+        "0",
+        "--format",
+        "json",
+        "e2e/collaboration-recovery-runtime.spec.ts",
+        "e2e/fixtures/collaboration-recovery-runtime.ts",
+        "e2e/collaboration-recovery-subscriptions.spec.ts",
+        "e2e/fixtures/collaboration-recovery-subscriptions.ts"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02",
+      "pid": 94663,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "source_after_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "entries_before": 257,
+      "entries_after": 257,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "c24419d2427affe4284db3d5d341c47c83d31ccbb014c6b40f76315b0e917e24",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    },
+    "clients-list-r02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/clients-list-r02",
+      "command_sha256": "4c97eef0cc919cd8ce6d7ff9db4e55844a200da6f1525d102a44b5807599f873",
+      "result_sha256": "c01704037b31c2a8f1ae0a771d1118b52e8cbcb42e88e28df5b33923dc89e96c",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02/node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/configs/playwright-clients-r02.config.mjs",
+        "--list"
+      ],
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-r02",
+      "pid": 94674,
+      "configuration_sha256": "b608a0abddd1c9d4b91da5b81836c0f8fb42c008792d3b569157eeeed4434863",
+      "exit": 0,
+      "source_before_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "source_after_sha256": "a7f71d516efa396bbab3b375fd7407907269ef0690bc6318d6328fa9f6060539",
+      "entries_before": 257,
+      "entries_after": 257,
+      "before_after_equal": true,
+      "current_drift": [],
+      "recorded_config_drift": false,
+      "recorded_tool_drift": [],
+      "stdout_sha256": "77e9f83954e07918cb67ded0c917bdc44f277153703dc74c3ef3f76016de00a7",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "raw_hashes_match_receipt": true
+    }
+  },
+  "exact_red_green_delta": [
+    {
+      "path": "cmd/server/notification_listeners.go",
+      "red": [
+        "0o755",
+        "67781a10230947299168a4cb56e97056235411e4aabac6c9b71693786ae33c33"
+      ],
+      "green": [
+        "0o755",
+        "8308a58cfcb9217da8cf313b112b1c434e1245b3d2e2a2af05e48e8652dbab42"
+      ]
+    },
+    {
+      "path": "pkg/db/generated/inbox.sql.go",
+      "red": [
+        "0o755",
+        "9eac5e1491e54d7c9a389b7068bd9597835a12535566b46a1c984b5d4b9e43ee"
+      ],
+      "green": [
+        "0o755",
+        "47a619be9ae342496caf6f8abcdf79b21fdab354f134996a055c7bdb634fafd5"
+      ]
+    },
+    {
+      "path": "pkg/db/queries/inbox.sql",
+      "red": [
+        "0o755",
+        "bb3f9ea30cf932e6f5cb5f6ed57a4043597f8070a50b48e268915876d0c3e4c1"
+      ],
+      "green": [
+        "0o755",
+        "44c0fefd774151a341cef5f024e9b9e79ab8d1f1fdb27d41f66a66ddbe6b3bfe"
+      ]
+    }
+  ],
+  "final_test": {
+    "path": "cmd/server/notification_comment_replay_test.go",
+    "sha256": "e157ac71ab1eac61315c932d8351750d4ceaa88d218971eeb613723a626db001",
+    "red_green_equal": true,
+    "lines": 862
+  },
+  "normal_race_exact_name_equality": true,
+  "database_audits": {
+    "normal": {
+      "before": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/normal-database-admitted-r03.json",
+      "after": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/notification-normal-after-r02.json",
+      "before_sha256": "5fc802e9bb2e1afbf4ca842f2ccb3f4ef5c25ef79a1c00bde724d7359f9afbba",
+      "after_sha256": "46e0c33d3af1c2dbd5897f87137f41d5646a6f1a4e5ce11043ade06de251fc07",
+      "database": "multica_pay241_s3n_20261119_uwkcehly_normal_r03",
+      "identities_equal": true,
+      "ledger_count": 855,
+      "ledger_equal": true,
+      "index_count": 663,
+      "indexes_equal": true,
+      "indexes_ready_and_valid": true,
+      "table_count_keys": 211,
+      "table_count_deltas": {
+        "collaboration_config_invalidation": {
+          "before": 0,
+          "after": 3
+        }
+      },
+      "gate_equal": true,
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "other_connections_after": 0,
+      "nonzero_tables_after": {
+        "schema_migrations": 855,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 3
+      }
+    },
+    "race": {
+      "before": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/race-database-admitted-r03.json",
+      "after": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/notification-race-after-r02.json",
+      "before_sha256": "3a35b141b1d7ccd147fb349540f3573369d033603e4a583f3905f6c7a728389a",
+      "after_sha256": "1c38f1c8fc5f02f3bf956d0e58cf7eff9dd8a0f735390c786cdf65b93fcec289",
+      "database": "multica_pay241_s3n_20261119_uwkcehly_race_r03",
+      "identities_equal": true,
+      "ledger_count": 855,
+      "ledger_equal": true,
+      "index_count": 663,
+      "indexes_equal": true,
+      "indexes_ready_and_valid": true,
+      "table_count_keys": 211,
+      "table_count_deltas": {
+        "collaboration_config_invalidation": {
+          "before": 0,
+          "after": 3
+        }
+      },
+      "gate_equal": true,
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "other_connections_after": 0,
+      "nonzero_tables_after": {
+        "schema_migrations": 855,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 3
+      }
+    },
+    "red": {
+      "before": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/red-database-admitted-r03.json",
+      "after": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/notification-red-r02-after.json",
+      "before_sha256": "a4648524b6625a12db5d8ec4d87e145b743a4377a2568258e199260c635973a1",
+      "after_sha256": "aed8193c1f20812345c06f8ad0183bd9ba4bfc241e21c989d600d290df33dc5b",
+      "database": "multica_pay241_s3n_20261119_uwkcehly_red_r03",
+      "identities_equal": true,
+      "ledger_count": 855,
+      "ledger_equal": true,
+      "index_count": 663,
+      "indexes_equal": true,
+      "indexes_ready_and_valid": true,
+      "table_count_keys": 211,
+      "table_count_deltas": {
+        "collaboration_config_invalidation": {
+          "before": 0,
+          "after": 3
+        }
+      },
+      "gate_equal": true,
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "other_connections_after": 0,
+      "nonzero_tables_after": {
+        "schema_migrations": 855,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 3
+      }
+    }
+  },
+  "preserved_failures": {
+    "notification-red-r01": {
+      "result_sha256": "836995ff895f4c600f62fd3a6b5c9263a2ab2be9b28d44afef205b51cf64e1a2",
+      "stdout_sha256": "8e0f2589a84401bc73b2f6d10fb424f291a4dc49a40f6b3acd91fcda19c074f1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 1
+    },
+    "notification-normal-r01": {
+      "result_sha256": "a78acf4696414789a79d082612697c50e43697bf33254de543cc85d812e92ef1",
+      "stdout_sha256": "e472f87981a32f77c67be32f410ec7d4d6c62c1d7c2bb876fb943ff418611637",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 1
+    },
+    "logging-probe-red-r01": {
+      "result_sha256": "63960801f6442fa28a018284fe5da3cc401240f5b2ecb1daaa3172fd0fafc20a",
+      "stdout_sha256": "b59efd1dbd8086d47aca2401ff6f316f1c34f2161259dd6d69fdc17d9a3a186b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exit": 1
+    },
+    "logging-probe-green-r02": {
+      "result_sha256": "1b26802c0b2c7e1f6224d6a0317839ddb780a0424d719d5b13af60b3cf24f1b8",
+      "stdout_sha256": "9fc37f936fbb9324f37dc89d4b1c33e58a96649a39a598d02e9a5bf3af1790a8",
+      "stderr_sha256": "d2af053b486c163731a9faa2ac2c4a94f737e7c2c765d045e13b54866188ddf1",
+      "exit": 0
+    }
+  },
+  "runtime_retention_followup": {
+    "finding": "NR-P01",
+    "status": "CLOSED_FOR_R02_STATIC_SOURCE",
+    "runtime_fixture_sha256": "fcbac0e765550890c009ae8c96d162f84985b3689a797723432e5db930be4c39",
+    "global_helper_unchanged": true,
+    "actual_runtime": "NOT_RUN",
+    "NR_P02": "OPEN_FOR_ACTUAL_RAW_RECONCILIATION"
+  },
+  "markdown_report_sha256": "e3b8dd821c738761b0a3646c806d165f909b04cb7846b03c1e713b53e987cb10",
+  "expected_top_level_source_inventory": {
+    "count": 35,
+    "source_files": {
+      "TestNotificationCommentReplaySequential": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayConcurrent": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayRetainedState": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayLegacyRows": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayDistinctTuples": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayRecipientControls": "cmd/server/notification_comment_replay_test.go",
+      "TestNotificationCommentReplayLegacyFallback": "cmd/server/notification_comment_replay_test.go",
+      "TestNotification_IssueCreated_AssigneeNotified": "cmd/server/notification_listeners_test.go",
+      "TestNotification_IssueCreated_SelfAssign": "cmd/server/notification_listeners_test.go",
+      "TestNotification_IssueCreated_NoAssignee": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StatusChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StatusChanged_Muted": "cmd/server/notification_listeners_test.go",
+      "TestNotification_CommentCreated": "cmd/server/notification_listeners_test.go",
+      "TestNotification_SystemCommentSkipsInboxAndMentions": "cmd/server/notification_listeners_test.go",
+      "TestSubscriberSystemCommentDoesNotSubscribe": "cmd/server/notification_listeners_test.go",
+      "TestNotification_AssigneeChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_TaskCompleted": "cmd/server/notification_listeners_test.go",
+      "TestNotification_TaskFailed": "cmd/server/notification_listeners_test.go",
+      "TestNotification_PriorityChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_DueDateChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StartDateChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_ParentBubble_StatusChanged": "cmd/server/notification_listeners_test.go",
+      "TestNotification_ParentBubble_NewCommentSuppressed": "cmd/server/notification_listeners_test.go",
+      "TestNotification_ParentBubble_PriorityChangeSuppressed": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StatusChange_ArchivesStaleTaskFailed": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StatusChange_NonTerminalKeepsTaskFailed": "cmd/server/notification_listeners_test.go",
+      "TestNotification_StatusChange_ReopenSurfacesNewTaskFailed": "cmd/server/notification_listeners_test.go",
+      "TestSubscriberIssueCreated_CreatorSubscribed": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberIssueCreated_CreatorAndAssignee": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberIssueCreated_SelfAssign": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberIssueUpdated_AssigneeChanged": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberIssueUpdated_NoAssigneeChange": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberCommentCreated_CommenterSubscribed": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberAddedEventPublished": "cmd/server/subscriber_listeners_test.go",
+      "TestSubscriberIssueCreated_AutopilotMapPayload": "cmd/server/subscriber_listeners_test.go"
+    },
+    "matches_final_normal_and_race": true
+  }
+}

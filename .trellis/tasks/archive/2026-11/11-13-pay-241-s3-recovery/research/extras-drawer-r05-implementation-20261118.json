@@ -1,0 +1,132 @@
+{
+  "at": "2026-11-18T12:33:00.133674+00:00",
+  "status": "STATIC_AUTHOR_GREEN_ONLY_EXTRAS_DRAWER_R05",
+  "owner": "/root/s3_extras_drawer_implement",
+  "task": "11-13-pay-241-s3-recovery",
+  "owned_changed_files": [
+    "e2e/fixtures/collaboration-recovery-extras.ts"
+  ],
+  "product_changes": 0,
+  "new_dependencies": 0,
+  "sources": {
+    "e2e/collaboration-recovery-extras.spec.ts": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-recovery-extras.spec.ts",
+      "sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "bytes": 1710,
+      "mode": "0o644"
+    },
+    "e2e/fixtures/collaboration-recovery-extras.ts": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "5a152b29edafaf7fa50e4b359248f5c0a7177b50a6683750e82455db2ae0265a",
+      "bytes": 76977,
+      "mode": "0o644"
+    },
+    "e2e/fixtures/collaboration-recovery.ts": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery.ts",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "bytes": 76868,
+      "mode": "0o644"
+    }
+  },
+  "coherent_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01",
+  "harness": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/harness",
+  "harness_manifest_before": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/harness-manifest-before.json",
+    "sha256": "c51c6b0fd59e09ccdd6ae4cab8fb3d604b6fae56837bb3e10017585855a363c3",
+    "bytes": 77787,
+    "mode": "0o600"
+  },
+  "harness_manifest_after": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/harness-manifest-after.json",
+    "sha256": "c51c6b0fd59e09ccdd6ae4cab8fb3d604b6fae56837bb3e10017585855a363c3",
+    "bytes": 77787,
+    "mode": "0o644"
+  },
+  "harness_files": 243,
+  "source_graph": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/resolved-source-graph.json",
+    "sha256": "d6eb426ffa96b3ef9c9091844e4a3867950f0511bceafbfcf6e08b6f5e4c9129",
+    "bytes": 278156,
+    "mode": "0o600"
+  },
+  "source_graph_files": 638,
+  "snapshot_files": 641,
+  "stale_ROOT_product": [],
+  "stale_ROOT_harness": [],
+  "patch": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/fixture-only-r04-to-r05.patch",
+    "sha256": "9f54c9cfe0d65f38bf1363c8fd0b23be4458292f1585924e7cf92b28d895d89c",
+    "bytes": 1502,
+    "mode": "0o600"
+  },
+  "patch_lines": {
+    "added": 6,
+    "removed": 1
+  },
+  "static_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/result.json",
+    "sha256": "6449a20686ec16f644ca3a76203f07254a7070b6cb2dc436188f207810167196",
+    "bytes": 5670,
+    "mode": "0o600"
+  },
+  "results": {
+    "typecheck": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/typecheck-result.json",
+      "sha256": "6af0074a36bbef27d08080738507f00dd12053e8080572b7a16beedaf246a82b",
+      "bytes": 1017,
+      "mode": "0o600"
+    },
+    "eslint": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/eslint-result.json",
+      "sha256": "da2ab3dca28a29982e85d6c5d554db14b064c614ec4ddcd2a578f7f58fc05308",
+      "bytes": 1538,
+      "mode": "0o600"
+    },
+    "list": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/list-result.json",
+      "sha256": "33eaa36586c7a756d9c5d15450e7562bb71fe5a094d0e5de737d4bfd1b6d47c8",
+      "bytes": 2171,
+      "mode": "0o600"
+    }
+  },
+  "planned_tops": 6,
+  "planned_subcases": 18,
+  "retry": 0,
+  "runtime_body_execution": 0,
+  "DB_API_build_browser_provider_execution": 0,
+  "original_failure": {
+    "report": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r04/playwright-report.json",
+      "sha256": "26edd9f44fa925f9446094cba020718fe9846cbe62d729654603c9a5907cb97a",
+      "bytes": 14798,
+      "mode": "0o644"
+    },
+    "fixture": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/harness-extrasA-r04/e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "c86229ef94f3444118affe0a9d0138a4586e1fc73d166ff8e41800bbd984ae1f",
+      "bytes": 76668,
+      "mode": "0o644"
+    },
+    "whole_round_accepted": false,
+    "tops": {
+      "PASS": 2,
+      "FAIL": 1,
+      "NOT_RUN": 3
+    },
+    "web_revocation_subcases": {
+      "PASS": 2,
+      "FAIL": 1,
+      "NOT_RUN": 0
+    },
+    "all_failed_evidence_preserved": true
+  },
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/extras-drawer-r05-implementation-20261118.md",
+    "sha256": "50b1de790adca55fd9cae847a89b7819a8636be297488cd760eb2e7947ed73f0",
+    "bytes": 3306,
+    "mode": "0o644"
+  },
+  "full_S3_accepted": false,
+  "matrix_mutation": 0,
+  "task_archived": false
+}

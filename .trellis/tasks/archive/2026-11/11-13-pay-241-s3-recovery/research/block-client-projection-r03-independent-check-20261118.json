@@ -1,0 +1,116 @@
+{
+  "at": "2026-11-18T12:15:27.801702+00:00",
+  "status": "VERIFIED_EXPLICIT_REPAIR_CLIENT_PROJECTION_R03",
+  "reviewer": "/root/s3_check_batch_block",
+  "task": "11-13-pay-241-s3-recovery",
+  "worksource": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03",
+  "baseline": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-code-r02/frontend-manifest-final-r02.json",
+    "sha256": "360586463141c86e914f2a3e92ea2132f873155d28b032cbe4073220b80eca81",
+    "bytes": 1121941
+  },
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/frontend-manifest-final-r03.json",
+    "sha256": "4a2f9dbeb6ca84693b16dcc16988dd29a09426d50c48d5bfca0c6545af8d5389",
+    "bytes": 1121942
+  },
+  "delta": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/delta-final-r03.json",
+    "sha256": "00d8892798162524bdeb62fe7c8e2f82009bf0e3ee1d0586f4fa67e47fec73a7",
+    "bytes": 2966
+  },
+  "patch": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/delta-final-r03.patch",
+    "sha256": "3b8d232111ab65ff949fc58ae6b6fcce2da6726620f0a6de8a6b0ab9666ddd6f",
+    "bytes": 16734
+  },
+  "source_files": 3624,
+  "changed_files": [
+    "packages/core/collaboration/presentation.test.ts",
+    "packages/core/collaboration/presentation.ts",
+    "packages/views/collaboration/information-workflow.test.tsx",
+    "packages/views/collaboration/workflow.tsx"
+  ],
+  "changes": 4,
+  "added_deleted": 0,
+  "original_R02_source_drift": [],
+  "unowned_source_drift": [],
+  "dependency_links": 2010,
+  "dependencies": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/dependency-links-final-r03.json",
+    "sha256": "439d8083ff046ce944134c0607d03f287fc345c09486308940f36e270cfc8e14",
+    "bytes": 993334
+  },
+  "dependency_drift": [],
+  "findings_fixed": [
+    "BC-R03-01 explicit repair erroneously required deliberately closed generic permissions in Core and Views"
+  ],
+  "findings_not_fixed": [],
+  "admission": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/block-client-explicit-repair-projection-admission-r03.json",
+    "sha256": "69d04d87f2148139e5206781cf17cd5c88ef39bf677bfe4a21aa899d28f0496a",
+    "bytes": 952
+  },
+  "source_proof": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/handler/collaboration.go",
+    "sha256": "6e27121de2763be0b9f033e8e7ad28e5c5ce4bf8370a1c0a3e0ab16d43a7fe3a",
+    "bytes": 12350
+  },
+  "native_assertions": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/native-assertions-final-r03.json",
+    "sha256": "3da00c28017985959183a6b119d031465f9266156393643224e317178c961666",
+    "bytes": 98848
+  },
+  "retained_reds": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/retained-reds-r03.json",
+    "sha256": "c8dd28e6f380002289f0b5388e84786bf95f46b0b942baac5265efa4e25a821f",
+    "bytes": 2120
+  },
+  "final_checks": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/final-checks-r03.json",
+    "sha256": "2f054dbc2f989e3f309564de4c25a1864fe0d6071510272cb4b8f584be63a6ec",
+    "bytes": 11424
+  },
+  "verification": {
+    "Core": {
+      "files": 9,
+      "assertions": 178,
+      "passed": 178,
+      "failed": 0,
+      "pending": 0
+    },
+    "Views": {
+      "files": 10,
+      "assertions": 94,
+      "passed": 94,
+      "failed": 0,
+      "pending": 0
+    },
+    "Core_typecheck": 0,
+    "Views_typecheck": 0,
+    "lint_files": 4,
+    "lint_errors": 0,
+    "lint_warnings": 0
+  },
+  "DB_API_build_browser_provider_execution": 0,
+  "ROOT_matrix_Git_publicwire_mutation": 0,
+  "server_generic_capabilities_false_preserved": true,
+  "full_backend_admission": "PENDING_SEPARATE_REVIEW",
+  "full_S3_accepted": false,
+  "task_archived": false,
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-client-projection-r03-independent-check-20261118.md",
+    "sha256": "46dd2310d520a77f3b06546d60003fa1fe59e174828d05b6d56ec9814f0c6135",
+    "bytes": 4916
+  },
+  "driver": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/run_checks.py",
+    "sha256": "db650eed7987849c519ebcf36c86f88e3d3626d7597110ce101faaaaf510edcf",
+    "bytes": 6179
+  },
+  "seal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-client-projection-r03/seal-final-r03.json",
+    "sha256": "1153fec1bc98896e68ec17d1eb54392c573c912f251f9396d51a3f0109da0229",
+    "bytes": 4928
+  }
+}

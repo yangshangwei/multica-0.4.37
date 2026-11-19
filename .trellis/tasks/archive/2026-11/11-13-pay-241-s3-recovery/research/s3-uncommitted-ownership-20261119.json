@@ -1,0 +1,2171 @@
+{
+  "status": "FINITE_OWNERSHIP_MAP_NOT_ACCEPTANCE_OR_STAGING",
+  "at": "2026-11-19T13:16:38.141424+00:00",
+  "rows": [
+    {
+      "group": "server",
+      "path": "server/cmd/server/router.go",
+      "baseline": {
+        "path": "server/cmd/server/router.go",
+        "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+        "mode": "0o755"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/cmd/server/router.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/cmd/server/router.go",
+      "accepted": {
+        "sha256": "f35ca9f952d9d75619316db05f7a98522e36d5a2576612ade2e9f31ff44a1b8c",
+        "mode": "0755",
+        "bytes": 151860
+      },
+      "ROOT": {
+        "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+        "mode": "0755",
+        "bytes": 151979
+      },
+      "HEAD": {
+        "sha256": "30d1ee80e7ea97371d434dcce370385bec93fe1f83df6a86e23227472aba4866",
+        "bytes": 151659
+      },
+      "ROOT_matches_accepted": false,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_DELTA_WITH_ALREADY_COMMITTED_OUTPUT_PRESERVED",
+      "composition_proof": {
+        "path": "server/cmd/server/router.go",
+        "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+        "committed_delta_fragments": [
+          {
+            "old_context_sha256": "110f14ae984dba4a1be14afce7770f0a7c1097464114a50df1865534e2ccf643",
+            "new_context_sha256": "9fca143cf4540ac8b223586f5fc29bf490bfa5b9581df87ad5f9aa0dcf94a426",
+            "old_lines": 6,
+            "new_lines": 7
+          }
+        ],
+        "composed_sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35"
+      }
+    },
+    {
+      "group": "server",
+      "path": "server/internal/handler/collaboration.go",
+      "baseline": {
+        "path": "server/internal/handler/collaboration.go",
+        "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/handler/collaboration.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/handler/collaboration.go",
+      "accepted": {
+        "sha256": "6e27121de2763be0b9f033e8e7ad28e5c5ce4bf8370a1c0a3e0ab16d43a7fe3a",
+        "mode": "0644",
+        "bytes": 12350
+      },
+      "ROOT": {
+        "sha256": "6e27121de2763be0b9f033e8e7ad28e5c5ce4bf8370a1c0a3e0ab16d43a7fe3a",
+        "mode": "0644",
+        "bytes": 12350
+      },
+      "HEAD": {
+        "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "bytes": 11488
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/handler/collaboration_creation.go",
+      "baseline": {
+        "path": "server/internal/handler/collaboration_creation.go",
+        "sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/handler/collaboration_creation.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/handler/collaboration_creation.go",
+      "accepted": {
+        "sha256": "53813f983658ba3826639627fd12ff4fbe33159b766b7020622c4ab9109934ab",
+        "mode": "0644",
+        "bytes": 6658
+      },
+      "ROOT": {
+        "sha256": "53813f983658ba3826639627fd12ff4fbe33159b766b7020622c4ab9109934ab",
+        "mode": "0644",
+        "bytes": 6658
+      },
+      "HEAD": {
+        "sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "bytes": 6004
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/handler/collaboration_information.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/handler/collaboration_information.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/handler/collaboration_information.go",
+      "accepted": {
+        "sha256": "71ae10ad9cf06e05ba608a5639e7a97e34bb322e2b6eaeae06f9aad6f700fe5f",
+        "mode": "0644",
+        "bytes": 9051
+      },
+      "ROOT": {
+        "sha256": "71ae10ad9cf06e05ba608a5639e7a97e34bb322e2b6eaeae06f9aad6f700fe5f",
+        "mode": "0644",
+        "bytes": 9051
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/handler/collaboration_information_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/handler/collaboration_information_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/handler/collaboration_information_test.go",
+      "accepted": {
+        "sha256": "4524f6695bd24f902aca3aa85a0f1114b2e8405638352d7e5219bfe087dd845b",
+        "mode": "0644",
+        "bytes": 8727
+      },
+      "ROOT": {
+        "sha256": "4524f6695bd24f902aca3aa85a0f1114b2e8405638352d7e5219bfe087dd845b",
+        "mode": "0644",
+        "bytes": 8727
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/handler/collaboration_workflow.go",
+      "baseline": {
+        "path": "server/internal/handler/collaboration_workflow.go",
+        "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/handler/collaboration_workflow.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/handler/collaboration_workflow.go",
+      "accepted": {
+        "sha256": "c1e61b32fae7005cb19527b1cd442d8a31568dd5e72ef9af7456870eb2690f2e",
+        "mode": "0644",
+        "bytes": 18708
+      },
+      "ROOT": {
+        "sha256": "c1e61b32fae7005cb19527b1cd442d8a31568dd5e72ef9af7456870eb2690f2e",
+        "mode": "0644",
+        "bytes": 18708
+      },
+      "HEAD": {
+        "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "bytes": 16615
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/migrations/collaboration_information_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/migrations/collaboration_information_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/migrations/collaboration_information_test.go",
+      "accepted": {
+        "sha256": "c8e5e9fcb569871429b12e2f280ca2f36bfba8a0267c885bc7306bb1a1a856b0",
+        "mode": "0644",
+        "bytes": 4004
+      },
+      "ROOT": {
+        "sha256": "c8e5e9fcb569871429b12e2f280ca2f36bfba8a0267c885bc7306bb1a1a856b0",
+        "mode": "0644",
+        "bytes": 4004
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration.go",
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration.go",
+      "accepted": {
+        "sha256": "0ca75701bab3d2dc5051d6c4ca7de1a0e58b7bc010191fcb8f3b7f18b7c16ad4",
+        "mode": "0644",
+        "bytes": 19961
+      },
+      "ROOT": {
+        "sha256": "0ca75701bab3d2dc5051d6c4ca7de1a0e58b7bc010191fcb8f3b7f18b7c16ad4",
+        "mode": "0644",
+        "bytes": 19961
+      },
+      "HEAD": {
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "bytes": 19936
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_activity.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_activity.go",
+        "sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_activity.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_activity.go",
+      "accepted": {
+        "sha256": "a36f968bf42d28d4344e7916aa710b553cec60b9045c623f3199f7b760e860d7",
+        "mode": "0644",
+        "bytes": 13356
+      },
+      "ROOT": {
+        "sha256": "a36f968bf42d28d4344e7916aa710b553cec60b9045c623f3199f7b760e860d7",
+        "mode": "0644",
+        "bytes": 13356
+      },
+      "HEAD": {
+        "sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "bytes": 11821
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_creation_options.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_creation_options.go",
+        "sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_creation_options.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_creation_options.go",
+      "accepted": {
+        "sha256": "92b07882d78146fa9d063710e12cd4b959904b210dd67915a8730485f5dff0e7",
+        "mode": "0644",
+        "bytes": 5212
+      },
+      "ROOT": {
+        "sha256": "92b07882d78146fa9d063710e12cd4b959904b210dd67915a8730485f5dff0e7",
+        "mode": "0644",
+        "bytes": 5212
+      },
+      "HEAD": {
+        "sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "bytes": 2448
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_handoff.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_handoff.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_handoff.go",
+      "accepted": {
+        "sha256": "771011a05b678e861236cea5ca19d88297931538ff949a72057fc3d3de872c9a",
+        "mode": "0644",
+        "bytes": 21243
+      },
+      "ROOT": {
+        "sha256": "771011a05b678e861236cea5ca19d88297931538ff949a72057fc3d3de872c9a",
+        "mode": "0644",
+        "bytes": 21243
+      },
+      "HEAD": {
+        "sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d",
+        "bytes": 20237
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_concurrency_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_concurrency_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_concurrency_test.go",
+      "accepted": {
+        "sha256": "206e528799d747e4fec48b700bc8785ab204dfa44a054cb7b9f7d86e4d6a24c0",
+        "mode": "0644",
+        "bytes": 5177
+      },
+      "ROOT": {
+        "sha256": "206e528799d747e4fec48b700bc8785ab204dfa44a054cb7b9f7d86e4d6a24c0",
+        "mode": "0644",
+        "bytes": 5177
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_creation_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_creation_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_creation_test.go",
+      "accepted": {
+        "sha256": "d57e09c388718ed2830ea02fd96935ee1ecf2921398331394b47fde087d6977e",
+        "mode": "0644",
+        "bytes": 4782
+      },
+      "ROOT": {
+        "sha256": "d57e09c388718ed2830ea02fd96935ee1ecf2921398331394b47fde087d6977e",
+        "mode": "0644",
+        "bytes": 4782
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_history.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_history.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_history.go",
+      "accepted": {
+        "sha256": "05bc8676535546b871ef8dc982ffcdf656baa98add07f4d0d1e8e71b314587f8",
+        "mode": "0644",
+        "bytes": 31079
+      },
+      "ROOT": {
+        "sha256": "05bc8676535546b871ef8dc982ffcdf656baa98add07f4d0d1e8e71b314587f8",
+        "mode": "0644",
+        "bytes": 31079
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_history_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_history_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_history_test.go",
+      "accepted": {
+        "sha256": "ae7a1ffa994fdb01db5eb96d12396c28e8ef986882de5e76a217a3be92d43dfe",
+        "mode": "0644",
+        "bytes": 10070
+      },
+      "ROOT": {
+        "sha256": "ae7a1ffa994fdb01db5eb96d12396c28e8ef986882de5e76a217a3be92d43dfe",
+        "mode": "0644",
+        "bytes": 10070
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_metadata_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_metadata_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_metadata_test.go",
+      "accepted": {
+        "sha256": "bbf589ca15dff29665ab0dd3d28dce55fbf91a4c197d60d565a2c2e05de8588f",
+        "mode": "0644",
+        "bytes": 7012
+      },
+      "ROOT": {
+        "sha256": "bbf589ca15dff29665ab0dd3d28dce55fbf91a4c197d60d565a2c2e05de8588f",
+        "mode": "0644",
+        "bytes": 7012
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_repair.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_repair.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_repair.go",
+      "accepted": {
+        "sha256": "35dcc025a6c876369d128c375ffb4b71d65ec460346c06d8c752294f6c1815ce",
+        "mode": "0644",
+        "bytes": 11723
+      },
+      "ROOT": {
+        "sha256": "35dcc025a6c876369d128c375ffb4b71d65ec460346c06d8c752294f6c1815ce",
+        "mode": "0644",
+        "bytes": 11723
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_repair_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_repair_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_repair_test.go",
+      "accepted": {
+        "sha256": "f04b88fc758fd905a27e08809bda5c5806bda3e3fe5809be7fde7af7f689077a",
+        "mode": "0644",
+        "bytes": 13091
+      },
+      "ROOT": {
+        "sha256": "f04b88fc758fd905a27e08809bda5c5806bda3e3fe5809be7fde7af7f689077a",
+        "mode": "0644",
+        "bytes": 13091
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_runtime_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_runtime_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_runtime_test.go",
+      "accepted": {
+        "sha256": "39e6fa7f3f30cec26f54c9eda013b17978edf41cf6142652340c622faecb919a",
+        "mode": "0644",
+        "bytes": 6592
+      },
+      "ROOT": {
+        "sha256": "39e6fa7f3f30cec26f54c9eda013b17978edf41cf6142652340c622faecb919a",
+        "mode": "0644",
+        "bytes": 6592
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_state.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_state.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_state.go",
+      "accepted": {
+        "sha256": "c0a833283691d75c6913cb83db090f38172c5f7e3881771cc962e4d4dff756fb",
+        "mode": "0644",
+        "bytes": 19253
+      },
+      "ROOT": {
+        "sha256": "c0a833283691d75c6913cb83db090f38172c5f7e3881771cc962e4d4dff756fb",
+        "mode": "0644",
+        "bytes": 19253
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_information_test.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_information_test.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_information_test.go",
+      "accepted": {
+        "sha256": "1133b662793894950ec2e3ec98453741cdc8d3cfc665e550c943cd11a5ab8aa5",
+        "mode": "0644",
+        "bytes": 19720
+      },
+      "ROOT": {
+        "sha256": "1133b662793894950ec2e3ec98453741cdc8d3cfc665e550c943cd11a5ab8aa5",
+        "mode": "0644",
+        "bytes": 19720
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "sha256": "faf6200d7a9a3eda633ca4e7f0e6499083a1e5eed2ae5e5f5a714cf09f6d97d7",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_lifecycle.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_lifecycle.go",
+      "accepted": {
+        "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+        "mode": "0644",
+        "bytes": 28690
+      },
+      "ROOT": {
+        "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+        "mode": "0644",
+        "bytes": 28690
+      },
+      "HEAD": {
+        "sha256": "faf6200d7a9a3eda633ca4e7f0e6499083a1e5eed2ae5e5f5a714cf09f6d97d7",
+        "bytes": 27403
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_runtime_handoff.go",
+        "sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_runtime_handoff.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_runtime_handoff.go",
+      "accepted": {
+        "sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80",
+        "mode": "0644",
+        "bytes": 19190
+      },
+      "ROOT": {
+        "sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+        "mode": "0644",
+        "bytes": 19170
+      },
+      "HEAD": {
+        "sha256": "6cecbbadc5df0cb08ccb5062d090d326339e6006dc9a720e9cf970e241604aa6",
+        "bytes": 19089
+      },
+      "ROOT_matches_accepted": false,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_DELTA_WITH_ALREADY_COMMITTED_OUTPUT_PRESERVED",
+      "composition_proof": {
+        "path": "server/internal/service/collaboration_runtime_handoff.go",
+        "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+        "committed_delta_fragments": [
+          {
+            "old_context_sha256": "80c0eb35f01a81f94f907751787c4745fc964193d99494ae40d07dd1eea30e93",
+            "new_context_sha256": "8f2bc0a8b007db01c516f69d632faa3b6acd1d09cd1204dacd594651cd27fee5",
+            "old_lines": 10,
+            "new_lines": 8
+          }
+        ],
+        "composed_sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191"
+      }
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/collaboration_workflow.go",
+      "baseline": {
+        "path": "server/internal/service/collaboration_workflow.go",
+        "sha256": "51e7eb2b52462fa5e771014b2000173752f30eaa07997f5c66d170054d5f5d09",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/collaboration_workflow.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/collaboration_workflow.go",
+      "accepted": {
+        "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+        "mode": "0644",
+        "bytes": 37070
+      },
+      "ROOT": {
+        "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+        "mode": "0644",
+        "bytes": 37070
+      },
+      "HEAD": {
+        "sha256": "6b64869101f78a5646166d05c24a3e67dbed5837bf2cc08a8fa1918810247b9b",
+        "bytes": 33556
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "HUNK_ONLY_S3_KEEP_PREEXISTING_S2_GET_READ_LOCK_UNSTAGED"
+    },
+    {
+      "group": "server",
+      "path": "server/internal/service/issue.go",
+      "baseline": {
+        "path": "server/internal/service/issue.go",
+        "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "mode": "0o755"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/internal/service/issue.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/internal/service/issue.go",
+      "accepted": {
+        "sha256": "94463ba45f7e49e1d35aa25426a561b5ca8deeb8a62c8ed9357e1c6e4f8cf445",
+        "mode": "0755",
+        "bytes": 42945
+      },
+      "ROOT": {
+        "sha256": "94463ba45f7e49e1d35aa25426a561b5ca8deeb8a62c8ed9357e1c6e4f8cf445",
+        "mode": "0755",
+        "bytes": 42945
+      },
+      "HEAD": {
+        "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "bytes": 42340
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/migrations/866_collaboration_information_metadata.down.sql",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/migrations/866_collaboration_information_metadata.down.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/migrations/866_collaboration_information_metadata.down.sql",
+      "accepted": {
+        "sha256": "24e52a84c04e16c38f4c8b05c3ab54199af0b7c3c11b415073e20a4790c879b9",
+        "mode": "0644",
+        "bytes": 673
+      },
+      "ROOT": {
+        "sha256": "24e52a84c04e16c38f4c8b05c3ab54199af0b7c3c11b415073e20a4790c879b9",
+        "mode": "0644",
+        "bytes": 673
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/migrations/866_collaboration_information_metadata.up.sql",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/migrations/866_collaboration_information_metadata.up.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/migrations/866_collaboration_information_metadata.up.sql",
+      "accepted": {
+        "sha256": "7321c2d50e9b908f6a684e9a0d5a5bf2565a18643ecd4bd8e9c994688fd0cf0e",
+        "mode": "0644",
+        "bytes": 212
+      },
+      "ROOT": {
+        "sha256": "7321c2d50e9b908f6a684e9a0d5a5bf2565a18643ecd4bd8e9c994688fd0cf0e",
+        "mode": "0644",
+        "bytes": 212
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/migrations/867_collaboration_information_ready.down.sql",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/migrations/867_collaboration_information_ready.down.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/migrations/867_collaboration_information_ready.down.sql",
+      "accepted": {
+        "sha256": "27e71daa6dacb55bda15c1f52eb16664898a6c620271639381f029f5b9547869",
+        "mode": "0644",
+        "bytes": 556
+      },
+      "ROOT": {
+        "sha256": "27e71daa6dacb55bda15c1f52eb16664898a6c620271639381f029f5b9547869",
+        "mode": "0644",
+        "bytes": 556
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/migrations/867_collaboration_information_ready.up.sql",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/migrations/867_collaboration_information_ready.up.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/migrations/867_collaboration_information_ready.up.sql",
+      "accepted": {
+        "sha256": "d13db3f7c2051321382e7add142dfb48205c616b15b5bc4e0cbbfde94dc0ea45",
+        "mode": "0644",
+        "bytes": 673
+      },
+      "ROOT": {
+        "sha256": "d13db3f7c2051321382e7add142dfb48205c616b15b5bc4e0cbbfde94dc0ea45",
+        "mode": "0644",
+        "bytes": 673
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+      "baseline": {
+        "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+        "sha256": "1c91a59d79c2bfaa852f52794a328fb8a9f02a236732dec08167f2d865115871",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/collaboration_delivery.sql.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/collaboration_delivery.sql.go",
+      "accepted": {
+        "sha256": "7f016ff6d4823da77616c06e4ec7279f5aefb2dafbd73ac5961dd0a727cfe272",
+        "mode": "0644",
+        "bytes": 6884
+      },
+      "ROOT": {
+        "sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+        "mode": "0644",
+        "bytes": 6978
+      },
+      "HEAD": {
+        "sha256": "3cbed2aa31d72a100509431681fa6a6ff286df389d0278d2d90951047c10e619",
+        "bytes": 6813
+      },
+      "ROOT_matches_accepted": false,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_DELTA_WITH_ALREADY_COMMITTED_OUTPUT_PRESERVED",
+      "composition_proof": {
+        "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+        "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+        "committed_delta_fragments": [
+          {
+            "old_context_sha256": "2ec4044968d322cbcc4f288aa3ba2ceb62c39f99ed37ec9cbd31ef8fc3075473",
+            "new_context_sha256": "b274e034143ef75874beb5e2242be586f3be3c659841e235729117962c88a0fa",
+            "old_lines": 7,
+            "new_lines": 7
+          },
+          {
+            "old_context_sha256": "749abf4784d8344bcfbdb142b2b75d0b2f5560c7f51ed1b1c31ae169d106217a",
+            "new_context_sha256": "2378fef5243f5a2f4edf46c21f5a87cbae030be777187cdb5be05ad13fed9720",
+            "old_lines": 6,
+            "new_lines": 9
+          }
+        ],
+        "composed_sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25"
+      }
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/collaboration_handoff.sql.go",
+      "baseline": {
+        "path": "server/pkg/db/generated/collaboration_handoff.sql.go",
+        "sha256": "994677c9383694660cbd6d08947b818df9c949a51cb24cf79983b8762d44ba99",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/collaboration_handoff.sql.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/collaboration_handoff.sql.go",
+      "accepted": {
+        "sha256": "977359330ae3e5dee2acadecee135fc78e158805008ad7b04172326718dd67b0",
+        "mode": "0644",
+        "bytes": 17465
+      },
+      "ROOT": {
+        "sha256": "977359330ae3e5dee2acadecee135fc78e158805008ad7b04172326718dd67b0",
+        "mode": "0644",
+        "bytes": 17465
+      },
+      "HEAD": {
+        "sha256": "994677c9383694660cbd6d08947b818df9c949a51cb24cf79983b8762d44ba99",
+        "bytes": 16734
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/collaboration_information.sql.go",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/collaboration_information.sql.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/collaboration_information.sql.go",
+      "accepted": {
+        "sha256": "ec899b7216ae29005770788f84cd6fe6ad10b6e0777b9943a390c3b503982b98",
+        "mode": "0644",
+        "bytes": 14666
+      },
+      "ROOT": {
+        "sha256": "ec899b7216ae29005770788f84cd6fe6ad10b6e0777b9943a390c3b503982b98",
+        "mode": "0644",
+        "bytes": 14666
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "baseline": {
+        "path": "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+        "sha256": "452a117f792292857a7be07d9467317389c666f2608ccde313bc310fd1a8b9ca",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "accepted": {
+        "sha256": "fe71913f373ab29c2e9b81de768f3ca3c4a5b64402b21583ca8d52306a8b8f3a",
+        "mode": "0644",
+        "bytes": 15697
+      },
+      "ROOT": {
+        "sha256": "fe71913f373ab29c2e9b81de768f3ca3c4a5b64402b21583ca8d52306a8b8f3a",
+        "mode": "0644",
+        "bytes": 15697
+      },
+      "HEAD": {
+        "sha256": "452a117f792292857a7be07d9467317389c666f2608ccde313bc310fd1a8b9ca",
+        "bytes": 15511
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/collaboration_workflow.sql.go",
+      "baseline": {
+        "path": "server/pkg/db/generated/collaboration_workflow.sql.go",
+        "sha256": "e7d2e1386908ca84baa0eab4c238511bd050bbba302a4abd79a4e42ba947e3a8",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/collaboration_workflow.sql.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/collaboration_workflow.sql.go",
+      "accepted": {
+        "sha256": "d23bf6fa41dbb387c8a54f70a29b24669f790a69fd07c10208f8a4c194b257fa",
+        "mode": "0644",
+        "bytes": 19278
+      },
+      "ROOT": {
+        "sha256": "d23bf6fa41dbb387c8a54f70a29b24669f790a69fd07c10208f8a4c194b257fa",
+        "mode": "0644",
+        "bytes": 19278
+      },
+      "HEAD": {
+        "sha256": "e7d2e1386908ca84baa0eab4c238511bd050bbba302a4abd79a4e42ba947e3a8",
+        "bytes": 18401
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/generated/models.go",
+      "baseline": {
+        "path": "server/pkg/db/generated/models.go",
+        "sha256": "92b072f44bf38889fccef8bf2bc1fd3b77fb8a6abccb365ca080403c01e66b04",
+        "mode": "0o755"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/generated/models.go",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/generated/models.go",
+      "accepted": {
+        "sha256": "6778ee8971752a2c1666706044f0c19eb7389df35fc001c48c561af189affe28",
+        "mode": "0755",
+        "bytes": 170677
+      },
+      "ROOT": {
+        "sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+        "mode": "0755",
+        "bytes": 170855
+      },
+      "HEAD": {
+        "sha256": "69c470128cff5f96cf3b3eb4555ec7c6bf6c7d8bcaa2421270eb3bb8fd93508f",
+        "bytes": 170466
+      },
+      "ROOT_matches_accepted": false,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_DELTA_WITH_ALREADY_COMMITTED_OUTPUT_PRESERVED",
+      "composition_proof": {
+        "path": "server/pkg/db/generated/models.go",
+        "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+        "committed_delta_fragments": [
+          {
+            "old_context_sha256": "073f3e2eb158d6f61edf4b905c12e0446bb9a79bb6252c7ec26f375daf899ea1",
+            "new_context_sha256": "bd1c853bb758a3b762ca8c7bf170494f1318959002b2f16e27e4ac88f3b7d04c",
+            "old_lines": 6,
+            "new_lines": 9
+          }
+        ],
+        "composed_sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4"
+      }
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/queries/collaboration_information.sql",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/queries/collaboration_information.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/queries/collaboration_information.sql",
+      "accepted": {
+        "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+        "mode": "0644",
+        "bytes": 5186
+      },
+      "ROOT": {
+        "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+        "mode": "0644",
+        "bytes": 5186
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "server",
+      "path": "server/pkg/db/queries/collaboration_workflow.sql",
+      "baseline": {
+        "path": "server/pkg/db/queries/collaboration_workflow.sql",
+        "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server/pkg/db/queries/collaboration_workflow.sql",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r05/server/pkg/db/queries/collaboration_workflow.sql",
+      "accepted": {
+        "sha256": "cddcaa14a65a97cd8bae6de882b96e17876fd75ec723dc6f3189182ecb34c1a4",
+        "mode": "0644",
+        "bytes": 5067
+      },
+      "ROOT": {
+        "sha256": "cddcaa14a65a97cd8bae6de882b96e17876fd75ec723dc6f3189182ecb34c1a4",
+        "mode": "0644",
+        "bytes": 5067
+      },
+      "HEAD": {
+        "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "bytes": 4934
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/admin/collaboration-schema.ts",
+      "baseline": {
+        "path": "packages/core/admin/collaboration-schema.ts",
+        "sha256": "945e36e6d91d7a3bbe2d2bc4e9b2914efca5ade3dd45c343cab14d8d0547974e",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/admin/collaboration-schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/admin/collaboration-schema.ts",
+      "accepted": {
+        "sha256": "e248860db13caf2ba32e6645601ccf1e47751f676f996a1dab1573cdb9df34af",
+        "mode": "0644",
+        "bytes": 13401
+      },
+      "ROOT": {
+        "sha256": "e248860db13caf2ba32e6645601ccf1e47751f676f996a1dab1573cdb9df34af",
+        "mode": "0644",
+        "bytes": 13401
+      },
+      "HEAD": {
+        "sha256": "945e36e6d91d7a3bbe2d2bc4e9b2914efca5ade3dd45c343cab14d8d0547974e",
+        "bytes": 13389
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/api/client.ts",
+      "baseline": {
+        "path": "packages/core/api/client.ts",
+        "sha256": "89fd63d8439b60882c1a33297172d3595718d7357a505950502c1698516a83a4",
+        "mode": "0o755"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/api/client.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/api/client.ts",
+      "accepted": {
+        "sha256": "f3e16943502b902e90dee526135c0dc2ff692826f286c825f4409fa11455487b",
+        "mode": "0755",
+        "bytes": 371111
+      },
+      "ROOT": {
+        "sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+        "mode": "0755",
+        "bytes": 371139
+      },
+      "HEAD": {
+        "sha256": "1cb9b5005cecd57202bbd8b0b088050e6f4f36116ee701ceac98ed340a863a1b",
+        "bytes": 366362
+      },
+      "ROOT_matches_accepted": false,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_DELTA_WITH_ALREADY_COMMITTED_OUTPUT_PRESERVED",
+      "composition_proof": {
+        "path": "packages/core/api/client.ts",
+        "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+        "committed_delta_fragments": [
+          {
+            "old_context_sha256": "5df398d0e260a6694a089de6967e4bbe7c6cae7e2012d088c27409d9fbadcf83",
+            "new_context_sha256": "387e24368ce7f5885530ff65a78830e0dd7e9128ae7a512d9088eb14ae274490",
+            "old_lines": 7,
+            "new_lines": 7
+          }
+        ],
+        "composed_sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695"
+      }
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/action.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/action.ts",
+        "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/action.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/action.ts",
+      "accepted": {
+        "sha256": "f9c38ed16c379e8ef9fd2a9b85330f55ecc2d734d5dfd5e0bf2dd1b5493e33b6",
+        "mode": "0644",
+        "bytes": 9532
+      },
+      "ROOT": {
+        "sha256": "f9c38ed16c379e8ef9fd2a9b85330f55ecc2d734d5dfd5e0bf2dd1b5493e33b6",
+        "mode": "0644",
+        "bytes": 9532
+      },
+      "HEAD": {
+        "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+        "bytes": 8541
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/activity-schema.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/activity-schema.ts",
+        "sha256": "793ee6958ff5b776b422c4f597cb65864dc961578d0da430f76e4932bef63997",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/activity-schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/activity-schema.ts",
+      "accepted": {
+        "sha256": "dd253b876a5e6a256450825f41f07f2f8c557b0d662f6c9f38fc625285d35ccc",
+        "mode": "0644",
+        "bytes": 7732
+      },
+      "ROOT": {
+        "sha256": "dd253b876a5e6a256450825f41f07f2f8c557b0d662f6c9f38fc625285d35ccc",
+        "mode": "0644",
+        "bytes": 7732
+      },
+      "HEAD": {
+        "sha256": "793ee6958ff5b776b422c4f597cb65864dc961578d0da430f76e4932bef63997",
+        "bytes": 6699
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/creation-schema.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/creation-schema.ts",
+        "sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/creation-schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/creation-schema.ts",
+      "accepted": {
+        "sha256": "bf3ae63f755ac053e64a4b2cb05eb3b3022665436ccfc6fa99f84b93834e664c",
+        "mode": "0644",
+        "bytes": 5886
+      },
+      "ROOT": {
+        "sha256": "bf3ae63f755ac053e64a4b2cb05eb3b3022665436ccfc6fa99f84b93834e664c",
+        "mode": "0644",
+        "bytes": 5886
+      },
+      "HEAD": {
+        "sha256": "b6580faefc7bb84e75f1b4fe5b78fc1a578b0ed2d661c05424295f53ec099fc1",
+        "bytes": 4944
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/creation.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/creation.ts",
+        "sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/creation.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/creation.ts",
+      "accepted": {
+        "sha256": "ad3a8d96cb936afbdf7771be36d45e3666de4526404f638e6b7d3f9e98cded93",
+        "mode": "0644",
+        "bytes": 8205
+      },
+      "ROOT": {
+        "sha256": "ad3a8d96cb936afbdf7771be36d45e3666de4526404f638e6b7d3f9e98cded93",
+        "mode": "0644",
+        "bytes": 8205
+      },
+      "HEAD": {
+        "sha256": "258c796f93e32a8b96b9c2d37c4bb6a30719064ad19b9739199b4833a81e4b4e",
+        "bytes": 7701
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/delivery-schema.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/delivery-schema.ts",
+        "sha256": "67883a29c07f5b9df2a3a52a315230152fb4ac49afd0c434868db423576fe8d8",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/delivery-schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/delivery-schema.ts",
+      "accepted": {
+        "sha256": "c6a0f8ba4417468d1b2f6796fd103c40a3886f8b4ff1ae3daf02719640c099bb",
+        "mode": "0644",
+        "bytes": 6944
+      },
+      "ROOT": {
+        "sha256": "c6a0f8ba4417468d1b2f6796fd103c40a3886f8b4ff1ae3daf02719640c099bb",
+        "mode": "0644",
+        "bytes": 6944
+      },
+      "HEAD": {
+        "sha256": "67883a29c07f5b9df2a3a52a315230152fb4ac49afd0c434868db423576fe8d8",
+        "bytes": 6453
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/index.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/index.ts",
+        "sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/index.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/index.ts",
+      "accepted": {
+        "sha256": "4629844149489009f9b43e19cf67c3387166eea008c377a5a03adb8d187354d7",
+        "mode": "0644",
+        "bytes": 12401
+      },
+      "ROOT": {
+        "sha256": "4629844149489009f9b43e19cf67c3387166eea008c377a5a03adb8d187354d7",
+        "mode": "0644",
+        "bytes": 12401
+      },
+      "HEAD": {
+        "sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+        "bytes": 12324
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/information-action.test.ts",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/information-action.test.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/information-action.test.ts",
+      "accepted": {
+        "sha256": "c5c1f61f19580f7a728d7127f23d2e7db5ead71c6e22c22c04dc4ccd94de60e7",
+        "mode": "0644",
+        "bytes": 14655
+      },
+      "ROOT": {
+        "sha256": "c5c1f61f19580f7a728d7127f23d2e7db5ead71c6e22c22c04dc4ccd94de60e7",
+        "mode": "0644",
+        "bytes": 14655
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/information-queries.test.ts",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/information-queries.test.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/information-queries.test.ts",
+      "accepted": {
+        "sha256": "66eb89bce87495c294e07809dc9436a18c10e52b14d732305386e2c6059335ab",
+        "mode": "0644",
+        "bytes": 8115
+      },
+      "ROOT": {
+        "sha256": "66eb89bce87495c294e07809dc9436a18c10e52b14d732305386e2c6059335ab",
+        "mode": "0644",
+        "bytes": 8115
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/information-queries.ts",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/information-queries.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/information-queries.ts",
+      "accepted": {
+        "sha256": "2ed123e01fc8fbe25281e5bbf536ec6f83772915ec21bd46a2f35a35d89ea7d6",
+        "mode": "0644",
+        "bytes": 7616
+      },
+      "ROOT": {
+        "sha256": "2ed123e01fc8fbe25281e5bbf536ec6f83772915ec21bd46a2f35a35d89ea7d6",
+        "mode": "0644",
+        "bytes": 7616
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/information-schema.test.ts",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/information-schema.test.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/information-schema.test.ts",
+      "accepted": {
+        "sha256": "5f9ef42328f8639f9bc0cb1ffc10f0a027987e681e4eab1d3fe06ee016dc8d71",
+        "mode": "0644",
+        "bytes": 12858
+      },
+      "ROOT": {
+        "sha256": "5f9ef42328f8639f9bc0cb1ffc10f0a027987e681e4eab1d3fe06ee016dc8d71",
+        "mode": "0644",
+        "bytes": 12858
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/information-schema.ts",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/information-schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/information-schema.ts",
+      "accepted": {
+        "sha256": "494fe0239e921c15ecf31a43ab1d5454971ab083e434adaa5cebed0880ac7845",
+        "mode": "0644",
+        "bytes": 13116
+      },
+      "ROOT": {
+        "sha256": "494fe0239e921c15ecf31a43ab1d5454971ab083e434adaa5cebed0880ac7845",
+        "mode": "0644",
+        "bytes": 13116
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/operation.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/operation.ts",
+        "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/operation.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/operation.ts",
+      "accepted": {
+        "sha256": "c98d0ab026f334f3367a404df1a7c611b78d6c2339b015eb1db33501d5444564",
+        "mode": "0644",
+        "bytes": 10619
+      },
+      "ROOT": {
+        "sha256": "c98d0ab026f334f3367a404df1a7c611b78d6c2339b015eb1db33501d5444564",
+        "mode": "0644",
+        "bytes": 10619
+      },
+      "HEAD": {
+        "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+        "bytes": 9479
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/presentation.test.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/presentation.test.ts",
+        "sha256": "db6620dbd5aacdbb80453f1880ec79d839641b46f32b970de31eea644c228fa2",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/presentation.test.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/presentation.test.ts",
+      "accepted": {
+        "sha256": "2b72e61d11a924fdbba110e49549940ae2e10499f3da6aa99bff4b0d03f6fa47",
+        "mode": "0644",
+        "bytes": 12341
+      },
+      "ROOT": {
+        "sha256": "2b72e61d11a924fdbba110e49549940ae2e10499f3da6aa99bff4b0d03f6fa47",
+        "mode": "0644",
+        "bytes": 12341
+      },
+      "HEAD": {
+        "sha256": "db6620dbd5aacdbb80453f1880ec79d839641b46f32b970de31eea644c228fa2",
+        "bytes": 6618
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/presentation.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/presentation.ts",
+        "sha256": "c52d6ce8368e16c402973955bcbe2fd693c4a605f25a7c53614b9a08d3e833db",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/presentation.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/presentation.ts",
+      "accepted": {
+        "sha256": "734d95bb570e3837518c11c9077f6e490e511fc0e442c25392edaebe6dcf970e",
+        "mode": "0644",
+        "bytes": 6261
+      },
+      "ROOT": {
+        "sha256": "734d95bb570e3837518c11c9077f6e490e511fc0e442c25392edaebe6dcf970e",
+        "mode": "0644",
+        "bytes": 6261
+      },
+      "HEAD": {
+        "sha256": "c52d6ce8368e16c402973955bcbe2fd693c4a605f25a7c53614b9a08d3e833db",
+        "bytes": 5589
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/core/collaboration/schema.ts",
+      "baseline": {
+        "path": "packages/core/collaboration/schema.ts",
+        "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/core/collaboration/schema.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/core/collaboration/schema.ts",
+      "accepted": {
+        "sha256": "cf4fa2eb5a722d720c8b66b870c34fc9d201f24cc0cc63238adf3517644b67cc",
+        "mode": "0644",
+        "bytes": 25320
+      },
+      "ROOT": {
+        "sha256": "cf4fa2eb5a722d720c8b66b870c34fc9d201f24cc0cc63238adf3517644b67cc",
+        "mode": "0644",
+        "bytes": 25320
+      },
+      "HEAD": {
+        "sha256": "780f2248b0798741b64315c531ff3f84309885468e8b80b27cc2b9df1ab3880b",
+        "bytes": 23858
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/activity.tsx",
+      "baseline": {
+        "path": "packages/views/collaboration/activity.tsx",
+        "sha256": "03b9055038661f320a35bd7a932bb0afc54375bba90c36dace3025765aec5940",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/activity.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/activity.tsx",
+      "accepted": {
+        "sha256": "08c432308351cfc91529bb5b38e47b951139701ffe2aee4180d5964aaea1d9a0",
+        "mode": "0644",
+        "bytes": 6874
+      },
+      "ROOT": {
+        "sha256": "08c432308351cfc91529bb5b38e47b951139701ffe2aee4180d5964aaea1d9a0",
+        "mode": "0644",
+        "bytes": 6874
+      },
+      "HEAD": {
+        "sha256": "03b9055038661f320a35bd7a932bb0afc54375bba90c36dace3025765aec5940",
+        "bytes": 4996
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/creation-form.tsx",
+      "baseline": {
+        "path": "packages/views/collaboration/creation-form.tsx",
+        "sha256": "cd66d988e200ea9d7267165714f023842be3e2d7a36f8268263b1aeeda16509f",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/creation-form.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/creation-form.tsx",
+      "accepted": {
+        "sha256": "c20109240f16015d0b42ba21ac67c5f2c4c9e7f481d8c0e773fef3c9cea7429c",
+        "mode": "0644",
+        "bytes": 36986
+      },
+      "ROOT": {
+        "sha256": "c20109240f16015d0b42ba21ac67c5f2c4c9e7f481d8c0e773fef3c9cea7429c",
+        "mode": "0644",
+        "bytes": 36986
+      },
+      "HEAD": {
+        "sha256": "cd66d988e200ea9d7267165714f023842be3e2d7a36f8268263b1aeeda16509f",
+        "bytes": 35494
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/detail-auxiliary.tsx",
+      "baseline": {
+        "path": "packages/views/collaboration/detail-auxiliary.tsx",
+        "sha256": "e5485c006e64fa8e11c72f30904cf9aa7da63a8f4b2fbe681bdd18a4b9cc5ecb",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/detail-auxiliary.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/detail-auxiliary.tsx",
+      "accepted": {
+        "sha256": "b4be187ca906f4ae5f8ec2c60d7b1ec14526385250b15fca02bebea639b5ed7a",
+        "mode": "0644",
+        "bytes": 12726
+      },
+      "ROOT": {
+        "sha256": "b4be187ca906f4ae5f8ec2c60d7b1ec14526385250b15fca02bebea639b5ed7a",
+        "mode": "0644",
+        "bytes": 12726
+      },
+      "HEAD": {
+        "sha256": "e5485c006e64fa8e11c72f30904cf9aa7da63a8f4b2fbe681bdd18a4b9cc5ecb",
+        "bytes": 11233
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/information-block.tsx",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/information-block.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/information-block.tsx",
+      "accepted": {
+        "sha256": "97af9a8fc29aa2763ed962486c34f70110308e5f92e61bcedd391e6cfd4fc821",
+        "mode": "0644",
+        "bytes": 6062
+      },
+      "ROOT": {
+        "sha256": "97af9a8fc29aa2763ed962486c34f70110308e5f92e61bcedd391e6cfd4fc821",
+        "mode": "0644",
+        "bytes": 6062
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/information-creation.test.tsx",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/information-creation.test.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/information-creation.test.tsx",
+      "accepted": {
+        "sha256": "76306b677f4c81a4416e41f39a96421a11c6e9c4fa427c0ce46078f3cc05e469",
+        "mode": "0644",
+        "bytes": 6013
+      },
+      "ROOT": {
+        "sha256": "76306b677f4c81a4416e41f39a96421a11c6e9c4fa427c0ce46078f3cc05e469",
+        "mode": "0644",
+        "bytes": 6013
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/information-history.test.tsx",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/information-history.test.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/information-history.test.tsx",
+      "accepted": {
+        "sha256": "4419c854911a4e61151ccc935aa1b1f048ce238e2dbc73bf7b9e17cb2c44c6b7",
+        "mode": "0644",
+        "bytes": 7220
+      },
+      "ROOT": {
+        "sha256": "4419c854911a4e61151ccc935aa1b1f048ce238e2dbc73bf7b9e17cb2c44c6b7",
+        "mode": "0644",
+        "bytes": 7220
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/information-history.tsx",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/information-history.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/information-history.tsx",
+      "accepted": {
+        "sha256": "68108a95400826e32c47eb6662aebf5b0a294186af74d3176472cba21e41e1b8",
+        "mode": "0644",
+        "bytes": 14621
+      },
+      "ROOT": {
+        "sha256": "68108a95400826e32c47eb6662aebf5b0a294186af74d3176472cba21e41e1b8",
+        "mode": "0644",
+        "bytes": 14621
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/information-workflow.test.tsx",
+      "baseline": null,
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/information-workflow.test.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/information-workflow.test.tsx",
+      "accepted": {
+        "sha256": "61c40203fcd0e8480c86d9739aae8d5ad19246763bd82a31b36574c80f0a442d",
+        "mode": "0644",
+        "bytes": 16806
+      },
+      "ROOT": {
+        "sha256": "61c40203fcd0e8480c86d9739aae8d5ad19246763bd82a31b36574c80f0a442d",
+        "mode": "0644",
+        "bytes": 16806
+      },
+      "HEAD": null,
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/labels.ts",
+      "baseline": {
+        "path": "packages/views/collaboration/labels.ts",
+        "sha256": "60616d45f4b9abeca7fc49acd4fbd1007d6e5b3a7d03c028c42e1bfc922bbb50",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/labels.ts",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/labels.ts",
+      "accepted": {
+        "sha256": "ddcf0ca14f15c607e50067883e3aec004ccc627aed9a077608d766b6be1805db",
+        "mode": "0644",
+        "bytes": 12977
+      },
+      "ROOT": {
+        "sha256": "ddcf0ca14f15c607e50067883e3aec004ccc627aed9a077608d766b6be1805db",
+        "mode": "0644",
+        "bytes": 12977
+      },
+      "HEAD": {
+        "sha256": "60616d45f4b9abeca7fc49acd4fbd1007d6e5b3a7d03c028c42e1bfc922bbb50",
+        "bytes": 12174
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/collaboration/workflow.tsx",
+      "baseline": {
+        "path": "packages/views/collaboration/workflow.tsx",
+        "sha256": "cbd6085bef297f95be2935a641b54985f428cb563fc77f9278e77bd7c7e2d706",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/collaboration/workflow.tsx",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/collaboration/workflow.tsx",
+      "accepted": {
+        "sha256": "2805f02a77521b9bec42a9e3710ed8281b988eb3fb39a8833186053d5fd60b79",
+        "mode": "0644",
+        "bytes": 55179
+      },
+      "ROOT": {
+        "sha256": "2805f02a77521b9bec42a9e3710ed8281b988eb3fb39a8833186053d5fd60b79",
+        "mode": "0644",
+        "bytes": 55179
+      },
+      "HEAD": {
+        "sha256": "cbd6085bef297f95be2935a641b54985f428cb563fc77f9278e77bd7c7e2d706",
+        "bytes": 44667
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": true,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "WHOLE_PATH_S3_ONLY_MATCHES_ACCEPTED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/locales/en/collaboration.json",
+      "baseline": {
+        "path": "packages/views/locales/en/collaboration.json",
+        "sha256": "19e2fd18c11e81a363e482615d7370efe33957d79242d8616a5a55dd19aa9e53",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/locales/en/collaboration.json",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/locales/en/collaboration.json",
+      "accepted": {
+        "sha256": "e02fd7c2281fe5bee91cca8f0a0c78cddc80cd36694e835259ad258690548ce0",
+        "mode": "0644",
+        "bytes": 92154
+      },
+      "ROOT": {
+        "sha256": "e02fd7c2281fe5bee91cca8f0a0c78cddc80cd36694e835259ad258690548ce0",
+        "mode": "0644",
+        "bytes": 92154
+      },
+      "HEAD": {
+        "sha256": "627284f16f882a75b310097ab6a0e13dffa9db6de73720c4b667eeb8849e759c",
+        "bytes": 86434
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "HUNK_ONLY_S3_INFORMATION_AND_ACTIVITY_KEEP_S2_STAGE_CODES_UNSTAGED"
+    },
+    {
+      "group": "client",
+      "path": "packages/views/locales/zh-Hans/collaboration.json",
+      "baseline": {
+        "path": "packages/views/locales/zh-Hans/collaboration.json",
+        "sha256": "c0f5223eeba3a7bca952875808874c2bb63f1e10ff0ff20bed0c6bbea7b043fa",
+        "mode": "0o644"
+      },
+      "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/packages/views/locales/zh-Hans/collaboration.json",
+      "baseline_source_matches": true,
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-client-work-r03/packages/views/locales/zh-Hans/collaboration.json",
+      "accepted": {
+        "sha256": "ed3c7e0ec11674e065d11c2aade777f9880e08e941f2ec4be7c99551acfbb67c",
+        "mode": "0644",
+        "bytes": 86514
+      },
+      "ROOT": {
+        "sha256": "ed3c7e0ec11674e065d11c2aade777f9880e08e941f2ec4be7c99551acfbb67c",
+        "mode": "0644",
+        "bytes": 86514
+      },
+      "HEAD": {
+        "sha256": "a16b852f71f892da03a3f89239f5f778793c18a08da1b8f9a540bed9948798fe",
+        "bytes": 81297
+      },
+      "ROOT_matches_accepted": true,
+      "HEAD_matches_ROOT": false,
+      "HEAD_matches_preS3": false,
+      "HEAD_at_inspection": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+      "commit_class": "HUNK_ONLY_S3_INFORMATION_AND_ACTIVITY_KEEP_S2_STAGE_CODES_UNSTAGED"
+    }
+  ],
+  "completed_at": "2026-11-19T13:20:11.104597+00:00",
+  "baseline_HEAD": "81fc27ac847c6b59782b734eaba70d99f14eed67",
+  "scope": "37 blockserver +29 blockclient paths from original owner deltas, plus5 acceptedE2E/helper paths and1 existing registration test; UIincrement/task/spec commits separately main-owned",
+  "exact_counts": {
+    "block_paths": 66,
+    "server": 37,
+    "client": 29,
+    "whole_path_S3_only": 58,
+    "whole_path_preserve_committed_output": 5,
+    "S3_hunk_only_with_uncommitted_S2": 3,
+    "whole_path_accepted_E2E_helper": 5,
+    "registration_test_receipt_gap": 1
+  },
+  "composition_proofs": [
+    {
+      "path": "server/cmd/server/router.go",
+      "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+      "committed_delta_fragments": [
+        {
+          "old_context_sha256": "110f14ae984dba4a1be14afce7770f0a7c1097464114a50df1865534e2ccf643",
+          "new_context_sha256": "9fca143cf4540ac8b223586f5fc29bf490bfa5b9581df87ad5f9aa0dcf94a426",
+          "old_lines": 6,
+          "new_lines": 7
+        }
+      ],
+      "composed_sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+      "committed_delta_fragments": [
+        {
+          "old_context_sha256": "80c0eb35f01a81f94f907751787c4745fc964193d99494ae40d07dd1eea30e93",
+          "new_context_sha256": "8f2bc0a8b007db01c516f69d632faa3b6acd1d09cd1204dacd594651cd27fee5",
+          "old_lines": 10,
+          "new_lines": 8
+        }
+      ],
+      "composed_sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191"
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+      "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+      "committed_delta_fragments": [
+        {
+          "old_context_sha256": "2ec4044968d322cbcc4f288aa3ba2ceb62c39f99ed37ec9cbd31ef8fc3075473",
+          "new_context_sha256": "b274e034143ef75874beb5e2242be586f3be3c659841e235729117962c88a0fa",
+          "old_lines": 7,
+          "new_lines": 7
+        },
+        {
+          "old_context_sha256": "749abf4784d8344bcfbdb142b2b75d0b2f5560c7f51ed1b1c31ae169d106217a",
+          "new_context_sha256": "2378fef5243f5a2f4edf46c21f5a87cbae030be777187cdb5be05ad13fed9720",
+          "old_lines": 6,
+          "new_lines": 9
+        }
+      ],
+      "composed_sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25"
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+      "committed_delta_fragments": [
+        {
+          "old_context_sha256": "073f3e2eb158d6f61edf4b905c12e0446bb9a79bb6252c7ec26f375daf899ea1",
+          "new_context_sha256": "bd1c853bb758a3b762ca8c7bf170494f1318959002b2f16e27e4ac88f3b7d04c",
+          "old_lines": 6,
+          "new_lines": 9
+        }
+      ],
+      "composed_sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4"
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "preS3_to_committed_HEAD_contextual_delta_applied_to_accepted_block_equals_ROOT": true,
+      "committed_delta_fragments": [
+        {
+          "old_context_sha256": "5df398d0e260a6694a089de6967e4bbe7c6cae7e2012d088c27409d9fbadcf83",
+          "new_context_sha256": "387e24368ce7f5885530ff65a78830e0dd7e9128ae7a512d9088eb14ae274490",
+          "old_lines": 7,
+          "new_lines": 7
+        }
+      ],
+      "composed_sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695"
+    }
+  ],
+  "E2E": [
+    {
+      "path": "e2e/collaboration-information-recovery.spec.ts",
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/harness/e2e/collaboration-information-recovery.spec.ts",
+      "ROOT_sha256": "a059f1d499f65cb6a1d71cbd97938a399a630d8d8006226aa9b3d859ea293cbb",
+      "accepted_sha256": "a059f1d499f65cb6a1d71cbd97938a399a630d8d8006226aa9b3d859ea293cbb",
+      "match": true,
+      "HEAD_sha256": null,
+      "uncommitted": true,
+      "evidence": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "commit_class": "WHOLE_PATH_S3_E2E_MATCHES_ACCEPTED"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-information-recovery.ts",
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/harness/e2e/fixtures/collaboration-information-recovery.ts",
+      "ROOT_sha256": "de7755922a3506f59908b36bafa03f99895ce7fbd25e667b48dcd934aa9eee51",
+      "accepted_sha256": "de7755922a3506f59908b36bafa03f99895ce7fbd25e667b48dcd934aa9eee51",
+      "match": true,
+      "HEAD_sha256": null,
+      "uncommitted": true,
+      "evidence": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "commit_class": "WHOLE_PATH_S3_E2E_MATCHES_ACCEPTED"
+    },
+    {
+      "path": "e2e/collaboration-recovery-extras.spec.ts",
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/harness/e2e/collaboration-recovery-extras.spec.ts",
+      "ROOT_sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "accepted_sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "match": true,
+      "HEAD_sha256": null,
+      "uncommitted": true,
+      "evidence": ".trellis/tasks/11-13-pay-241-s3-recovery/research/extras-a-r05-independent-check-20261118.md",
+      "commit_class": "WHOLE_PATH_S3_E2E_MATCHES_ACCEPTED"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-drawer-author-r05/harness/e2e/fixtures/collaboration-recovery-extras.ts",
+      "ROOT_sha256": "5a152b29edafaf7fa50e4b359248f5c0a7177b50a6683750e82455db2ae0265a",
+      "accepted_sha256": "5a152b29edafaf7fa50e4b359248f5c0a7177b50a6683750e82455db2ae0265a",
+      "match": true,
+      "HEAD_sha256": null,
+      "uncommitted": true,
+      "evidence": ".trellis/tasks/11-13-pay-241-s3-recovery/research/extras-a-r05-independent-check-20261118.md",
+      "commit_class": "WHOLE_PATH_S3_E2E_MATCHES_ACCEPTED"
+    },
+    {
+      "path": "e2e/fixtures.ts",
+      "accepted_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/harness/e2e/fixtures.ts",
+      "ROOT_sha256": "40adcbabe7224359458a1a92c9537c3e6e8bb10e219802b0b8db4b703b6b26dc",
+      "accepted_sha256": "40adcbabe7224359458a1a92c9537c3e6e8bb10e219802b0b8db4b703b6b26dc",
+      "match": true,
+      "HEAD_sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "uncommitted": true,
+      "evidence": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
+      "commit_class": "WHOLE_PATH_S3_E2E_MATCHES_ACCEPTED"
+    },
+    {
+      "path": "e2e/fixtures/password-registration-window.node-test.mjs",
+      "ROOT_sha256": "6ebba4ff1b7760286e71a8d8cc8842f71db56e87a18d6e9b6f6f0a0d6002a150",
+      "commit_class": "S3_REGISTRATION_TEST_OWNERSHIP_CLEAR_EXECUTION_RECEIPT_NOT_LOCATED",
+      "baseline_reference": ".trellis/tasks/11-13-pay-241-s3-recovery/research/session-baseline-20261119-output-r01.json",
+      "no_current_test_pass_claim": true
+    }
+  ],
+  "safe_groups": {
+    "block_whole_paths": [
+      "server/cmd/server/router.go",
+      "server/internal/handler/collaboration.go",
+      "server/internal/handler/collaboration_creation.go",
+      "server/internal/handler/collaboration_information.go",
+      "server/internal/handler/collaboration_information_test.go",
+      "server/internal/handler/collaboration_workflow.go",
+      "server/internal/migrations/collaboration_information_test.go",
+      "server/internal/service/collaboration.go",
+      "server/internal/service/collaboration_activity.go",
+      "server/internal/service/collaboration_creation_options.go",
+      "server/internal/service/collaboration_handoff.go",
+      "server/internal/service/collaboration_information_concurrency_test.go",
+      "server/internal/service/collaboration_information_creation_test.go",
+      "server/internal/service/collaboration_information_history.go",
+      "server/internal/service/collaboration_information_history_test.go",
+      "server/internal/service/collaboration_information_metadata_test.go",
+      "server/internal/service/collaboration_information_repair.go",
+      "server/internal/service/collaboration_information_repair_test.go",
+      "server/internal/service/collaboration_information_runtime_test.go",
+      "server/internal/service/collaboration_information_state.go",
+      "server/internal/service/collaboration_information_test.go",
+      "server/internal/service/collaboration_lifecycle.go",
+      "server/internal/service/collaboration_runtime_handoff.go",
+      "server/internal/service/issue.go",
+      "server/migrations/866_collaboration_information_metadata.down.sql",
+      "server/migrations/866_collaboration_information_metadata.up.sql",
+      "server/migrations/867_collaboration_information_ready.down.sql",
+      "server/migrations/867_collaboration_information_ready.up.sql",
+      "server/pkg/db/generated/collaboration_delivery.sql.go",
+      "server/pkg/db/generated/collaboration_handoff.sql.go",
+      "server/pkg/db/generated/collaboration_information.sql.go",
+      "server/pkg/db/generated/collaboration_stage_submission.sql.go",
+      "server/pkg/db/generated/collaboration_workflow.sql.go",
+      "server/pkg/db/generated/models.go",
+      "server/pkg/db/queries/collaboration_information.sql",
+      "server/pkg/db/queries/collaboration_workflow.sql",
+      "packages/core/admin/collaboration-schema.ts",
+      "packages/core/api/client.ts",
+      "packages/core/collaboration/action.ts",
+      "packages/core/collaboration/activity-schema.ts",
+      "packages/core/collaboration/creation-schema.ts",
+      "packages/core/collaboration/creation.ts",
+      "packages/core/collaboration/delivery-schema.ts",
+      "packages/core/collaboration/index.ts",
+      "packages/core/collaboration/information-action.test.ts",
+      "packages/core/collaboration/information-queries.test.ts",
+      "packages/core/collaboration/information-queries.ts",
+      "packages/core/collaboration/information-schema.test.ts",
+      "packages/core/collaboration/information-schema.ts",
+      "packages/core/collaboration/operation.ts",
+      "packages/core/collaboration/presentation.test.ts",
+      "packages/core/collaboration/presentation.ts",
+      "packages/core/collaboration/schema.ts",
+      "packages/views/collaboration/activity.tsx",
+      "packages/views/collaboration/creation-form.tsx",
+      "packages/views/collaboration/detail-auxiliary.tsx",
+      "packages/views/collaboration/information-block.tsx",
+      "packages/views/collaboration/information-creation.test.tsx",
+      "packages/views/collaboration/information-history.test.tsx",
+      "packages/views/collaboration/information-history.tsx",
+      "packages/views/collaboration/information-workflow.test.tsx",
+      "packages/views/collaboration/labels.ts",
+      "packages/views/collaboration/workflow.tsx"
+    ],
+    "block_hunk_only": [
+      "server/internal/service/collaboration_workflow.go",
+      "packages/views/locales/en/collaboration.json",
+      "packages/views/locales/zh-Hans/collaboration.json"
+    ],
+    "E2E_whole_paths": [
+      "e2e/collaboration-information-recovery.spec.ts",
+      "e2e/fixtures/collaboration-information-recovery.ts",
+      "e2e/collaboration-recovery-extras.spec.ts",
+      "e2e/fixtures/collaboration-recovery-extras.ts",
+      "e2e/fixtures.ts"
+    ]
+  },
+  "hard_dependencies": [
+    "Commit block handler/service/state/history/repair together with866867DDL/sqlc/client consumers; isolated new files alone leave missing imports/types/columns/readers",
+    "Use S3-onlyworkflow/locales hunks unless separateS2ownership commit accepted; currentwholefilematches alone doesnot authorize S2hunks",
+    "Retain alreadycommittedoutput adjustments in5composedfiles; never replaceROOTwitholderblockcopy",
+    "Bind minimal S3blockcontract spec andacceptedcode/client/runtime references for archive; existingstageapproval/e2e-env dirtyspecdiffs areS2, notthisS3group",
+    "FullS3archive still requires committing this acceptedS3source andfinalchecker gate; S4/S5 do not createS3behaviorblocks"
+  ],
+  "operations": {
+    "Git_read_only_selected_paths": true,
+    "Git_write": false,
+    "DB_API_tests_builds": 0,
+    "shared_records_edits": false
+  },
+  "uncertainties": [
+    "Registrationmock-clock test has retainedhash andR08review mentionsmock-clockchecks,but exact acceptedexecutionreceipt not located in this boundedread; main can supply existingreceipt or run noDBtest before including",
+    "No blanket cleanHEAD acceptability inferred: acceptedS3candidate was composed with separatelyacceptedbutstilluncommittedS2 foundation; preserve explicit source qualification"
+  ],
+  "markdown_report": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-uncommitted-ownership-20261119.md",
+    "sha256": "e9f4dbb190dee156969e726819d6f6228b6a23dc78a46820384ec70b04015ab5",
+    "bytes": 15340
+  }
+}
