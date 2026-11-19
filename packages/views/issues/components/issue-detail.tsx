@@ -13,7 +13,7 @@ import {
 import { useStatusLabel } from "../utils/status-label";
 import { priorityLabel } from "../utils/priority-label";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
-import { useState, useEffect, useCallback, useMemo, useRef, Fragment, type ReactNode } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef, useId, Fragment, type ReactNode } from "react";
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
 import { useDefaultLayout, usePanelRef } from "react-resizable-panels";
 import { AppLink, useBackOrReplace } from "../../navigation";
@@ -557,6 +557,7 @@ function ActivityBlock({
   t: ActivityT;
   timeAgo: (dateStr: string) => string;
 }) {
+  const contentId = useId();
   if (!expanded) {
     const count = entries.length;
     return (
@@ -564,11 +565,14 @@ function ActivityBlock({
         <button
           type="button"
           onClick={onToggle}
+          aria-expanded={false}
+          aria-controls={contentId}
           className="flex items-center gap-1.5 text-caption text-muted-foreground transition-colors hover:text-foreground"
         >
           <ChevronRight className="h-3 w-3 shrink-0" />
           <span>{t(($) => $.activity.activity_count, { count })}</span>
         </button>
+        <div id={contentId} hidden />
       </div>
     );
   }
@@ -591,6 +595,8 @@ function ActivityBlock({
         <button
           type="button"
           onClick={onToggle}
+          aria-expanded={true}
+          aria-controls={contentId}
           className="flex items-center gap-1.5 text-caption text-muted-foreground transition-colors hover:text-foreground"
         >
           <ChevronDown className="h-3 w-3 shrink-0" />
@@ -601,12 +607,15 @@ function ActivityBlock({
         <button
           type="button"
           onClick={onToggleShowOlder}
+          aria-expanded={false}
+          aria-controls={contentId}
           className="flex items-center gap-1.5 text-caption text-muted-foreground transition-colors hover:text-foreground"
         >
           <ChevronRight className="h-3 w-3 shrink-0" />
           <span>{t(($) => $.activity.show_more_activities, { count: hiddenOlderCount })}</span>
         </button>
       )}
+      <div id={contentId} className="flex flex-col gap-3">
       {visibleEntries.map((entry) => {
         const details = (entry.details ?? {}) as Record<string, string>;
         const isStatusChange = entry.action === "status_changed";
@@ -665,6 +674,7 @@ function ActivityBlock({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
@@ -1235,6 +1245,8 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
     id: layoutId,
   });
   const sidebarRef = usePanelRef();
+  const sidebarToggleRef = useRef<HTMLButtonElement>(null);
+  const disclosureId = useId();
   const isMobile = useIsMobile();
   const desktopSidebarInitialOpen = getAnimatedRightSidebarInitialOpen(
     defaultSidebarOpen,
@@ -2410,11 +2422,13 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
           type="button"
           className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${propertiesOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setPropertiesOpen(!propertiesOpen)}
+          aria-expanded={propertiesOpen}
+          aria-controls={`${disclosureId}-properties`}
         >
           {t(($) => $.detail.section_properties)}
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${propertiesOpen ? "rotate-90" : ""}`} />
         </button>
-        {propertiesOpen && <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 pl-2">
+        {propertiesOpen && <div id={`${disclosureId}-properties`} className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 pl-2">
           {/* Core props — always rendered. */}
           <PropRow label={t(($) => $.detail.prop_status)}>
             {executionAllowed ? <StatusPicker status={issue.status} onUpdate={handleUpdateField} align="start" /> : <span className="text-caption text-muted-foreground">{issue.admission_status === "rejected" ? triageT(($) => $.rejected) : issue.admission_status === "duplicate" ? triageT(($) => $.duplicate) : triageT(($) => $.pending)}</span>}
@@ -2596,6 +2610,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
             </div>
           )}
         </div>}
+        {!propertiesOpen && <div id={`${disclosureId}-properties`} hidden />}
       </div>
 
       {/* Quick actions — the sidebar's only "do something" block, so it sits
@@ -2617,11 +2632,13 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
             type="button"
             className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${parentIssueOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => setParentIssueOpen(!parentIssueOpen)}
+            aria-expanded={parentIssueOpen}
+            aria-controls={`${disclosureId}-parent`}
           >
             {t(($) => $.detail.section_parent_issue)}
             <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${parentIssueOpen ? "rotate-90" : ""}`} />
           </button>
-          {parentIssueOpen && <div className="pl-2">
+          {parentIssueOpen && <div id={`${disclosureId}-parent`} className="pl-2">
             <div className="flex items-center gap-0.5 rounded-md px-2 -mx-2 hover:bg-accent/50 transition-colors group">
               <AppLink
                 href={paths.issueDetail(parentIssue.id)}
@@ -2646,6 +2663,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
               </button>
             </div>
           </div>}
+          {!parentIssueOpen && <div id={`${disclosureId}-parent`} hidden />}
         </div>
       )}
 
@@ -2658,11 +2676,14 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
             type="button"
             className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${pullRequestsOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
             onClick={() => setPullRequestsOpen(!pullRequestsOpen)}
+            aria-expanded={pullRequestsOpen}
+            aria-controls={`${disclosureId}-pull-requests`}
           >
             {t(($) => $.detail.section_pull_requests)}
             <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${pullRequestsOpen ? "rotate-90" : ""}`} />
           </button>
-          {pullRequestsOpen && <div className="pl-2"><PullRequestList issueId={id} /></div>}
+          {pullRequestsOpen && <div id={`${disclosureId}-pull-requests`} className="pl-2"><PullRequestList issueId={id} /></div>}
+          {!pullRequestsOpen && <div id={`${disclosureId}-pull-requests`} hidden />}
         </div>
       )}
 
@@ -2681,11 +2702,13 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
           type="button"
           className={`flex w-full items-center gap-1 rounded-md px-2 py-1 text-caption font-medium transition-colors mb-2 hover:bg-accent/70 ${detailsOpen ? "" : "text-muted-foreground hover:text-foreground"}`}
           onClick={() => setDetailsOpen(!detailsOpen)}
+          aria-expanded={detailsOpen}
+          aria-controls={`${disclosureId}-details`}
         >
           {t(($) => $.detail.section_details)}
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${detailsOpen ? "rotate-90" : ""}`} />
         </button>
-        {detailsOpen && <div className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 pl-2">
+        {detailsOpen && <div id={`${disclosureId}-details`} className="grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 pl-2">
           <PropRow label={t(($) => $.detail.prop_created_by)}>
             <ActorAvatar actorType={issue.creator_type} actorId={issue.creator_id} size="sm" enableHoverCard />
             <span className="cursor-pointer truncate">{getActorName(issue.creator_type, issue.creator_id)}</span>
@@ -2697,6 +2720,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
             <span className="text-muted-foreground">{shortDate(issue.updated_at)}</span>
           </PropRow>
         </div>}
+        {!detailsOpen && <div id={`${disclosureId}-details`} hidden />}
       </div>
 
       {/* The standalone "Token usage" section that used to sit here is gone:
@@ -2968,6 +2992,8 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
                     size="icon-sm"
                     className={sidebarOpen ? "" : "text-muted-foreground"}
                     onClick={handleToggleSidebar}
+                    ref={sidebarToggleRef}
+                    aria-expanded={sidebarOpen}
                     aria-label={t(($) => $.detail.sidebar_tooltip)}
                   >
                     <PanelRight />
@@ -3199,6 +3225,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
               key={id}
               value={descriptionConflictDraft ?? issue.description ?? ""}
               placeholder={t(($) => $.detail.desc_placeholder)}
+              aria-label={t(($) => $.detail.description_label)}
               onUpdate={(md, baseMarkdown) => {
                 // Bind any pending uploads still referenced in the markdown
                 // so they appear in `issueAttachments` after refresh and the
@@ -3335,6 +3362,8 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
                   <button
                     type="button"
                     onClick={() => setSubIssuesCollapsed((v) => !v)}
+                    aria-expanded={!subIssuesCollapsed}
+                    aria-controls={`${disclosureId}-sub-issues`}
                     className="flex items-center gap-1.5 text-body font-medium text-foreground hover:text-foreground/80 transition-colors"
                   >
                     <ChevronDown
@@ -3398,7 +3427,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
                   const groups = groupSubIssuesByStage(childIssues);
                   const staged = childIssues.some((c) => c.stage != null);
                   return (
-                    <div className="overflow-hidden rounded-lg border bg-card/30 divide-y divide-border/60">
+                    <div id={`${disclosureId}-sub-issues`} className="overflow-hidden rounded-lg border bg-card/30 divide-y divide-border/60">
                       {groups.map(({ stage: groupStage, items }) => (
                         <Fragment key={groupStage ?? "unstaged"}>
                           {staged && (
@@ -3422,6 +3451,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
                     </div>
                   );
                 })()}
+                {subIssuesCollapsed && <div id={`${disclosureId}-sub-issues`} hidden />}
               </div>
               </IssueContextMenuProvider>
             );
@@ -3722,7 +3752,7 @@ function OrdinaryIssueDetail({ issueId, iterationHistoryOpen, onIterationHistory
         panelRef={sidebarRef}
         onResize={handleDesktopSidebarResize}
       >
-        <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled}>
+        <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled} returnFocusRef={sidebarToggleRef}>
           {sidebarContent}
         </AnimatedRightSidebar>
       </ResizablePanel>

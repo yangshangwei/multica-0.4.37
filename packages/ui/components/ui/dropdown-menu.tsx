@@ -4,10 +4,12 @@ import * as React from "react"
 import { Menu as MenuPrimitive } from "@base-ui/react/menu"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 import { ChevronRightIcon, CheckIcon } from "lucide-react"
 
 function DropdownMenu({ ...props }: MenuPrimitive.Root.Props) {
-  return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />
+  const scope = useScopedPopup(props)
+  return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} {...scope} />
 }
 
 function DropdownMenuPortal({ ...props }: MenuPrimitive.Portal.Props) {
@@ -32,6 +34,7 @@ function DropdownMenuContent({
     MenuPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset" | "anchor"
   >) {
+  const visible = usePopupVisibility()
   // Stop click events from bubbling out of the menu. Base UI portals the
   // popup so DOM is detached, but React's synthetic event system still
   // bubbles through the React component tree — without this, clicking a
@@ -55,6 +58,10 @@ function DropdownMenuContent({
           }}
           className={cn("z-50 max-h-(--available-height) min-w-32 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-surface-raised p-1 text-popover-foreground shadow-[var(--menu-shadow)] ring-1 ring-surface-border duration-100 outline-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:overflow-hidden data-closed:fade-out-0 data-closed:zoom-out-95", className )}
           {...props}
+          hidden={!visible || props.hidden}
+          inert={!visible || props.inert}
+          aria-hidden={!visible || props["aria-hidden"]}
+          finalFocus={visible ? props.finalFocus : false}
         />
       </MenuPrimitive.Positioner>
     </MenuPrimitive.Portal>

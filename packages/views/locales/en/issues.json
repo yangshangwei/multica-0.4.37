@@ -518,7 +518,8 @@
       "new_review": "Start a new review",
       "submit": "Submit completion",
       "authorize": "Authorize this version"
-    }
+    },
+    "description_label": "Issue description"
   },
   "timeline": {
     "loading": "Loading..."
@@ -626,10 +627,12 @@
       "bar_authors_more_other": "{{names}} and {{count}} others",
       "resolve_failed": "Failed to resolve thread",
       "unresolve_failed": "Failed to unresolve thread"
-    }
+    },
+    "field_label": "Comment"
   },
   "reply": {
-    "placeholder": "Leave a reply..."
+    "placeholder": "Leave a reply...",
+    "field_label": "Reply"
   },
   "agent_activity": {
     "hover_header_one": "{{count}} agent working",
@@ -825,7 +828,11 @@
       "agents_group": "Agents",
       "squads_group": "Squads",
       "agent_runtime_required": "Bind a runtime before assigning work to this agent",
-      "squad_runtime_required": "Bind a runtime to this squad's leader before assigning work"
+      "squad_runtime_required": "Bind a runtime to this squad's leader before assigning work",
+      "loading": "Loading {{group}}…",
+      "load_failed": "Could not load {{group}}.",
+      "refresh_failed": "Could not refresh {{group}}. Showing the last loaded options.",
+      "retry": "Retry {{group}}"
     },
     "start_date": {
       "trigger_label": "Start date",

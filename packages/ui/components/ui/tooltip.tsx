@@ -3,6 +3,7 @@
 import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 
 function TooltipProvider({
   delay = 200,
@@ -18,7 +19,8 @@ function TooltipProvider({
 }
 
 function Tooltip({ ...props }: TooltipPrimitive.Root.Props) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+  const scope = useScopedPopup(props)
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} {...scope} />
 }
 
 function TooltipTrigger({ ...props }: TooltipPrimitive.Trigger.Props) {
@@ -39,6 +41,7 @@ function TooltipContent({
     TooltipPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset" | "anchor"
   >) {
+  const visible = usePopupVisibility()
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Positioner
@@ -56,6 +59,9 @@ function TooltipContent({
             className
           )}
           {...props}
+          hidden={!visible || props.hidden}
+          inert={!visible || props.inert}
+          aria-hidden={!visible || props["aria-hidden"]}
         >
           {children}
         </TooltipPrimitive.Popup>

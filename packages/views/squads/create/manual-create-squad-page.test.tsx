@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { act, screen, fireEvent, waitFor } from "@testing-library/react";
+import { act, screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { NavigationProvider } from "../../navigation";
 import { renderWithI18n } from "../../test/i18n";
 import type { Agent, MemberWithUser, Squad } from "@multica/core/types";
@@ -23,13 +23,16 @@ const mocks = vi.hoisted(() => ({
   toastError: vi.fn(),
   toastWarning: vi.fn(),
   invalidate: vi.fn(),
+  agentsPending: false,
+  agentsError: false,
+  retryAgents: vi.fn(),
 }));
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (opts: { queryKey?: unknown[] }) => {
     const key = opts.queryKey ?? [];
     if (Array.isArray(key) && key.includes("agents")) {
-      return { data: mocks.agents };
+      return { data: mocks.agentsPending || mocks.agentsError ? undefined : mocks.agents, isPending: mocks.agentsPending, isError: mocks.agentsError, isFetching: mocks.agentsPending, refetch: mocks.retryAgents };
     }
     if (Array.isArray(key) && key.includes("members")) {
       return { data: mocks.members };
@@ -285,6 +288,8 @@ describe("ManualCreateSquadPage", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.canGoBack = false;
+    mocks.agentsPending = false;
+    mocks.agentsError = false;
     mocks.agents = [otherAgent, myAgent, myAgent2];
     mocks.members = [wsMember];
   });
@@ -300,6 +305,32 @@ describe("ManualCreateSquadPage", () => {
     expect(desc.value).toBe("We own infra");
     // Char counter reflects the typed length.
     expect(screen.getByTestId("char-counter").textContent).toMatch(/^12\//);
+  });
+
+  it("does not mistake pending or failed candidate reads for an empty workspace", () => {
+    mocks.agentsPending = true;
+    const view = renderPage();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading agents...");
+    expect(screen.queryByText(/No active agents available/)).not.toBeInTheDocument();
+    fireEvent.change(screen.getByRole("textbox", { name: "Name" }), { target: { value: "Keep this name" } });
+    mocks.agentsPending = false;
+    mocks.agentsError = true;
+    view.rerender(<NavigationProvider value={{ push: mocks.navigationPush, replace: mocks.navigationReplace, back: mocks.navigationBack, pathname: "/test-ws/squads/new/manual", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path }}><ManualCreateSquadPage /></NavigationProvider>);
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load agents.");
+    expect(screen.queryByText(/No active agents available/)).not.toBeInTheDocument();
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("Keep this name");
+    fireEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(mocks.retryAgents).toHaveBeenCalledOnce();
+  });
+
+  it("exposes named multiselect options and announces a toggled member", () => {
+    renderPage();
+    const listbox = screen.getByRole("listbox", { name: "Additional Members" });
+    expect(listbox).toHaveAttribute("aria-multiselectable", "true");
+    const member = within(listbox).getByRole("option", { name: "Workspace Pal" });
+    expect(member).toHaveAttribute("aria-selected", "false");
+    fireEvent.click(member);
+    expect(member).toHaveAttribute("aria-selected", "true");
   });
 
   it("renders the leader picker with 'My Agents' before 'Workspace Agents'", () => {

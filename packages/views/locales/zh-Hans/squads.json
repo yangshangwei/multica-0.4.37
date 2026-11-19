@@ -141,7 +141,8 @@
     "description": "AI小队指引会在队长智能体处理分配给该AI小队的任务时注入到它的 prompt 中。可用来给队长提供贯穿全队的指导、协作规范，或每次 task 都应遵循的上下文。",
     "unsaved_changes": "有未保存的修改",
     "save_button": "保存",
-    "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。"
+    "placeholder": "例如：始终先编写失败测试。提交应保持小而独立。",
+    "remote_changed": "指引已被其他人修改。你的未保存草稿已保留；保存将替换最新指引。"
   },
   "scope": {
     "mine": "我创建的",
@@ -204,5 +205,22 @@
     "applying": "正在准备AI小队...",
     "cancel": "取消",
     "failed": "无法更新项目AI小队，请重试。"
+  },
+  "recovery": {
+    "loading": "加载中...",
+    "agents_loading": "正在加载智能体...",
+    "agents_error": "未能加载智能体。",
+    "members_loading": "正在加载AI小队成员...",
+    "members_error": "未能加载AI小队成员。",
+    "workspace_members_loading": "正在加载工作空间成员...",
+    "workspace_members_error": "未能加载工作空间成员。",
+    "runtimes_loading": "正在加载运行时...",
+    "runtimes_error": "未能加载运行时。",
+    "detail_error": "未能加载此AI小队。",
+    "detail_refresh_error": "未能刷新此AI小队，当前编辑内容已保留。",
+    "not_found": "未找到此AI小队。",
+    "access_denied": "你已无权访问此AI小队。",
+    "unknown_count": "尚未加载",
+    "retry": "重试"
   }
 }

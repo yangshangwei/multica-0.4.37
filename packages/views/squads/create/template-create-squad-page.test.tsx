@@ -95,6 +95,27 @@ beforeEach(() => {
 });
 
 describe("TemplateCreateSquadPage", () => {
+  it("recovers a failed runtime read without losing the selected template or name", async () => {
+    mocks.listRuntimes.mockRejectedValueOnce(new Error("offline"));
+    renderPage();
+    await pickTemplate();
+    fireEvent.change(screen.getByRole("textbox", { name: "Squad name" }), { target: { value: "Keep my squad" } });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load runtimes.");
+    expect(screen.queryByText(/Connect a runtime first/)).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Retry" }));
+    await waitFor(() => expect(screen.getByRole("button", { name: "Create squad" })).toBeEnabled());
+    expect(screen.getByRole("textbox", { name: "Squad name" })).toHaveValue("Keep my squad");
+    expect(screen.getByRole("button", { name: /Feature delivery/ })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("offers a retry when the template catalog fails", async () => {
+    mocks.listTemplates.mockRejectedValueOnce(new Error("offline"));
+    renderPage();
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not load squad templates.");
+    await userEvent.click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("button", { name: /Feature delivery/ })).toBeVisible();
+  });
+
   it("creates with the selected template, name and access, invalidates caches, and navigates once", async () => {
     const user = userEvent.setup();
     const { navigation, invalidate } = renderPage();

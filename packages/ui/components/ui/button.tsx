@@ -22,12 +22,12 @@ const buttonVariants = cva(
         // repainting the chip neutral. That is what silently killed the
         // brand colour in dark mode — see MUL-4884.
         //
-        // `brand` needs no `dark:` of its own: the --brand token already
-        // flips per theme, so one set of rules is correct in both.
+        // Solid hover/active tones keep text contrast independent of the
+        // surface behind the control. Tokens own both themes.
         // aria-expanded is pinned to the hover value so opening a popover
         // reads as hover rather than as a colour change.
         brand:
-          "border-brand bg-brand text-brand-foreground hover:bg-brand/90 hover:text-brand-foreground active:bg-brand/85 aria-expanded:bg-brand/90 aria-expanded:text-brand-foreground",
+          "border-brand bg-brand text-brand-foreground hover:bg-brand-hover hover:text-brand-foreground active:bg-brand-active aria-expanded:bg-brand-hover aria-expanded:text-brand-foreground",
         // Brand tint for "there is activity here" — present, but not
         // claiming the loud filled state. Light and dark take their own
         // opacity notches: the same alpha does not read equally against a

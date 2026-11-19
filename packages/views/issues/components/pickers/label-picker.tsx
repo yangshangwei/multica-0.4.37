@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tag, Plus, Settings2 } from "lucide-react";
 import { toast } from "sonner";
@@ -100,6 +100,7 @@ export function LabelPicker({
   triggerRender,
 }: LabelPickerProps) {
   const { t } = useT("issues");
+  const listboxId = useId();
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const open = controlledOpen ?? internalOpen;
   const setOpen = onOpenChange ?? setInternalOpen;
@@ -228,6 +229,9 @@ export function LabelPicker({
         searchable
         searchPlaceholder={t(($) => $.pickers.label.search_placeholder)}
         onSearchChange={setFilter}
+        listboxId={listboxId}
+        listboxLabel={t(($) => $.table.columns.labels)}
+        multiple
         triggerRender={resolvedTriggerRender}
         trigger={
           hasLabels ? (
@@ -265,6 +269,7 @@ export function LabelPicker({
           return (
             <PickerItem
               key={label.id}
+              optionId={`${listboxId}-${label.id}`}
               selected={selected}
               onClick={() => toggle(label.id)}
             >
@@ -279,7 +284,7 @@ export function LabelPicker({
         })}
         {filtered.length === 0 && !canCreate && <PickerEmpty />}
         {canCreate && (
-          <PickerItem selected={false} onClick={createAndAttach}>
+          <PickerItem optionId={`${listboxId}-create`} selected={false} onClick={createAndAttach}>
             <Plus className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <span className="truncate">
               {t(($) => $.pickers.label.create_action)} <span className="font-medium">&ldquo;{query}&rdquo;</span>

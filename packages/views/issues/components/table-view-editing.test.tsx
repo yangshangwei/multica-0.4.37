@@ -255,8 +255,13 @@ describe("TableView cell editors under data refresh", () => {
     );
   }
 
-  // Core field-revision.test.ts owns the observation matrix; these use real row pickers.
-  it("uses the rendered row revision for priority and clear-assignee writes despite a newer detail cache", async () => {
+  // Core field-revision.test.ts owns the observation matrix. Each real picker
+  // gets a fresh row/cache mismatch so one completed edit cannot hide another
+  // field accidentally reading its token from the newer detail cache.
+  it.each([
+    { field: "priority", trigger: "No priority", option: "High", update: { priority: "high" } },
+    { field: "clear-assignee", trigger: "Someone", option: "Unassigned", update: { assignee_type: null, assignee_id: null } },
+  ])("uses the rendered row revision for $field despite a newer detail cache", async ({ trigger, option, update }) => {
     const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
     const issue = { ...makeIssue("c", "Observed row", "todo"), revision: 23, assignee_type: "member" as const, assignee_id: "user-1" };
     serverIssues = [issue];
@@ -264,13 +269,9 @@ describe("TableView cell editors under data refresh", () => {
     const updateIssue = vi.fn();
     renderEditableTable(updateIssue);
     const row = (await screen.findByText("MUL-c")).closest("tr")!;
-    await user.click(within(row).getByRole("button", { name: "No priority" }));
-    await user.click(screen.getByRole("button", { name: "High" }));
-    expect(updateIssue).toHaveBeenLastCalledWith(issue.id, { priority: "high", expected_revision: 23 });
-
-    await user.click(within(row).getByRole("button", { name: "Someone" }));
-    await user.click(screen.getByRole("button", { name: "Unassigned" }));
-    expect(updateIssue).toHaveBeenLastCalledWith(issue.id, { assignee_type: null, assignee_id: null, expected_revision: 23 });
+    await user.click(within(row).getByRole("button", { name: trigger }));
+    await user.click(screen.getByRole("option", { name: option }));
+    expect(updateIssue).toHaveBeenCalledExactlyOnceWith(issue.id, { ...update, expected_revision: 23 });
     expect(navigationMocks.push).not.toHaveBeenCalled();
   });
 
@@ -283,7 +284,7 @@ describe("TableView cell editors under data refresh", () => {
     renderEditableTable(updateIssue);
     const row = (await screen.findByText("MUL-c")).closest("tr")!;
     await user.click(within(row).getByRole("button", { name: "Unassigned" }));
-    await user.click(await screen.findByRole("button", { name: `Assignable ${assigneeType}` }));
+    await user.click(await screen.findByRole("option", { name: `Assignable ${assigneeType}` }));
     expect(useModalStore.getState().data).toEqual({ issueIds: ["c"], mode: "assign", assigneeType, assigneeId: `${assigneeType}-1`, issueRevision: 23 });
     expect(updateIssue).not.toHaveBeenCalled();
   });
@@ -316,7 +317,7 @@ describe("TableView cell editors under data refresh", () => {
     await screen.findByText("MUL-c");
     const row = screen.getByText("MUL-c").closest("tr")!;
     await user.click(within(row).getByRole("button", { name: /Backlog/ }));
-    await user.click(screen.getByRole("button", { name: /^Todo$/ }));
+    await user.click(screen.getByRole("option", { name: /^Todo$/ }));
 
     const { modal, data } = useModalStore.getState();
     expect(modal).toBe("issue-run-confirm");
@@ -413,7 +414,7 @@ describe("TableView cell editors under data refresh", () => {
     const rowA = screen.getByText("MUL-a").closest("tr")!;
     await user.click(within(rowA).getByRole("button", { name: /Todo/ }));
     // Base UI portals the popup; "Backlog" only exists while it is open.
-    expect(screen.getByRole("button", { name: /Backlog/ })).toBeTruthy();
+    expect(screen.getByRole("option", { name: /Backlog/ })).toBeTruthy();
 
     // A realtime refresh lands: new array identities, rows reordered, new
     // childProgressMap. The popup must stay open and the structure must hold
@@ -447,15 +448,15 @@ describe("TableView cell editors under data refresh", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: /Backlog/ })).toBeTruthy();
+      expect(screen.getByRole("option", { name: /Backlog/ })).toBeTruthy();
       expect(identifiers()).toEqual(["MUL-a", "MUL-b"]);
       // …while the VALUES inside the frozen rows keep tracking live data.
       expect(screen.getByText("Alpha task (updated)")).toBeTruthy();
     });
 
     // Selecting a value closes the editor; the deferred live order applies.
-    await user.click(screen.getByRole("button", { name: /Backlog/ }));
-    expect(screen.queryByRole("button", { name: /Backlog/ })).toBeNull();
+    await user.click(screen.getByRole("option", { name: /Backlog/ }));
+    expect(screen.queryByRole("option", { name: /Backlog/ })).toBeNull();
     expect(identifiers()).toEqual(["MUL-b", "MUL-a"]);
   }, 60_000);
 

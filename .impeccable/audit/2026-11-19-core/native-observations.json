@@ -1,0 +1,31 @@
+{
+  "kind": "Manual summary of actual cua_repl observations; not raw AX dump",
+  "hidden_sidebar": {
+    "route": "issue detail",
+    "steps": [
+      "Open detail with right sidebar visible",
+      "Activate toggle right sidebar",
+      "Observe sidebar gone visually; property controls remain in AX",
+      "Press Tab 12 times from toggle"
+    ],
+    "result": "Focused UI element: button 属性; hidden control was keyboard reachable",
+    "source": "packages/views/layout/animated-right-sidebar.tsx:134"
+  },
+  "status_picker": {
+    "steps": [
+      "Open status picker for current status 待办",
+      "Read AX",
+      "Press Down"
+    ],
+    "result": "Options are ordinary buttons without selected/pressed state; focus starts and remains on 待规划 after Down. No selection was submitted."
+  },
+  "editors": {
+    "description": "AX exposes text entry area with content 12333, no field name. Source confirms no aria-label/labelledby.",
+    "comment": "Before activation named button 留下评论...; after activation text entry area contains placeholder text but no explicit stable field name in source. No text entered or submitted.",
+    "quick_create": "AX exposes text entry area named 任务描述 plus current placeholder/value. Explicit label present."
+  },
+  "squad_tabs": {
+    "result": "Detail exposes button 成员 and button 指引, no tab group or selected state. Directory above it does use tab group and selected tab."
+  },
+  "desktop_visuals": "Inspected inbox, task detail (sidebar collapsed), agents directory. No layout defects inferred solely from these full-width screenshots."
+}

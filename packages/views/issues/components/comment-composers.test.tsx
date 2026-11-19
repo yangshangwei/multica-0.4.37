@@ -104,6 +104,7 @@ vi.mock("../../editor", async () => ({
       defaultValue,
       onUpdate,
       placeholder,
+      "aria-label": ariaLabel,
       onUploadFile,
       onUploadingChange,
       onSubmit,
@@ -113,6 +114,7 @@ vi.mock("../../editor", async () => ({
       defaultValue?: string;
       onUpdate?: (markdown: string) => void;
       placeholder?: string;
+      "aria-label"?: string;
       onUploadFile?: (file: File, uploadId: string) => Promise<UploadResult | null>;
       onUploadingChange?: (uploading: boolean) => void;
       onSubmit?: () => void;
@@ -186,6 +188,7 @@ vi.mock("../../editor", async () => ({
         data-testid="editor"
         defaultValue={defaultValue}
         placeholder={placeholder}
+        aria-label={ariaLabel}
         onChange={(event) => {
           valueRef.current = event.target.value;
           onUpdate?.(event.target.value);
@@ -359,6 +362,21 @@ describe("quick action `/` menu", () => {
 });
 
 describe("comment composers", () => {
+  it("keeps a stable field name after the comment editor is activated and populated", () => {
+    renderCommentInput();
+    activateComposer("comment-composer-shell");
+    const editor = screen.getByRole("textbox", { name: "Comment" });
+    fireEvent.change(editor, { target: { value: "Draft comment" } });
+    expect(editor).toHaveAccessibleName("Comment");
+  });
+
+  it("keeps a stable field name after the reply editor is activated and populated", () => {
+    renderReplyInput();
+    activateComposer("reply-composer-shell");
+    const editor = screen.getByRole("textbox", { name: "Reply" });
+    fireEvent.change(editor, { target: { value: "Draft reply" } });
+    expect(editor).toHaveAccessibleName("Reply");
+  });
   it("renders the main comment composer without a manual expand control", () => {
     const { container } = renderCommentInput();
 

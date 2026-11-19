@@ -204,6 +204,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
   });
   const sidebarRef = usePanelRef();
   const rightSidebarShortcutTargetRef = useRef<HTMLDivElement | null>(null);
+  const rightSidebarToggleRef = useRef<HTMLButtonElement | null>(null);
   const desktopSidebarInitialOpen = getAnimatedRightSidebarInitialOpen(
     true,
     defaultLayout,
@@ -536,7 +537,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           <ChevronRight className={`!size-3 shrink-0 stroke-[2.5] text-muted-foreground transition-transform ${descriptionOpen ? "rotate-90" : ""}`} />
         </button>
         <div id={descriptionId} hidden={!descriptionOpen} className="pl-2">
-          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} isVisible={descriptionOpen} />
+          <ProjectDescription key={project.id} project={project} supported={capabilities.data?.description_cas === true} isVisible={descriptionOpen && sidebarOpen} />
           <p className="mt-1 px-2 text-caption text-muted-foreground">
             {t(($) => $.detail.description_hint)}
           </p>
@@ -611,6 +612,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
                 <TooltipTrigger
                   render={
                     <Button
+                      ref={rightSidebarToggleRef}
                       variant={sidebarOpen ? "secondary" : "ghost"}
                       size="icon-sm"
                       aria-label={t(($) => $.detail.sidebar_tooltip)}
@@ -663,7 +665,7 @@ export function ProjectDetail({ projectId }: { projectId: string }) {
           panelRef={sidebarRef}
           onResize={handleDesktopSidebarResize}
         >
-          <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled}>
+          <AnimatedRightSidebar open={desktopSidebarVisualOpen} motionEnabled={desktopSidebarMotionEnabled} returnFocusRef={rightSidebarToggleRef}>
             {sidebarContent}
           </AnimatedRightSidebar>
         </ResizablePanel>

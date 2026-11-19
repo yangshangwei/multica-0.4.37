@@ -4,10 +4,12 @@ import * as React from "react"
 import { AlertDialog as AlertDialogPrimitive } from "@base-ui/react/alert-dialog"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 import { Button } from "@multica/ui/components/ui/button"
 
 function AlertDialog({ ...props }: AlertDialogPrimitive.Root.Props) {
-  return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />
+  const scope = useScopedPopup(props)
+  return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} {...scope} />
 }
 
 function AlertDialogTrigger({ ...props }: AlertDialogPrimitive.Trigger.Props) {
@@ -26,6 +28,7 @@ function AlertDialogOverlay({
   className,
   ...props
 }: AlertDialogPrimitive.Backdrop.Props) {
+  const visible = usePopupVisibility()
   return (
     <AlertDialogPrimitive.Backdrop
       data-slot="alert-dialog-overlay"
@@ -34,6 +37,7 @@ function AlertDialogOverlay({
         className
       )}
       {...props}
+      hidden={!visible || props.hidden}
     />
   )
 }
@@ -45,6 +49,7 @@ function AlertDialogContent({
 }: AlertDialogPrimitive.Popup.Props & {
   size?: "default" | "sm"
 }) {
+  const visible = usePopupVisibility()
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
@@ -56,6 +61,10 @@ function AlertDialogContent({
           className
         )}
         {...props}
+        hidden={!visible || props.hidden}
+        inert={!visible || props.inert}
+        aria-hidden={!visible || props["aria-hidden"]}
+        finalFocus={visible ? props.finalFocus : false}
       />
     </AlertDialogPortal>
   )

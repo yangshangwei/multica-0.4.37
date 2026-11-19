@@ -159,20 +159,20 @@ describe("BoardCardContent assignee picker", () => {
     );
     const view = render(content(issue));
     fireEvent.click(screen.getByRole("button", { name: "No priority" }));
-    fireEvent.click(screen.getByRole("button", { name: "High" }));
+    fireEvent.click(screen.getByRole("option", { name: "High" }));
     await waitFor(() => expect(actions.updateIssue).toHaveBeenLastCalledWith(
       issue.id, { priority: "high", expected_revision: 17 }, expect.any(Object),
     ));
 
     fireEvent.click(view.container.querySelector('[data-slot="avatar"]')!);
-    fireEvent.click(screen.getByRole("button", { name: "Unassigned" }));
+    fireEvent.click(screen.getByRole("option", { name: "Unassigned" }));
     expect(actions.updateIssue).toHaveBeenLastCalledWith(
       issue.id, { assignee_type: null, assignee_id: null, expected_revision: 17 }, expect.any(Object),
     );
 
     view.rerender(content({ ...issue, revision: 18 }));
     fireEvent.click(screen.getByRole("button", { name: "No priority" }));
-    fireEvent.click(screen.getByRole("button", { name: "Low" }));
+    fireEvent.click(screen.getByRole("option", { name: "Low" }));
     expect(actions.updateIssue).toHaveBeenLastCalledWith(
       issue.id, { priority: "low", expected_revision: 18 }, expect.any(Object),
     );
@@ -199,7 +199,7 @@ describe("BoardCardContent assignee picker", () => {
       expect(fireEvent.click(avatar!)).toBe(false);
       expect(screen.getByRole("textbox")).toBeInTheDocument();
       expect(navigation.push).not.toHaveBeenCalled();
-      fireEvent.click(screen.getByRole("button", { name: "Unassigned" }));
+      fireEvent.click(screen.getByRole("option", { name: "Unassigned" }));
       expect(actions.updateIssue).toHaveBeenCalledWith(
         issue.id, { assignee_type: null, assignee_id: null }, expect.any(Object),
       );

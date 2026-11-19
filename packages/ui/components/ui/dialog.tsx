@@ -4,11 +4,13 @@ import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 import { Button } from "@multica/ui/components/ui/button"
 import { XIcon } from "lucide-react"
 
 function Dialog({ ...props }: DialogPrimitive.Root.Props) {
-  return <DialogPrimitive.Root data-slot="dialog" {...props} />
+  const scope = useScopedPopup(props)
+  return <DialogPrimitive.Root data-slot="dialog" {...props} {...scope} />
 }
 
 function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
@@ -27,6 +29,7 @@ function DialogOverlay({
   className,
   ...props
 }: DialogPrimitive.Backdrop.Props) {
+  const visible = usePopupVisibility()
   return (
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
@@ -35,6 +38,7 @@ function DialogOverlay({
         className
       )}
       {...props}
+      hidden={!visible || props.hidden}
     />
   )
 }
@@ -51,6 +55,7 @@ function DialogContent({
   keepMounted?: boolean
   closeLabel?: string
 }) {
+  const visible = usePopupVisibility()
   return (
     <DialogPortal keepMounted={keepMounted}>
       <DialogOverlay />
@@ -61,6 +66,10 @@ function DialogContent({
           className
         )}
         {...props}
+        hidden={!visible || props.hidden}
+        inert={!visible || props.inert}
+        aria-hidden={!visible || props["aria-hidden"]}
+        finalFocus={visible ? props.finalFocus : false}
       >
         {children}
         {showCloseButton && (

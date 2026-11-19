@@ -193,6 +193,7 @@ vi.mock("../../editor", async () => ({
       value: syncedValue,
       onUpdate,
       placeholder,
+      "aria-label": ariaLabel,
       flushPendingOnUnmount,
       onReady,
     }: any,
@@ -255,6 +256,7 @@ vi.mock("../../editor", async () => ({
           onUpdate?.(e.target.value, baseRef.current);
         }}
         placeholder={placeholder}
+        aria-label={ariaLabel}
         data-testid="rich-text-editor"
         data-flush-on-unmount={flushPendingOnUnmount ? "true" : undefined}
       />
@@ -1264,6 +1266,24 @@ describe("IssueDetail (shared)", () => {
     // The "+ Add property" affordance is always offered while any
     // optional field is still hidden.
     expect(screen.getByText("Add property")).toBeInTheDocument();
+  });
+
+  it("names the description editor and exposes disclosure state and target relationships", async () => {
+    renderIssueDetail();
+    expect(await screen.findByRole("textbox", { name: "Issue description" })).toHaveValue(mockIssue.description);
+    for (const name of ["Properties", "Details", "Pull requests"]) {
+      const toggle = screen.getByRole("button", { name });
+      expect(toggle).toHaveAttribute("aria-expanded", "true");
+      const panelId = toggle.getAttribute("aria-controls");
+      expect(panelId).toBeTruthy();
+      expect(document.getElementById(panelId!)).toBeInTheDocument();
+      fireEvent.click(toggle);
+      expect(toggle).toHaveAttribute("aria-expanded", "false");
+      expect(document.getElementById(panelId!)).toHaveAttribute("hidden");
+      fireEvent.click(toggle);
+      expect(toggle).toHaveAttribute("aria-expanded", "true");
+      expect(toggle).toHaveAttribute("aria-controls", panelId);
+    }
   });
 
   it("hides every optional property row when none are set", async () => {
@@ -2404,7 +2424,7 @@ describe("IssueDetail (shared)", () => {
       renderIssueDetail();
       const row = (await screen.findByRole("checkbox", { name: "Select TES-11" })).closest<HTMLElement>(".group\\/row")!;
       fireEvent.click(within(row).getByTestId("actor-avatar"));
-      fireEvent.click(await screen.findByRole("button", { name: "Unassigned" }));
+      fireEvent.click(await screen.findByRole("option", { name: "Unassigned" }));
       await waitFor(() => expect(mockApiObj.updateIssue).toHaveBeenCalledWith("child-1", {
         assignee_type: null,
         assignee_id: null,
@@ -2420,7 +2440,7 @@ describe("IssueDetail (shared)", () => {
       renderIssueDetail();
       const row = (await screen.findByRole("checkbox", { name: "Select TES-11" })).closest<HTMLElement>(".group\\/row")!;
       fireEvent.click(within(row).getByTestId("actor-avatar"));
-      fireEvent.click(await screen.findByRole("button", { name: "Unassigned" }));
+      fireEvent.click(await screen.findByRole("option", { name: "Unassigned" }));
       await waitFor(() => expect(toast.error).toHaveBeenCalledWith(enIssues.revision.conflict));
       expect(mockApiObj.updateIssue).toHaveBeenCalledWith("child-1", { assignee_type: null, assignee_id: null, expected_revision: 8 });
       expect(mockApiObj.updateIssue).toHaveBeenCalledOnce();

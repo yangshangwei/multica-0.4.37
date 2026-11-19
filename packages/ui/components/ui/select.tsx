@@ -4,6 +4,7 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 
 import { cn } from "@multica/ui/lib/utils"
+import { useHasPopupVisibilityScope, usePopupVisibility } from "./popup-visibility"
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react"
 
 type SelectProps<
@@ -20,7 +21,44 @@ type SelectProps<
 function Select<Value, Multiple extends boolean | undefined = false>(
   props: SelectProps<Value, Multiple>
 ) {
+  const scoped = useHasPopupVisibilityScope()
+  if (scoped) return <ScopedSelect {...props} />
   return <SelectPrimitive.Root {...props} />
+}
+
+/** Unlike other Base UI popups, Select exposes unmount but no close action. */
+function ScopedSelect<Value, Multiple extends boolean | undefined = false>({
+  open,
+  defaultOpen,
+  onOpenChange,
+  ...props
+}: SelectProps<Value, Multiple>) {
+  const visible = usePopupVisibility()
+  const [localOpen, setLocalOpen] = React.useState(visible && (defaultOpen ?? false))
+  const [dismissed, setDismissed] = React.useState(!visible && open === true)
+
+  React.useLayoutEffect(() => {
+    if (!visible) {
+      setLocalOpen(false)
+      if (open) setDismissed(true)
+    }
+    if (open === false) setDismissed(false)
+  }, [visible, open])
+
+  return <SelectPrimitive.Root
+    {...props}
+    open={visible && !dismissed && (open ?? localOpen)}
+    onOpenChange={(nextOpen, details) => {
+      if (nextOpen && !visible) {
+        details.cancel()
+        return
+      }
+      onOpenChange?.(nextOpen, details)
+      if (details.isCanceled) return
+      if (nextOpen) setDismissed(false)
+      if (open === undefined) setLocalOpen(nextOpen)
+    }}
+  />
 }
 
 function SelectGroup({ className, ...props }: SelectPrimitive.Group.Props) {
@@ -85,6 +123,7 @@ function SelectContent({
     SelectPrimitive.Positioner.Props,
     "align" | "alignOffset" | "side" | "sideOffset" | "alignItemWithTrigger"
   >) {
+  const visible = usePopupVisibility()
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Positioner
@@ -100,6 +139,10 @@ function SelectContent({
           data-align-trigger={alignItemWithTrigger}
           className={cn("relative isolate z-50 max-h-(--available-height) w-(--anchor-width) min-w-36 origin-(--transform-origin) overflow-x-hidden overflow-y-auto rounded-lg bg-surface-raised text-popover-foreground shadow-[var(--menu-shadow)] ring-1 ring-surface-border duration-100 data-[align-trigger=true]:animate-none data-[side=bottom]:slide-in-from-top-2 data-[side=inline-end]:slide-in-from-left-2 data-[side=inline-start]:slide-in-from-right-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95", className )}
           {...props}
+          hidden={!visible || props.hidden}
+          inert={!visible || props.inert}
+          aria-hidden={!visible || props["aria-hidden"]}
+          finalFocus={visible ? props.finalFocus : false}
         >
           <SelectScrollUpButton />
           <SelectPrimitive.List>{children}</SelectPrimitive.List>
