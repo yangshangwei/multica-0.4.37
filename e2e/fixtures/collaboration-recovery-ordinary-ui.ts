@@ -172,9 +172,10 @@ async function pickerChoice(session: RecoverySession, field: "priority" | "assig
   const trigger = propertyButton(session, field, field === "priority" ? "Low" : session.actor.name);
   await expect(trigger).toHaveCount(1);
   await expect(trigger).toBeVisible(); await expect(trigger).toBeEnabled(); await trigger.click();
-  const popup = session.page.locator('[data-slot="popover-content"]').filter({ has: session.page.locator("button[data-picker-item]") });
+  const list = session.page.getByRole("listbox", { name: field === "priority" ? "Priority" : "Assignee", exact: true });
+  const popup = session.page.locator('[data-slot="popover-content"]').filter({ has: list });
   await expect(popup).toHaveCount(1); await expect(popup).toBeVisible();
-  const choice = popup.getByRole("button", { name: field === "priority" ? "High" : "Unassigned", exact: true });
+  const choice = list.getByRole("option", { name: field === "priority" ? "High" : "Unassigned", exact: true });
   await expect(choice).toBeVisible(); await expect(choice).toBeEnabled(); await choice.click();
   await expect(popup).toBeHidden();
 }

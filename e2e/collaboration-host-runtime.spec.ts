@@ -187,16 +187,30 @@ test("host Web and actual Electron share one ordinary Agent, preserve authors, a
       const records = [...final.records, ...separateHistory.records].find((item) => item.run.id === visit.identity.run_id)!;
       expect(run.cleanup).toEqual(records.run.descendant_cleanup);
       const facts = stats.http.filter((fact) => fact.run_id === visit.identity.run_id);
-      expect([...new Set(facts.map((fact) => fact.operation))]).toEqual(["claim", "permit", "termination", "proof"]);
+      expect([...new Set(facts.map((fact) => fact.operation))]).toEqual(["claim", "permit", "termination", "outcome", "proof"]);
       const permits = facts.filter((fact) => fact.operation === "permit");
       expect(permits.length).toBeGreaterThan(0);
       expect(permits.every((fact) => fact.attempt_seq === "1")).toBe(true);
       // Preparation and BeforeLaunch may replay the original permit. They
       // must retain one launch identity and yield only one physical start.
       expect(new Set(facts.filter((fact) => fact.launch_hash).map((fact) => fact.launch_hash)).size).toBe(1);
-      expect(facts.every((fact) => fact.protocol_version === 3 && fact.containment === hostMode && fact.status === 200)).toBe(true);
-      expect(facts.find((fact) => fact.operation === "termination")).toMatchObject({ kind: "managed_launch_ended", attempt_seq: "1" });
-      expect(facts.find((fact) => fact.operation === "proof")).toMatchObject({ state: "host_exit_observed" });
+      expect(facts.every((fact) => fact.protocol_version === 3 && fact.containment === hostMode)).toBe(true);
+      expect(facts.filter((fact) => fact.operation !== "outcome").every((fact) => fact.status === 200)).toBe(true);
+      const outcomes = facts.filter((fact) => fact.operation === "outcome");
+      expect(outcomes).toHaveLength(1);
+      // Stop revokes new business writes, while the independent termination
+      // capability must still record the process exit and seal its proof.
+      expect(outcomes[0]).toMatchObject({ run_id: visit.identity.run_id, attempt_seq: "1",
+        status: visit.identity.run_id === second.identity.run_id ? 403 : 200 });
+      expect(outcomes[0]!.event_id).toMatch(/^[0-9a-f-]{36}$/);
+      expect(outcomes[0]!.request_sha256).toMatch(/^[0-9a-f]{64}$/);
+      const termination = facts.find((fact) => fact.operation === "termination")!;
+      const proof = facts.find((fact) => fact.operation === "proof")!;
+      expect(termination).toMatchObject({ kind: "managed_launch_ended", attempt_seq: "1" });
+      expect(proof).toMatchObject({ run_id: visit.identity.run_id, state: "host_exit_observed" });
+      expect(proof.receipt_id).toMatch(/^[0-9a-f-]{36}$/);
+      expect(facts.indexOf(outcomes[0]!)).toBeGreaterThan(facts.indexOf(termination));
+      expect(facts.indexOf(proof)).toBeGreaterThan(facts.indexOf(outcomes[0]!));
     }
     expect(webErrors).toEqual([]);
     expect(native.errors).toEqual([]);

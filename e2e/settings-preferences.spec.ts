@@ -128,7 +128,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await page.getByRole("button", { name: "New Issue", exact: true }).click();
   await expect(page.getByRole("dialog", { name: "Quick create issue", exact: true }).getByRole("button", { name: "No priority", exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Switch to Manual", exact: true }).click();
+  await page.getByTitle("Switch to manual create — fill the fields yourself", { exact: true }).click();
 
   const dialog = page.getByRole("dialog", { name: "New Issue", exact: true });
   await expect(dialog).toBeVisible();
@@ -137,7 +137,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await dialog.getByRole("button", { name: "More options", exact: true }).click();
   await expect(page.getByRole("menuitem", { name: "Set priority...", exact: true })).toBeVisible();
   await page.getByRole("menuitem", { name: "Set priority...", exact: true }).click();
-  await page.getByRole("button", { name: "High", exact: true }).click();
+  await page.getByRole("listbox", { name: "Priority", exact: true }).getByRole("option", { name: "High", exact: true }).click();
   await expect(dialog.getByRole("button", { name: "High", exact: true })).toBeVisible();
   const title = "Priority selected through the hidden-field menu";
   await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);

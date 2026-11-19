@@ -363,12 +363,13 @@ test("Desktop creates a private collaboration issue, downloads through native IP
     app = native.app;
     let page = native.page;
     await native.start();
-    await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    await page.getByRole("button", { name: "New collaboration issue", exact: true })
+      .and(page.locator('[data-sidebar="menu-button"]')).click();
     const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
     const title = `Native created collaboration ${key}`;
     await dialog.getByLabel("Title", { exact: true }).fill(title);
     await dialog.getByLabel("Description", { exact: true }).fill("Native creation and attachment continuity.");
-    await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("Assigned to you", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
     await nativeScreenshot(app, page, testInfo.outputPath("desktop-collaboration-create.png"));
     const bytes = Buffer.from("Private native attachment from the creation form.");
     await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "desktop-note.txt", mimeType: "text/plain", buffer: bytes });
@@ -587,7 +588,8 @@ test("Desktop authors initial fields and preserves discussion through shared edi
     const native = await openDesktop(profile, { token: editing.source.getToken()!, deepLink: "multica://account" });
     app = native.app;
     await native.start();
-    const issue = await createCollaborationWithInitialFields(native.page, editing);
+    const creationTrigger = native.page.getByRole("main").getByRole("button", { name: "New collaboration issue", exact: true });
+    const issue = await createCollaborationWithInitialFields(native.page, editing, creationTrigger);
     await exerciseCollaborationFields(native.page, editing, issue.id);
     const discussion = await exerciseCollaborationDiscussion(native.page, editing.source, issue.id);
     expect((await snapshot(native.page)).accountGroup!.tabs).toHaveLength(1);

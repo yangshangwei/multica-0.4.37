@@ -48,11 +48,24 @@ test.describe("G-D bulk edits and board moves", () => {
     await page.locator("button[data-picker-item]").filter({ hasText: /^In Progress$/ }).click();
     const update = await updated;
     expect(update.status()).toBe(200);
-    expect(update.request().postDataJSON()).toEqual({ issue_ids: expect.arrayContaining([a.id, b.id, c.id]), updates: { status: "in_progress" } });
-    expect((update.request().postDataJSON() as { issue_ids: string[] }).issue_ids).toHaveLength(3);
-    expect(await update.json()).toEqual({ updated: 3 });
+    const updateRequest = update.request().postDataJSON() as { issue_ids: string[]; updates: { status: string } };
+    expect(updateRequest).toEqual({ issue_ids: expect.arrayContaining([a.id, b.id, c.id]), updates: { status: "in_progress" } });
+    expect(updateRequest.issue_ids).toHaveLength(3);
+    const savedIssues = await Promise.all(updateRequest.issue_ids.map((id) =>
+      callJSON<Issue & { revision: number }>(owner, `/api/issues/${id}`)));
+    for (const [index, issue] of savedIssues.entries()) {
+      expect(issue.id).toBe(updateRequest.issue_ids[index]);
+      expect(issue.status).toBe("in_progress");
+      expect(Number.isSafeInteger(issue.revision)).toBe(true);
+      expect(issue.revision).toBeGreaterThan(0);
+    }
+    expect(await update.json()).toEqual({
+      updated: 3,
+      results: savedIssues.map((issue, index) => ({
+        index, issue_id: updateRequest.issue_ids[index], state: "committed", code: "updated", revision: issue.revision,
+      })),
+    });
     await expect(page.getByText("Updated 3 issues", { exact: true })).toBeVisible();
-    for (const issue of [a, b, c]) expect(await issueStatus(owner, issue.id)).toBe("in_progress");
     expect(await issueStatus(owner, control.id)).toBe("todo");
 
     // After reload the three rows are grouped under In Progress: selecting that

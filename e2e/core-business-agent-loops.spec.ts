@@ -233,11 +233,16 @@ test("G6 a plain comment re-engages the assignee, an @mention engages another ag
   await expect(triggerChip(page, assignee.name, "assignee")).toHaveCount(0);
   const mention = await submitComment(page, issue.id);
   expect(mention.content).toContain(`mention://agent/${mentioned.id}`);
-  expect(mention.trigger_outcomes).toEqual([{ target_type: "agent", target_id: mentioned.id, status: "queued", reason_code: "queued" }]);
   await expect.poll(async () => (await queueRows("issue_id", issue.id)).slice(2).map(({ agent_id, status, trigger_comment_id }) => ({ agent_id, status, trigger_comment_id })))
     .toEqual([{ agent_id: mentioned.id, status: "queued", trigger_comment_id: mention.id }]);
+  const mentionTasks = await queueRows("trigger_comment_id", mention.id);
+  expect(mentionTasks).toHaveLength(1);
+  expect(mention.trigger_outcomes).toEqual([{
+    target_type: "agent", target_id: mentioned.id, status: "queued", reason_code: "queued",
+    task_id: mentionTasks[0]!.id, executing_agent_id: mentioned.id,
+  }]);
   const mentionRun = await daemon.claim();
-  expect(mentionRun).toMatchObject({ trigger_comment_id: mention.id });
+  expect(mentionRun).toMatchObject({ id: mentionTasks[0]!.id, trigger_comment_id: mention.id });
   await daemon.start(mentionRun!.id);
   const thirdReply = `Rollback plan reviewed by a second agent ${randomUUID().slice(0, 8)}`;
   await daemon.complete(mentionRun!.id, thirdReply);

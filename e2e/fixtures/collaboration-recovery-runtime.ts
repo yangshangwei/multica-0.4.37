@@ -652,8 +652,22 @@ async function reconnect(session: RecoverySession, previousId: string, evidence:
       current_frames: current.frames, handshakes: session.handshakes, business_writes: session.writes });
     return current;
   }
-  await expect(session.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible({ timeout: 35_000 });
+  const detail = session.page.locator('[data-tab-scroll-root="account-detail"]');
+  // Only the direct alert replaces the protected detail; nested panels can
+  // report their own denials while the original issue is still being removed.
+  const denial = detail.locator(':scope > [role="alert"]').filter({
+    has: session.page.getByText("You no longer have access to this issue.", { exact: true }),
+  });
+  await expect(denial).toBeVisible({ timeout: 35_000 });
   await expect(session.page.getByRole("heading", { name: session.fixture.title, exact: true })).toHaveCount(0);
+  await expect(detail.locator("#description, #discussion")).toHaveCount(0);
+  await expect(session.page.getByRole("region", { name: "Issue actions", exact: true })).toHaveCount(0);
+  await expect(session.page.getByRole("form", { name: "Comments", exact: true })).toHaveCount(0);
+  await expect.poll(() => session.page.evaluate(({ userId, issueId }) => Object.keys(localStorage).filter((key) => {
+    if (!key.includes("multica_collaboration_draft:") && !key.includes("multica_collaboration_delivery:")) return false;
+    const record = JSON.parse(localStorage.getItem(key) ?? "null");
+    return record?.scope?.userId === userId && (record.scope.issueId === issueId || record.scope.context?.issueId === issueId);
+  }).length, { userId: session.actor.id, issueId: session.fixture.issueId })).toBe(0);
   const find = () => [...session.sockets].reverse().find((socket) => socket.created_at >= at && socket.id !== previousId && socket.closed_at === null &&
     session.handshakes.some((handshake) => handshake.request_id === socket.id && handshake.status === 101) &&
     (session.platform === "Web" || socket.frames.some((frame) => frame.direction === "received" && frame.type === "auth_ack")));

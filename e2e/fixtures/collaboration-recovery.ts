@@ -728,9 +728,9 @@ async function ordinaryUIUpdate(session: RecoverySession, child: OrdinaryIssue, 
   let select: Locator;
   if (field === "priority") {
     await page.getByRole("button", { name: "High", exact: true }).click();
-    const popup = page.locator('[data-slot="popover-content"]').filter({ has: page.locator('[data-picker-item]') });
-    await expect(popup).toBeVisible();
-    select = popup.getByRole("button", { name: "Medium", exact: true });
+    const list = page.getByRole("listbox", { name: "Priority", exact: true });
+    await expect(list).toBeVisible();
+    select = list.getByRole("option", { name: "Medium", exact: true });
   } else {
     await page.getByRole("button", { name: "Unassigned", exact: true }).click();
     const popup = page.locator('[data-slot="popover-content"]').filter({ has: page.getByRole("textbox", { name: "Filter options", exact: true }) });

@@ -53,11 +53,11 @@ test("Web creates one private issue after lost upload/create responses and revok
   const title = `Created collaboration ${key}`;
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill("Creation body stays on the original issue.");
-  await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("Assigned to you", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Create collaboration issue", exact: true })).toBeEnabled();
   expect(createPosts).toBe(0);
   await selectCollaborationRecipient(page, dialog, { id: viewerId, name: "Delivery recipient" });
-  await expect(dialog.getByText("Assigned to Delivery recipient", { exact: true })).toBeVisible();
+  await expect(dialog.getByText("Assigned to Delivery recipient", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
   expect(createPosts).toBe(0);
   let uploaded: FileMetadata | undefined, uploadKey = "", uploadPosts = 0;
   page.on("request", (request) => { if (new URL(request.url()).pathname === "/api/collaboration/attachments/drafts" && request.method() === "POST") uploadPosts += 1; });
@@ -228,7 +228,7 @@ test("Web explicitly resubmits rejected creation input without losing files or r
     await dialog.getByLabel("Title", { exact: true }).fill(title);
     await dialog.getByLabel("Description", { exact: true }).fill("Keep this input and its unconsumed private file.");
     await selectCollaborationRecipient(page, dialog, { id: target.id, name: "Unavailable creation recipient" });
-    await expect(dialog.getByText("Assigned to Unavailable creation recipient", { exact: true })).toBeVisible();
+    await expect(dialog.getByText("Assigned to Unavailable creation recipient", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
     const uploadedResponse = page.waitForResponse((response) => response.url().endsWith("/api/collaboration/attachments/drafts") && response.request().method() === "POST");
     await dialog.getByLabel("Attach files", { exact: true }).setInputFiles({ name: "correction-note.txt", mimeType: "text/plain", buffer: Buffer.from("Preserve this uploaded identity") });
     const uploaded = await (await uploadedResponse).json();

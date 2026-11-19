@@ -12,10 +12,6 @@ async function authenticate(page: Page, token: string) {
   }, token);
 }
 
-function picker(page: Page) {
-  return page.locator('[data-recipient-picker]').first();
-}
-
 test("Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape", async ({ page }, testInfo) => {
   test.setTimeout(120_000);
   test.skip(!apiUrl || !process.env.DATABASE_URL || !process.env.NEXT_PUBLIC_API_URL,
@@ -58,14 +54,16 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
   await page.goto("/account");
   await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
-  const control = picker(page);
+  const control = dialog.locator('[data-recipient-picker]');
   await expect(control).toHaveCount(1);
-  const trigger = control.locator('button[aria-label="Recipient"]');
+  const trigger = control.getByRole("button", { name: "Recipient", exact: true });
   await expect(trigger).toBeVisible();
   const title = `Picker assigned issue ${suffix}`;
   await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
-  await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
-  await expect(trigger).toContainText(`Account ID: ${sourceId}`);
+  await expect(dialog.getByText("Assigned to you", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
+  await expect(trigger).toHaveAttribute("title", `Account ID: ${sourceId}`);
+  await expect(trigger).toContainText("Assigned to you");
+  await expect(trigger).not.toContainText(sourceId);
   const createRequests: Request[] = [];
   page.on("request", (request) => {
     if (new URL(request.url()).pathname === "/api/collaboration/issues" && request.method() === "POST") createRequests.push(request);
@@ -170,8 +168,10 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
     await expect(dialog).toBeVisible();
     await expect(search).not.toHaveAttribute("aria-activedescendant");
     await expect(list.getByRole("option", { disabled: false })).toHaveCount(0);
-    await expect(trigger).toContainText(`Account ID: ${sourceId}`);
-    await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+    await expect(trigger).toHaveAttribute("title", `Account ID: ${sourceId}`);
+    await expect(trigger).toContainText("Assigned to you");
+    await expect(trigger).not.toContainText(sourceId);
+    await expect(dialog.getByText("Assigned to you", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
     expect(createRequests).toHaveLength(0);
 
     const currentSearch = page.waitForResponse((response) => searchPattern(new URL(response.url()))
@@ -187,9 +187,11 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
     await expect(recipientOption).toBeEnabled();
     await recipientOption.click();
     await expect(list).toBeHidden();
-    await expect(trigger).toContainText(`Account ID: ${recentId}`);
-    await expect(trigger).not.toContainText(`Account ID: ${sourceId}`);
-    await expect(dialog.getByText(`Assigned to ${recentName}`, { exact: true })).toBeVisible();
+    await expect(trigger).toHaveAttribute("title", `Account ID: ${recentId}`);
+    await expect(trigger).not.toHaveAttribute("title", `Account ID: ${sourceId}`);
+    await expect(trigger).toContainText(`Assigned to ${recentName}`);
+    await expect(trigger).not.toContainText(recentId);
+    await expect(dialog.getByText(`Assigned to ${recentName}`, { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
   } finally {
     releaseSearch();
     try { await delivery; } finally { await page.unroute(searchPattern, holdSearch); }

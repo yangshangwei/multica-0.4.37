@@ -432,6 +432,7 @@ test("stage decisions and prepared test reports retain human and runtime history
 
     const prepared = await startResource(true);
     const testReference = { candidate_id: nextCode.candidate_id, candidate_version: nextCode.version, candidate_digest: nextCode.content_digest };
+    let preparedWorkspace: { workdirHash: string; sessionKey: string } | undefined;
     const submitPrepared = async (fault: "none" | "duplicate_effect", visitCount: number) => {
       await prepared.resource.beforeTrigger();
       await show(p);
@@ -474,9 +475,24 @@ test("stage decisions and prepared test reports retain human and runtime history
       const providerLaunch = ledger?.launches.filter((launch: { kind: string; authorized: boolean }) => launch.kind === "provider" && launch.authorized);
       expect(providerLaunch).toHaveLength(1);
       expect(providerLaunch?.[0]?.attempt_seq).toBe(unsettled.attempt);
-      expect(ledger?.launches.some((launch: { kind: string }) => launch.kind === "preparation")).toBe(true);
+      if (!ledger) throw new Error("The prepared provider run has no owned launch ledger");
+      const preparationLaunches = ledger.launches.filter((launch: { kind: string }) => launch.kind === "preparation");
+      if (visitCount === 1) {
+        expect(preparationLaunches.length).toBeGreaterThan(0);
+        expect(visit.workdir_hash).not.toBe(bareVisit.workdir_hash);
+        preparedWorkspace = { workdirHash: visit.workdir_hash, sessionKey: ledger.session_key };
+      } else {
+        // The same configuration retains its committed Git workspace. A new
+        // business run needs one provider launch, not another extraction.
+        expect(preparedWorkspace).toBeDefined();
+        expect(preparationLaunches).toHaveLength(0);
+        expect(ledger.launches).toHaveLength(1);
+        expect(visit.workdir_hash).toBe(preparedWorkspace!.workdirHash);
+        expect(ledger.session_key).toBe(preparedWorkspace!.sessionKey);
+        expect(unsettled.attempt).toBe("1");
+      }
       record("actual CLI T1/T2/T3 before provider completion", { comment, command, visit: { run_id: visit.identity.run_id, inputs: visit.inputs,
-        cli_sha256: visit.cli_hash, prepared_files: visit.workdir_files }, result, report: unsettled, ledger });
+        cli_sha256: visit.cli_hash, workdir_hash: visit.workdir_hash, prepared_files: visit.workdir_files }, result, report: unsettled, ledger });
       prepared.resource.daemon.release(visit, fault === "none" ? "success" : "failure");
       const run = await settle(visit, fault === "none" ? "success" : "failure");
       const report = await read();
@@ -486,7 +502,9 @@ test("stage decisions and prepared test reports retain human and runtime history
       const records = await P.client.requestJSON<CollaborationRunRecords>(versioned(`${issueRoot(id)}/runs/${visit.identity.run_id}/records?limit=100`));
       expect(records.preparation?.git).toMatchObject({ object_format: "sha1", commit_oid: gitInput.head });
       if (run.launch_count === undefined) throw new Error("Prepared run omitted its actual launch inventory");
-      expect(BigInt(run.launch_count)).toBeGreaterThan(1n);
+      expect(BigInt(run.launch_count)).toBe(BigInt(ledger.launches.length));
+      if (visitCount === 1) expect(BigInt(run.launch_count)).toBeGreaterThan(1n);
+      else expect(BigInt(run.launch_count)).toBe(1n);
       record("prepared execution and retained report are distinct facts", { run, report, preparation: records.preparation });
       return { report, read, path, visit, command };
     };

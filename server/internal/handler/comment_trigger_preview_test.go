@@ -578,6 +578,8 @@ func TestCreateComment_ThreadParentQueuesParentAndPromotesDeferredFallback(t *te
 		t.Skip("database not available")
 	}
 	ctx := context.Background()
+	// This live-runtime scenario needs the heartbeat a daemon sends before claiming.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at=now() WHERE id=$1`, handlerTestRuntimeID(t))
 
 	assigneeID := createHandlerTestAgent(t, "Thread Parent Assignee", nil)
 	parentAgentID := createHandlerTestAgent(t, "Thread Parent Owner", nil)
@@ -734,6 +736,8 @@ func TestCreateComment_ParentAgentReplyCancelsPromotedFallbackBeforeClaim(t *tes
 		t.Skip("database not available")
 	}
 	ctx := context.Background()
+	// This live-runtime scenario needs the heartbeat a daemon sends before claiming.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at=now() WHERE id=$1`, handlerTestRuntimeID(t))
 
 	assigneeID := createHandlerTestAgent(t, "Thread Parent Cancel Assignee", nil)
 	parentAgentID := createHandlerTestAgent(t, "Thread Parent Cancel Owner", nil)
@@ -814,6 +818,8 @@ func TestStartTaskCancelsPromotedFallbackBeforeAssigneeCanClaim(t *testing.T) {
 		t.Skip("database not available")
 	}
 	ctx := context.Background()
+	// This live-runtime scenario needs the heartbeat a daemon sends before claiming.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at=now() WHERE id=$1`, handlerTestRuntimeID(t))
 
 	assigneeID := createHandlerTestAgent(t, "Thread Parent Start Cancel Assignee", nil)
 	parentAgentID := createHandlerTestAgent(t, "Thread Parent Start Cancel Owner", nil)

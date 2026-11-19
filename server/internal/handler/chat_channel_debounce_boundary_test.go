@@ -131,6 +131,22 @@ func TestChannelChat_ReplyLandingInsideDebounceWindowStillAnswersTheNextMessage(
 		_ = testPool.QueryRow(ctx, `SELECT status FROM agent_task_queue WHERE id = $1`, next.ID).Scan(&status)
 		_ = testPool.QueryRow(ctx, `SELECT count(*) FROM chat_message WHERE task_id = $1 AND role = 'user'`,
 			next.ID).Scan(&ownedInput)
+		var ownership string
+		if err := testPool.QueryRow(ctx, `
+			SELECT jsonb_build_object(
+				'tasks', (SELECT COALESCE(jsonb_agg(jsonb_build_object(
+					'id', id, 'created_at', created_at, 'status', status,
+					'input_owner', chat_input_task_id, 'context_revision', channel_context_revision
+				) ORDER BY created_at, id), '[]'::jsonb) FROM agent_task_queue WHERE chat_session_id=$1),
+				'messages', (SELECT COALESCE(jsonb_agg(jsonb_build_object(
+					'id', id, 'created_at', created_at, 'role', role, 'kind', message_kind,
+					'task_id', task_id, 'channel_ingested', channel_ingested, 'context_revision', channel_context_revision
+				) ORDER BY created_at, id), '[]'::jsonb) FROM chat_message WHERE chat_session_id=$1)
+			)::text`, sessionID).Scan(&ownership); err != nil {
+			t.Logf("load failed-turn ownership metadata: %v", err)
+		} else {
+			t.Logf("failed-turn ownership metadata: %s", ownership)
+		}
 		t.Fatalf("claim = %d %s (task %+v); task %s owns %d user messages and is now %q. "+
 			"The user's message was accepted and never answered.",
 			res.code, res.body, res.task, uuidToString(next.ID), ownedInput, status)

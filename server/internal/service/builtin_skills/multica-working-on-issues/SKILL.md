@@ -147,8 +147,7 @@ members cannot read the protected result.
 
 ## PR linking and close intent are two distinct contracts
 
-The GitHub webhook runs two separate scans over an incoming PR. They are not the
-same gate and they read different fields.
+The GitHub webhook scans different PR fields for linking and close intent.
 
 **Linking** scans the PR **title, body, OR branch** for a routable issue key
 (`PREFIX-NUMBER`, e.g. `MUL-2759`). Each match writes an issue ↔ PR link row.
@@ -174,10 +173,8 @@ Resolves MUL-2759
 Fix login MUL-2759                                 # links only — keyword not adjacent
 ```
 
-Consequence: a bare title prefix or a branch reference links the PR but does not
-close the issue on merge. A closing keyword immediately adjacent to the issue key
-records close intent; on merge, that close intent can move the linked issue to
-`done`.
+A bare title prefix or branch reference links the PR without closing the issue
+on merge; only close intent can advance it to `done`.
 
 **Reference-only links (hidden from the PR list).** A key that appears **only**
 as a bare mention in the body — no closing keyword, and not in the title or
