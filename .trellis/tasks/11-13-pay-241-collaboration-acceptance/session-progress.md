@@ -1,5 +1,19 @@
 # PAY-241 当前会话进度
 
+## 2026-11-20：TC-04机器完成／人工授权拒绝内部切片独立通过
+
+父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**。只将TC-04从NOT_RUN推进PARTIAL；真实模型分析的依据、风险和置信度仍未验证。[独立检查](research/tc04-independent-check-20261120.md)接受内部权限切片，阻挡项0，父任务继续in_progress。
+
+一个新增实际router测试文件，r02普通/竞态各 **2顶层／9拒绝叶／11命名PASS，零FAIL/SKIP**，合计11个不同命名、22次执行。每模式4个实际daemon claim签发generic/restricted mat并先完成支持GET200；账号是有权人类签发人/发起人。九次请求覆盖人工M1授权签发、精确原授权撤销、具备真实交付及有效人工授权的协作关闭。generic授权请求在RequireHumanActor403，JWT+Agent提示在M1 backstop403，协作生命周期在human workflow403，restricted在能力路由403；没有把错误凭据401当业务拒绝。
+
+每次拒绝完整30组SQL业务事实、原授权/交付回执、不可变历史和制品字节保持。之后合法人类以相同body/原键成功创建授权、撤销原授权和完成任务，排除缺字段、过期或旧版本遮蔽。允许的人类授权普通任务Agent执行合同不变；既有TC-13的QA范围不重跑。
+
+r01完整保留1topPASS/1FAIL、8namedPASS/3FAIL：夹具误期望下游服务错误码，真实generic已在更早人工路由门禁正确403。仅增加精确身份/路由响应断言，未允许多个替代码、未改body/原键/不变断言/超时；新库r02完整两模式通过。gofmt/vet通过，最终normal/race完成编译；较早compile-only绑定前一测试源码，不冒充最终版本单独编译证据。
+
+执行源为ad5affc9a的5091服务端基线文件加唯一新测试d09149e0，ROOT整合字节一致；并行navigation/testing提交按独立来源保留，未提交WIP排除。六专库连接0、856迁移/663索引/gateepoch2保持；三个实际执行库各保留3grant/2terminal/3policy/1evaluation/1knowledgejob/14invalidation，旧夹具清理瞬态行。两个service库及race-r01未执行。九个所属命令进程退出，无独立API/Web/Electron/Provider服务。安全公开证据保存在私有raw，私有凭据元数据不打印。
+
+本轮无产品逻辑/依赖改动、无新浏览器或真实模型验证；TC-01必填、TC-03 P1/分诊通知、S4 I02–I09、最终S5与业务签字继续开放。下一内部候选是TC-12“实际代码修订后的失败→修复回归”缺口研究，尚无实施/通过承诺，不回退已完成阶段。测试/规范/计划已定向Lore提交`727df4d08`（3路径）；验收记录单独提交，实际推送以最终远端核对为准，父任务不归档。
+
 ## 2026-11-20：TC-01完整正向创建补证通过，整例保持PARTIAL
 
 父矩阵 **9 PASS /10 PARTIAL /5 NOT_RUN**。仅将TC-01从NOT_RUN推进PARTIAL；TC-03补充项目/排期/唯一当前handler/High证据，仍为PARTIAL，其他22行和全部历史列保持。[独立检查](research/tc01-independent-check-20261120.md)接受正向创建切片、阻挡项0，未接受全局PAY字段强制或P1映射。

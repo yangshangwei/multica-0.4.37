@@ -6697,10 +6697,10 @@
       "report": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md"
     },
     "next_internal_slice": {
-      "case": "TC-04",
-      "phase": "EXACT_MACHINE_CLOSE_APPROVAL_REFUSAL_RESEARCH_NEXT",
+      "case": "TC-12",
+      "phase": "EXACT_CODE_REVISION_REGRESSION_GAP_RESEARCH_NEXT",
       "source": "research/remaining-internal-acceptance-20261119.md",
-      "limits": "Real-model analysis quality stays separately untested; no real account authorized."
+      "limits": "Only a next research lead; existing S2 same-code fault-switch evidence cannot prove a business-code repair. No real-model, payment or external system authorization added."
     },
     "TC13_acceptance": {
       "at": "2026-11-19T15:33:38.477789+00:00",
@@ -6750,6 +6750,32 @@
       "global_mandatory_fields_or_P1_mapping": false,
       "preserved_failed_round": "r01 0PASS2FAIL modal-background evidence locator",
       "work_commit": "f79df9a22eadaf8d145d0d3c458ed4b1b4a535e5"
+    },
+    "TC04_machine_authority_acceptance": {
+      "at": "2026-11-19T22:43:37.338915+00:00",
+      "status": "ACCEPTED_INTERNAL_SUBSCOPE",
+      "case_status": "PARTIAL",
+      "report": "research/tc04-independent-check-20261120.md",
+      "report_json_sha256": "4d7b2b7dd7deb36631744f716431661e973df3aebaa879ef41e2519dd3c5d8de",
+      "source_head": "ad5affc9a3c7dd4c27234cb58f1de53d5436fdf4",
+      "test_sha256": "d09149e01bcd2ef1aecf2a9754c91ab220b70753bbc2e6d32bbd408ee6a5964d",
+      "round": "r02",
+      "each_mode": {
+        "tops": 2,
+        "refusal_leaves": 9,
+        "named_pass": 11
+      },
+      "named_executions": 22,
+      "product_changes": 0,
+      "real_model_quality_tested": false,
+      "preserved_failed_round": "normal-r01 1topPASS1FAIL/8namedPASS3FAIL; wrong earlier-router response expectation",
+      "all_six_databases_connections": 0,
+      "parent_counts": {
+        "PASS": 9,
+        "PARTIAL": 11,
+        "NOT_RUN": 4
+      },
+      "work_commit": "727df4d085e95f0dda674c07fc3ed261060a17a8"
     }
   }
 }

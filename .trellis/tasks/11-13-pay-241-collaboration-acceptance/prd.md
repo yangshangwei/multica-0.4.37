@@ -1,6 +1,6 @@
 # PAY-241 支付异常协作闭环验收
 
-状态：in_progress（总验收开放，2026-11-20 续接）。S1/S2/S3及TC-02/13已独立接受、提交；TC-01完整正向创建补证通过，整例保持PARTIAL，TC-03补充项目/日期/当前handler证据。父矩阵 **9 PASS /10 PARTIAL /5 NOT_RUN**，当前见session-progress.md和research/tc01-independent-check-20261120.md。全局必填/P1映射未确认，真实模型、S4、最终S5和业务签字仍开放；完整24例保留。
+状态：in_progress（总验收开放，2026-11-20 TC-04续接）。S1/S2/S3、TC-02/13已接受；TC-01完整正向创建与TC-04机器完成/人工授权拒绝内部补证已接受，两例保持PARTIAL。父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**，当前见session-progress.md和research/tc04-independent-check-20261120.md。真实模型分析质量、全局必填/P1/分诊语义、S4、最终S5和业务签字仍开放；完整24例保留。
 
 ## 目标与用户价值
 
