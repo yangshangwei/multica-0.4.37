@@ -129,6 +129,25 @@ or retention policy.
 
 ## 4. Validation and error matrix
 
+### Observing logs without changing later tests
+
+Tests that replace `slog.Default` must preserve the legacy `log.Writer` and `log.Flags` as well. `slog.SetDefault` bridges the legacy logger into a nondefault handler; restoring an original default handler does not restore that writer. A wrapper delegating to the old default handler can recursively acquire the same legacy logger mutex.
+
+Use an independent owned `slog.TextHandler`/`JSONHandler` sink for observation, retain synchronized error capture, and restore all three original values after publishers have joined. Do not discard the error collector or accept only a passing new-test subset while a later old test hangs.
+
+```go
+previous := slog.Default()
+legacyWriter, legacyFlags := log.Writer(), log.Flags()
+// Observe through an independent handler, never through previous.Handler().
+t.Cleanup(func() {
+    slog.SetDefault(previous)
+    log.SetOutput(legacyWriter)
+    log.SetFlags(legacyFlags)
+})
+```
+
+PAY-241's first notification normal round retained its original ten-minute timeout in an old archive test. A stdlib-only probe reproduced the copied observer's blocked logging; the corrected observer preserved both error capture and restored logging, and the complete old/new 35-top suite then passed in normal and race modes. Preserve the original timeout, unfinished inventory and remaining fixture rows; do not normalize them into a successful cleanup.
+
 | Input / operation | Required result |
 | --- | --- |
 | `DATABASE_URL` absent or whitespace | Exit 2 before pool/setup/router; no database connection |

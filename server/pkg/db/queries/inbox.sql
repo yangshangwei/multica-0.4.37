@@ -97,6 +97,30 @@ INSERT INTO inbox_item (
 ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, COALESCE(sqlc.narg('id')::uuid, gen_random_uuid()))
 RETURNING *;
 
+-- name: CreateCommentInboxItem :one
+-- Preserve every retained delivery of this original comment, including legacy
+-- random IDs and read/archived rows. The stable ID closes concurrent replays by
+-- current writers; this does not fence an older random-ID writer or remove old
+-- duplicates. Compare canonical UUID text without casting historical JSON.
+INSERT INTO inbox_item (
+    id, workspace_id, recipient_type, recipient_id,
+    type, severity, issue_id, title, body, actor_type, actor_id, details
+)
+SELECT sqlc.arg('id')::uuid, sqlc.arg('workspace_id')::uuid, 'member', sqlc.arg('recipient_id')::uuid,
+       'new_comment', sqlc.arg('severity')::text, sqlc.arg('issue_id')::uuid, sqlc.arg('title')::text,
+       sqlc.narg('body')::text, sqlc.narg('actor_type')::text, sqlc.narg('actor_id')::uuid, sqlc.arg('details')::jsonb
+WHERE NOT EXISTS (
+    SELECT 1 FROM inbox_item retained
+    WHERE retained.workspace_id = sqlc.arg('workspace_id')::uuid
+      AND retained.issue_id = sqlc.arg('issue_id')::uuid
+      AND retained.recipient_type = 'member'
+      AND retained.recipient_id = sqlc.arg('recipient_id')::uuid
+      AND retained.type = 'new_comment'
+      AND lower(retained.details->>'comment_id') = sqlc.arg('comment_id')::uuid::text
+)
+ON CONFLICT (id) DO NOTHING
+RETURNING *;
+
 -- name: MarkInboxRead :one
 UPDATE inbox_item SET read = true
 WHERE id = $1
