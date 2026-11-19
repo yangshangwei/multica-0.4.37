@@ -355,6 +355,39 @@ Use the task-owned database/package isolation and race rules in [Database test i
 
 ## 7. Wrong vs correct
 
+### Post-QA machine refusal regression
+
+`collaboration_stage_qa_protection_test.go` in service owns the exact missing
+post-decision stimulus: create a passing settled report, record a current human
+QA return or approval, then attempt the opposite decision and revocation as a
+task principal and as a human credential marked AgentActor. Preserve the exact
+decision, derived review head, expiry/dependencies, original human receipt and
+all issue/runtime/event/notification facts after each refusal. A distinct
+successful human opposite decision proves the request was otherwise usable;
+it must leave the original decision immutable. Normalize only read-time
+`CheckedAt` and signability horizons when comparing projections.
+
+The router companion uses the real production router and actual task claim to
+obtain generic and restricted `mat_` credentials. First prove the same token's
+supported ordinary issue GET succeeds. Generic task identity and the separate
+JWT-plus-Agent-hint control must hit the human-only `403 forbidden`; restricted
+capabilities stop at their closed-route guard. The router's QA-return fixture
+has no runtime report, so its opposite-approval request proves authentication
+ordering only; a human control reaches `409 stage_test_report_unusable` and the
+service test separately proves full approval admissibility. Do not describe
+that router case as a fresh approved-report or browser journey.
+
+Wrong: send an `mcb_` runtime token to the generic human route and count its
+authentication failure as an authenticated Agent denial. Correct: bind a real
+issued `mat_` to its task/Agent/workspace/user, retain the positive supported
+read and exact post-QA write refusal. Never print the credential itself.
+
+The existing service fixture unconditionally clears `creation_enabled` during
+cleanup. A task-owned verification run must retain its actual after-state and
+restore the recorded original flag explicitly without rewriting the epoch or
+deleting retained invalidation records. Business no-effect assertions belong
+around each denied request, not to final cleanup row counts.
+
 Wrong: synchronize a new execution blocker only in the schema list, leave its
 stored-status or locale mapping unknown, or weaken the complete action-state
 check to bypass it. Another wrong fix is carrying Host execution fields into a
