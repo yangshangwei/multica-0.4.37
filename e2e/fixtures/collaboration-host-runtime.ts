@@ -10,6 +10,7 @@ import type {
   CollaborationCommandHistory, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlReceipt, CollaborationIssue,
   CollaborationMentionTargets, CollaborationResourceIdentityView, CollaborationResourceOptions, CollaborationResources, CollaborationRunRecords, CollaborationTriggerPreview,
 } from "@multica/core/collaboration";
+import { CollaborationIssueSchema } from "../../packages/core/collaboration/schema";
 import pg from "pg";
 import { TestApiClient } from "../fixtures";
 import { revealCollaborationMentions } from "./collaboration-disclosures";
@@ -726,12 +727,35 @@ export async function authorizeHostIssue(page: Page, fixture: HostFixture, issue
 }
 
 export async function hostControl(page: Page, issue: HostIssue, action: "stop" | "resume", scope: "target" | "issue") {
-  const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(issue.id)}/control` && response.request().method() === "POST");
   const label = `${action === "stop" ? "Stop" : "Resume"} ${scope === "issue" ? "all" : "target"}`;
-  await hostPanel(page).getByRole("button", { name: label, exact: true }).click();
-  const response = await pending;
+  let control = hostPanel(page).getByRole("button", { name: label, exact: true });
+  if (scope === "target") {
+    const apiUrl = process.env.COLLABORATION_E2E_API_URL;
+    if (!apiUrl) throw new Error("Host target control requires the explicit acceptance API URL");
+    const snapshot = CollaborationIssueSchema.parse(await page.evaluate(async (url) => {
+      const token = localStorage.getItem("multica_token");
+      const response = await fetch(url, { credentials: "include", headers: token ? { Authorization: `Bearer ${token}` } : {} });
+      if (!response.ok) throw new Error(`Host target snapshot read failed: ${response.status}`);
+      return response.json();
+    }, new URL(versioned(issueRoot(issue.id)), apiUrl).href));
+    expect(snapshot.id).toBe(issue.id);
+    expect(snapshot.execution?.protocol_version).toBe(6);
+    const targets = snapshot.execution?.targets.filter((target) => target.id === issue.targetId) ?? [];
+    const target = targets[0];
+    if (targets.length !== 1 || !target) throw new Error("Host target control requires one current public target");
+    const row = hostPanel(page).getByRole("listitem")
+      .filter({ has: page.getByText(target.resource_id, { exact: true }) })
+      .filter({ has: page.getByRole("button", { name: label, exact: true }) });
+    await expect(row).toHaveCount(1);
+    control = row.getByRole("button", { name: label, exact: true });
+  }
+  const [response] = await Promise.all([
+    page.waitForResponse((response) => new URL(response.url()).pathname === `${issueRoot(issue.id)}/control` && response.request().method() === "POST"),
+    control.click(),
+  ]);
   expect(response.status()).toBe(200);
   expect(response.request().postDataJSON()).toMatchObject({ action, scope, execution_view_version: 6 });
+  if (scope === "target") expect(response.request().postDataJSON()).toMatchObject({ targets: [{ target_id: issue.targetId }] });
   const receipt: CollaborationControlReceipt = await response.json();
   expect(receipt).toMatchObject({ action, scope, queue_state: action === "resume" ? "active" : "paused" });
   if (scope === "target") expect(receipt.target_id).toBe(issue.targetId);

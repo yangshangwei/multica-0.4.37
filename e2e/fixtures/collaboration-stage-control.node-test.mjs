@@ -34,6 +34,22 @@ const receipt = { version: 1, issue_id: issue, request_id: id, intent_id: intent
 const reply = { request_id: id, ok: true, result: receipt, calls: { count: 1, last: { intent_id: intent,
   kind: "deployment", target_digest: digest, artifact_digest: digest, external_request_key: id, conditional_version: "1" } } };
 
+// Retained R22 reply data is parsed offline. Socket tests below use a fresh
+// synthetic request identity and never contact or replay the real harness.
+const observedRollbackReply = {
+  request_id: "61b4733a-f70e-424c-8f4b-c337ea9c3f52", ok: true,
+  result: { version: 1, issue_id: "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+    request_id: "61b4733a-f70e-424c-8f4b-c337ea9c3f52", intent_id: "01a1e575-5feb-7382-a862-81b0f0793478",
+    approval_decision_id: "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab", kind: "rollback", state: "succeeded",
+    fact_id: "01a1e575-600d-7ccd-800c-cd8ec86aa8ef", observation_id: "01a1e575-600d-7ccd-800c-cd8ec86aa8ef" },
+  calls: { count: 2, last: { intent_id: "01a1e575-5feb-7382-a862-81b0f0793478", kind: "rollback",
+    target_digest: "69f136894a3bb3a99dbbba3f55a2644c13f8eff1a73b580fea107e66f229b5f3",
+    artifact_digest: "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f",
+    external_request_key: "01a1e575-5feb-7382-a862-81b0f0793478",
+    conditional_version: "1/after/01a1e575-3092-7cb9-bfa2-8a28d87745ff" } },
+};
+const opaqueVersion = observedRollbackReply.calls.last.conditional_version;
+
 test("private control accepts a frozen original request and bounded native operation IDs", () => {
   assert.equal(encodeStageControlRequest(request), `${JSON.stringify(request)}\n`);
   const native = { request_id: id, action: "source.behavior", behavior: "succeeded", external_operation_id: "deploy/provider:作业-1" };
@@ -52,6 +68,40 @@ test("private control rejects unknown actions/fields, duplicate response keys an
   assert.throws(() => parseStageControlReply(JSON.stringify({ ...reply, calls: { count: -1, last: null } }), id));
   assert.throws(() => parseStageControlReply(`{"request_id":"${id}","request_id":"${id}","ok":false,"code":"x","calls":{"count":0,"last":null}}`, id));
   assert.throws(() => parseStageControlReply(JSON.stringify({ ...reply, result: { ...receipt, secret: "x".repeat(65536) } }), id));
+});
+
+test("a succeeded rollback reply preserves its opaque conditional token and bounded UTF-8 state", () => {
+  const parsed = parseStageControlReply(JSON.stringify(observedRollbackReply), observedRollbackReply.request_id);
+  assert.deepEqual(parsed, observedRollbackReply);
+  assert.equal(parsed.result.state, "succeeded");
+  assert.equal(parsed.calls.count, 2);
+  assert.equal(parsed.calls.last.conditional_version, opaqueVersion);
+  for (const value of ["0", "01", "provider/etag:v2", "x".repeat(256), "界".repeat(85) + "a"]) {
+    const bounded = { ...reply, calls: { count: 1, last: { ...reply.calls.last, conditional_version: value } } };
+    assert.equal(parseStageControlReply(JSON.stringify(bounded), id).calls.last.conditional_version, value);
+  }
+});
+
+test("malformed conditional tokens cannot expose a confirmed stage-control reply", () => {
+  for (const value of ["", null, undefined, 1, false, {}, [], "a\0b", "\ud800", "\udfff", "x".repeat(257), "界".repeat(86)]) {
+    const malformed = { ...reply, calls: { count: 1, last: { ...reply.calls.last, conditional_version: value } } };
+    assert.throws(() => parseStageControlReply(JSON.stringify(malformed), id));
+  }
+});
+
+test("opaque reply tokens do not loosen request candidate, native or initial configuration versions", () => {
+  const observe = { request_id: id, action: "execution.observe", intent_id: intent,
+    native_id: "synthetic-observation", native_version: "1", result: "unknown" };
+  const configure = { request_id: id, action: "source.configure", workspace_id: issue,
+    deployment_integration_id: approval, metric_integration_id: candidate, environment: "synthetic",
+    remote_instance: "fixture", remote_tenant: "fixture", remote_target: "fixture", conditional_version: "1",
+    current_artifact_digest: null, query_id: "query", query_digest: digest, rule_id: "rule", rule_digest: digest,
+    metric_freshness_seconds: 120 };
+  assert.equal(JSON.parse(encodeStageControlRequest(observe)).native_version, "1");
+  assert.equal(JSON.parse(encodeStageControlRequest(configure)).conditional_version, "1");
+  assert.throws(() => encodeStageControlRequest({ ...request, candidate: { ...request.candidate, version: opaqueVersion } }));
+  assert.throws(() => encodeStageControlRequest({ ...observe, native_version: opaqueVersion }));
+  assert.throws(() => encodeStageControlRequest({ ...configure, conditional_version: opaqueVersion }));
 });
 
 async function fixture(t, receive) {
@@ -82,6 +132,30 @@ async function fixture(t, receive) {
   server.listen(path); await once(server, "listening"); chmodSync(path, 0o600);
   return { control, path };
 }
+
+test("one correlated socket reply confirms a succeeded rollback with an opaque conditional token", async (t) => {
+  const received = [];
+  const terminal = { ...reply, result: { ...receipt, kind: "rollback", state: "succeeded", fact_id: approval },
+    calls: { count: 2, last: { ...reply.calls.last, kind: "rollback", conditional_version: opaqueVersion } } };
+  const { control } = await fixture(t, (value, socket) => {
+    received.push(value);
+    socket.write(`${JSON.stringify(terminal)}\n`);
+  });
+  const result = await control.send(request);
+  assert.deepEqual(result, terminal);
+  assert.equal(result.calls.last.conditional_version, opaqueVersion);
+  assert.deepEqual(received, [request]);
+});
+
+test("a malformed conditional token from a socket remains unconfirmed without replay", async (t) => {
+  for (const value of [null, 1, "a\0b", "界".repeat(86)]) {
+    let count = 0;
+    const malformed = { ...reply, calls: { count: 1, last: { ...reply.calls.last, conditional_version: value } } };
+    const { control } = await fixture(t, (_request, socket) => { count++; socket.write(`${JSON.stringify(malformed)}\n`); });
+    await assert.rejects(control.send(request), /unconfirmed/i);
+    assert.equal(count, 1);
+  }
+});
 
 test("receipt recovery may reuse an already completed original request ID without a second prepare", async (t) => {
   const requests = [];

@@ -296,7 +296,7 @@ export async function configureStageExecution(control: StageExecutionControl, wo
     ...sources, environment: `synthetic-stage-${suffix}`, remote_instance: "controlled-local-stage-fixture", remote_tenant: suffix,
     remote_target: `target-${suffix}`, conditional_version: "1", current_artifact_digest: previousArtifact,
     query_id: "synthetic-payment-error-rate", query_digest: stageBytesHash("controlled-query-v1"), rule_id: "synthetic-test-rule",
-    rule_digest: stageBytesHash("controlled-rule-v1"), metric_freshness_seconds: 600 };
+    rule_digest: stageBytesHash("controlled-rule-v1"), metric_freshness_seconds: 120 };
   const reply = await control.send(request);
   if (!reply.ok) throw new Error(`Controlled target configuration refused: ${reply.code}`);
   const target = stageString(reply.result.target_digest, "target digest");

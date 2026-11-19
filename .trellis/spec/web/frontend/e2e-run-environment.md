@@ -637,6 +637,26 @@ this to both inviting and transferring: Transfer can be primary for the creator
 but collapsed for the recipient after a reload. Expand the section before
 asserting that an unauthorized action is absent; keep capability/API refusals.
 
+For an already visible toolbar action, click its unique exact button before
+opening More actions. The Base UI root menu is modal: its pointer backdrop
+leaves the dropdown trigger accessible but blocks neighboring toolbar buttons.
+Opening a menu that lacks Submit result and then selecting the toolbar button
+can therefore time out even while that button is visible, enabled and stable.
+
+```typescript
+await page.getByRole("button", { name: "Submit result", exact: true }).click();
+```
+
+When an action actually belongs in More actions, open the menu and scope its
+unique menuitem to that visible menu. Dismiss an unrelated open menu through
+Escape or its trigger and await closure before returning to a toolbar action.
+Do not use a button/menuitem union with `.first()`, force clicks, remove the
+normal backdrop or increase deadlines to conceal the wrong active surface.
+Preserve the failed run and verify the real form, request identity and subsequent
+business assertions in a fresh complete journey. PAY-241 R23 retained this
+20-second click failure; R24's spec-only repair preserves the original 480-second
+scenario deadline and all later M1/authorization/recovery assertions.
+
 The password handoff chain submits through Submit result with explicit Result
 and Basis. Bind its `delivery_confirmation.submission_id` to the immutable
 `delivery.current` snapshot, then use Accept and complete with that same

@@ -11,7 +11,6 @@ import { changePolicyInUI } from "./fixtures/collaboration-business-scenarios";
 import { hostControl, hostPanel, issueRoot, openHostAcceptanceGate, openHostConsent, sendHostComment } from "./fixtures/collaboration-host-runtime";
 import { nativeScreenshot, openDesktop } from "./fixtures/collaboration-native";
 import { TestApiClient } from "./fixtures";
-import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { StageSourceFixture, createStageGitInput, createStageTestResource, joinStageSource, loseStageReply, readCode,
   readStage, readStagePolicy, showStage, stageAcceptanceConfigured, stageEnvironment, stageHash, stageObservations, stagePanel,
   stageRefusal, stageRequest, stageRoot, stageSuccess, stageUI, type StageHTTPFact } from "./fixtures/collaboration-stage-approvals";
@@ -466,8 +465,7 @@ test("stage evidence gates real submission, M1 completion and administrative or 
     expect(execution.calls.count).toBe(f.configured.callBaseline + 1);
     await showStage(f.p, j.env.webUrl, id, f.title); j.retain(await stageMoveUI(f.p, P, id, "Verification"));
     const d = await j.open(browser, D, id, f.title);
-    await revealCollaborationDisclosure(d, "More actions");
-    await d.getByRole("button", { name: "Submit result", exact: true }).or(d.getByRole("menuitem", { name: "Submit result", exact: true })).first().click();
+    await d.getByRole("button", { name: "Submit result", exact: true }).click();
     const submissionForm = d.getByRole("form", { name: "Submit result", exact: true });
     await submissionForm.getByLabel("Result", { exact: true }).fill("Synthetic exact build and controlled deployment verified");
     await submissionForm.getByLabel("Basis", { exact: true }).fill("Actual Git-bound CLI report, human QA/release and matching controlled execution fact");
