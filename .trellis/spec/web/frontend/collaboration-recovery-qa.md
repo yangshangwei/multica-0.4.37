@@ -281,3 +281,48 @@ Desktop `out/` files are build outputs: bind them separately and prove the
 original source inputs remained unchanged. Successful environment admission
 and test execution are dependent steps; observe admission success before
 starting the test command.
+
+## Requirements description synchronization and Activity history
+
+`e2e/collaboration-requirements-history.spec.ts` owns the TC-02 description
+history proof. Opt in with `PAY241_TC02_REQUIREMENTS_ACCEPTANCE=1` and
+`E2E_PASSWORD_AUTH=1`, plus the owned API/database, production Web and matching
+Desktop renderer/preload inputs listed above. It does not enable S3 runtime or
+real-model execution. Its two journeys use three independent authorized
+product/developer/QA sessions per platform. These account labels describe the
+fixture participants, not new occupational permissions.
+
+V1 creation and participant invitations are explicit public API setup. Two
+actual Edit issue submissions change only acceptance criteria in the existing
+description, preserving impact and reproduction paragraphs. Each of the three
+versions must render in all three sessions with its exact real UI GET response
+description and collaboration revision. The revision is response evidence, not
+a visible UI version label. Current API equality alone proves neither rendered
+synchronization nor old-version access.
+
+Open each actual Activity drawer and compare its latest complete response with
+the displayed actor, `time[datetime]` and complete description before/after
+contents. Keep old responses for audit, but never merge them into a current
+ordered-page oracle: a Map preserving old insertion order can disagree with a
+correct current descending event list. In this finite fixture the five events
+(creation, two invitations, two edits) fit one default UI page. Separately,
+each real session traverses authorized `limit=1` API pages through the creation
+boundary; that diagnostic pagination is not an asserted UI Load more action.
+
+Read-only SQL joins each immutable event ID/sequence, actor, full text and UTC
+timestamp to its original request and operation receipt. Retain original API
+and SQL timestamp strings and compare their exact UTC instant, including all
+fractional digits. A valid RFC3339 offset such as `+08:00` need not serialize
+as a literal `Z`; preserve normalized UTC evidence without changing the server
+timezone. The public Activity DTO intentionally omits the stored request/receipt fields. Compare full stored
+receipt/operation values, recover original results after later edits and retain
+exactly one event per deliberate edit. Observer sessions must perform no
+business writes; commands, runs, dispatches and unrelated history remain
+unchanged. Comment revision history cannot substitute for description history.
+
+The complete denominator is two tops, six actor sessions, four UI edits,
+eighteen rendered/current-response observations and six Activity inspections,
+with zero retries. Preserve failed rounds and require independent raw/source/
+catalog/closure review before accepting the business case. Native Electron
+renderer/preload acceptance does not establish installed production Main,
+OS-pointer behavior, payment execution or real-model quality.
