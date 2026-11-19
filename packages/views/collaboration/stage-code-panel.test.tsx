@@ -52,7 +52,55 @@ it("keeps an absent R4 unavailable and offers no approval", async () => {
   mount(view, null);
   const section = await screen.findByRole("region", { name: "Code and approvals" });
   expect(await within(section).findByText("Code evidence is unavailable on this server.")).toBeVisible();
+  expect(within(section).queryByText("You cannot currently read the source evidence. No source details or approvals are shown.")).not.toBeInTheDocument();
   expect(within(section).queryByRole("button", { name: "Approve code review" })).not.toBeInTheDocument();
+});
+it.each(["pending", "unavailable", "error"] as const)("keeps R1 source denial visible after clearing a private R4 whose next read is %s", async (nextRead) => {
+  const stage = structuredClone(view);
+  const privateRecord = { ...stageCodeViewFixture, decisions: [{ ...stageCodeReviewDecisionFixture, reason: "PRIVATE previous review" }],
+    test_reports: [stageTestReportSummaryFixture] };
+  let sourceDenied = false, replacementStarted = false;
+  let cancelPending: ((error: Error) => void) | undefined;
+  const writes = mount(stage, () => {
+    if (!sourceDenied) return privateRecord;
+    replacementStarted = true;
+    if (nextRead === "pending") return new Promise((_resolve, reject) => { cancelPending = reject; });
+    if (nextRead === "unavailable") return null;
+    throw new TypeError("Synthetic code evidence network failure");
+  });
+  const section = await screen.findByRole("region", { name: "Code and approvals" });
+  expect(await within(section).findByText("PRIVATE previous review")).toBeVisible();
+  expect(within(section).getByRole("region", { name: "Test reports" })).toBeVisible();
+  sourceDenied = true;
+  Object.assign(stage.children, { items: stage.children.items.map((child) => ({ ...child, can_open: false, content_digest: null, pull_requests: [] })) });
+  const client = clients.at(-1)!;
+  await client.refetchQueries({ predicate: (query) => query.queryKey.at(-1) === "view" });
+  void client.refetchQueries({ predicate: (query) => query.queryKey.at(-1) === stageIds.candidate1 });
+  await waitFor(() => expect(replacementStarted).toBe(true));
+  const message = await within(section).findByText("You cannot currently read the source evidence. No source details or approvals are shown.");
+  expect(message).toBeVisible();expect(message).toHaveAttribute("role", "status");
+  expect(within(section).getAllByText("You cannot currently read the source evidence. No source details or approvals are shown.")).toHaveLength(1);
+  expect(within(section).queryByText(stagePullRequestFixture.head_sha)).not.toBeInTheDocument();
+  expect(within(section).queryByText("PRIVATE previous review")).not.toBeInTheDocument();
+  expect(within(section).queryByRole("region", { name: "Test reports" })).not.toBeInTheDocument();
+  expect(within(section).queryByRole("region", { name: "Human decisions" })).not.toBeInTheDocument();
+  expect(within(section).queryByRole("button", { name: /^Approve/ })).not.toBeInTheDocument();
+  expect(writes).toEqual([]);
+  if (nextRead === "error") expect(await within(section).findByRole("button", { name: "Refresh" })).toBeEnabled();
+  cancelPending?.(new DOMException("Test ended", "AbortError"));
+});
+it.each(["pending", "error"] as const)("keeps a readable R1 distinct from an R4 %s state", async (state) => {
+  let cancelPending: ((error: Error) => void) | undefined;
+  mount(view, () => {
+    if (state === "pending") return new Promise((_resolve, reject) => { cancelPending = reject; });
+    throw new TypeError("Synthetic code evidence network failure");
+  });
+  const section = await screen.findByRole("region", { name: "Code and approvals" });
+  if (state === "pending") expect(await within(section).findByText("Loading stage gates...")).toBeVisible();
+  else expect(await within(section).findByRole("button", { name: "Refresh" })).toBeEnabled();
+  expect(within(section).queryByText("You cannot currently read the source evidence. No source details or approvals are shown.")).not.toBeInTheDocument();
+  expect(within(section).queryByRole("button", { name: /^Approve/ })).not.toBeInTheDocument();
+  cancelPending?.(new DOMException("Test ended", "AbortError"));
 });
 it("creates a code candidate from the observed child PR and opens its returned identity", async () => {
   const writes = mount({ ...view, code_candidates: { items: [], truncated: false } }, stageCodeViewFixture,

@@ -47,6 +47,12 @@ export function useCollaborationStageLabels() {
       case "stage_dependency_invalid": return t(($) => $.stage.refusals.stage_dependency_invalid);
       case "stage_test_report_unusable": return t(($) => $.stage.refusals.stage_test_report_unusable);
       case "stage_execution_fact_missing": return t(($) => $.stage.refusals.stage_execution_fact_missing);
+      case "stage_execution_unavailable": return t(($) => $.stage.refusals.stage_execution_unavailable);
+      case "stage_execution_target_changed": return t(($) => $.stage.refusals.stage_execution_target_changed);
+      case "stage_execution_pending": return t(($) => $.stage.refusals.stage_execution_pending);
+      case "stage_execution_conflict": return t(($) => $.stage.refusals.stage_execution_conflict);
+      case "stage_rollback_observation_unavailable": return t(($) => $.stage.refusals.stage_rollback_observation_unavailable);
+      case "stage_rollback_observation_changed": return t(($) => $.stage.refusals.stage_rollback_observation_changed);
       case "stage_stage_changed": return t(($) => $.stage.refusals.stage_stage_changed);
       case "stage_decision_expired": return t(($) => $.stage.refusals.stage_decision_expired);
       case "stage_signer_changed": return t(($) => $.stage.refusals.stage_signer_changed);

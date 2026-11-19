@@ -1,6 +1,6 @@
 import { useEffect, useId, useState } from "react";
 import { useIsMutating, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deriveCollaborationStageCodeState, useCollaborationStageCodeCandidate, canPrepareCollaborationTest, collaborationCodeTestSubject,
+import { deriveCollaborationStageCodeState, useCollaborationStageCodeCandidate, canPrepareCollaborationTest, collaborationCodeTestSubject, collaborationStageSourceDenied,
   collaborationKeys, collaborationMentionTargetsOptions, useCollaborationDeliveryForm, useCollaborationPendingDrafts,
   type CollaborationIssue, type CollaborationScope, type CollaborationStageView } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
@@ -59,9 +59,9 @@ export function StageCodePanel({ scope, issue, view, locked, selectedId, onSelec
     {candidateId && query.isPending && <p role="status" className="text-caption">{t(($) => $.stage.loading)}</p>}
     {query.error && <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     {query.data && query.data.state !== "available" && <p role="status" className="text-caption text-muted-foreground">{t(($) => $.stage.code.unavailable)}</p>}
+    {(collaborationStageSourceDenied(view) || (record && !source)) && <p role="status" className="text-body text-muted-foreground">{t(($) => $.stage.code.sourceUnavailable)}</p>}
     {record && <>
       <p className="text-caption text-muted-foreground">{t(($) => $.stage.code.version, { version: record.candidate.version })} · {labels.codeCandidateState(record.candidate.state)}</p>
-      {!source && <p role="status" className="text-body text-muted-foreground">{t(($) => $.stage.code.sourceUnavailable)}</p>}
       <div className="flex flex-wrap gap-2">{actions.returns.map((step) => <Button key={step} type="button" variant="outline" className={actionClass} disabled={locked}
             onClick={(event) => onOpen({ kind: "code", action: "decide", candidateId: record.candidate.candidate_id, step, decision: "return" }, event.currentTarget)}>{t(($) => $.stage.code.return[step])}</Button>)}</div>
       {source && <>
