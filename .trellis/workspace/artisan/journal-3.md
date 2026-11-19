@@ -1483,3 +1483,39 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 ### Next Steps
 
 - 父任务继续跟踪其余原编号；PAY-241 S3 与既有创建弹窗任务保持原归属。
+
+
+## Session 165: Core UI audit remediation committed
+<!-- trellis-session: v=2 fp=02a7d4f0265f1246 -->
+
+**Date**: 2026-11-19
+**Task**: Core UI audit remediation committed
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Committed verified F01-F11 core UI fixes and archived their evidence; unrelated shared-tree work preserved.
+
+### Main Changes
+
+- Preserve squad drafts and denied-query boundaries; repair retained sidebar portals, picker/editor semantics, brand contrast and touch targets.
+- Independent review resolved six integration edge cases; native Electron confirmed the key interaction repairs.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b6b07c3067bccaf3a76de960872a41e0f687d276` | fix(ui): preserve drafts and accessible state across core workflows |
+
+### Testing
+
+- [OK] 533 targeted tests passed; Core/UI/Views/Web/Desktop typechecks passed; scoped lint0 errors and detector0 findings.
+- [OK] Commit preparation rechecked51 source hashes against the verified manifest; all matched.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Physical phone touch, spoken screen-reader validation and the two unconfirmed narrow-layout candidates remain outside this task.
