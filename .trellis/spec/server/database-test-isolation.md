@@ -77,6 +77,15 @@ specific positive fixture; never add a global heartbeat loop or relax the fence
 for stale/offline negative tests. A targeted pass or a later heartbeat-age log
 does not reconstruct a cleaned-up runtime row from an earlier failed run.
 
+Private collaboration history cursors require a generated, nondefault
+`JWT_SECRET` even in a legacy-auth test deployment. Set it before starting the
+API or Go test process: `auth.JWTSecret()` caches its first value with
+`sync.Once`, so a later per-test environment override cannot repair an earlier
+default read. `informationCursorKey()` intentionally rejects the public
+development default with HTTP 503 `information_context_unavailable`. Preserve
+that refusal; configure the isolated fixture instead of weakening the check.
+Keep the generated value only in the private environment file, never the report.
+
 ### Private environment registry identity
 
 An application environment file and a development registry are separate inputs.

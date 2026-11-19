@@ -150,6 +150,55 @@ grep -Fxq 'MULTICA_PLATFORM_ADMIN_ENABLED=true' "$fixture_dir/source.env"
 grep -Fq 'WEB_MODE=production' "$STATE_DIR/manifest.env"
 FIXTURE
 
+# Each isolated check owns its signing key, even when the source has a real key.
+jwt_key_case() {
+  local name=$1 source_key=$2 run
+  local fixture_dir="$test_dir/jwt-$name"
+  mkdir -p "$fixture_dir"
+  cp "$test_dir/source.env" "$fixture_dir/source.env"
+  if [ "$name" != missing ]; then
+    printf 'JWT_SECRET=%s\n' "$source_key" >> "$fixture_dir/source.env"
+  fi
+  cp "$fixture_dir/source.env" "$fixture_dir/source-before.env"
+  for run in first second; do
+    bash -s -- "$root_dir" "$fixture_dir" "$run" <<'FIXTURE'
+set -euo pipefail
+source "$1/scripts/check.sh"
+fixture_dir=$2
+run=$3
+REPO_ROOT="$fixture_dir"
+DEV_HOME="$fixture_dir/registry-$run"
+ENVS_DIR="$DEV_HOME/envs"
+LOCK_DIR="$DEV_HOME/lock.d"
+load_env_file() { set -a; source "$1"; set +a; }
+allocate_offset() { printf 907; }
+unset JWT_SECRET
+load_env_file "$fixture_dir/source.env"
+source_key=${JWT_SECRET:-}
+prepare_check_environment "$fixture_dir/source.env"
+[[ ${JWT_SECRET:-} =~ ^[0-9a-f]{64}$ ]] || { echo 'Check signing key must be 32 random bytes encoded as hex'; exit 1; }
+[ "$JWT_SECRET" != "$source_key" ] || { echo 'Check reused its source signing key'; exit 1; }
+if [ "$run" = first ]; then
+  (umask 077; printf '%s' "$JWT_SECRET" > "$fixture_dir/first-key")
+else
+  [ "$JWT_SECRET" != "$(cat "$fixture_dir/first-key")" ] || { echo 'Two checks reused one signing key'; exit 1; }
+fi
+cmp -s "$fixture_dir/source.env" "$fixture_dir/source-before.env" || { echo 'Check changed its source environment'; exit 1; }
+node - "$ENV_FILE" <<'JS'
+const fs = require('node:fs');
+if ((fs.statSync(process.argv[2]).mode & 0o777) !== 0o600) throw new Error('Check environment must remain private');
+JS
+FIXTURE
+  done
+  echo "jwt-$name: PASS"
+}
+
+jwt_key_case missing ''
+jwt_key_case blank ''
+jwt_key_case default 'multica-dev-secret-change-in-production'
+jwt_key_case historical-default 'change-me-in-production'
+jwt_key_case custom 'source-signing-key-must-not-reach-the-check'
+
 native_origin_case() {
   local name=$1 collaboration=$2 changelog=$3 expected=$4 expected_status=${5:-0} status=0
   local fixture_dir="$test_dir/native-$name"

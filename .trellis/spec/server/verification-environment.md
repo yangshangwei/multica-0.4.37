@@ -24,6 +24,14 @@ test_env.pop("MULTICA_RESOURCE_PUBLISH_DIR", None)
 
 The publisher key is removed from the ordinary top-level package child, not globally. API startup, non-test/compile commands and a recursive test's explicitly selected publisher configuration retain their intended values. API pool overrides are removed from actual ordinary and recursive test branches. Individual tests may set their own environment.
 
+`scripts/check.sh:prepare_check_environment()` generates a new 32-byte signing
+key for each isolated check and appends its hexadecimal value as `JWT_SECRET`
+only to the private task copy. Never inherit a deployment key into test actors
+or leave the public development default in place: private history cursors
+correctly reject that default. `scripts/check.test.sh` exercises missing, blank,
+both public defaults and custom source values, verifies distinct generated keys
+and mode0600 task files, and compares source bytes unchanged.
+
 `MULTICA_RESOURCE_PUBLISH_DIR` enables organization-scoped catalog reads. The router's ordinary `TestMain` inserts user/workspace fixtures directly; it does not perform the public `CreateWorkspace` call that ensures an active internal organization. An API publishing path inherited by this fixture can therefore make an embedded-only skill catalog return503. Do not add an organization seed or change a product assertion to hide this configuration leak.
 
 Use a private0700 HOME for the launcher child and a separate HOME per top-level Go package. Pin actual `GOCACHE`, `GOMODCACHE` and `GOPATH` explicitly. Recursive tests retain a test-selected HOME. Do not export global task config/workspace roots that override `t.Setenv("HOME", ...)`.
