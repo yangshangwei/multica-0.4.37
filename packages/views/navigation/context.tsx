@@ -59,7 +59,7 @@ export function NavigationProvider({
     () => ({
       ...value,
       push: (path: string) => startTransition(() => value.push(path)),
-      replace: (path: string) => startTransition(() => value.replace(path)),
+      replace: (...args: Parameters<NavigationAdapter["replace"]>) => startTransition(() => value.replace(...args)),
     }),
     [value],
   );

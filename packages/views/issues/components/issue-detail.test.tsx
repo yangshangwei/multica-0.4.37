@@ -131,6 +131,7 @@ vi.mock("../../navigation", () => ({
     push: vi.fn(),
     replace: navigationState.replace,
     pathname: navigationState.pathname,
+    searchParams: new URLSearchParams(),
     hash: navigationState.hash,
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
   }),
@@ -765,7 +766,7 @@ describe("IssueDetail (shared)", () => {
     const client = createTestQueryClient();
     render(<I18nProvider locale="en" resources={TEST_RESOURCES}><QueryClientProvider client={client}><IssueDetailRoute routeId={id} /></QueryClientProvider></I18nProvider>);
     expect(await screen.findByTestId("source-collaboration-detail")).toHaveAttribute("data-run-id", runId);
-    expect(navigationState.replace).toHaveBeenCalledWith(`/test/issues/TES-1#run-${runId}`);
+    expect(navigationState.replace).toHaveBeenCalledWith(`/test/issues/TES-1#run-${runId}`, { preserveView: true });
     expect(mockApiObj.listTasksByIssue).not.toHaveBeenCalled();
     client.clear();
   });

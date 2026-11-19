@@ -73,7 +73,7 @@ describe("routed iteration participation disclosure", () => {
     const view = render(surface(client, `/acme/issues/${alpha.id}`, replace, <IssueDetailRoute key={alpha.id} routeId={alpha.id} />));
     try {
       const summary = (await screen.findByText("Iteration history")).closest("summary")!;
-      await waitFor(() => expect(replace).toHaveBeenCalledWith(`/acme/issues/${alpha.identifier}`));
+      await waitFor(() => expect(replace).toHaveBeenCalledWith(`/acme/issues/${alpha.identifier}`, { preserveView: true }));
       await user.click(summary);
       await waitFor(() => expect(readHistory).toHaveBeenCalled());
       expect(summary.closest("details")).toHaveProperty("open", true);

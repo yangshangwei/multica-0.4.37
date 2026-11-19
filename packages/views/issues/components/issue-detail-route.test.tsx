@@ -29,6 +29,7 @@ vi.mock("@multica/core/paths", async () => {
 
 const replace = vi.fn();
 const push = vi.fn();
+let navigationSearch = "";
 
 function wrapper({ children }: { children: ReactNode }) {
   const adapter: NavigationAdapter = {
@@ -36,7 +37,7 @@ function wrapper({ children }: { children: ReactNode }) {
     replace,
     back: vi.fn(),
     pathname: "/acme/issues/x",
-    searchParams: new URLSearchParams(),
+    searchParams: new URLSearchParams(navigationSearch),
     hash: "",
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
   };
@@ -47,6 +48,7 @@ describe("useCanonicalIssueUrl", () => {
   beforeEach(() => {
     replace.mockClear();
     push.mockClear();
+    navigationSearch = "";
   });
 
   it("rewrites a UUID URL to the identifier once the issue resolves", () => {
@@ -60,7 +62,7 @@ describe("useCanonicalIssueUrl", () => {
     expect(replace).not.toHaveBeenCalled();
 
     rerender({ identifier: "TRS-134" });
-    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134");
+    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134", { preserveView: true });
     expect(push).not.toHaveBeenCalled();
   });
 
@@ -87,7 +89,16 @@ describe("useCanonicalIssueUrl", () => {
   // to the issue's real identifier rather than left as typed.
   it("normalizes a differently-cased identifier segment", () => {
     renderHook(() => useCanonicalIssueUrl("trs-134", "TRS-134"), { wrapper });
-    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134");
+    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134", { preserveView: true });
+  });
+
+  it("preserves query context while normalizing the same issue", () => {
+    navigationSearch = "from=inbox&view=mine";
+    renderHook(
+      () => useCanonicalIssueUrl("cb240efb-154c-42a8-ae92-42b02676feca", "TRS-134", "#comment-7"),
+      { wrapper },
+    );
+    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134?from=inbox&view=mine#comment-7", { preserveView: true });
   });
 
   it("preserves a source-comment deep link while canonicalizing a UUID", () => {
@@ -99,7 +110,7 @@ describe("useCanonicalIssueUrl", () => {
       ),
       { wrapper },
     );
-    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134#comment-comment-7");
+    expect(replace).toHaveBeenCalledWith("/acme/issues/TRS-134#comment-comment-7", { preserveView: true });
   });
 });
 

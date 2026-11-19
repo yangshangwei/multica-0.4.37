@@ -33,7 +33,8 @@ export function useCanonicalIssueUrl(
 ) {
   const paths = useWorkspacePaths();
   const navigation = useNavigation();
-  const canonicalHref = identifier ? `${paths.issueDetail(identifier)}${hash}` : null;
+  const query = navigation.searchParams.toString();
+  const canonicalHref = identifier ? `${paths.issueDetail(identifier)}${query ? `?${query}` : ""}${hash}` : null;
   // `useWorkspacePaths()` and the navigation adapter are both rebuilt on
   // render, so this ref — not the dependency array — is what guarantees the
   // replace runs once per target instead of on every commit.
@@ -43,7 +44,7 @@ export function useCanonicalIssueUrl(
     if (!canonicalHref || routeId === identifier) return;
     if (replacedRef.current === canonicalHref) return;
     replacedRef.current = canonicalHref;
-    navigation.replace(canonicalHref);
+    navigation.replace(canonicalHref, { preserveView: true });
   }, [canonicalHref, identifier, routeId, navigation]);
 }
 

@@ -96,7 +96,17 @@ function NavigationProviderInner({
     setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
     if (fragment === null) router.push(path);
   }, [router, navigateFragment]);
-  const replace = useCallback((path: string) => {
+  const replace = useCallback((path: string, options?: { preserveView?: boolean }) => {
+    if (options?.preserveView) {
+      const target = new URL(path, window.location.href);
+      if (target.origin === window.location.origin) {
+        // Next's supported History API keeps the current route tree mounted.
+        // A router.replace of a UUID with its identifier would remount the
+        // dynamic segment and discard a picker or editor already in use.
+        window.history.replaceState(null, "", target.pathname + target.search + target.hash);
+        return;
+      }
+    }
     const fragment = navigateFragment(path, "replaceState");
     setIntent((previous) => ({ path: fragment ?? path, resume: false, key: previous.key + 1 }));
     if (fragment === null) router.replace(path);
