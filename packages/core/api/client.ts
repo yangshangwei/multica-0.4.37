@@ -1126,7 +1126,7 @@ export class ApiClient {
 
   async getCollaborationAttachmentUpload(draftId: string, requestId: string, options?: { signal?: AbortSignal }) {
     const result = parseCollaborationAttachment(await this.fetchCollaborationRecovery(`/api/collaboration/attachments/drafts/${encodeURIComponent(draftId)}/operations/${encodeURIComponent(requestId)}`, options));
-    return result && sameResourceIdentity(result.draft_id, draftId) ? result : null;
+    return result && result.draft_id !== null && sameResourceIdentity(result.draft_id, draftId) ? result : null;
   }
 
   async getCollaborationDraftAttachments(draftId: string, options?: { signal?: AbortSignal }) {

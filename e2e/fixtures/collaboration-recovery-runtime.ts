@@ -1014,3 +1014,11 @@ export async function exerciseRecoveryRuntimeWithdrawal(browser: Browser, platfo
       old_cancelled_waiting_inputs: retained.filter((item) => item.waiting !== null).map((item) => item.waiting!.commandId) };
   });
 }
+
+// The output acceptance shares the original runtime/proof/ledger owners. Keep
+// their accepted case bodies unchanged; its multipart observation is separate.
+export {
+  runtimeTransport, createRuntimeIssue, readIssue, surface, actorFor, submitInput, control, assertVisit, inventory,
+  audit, records, waitSettlement, recoverOriginal, notifications, originalInputReceipt, wireJSON, refusal, safeError,
+};
+export type { RuntimeFixture, OriginalInput, WireReply };

@@ -621,7 +621,7 @@ func init() {
 	issueCommentAddCmd.Flags().String("content-file", "", "Read comment content from a UTF-8 file (preserves multi-line content verbatim; use this on Windows when stdin piping mangles non-ASCII bytes). The path must be inside the current working directory unless --allow-external-file is set.")
 	issueCommentAddCmd.Flags().Bool("allow-external-file", false, "Allow --content-file / --attachment to read a path outside the current working directory. Off by default so a stale file from another run/environment can't be picked up (MUL-4252).")
 	issueCommentAddCmd.Flags().String("parent", "", "Parent comment ID to reply under. A comment-triggered agent task must reply under its trigger comment; omitting --parent to post a top-level comment is rejected")
-	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach (can be specified multiple times)")
+	issueCommentAddCmd.Flags().StringSlice("attachment", nil, "File path(s) to attach; collaboration runs accept one file inside the current working directory")
 	issueCommentAddCmd.Flags().String("output", "json", "Output format: table or json")
 	issueCommentAddCmd.Flags().String("request-id", "", "Collaboration write UUID; reuse with the unchanged command after an uncertain result")
 	issueCommentAddCmd.Flags().String("idempotency-key", "", "Ordinary attachment-free comment UUID key; retain it for read-only receipt recovery after an uncertain result")

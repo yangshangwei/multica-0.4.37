@@ -1428,6 +1428,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Get("/api/collaboration/runtime/runs/{runId}/attachments/{attachmentId}/content", h.GetCollaborationRuntimeAttachmentContent)
 	r.Post("/api/collaboration/runtime/runs/{runId}/preparation/observations", h.RecordCollaborationRuntimePreparation)
 	r.Post("/api/collaboration/runtime/runs/{runId}/comments", h.CreateCollaborationRuntimeComment)
+	r.Post("/api/collaboration/runtime/runs/{runId}/comments/attachments", h.CreateCollaborationRuntimeCommentAttachment)
 	r.Get("/api/collaboration/runtime/runs/{runId}/comments", h.ListCollaborationRuntimeComments)
 	r.Get("/api/collaboration/runtime/runs/{runId}/comments/{commentId}/content", h.GetCollaborationRuntimeCommentContent)
 	r.Post("/api/collaboration/runtime/runs/{runId}/squad-activity", h.RecordCollaborationRuntimeSquadActivity)

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"reflect"
 	"strings"
 	"time"
 
@@ -24,9 +25,20 @@ type CollaborationRuntimeCommentParams struct {
 }
 
 type CollaborationRuntimeCommentReceipt struct {
-	CommentID         pgtype.UUID   `json:"comment_id"`
-	RunIDs            []pgtype.UUID `json:"run_ids"`
-	ContinuationRunID pgtype.UUID   `json:"continuation_run_id"`
+	CommentID         pgtype.UUID                  `json:"comment_id"`
+	RunIDs            []pgtype.UUID                `json:"run_ids"`
+	ContinuationRunID pgtype.UUID                  `json:"continuation_run_id"`
+	Attachment        *CollaborationAttachmentView `json:"attachment,omitempty"`
+}
+
+type collaborationRuntimeCommentInput struct {
+	CollaborationRuntimeCommentParams
+	Attachment *collaborationRuntimeOutputFingerprint `json:"attachment,omitempty"`
+}
+
+type collaborationRuntimeCommentEvent struct {
+	Input   collaborationRuntimeCommentInput   `json:"input"`
+	Receipt CollaborationRuntimeCommentReceipt `json:"receipt"`
 }
 
 type CollaborationRuntimeMember struct {
@@ -231,104 +243,147 @@ func (s *CollaborationService) CreateRuntimeComment(ctx context.Context, runID p
 		if err != nil {
 			return empty, err
 		}
-		eventID := "comment:" + util.UUIDToString(p.CommentID)
-		prior, err := r.q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: runID, ProducerEventID: eventID})
-		if err == nil {
-			var saved struct {
-				Input   CollaborationRuntimeCommentParams  `json:"input"`
-				Receipt CollaborationRuntimeCommentReceipt `json:"receipt"`
-			}
-			if prior.Kind != "comment" || json.Unmarshal(prior.Payload, &saved) != nil || saved.Input != p {
-				return empty, collaborationError(http.StatusConflict, "comment_conflict")
-			}
-			return saved.Receipt, nil
-		}
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return empty, err
+		input := collaborationRuntimeCommentInput{CollaborationRuntimeCommentParams: p}
+		if prior, found, err := r.runtimeCommentReceipt(ctx, input); found || err != nil {
+			return prior, err
 		}
 		if err = validateCollaborationCommentParent(ctx, r.q, r.access, p.ParentID); err != nil {
 			return empty, err
 		}
-		comment, err := r.q.CreateCollaborationRuntimeComment(ctx, db.CreateCollaborationRuntimeCommentParams{ID: p.CommentID, IssueID: r.access.Issue.ID, WorkspaceID: r.access.Issue.WorkspaceID, AuthorID: r.run.AgentID, ParentID: p.ParentID, Content: p.Content})
+		return r.writeRuntimeComment(ctx, input, nil)
+	})
+}
+
+// The original comment UUID owns both JSON and multipart writes. An output
+// fingerprint is present only for multipart, so it cannot alias a no-file event.
+func (r *collaborationRuntimeState) runtimeCommentReceipt(ctx context.Context, input collaborationRuntimeCommentInput) (CollaborationRuntimeCommentReceipt, bool, error) {
+	var empty CollaborationRuntimeCommentReceipt
+	prior, err := r.q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: r.run.ID, ProducerEventID: "comment:" + util.UUIDToString(input.CommentID)})
+	if errors.Is(err, pgx.ErrNoRows) {
+		return empty, false, nil
+	}
+	if err != nil {
+		return empty, false, err
+	}
+	var saved collaborationRuntimeCommentEvent
+	if prior.Kind != "comment" || json.Unmarshal(prior.Payload, &saved) != nil || !reflect.DeepEqual(saved.Input, input) {
+		return empty, false, collaborationError(http.StatusConflict, "comment_conflict")
+	}
+	if saved.Receipt.CommentID != input.CommentID || (input.Attachment == nil) != (saved.Receipt.Attachment == nil) {
+		return empty, false, invalidCollaborationLedger("invalid runtime comment receipt")
+	}
+	if input.Attachment != nil {
+		row, err := r.q.GetCollaborationAttachment(ctx, saved.Receipt.Attachment.ID)
+		if err != nil {
+			return empty, false, err
+		}
+		if err = validateCollaborationRuntimeOutput(row, r, *input.Attachment); err != nil {
+			return empty, false, err
+		}
+		current := CollaborationAttachmentMetadata(row)
+		expected := *saved.Receipt.Attachment
+		if !current.CreatedAt.Equal(expected.CreatedAt) || expected.DeliveredAt == nil || !current.DeliveredAt.Equal(*expected.DeliveredAt) {
+			return empty, false, invalidCollaborationLedger("runtime output receipt changed")
+		}
+		// PostgreSQL and JSON can represent the same instant with different
+		// time.Location values; compare those instants before the other fields.
+		expected.CreatedAt, expected.DeliveredAt = current.CreatedAt, current.DeliveredAt
+		if !reflect.DeepEqual(current, expected) {
+			return empty, false, invalidCollaborationLedger("runtime output receipt changed")
+		}
+		saved.Receipt.Attachment = &current
+	}
+	return saved.Receipt, true, nil
+}
+
+// Every comment producer uses this lock-owned writer for the actual Agent
+// comment, original event, squad effects and notifications in one transaction.
+func (r *collaborationRuntimeState) writeRuntimeComment(ctx context.Context, input collaborationRuntimeCommentInput, attachment *CollaborationAttachmentView) (CollaborationRuntimeCommentReceipt, error) {
+	var empty CollaborationRuntimeCommentReceipt
+	p := input.CollaborationRuntimeCommentParams
+	runID := r.run.ID
+	eventID := "comment:" + util.UUIDToString(p.CommentID)
+	comment, err := r.q.CreateCollaborationRuntimeComment(ctx, db.CreateCollaborationRuntimeCommentParams{ID: p.CommentID, IssueID: r.access.Issue.ID, WorkspaceID: r.access.Issue.WorkspaceID, AuthorID: r.run.AgentID, ParentID: p.ParentID, Content: p.Content})
+	if err != nil {
+		return empty, err
+	}
+	out := CollaborationRuntimeCommentReceipt{CommentID: comment.ID, RunIDs: []pgtype.UUID{}, Attachment: attachment}
+	if attachment != nil {
+		if err = recordCollaborationAttachmentReferences(ctx, r.q, "comment", comment.ID, comment.Revision, []pgtype.UUID{attachment.ID}); err != nil {
+			return empty, err
+		}
+	}
+	mentions := parseCollaborationMentions(p.Content)
+	if r.target.Kind == "squad" {
+		roster, err := decodeCollaborationRoster[collaboration.GroupResource](r.group.Roster)
 		if err != nil {
 			return empty, err
 		}
-		out := CollaborationRuntimeCommentReceipt{CommentID: comment.ID, RunIDs: []pgtype.UUID{}}
-		mentions := parseCollaborationMentions(p.Content)
-		if r.target.Kind == "squad" {
-			roster, err := decodeCollaborationRoster[collaboration.GroupResource](r.group.Roster)
-			if err != nil {
-				return empty, err
+		for _, mention := range mentions.Targets {
+			if mention.Kind != collaboration.TargetAgent {
+				continue
 			}
-			for _, mention := range mentions.Targets {
-				if mention.Kind != collaboration.TargetAgent {
+			for _, resource := range roster {
+				if resource.AgentID != util.UUIDToString(mention.ResourceID) {
 					continue
 				}
-				for _, resource := range roster {
-					if resource.AgentID != util.UUIDToString(mention.ResourceID) {
-						continue
-					}
-					if resource.Role == "leader" {
-						out.ContinuationRunID, err = r.queueContinuation(ctx, r.run.ID)
-					} else {
-						var run db.CollaborationRun
-						run, err = r.createDerivedRun(ctx, resource, r.run.ID, "member", "comment:"+util.UUIDToString(comment.ID)+":"+resource.AgentID)
-						if err == nil {
-							out.RunIDs = append(out.RunIDs, run.ID)
-							err = r.q.CreateCollaborationCommentDelegation(ctx, db.CreateCollaborationCommentDelegationParams{GroupID: r.group.ID, ParentRunID: r.run.ID, RequestKey: util.UUIDToString(comment.ID) + ":" + resource.AgentID, PayloadHash: collaborationCapabilityHash(p.Content), MemberAgentID: run.AgentID, SourceCommentID: comment.ID, RunID: run.ID})
-						}
-					}
-					if err != nil {
-						return empty, err
+				if resource.Role == "leader" {
+					out.ContinuationRunID, err = r.queueContinuation(ctx, r.run.ID)
+				} else {
+					var run db.CollaborationRun
+					run, err = r.createDerivedRun(ctx, resource, r.run.ID, "member", "comment:"+util.UUIDToString(comment.ID)+":"+resource.AgentID)
+					if err == nil {
+						out.RunIDs = append(out.RunIDs, run.ID)
+						err = r.q.CreateCollaborationCommentDelegation(ctx, db.CreateCollaborationCommentDelegationParams{GroupID: r.group.ID, ParentRunID: r.run.ID, RequestKey: util.UUIDToString(comment.ID) + ":" + resource.AgentID, PayloadHash: collaborationCapabilityHash(p.Content), MemberAgentID: run.AgentID, SourceCommentID: comment.ID, RunID: run.ID})
 					}
 				}
-			}
-			if r.run.StepKind.String == "member" && !out.ContinuationRunID.Valid {
-				out.ContinuationRunID, err = r.queueContinuation(ctx, r.run.ID)
 				if err != nil {
 					return empty, err
 				}
 			}
 		}
-		payload, err := json.Marshal(struct {
-			Input   CollaborationRuntimeCommentParams  `json:"input"`
-			Receipt CollaborationRuntimeCommentReceipt `json:"receipt"`
-		}{p, out})
-		if err != nil {
-			return empty, err
-		}
-		if _, err = r.q.CreateCollaborationBusinessEvent(ctx, db.CreateCollaborationBusinessEventParams{IssueID: r.access.Issue.ID, RunID: runID, EventID: eventID, Kind: "comment", Payload: payload}); err != nil {
-			return empty, err
-		}
-		if err = r.recordAssignedWakeCause(ctx, out.ContinuationRunID, "comment", comment.ID); err != nil {
-			return empty, err
-		}
-		seq, err := r.q.AdvanceCollaborationEventSequence(ctx, r.access.Issue.ID)
-		if err != nil {
-			return empty, err
-		}
-		public, err := json.Marshal(map[string]any{"comment_id": comment.ID, "run_id": runID, "group_id": r.group.ID, "author_type": "agent", "author_id": r.run.AgentID})
-		if err != nil {
-			return empty, err
-		}
-		if _, err = r.q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: r.access.Issue.ID, EventSeq: seq, Kind: "runtime_comment_created", Payload: public}); err != nil {
-			return empty, err
-		}
-		participants, err := collaborationMentionParticipants(ctx, r.q, r.access)
-		if err != nil {
-			return empty, err
-		}
-		recipients := []CollaborationCommentRecipient{}
-		for _, person := range participants {
-			if mentions.All || mentions.People[person.UserID] {
-				recipients = append(recipients, CollaborationCommentRecipient{Recipient: person, IsMention: true})
+		if r.run.StepKind.String == "member" && !out.ContinuationRunID.Valid {
+			out.ContinuationRunID, err = r.queueContinuation(ctx, r.run.ID)
+			if err != nil {
+				return empty, err
 			}
 		}
-		if err = writeCollaborationCommentNotifications(ctx, r.q, r.access.Issue.ID, comment.ID, seq, "mention_added", "comment", recipients); err != nil {
-			return empty, err
+	}
+	payload, err := json.Marshal(collaborationRuntimeCommentEvent{Input: input, Receipt: out})
+	if err != nil {
+		return empty, err
+	}
+	if _, err = r.q.CreateCollaborationBusinessEvent(ctx, db.CreateCollaborationBusinessEventParams{IssueID: r.access.Issue.ID, RunID: runID, EventID: eventID, Kind: "comment", Payload: payload}); err != nil {
+		return empty, err
+	}
+	if err = r.recordAssignedWakeCause(ctx, out.ContinuationRunID, "comment", comment.ID); err != nil {
+		return empty, err
+	}
+	seq, err := r.q.AdvanceCollaborationEventSequence(ctx, r.access.Issue.ID)
+	if err != nil {
+		return empty, err
+	}
+	public, err := json.Marshal(map[string]any{"comment_id": comment.ID, "run_id": runID, "group_id": r.group.ID, "author_type": "agent", "author_id": r.run.AgentID})
+	if err != nil {
+		return empty, err
+	}
+	if _, err = r.q.CreateCollaborationEvent(ctx, db.CreateCollaborationEventParams{IssueID: r.access.Issue.ID, EventSeq: seq, Kind: "runtime_comment_created", Payload: public}); err != nil {
+		return empty, err
+	}
+	participants, err := collaborationMentionParticipants(ctx, r.q, r.access)
+	if err != nil {
+		return empty, err
+	}
+	recipients := []CollaborationCommentRecipient{}
+	for _, person := range participants {
+		if mentions.All || mentions.People[person.UserID] {
+			recipients = append(recipients, CollaborationCommentRecipient{Recipient: person, IsMention: true})
 		}
-		return out, nil
-	})
+	}
+	if err = writeCollaborationCommentNotifications(ctx, r.q, r.access.Issue.ID, comment.ID, seq, "mention_added", "comment", recipients); err != nil {
+		return empty, err
+	}
+	return out, nil
 }
 
 func (r *collaborationRuntimeState) createDerivedRun(ctx context.Context, resource collaboration.GroupResource, parent pgtype.UUID, kind, key string) (db.CollaborationRun, error) {

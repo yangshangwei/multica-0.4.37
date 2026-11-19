@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
+import { collaborationAttachmentIds } from "./attachment-schema";
 import { CollaborationExecutionRunSchema } from "./execution-schema";
 import { collaborationTextByteLength } from "./text-limits";
 import { nonnegativeVersion, positiveVersion } from "./version";
@@ -21,9 +22,9 @@ export const CollaborationRunRecordItemSchema = z.discriminatedUnion("kind", [
   z.object({ id: recordId, kind: z.literal("message"), role: z.enum(["assistant", "user", "system"]), body: z.string() }),
   z.object({ id: recordId, kind: z.literal("tool_call"), call_id: recordedName, name: recordedName, body: z.string() }),
   z.object({ id: recordId, kind: z.literal("tool_result"), call_id: recordedName, body: z.string(), is_error: z.boolean() }),
-  z.object({ id: recordId, kind: z.literal("comment"), comment_id: uuid, body: z.string() }),
+  z.object({ id: recordId, kind: z.literal("comment"), comment_id: uuid, body: z.string(), attachment_ids: collaborationAttachmentIds.optional() }),
   z.object({ id: recordId, kind: z.literal("squad_activity"), outcome: z.enum(["action", "no_action", "failed"]), body: z.string() }),
-  z.object({ id: recordId, kind: z.literal("result"), outcome: z.enum(["success", "failure"]), body: z.string() }),
+  z.object({ id: recordId, kind: z.literal("result"), outcome: z.enum(["success", "failure"]), body: z.string(), attachment_ids: collaborationAttachmentIds.optional() }),
 ]);
 
 const usage = z.object({

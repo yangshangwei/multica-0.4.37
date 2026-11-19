@@ -477,8 +477,8 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		}
 		prior, err := q.GetCollaborationRuntimeEvent(ctx, db.GetCollaborationRuntimeEventParams{RunID: runID, ProducerEventID: p.EventID})
 		if err == nil {
-			var saved protocol.CollaborationRunOutcome
-			if prior.Kind != "outcome" || json.Unmarshal(prior.Payload, &saved) != nil || !reflect.DeepEqual(saved, p) {
+			saved, decodeErr := decodeCollaborationStoredOutcome(prior.Payload)
+			if prior.Kind != "outcome" || decodeErr != nil || !reflect.DeepEqual(saved.CollaborationRunOutcome, p) {
 				return false, collaborationError(http.StatusConflict, "outcome_conflict")
 			}
 			return true, nil
@@ -506,7 +506,11 @@ func (s *CollaborationService) RecordRuntimeOutcome(ctx context.Context, runID p
 		if err = validateCollaborationCheckpointOutcome(ctx, q, r.access.Issue.ID, runID, p); err != nil {
 			return false, err
 		}
-		payload, err := json.Marshal(p)
+		outputs, err := r.frozenOutputAttachmentIDs(ctx)
+		if err != nil {
+			return false, err
+		}
+		payload, err := json.Marshal(collaborationStoredOutcome{CollaborationRunOutcome: p, OutputAttachmentIDs: outputs})
 		if err != nil {
 			return false, err
 		}
@@ -564,8 +568,8 @@ func acknowledgeRecordedRuntimeOutcome(ctx context.Context, q *db.Queries, runID
 	if identity != p.Identity || prior.RunID != runID || util.UUIDToString(prior.IssueID) != identity.IssueID {
 		return false, collaborationError(http.StatusConflict, "stale_execution")
 	}
-	var saved protocol.CollaborationRunOutcome
-	if decodeCollaborationPreparationJSON(prior.Payload, &saved) != nil || !reflect.DeepEqual(saved, p) {
+	saved, decodeErr := decodeCollaborationStoredOutcome(prior.Payload)
+	if decodeErr != nil || !reflect.DeepEqual(saved.CollaborationRunOutcome, p) {
 		return false, collaborationError(http.StatusConflict, "outcome_conflict")
 	}
 	return true, nil

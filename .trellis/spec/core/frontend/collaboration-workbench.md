@@ -68,7 +68,7 @@ file identities on ambiguous results. Explicit source or account changes fence
 late results. Cancelled upload transport does not prove server rollback: retain
 the original key and file identity/fingerprint until recovery can settle it.
 
-Private file metadata must match source, uploader, draft and explicit
+Human draft file metadata must match source, uploader, draft and explicit
 `intended_issue_id` (null for creation; exact issue for issue-intended uploads).
 Each successful creation/comment/delivery retires its consumed upload bundle
 and starts a new draft UUID. Retirement belongs in the confirmed core result
@@ -76,6 +76,16 @@ path so an unmounted composer cannot revive it. A newly mounted form observes
 that state change. Reusing delivered files sends their IDs without the old draft.
 Attachment-bearing comment success/recovery must confirm the same file IDs;
 an older/malformed success without that correlation remains uncertain.
+
+Delivered Agent metadata instead requires null human draft/uploader, nonzero
+Agent/run IDs, canonical positive int64 attempt and permanent issue delivery.
+Mixed or incomplete provenance is malformed. Comment/result record refs are
+optional, unique and bounded to 32; the input variant retains its existing
+required list. Use the shared protected attachment renderer. Human draft
+recovery receiving a valid Agent row with null draft returns unavailable;
+`result.draft_id !== null` must precede identity comparison, without retiring
+the original human intent. The full contract is
+[run-bound Agent outputs](../../server/collaboration-runtime-output.md).
 
 Resource or operation failure is not automatically parent-access loss. A missing
 file/operation or unsupported file route is unavailable. Creation's

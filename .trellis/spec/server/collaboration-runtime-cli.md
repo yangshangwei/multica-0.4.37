@@ -48,7 +48,11 @@ accepts action/no_action/failed and a reason. Content and reason are limited to
 `<`, `>` and `&` as six bytes, both routes read up to six times that limit plus
 a 64 KiB envelope, like shared-context updates. Filters, attachments, comment
 content-file, profile/server/workspace overrides and other operations are
-unsupported except for the explicit recall operations below. Legacy `issue get`
+unsupported except for explicit recall below and the run-bound single-file
+`issue comment add --attachment` contract in
+[Agent outputs](./collaboration-runtime-output.md). That command requires the
+original `--request-id`, uses invocation-CWD regular bytes and current mcb, and
+does not add ordinary file upload or a credential fallback. Legacy `issue get`
 and `issue comment list` without paging flags return the authorized run context
 and its newest 200 comments. Every response must match the admitted run/issue.
 

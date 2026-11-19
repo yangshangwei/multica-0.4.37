@@ -444,10 +444,8 @@ func projectHandoffResults(ctx context.Context, q *db.Queries, a CollaborationIs
 }
 func handoffResultText(e db.CollaborationRunEvent) (string, string, error) {
 	if e.Kind == "outcome" {
-		var p struct {
-			Body string `json:"body"`
-		}
-		if json.Unmarshal(e.Payload, &p) != nil {
+		p, err := decodeCollaborationStoredOutcome(e.Payload)
+		if err != nil {
 			return "", "", invalidCollaborationLedger("invalid result source")
 		}
 		return p.Body, "provider_result", nil

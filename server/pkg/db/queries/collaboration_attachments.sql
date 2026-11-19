@@ -17,6 +17,30 @@ WHERE uploader_user_id = sqlc.arg(uploader_user_id)
 -- name: GetCollaborationAttachment :one
 SELECT * FROM collaboration_attachment WHERE id = $1;
 
+-- The runtime owner holds the original run lock through the count and insert.
+-- No human draft identity or uploader authority is assigned to Agent output.
+-- name: CreateCollaborationRuntimeOutputAttachment :one
+INSERT INTO collaboration_attachment (
+    id, issue_id, source_workspace_id, uploader_agent_id, run_id, attempt_seq,
+    storage_key, content_sha256, encryption_key, name, content_type, size_bytes,
+    delivered_at
+) VALUES (
+    sqlc.arg(id)::uuid, sqlc.arg(issue_id)::uuid, sqlc.arg(source_workspace_id)::uuid,
+    sqlc.arg(uploader_agent_id)::uuid, sqlc.arg(run_id)::uuid, sqlc.arg(attempt_seq)::bigint,
+    sqlc.arg(storage_key), sqlc.arg(content_sha256)::text, sqlc.arg(encryption_key),
+    sqlc.arg(name), sqlc.arg(content_type), sqlc.arg(size_bytes), clock_timestamp()
+) RETURNING *;
+
+-- name: CountCollaborationRuntimeOutputAttachments :one
+SELECT count(*)::bigint FROM collaboration_attachment
+WHERE run_id = sqlc.arg(run_id)::uuid AND attempt_seq = sqlc.arg(attempt_seq)::bigint;
+
+-- Frozen at outcome commit, without a LIMIT that could truncate history.
+-- name: ListCollaborationRuntimeOutputAttachments :many
+SELECT * FROM collaboration_attachment
+WHERE run_id = sqlc.arg(run_id)::uuid AND attempt_seq = sqlc.arg(attempt_seq)::bigint
+ORDER BY created_at, id;
+
 -- name: LockCollaborationAttachments :many
 SELECT * FROM collaboration_attachment WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE;
 

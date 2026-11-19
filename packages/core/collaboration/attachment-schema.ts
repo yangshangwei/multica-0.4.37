@@ -3,15 +3,24 @@ import { parseWithFallback } from "../api/schema";
 import { positiveVersion } from "./version";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
+const runtimeIdentity = uuid.refine((value) => value !== "00000000-0000-0000-0000-000000000000");
 export const COLLABORATION_ATTACHMENT_MAX_BYTES = 104857600;
 export const collaborationAttachmentIds = z.array(uuid).max(32).refine((ids) => new Set(ids).size === ids.length);
 export const CollaborationAttachmentSchema = z.object({
-  id: uuid, draft_id: uuid, issue_id: uuid.nullable(), intended_issue_id: uuid.nullable(), source_workspace_id: uuid, uploader_user_id: uuid,
+  id: uuid, draft_id: uuid.nullable(), issue_id: uuid.nullable(), intended_issue_id: uuid.nullable(), source_workspace_id: uuid, uploader_user_id: uuid.nullable(),
+  uploader_agent_id: runtimeIdentity.nullable().optional(), run_id: runtimeIdentity.nullable().optional(), attempt_seq: positiveVersion.nullable().optional(),
   name: z.string().min(1).max(1024), content_type: z.string().min(1).max(256),
   size_bytes: z.number().int().nonnegative().max(COLLABORATION_ATTACHMENT_MAX_BYTES), version: positiveVersion,
   created_at: z.iso.datetime({ offset: true }), delivered_at: z.iso.datetime({ offset: true }).nullable(),
 }).refine((value) => (value.issue_id === null) === (value.delivered_at === null) &&
-  (value.issue_id === null || value.intended_issue_id === null || value.issue_id === value.intended_issue_id));
+  (value.issue_id === null || value.intended_issue_id === null || value.issue_id === value.intended_issue_id))
+  .refine((value) => {
+    if (value.draft_id !== null && value.uploader_user_id !== null) {
+      return (value.uploader_agent_id ?? null) === null && (value.run_id ?? null) === null && (value.attempt_seq ?? null) === null;
+    }
+    return value.draft_id === null && value.uploader_user_id === null && typeof value.uploader_agent_id === "string" &&
+      typeof value.run_id === "string" && typeof value.attempt_seq === "string" && value.issue_id !== null && value.delivered_at !== null;
+  }, "Attachment provenance must identify a human draft or a delivered Agent output");
 export const CollaborationAttachmentsSchema = z.object({ issue_id: uuid, attachments: z.array(CollaborationAttachmentSchema) })
   .refine((value) => new Set(value.attachments.map((file) => file.id)).size === value.attachments.length &&
     value.attachments.every((file) => file.issue_id === value.issue_id));

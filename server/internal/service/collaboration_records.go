@@ -297,8 +297,8 @@ func (s *CollaborationService) RunRecords(ctx context.Context, issueID, runID pg
 				}
 				out.Resource.Provider, out.Resource.Model, out.Resource.AccountSource = saved.Provider, saved.Model, saved.AccountSource
 			case "outcome":
-				var saved protocol.CollaborationRunOutcome
-				if json.Unmarshal(event.Payload, &saved) != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: saved.Outcome, Body: saved.Body, Record: saved.Record}) != nil {
+				saved, decodeErr := decodeCollaborationStoredOutcome(event.Payload)
+				if decodeErr != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: saved.Outcome, Body: saved.Body, Record: saved.Record}) != nil {
 					return invalidCollaborationLedger("outcome record invalid")
 				}
 				if saved.Record != nil {
@@ -409,8 +409,8 @@ func collaborationRecordEventItemsWithPrefix(event db.CollaborationRunEvent, che
 	invalid := invalidCollaborationLedger("run event record invalid")
 	switch event.Kind {
 	case "outcome":
-		var saved protocol.CollaborationRunOutcome
-		if json.Unmarshal(event.Payload, &saved) != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: saved.Outcome, Body: saved.Body, Record: saved.Record}) != nil {
+		saved, decodeErr := decodeCollaborationStoredOutcome(event.Payload)
+		if decodeErr != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: saved.Outcome, Body: saved.Body, Record: saved.Record}) != nil {
 			return nil, invalid
 		}
 		if saved.Record != nil {
@@ -426,7 +426,11 @@ func collaborationRecordEventItemsWithPrefix(event db.CollaborationRunEvent, che
 				items = append(items, CollaborationRunRecordItem{ID: id, Kind: message.Kind, Body: message.Body, Role: message.Role, CallID: message.CallID, Name: message.Name, IsError: message.IsError})
 			}
 		}
-		items = append(items, CollaborationRunRecordItem{Kind: "result", Outcome: saved.Outcome, Body: saved.Body})
+		result := CollaborationRunRecordItem{Kind: "result", Outcome: saved.Outcome, Body: saved.Body}
+		if saved.OutputAttachmentIDs != nil {
+			result.AttachmentIDs = &saved.OutputAttachmentIDs
+		}
+		items = append(items, result)
 	case "record_checkpoint":
 		var saved protocol.CollaborationRecordingCheckpoint
 		if decodeCollaborationPreparationJSON(event.Payload, &saved) != nil || protocol.ValidateCollaborationRecordingCheckpoint(saved) != nil || saved.Identity.RunID != util.UUIDToString(event.RunID) || saved.Identity.IssueID != util.UUIDToString(event.IssueID) {
@@ -436,16 +440,19 @@ func collaborationRecordEventItemsWithPrefix(event db.CollaborationRunEvent, che
 			items = append(items, CollaborationRunRecordItem{ID: fmt.Sprintf("record:%s:%d", saved.StreamID, saved.MessageOffset+offset), Kind: message.Kind, Body: message.Body, Role: message.Role, CallID: message.CallID, Name: message.Name, IsError: message.IsError})
 		}
 	case "comment":
-		var saved struct {
-			Input struct {
-				CommentID pgtype.UUID `json:"comment_id"`
-				Content   string      `json:"content"`
-			} `json:"input"`
-		}
+		var saved collaborationRuntimeCommentEvent
 		if json.Unmarshal(event.Payload, &saved) != nil || !saved.Input.CommentID.Valid {
 			return nil, invalid
 		}
-		items = append(items, CollaborationRunRecordItem{Kind: "comment", CommentID: util.UUIDToString(saved.Input.CommentID), Body: saved.Input.Content})
+		item := CollaborationRunRecordItem{Kind: "comment", CommentID: util.UUIDToString(saved.Input.CommentID), Body: saved.Input.Content}
+		if saved.Input.Attachment != nil {
+			if saved.Receipt.Attachment == nil || !saved.Receipt.Attachment.ID.Valid {
+				return nil, invalid
+			}
+			ids := []string{util.UUIDToString(saved.Receipt.Attachment.ID)}
+			item.AttachmentIDs = &ids
+		}
+		items = append(items, item)
 	case "squad_activity":
 		var saved struct {
 			Outcome string `json:"outcome"`

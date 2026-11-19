@@ -16,6 +16,7 @@ Every contract below is traced to source in `references/working-on-issues-source
 ## Collaboration tasks require their own workflow
 
 Before collaboration commands, delivery/acceptance, files, consent, recovery or knowledge proposals, read `references/collaboration-workflow.md`: human delivery/policy, gated execution, narrow run credentials, source-bound inputs and exact-request recovery.
+For Agent file delivery, follow [Agent output files](references/collaboration-workflow.md#agent-output-files): one contained file and the original comment request UUID.
 For typed test results, follow its test-report section: read the frozen subject, submit one report per attempt, and keep failures and the original request. Runtime reports never sign QA or authorize release. The same reference explains why release approval, pending execution, confirmed deployment and rollback evidence must remain distinct.
 Unknown protocols or unsupported actions cannot fall back to ordinary execution. Host permissions apply; separate directories are not an OS sandbox.
 

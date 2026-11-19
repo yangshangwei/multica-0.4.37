@@ -11,6 +11,23 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+const countCollaborationRuntimeOutputAttachments = `-- name: CountCollaborationRuntimeOutputAttachments :one
+SELECT count(*)::bigint FROM collaboration_attachment
+WHERE run_id = $1::uuid AND attempt_seq = $2::bigint
+`
+
+type CountCollaborationRuntimeOutputAttachmentsParams struct {
+	RunID      pgtype.UUID `json:"run_id"`
+	AttemptSeq int64       `json:"attempt_seq"`
+}
+
+func (q *Queries) CountCollaborationRuntimeOutputAttachments(ctx context.Context, arg CountCollaborationRuntimeOutputAttachmentsParams) (int64, error) {
+	row := q.db.QueryRow(ctx, countCollaborationRuntimeOutputAttachments, arg.RunID, arg.AttemptSeq)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
 const createCollaborationAttachment = `-- name: CreateCollaborationAttachment :one
 INSERT INTO collaboration_attachment (
     id, draft_id, uploader_user_id, source_workspace_id, intended_issue_id,
@@ -20,7 +37,7 @@ INSERT INTO collaboration_attachment (
     $1, $2, $3, $4, $5,
     $6, $7, $8, $9,
     $10, $11, $12
-) RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at
+) RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq
 `
 
 type CreateCollaborationAttachmentParams struct {
@@ -72,6 +89,9 @@ func (q *Queries) CreateCollaborationAttachment(ctx context.Context, arg CreateC
 		&i.ContentSha256,
 		&i.EncryptionKey,
 		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
 	)
 	return i, err
 }
@@ -98,10 +118,81 @@ func (q *Queries) CreateCollaborationAttachmentReference(ctx context.Context, ar
 	return err
 }
 
+const createCollaborationRuntimeOutputAttachment = `-- name: CreateCollaborationRuntimeOutputAttachment :one
+INSERT INTO collaboration_attachment (
+    id, issue_id, source_workspace_id, uploader_agent_id, run_id, attempt_seq,
+    storage_key, content_sha256, encryption_key, name, content_type, size_bytes,
+    delivered_at
+) VALUES (
+    $1::uuid, $2::uuid, $3::uuid,
+    $4::uuid, $5::uuid, $6::bigint,
+    $7, $8::text, $9,
+    $10, $11, $12, clock_timestamp()
+) RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq
+`
+
+type CreateCollaborationRuntimeOutputAttachmentParams struct {
+	ID                pgtype.UUID `json:"id"`
+	IssueID           pgtype.UUID `json:"issue_id"`
+	SourceWorkspaceID pgtype.UUID `json:"source_workspace_id"`
+	UploaderAgentID   pgtype.UUID `json:"uploader_agent_id"`
+	RunID             pgtype.UUID `json:"run_id"`
+	AttemptSeq        int64       `json:"attempt_seq"`
+	StorageKey        string      `json:"storage_key"`
+	ContentSha256     string      `json:"content_sha256"`
+	EncryptionKey     []byte      `json:"encryption_key"`
+	Name              string      `json:"name"`
+	ContentType       string      `json:"content_type"`
+	SizeBytes         int64       `json:"size_bytes"`
+}
+
+// The runtime owner holds the original run lock through the count and insert.
+// No human draft identity or uploader authority is assigned to Agent output.
+func (q *Queries) CreateCollaborationRuntimeOutputAttachment(ctx context.Context, arg CreateCollaborationRuntimeOutputAttachmentParams) (CollaborationAttachment, error) {
+	row := q.db.QueryRow(ctx, createCollaborationRuntimeOutputAttachment,
+		arg.ID,
+		arg.IssueID,
+		arg.SourceWorkspaceID,
+		arg.UploaderAgentID,
+		arg.RunID,
+		arg.AttemptSeq,
+		arg.StorageKey,
+		arg.ContentSha256,
+		arg.EncryptionKey,
+		arg.Name,
+		arg.ContentType,
+		arg.SizeBytes,
+	)
+	var i CollaborationAttachment
+	err := row.Scan(
+		&i.ID,
+		&i.IssueID,
+		&i.DraftID,
+		&i.UploaderUserID,
+		&i.StorageKey,
+		&i.Version,
+		&i.Name,
+		&i.ContentType,
+		&i.SizeBytes,
+		&i.CreatedAt,
+		&i.DeliveredAt,
+		&i.SourceWorkspaceID,
+		&i.IntendedIssueID,
+		&i.UploadRequestID,
+		&i.ContentSha256,
+		&i.EncryptionKey,
+		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
+	)
+	return i, err
+}
+
 const deliverCollaborationAttachment = `-- name: DeliverCollaborationAttachment :one
 UPDATE collaboration_attachment SET issue_id = $1, delivered_at = clock_timestamp()
 WHERE id = $2 AND issue_id IS NULL AND discarded_at IS NULL
-RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at
+RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq
 `
 
 type DeliverCollaborationAttachmentParams struct {
@@ -130,6 +221,9 @@ func (q *Queries) DeliverCollaborationAttachment(ctx context.Context, arg Delive
 		&i.ContentSha256,
 		&i.EncryptionKey,
 		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
 	)
 	return i, err
 }
@@ -138,7 +232,7 @@ const discardCollaborationDraftAttachment = `-- name: DiscardCollaborationDraftA
 UPDATE collaboration_attachment SET discarded_at = COALESCE(discarded_at, clock_timestamp())
 WHERE id = $1 AND draft_id = $2
   AND uploader_user_id = $3 AND issue_id IS NULL
-RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at
+RETURNING id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq
 `
 
 type DiscardCollaborationDraftAttachmentParams struct {
@@ -168,12 +262,15 @@ func (q *Queries) DiscardCollaborationDraftAttachment(ctx context.Context, arg D
 		&i.ContentSha256,
 		&i.EncryptionKey,
 		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
 	)
 	return i, err
 }
 
 const getCollaborationAttachment = `-- name: GetCollaborationAttachment :one
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment WHERE id = $1
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment WHERE id = $1
 `
 
 func (q *Queries) GetCollaborationAttachment(ctx context.Context, id pgtype.UUID) (CollaborationAttachment, error) {
@@ -197,6 +294,9 @@ func (q *Queries) GetCollaborationAttachment(ctx context.Context, id pgtype.UUID
 		&i.ContentSha256,
 		&i.EncryptionKey,
 		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
 	)
 	return i, err
 }
@@ -267,7 +367,7 @@ func (q *Queries) GetCollaborationAttachmentReadBasis(ctx context.Context, arg G
 }
 
 const getCollaborationAttachmentUpload = `-- name: GetCollaborationAttachmentUpload :one
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
 WHERE uploader_user_id = $1
   AND draft_id = $2 AND upload_request_id = $3
 `
@@ -299,12 +399,15 @@ func (q *Queries) GetCollaborationAttachmentUpload(ctx context.Context, arg GetC
 		&i.ContentSha256,
 		&i.EncryptionKey,
 		&i.DiscardedAt,
+		&i.UploaderAgentID,
+		&i.RunID,
+		&i.AttemptSeq,
 	)
 	return i, err
 }
 
 const listCollaborationAttachments = `-- name: ListCollaborationAttachments :many
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
 WHERE issue_id = $1 AND delivered_at IS NOT NULL AND discarded_at IS NULL
 ORDER BY created_at, id
 `
@@ -336,6 +439,9 @@ func (q *Queries) ListCollaborationAttachments(ctx context.Context, issueID pgty
 			&i.ContentSha256,
 			&i.EncryptionKey,
 			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
 		); err != nil {
 			return nil, err
 		}
@@ -420,7 +526,7 @@ func (q *Queries) ListCollaborationCreationSources(ctx context.Context, userID p
 }
 
 const listCollaborationDraftAttachments = `-- name: ListCollaborationDraftAttachments :many
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
 WHERE draft_id = $1 AND uploader_user_id = $2
   AND issue_id IS NULL AND discarded_at IS NULL
 ORDER BY created_at, id
@@ -458,6 +564,62 @@ func (q *Queries) ListCollaborationDraftAttachments(ctx context.Context, arg Lis
 			&i.ContentSha256,
 			&i.EncryptionKey,
 			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const listCollaborationRuntimeOutputAttachments = `-- name: ListCollaborationRuntimeOutputAttachments :many
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
+WHERE run_id = $1::uuid AND attempt_seq = $2::bigint
+ORDER BY created_at, id
+`
+
+type ListCollaborationRuntimeOutputAttachmentsParams struct {
+	RunID      pgtype.UUID `json:"run_id"`
+	AttemptSeq int64       `json:"attempt_seq"`
+}
+
+// Frozen at outcome commit, without a LIMIT that could truncate history.
+func (q *Queries) ListCollaborationRuntimeOutputAttachments(ctx context.Context, arg ListCollaborationRuntimeOutputAttachmentsParams) ([]CollaborationAttachment, error) {
+	rows, err := q.db.Query(ctx, listCollaborationRuntimeOutputAttachments, arg.RunID, arg.AttemptSeq)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []CollaborationAttachment{}
+	for rows.Next() {
+		var i CollaborationAttachment
+		if err := rows.Scan(
+			&i.ID,
+			&i.IssueID,
+			&i.DraftID,
+			&i.UploaderUserID,
+			&i.StorageKey,
+			&i.Version,
+			&i.Name,
+			&i.ContentType,
+			&i.SizeBytes,
+			&i.CreatedAt,
+			&i.DeliveredAt,
+			&i.SourceWorkspaceID,
+			&i.IntendedIssueID,
+			&i.UploadRequestID,
+			&i.ContentSha256,
+			&i.EncryptionKey,
+			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
 		); err != nil {
 			return nil, err
 		}
@@ -470,7 +632,7 @@ func (q *Queries) ListCollaborationDraftAttachments(ctx context.Context, arg Lis
 }
 
 const lockCollaborationAttachments = `-- name: LockCollaborationAttachments :many
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment WHERE id = ANY($1::uuid[]) ORDER BY id FOR UPDATE
 `
 
 func (q *Queries) LockCollaborationAttachments(ctx context.Context, dollar_1 []pgtype.UUID) ([]CollaborationAttachment, error) {
@@ -500,6 +662,9 @@ func (q *Queries) LockCollaborationAttachments(ctx context.Context, dollar_1 []p
 			&i.ContentSha256,
 			&i.EncryptionKey,
 			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
 		); err != nil {
 			return nil, err
 		}

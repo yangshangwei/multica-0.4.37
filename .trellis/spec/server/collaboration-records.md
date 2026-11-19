@@ -126,6 +126,12 @@ engine-task messages. Missing optional routes are unavailable, not empty history
 
 Inputs come from the run's frozen prompt, and comment text comes from its retained
 event. Never rebuild an old run from the current batch or live issue description.
+Agent output comment/result `attachment_ids` come from the original comment
+receipt and the server-owned set frozen in the first outcome transaction.
+All stored outcome consumers use `decodeCollaborationStoredOutcome`; preserve
+the unchanged complete original request separately from output refs for ACK.
+Do not infer historical result files from later attachment rows. See
+[run-bound Agent outputs](./collaboration-runtime-output.md).
 Resource identities and the one-time provider/model/account-source snapshot are
 source-owned; engine/resource deletion must not erase them. Capture live runtime
 data through `s.collaborationRuntimeLookup(q)` with the production collector and

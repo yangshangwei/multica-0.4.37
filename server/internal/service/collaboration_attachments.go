@@ -12,6 +12,7 @@ import (
 	"log/slog"
 	"net/http"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 	"unicode/utf8"
@@ -39,6 +40,9 @@ type CollaborationAttachmentView struct {
 	IntendedIssueID   pgtype.UUID `json:"intended_issue_id"`
 	SourceWorkspaceID pgtype.UUID `json:"source_workspace_id"`
 	UploaderUserID    pgtype.UUID `json:"uploader_user_id"`
+	UploaderAgentID   pgtype.UUID `json:"uploader_agent_id,omitzero"`
+	RunID             pgtype.UUID `json:"run_id,omitzero"`
+	AttemptSeq        *string     `json:"attempt_seq,omitempty"`
 	Name              string      `json:"name"`
 	ContentType       string      `json:"content_type"`
 	SizeBytes         int64       `json:"size_bytes"`
@@ -48,9 +52,15 @@ type CollaborationAttachmentView struct {
 }
 
 func CollaborationAttachmentMetadata(row db.CollaborationAttachment) CollaborationAttachmentView {
+	var attempt *string
+	if row.AttemptSeq.Valid {
+		seq := strconv.FormatInt(row.AttemptSeq.Int64, 10)
+		attempt = &seq
+	}
 	return CollaborationAttachmentView{ID: row.ID, DraftID: row.DraftID, IssueID: row.IssueID,
 		IntendedIssueID:   row.IntendedIssueID,
 		SourceWorkspaceID: row.SourceWorkspaceID, UploaderUserID: row.UploaderUserID,
+		UploaderAgentID: row.UploaderAgentID, RunID: row.RunID, AttemptSeq: attempt,
 		Name: row.Name, ContentType: row.ContentType, SizeBytes: row.SizeBytes, Version: row.Version,
 		CreatedAt: row.CreatedAt.Time, DeliveredAt: collaborationContentTime(row.DeliveredAt)}
 }
@@ -265,7 +275,9 @@ func (s *CollaborationService) authorizeAttachmentUploadContext(ctx context.Cont
 }
 
 func validateCollaborationStoredAttachment(row db.CollaborationAttachment) error {
-	if !row.SourceWorkspaceID.Valid || !row.DraftID.Valid || !row.ID.Valid || row.Version < 1 ||
+	human := row.UploaderUserID.Valid && row.DraftID.Valid && !row.UploaderAgentID.Valid && !row.RunID.Valid && !row.AttemptSeq.Valid
+	agent := !row.UploaderUserID.Valid && !row.DraftID.Valid && !row.IntendedIssueID.Valid && !row.UploadRequestID.Valid && row.UploaderAgentID.Valid && row.RunID.Valid && row.AttemptSeq.Valid && row.AttemptSeq.Int64 > 0 && row.IssueID.Valid && row.DeliveredAt.Valid && !row.DiscardedAt.Valid
+	if !row.SourceWorkspaceID.Valid || (!human && !agent) || !row.ID.Valid || row.Version < 1 ||
 		len(row.EncryptionKey) != secretbox.KeySize || !row.ContentSha256.Valid || len(row.ContentSha256.String) != sha256.Size*2 ||
 		row.SizeBytes < 0 || row.SizeBytes > CollaborationAttachmentMaxBytes ||
 		!strings.HasPrefix(row.StorageKey, storage.CollaborationPrivatePrefix) || row.StorageKey != storage.CollaborationPrivatePrefix+util.UUIDToString(row.ID) {

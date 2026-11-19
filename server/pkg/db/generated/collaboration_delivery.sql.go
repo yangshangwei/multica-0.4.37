@@ -24,7 +24,7 @@ func (q *Queries) GetCollaborationDeliveryLifecycleBoundary(ctx context.Context,
 }
 
 const listCollaborationDeliveryAttachments = `-- name: ListCollaborationDeliveryAttachments :many
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
 WHERE issue_id = $1::uuid AND id = ANY($2::uuid[])
   AND discarded_at IS NULL
 `
@@ -61,6 +61,9 @@ func (q *Queries) ListCollaborationDeliveryAttachments(ctx context.Context, arg 
 			&i.ContentSha256,
 			&i.EncryptionKey,
 			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
 		); err != nil {
 			return nil, err
 		}

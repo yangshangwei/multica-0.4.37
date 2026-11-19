@@ -761,6 +761,9 @@ type CollaborationAttachment struct {
 	ContentSha256     pgtype.Text        `json:"content_sha256"`
 	EncryptionKey     []byte             `json:"encryption_key"`
 	DiscardedAt       pgtype.Timestamptz `json:"discarded_at"`
+	UploaderAgentID   pgtype.UUID        `json:"uploader_agent_id"`
+	RunID             pgtype.UUID        `json:"run_id"`
+	AttemptSeq        pgtype.Int8        `json:"attempt_seq"`
 }
 
 type CollaborationAttachmentReference struct {

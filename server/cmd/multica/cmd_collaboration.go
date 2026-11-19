@@ -48,6 +48,7 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	}
 	if operation == "issue comment add" {
 		allowed["content"], allowed["content-stdin"], allowed["parent"], allowed["request-id"] = true, true, true, true
+		allowed["attachment"] = true
 	}
 	if operation == "squad activity" {
 		allowed["reason"], allowed["request-id"] = true, true
@@ -76,6 +77,12 @@ func validateCollaborationCLI(run *cli.CollaborationContext, cmd *cobra.Command,
 	if unsupported != "" {
 		return fmt.Errorf("--%s is unavailable inside a collaboration run", unsupported)
 	}
+	if operation == "issue comment add" && cmd.Flags().Changed("attachment") {
+		attachments, err := cmd.Flags().GetStringSlice("attachment")
+		if err != nil || len(attachments) != 1 || attachments[0] == "" {
+			return errors.New("collaboration comments accept exactly one explicit --attachment file")
+		}
+	}
 	if operation == "issue comment add" || operation == "squad activity" || operation == "collaboration memory update" || operation == "collaboration test-report submit" || operation == "collaboration test-report receipt" {
 		request, _ := cmd.Flags().GetString("request-id")
 		id, err := uuid.Parse(request)
@@ -99,6 +106,7 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 	}
 	requestID, _ := cmd.Flags().GetString("request-id")
 	var body any
+	var attachment *cli.CollaborationOutputFile
 	switch operation {
 	case "issue comment add":
 		content, present, err := resolveTextFlag(cmd, "content")
@@ -110,7 +118,7 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 		}
 		// A collaboration run carries no MULTICA_AGENT_ID/TASK_ID, so the gated
 		// guardLocalPathLinks would skip every runtime comment.
-		if err := rejectLocalPathLinks(content, "comment body", "Files are unavailable in this collaboration runtime."); err != nil {
+		if err := rejectLocalPathLinks(content, "comment body", "Deliver the file with --attachment <path> inside the current working directory."); err != nil {
 			return true, err
 		}
 		payload := map[string]any{"comment_id": requestID, "content": content}
@@ -122,6 +130,14 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 			payload["parent_id"] = parent
 		}
 		body = payload
+		if cmd.Flags().Changed("attachment") {
+			paths, _ := cmd.Flags().GetStringSlice("attachment")
+			file, err := cli.ReadCollaborationOutputFile(paths[0])
+			if err != nil {
+				return true, err
+			}
+			attachment = &file
+		}
 	case "squad activity":
 		if len(args) != 2 || (args[1] != "action" && args[1] != "no_action" && args[1] != "failed") {
 			return true, errors.New("squad outcome must be action, no_action, or failed")
@@ -165,6 +181,20 @@ func runCollaborationCLI(cmd *cobra.Command, args []string, operation string) (b
 		return true, err
 	}
 	output, _ := cmd.Flags().GetString("output")
+	if attachment != nil {
+		payload := body.(map[string]any)
+		parent, _ := payload["parent_id"].(string)
+		content := payload["content"].(string)
+		result, err := run.CreateCommentAttachment(ctx, client, requestID, parent, content, view.AgentID, *attachment)
+		if err != nil {
+			return true, err
+		}
+		if output == "table" {
+			fmt.Fprintf(cmd.ErrOrStderr(), "Collaboration output recorded: %s\n", requestID)
+			return true, nil
+		}
+		return true, cli.PrintJSON(cmd.OutOrStdout(), result)
+	}
 	switch operation {
 	case "issue get":
 		if output == "table" {

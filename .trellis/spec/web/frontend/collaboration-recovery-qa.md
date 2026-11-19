@@ -208,3 +208,41 @@ may lose their flags. Disclose genuinely unobserved short processes and
 reconcile Provider turns with original run/attempt ledgers and provider records.
 Reservation row counts alone do not prove release: retain the exact run-linked
 release timestamp, revoked capability and terminal observation for every run.
+
+## Agent output recovery
+
+`e2e/collaboration-runtime-output.spec.ts` runs two complete tops/eight subcases
+per platform with real test-owned Provider processes invoking the bound CLI
+`issue comment add --attachment`. Expected totals are ten Providers, twelve
+output CLI invocations, ten Agent file rows/twenty comment+issue refs, six human
+input files and four stored natural outcomes. Startup CLI reads, input uploads,
+transport replays and Stop/withdrawal runs with no outcome are separate counts.
+Keep original UUID/file fingerprints, encrypted object identity and frozen
+result refs through response loss, same/different-byte replay, explicit new work,
+Stop, author loss and grant withdrawal. The owning-layer tests separately prove
+first-commit contention, unknown database commit and outcome/storage races.
+
+Inspect **all** permit facts: the production host Runner authorizes before
+preparation and immediately before Provider launch. Each finite run reuses the
+same authorized request/token/attempt. Per platform, require five original
+permit entries, ten HTTP calls, exactly two matching calls per original and
+complete equality with the five actual Provider run IDs. Compare method/path,
+auth/request/response hashes and the first committed original; keep one claim,
+attempt, reservation and capability per physical run. A matching replay is not
+another Provider launch.
+
+`NEXT_PUBLIC_WS_URL` is a complete endpoint when explicit: Web returns it
+literally. Bind the build-time and service value to the actual `/ws` route; a
+healthy API origin alone does not prove WS readiness. Compare Stop replays with
+the same `CollaborationControlReceiptSchema` used for the original UI response,
+retaining original key/body and full canonical equality. Extra raw nullable
+fields are not a different canonical receipt.
+
+Original permission-capability evidence records one timestamp captured after
+response bytes and checks that same timestamp before expiry. Process observers
+exclude themselves before expanding descendants and retain exact service PID
+roots when argv changes. Reconcile original kernel/role observations with
+Provider/CLI callback and ledger identities, including any short unobserved
+process; latest labels alone are not a launch denominator. Retain all failed
+whole rounds even when their subcases passed, and accept only a complete fresh
+round with original gate, native/PID and connection closure.

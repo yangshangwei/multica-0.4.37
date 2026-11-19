@@ -7,6 +7,40 @@ import { collaborationRunRecordsFixture as fixture } from "./run-records-test-fi
 
 afterEach(() => setSchemaLogger(noopLogger));
 
+describe.each(["comment", "result"] as const)("%s output attachment references", (kind) => {
+  const record = kind === "comment"
+    ? { id: "output:comment", kind, comment_id: "00000000-0000-4000-8000-0000000000c1", body: "Original Agent comment" }
+    : { id: "output:result", kind, outcome: "success", body: "Original frozen result" };
+  const ids = Array.from({ length: 32 }, (_, index) => `00000000-0000-4000-8000-${(index + 1).toString(16).padStart(12, "0")}`);
+
+  it("preserves every original output ID, order and canonical identity through the public parser", () => {
+    const parsed = collaboration.parseCollaborationRunRecords({ ...fixture, items: [{ ...record, attachment_ids: ids.map((id) => id.toUpperCase()) }] });
+    expect(parsed?.items).toEqual([{ ...record, attachment_ids: ids }]);
+  });
+
+  it("preserves legacy absence separately from an explicit empty output set", () => {
+    expect(collaboration.parseCollaborationRunRecords({ ...fixture, items: [record] })?.items).toEqual([record]);
+    expect(collaboration.parseCollaborationRunRecords({ ...fixture, items: [{ ...record, attachment_ids: [] }] })?.items).toEqual([{ ...record, attachment_ids: [] }]);
+  });
+
+  it.each([
+    { name: "null", value: null }, { name: "a non-array", value: ids[0] },
+    { name: "a malformed ID", value: ["not-a-file"] },
+    { name: "a duplicate ID", value: [ids[0], ids[0]] },
+    { name: "a case-equivalent duplicate ID", value: [ids[9], ids[9]!.toUpperCase()] },
+    { name: "33 original outputs", value: [...ids, "00000000-0000-4000-8000-0000000000ff"] },
+  ])("refuses $name without dropping output provenance", ({ value }) => {
+    expect(collaboration.parseCollaborationRunRecords({ ...fixture, items: [{ ...record, attachment_ids: value }] })).toBeNull();
+  });
+});
+
+it("preserves the original required input attachment variant independently of the output bound", () => {
+  const input = fixture.items[0]!;
+  const ids = Array.from({ length: 33 }, (_, index) => `00000000-0000-4000-8000-${(index + 1).toString(16).padStart(12, "0")}`);
+  expect(collaboration.parseCollaborationRunRecords({ ...fixture, items: [{ ...input, attachment_ids: ids }] })?.items).toEqual([{ ...input, attachment_ids: ids }]);
+  expect(collaboration.parseCollaborationRunRecords({ ...fixture, items: [{ ...input, attachment_ids: undefined }] })).toBeNull();
+});
+
 describe("source-recorded run pages", () => {
   it("validates checkpoint stream ordinals and explicit retention without inventing an unknown tail", () => {
     const stream = "00000000-0000-4000-8000-000000000009";
