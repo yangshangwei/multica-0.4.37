@@ -40,6 +40,16 @@ windows and full width below the small breakpoint. Empty properties belong in
 editing; no secondary disclosure stack remains below discussion. Long titles,
 names, result/basis and translated controls wrap without horizontal overflow.
 
+The top-aligned resource popup must declare `WebkitAppRegion: "no-drag"` on its
+`DialogContent`, matching the collaboration creation popup. Its close control
+overlaps the Electron account shell's 48px native drag bar; a portal or higher
+z-index does not exclude it from native window drag hit-testing. Preserve the
+real `DialogClose` wiring and retained lifetime. The component test pins the
+no-drag boundary, but native acceptance must click the visible X with OS screen
+coordinates and verify the full popup and backdrop disappear. Accessibility
+activation, DOM `.click()`, Playwright clicks and renderer input injection do
+not prove OS pointer delivery; Escape/backdrop success alone is insufficient.
+
 Preparing a result from a comment copies its current text/file identity into a
 separate editable result draft only on an explicit user action. Require basis and
 an explicit formal submit; no ordinary comment or preparation performs a handoff.

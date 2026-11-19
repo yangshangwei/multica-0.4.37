@@ -1,0 +1,31 @@
+{
+  "id": "collaboration-drawer-native-close",
+  "name": "collaboration-drawer-native-close",
+  "title": "Restore native pointer clicks on collaboration drawer close",
+  "description": "Continue the authorized drawer repair: native pointer clicks on the top-right X are swallowed by the Electron drag region, despite working Escape and backdrop dismissal.",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-19",
+  "completedAt": null,
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/views/collaboration/detail-auxiliary.tsx",
+    "packages/views/collaboration/detail-auxiliary.test.tsx",
+    ".trellis/spec/views/frontend/collaboration-detail.md",
+    ".trellis/tasks/archive/2026-11/11-19-collaboration-drawer-dismissal/research/verification.md"
+  ],
+  "notes": "Follow-up under existing direct-fix authorization. Actual OS X coordinate reproduced before fix; Details and repeated Activity X coordinate clicks pass after no-drag; Escape/backdrop pass. 21 tests, Views tsc/lint and review passed. Corrected previous AX-only mouse claim.",
+  "meta": {}
+}

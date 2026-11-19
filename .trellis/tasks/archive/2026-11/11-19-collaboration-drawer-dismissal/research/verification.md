@@ -1,5 +1,14 @@
 # Verification — 2026-11-19
 
+## Correction after native-pointer feedback
+The close-button checks below used CUA accessibility element activation, not an
+OS coordinate click. They verified the first hidden-lifecycle repair but did
+not prove native mouse delivery. The user subsequently reported X still inert
+while Escape/backdrop worked. A real screen-coordinate click reproduced a
+second cause: the resource popup overlaps Electron's drag region without a
+no-drag boundary. Follow-up task: `11-19-collaboration-drawer-native-close`.
+The original claim of complete native mouse dismissal was too broad.
+
 ## Result
 The retained collaboration drawer and its backdrop now disappear after close. Base UI owns native hidden lifecycle while scope visibility still suppresses hidden surfaces. Editors stay mounted.
 

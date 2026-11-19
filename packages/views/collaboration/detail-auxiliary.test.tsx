@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -68,6 +68,9 @@ it("hides the complete drawer and backdrop with its close button while retaining
   const files = within(resources()).getByRole("button", { name: "Attachments" });
   await user.click(files);
   const drawer = screen.getByRole("dialog", { name: "Attachments" });
+  // Electron drag regions intercept OS pointer input before DOM events. This
+  // guards the popup boundary; userEvent clicks do not prove native hit testing.
+  expect((drawer.style as CSSProperties & { WebkitAppRegion?: string }).WebkitAppRegion).toBe("no-drag");
   const backdrop = document.querySelector('[data-slot="dialog-overlay"]');
   const editor = screen.getByRole("textbox", { name: "File note" });
   await user.type(editor, "Keep this draft after closing");

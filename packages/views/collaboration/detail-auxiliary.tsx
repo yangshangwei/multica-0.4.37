@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useRef, useState, type CSSProperties } from "react";
 import { deriveCollaborationDetailState, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import type { AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -85,6 +85,7 @@ export const CollaborationDetailAuxiliary = forwardRef<CollaborationDetailAuxili
       if (!next && afterClose.current) { const callback = afterClose.current; afterClose.current = null; requestAnimationFrame(callback); }
     }}>
       <DialogContent id={id} keepMounted showCloseButton={false}
+        style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
         initialFocus={() => !destination.memoryVersion && destination.anchor === "memory" && selected === "memory" ? content.current?.querySelector<HTMLElement>("#memory") ?? heading.current : heading.current}
         finalFocus={() => navigating.current ? false : opener.current?.isConnected ? opener.current : toolbar.current?.querySelector<HTMLButtonElement>("button")}
         className="top-0 right-0 left-auto flex h-dvh w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 rounded-none p-0 sm:max-w-[44rem] data-open:zoom-in-100 data-closed:zoom-out-100 data-open:slide-in-from-right-4 data-closed:slide-out-to-right-4 motion-reduce:animate-none">
