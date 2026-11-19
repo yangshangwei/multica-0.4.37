@@ -168,7 +168,11 @@ export function RunConfirmModal({
           assignee_type: d.assigneeType ?? null,
           assignee_id: d.assigneeId ?? null,
         };
-    return { ...base, ...extra };
+    return {
+      ...base,
+      ...extra,
+      ...(d.issueRevision !== undefined ? { expected_revision: d.issueRevision } : {}),
+    };
   };
 
   // The copy names whoever the issue is handed to; for a squad that is the

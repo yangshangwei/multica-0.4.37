@@ -8,7 +8,7 @@ import { useAuthStore } from "@multica/core/auth";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { accountPath, parseAccountPath, useWorkspacePaths } from "@multica/core/paths";
 import { useModalStore } from "@multica/core/modals";
-import { useUpdateIssue } from "@multica/core/issues/mutations";
+import { useUpdateIssue, withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
 import { errorCode } from "@multica/core/api";
 import { pinListOptions, useCreatePin, useDeletePin } from "@multica/core/pins";
@@ -88,6 +88,7 @@ export function useIssueActions(issue: Issue | null): UseIssueActionsResult {
       options?: IssueSurfaceMutationOptions,
     ) => {
       if (!issueId) return;
+      updates = withObservedIssueFieldRevision(issue ?? undefined, updates);
       const applyUpdate = () => {
         // The two writes that can hand work to an agent — giving it an owner, and
         // promoting it out of the parking lot — confirm first, through the shared

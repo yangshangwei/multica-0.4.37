@@ -12,6 +12,7 @@ import { propertyListOptions } from "@multica/core/properties";
 import { CustomPropertyValueDisplay } from "./pickers/custom-property-picker";
 import { descriptionPreview } from "./description-preview";
 import { formatDateOnly, isPastDateOnly } from "@multica/core/issues/date";
+import { withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import { CalendarClock, CalendarDays } from "lucide-react";
 import { ActorAvatar } from "../../common/actor-avatar";
 import { SourceCollaborationAccount } from "../../collaboration/source-bridge";
@@ -77,11 +78,11 @@ export const BoardCardContent = memo(function BoardCardContent({
   const surfaceActions = useIssueSurfaceActionsOptional();
   const handleUpdate = useCallback(
     (updates: Partial<UpdateIssueRequest>) => {
-      surfaceActions?.updateIssue(issue.id, updates, {
+      surfaceActions?.updateIssue(issue.id, withObservedIssueFieldRevision(issue, updates), {
         errorMessage: t(($) => $.card.update_failed),
       });
     },
-    [issue.id, surfaceActions, t],
+    [issue, surfaceActions, t],
   );
   const canEdit = editable && !!surfaceActions && !issue.collaboration;
 

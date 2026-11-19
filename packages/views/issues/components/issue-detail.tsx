@@ -69,7 +69,7 @@ import type { Attachment, Issue, IssueProperty, IssueStatus, IssueStatusCategory
 import { contentReferencesAttachment } from "@multica/core/types";
 import { STATUS_CONFIG } from "@multica/core/issues/config";
 import { formatDateOnly, isPastDateOnly } from "@multica/core/issues/date";
-import { useUpdateIssue } from "@multica/core/issues/mutations";
+import { useUpdateIssue, withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import { toast } from "sonner";
 import { ApiError, errorCode } from "@multica/core/api";
 import { StatusIcon, PriorityIcon, StatusPicker, PriorityPicker, StagePicker, StartDatePicker, DueDatePicker, AssigneePicker, LabelPicker } from ".";
@@ -710,6 +710,7 @@ function SubIssueRow({
 
   const handleUpdate = useCallback(
     (updates: Partial<UpdateIssueRequest>) => {
+      updates = withObservedIssueFieldRevision(child, updates);
       const applyUpdate = () => {
         return new Promise<void>((resolve) => {
           updateIssue.mutate(
@@ -720,7 +721,9 @@ function SubIssueRow({
             {
               onError: (err) =>
                 toast.error(
-                  err instanceof Error && err.message
+                  errorCode(err) === "revision_conflict"
+                    ? t(($) => $.revision.conflict)
+                    : err instanceof Error && err.message
                     ? err.message
                     : t(($) => $.detail.update_failed),
                 ),

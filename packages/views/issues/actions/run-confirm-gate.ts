@@ -15,6 +15,7 @@ export type RunConfirmIntent =
       mode: "assign";
       assigneeType: "agent" | "squad";
       assigneeId: string;
+      issueRevision?: number;
     }
   | {
       issueIds: [string];
@@ -22,6 +23,7 @@ export type RunConfirmIntent =
       status: string;
       assigneeType: "agent" | "squad";
       assigneeId: string;
+      issueRevision?: number;
     };
 
 /**
@@ -88,6 +90,7 @@ export function runConfirmIntent(
       mode: "assign",
       assigneeType: updates.assignee_type,
       assigneeId: updates.assignee_id,
+      ...(updates.expected_revision !== undefined ? { issueRevision: updates.expected_revision } : {}),
     };
   }
 
@@ -109,6 +112,7 @@ export function runConfirmIntent(
         status: updates.status,
         assigneeType: owner,
         assigneeId: issue.assignee_id,
+        ...(updates.expected_revision !== undefined ? { issueRevision: updates.expected_revision } : {}),
       };
     }
   }

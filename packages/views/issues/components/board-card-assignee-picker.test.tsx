@@ -1,5 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Issue, IssueAssigneeType } from "@multica/core/types";
 import { AppLink, NavigationProvider, type NavigationAdapter } from "../../navigation";
 import {
@@ -7,6 +7,7 @@ import {
   type IssueSurfaceActions,
 } from "../surface/actions-context";
 import { BoardCardContent } from "./board-card";
+import enIssues from "../../locales/en/issues.json";
 
 vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@tanstack/react-query")>()),
@@ -68,7 +69,7 @@ vi.mock("@multica/core/workspace/hooks", () => ({
 }));
 
 vi.mock("../../i18n", () => ({
-  useT: () => ({ t: () => "Translated" }),
+  useT: () => ({ t: (selector: (value: typeof enIssues) => unknown) => selector(enIssues) }),
   useTimeAgo: () => () => "now",
 }));
 
@@ -139,7 +140,45 @@ function makeIssue(assigneeType: IssueAssigneeType): Issue {
   };
 }
 
+beforeEach(() => {
+  vi.clearAllMocks();
+  viewState.cardProperties.priority = false;
+});
+
 describe("BoardCardContent assignee picker", () => {
+  // Core field-revision.test.ts owns numeric validity and compatibility.
+  it("passes the card observation through real priority and assignee pickers after a revision refresh", async () => {
+    viewState.cardProperties.priority = true;
+    const issue = { ...makeIssue("member"), revision: 17 };
+    const content = (value: Issue) => (
+      <NavigationProvider value={navigation}>
+        <IssueSurfaceActionsProvider actions={actions}>
+          <BoardCardContent issue={value} editable />
+        </IssueSurfaceActionsProvider>
+      </NavigationProvider>
+    );
+    const view = render(content(issue));
+    fireEvent.click(screen.getByRole("button", { name: "No priority" }));
+    fireEvent.click(screen.getByRole("button", { name: "High" }));
+    await waitFor(() => expect(actions.updateIssue).toHaveBeenLastCalledWith(
+      issue.id, { priority: "high", expected_revision: 17 }, expect.any(Object),
+    ));
+
+    fireEvent.click(view.container.querySelector('[data-slot="avatar"]')!);
+    fireEvent.click(screen.getByRole("button", { name: "Unassigned" }));
+    expect(actions.updateIssue).toHaveBeenLastCalledWith(
+      issue.id, { assignee_type: null, assignee_id: null, expected_revision: 17 }, expect.any(Object),
+    );
+
+    view.rerender(content({ ...issue, revision: 18 }));
+    fireEvent.click(screen.getByRole("button", { name: "No priority" }));
+    fireEvent.click(screen.getByRole("button", { name: "Low" }));
+    expect(actions.updateIssue).toHaveBeenLastCalledWith(
+      issue.id, { priority: "low", expected_revision: 18 }, expect.any(Object),
+    );
+    expect(navigation.push).not.toHaveBeenCalled();
+  });
+
   it.each<IssueAssigneeType>(["member", "agent", "squad"])(
     "opens the picker from an avatar-only %s assignee without navigating the card",
     (assigneeType) => {
@@ -160,6 +199,10 @@ describe("BoardCardContent assignee picker", () => {
       expect(fireEvent.click(avatar!)).toBe(false);
       expect(screen.getByRole("textbox")).toBeInTheDocument();
       expect(navigation.push).not.toHaveBeenCalled();
+      fireEvent.click(screen.getByRole("button", { name: "Unassigned" }));
+      expect(actions.updateIssue).toHaveBeenCalledWith(
+        issue.id, { assignee_type: null, assignee_id: null }, expect.any(Object),
+      );
     },
   );
 });

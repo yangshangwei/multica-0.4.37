@@ -14,6 +14,8 @@ import { revealCollaborationDisclosure } from "./collaboration-disclosures";
 import { revealCollaborationEditingAction } from "./collaboration-editing";
 
 export type RecoveryPlatform = "Web" | "Desktop";
+export type RecoveryActor = Pick<HandoffActor, "client" | "id" | "name" | "authenticateWeb"> & { login?: HandoffActor["login"] };
+export type RecoverySurface = Pick<OfflineHandoffFixture, "apiUrl" | "issueId" | "title" | "accountPath">;
 type JSONRecord = Record<string, unknown>;
 const object = z.record(z.string(), z.unknown());
 const ordinaryIssue = z.object({ id: z.uuid(), identifier: z.string(), title: z.string(), revision: z.number().int().positive(),
@@ -104,8 +106,8 @@ interface CommentPageFact { at: string; cursor: string | null; limit: number; ma
 type NativeSession = Awaited<ReturnType<typeof openDesktop>>;
 interface SessionLifecycle { profile: string | null; native_pid: number | null; page_closed_at: string | null; context_closed_at: string | null;
   native_exit: { at: string; code: number | null; signal: string | null } | null; close_started_at: string | null; close_ended_at: string | null }
-interface RecoverySession { page: Page; context: BrowserContext; platform: RecoveryPlatform; actor: HandoffActor;
-  fixture: OfflineHandoffFixture; native?: NativeSession; errors: string[]; writes: BusinessRequestFact[]; lifecycle: SessionLifecycle;
+export interface RecoverySession { page: Page; context: BrowserContext; platform: RecoveryPlatform; actor: RecoveryActor;
+  fixture: RecoverySurface; native?: NativeSession; errors: string[]; writes: BusinessRequestFact[]; lifecycle: SessionLifecycle;
   cleanup_errors: JSONRecord[]; console_facts: JSONRecord[]; request_failures: JSONRecord[]; response_facts: JSONRecord[];
   sockets: SocketFact[]; handshakes: HandshakeFact[]; pages: CommentPageFact[]; read_errors: string[];
   pendingReads: Set<Promise<void>>; cdp: CDPSession; close(): Promise<void>; navigate(path: string): Promise<void> }
@@ -264,7 +266,7 @@ async function observeSession(session: RecoverySession) {
   });
 }
 
-async function openSession(browser: Browser, platform: RecoveryPlatform, actor: HandoffActor, fixture: OfflineHandoffFixture,
+async function openSession(browser: Browser, platform: RecoveryPlatform, actor: RecoveryActor, fixture: RecoverySurface,
   info: TestInfo, evidence: RecoveryEvidence): Promise<RecoverySession> {
   let native: NativeSession | undefined, profile: string | undefined, context: BrowserContext | undefined, page: Page | undefined,
     cdp: CDPSession | undefined, session: RecoverySession | undefined, closing: Promise<void> | undefined;
@@ -285,8 +287,10 @@ async function openSession(browser: Browser, platform: RecoveryPlatform, actor: 
       const root = process.env.PAY241_S3_PROFILE_ROOT ?? tmpdir();
       mkdirSync(root, { recursive: true, mode: 0o700 });
       profile = mkdtempSync(join(root, "pay241-s3-client-")); lifecycle.profile = profile;
-      await actor.login();
-      native = await openDesktop(profile, { token: actor.client.getToken()! });
+      if (actor.login) await actor.login();
+      const token = actor.client.getToken();
+      if (!token) throw new Error("The current password registration or login session is unavailable");
+      native = await openDesktop(profile, { token });
       const childProcess = native.app.process(); lifecycle.native_pid = childProcess.pid ?? null;
       childProcess.once("exit", (code, signal) => { lifecycle.native_exit = { at: now(), code, signal }; });
       context = native.app.context(); page = native.page;
@@ -346,8 +350,8 @@ async function platformRequest(session: RecoverySession, path: string, method = 
   return { at: now(), ...result };
 }
 
-async function withSessions<T>(browser: Browser, platform: RecoveryPlatform, fixture: OfflineHandoffFixture, info: TestInfo,
-  evidence: RecoveryEvidence, exercise: (open: (actor: HandoffActor) => Promise<RecoverySession>) => Promise<T>): Promise<T> {
+export async function withSessions<T>(browser: Browser, platform: RecoveryPlatform, fixture: RecoverySurface, info: TestInfo,
+  evidence: RecoveryEvidence, exercise: (open: (actor: RecoveryActor) => Promise<RecoverySession>) => Promise<T>): Promise<T> {
   const sessions: RecoverySession[] = [];
   let outcome: { ok: true; value: T } | { ok: false; error: unknown };
   let cleanupFailed = false;
@@ -390,7 +394,7 @@ async function withSessions<T>(browser: Browser, platform: RecoveryPlatform, fix
 
 /** Each original browser request waits here before any server mutation. The
  * decision either forwards its unchanged request or aborts it during teardown. */
-class HeldRequest {
+export class HeldRequest {
   fact: MutationFact | null = null;
   result: HTTPFact | null = null;
   private route: Route | null = null;
@@ -710,7 +714,7 @@ export async function exerciseRecoveryPriority(browser: Browser, platform: Recov
   });
 }
 
-async function openOrdinaryChild(session: RecoverySession, child: OrdinaryIssue) {
+export async function openOrdinaryChild(session: RecoverySession, child: OrdinaryIssue) {
   await session.navigate(session.fixture.accountPath);
   await expect(session.page.getByRole("heading", { name: session.fixture.title, exact: true })).toBeVisible();
   const drawer = await revealCollaborationDisclosure(session.page, "Sub-issues");
@@ -741,10 +745,11 @@ async function ordinaryUIUpdate(session: RecoverySession, child: OrdinaryIssue, 
   try { [, response] = await Promise.all([click, pending]); }
   finally { await Promise.allSettled([click, pending]); }
   expect(response.status()).toBe(200);
-  const input = mutationFact(session, response.request(), "ORDINARY_UI_OPTIONAL_VERSION_COMPATIBILITY", await response.request().allHeaders());
-  expect(Object.hasOwn(input.body, "expected_revision")).toBe(false);
+  const input = mutationFact(session, response.request(), "ORDINARY_UI_OBSERVED_NUMERIC_REVISION", await response.request().allHeaders());
+  expect(input.body.expected_revision).toBe(child.revision);
   const result = ordinaryIssue.parse(await response.json());
-  return { input, result, scope: "Actual UI intentionally omitted expected_revision; this is not numeric UI CAS" };
+  expect(result).toMatchObject({ id: child.id, revision: child.revision + 1 });
+  return { input, result, scope: "Actual UI retained its numeric observation; the separate ordinary UI suite owns genuine two-client contention" };
 }
 
 export async function exerciseRecoveryOrdinary(browser: Browser, platform: RecoveryPlatform, info: TestInfo,
@@ -757,7 +762,7 @@ export async function exerciseRecoveryOrdinary(browser: Browser, platform: Recov
   expect(child.collaboration == null).toBe(true); expect(child.parent_issue_id).toBe(fixture.issueId);
   const parent = parentFacts(await currentIssue(fixture));
   const activityBefore = await fixture.creator.client.requestJSON(`${issuePath(fixture.issueId)}/activity?limit=50`);
-  evidence.checkpoint("ordinary_child_explicit_numeric_API_boundary", { child, parent, first, UI_contract: "optional expected_revision" });
+  evidence.checkpoint("ordinary_child_explicit_numeric_API_boundary", { child, parent, first, UI_contract: "Known rendered revision retained by the UI; optional API compatibility is a separate control" });
   return withSessions(browser, platform, fixture, info, evidence, async (open) => {
     const prioritySession = await open(fixture.creator), assigneeSession = await open(fixture.creator);
     await openOrdinaryChild(prioritySession, child); await openOrdinaryChild(assigneeSession, child);
@@ -794,8 +799,8 @@ export async function exerciseRecoveryOrdinary(browser: Browser, platform: Recov
       expect(afterFresh).toMatchObject({ revision: child.revision + 2, priority: "high", assignee_id: null, parent_issue_id: fixture.issueId });
       evidence.checkpoint("separate_fresh_numeric_API_intent", { freshBody, fresh });
       await openOrdinaryChild(prioritySession, afterFresh);
-      const compatibilityPriority = await ordinaryUIUpdate(prioritySession, afterFresh, "priority");
-      const compatibilityAssignee = await ordinaryUIUpdate(prioritySession, compatibilityPriority.result, "assignee");
+      const observedPriority = await ordinaryUIUpdate(prioritySession, afterFresh, "priority");
+      const observedAssignee = await ordinaryUIUpdate(prioritySession, observedPriority.result, "assignee");
       const final = ordinaryIssue.parse(await fixture.creator.client.requestJSON(path));
       expect(final).toMatchObject({ priority: "medium", assignee_type: "member", assignee_id: fixture.creator.id,
         revision: child.revision + 4, parent_issue_id: fixture.issueId });
@@ -803,9 +808,9 @@ export async function exerciseRecoveryOrdinary(browser: Browser, platform: Recov
       expect(parentFacts(await currentIssue(fixture))).toEqual(parent);
       expect(await fixture.creator.client.requestJSON(`${issuePath(fixture.issueId)}/activity?limit=50`)).toEqual(activityBefore);
       evidence.set({ child_id: child.id, final_child: final, numeric_CAS: { planned_original_requests: 2, original_requests: inputs,
-        winning_response: won, conflict: lost, fresh }, UI_compatibility: { planned_requests: 2, actual: [compatibilityPriority, compatibilityAssignee] },
+        winning_response: won, conflict: lost, fresh }, UI_observed_numeric_revision: { planned_requests: 2, actual: [observedPriority, observedAssignee] },
         parent_business_and_execution_unchanged: true, no_UI_revision_injection: true });
-      return { issue_id: fixture.issueId, child_id: child.id, order: first, status: "PASSED", explicit_API_CAS_requests: 2, UI_compatibility_requests: 2 };
+      return { issue_id: fixture.issueId, child_id: child.id, order: first, status: "PASSED", explicit_API_CAS_requests: 2, UI_observed_numeric_revision_requests: 2 };
     } finally {
       await priority.close(); await assignee.close(); await Promise.allSettled(sends);
     }
@@ -850,7 +855,7 @@ async function writeBatchComment(fixture: OfflineHandoffFixture, content: string
   return row;
 }
 
-async function authenticatedSocket(session: RecoverySession, after: string, previousId?: string): Promise<SocketFact> {
+export async function authenticatedSocket(session: RecoverySession, after: string, previousId?: string): Promise<SocketFact> {
   const find = () => [...session.sockets].reverse().find((socket) => socket.created_at >= after && socket.id !== previousId && socket.closed_at === null &&
     socket.frames.some((frame) => frame.direction === "received" && frame.type === "subscribe_ack" && frame.scope === "issue" && frame.id === session.fixture.issueId));
   await expect.poll(() => find() !== undefined, { timeout: 35_000, message: "A distinct live application socket must authenticate and subscribe to the issue" }).toBe(true);
@@ -875,7 +880,7 @@ async function authenticatedSocket(session: RecoverySession, after: string, prev
   return socket;
 }
 
-async function disconnectObserver(session: RecoverySession, socket: SocketFact, evidence: RecoveryEvidence, phase: string) {
+export async function disconnectObserver(session: RecoverySession, socket: SocketFact, evidence: RecoveryEvidence, phase: string) {
   await Promise.allSettled([...session.pendingReads]);
   await session.context.setOffline(true);
   const close = await session.page.evaluate(() => (window as unknown as { pay241RecoveryTransport: {

@@ -34,6 +34,7 @@ import type {
 import { renderWithI18n } from "../../test/i18n";
 import { IssueSurfaceSelectionProvider } from "../surface/selection-context";
 import type { IssueSurfaceSelection } from "../surface/selection-context";
+import { IssueSurfaceActionsProvider, type IssueSurfaceActions } from "../surface/actions-context";
 import type { IssueCreateDefaults } from "../surface/types";
 import type { ChildProgress } from "./list-row";
 import { TableView, useReleaseEditingCellOnUnmount } from "./table-view";
@@ -200,6 +201,8 @@ const serverQuery: IssueTableQuerySpec = {
 };
 
 let serverIssues: Issue[] = [];
+let selectableAgents: Array<{ id: string; name: string; owner_id: string; runtime_id: string; archived_at: null }> = [];
+let selectableSquads: Array<{ id: string; name: string; leader_id: string; archived_at: null }> = [];
 
 function Harness({
   childProgressMap,
@@ -234,6 +237,57 @@ function Harness({
 }
 
 describe("TableView cell editors under data refresh", () => {
+  function renderEditableTable(updateIssue: IssueSurfaceActions["updateIssue"]) {
+    const actions: IssueSurfaceActions = {
+      isPending: false,
+      createIssue: vi.fn(),
+      updateIssue,
+      moveIssue: vi.fn(),
+      batchUpdate: vi.fn().mockResolvedValue({ updated: 0 }),
+      batchDelete: vi.fn().mockResolvedValue(undefined),
+    };
+    return renderWithI18n(
+      <QueryClientProvider client={queryClient}>
+        <IssueSurfaceActionsProvider actions={actions}>
+          <Harness childProgressMap={new Map()} surfaceKey="ordinary-field-revision" />
+        </IssueSurfaceActionsProvider>
+      </QueryClientProvider>,
+    );
+  }
+
+  // Core field-revision.test.ts owns the observation matrix; these use real row pickers.
+  it("uses the rendered row revision for priority and clear-assignee writes despite a newer detail cache", async () => {
+    const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
+    const issue = { ...makeIssue("c", "Observed row", "todo"), revision: 23, assignee_type: "member" as const, assignee_id: "user-1" };
+    serverIssues = [issue];
+    queryClient.setQueryData(issueKeys.detail("ws-1", issue.id), { ...issue, revision: 24 });
+    const updateIssue = vi.fn();
+    renderEditableTable(updateIssue);
+    const row = (await screen.findByText("MUL-c")).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: "No priority" }));
+    await user.click(screen.getByRole("button", { name: "High" }));
+    expect(updateIssue).toHaveBeenLastCalledWith(issue.id, { priority: "high", expected_revision: 23 });
+
+    await user.click(within(row).getByRole("button", { name: "Someone" }));
+    await user.click(screen.getByRole("button", { name: "Unassigned" }));
+    expect(updateIssue).toHaveBeenLastCalledWith(issue.id, { assignee_type: null, assignee_id: null, expected_revision: 23 });
+    expect(navigationMocks.push).not.toHaveBeenCalled();
+  });
+
+  it.each(["agent", "squad"] as const)("pins the rendered row revision before a real %s assignment confirmation", async (assigneeType) => {
+    const user = userEvent.setup({ delay: null, pointerEventsCheck: 0 });
+    serverIssues = [{ ...makeIssue("c", "Observed row", "todo"), revision: 23 }];
+    selectableAgents = [{ id: "agent-1", name: "Assignable agent", owner_id: "user-1", runtime_id: "runtime-1", archived_at: null }];
+    selectableSquads = [{ id: "squad-1", name: "Assignable squad", leader_id: "agent-1", archived_at: null }];
+    const updateIssue = vi.fn();
+    renderEditableTable(updateIssue);
+    const row = (await screen.findByText("MUL-c")).closest("tr")!;
+    await user.click(within(row).getByRole("button", { name: "Unassigned" }));
+    await user.click(await screen.findByRole("button", { name: `Assignable ${assigneeType}` }));
+    expect(useModalStore.getState().data).toEqual({ issueIds: ["c"], mode: "assign", assigneeType, assigneeId: `${assigneeType}-1`, issueRevision: 23 });
+    expect(updateIssue).not.toHaveBeenCalled();
+  });
+
   // The table's inline pickers are single-issue writes like the issue detail's,
   // so they route on the same run-confirm gate: promoting an agent-owned issue
   // out of backlog starts a run and must confirm first (MUL-6463). The gate's
@@ -278,6 +332,9 @@ describe("TableView cell editors under data refresh", () => {
   let queryClient: QueryClient;
 
   beforeEach(() => {
+    selectableAgents = [];
+    selectableSquads = [];
+    useModalStore.getState().close();
     navigationMocks.push.mockReset();
     navigationMocks.openInNewTab.mockReset();
     navigationMocks.getShareableUrl.mockReset();
@@ -293,8 +350,8 @@ describe("TableView cell editors under data refresh", () => {
     setApiInstance({
       listProperties: async () => ({ properties: [] }),
       listMembers: async () => [],
-      listAgents: async () => [],
-      listSquads: async () => [],
+      listAgents: async () => selectableAgents,
+      listSquads: async () => selectableSquads,
       getAssigneeFrequency: async () => [],
       listIssueStatuses: async () => ({ statuses: [] }),
       listIssueTableRows: async () => ({
@@ -314,6 +371,8 @@ describe("TableView cell editors under data refresh", () => {
 
   afterEach(() => {
     cleanup();
+    useModalStore.getState().close();
+    queryClient.clear();
     vi.unstubAllGlobals();
   });
 

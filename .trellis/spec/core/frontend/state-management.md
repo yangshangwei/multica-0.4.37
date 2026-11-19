@@ -166,3 +166,66 @@ Wrong: leave the earlier GET active, or cancel it and assume the visible row
 must still exist before the optimistic patch. Correct: preserve the loaded UUID
 row across exact cancellation, apply the synchronous optimistic patch and keep
 normal settlement and authorization behavior.
+
+## Ordinary priority and assignee observations
+
+### 1. Scope / trigger
+
+Ordinary detail/menu, board, table and sub-issue field pickers must send the
+revision of the Issue that supplied the visible UI. A newer cache entry cannot
+silently authorize an older menu or confirmation intent.
+
+### 2. Signatures
+
+`withObservedIssueFieldRevision(issue, updates)` in `issues/mutations.ts` adds
+the existing `UpdateIssueRequest.expected_revision?: number`. Shared Views
+calls it before delegating to mutation/surface owners or `runConfirmIntent`.
+The existing modal `issueRevision?: number` carries that same observation.
+
+### 3. Contracts
+
+Preserve an explicit token. Otherwise attach only a positive safe integer from
+the supplied ordinary Issue, and only for priority or assignee fields. Do not
+derive an ordinary token from collaboration authority or read QueryClient to
+replace the observation. Keep Core transport, optimistic metadata exclusion,
+rollback and settlement invalidation in their existing owners.
+
+Both confirmation and suppress/handoff submission retain the captured token.
+A batch may attach the existing common token only when every selected rendered
+Issue has the same known positive revision. Missing/heterogeneous observations
+retain the versionless API contract; do not invent a maximum revision or fan
+out the batch. Status/completion/drag operations keep their separate contracts.
+
+### 4. Validation and error matrix
+
+| Condition | Expected behavior |
+| --- | --- |
+| Rendered R, newer cached R+1 | Send R; server may reject with `409 revision_conflict` |
+| Explicit caller token | Preserve it through every delegation and modal |
+| Missing/invalid revision or collaboration projection | Do not manufacture an ordinary token |
+| Two genuine requests observed at R | Winner advances once; loser receives exact conflict and cannot overwrite its field |
+| User reopens the picker after authoritative refresh | New explicit intent uses R+1; no automatic resubmission |
+| Batch observations differ | Preserve existing compatibility and partial-result behavior |
+
+### 5. Good / base / bad cases
+
+Good: a captured menu retains R even when a detail cache already holds R+1.
+Base: an older backend without revision keeps its supported versionless call.
+Bad: fill the token inside `onMutate` from the highest cached revision, or renew
+it when a confirmation modal submits.
+
+### 6. Required tests
+
+`issues/field-revision.test.ts` owns the pure boundary matrix; mutation tests
+own actual QueryClient rollback, transport forwarding and fresh continuation.
+Views tests own rendered observations, stale menu/cache differences, child
+versus parent revision, modal retention and common-revision batch behavior.
+`e2e/collaboration-recovery-ordinary-ui.spec.ts` verifies genuine Web/Desktop
+picker PUTs, both commit orders, exact conflicts and explicit continuation;
+its versionless API control is a separate denominator.
+
+### 7. Wrong versus correct
+
+Wrong: `expected_revision: findSourceIssue(cache, id).revision` at send time.
+Correct: `withObservedIssueFieldRevision(renderedIssue, updates)` at the field
+owner, with the supplied token preserved through confirmation and transport.

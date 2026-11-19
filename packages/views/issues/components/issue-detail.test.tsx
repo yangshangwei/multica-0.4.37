@@ -9,6 +9,7 @@ import { issueKeys } from "@multica/core/issues/queries";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { toast } from "sonner";
 import { useResolvedExpandStore } from "@multica/core/issues/stores/resolved-expand-store";
+import { createIterationParticipationStore } from "@multica/core/issues/stores/iteration-participation-store";
 import {
   DEFAULT_SUB_ISSUE_ROW_PROPERTIES,
   useSubIssueDisplayStore,
@@ -119,6 +120,7 @@ vi.mock("@multica/core/paths", async () => {
 
 // Mock navigation
 const navigationState = vi.hoisted(() => ({ pathname: "/issues/issue-1", hash: "", replace: vi.fn() }));
+const navigationParticipation = vi.hoisted(() => ({ store: null as ReturnType<typeof createIterationParticipationStore> | null }));
 vi.mock("../../navigation", () => ({
   AppLink: ({ children, href, ...props }: any) => (
     <a href={href} {...props}>
@@ -133,6 +135,12 @@ vi.mock("../../navigation", () => ({
     getShareableUrl: (p: string) => `https://app.multica.com${p}`,
   }),
   useBackOrReplace: () => vi.fn(),
+  // Keep the new navigation dependency as a real, stable Core StoreApi. Its
+  // disclosure contract is canonical in issue-detail-route.iteration-history.test.tsx.
+  useIterationParticipationStoreApi: () => {
+    navigationParticipation.store ??= createIterationParticipationStore(navigationState.pathname);
+    return navigationParticipation.store;
+  },
   NavigationProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
@@ -709,6 +717,7 @@ describe("IssueDetail (shared)", () => {
     vi.clearAllMocks();
     navigationState.pathname = "/issues/issue-1";
     navigationState.hash = "";
+    navigationParticipation.store = null;
     contentEditorMounts.count = 0;
     mockViewport.isMobile = false;
     // Default: issue loads successfully
@@ -2385,6 +2394,36 @@ describe("IssueDetail (shared)", () => {
       due_date: null,
       priority: "none",
       ...overrides,
+    });
+
+    // Core field-revision.test.ts owns validity; this direct child leaf must use its child observation.
+    it.each([8, undefined])("sends the child assignee observation %s through the real picker", async (revision) => {
+      const child = subIssue({ id: "child-1", identifier: "TES-11", title: "Observed child", revision, assignee_type: "member", assignee_id: "user-1" });
+      mockApiObj.listChildIssues.mockResolvedValue({ issues: [child] });
+      mockApiObj.updateIssue.mockReset().mockResolvedValueOnce({ ...child, assignee_type: null, assignee_id: null });
+      renderIssueDetail();
+      const row = (await screen.findByRole("checkbox", { name: "Select TES-11" })).closest<HTMLElement>(".group\\/row")!;
+      fireEvent.click(within(row).getByTestId("actor-avatar"));
+      fireEvent.click(await screen.findByRole("button", { name: "Unassigned" }));
+      await waitFor(() => expect(mockApiObj.updateIssue).toHaveBeenCalledWith("child-1", {
+        assignee_type: null,
+        assignee_id: null,
+        ...(revision !== undefined ? { expected_revision: revision } : {}),
+      }));
+      expect(mockApiObj.updateIssue).toHaveBeenCalledOnce();
+    });
+
+    it("shows the existing conflict feedback for a child's original assignee token without resending", async () => {
+      const child = subIssue({ id: "child-1", identifier: "TES-11", title: "Observed child", revision: 8, assignee_type: "member", assignee_id: "user-1" });
+      mockApiObj.listChildIssues.mockResolvedValue({ issues: [child] });
+      mockApiObj.updateIssue.mockReset().mockRejectedValueOnce({ body: { code: "revision_conflict" } });
+      renderIssueDetail();
+      const row = (await screen.findByRole("checkbox", { name: "Select TES-11" })).closest<HTMLElement>(".group\\/row")!;
+      fireEvent.click(within(row).getByTestId("actor-avatar"));
+      fireEvent.click(await screen.findByRole("button", { name: "Unassigned" }));
+      await waitFor(() => expect(toast.error).toHaveBeenCalledWith(enIssues.revision.conflict));
+      expect(mockApiObj.updateIssue).toHaveBeenCalledWith("child-1", { assignee_type: null, assignee_id: null, expected_revision: 8 });
+      expect(mockApiObj.updateIssue).toHaveBeenCalledOnce();
     });
 
     it("shows an independently shared child with an account link and safe summary instead of ordinary inline writes", async () => {

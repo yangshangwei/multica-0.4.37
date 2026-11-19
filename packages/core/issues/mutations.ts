@@ -70,6 +70,19 @@ export type UpdateIssueMutationInput = {
   move_intent?: Pick<MoveIssueRequest, "before_id" | "after_id">;
 } & UpdateIssueRequest;
 
+/** Pin ordinary field intent to its supplied UI observation, without a cache lookup. */
+export function withObservedIssueFieldRevision(
+  issue: Pick<Issue, "revision" | "collaboration"> | undefined,
+  updates: Partial<UpdateIssueRequest>,
+): Partial<UpdateIssueRequest> {
+  if (updates.expected_revision !== undefined || !issue || issue.collaboration) return updates;
+  if (updates.priority === undefined && updates.assignee_type === undefined && updates.assignee_id === undefined) return updates;
+  const revision = issue.revision;
+  return typeof revision === "number" && Number.isSafeInteger(revision) && revision > 0
+    ? { ...updates, expected_revision: revision }
+    : updates;
+}
+
 // ---------------------------------------------------------------------------
 // Per-status pagination
 // ---------------------------------------------------------------------------

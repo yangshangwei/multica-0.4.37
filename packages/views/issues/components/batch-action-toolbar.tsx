@@ -19,7 +19,7 @@ import {
 import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import { commonIssueFields } from "@multica/core/issues/batch";
 import { issueBehavesAs } from "@multica/core/issues";
-import { useBatchUpdateIssues, useBatchDeleteIssues } from "@multica/core/issues/mutations";
+import { useBatchUpdateIssues, useBatchDeleteIssues, withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import { useModalStore } from "@multica/core/modals";
 import { StatusPicker, PriorityPicker, AssigneePicker } from "./pickers";
 import { useT } from "../../i18n";
@@ -89,6 +89,15 @@ export function BatchActionToolbar({
   const loading =
     surfaceActions?.isPending ?? (batchUpdate.isPending || batchDelete.isPending);
   const ids = selectedIssues.map((issue) => issue.id);
+  // The existing batch request has one token, so every selected rendered
+  // issue must share that known observation before it can be attached.
+  const commonRevision = selectedIssues[0]?.revision;
+  const observedBatchIssue = typeof commonRevision === "number"
+    && Number.isSafeInteger(commonRevision)
+    && commonRevision > 0
+    && selectedIssues.every((issue) => issue.revision === commonRevision)
+    ? selectedIssues[0]
+    : undefined;
   // Shared issues change only through their own workflow, so batch actions are
   // disabled up front with the reason shown, not refused after a click.
   const actionsDisabled = loading || containsCollaboration;
@@ -106,6 +115,7 @@ export function BatchActionToolbar({
 
   const handleBatchUpdate = async (updates: Partial<UpdateIssueRequest>) => {
     if (refuseCollaborationBatch()) return;
+    updates = withObservedIssueFieldRevision(observedBatchIssue, updates);
     try {
       const result = surfaceActions
         ? await surfaceActions.batchUpdate(ids, updates)
@@ -138,6 +148,7 @@ export function BatchActionToolbar({
 
   const handleBatchAssignee = (updates: Partial<UpdateIssueRequest>) => {
     if (refuseCollaborationBatch()) return;
+    updates = withObservedIssueFieldRevision(observedBatchIssue, updates);
     if ((updates.assignee_type === "agent" || updates.assignee_type === "squad") && updates.assignee_id) {
       // Backlog never starts a run on assign (parking lot), so if every selected
       // issue is in backlog the confirm modal would only render an empty "won't
@@ -153,6 +164,7 @@ export function BatchActionToolbar({
           mode: "assign",
           assigneeType: updates.assignee_type,
           assigneeId: updates.assignee_id,
+          ...(updates.expected_revision !== undefined ? { issueRevision: updates.expected_revision } : {}),
         });
         return;
       }

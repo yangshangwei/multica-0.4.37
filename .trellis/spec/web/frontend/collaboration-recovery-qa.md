@@ -246,3 +246,38 @@ Provider/CLI callback and ledger identities, including any short unobserved
 process; latest labels alone are not a launch denominator. Retain all failed
 whole rounds even when their subcases passed, and accept only a complete fresh
 round with original gate, native/PID and connection closure.
+
+## Ordinary field UI revision conflicts
+
+`collaboration-recovery-ordinary-ui.spec.ts` owns two complete platform tops,
+each with priority-first, assignee-first and a separate versionless API control.
+Capture both genuine picker PUTs before forwarding either. Require the actual
+observed numeric R, natural 200/R+1, exact 409, visible conflict feedback and
+an unchanged losing field. Reopen the losing picker only after its authoritative
+GET at R+1; the fresh genuine PUT succeeds at R+2. Never add a token through
+route interception or count the direct API control as UI proof.
+
+An assignee trigger includes avatar initials as well as its label. Select its
+unique owning property-row button by the exact rendered label descendant;
+retain bounded DOM/ARIA diagnostics when the accessible name differs.
+
+Parent before/after DTO comparison must use the same original credential.
+Native session setup logs in through the fixture actor's mutable API client.
+`information_workflow.context_version` includes credential authority/expiry,
+so comparing with the client's replacement token can differ without any
+business mutation. Capture the original token privately and use an explicit
+read-only fetch closure for both reads; log only its hash. `TestApiClient`
+overwrites an Authorization override with its current token. Preserve complete
+DTO equality, including context version, and all persisted SQL fingerprints.
+
+Ordinary UpdateIssue intentionally omits `labels`; detail GET attaches their
+authoritative list. Assert omission and the expected GET labels independently,
+then compare every other field exactly. Do not change the product response or
+weaken revision/identity assertions to force unlike projections to be equal.
+
+Retain complete two-top/six-subcase inventories, original failures, current
+source/config/builds, session/native exits, gate and database closure. Generated
+Desktop `out/` files are build outputs: bind them separately and prove the
+original source inputs remained unchanged. Successful environment admission
+and test execution are dependent steps; observe admission success before
+starting the test command.

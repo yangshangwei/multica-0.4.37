@@ -3,7 +3,7 @@ vi.mock("../../iterations/iteration-assignment", () => ({
 }));
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
-import type { Issue } from "@multica/core/types";
+import type { Issue, UpdateIssueRequest } from "@multica/core/types";
 import enIssues from "../../locales/en/issues.json";
 import { BatchActionToolbar } from "./batch-action-toolbar";
 
@@ -20,8 +20,10 @@ vi.mock("@multica/core/issues/stores/selection-store", () => ({
     selector(selection),
 }));
 
-vi.mock("@multica/core/issues/mutations", () => ({
-  useBatchUpdateIssues: () => ({ mutateAsync: vi.fn(), isPending: false }),
+const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue({ updated: 1 }));
+vi.mock("@multica/core/issues/mutations", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/issues/mutations")>(),
+  useBatchUpdateIssues: () => ({ mutateAsync: batchUpdate, isPending: false }),
   useBatchDeleteIssues: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
 
@@ -35,8 +37,8 @@ vi.mock("./pickers", () => ({
   StatusPicker: ({ status }: { status: string | null }) => (
     <div data-testid="status-picker" data-status={status ?? "__none__"} />
   ),
-  PriorityPicker: ({ priority }: { priority: string | null }) => (
-    <div data-testid="priority-picker" data-priority={priority ?? "__none__"} />
+  PriorityPicker: ({ priority, onUpdate }: { priority: string | null; onUpdate: (updates: Partial<UpdateIssueRequest>) => void }) => (
+    <button data-testid="priority-picker" data-priority={priority ?? "__none__"} onClick={() => onUpdate({ priority: "high" })} />
   ),
   AssigneePicker: ({
     assigneeType,
@@ -86,9 +88,36 @@ function makeIssue(overrides: Partial<Issue> = {}): Issue {
 
 beforeEach(() => {
   selection.selectedIds = new Set();
+  batchUpdate.mockClear();
 });
 
 describe("BatchActionToolbar picker wiring", () => {
+  // Selection equality belongs to the toolbar; numeric validity belongs to Core field-revision.test.ts.
+  it.each([
+    { name: "one observed selected row", revisions: [7], expected: 7 },
+    { name: "equal selected observations", revisions: [7, 7], expected: 7 },
+    { name: "different selected observations", revisions: [7, 8], expected: undefined },
+    { name: "a missing selected observation", revisions: [7, undefined], expected: undefined },
+    { name: "invalid equal observations", revisions: [0, 0], expected: undefined },
+  ])("uses only a common rendered revision for $name", async ({ revisions, expected }) => {
+    const issues = revisions.map((revision, index) => makeIssue({ id: `selected-${index}`, revision }));
+    selection.selectedIds = new Set([...issues.map((issue) => issue.id), "missing-row"]);
+    render(<BatchActionToolbar issues={[...issues, makeIssue({ id: "unselected", revision: 99 })]} />);
+    fireEvent.click(screen.getByTestId("priority-picker"));
+    await waitFor(() => expect(batchUpdate).toHaveBeenCalledOnce());
+    expect(batchUpdate).toHaveBeenCalledWith({
+      ids: issues.map((issue) => issue.id),
+      updates: { priority: "high", ...(expected !== undefined ? { expected_revision: expected } : {}) },
+    });
+  });
+
+  it("has no action when selected IDs resolve to no rendered issues", () => {
+    selection.selectedIds = new Set(["missing-row"]);
+    render(<BatchActionToolbar issues={[makeIssue({ id: "a", revision: 7 })]} />);
+    expect(screen.queryByTestId("priority-picker")).not.toBeInTheDocument();
+    expect(batchUpdate).not.toHaveBeenCalled();
+  });
+
   it("names and activates the clear-selection button", () => {
     selection.selectedIds = new Set(["a"]);
     render(<BatchActionToolbar issues={[makeIssue({ id: "a" })]} />);

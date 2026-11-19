@@ -535,6 +535,36 @@ describe("useUpdateIssue — optimistic move keeps every bucketed board in sync"
     });
   });
 
+  it("forwards an observed field token unchanged and rolls back a refused optimistic field", async () => {
+    const detailKey = issueKeys.detail(WS_ID, "issue-1");
+    qc.setQueryData<Issue>(detailKey, makeIssue(1, { revision: 6 }));
+    let reject!: (error: ApiError) => void;
+    updateIssue.mockReturnValue(new Promise<Issue>((_resolve, fail) => { reject = fail; }));
+    const { result } = renderHook(() => useUpdateIssue(), { wrapper: createWrapper(qc) });
+
+    act(() => result.current.mutate({ id: "issue-1", priority: "high", expected_revision: 5 }));
+    await waitFor(() => expect(updateIssue).toHaveBeenCalledWith("issue-1", {
+      priority: "high",
+      expected_revision: 5,
+    }));
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "high", revision: 6 });
+    expect(qc.getQueryData(detailKey)).not.toHaveProperty("expected_revision");
+
+    await act(async () => { reject(new ApiError("Revision conflict", 409, "Conflict")); });
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "none", revision: 6 });
+    expect(qc.getQueryState(detailKey)?.isInvalidated).toBe(true);
+    expect(updateIssue).toHaveBeenCalledOnce();
+
+    updateIssue.mockResolvedValue(makeIssue(1, { priority: "high", revision: 7 }));
+    await act(async () => {
+      await result.current.mutateAsync({ id: "issue-1", priority: "high", expected_revision: 6 });
+    });
+    expect(updateIssue).toHaveBeenLastCalledWith("issue-1", { priority: "high", expected_revision: 6 });
+    expect(qc.getQueryData<Issue>(detailKey)).toMatchObject({ priority: "high", revision: 7 });
+    expect(qc.getQueryData(detailKey)).not.toHaveProperty("expected_revision");
+  });
+
   it("does not let an older successful response overwrite a newer WS revision", async () => {
     let resolve!: (issue: Issue) => void;
     updateIssue.mockReturnValue(

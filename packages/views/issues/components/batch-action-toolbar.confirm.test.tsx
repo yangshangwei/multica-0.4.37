@@ -26,7 +26,8 @@ const batchUpdate = vi.hoisted(() => vi.fn().mockResolvedValue({ updated: 1 }));
 const batchDelete = vi.hoisted(() => vi.fn().mockResolvedValue(undefined));
 const surface = vi.hoisted(() => ({ current: null as { batchUpdate: typeof batchUpdate; batchDelete: typeof batchDelete; isPending: boolean } | null }));
 vi.mock("../surface/actions-context", () => ({ useIssueSurfaceActionsOptional: () => surface.current }));
-vi.mock("@multica/core/issues/mutations", () => ({
+vi.mock("@multica/core/issues/mutations", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/issues/mutations")>(),
   useBatchUpdateIssues: () => ({ mutateAsync: batchUpdate, isPending: false }),
   useBatchDeleteIssues: () => ({ mutateAsync: batchDelete, isPending: false }),
 }));
@@ -71,6 +72,8 @@ vi.mock("./pickers", () => ({
         data-testid="assign-member"
         onClick={() => onUpdate({ assignee_type: "member", assignee_id: "user-1" })}
       />
+      <button data-testid="assign-squad" onClick={() => onUpdate({ assignee_type: "squad", assignee_id: "squad-1" })} />
+      <button data-testid="clear-assignee" onClick={() => onUpdate({ assignee_type: null, assignee_id: null })} />
     </div>
   ),
 }));
@@ -116,6 +119,47 @@ beforeEach(() => {
 });
 
 describe("BatchActionToolbar status routing (MUL-4155)", () => {
+  it.each(["surface", "embedded"] as const)("passes a common rendered revision through %s member and clear actions", async (placement) => {
+    selection.selectedIds = new Set(["a", "b", "missing-row"]);
+    if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
+    render(<BatchActionToolbar issues={[makeIssue({ revision: 7 }), makeIssue({ id: "b", revision: 7 }), makeIssue({ id: "unselected", revision: 99 })]} />);
+    fireEvent.click(screen.getByTestId("assign-member"));
+    await waitFor(() => expect(batchUpdate).toHaveBeenCalledOnce());
+    const member = { assignee_type: "member", assignee_id: "user-1", expected_revision: 7 };
+    if (placement === "surface") expect(batchUpdate).toHaveBeenLastCalledWith(["a", "b"], member);
+    else expect(batchUpdate).toHaveBeenLastCalledWith({ ids: ["a", "b"], updates: member });
+
+    fireEvent.click(screen.getByTestId("clear-assignee"));
+    const cleared = { assignee_type: null, assignee_id: null, expected_revision: 7 };
+    if (placement === "surface") expect(batchUpdate).toHaveBeenLastCalledWith(["a", "b"], cleared);
+    else expect(batchUpdate).toHaveBeenLastCalledWith({ ids: ["a", "b"], updates: cleared });
+    expect(openModal).not.toHaveBeenCalled();
+    expect(selection.clear).not.toHaveBeenCalled();
+  });
+
+  it.each(["agent", "squad"] as const)("captures the common revision before a %s batch confirmation", (assigneeType) => {
+    selection.selectedIds = new Set(["a", "b"]);
+    const view = render(<BatchActionToolbar issues={[makeIssue({ revision: 7 }), makeIssue({ id: "b", revision: 7 })]} />);
+    fireEvent.click(screen.getByTestId(`assign-${assigneeType}`));
+    const expected = { issueIds: ["a", "b"], mode: "assign", assigneeType, assigneeId: `${assigneeType}-1`, issueRevision: 7 };
+    expect(openModal).toHaveBeenCalledWith("issue-run-confirm", expected);
+    view.rerender(<BatchActionToolbar issues={[makeIssue({ revision: 8 }), makeIssue({ id: "b", revision: 8 })]} />);
+    expect(openModal).toHaveBeenCalledOnce();
+    expect(openModal.mock.calls[0]?.[1]).toEqual(expected);
+    expect(batchUpdate).not.toHaveBeenCalled();
+  });
+
+  it("retains the common token on the existing all-backlog assignment bypass", () => {
+    selection.selectedIds = new Set(["a", "b"]);
+    render(<BatchActionToolbar issues={[
+      makeIssue({ status: "backlog", revision: 7 }),
+      makeIssue({ id: "b", status: "later", status_category: "backlog", revision: 7 }),
+    ]} />);
+    fireEvent.click(screen.getByTestId("assign-agent"));
+    expect(batchUpdate).toHaveBeenCalledWith({ ids: ["a", "b"], updates: { assignee_type: "agent", assignee_id: "agent-1", expected_revision: 7 } });
+    expect(openModal).not.toHaveBeenCalled();
+  });
+
   it.each(["surface", "embedded"] as const)("does not report an update for a no-change %s result", async (placement) => {
     batchUpdate.mockResolvedValue({ updated: 0 });
     if (placement === "surface") surface.current = { batchUpdate, batchDelete, isPending: false };
@@ -183,7 +227,7 @@ describe("BatchActionToolbar status routing (MUL-4155)", () => {
       openModal.mockClear();
       // A backlog issue in the selection is the case that historically could
       // start a run — it still must not pop the confirm modal now.
-      const { unmount } = render(<BatchActionToolbar issues={[makeIssue({ status: "backlog" })]} />);
+      const { unmount } = render(<BatchActionToolbar issues={[makeIssue({ status: "backlog", revision: 7 })]} />);
       fireEvent.click(screen.getByTestId(`status-${status}`));
       expect(openModal).not.toHaveBeenCalled();
       expect(batchUpdate).toHaveBeenCalledWith({ ids: ["a"], updates: { status } });
@@ -199,6 +243,7 @@ describe("BatchActionToolbar status routing (MUL-4155)", () => {
       expect.objectContaining({ issueIds: ["a"], mode: "assign", assigneeType: "agent", assigneeId: "agent-1" }),
     );
     expect(batchUpdate).not.toHaveBeenCalled();
+    expect(openModal.mock.calls[0]?.[1]).not.toHaveProperty("issueRevision");
   });
 
   it("applies member assignment directly (never starts a run)", () => {
