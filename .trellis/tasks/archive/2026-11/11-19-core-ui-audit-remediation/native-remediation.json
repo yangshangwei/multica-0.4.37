@@ -1,0 +1,35 @@
+{
+  "method": "cua_repl native macOS AX+keyboard and one screenshot, current dev Electron after Cmd+R refresh",
+  "renderer": "localhost:5666",
+  "checks": [
+    {
+      "finding": "F02",
+      "result": "pass",
+      "steps": "Open task status popup; click right-sidebar toggle; read AX; press Tab12; reopen sidebar",
+      "evidence": "Status popup and all sidebar controls removed from AX, focus toggle;12 Tab presses land Chat FAB; reopening retains properties with no old popup"
+    },
+    {
+      "finding": "F04",
+      "result": "pass",
+      "steps": "Open task status popup; Down arrow; Escape/close without selecting",
+      "evidence": "Named listbox 状态 with selected 待办; Down exposes focused 进行中 not selected; no write submitted"
+    },
+    {
+      "finding": "F05",
+      "result": "pass",
+      "evidence": "Task description textbox name 任务描述; activated comment textbox name 评论; no content changed"
+    },
+    {
+      "finding": "F07",
+      "result": "pass",
+      "evidence": "Squad detail exposes named tab group, selected 成员/指引 states and named panel; mounted instruction editor named 指引"
+    }
+  ],
+  "limitations": [
+    "Native spoken screen reader output not measured",
+    "No phone/touch gestures",
+    "No mobile rendered hitbox dimensions or dark screenshots",
+    "No network fault injection against user environment"
+  ],
+  "ui_restored": "Inbox, original task sidebar re-expanded; no entity or instruction mutations"
+}
