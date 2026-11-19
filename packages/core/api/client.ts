@@ -12,6 +12,9 @@ import { parseCollaborationActivity } from "../collaboration/activity-schema";
 import { CollaborationCompletionCandidatesSchema, AdminCollaborationCompletionCandidatesSchema, CollaborationCompletionPreviewInputSchema, CollaborationCompletionPreviewSchema,
   type CollaborationCompletionCandidates, type CollaborationCompletionPreviewInput, type CollaborationCompletionPreview, type CollaborationCompletionRead } from "../collaboration/completion-schema";
 import { collaborationDeliveryRefusalStatus, parseCollaborationDeliveryHistory } from "../collaboration/delivery-schema";
+import { CollaborationInformationCursorSchema, CollaborationInformationMetadataSchema, CollaborationInformationRepairSelectionSchema,
+  CollaborationInformationTextSchema, parseCollaborationInformationHistory, parseCollaborationInformationDetail,
+  parseCollaborationInformationAffected, type CollaborationInformationRepairSelection } from "../collaboration/information-schema";
 import { parseCollaborationRunRecords } from "../collaboration/run-records-schema";
 import { COLLABORATION_HANDOFF_MAX_JSON_BYTES, parseCollaborationRunHandoff } from "../collaboration/run-handoff-schema";
 import {
@@ -1080,13 +1083,21 @@ export class ApiClient {
     }
   }
 
-  async getCollaborationCreationOptions(sourceWorkspaceId?: string, options?: { signal?: AbortSignal; parentSearch?: string }) {
+  async getCollaborationCreationOptions(sourceWorkspaceId?: string, options?: { signal?: AbortSignal; parentSearch?: string; projectId?: string }) {
     const query = new URLSearchParams();
     if (sourceWorkspaceId) query.set("source_workspace_id", sourceWorkspaceId);
     if (sourceWorkspaceId && options?.parentSearch) query.set("parent_search", options.parentSearch);
+    if (options?.projectId !== undefined) {
+      if (!sourceWorkspaceId) throw new TypeError("A selected project requires its source workspace");
+      z.uuid().parse(options.projectId);
+      query.set("project_id", options.projectId);
+    }
     const suffix = query.size ? `?${query}` : "";
     const result = parseCollaborationCreationOptions(await this.fetchCollaboration(`/api/collaboration/creation-options${suffix}`, { signal: options?.signal }));
-    return result && (sourceWorkspaceId ? result.source !== null && sameResourceIdentity(result.source.id, sourceWorkspaceId) : result.source === null) ? result : null;
+    const observation = result?.stage_policy_observation;
+    return result && (sourceWorkspaceId ? result.source !== null && sameResourceIdentity(result.source.id, sourceWorkspaceId) : result.source === null) &&
+      (observation === undefined || (observation.source_workspace_id === null ? !sourceWorkspaceId : sameResourceIdentity(observation.source_workspace_id, sourceWorkspaceId ?? "")) &&
+        (options?.projectId ? observation.state === "known" && sameResourceIdentity(observation.project_id, options.projectId) : observation.state === "not_selected")) ? result : null;
   }
 
   async createCollaborationIssue(requestId: string, input: CollaborationCreationInput, options?: { signal?: AbortSignal }) {
@@ -1667,6 +1678,7 @@ export class ApiClient {
       project_id?: string | null; parent_issue_id?: string | null; stage?: number | null;
       current_iteration_id?: string | null; expected_revision?: string; expected_iteration_revision?: string; iteration_reason?: string; allow_completed?: boolean;
       completion?: DeliveryCompletionBinding;
+      unblock_condition?: string; estimated_resolution_at?: string; information_repair?: CollaborationInformationRepairSelection;
     },
     options?: { signal?: AbortSignal },
     method: "POST" | "PATCH" | "PUT" = "POST",
@@ -1696,12 +1708,55 @@ export class ApiClient {
     if (input.purpose === "transfer" && ("expectedStatus" in input || "statusOptionsVersion" in input)) {
       throw new TypeError("Transfer does not accept status confirmation fields");
     }
+    if (input.purpose === "transfer" && ("unblockCondition" in input || "estimatedResolutionAt" in input || "informationRepair" in input)) {
+      throw new TypeError("Transfer does not accept information metadata");
+    }
+    if (input.purpose !== "information_repair" && "informationRepair" in input ||
+      input.purpose === "information_repair" && ("unblockCondition" in input || "estimatedResolutionAt" in input)) {
+      throw new TypeError("Information repair and block metadata are separate request kinds");
+    }
+    const metadata = input.purpose === "information" && (input.unblockCondition !== undefined || input.estimatedResolutionAt !== undefined)
+      ? CollaborationInformationMetadataSchema.parse({ unblock_condition: input.unblockCondition, estimated_resolution_at: input.estimatedResolutionAt }) : {};
+    if (Object.keys(metadata).length > 0 || input.purpose === "information_repair") CollaborationInformationTextSchema.parse(input.note);
+    const repair = input.purpose === "information_repair" ? CollaborationInformationRepairSelectionSchema.parse(input.informationRepair) : undefined;
     return this.writeCollaborationOperation(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs`, input, {
       target_user_id: input.targetUserId,
       purpose: input.purpose,
       note: input.note,
-      ...(input.purpose === "information" ? { expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion } : {}),
+      ...(input.purpose !== "transfer" ? { expected_status: input.expectedStatus, status_options_version: input.statusOptionsVersion } : {}),
+      ...metadata,
+      ...(repair ? { information_repair: repair } : {}),
     }, options);
+  }
+
+  private informationHistoryQuery(params: { limit?: number; cursor?: string }) {
+    const limit = params.limit ?? 50;
+    if (!Number.isInteger(limit) || limit < 1 || limit > 50) throw new TypeError("Information history limit must be from 1 to 50");
+    const query = new URLSearchParams({ limit: String(limit) });
+    if (params.cursor !== undefined) query.set("cursor", CollaborationInformationCursorSchema.parse(params.cursor));
+    return { query, limit };
+  }
+
+  private fetchCollaborationInformationHistory(path: string, options?: { signal?: AbortSignal }) {
+    return withRequestDeadline({ ...options, timeoutMs: RECOVERY_REQUEST_TIMEOUT_MS }, this.endpointController.signal,
+      (signal) => this.fetchCollaborationOptionalHistory(path, { signal, cache: "no-store" }, 65_536));
+  }
+
+  async getCollaborationInformationHistory(id: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    const { query, limit } = this.informationHistoryQuery(params);
+    const page = parseCollaborationInformationHistory(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs?${query}`, options));
+    return page && sameResourceIdentity(page.issue_id, id) && page.items.length <= limit ? page : null;
+  }
+
+  async getCollaborationInformationHandoff(id: string, handoffId: string, options?: { signal?: AbortSignal }) {
+    const detail = parseCollaborationInformationDetail(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs/${encodeURIComponent(handoffId)}`, options));
+    return detail && sameResourceIdentity(detail.issue_id, id) && sameResourceIdentity(detail.item.handoff_id, handoffId) ? detail : null;
+  }
+
+  async getCollaborationInformationRepairAffected(id: string, repairId: string, params: { limit?: number; cursor?: string } = {}, options?: { signal?: AbortSignal }) {
+    const { query, limit } = this.informationHistoryQuery(params);
+    const page = parseCollaborationInformationAffected(await this.fetchCollaborationInformationHistory(`/api/collaboration/issues/${encodeURIComponent(id)}/handoffs/${encodeURIComponent(repairId)}/superseded-requests?${query}`, options));
+    return page && sameResourceIdentity(page.issue_id, id) && sameResourceIdentity(page.repair_handoff_id, repairId) && page.items.length <= limit ? page : null;
   }
 
   /** The recipient comes from the request on the server, never from the client. */

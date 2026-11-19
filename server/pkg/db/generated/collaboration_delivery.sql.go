@@ -170,7 +170,7 @@ func (q *Queries) ListCollaborationDeliveryEvents(ctx context.Context, arg ListC
 }
 
 const listCollaborationDeliveryHandoffs = `-- name: ListCollaborationDeliveryHandoffs :many
-SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at FROM issue_handoff
+SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id FROM issue_handoff
 WHERE issue_id = $1::uuid AND id = ANY($2::uuid[])
   AND purpose = 'acceptance'
 `
@@ -202,6 +202,9 @@ func (q *Queries) ListCollaborationDeliveryHandoffs(ctx context.Context, arg Lis
 			&i.PreviousStatus,
 			&i.Resolution,
 			&i.CreatedAt,
+			&i.UnblockCondition,
+			&i.EstimatedResolutionAt,
+			&i.SupersededByRepairHandoffID,
 		); err != nil {
 			return nil, err
 		}

@@ -15,13 +15,21 @@ export class CollaborationCreationRejectedError extends Error {
   constructor(readonly code: CollaborationCreationRejectionCode) { super("The original creation was rejected"); this.name = "CollaborationCreationRejectedError"; }
 }
 
-export function collaborationCreationOptions(client: QueryClient, scope: CollaborationScope, sourceId?: string, parentSearch = "") {
+export function collaborationCreationOptions(client: QueryClient, scope: CollaborationScope, sourceId?: string, parentSearch = "", projectId?: string) {
   const context = sourceId ? { kind: "creation" as const, sourceWorkspaceId: sourceId } : null;
   return queryOptions({
-    queryKey: context ? [...collaborationDeliveryKey(scope, context), "options", parentSearch] : [...collaborationKeys.scope(scope), "creation-options"],
+    queryKey: context ? [...collaborationDeliveryKey(scope, context), "options", parentSearch, ...(projectId ? [projectId.toLowerCase()] : [])] : [...collaborationKeys.scope(scope), "creation-options"],
     enabled: scope.userId !== "", staleTime: 0, retry: false, refetchOnMount: "always", refetchOnWindowFocus: "always", refetchInterval: 15_000,
     queryFn: async ({ signal }) => {
-      const load = () => getApi().getCollaborationCreationOptions(sourceId, { signal, parentSearch });
+      const load = async () => {
+        try { return await getApi().getCollaborationCreationOptions(sourceId, { signal, parentSearch, ...(projectId ? { projectId } : {}) }); }
+        catch (error) {
+          if (!projectId || !(error instanceof ApiError) || error.status !== 404 || error.isStaleAuthResponse) throw error;
+          // A missing selected project does not establish source departure.
+          await getApi().getCollaborationCreationOptions(sourceId, { signal, parentSearch });
+          return null;
+        }
+      };
       const result = context ? await protectCollaborationDelivery(client, scope, context, load, true)
         : await protectCollaborationRead(client, scope, null, load);
       reconcileCollaborationCreationSources(client, scope, result.sources.map((source) => source.id));

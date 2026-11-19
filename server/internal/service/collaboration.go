@@ -316,7 +316,7 @@ func (s *CollaborationService) createCollaborationIssueInTx(ctx context.Context,
 		WorkspaceID: p.SourceWorkspaceID, Title: p.Title, Description: pgtype.Text{String: p.Description, Valid: true},
 		Status: initial.Status, Priority: initial.Priority, StartDate: initial.StartDate, DueDate: initial.DueDate, Stage: initial.Stage, LabelIDs: p.LabelIDs,
 		AssigneeType: pgtype.Text{String: "member", Valid: true}, AssigneeID: p.HandlerID,
-		CreatorType: "member", CreatorID: actorID, ProjectID: p.ProjectID, ParentIssueID: p.ParentIssueID, AllowDuplicate: true,
+		CreatorType: "member", CreatorID: actorID, ProjectID: p.ProjectID, ParentIssueID: p.ParentIssueID, AllowDuplicate: true, collaborationRoot: true,
 	}, policy)
 	if err != nil {
 		return empty, err

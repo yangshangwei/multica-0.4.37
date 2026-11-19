@@ -2,6 +2,8 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationFieldOptions, collaborationPropertyValueMatchesDefinition, collaborationKeys, executeCollaborationAction, isCollaborationDenied, parseCollaborationActionDraft, prepareCollaborationAction, useCollaborationPendingDrafts, useCollaborationStatusOptions,
   deriveCollaborationDetailState, collaborationCompletionTarget, useCollaborationDeliveryForm, collaborationCommentWithinByteLimit, collaborationDraftAttachmentsOptions, collaborationAttachmentsOptions,
+  CollaborationInformationEstimateSchema, collaborationInformationTextValid,
+  type CollaborationInformationRepairBasis, type CollaborationInformationRepairContext,
   type CollaborationAction, type CollaborationActionIntent, type CollaborationAttachment, type CollaborationComment, type CollaborationDraft, type CollaborationIssue, type CollaborationRecipientAccount, type CollaborationScope, type CollaborationStatusAction } from "@multica/core/collaboration";
 import { Button } from "@multica/ui/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@multica/ui/components/ui/dialog";
@@ -24,9 +26,11 @@ import { CollaborationIterationInput, CollaborationLabelInput, CollaborationProp
 
 import { deliveryCompletionScope } from "@multica/core/issues";
 import { CollaborationCompletionAuthorization, type CompletionAuthorizationSelection } from "./completion-authorization";
+import { CollaborationInformationBlock, CollaborationInformationFields, CollaborationInformationRepairBasis as InformationRepairBasisFields } from "./information-block";
 
 type ActionName = CollaborationAction["action"];
-const successful = new Set(["participant_added", "already_participant", "transferred", "already_handler", "participant_left", "participant_removed", "information_requested", "information_returned", "acceptance_submitted", "acceptance_returned", "ai_policy_changed", "ai_policy_unchanged", "status_changed", "status_unchanged", "completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "unchanged"]);
+type RepairObservation = Pick<CollaborationInformationRepairContext, "context_version" | "active_request_id"> & { status_options_version: string };
+const successful = new Set(["participant_added", "already_participant", "transferred", "already_handler", "participant_left", "participant_removed", "information_requested", "information_returned", "information_repaired", "acceptance_submitted", "acceptance_returned", "ai_policy_changed", "ai_policy_unchanged", "status_changed", "status_unchanged", "completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "unchanged"]);
 
 export function CollaborationWorkflow({ scope, issue, initialAction, initialStatus, resultFromComment, onResultPrepared, onDiscuss, embedded = false, onDismiss, onApplied, onBusyChange }: {
   scope: CollaborationScope; issue: CollaborationIssue; initialAction?: "transfer" | "change_status" | "edit"; initialStatus?: string;
@@ -68,6 +72,7 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const actions: [ActionName, boolean][] = [["invite", issue.capabilities.invite], ["transfer", issue.capabilities.transfer],
     ["request_information", issue.capabilities.request_information], ["return_information", issue.capabilities.return_information], ["submit_acceptance", issue.capabilities.submit_acceptance],
+    ["repair_information", state.primary === "repair_information" || state.secondary.includes("repair_information")],
     ["return_acceptance", issue.capabilities.return_acceptance === true], ["change_ai_policy", issue.capabilities.change_ai_policy === true],
     ["change_status", issue.capabilities.change_status], ["complete", issue.capabilities.complete && (state.canAccept || state.canSelfComplete)], ["cancel", issue.capabilities.cancel], ["reopen", issue.capabilities.reopen],
     ["leave", issue.capabilities.leave], ["edit", issue.capabilities.edit],
@@ -96,12 +101,13 @@ export function CollaborationWorkflow({ scope, issue, initialAction, initialStat
   const actionLabel = (action: ActionName, isPrimary = false) => action === "complete" ? state.canAccept ? t(($) => $.delivery.accept) : t(($) => $.delivery.selfComplete)
     : action === "change_status" && isPrimary && ["backlog", "todo"].includes(issue.status_category) ? t(($) => $.delivery.start) : labels.action(action);
   function select(action: ActionName, button: HTMLElement | null) { trigger.current = button; apply.reset(); setRestored(null); setSelection({ action }); }
-  const formOpen = selected !== undefined && issue.write_context != null && available.includes(selected);
+  const formOpen = selected !== undefined && issue.write_context != null && (available.includes(selected) || selected === "repair_information" && restored?.action === selected);
   const feedback = <>
     {drafts.error && <p role="alert" className="text-body">{t(($) => $.workflow.storageError)}</p>}
     {apply.isPending && <p role="status" className="text-body">{t(($) => $.workflow.pending)}</p>}
     {apply.error && <CollaborationQueryState error={apply.error} />}
     {apply.data && (apply.data.code === "stage_incomplete" || apply.data.code === "stage_policy_exit_required") ? <CollaborationStageRefusalNotice refusal={apply.data} /> : apply.data && <p role="status" className="text-body">{successful.has(apply.data.code) && (apply.data.status === undefined || apply.data.status < 400) ? t(($) => $.workflow.success) : t(($) => $.workflow.refused)}</p>}
+    {apply.data && !successful.has(apply.data.code) && apply.data.code.startsWith("information_") && <p className="text-body text-muted-foreground">{labels.reason(apply.data.code)}</p>}
     {!apply.isPending && drafts.actions.length > 0 && <div className="space-y-3"><p role="status" className="text-body">{t(($) => $.workflow.unknown)}</p>{drafts.actions.map((draft) =>
       <Button key={draft.requestId} data-workflow-recovery type="button" variant="outline" disabled={apply.isPending} className="pointer-coarse:min-h-11" onClick={(event) => { if (!selection) trigger.current = event.currentTarget; apply.mutate({ draft, recovery: true }); }}>{t(($) => $.workflow.recover)}</Button>)}</div>}
   </>;
@@ -166,17 +172,27 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
   const restoredEdit = restoredAction?.action === "edit" ? restoredAction : null;
   const restoredStructure = restoredAction?.action === "edit_source_structure" ? restoredAction : null;
   const restoredIteration = restoredAction?.action === "change_iteration" ? restoredAction : null;
+  const restoredRepair = restoredAction?.action === "repair_information" ? restoredAction : null;
   const [submissionId, setSubmissionId] = useState(() => restoredAction?.action === "return_acceptance" ? restoredAction.submissionId
     : restoredAction?.action === "complete" ? restoredAction.submissionId ?? null : baseline.delivery?.current?.id ?? null);
   const [informationRequestId, setInformationRequestId] = useState(() => restoredAction?.action === "return_information" ? restoredAction.informationRequestId : baseline.current_information_request?.id ?? null);
   const [recipient, setRecipient] = useState<CollaborationRecipientAccount | null>(() => {
     if (restoredAction && "targetUserId" in restoredAction) return [baseline.handler, baseline.creator, baseline.delivery?.current?.author, baseline.current_information_request?.requester]
-      .find((person) => person?.user_id === restoredAction.targetUserId) ?? null;
+      .find((person) => person?.user_id.toLowerCase() === restoredAction.targetUserId.toLowerCase()) ?? (restoredAction.action === "repair_information"
+        ? { user_id: restoredAction.targetUserId, name: restoredAction.targetUserId, avatar_url: "", external: null } : null);
     return action === "return_acceptance" ? baseline.delivery?.current?.author ?? null : null;
   });
   const recipientWasChosen = useRef(restoredAction !== undefined && "targetUserId" in restoredAction);
   const [note, setNote] = useState(restoredAction && "note" in restoredAction ? restoredAction.note ?? "" : "");
-  const [status, setStatus] = useState(initialStatus ?? "");
+  const [status, setStatus] = useState(initialStatus ?? (restoredAction && "expectedStatus" in restoredAction && ["request_information", "return_information", "repair_information"].includes(restoredAction.action) ? restoredAction.expectedStatus : ""));
+  const [unblockCondition, setUnblockCondition] = useState(restoredAction?.action === "request_information" ? restoredAction.unblockCondition ?? "" : "");
+  const [estimatedResolutionAt, setEstimatedResolutionAt] = useState(restoredAction?.action === "request_information" ? restoredAction.estimatedResolutionAt ?? "" : "");
+  const [repairBasis, setRepairBasis] = useState<CollaborationInformationRepairBasis | null>(restoredRepair?.informationRepair.basis ?? null);
+  const [repairContext, setRepairContext] = useState<CollaborationInformationRepairContext | null>(null);
+  const [repairObservation, setRepairObservation] = useState<RepairObservation | null>(() => restoredRepair ? {
+    context_version: restoredRepair.informationRepair.context_version, active_request_id: restoredRepair.informationRepair.active_request_id,
+    status_options_version: restoredRepair.statusOptionsVersion,
+  } : null);
   const [aiPolicy, setAIPolicy] = useState(restoredAction?.action === "change_ai_policy" ? restoredAction.aiPolicy : baseline.ai_policy ?? "");
   const result = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId,
     context: { kind: "issue", issueId: issue.id, sourceWorkspaceId: issue.source_workspace.id } }, "result");
@@ -228,14 +244,29 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
   for (const [id, value] of Object.entries(properties)) { if (value === null) delete propertyValues[id]; else propertyValues[id] = value; }
   const invalidProperties = Object.entries(properties).some(([id, value]) => value !== null && !fields.data?.properties.some((definition) => definition.id === id && collaborationPropertyValueMatchesDefinition(value, definition)));
   const invalidLabels = labelIds !== undefined && fields.data !== undefined && labelIds.some((id) => !fields.data!.labels.some((label) => label.id === id));
-  const staleBaseline = baseline.collaboration_revision !== issue.collaboration_revision || baseline.lifecycle_epoch !== issue.lifecycle_epoch ||
+  const needsRecipient = action === "invite" || action === "transfer" || action === "request_information" || action === "return_acceptance" || action === "repair_information";
+  const needsStatus = ["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "repair_information", "submit_acceptance", "return_acceptance"].includes(action);
+  const options = useCollaborationStatusOptions(scope, issue.id, (needsStatus ? action : "change_status") as CollaborationStatusAction, needsStatus);
+  const repairOptions = options.data?.action === "repair_information" ? options.data : null;
+  useEffect(() => {
+    if (action !== "repair_information" || !repairOptions) return;
+    const context = repairOptions.information_repair_context;
+    if (repairObservation === null) {
+      setRepairObservation({ context_version: context.context_version, active_request_id: context.active_request_id, status_options_version: repairOptions.status_options_version });
+      setRepairContext(context);
+    } else if (repairContext === null && context.context_version === repairObservation.context_version && context.active_request_id === repairObservation.active_request_id && repairOptions.status_options_version === repairObservation.status_options_version) {
+      setRepairContext(context);
+    }
+  }, [action, repairOptions, repairObservation, repairContext]);
+  const repairChanged = action === "repair_information" && repairObservation !== null && (
+    issue.information_workflow?.context_version !== repairObservation.context_version || issue.information_workflow.active_request_id !== repairObservation.active_request_id ||
+    repairOptions !== null && (repairOptions.status_options_version !== repairObservation.status_options_version ||
+      repairOptions.information_repair_context.context_version !== repairObservation.context_version || repairOptions.information_repair_context.active_request_id !== repairObservation.active_request_id));
+  const staleBaseline = repairChanged || baseline.collaboration_revision !== issue.collaboration_revision || baseline.lifecycle_epoch !== issue.lifecycle_epoch ||
     baseline.write_context?.participant_epoch !== issue.write_context?.participant_epoch || baseline.write_context?.account_epoch !== issue.write_context?.account_epoch ||
     needsSource && baseline.source_structure?.issue_revision !== issue.source_structure?.issue_revision ||
     action === "change_iteration" && sourceOptions?.iterations.some((item) => item.id === iterationId && item.revision !== iterationRevision) === true;
-  const needsRecipient = action === "invite" || action === "transfer" || action === "request_information" || action === "return_acceptance";
-  const needsStatus = ["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance", "return_acceptance"].includes(action);
-  const options = useCollaborationStatusOptions(scope, issue.id, (needsStatus ? action : "change_status") as CollaborationStatusAction, needsStatus);
-  const chosenStatus = status || (startWork ? options.data?.options.find((option) => option.category === "in_progress")?.key : options.data?.default_status) || "";
+  const chosenStatus = action === "repair_information" ? status : status || (startWork ? options.data?.options.find((option) => option.category === "in_progress")?.key : options.data?.default_status) || "";
   const editReady = action !== "edit" || (title.trim() !== "" && ["none", "low", "medium", "high", "urgent"].includes(priority) && baseline.start_date !== undefined && baseline.due_date !== undefined && !invalidProperties && !invalidLabels);
   const sourceReady = !needsSource || sourceOptions !== undefined && !fields.error && !fields.isFetching && !fields.isPlaceholderData && (sourceSelection.stage === null || Number.isInteger(sourceSelection.stage) && sourceSelection.stage >= 1 && sourceSelection.stage <= 2147483647);
   // The answer goes to the open request the form observed, so show that one.
@@ -250,9 +281,21 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
     (action === "return_acceptance" ? note.trim() !== "" && !reasonTooLong : baselineState.canAccept);
   const completionReady = action !== "complete" || (deciding ? baselineState.canAccept : baselineState.canSelfComplete);
   const informationReady = action !== "return_information" || informationRequest !== null && informationRequestId === issue.current_information_request?.id;
+  const needsInformationMetadata = action === "request_information" && (baseline.information_workflow?.managed === true || unblockCondition !== "" || estimatedResolutionAt !== "");
+  const informationReasonRequired = needsInformationMetadata || action === "repair_information";
+  const informationReasonInvalid = informationReasonRequired && note !== "" && !collaborationInformationTextValid(note);
+  const metadataReady = !needsInformationMetadata || collaborationInformationTextValid(note) && collaborationInformationTextValid(unblockCondition) && CollaborationInformationEstimateSchema.safeParse(estimatedResolutionAt).success;
+  const pendingRepair = repairContext?.pending_submission;
+  const historicalRepair = repairContext?.historical_origin;
+  const currentState = deriveCollaborationDetailState(issue, scope.userId);
+  const repairBasisReady = repairBasis?.kind === "pending_submission" ? pendingRepair != null && repairBasis.submission_id === pendingRepair.submission_id && repairBasis.submission_event_id === pendingRepair.submission_event_id && recipient?.user_id.toLowerCase() === pendingRepair.creator_user_id
+    : repairBasis?.kind === "historical_information" ? pendingRepair == null && historicalRepair != null && repairBasis.origin_request_id === historicalRepair.origin_request_id && repairBasis.origin_event_id === historicalRepair.origin_event_id && chosenStatus === historicalRepair.status
+    : repairBasis?.kind === "human_selected" && repairContext?.human_selection_allowed === true && pendingRepair == null && options.data?.options.some((item) => item.key === chosenStatus && ["backlog", "todo", "in_progress"].includes(item.category)) === true;
+  const repairReady = action !== "repair_information" || repairObservation !== null && repairContext !== null && repairOptions !== null && repairBasisReady && collaborationInformationTextValid(note) && !staleBaseline &&
+    (currentState.primary === "repair_information" || currentState.secondary.includes("repair_information"));
   const policyReady = action !== "change_ai_policy" || aiPolicy === "manual" || aiPolicy === "assisted";
   const ready = !locked && (!needsRecipient || recipient !== null) && (!needsStatus || (options.isSuccess && !options.isFetching && options.data.options.some((item) => item.key === chosenStatus))) &&
-    editReady && sourceReady && iterationReady && resultReady && decisionReady && completionReady && informationReady && policyReady && (!needsResult || !staleBaseline) && (action !== "complete" || !completion.active || completion.binding !== null);
+    editReady && sourceReady && iterationReady && resultReady && decisionReady && completionReady && informationReady && metadataReady && repairReady && policyReady && (!needsResult || !staleBaseline) && (action !== "complete" || !completion.active || completion.binding !== null);
   const formLabel = action === "complete" ? deciding ? t(($) => $.delivery.accept) : t(($) => $.delivery.selfComplete)
     : startWork ? t(($) => $.delivery.start) : labels.action(action);
   const evidence = () => ({ deliveryDraftId: result.form.draftId, attachmentIds: [...result.form.selectedAttachmentIds],
@@ -262,7 +305,10 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
     switch (action) {
       case "invite": return { action, targetUserId: recipient!.user_id };
       case "transfer": return { action, targetUserId: recipient!.user_id, note };
-      case "request_information": return { action, targetUserId: recipient!.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
+      case "request_information": return { action, targetUserId: recipient!.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version,
+        ...(needsInformationMetadata ? { unblockCondition, estimatedResolutionAt } : {}) };
+      case "repair_information": return { action, targetUserId: recipient!.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: repairObservation!.status_options_version,
+        informationRepair: { context_version: repairObservation!.context_version, active_request_id: repairObservation!.active_request_id, basis: repairBasis! } };
       case "return_information": return { action, informationRequestId: informationRequestId!, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
       case "submit_acceptance": return { action, note: result.form.content, basis: result.form.basis ?? "", ...evidence(), expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
       case "return_acceptance": return { action, submissionId: submissionId!, targetUserId: recipient!.user_id, note, expectedStatus: chosenStatus, statusOptionsVersion: options.data!.status_options_version };
@@ -291,6 +337,7 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
       {informationRequest && <div id={`${fieldId}-request`} className="min-w-0 space-y-2 rounded-md bg-muted/30 p-3 [overflow-wrap:anywhere]">
         <p className="text-caption text-muted-foreground">{t(($) => $.workflow.requestedBy, { name: informationRequest.requester.name })}</p>
         {informationRequest.note.trim() ? <RichContent resourcePolicy="restricted" content={informationRequest.note} /> : <p className="text-body text-muted-foreground">{t(($) => $.workflow.requestNoNote)}</p>}
+        <CollaborationInformationBlock block={informationRequest.block} />
         {informationRequest.return_status_fallback === true && informationRequest.return_status && <p className="text-caption text-muted-foreground">{t(($) => $.workflow.returnStatusFallback,
           { status: options.data?.options.find((item) => item.key === informationRequest.return_status)?.name ?? informationRequest.return_status })}</p>}
       </div>}
@@ -299,17 +346,45 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
           onSelect={(person) => { recipientWasChosen.current = true; setRecipient(person); }} />
         {recipient && <p role="status" className="text-body [overflow-wrap:anywhere]">{t(($) => $.workflow.confirmRecipient, { name: recipient.name })}</p>}
       </div>}
+      {action === "repair_information" && <>
+        <InformationRepairBasisFields context={repairContext ?? undefined} selected={repairBasis} onSelect={setRepairBasis} />
+        {repairContext === null && repairBasis && repairObservation && <div className="min-w-0 space-y-3 [overflow-wrap:anywhere]">
+          <p className="text-body text-muted-foreground">{t(($) => $.information.repair.retainedBasis)}</p>
+          <dl className="space-y-3 text-body [&_dt]:mb-1 [&_dt]:text-caption [&_dt]:text-muted-foreground">
+            <div><dt>{t(($) => $.information.repair.basis)}</dt><dd>{repairBasis.kind === "human_selected" ? t(($) => $.information.repair.humanBasis)
+              : repairBasis.kind === "historical_information" ? t(($) => $.information.repair.historicalBasis, { status: labels.status(chosenStatus) }) : t(($) => $.information.repair.pendingBasis)}</dd></div>
+            <div><dt>{t(($) => $.information.repair.capturedContext)}</dt><dd className="select-text">{repairObservation.context_version}</dd></div>
+            <div><dt>{t(($) => $.information.history.priorRequest)}</dt><dd className="select-text">{repairObservation.active_request_id ?? t(($) => $.information.repair.noActiveRequest)}</dd></div>
+            {repairBasis.kind !== "human_selected" && <>
+              <div><dt>{repairBasis.kind === "historical_information" ? t(($) => $.information.history.basisRequest) : t(($) => $.information.history.basisSubmission)}</dt><dd className="select-text">{repairBasis.kind === "historical_information" ? repairBasis.origin_request_id : repairBasis.submission_id}</dd></div>
+              <div><dt>{t(($) => $.information.history.basisEvent)}</dt><dd className="select-text">{repairBasis.kind === "historical_information" ? repairBasis.origin_event_id : repairBasis.submission_event_id}</dd></div>
+            </>}
+          </dl>
+        </div>}
+        {pendingRepair && <div className="space-y-2"><p className="text-caption text-muted-foreground">{t(($) => $.information.repair.creatorRequired)}</p>
+          <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={() => {
+            recipientWasChosen.current = true; setRecipient(issue.creator.user_id === pendingRepair.creator_user_id ? issue.creator
+              : { user_id: pendingRepair.creator_user_id, name: pendingRepair.creator_user_id, avatar_url: "", external: null });
+          }}>{t(($) => $.information.repair.useCreator)}</Button></div>}
+        {!pendingRepair && <Button type="button" variant="outline" className="pointer-coarse:min-h-11" onClick={() => {
+          recipientWasChosen.current = true; setRecipient([issue.handler, issue.creator].find((person) => person.user_id.toLowerCase() === scope.userId.toLowerCase())
+            ?? { user_id: scope.userId, name: t(($) => $.creation.self), avatar_url: "", external: null });
+        }}>{t(($) => $.information.repair.useSelf)}</Button>}
+      </>}
       {needsStatus && <div className="space-y-2"><label htmlFor={`${fieldId}-status`} className="text-body">{t(($) => $.detail.status)}</label><select id={`${fieldId}-status`} value={chosenStatus} onChange={(event) => setStatus(event.target.value)} className="block min-h-11 max-w-full rounded-md border border-input bg-background px-3 text-body focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+        {action === "repair_information" && <option value="">{t(($) => $.information.repair.chooseStatus)}</option>}
         {chosenStatus && options.data && !options.data.options.some((item) => item.key === chosenStatus) && <option value={chosenStatus}>{t(($) => $.fields.unavailableSelection, { value: chosenStatus })}</option>}
         {(options.data?.options ?? []).map((option) => <option key={option.key} value={option.key}>{option.name}</option>)}</select>
         {options.isFetching ? <p role="status" className="text-body text-muted-foreground">{t(($) => $.page.loading)}</p>
           : options.error && <CollaborationQueryState error={options.error} retry={() => void options.refetch()} />}
       </div>}
-      {["transfer", "request_information", "return_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : t(($) => $.workflow.note)}</label>
-        <Textarea id={`${fieldId}-note`} required={action === "return_acceptance"} aria-invalid={reasonTooLong || undefined}
-          aria-describedby={[informationRequest ? `${fieldId}-request` : "", reasonTooLong ? `${fieldId}-note-limit` : ""].filter(Boolean).join(" ") || undefined} value={note} onChange={(event) => setNote(event.target.value)} />
+      {["transfer", "request_information", "return_information", "repair_information", "return_acceptance"].includes(action) && <div className="space-y-2"><label htmlFor={`${fieldId}-note`} className="text-body">{action === "return_acceptance" ? t(($) => $.delivery.revisionReason) : action === "repair_information" ? t(($) => $.information.repair.reason) : informationReasonRequired ? t(($) => $.information.metadata.reason) : t(($) => $.workflow.note)}</label>
+        <Textarea id={`${fieldId}-note`} required={action === "return_acceptance" || informationReasonRequired} aria-invalid={reasonTooLong || informationReasonInvalid || undefined}
+          aria-describedby={[informationRequest ? `${fieldId}-request` : "", reasonTooLong ? `${fieldId}-note-limit` : "", informationReasonInvalid ? `${fieldId}-note-invalid` : ""].filter(Boolean).join(" ") || undefined} value={note} onChange={(event) => setNote(event.target.value)} />
         {reasonTooLong && <p id={`${fieldId}-note-limit`} role="alert" className="text-caption text-destructive">{t(($) => $.memory.tooLong, { max: 65_536 })}</p>}
+        {informationReasonInvalid && <p id={`${fieldId}-note-invalid`} role="alert" className="text-caption text-destructive">{t(($) => $.information.metadata.invalidText)}</p>}
       </div>}
+      {action === "request_information" && <CollaborationInformationFields condition={unblockCondition} estimate={estimatedResolutionAt} required={needsInformationMetadata} onCondition={setUnblockCondition} onEstimate={setEstimatedResolutionAt} />}
       {needsResult && <>
         <p id={`${fieldId}-result-hint`} className="text-caption text-muted-foreground">{t(($) => $.delivery.hint)}</p>
         <div className="space-y-2"><label htmlFor={`${fieldId}-result`} className="text-body">{t(($) => $.delivery.result)}</label>
@@ -378,6 +453,10 @@ function WorkflowForm({ scope, issue, action, opening, initialStatus, restoredAc
     {staleBaseline && <div className="space-y-2"><p role="status" className="text-body">{t(($) => $.fields.changed)}</p>
       <Button type="button" variant="outline" disabled={locked} className="h-auto min-h-8 max-w-full whitespace-normal py-1.5 pointer-coarse:min-h-11" onClick={() => {
         setBaseline(issue); setSubmissionId(issue.delivery?.current?.id ?? null); setInformationRequestId(issue.current_information_request?.id ?? null);
+        if (action === "repair_information" && repairOptions) {
+          const context = repairOptions.information_repair_context;
+          setRepairContext(context); setRepairObservation({ context_version: context.context_version, active_request_id: context.active_request_id, status_options_version: repairOptions.status_options_version });
+        }
         if (action === "return_acceptance" && !recipientWasChosen.current) setRecipient(issue.delivery?.current?.author ?? null);
         if (iterationId) setIterationRevision(sourceOptions?.iterations.find((item) => item.id === iterationId)?.revision);
       }}>{t(($) => $.fields.useCurrentVersion)}</Button></div>}

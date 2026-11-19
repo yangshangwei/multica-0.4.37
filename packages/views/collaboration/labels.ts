@@ -55,6 +55,13 @@ export function useCollaborationLabels() {
     },
     reason: (code: string, mode?: string) => {
       switch (code) {
+        case "information_repair_required": return t(($) => $.information.reasons.repairRequired);
+        case "information_metadata_required": return t(($) => $.information.reasons.metadataRequired);
+        case "information_metadata_invalid": return t(($) => $.information.reasons.metadataInvalid);
+        case "information_context_changed": return t(($) => $.information.reasons.contextChanged);
+        case "information_context_unavailable": return t(($) => $.information.reasons.contextUnavailable);
+        case "information_repair_not_applicable": return t(($) => $.information.reasons.notApplicable);
+        case "information_repair_basis_unavailable": return t(($) => $.information.reasons.basisUnavailable);
         case "target_registered": return t(($) => $.resources.registered);
         case "resource_offered": return t(($) => $.resources.offered);
         case "resource_offer_adopted": return t(($) => $.resources.offerAdopted);
@@ -126,6 +133,7 @@ export function useCollaborationLabels() {
         case "transfer": return t(($) => $.workflow.transfer);
         case "request_information": return t(($) => $.workflow.requestInformation);
         case "return_information": return t(($) => $.workflow.returnInformation);
+        case "repair_information": return t(($) => $.information.repair.title);
         case "submit_acceptance": return t(($) => $.delivery.submit);
         case "return_acceptance": return t(($) => $.delivery.return);
         case "change_ai_policy": return t(($) => $.policy.change);

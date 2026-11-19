@@ -8,6 +8,8 @@ import type { CollaborationDraft } from "./draft";
 import { CollaborationAIPolicySchema, collaborationBoundedResultText, collaborationResultText } from "./delivery-schema";
 import { collaborationAttachmentIds } from "./attachment-schema";
 import { CompletionBindingSchema, completionUUID } from "../issues/completion-schema";
+import { CollaborationInformationEstimateSchema, CollaborationInformationRepairSelectionSchema,
+  CollaborationInformationTextSchema, collaborationInformationTextValid } from "./information-schema";
 
 const base = {
   requestId: z.uuid(), expectedCollaborationRevision: positiveVersion, expectedLifecycleEpoch: positiveVersion,
@@ -18,7 +20,12 @@ const evidence = { draftId: z.uuid().optional(), deliveryDraftId: z.uuid().optio
 export const CollaborationActionSchema = z.discriminatedUnion("action", [
   z.object({ ...base, action: z.literal("invite"), targetUserId: z.uuid() }),
   z.object({ ...base, action: z.literal("transfer"), targetUserId: z.uuid(), note: z.string() }),
-  z.object({ ...base, ...directed, action: z.literal("request_information"), targetUserId: z.uuid(), note: z.string() }),
+  z.object({ ...base, ...directed, action: z.literal("request_information"), targetUserId: z.uuid(), note: z.string(),
+    unblockCondition: CollaborationInformationTextSchema.optional(), estimatedResolutionAt: CollaborationInformationEstimateSchema.optional() })
+    .refine((value) => value.unblockCondition === undefined && value.estimatedResolutionAt === undefined ||
+      value.unblockCondition !== undefined && value.estimatedResolutionAt !== undefined && collaborationInformationTextValid(value.note)),
+  z.strictObject({ ...base, ...directed, action: z.literal("repair_information"), targetUserId: z.uuid(),
+    note: CollaborationInformationTextSchema, informationRepair: CollaborationInformationRepairSelectionSchema }),
   z.object({ ...base, ...directed, action: z.literal("return_information"), informationRequestId: z.uuid(), note: z.string() }),
   z.object({ ...base, ...directed, ...evidence, action: z.literal("submit_acceptance"), note: collaborationResultText, basis: collaborationResultText })
     .refine((value) => value.draftId === undefined || value.deliveryDraftId === undefined || value.draftId === value.deliveryDraftId),
@@ -68,6 +75,7 @@ export async function sendCollaborationAction(scope: CollaborationScope, issueId
     case "invite": result = await api.addCollaborationParticipant(issueId, action); break;
     case "transfer": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "transfer" }); break;
     case "request_information": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "information" }); break;
+    case "repair_information": result = await api.createCollaborationHandoff(issueId, { ...action, purpose: "information_repair" }); break;
     case "return_information": result = await api.returnCollaborationInformation(issueId, action); break;
     case "submit_acceptance": result = await api.submitCollaborationAcceptance(issueId, action); break;
     case "return_acceptance": result = await api.returnCollaborationAcceptance(issueId, action); break;
@@ -96,6 +104,6 @@ export async function recoverCollaborationAction(scope: CollaborationScope, draf
   } catch (error) {
     if (!(error instanceof ApiError) || error.status !== 404) throw error;
   }
-  if (action.action === "complete" && action.completion) throw new CollaborationUnavailableError();
+  if (action.action === "repair_information" || action.action === "complete" && action.completion) throw new CollaborationUnavailableError();
   return sendCollaborationAction(scope, draft.scope.issueId, action);
 }

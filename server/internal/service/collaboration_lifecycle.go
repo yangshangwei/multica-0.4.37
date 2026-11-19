@@ -45,14 +45,15 @@ type CollaborationStatusOption struct {
 }
 
 type CollaborationStatusOptions struct {
-	Action               string                      `json:"action"`
-	StatusOptionsVersion string                      `json:"status_options_version"`
-	DefaultStatus        string                      `json:"default_status"`
-	Options              []CollaborationStatusOption `json:"options"`
+	Action                   string                                 `json:"action"`
+	StatusOptionsVersion     string                                 `json:"status_options_version"`
+	DefaultStatus            string                                 `json:"default_status"`
+	Options                  []CollaborationStatusOption            `json:"options"`
+	InformationRepairContext *CollaborationInformationRepairContext `json:"information_repair_context,omitempty"`
 }
 
 func collaborationStatusAction(action string) bool {
-	return action == "complete" || action == "cancel" || action == "reopen" || action == "change_status" || collaborationDirectedStatusAction(action)
+	return action == "complete" || action == "cancel" || action == "reopen" || action == "change_status" || action == "repair_information" || collaborationDirectedStatusAction(action)
 }
 
 func collaborationDirectedStatusAction(action string) bool {
@@ -98,6 +99,8 @@ func collaborationStatusActionEligible(c collaboration.Capabilities, action stri
 		return c.SubmitAcceptance
 	case "return_acceptance":
 		return c.ReturnAcceptance
+	case "repair_information":
+		return c.Transfer && c.ChangeStatus
 	default:
 		return false
 	}
@@ -156,6 +159,13 @@ func (s *CollaborationService) StatusOptions(ctx context.Context, issueID pgtype
 }
 
 func collaborationActionStatusOptions(ctx context.Context, q *db.Queries, access CollaborationIssueAccess, action string, catalog []db.IssueStatus) (CollaborationStatusOptions, error) {
+	if action == "repair_information" {
+		state, err := loadInformationState(ctx, q, access, catalog, false)
+		if err != nil {
+			return CollaborationStatusOptions{}, err
+		}
+		return informationRepairOptions(ctx, q, state, catalog)
+	}
 	var request db.IssueHandoff
 	if action == "return_information" {
 		var open bool
@@ -166,6 +176,13 @@ func collaborationActionStatusOptions(ctx context.Context, q *db.Queries, access
 		}
 		if !open {
 			return CollaborationStatusOptions{}, collaborationError(http.StatusConflict, "information_request_not_active")
+		}
+		state, err := loadInformationState(ctx, q, access, catalog, false)
+		if err != nil {
+			return CollaborationStatusOptions{}, err
+		}
+		if state.Policy.Managed && state.ChainCode != "" {
+			return CollaborationStatusOptions{}, collaborationError(http.StatusConflict, state.ChainCode)
 		}
 	}
 	options, err := collaborationStatusOptions(access.Issue, action, catalog, request)
@@ -448,6 +465,18 @@ func (s *CollaborationService) ChangeStatus(ctx context.Context, p Collaboration
 		}
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
+		}
+		policy, err := informationPolicyFor(ctx, t.q, t.access.Issue, true)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if policy.Managed {
+			if t.access.StatusCategory == "blocked" {
+				return t.result("information_repair_required", http.StatusConflict), nil
+			}
+			if target, found := collaborationCatalogEntry(t.catalog, p.TargetStatus); found && target.Category == "blocked" {
+				return t.result("information_metadata_required", http.StatusBadRequest), nil
+			}
 		}
 		if refusal, err := t.validateStatus(ctx, "change_status", p.TargetStatus, p.StatusOptionsVersion); refusal != nil || err != nil {
 			if refusal != nil {

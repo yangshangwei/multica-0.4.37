@@ -4,12 +4,14 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -35,19 +37,28 @@ type CollaborationActivityHandoff struct {
 }
 
 type CollaborationActivityEntry struct {
-	Stage            json.RawMessage               `json:"stage"`
-	ID               pgtype.UUID                   `json:"id"`
-	IssueID          pgtype.UUID                   `json:"issue_id"`
-	EventSeq         int64                         `json:"event_seq,string"`
-	Kind             string                        `json:"kind"`
-	Note             string                        `json:"note,omitempty"`
-	Actor            *CollaborationContentAccount  `json:"actor"`
-	CreatedAt        time.Time                     `json:"created_at"`
-	DetailsAvailable bool                          `json:"details_available"`
-	Target           *CollaborationContentAccount  `json:"target"`
-	Handoff          *CollaborationActivityHandoff `json:"handoff"`
-	CommentID        pgtype.UUID                   `json:"comment_id"`
-	Changes          []CollaborationActivityChange `json:"changes"`
+	InformationRepair *CollaborationInformationRepairActivity `json:"information_repair,omitempty"`
+	Stage             json.RawMessage                         `json:"stage"`
+	ID                pgtype.UUID                             `json:"id"`
+	IssueID           pgtype.UUID                             `json:"issue_id"`
+	EventSeq          int64                                   `json:"event_seq,string"`
+	Kind              string                                  `json:"kind"`
+	Note              string                                  `json:"note,omitempty"`
+	Actor             *CollaborationContentAccount            `json:"actor"`
+	CreatedAt         time.Time                               `json:"created_at"`
+	DetailsAvailable  bool                                    `json:"details_available"`
+	Target            *CollaborationContentAccount            `json:"target"`
+	Handoff           *CollaborationActivityHandoff           `json:"handoff"`
+	CommentID         pgtype.UUID                             `json:"comment_id"`
+	Changes           []CollaborationActivityChange           `json:"changes"`
+}
+
+type CollaborationInformationRepairActivity struct {
+	HandoffID      pgtype.UUID                         `json:"handoff_id"`
+	PreviousStatus string                              `json:"previous_status"`
+	RestoredStatus string                              `json:"restored_status"`
+	TargetUserID   pgtype.UUID                         `json:"target_user_id"`
+	Basis          CollaborationInformationRepairBasis `json:"basis"`
 }
 
 type CollaborationActivityPage struct {
@@ -74,7 +85,7 @@ func collaborationActivityKind(kind string) string {
 	case "stage_roles_configured", "stage_roles_unchanged", "stage_proposal_created", "stage_proposal_revised", "stage_proposal_accepted", "stage_proposal_rejected", "stage_scope_confirmed", "stage_code_candidate_created", "stage_decision_recorded", "stage_decision_revoked", "stage_advanced", "stage_execution_admitted", "stage_execution_observed", "stage_rollback_observed":
 		return kind
 	case "created", "participant_added", "participant_removed", "participant_left", "transferred",
-		"information_requested", "information_returned", "acceptance_submitted", "status_changed",
+		"information_requested", "information_returned", "information_repaired", "acceptance_submitted", "status_changed",
 		"completed", "cancelled", "reopened", "issue_edited", "iteration_changed", "comment_created", "comment_edited", "comment_deleted":
 		return kind
 	default:
@@ -125,7 +136,25 @@ func (s *CollaborationService) ListActivity(ctx context.Context, issueID pgtype.
 			entry := CollaborationActivityEntry{ID: row.ID, IssueID: issueID, EventSeq: row.EventSeq, Kind: collaborationActivityKind(row.Kind),
 				Actor: accounts[row.ActorUserID], CreatedAt: row.CreatedAt.Time, Changes: make([]CollaborationActivityChange, 0)}
 			if valid[i] {
-				entry.DetailsAvailable = projectCollaborationActivity(&entry, payloads[i], row.ActorUserID, accounts, byHandoff)
+				if row.Kind == "information_repaired" {
+					handoff, e := q.GetCollaborationInformationHandoff(ctx, db.GetCollaborationInformationHandoffParams{IssueID: issueID, HandoffID: payloads[i].HandoffID})
+					if e != nil && !errors.Is(e, pgx.ErrNoRows) {
+						return e
+					}
+					if e == nil {
+						item, e := informationHistoryItem(ctx, q, handoff)
+						if e != nil {
+							return e
+						}
+						if item.Provenance.State == "linked" && item.Provenance.EventID == row.ID && item.repair != nil {
+							entry.InformationRepair = &CollaborationInformationRepairActivity{HandoffID: handoff.ID, PreviousStatus: handoff.PreviousStatus,
+								RestoredStatus: item.repair.Status, TargetUserID: handoff.ToUserID, Basis: item.repair.Basis}
+							entry.DetailsAvailable = true
+						}
+					}
+				} else {
+					entry.DetailsAvailable = projectCollaborationActivity(&entry, payloads[i], row.ActorUserID, accounts, byHandoff)
+				}
 			}
 			if !entry.DetailsAvailable {
 				entry.Target, entry.Handoff, entry.CommentID, entry.Changes = nil, nil, pgtype.UUID{}, make([]CollaborationActivityChange, 0)

@@ -9,6 +9,8 @@ export function deriveCollaborationDetailState(issue: CollaborationIssue, viewer
   const currentSubmission = issue.delivery?.current ?? null;
   const latestSubmission = issue.delivery?.latest ?? null;
   const request = issue.current_information_request ?? null;
+  const information = issue.information_workflow;
+  const managedBlocked = information?.managed === true && issue.status_category === "blocked";
   const creator = issue.creator.user_id.toLowerCase() === viewerId.toLowerCase();
   const handler = issue.handler.user_id.toLowerCase() === viewerId.toLowerCase();
   const writable = issue.write_context != null;
@@ -17,12 +19,12 @@ export function deriveCollaborationDetailState(issue: CollaborationIssue, viewer
   const canAccept = writable && creator && handler && !closed && request === null && issue.status_category === "in_review" &&
     capabilities.complete === true && currentSubmission?.evidence_state === "available" && currentSubmission.decision === null &&
     currentSubmission.lifecycle_epoch === issue.lifecycle_epoch;
-  const canSelfComplete = writable && creator && handler && !closed && request === null && currentSubmission === null &&
+  const canSelfComplete = writable && creator && handler && !closed && !managedBlocked && request === null && currentSubmission === null &&
     capabilities.complete === true && (issue.status_category !== "in_review" || issue.delivery !== undefined && issue.delivery.current === null);
   let stage: CollaborationDetailStage;
   if (issue.status_category === "done") stage = "completed";
   else if (issue.status_category === "cancelled") stage = "cancelled";
-  else if (request !== null) stage = "waiting_information";
+  else if (request !== null || managedBlocked) stage = "waiting_information";
   else if (currentSubmission?.evidence_state === "available") stage = "pending_acceptance";
   else if (currentSubmission !== null || issue.status_category === "in_review") stage = "legacy_review";
   else stage = "working";
@@ -30,14 +32,16 @@ export function deriveCollaborationDetailState(issue: CollaborationIssue, viewer
   const available: CollaborationDetailAction[] = [];
   const add = (action: CollaborationDetailAction, enabled: boolean) => { if (enabled && !available.includes(action)) available.push(action); };
   if (writable) {
-    add("return_information", !closed && request !== null && request.recipient.user_id.toLowerCase() === viewerId.toLowerCase() && capabilities.return_information === true);
+    add("return_information", !closed && request !== null && request.recipient.user_id.toLowerCase() === viewerId.toLowerCase() && capabilities.return_information === true &&
+      (information === undefined || information.actions.return.available === true));
+    add("repair_information", !closed && managedBlocked && (creator || handler) && capabilities.edit === true && information?.actions.repair.available === true);
     add("complete", canAccept || canSelfComplete);
-    add("return_acceptance", !closed && creator && handler && request === null && currentSubmission !== null && capabilities.return_acceptance === true);
-    add("submit_acceptance", !closed && handler && request === null && capabilities.submit_acceptance === true &&
+    add("return_acceptance", !closed && !managedBlocked && creator && handler && request === null && currentSubmission !== null && capabilities.return_acceptance === true);
+    add("submit_acceptance", !closed && !managedBlocked && handler && request === null && capabilities.submit_acceptance === true &&
       (currentSubmission === null || currentSubmission.evidence_state !== "available") && !(creator && currentSubmission === null));
-    add("request_information", !closed && handler && capabilities.request_information === true);
-    add("transfer", !closed && currentSubmission === null && capabilities.transfer === true);
-    add("change_status", !closed && request === null && currentSubmission === null && capabilities.change_status === true);
+    add("request_information", !closed && handler && capabilities.request_information === true && (information === undefined || information.actions.request.available === true));
+    add("transfer", !closed && !managedBlocked && currentSubmission === null && capabilities.transfer === true);
+    add("change_status", !closed && !managedBlocked && request === null && currentSubmission === null && capabilities.change_status === true);
     add("invite", !closed && capabilities.invite === true);
     add("edit", capabilities.edit === true);
     add("edit_source_structure", capabilities.edit_source_structure === true);
@@ -52,6 +56,7 @@ export function deriveCollaborationDetailState(issue: CollaborationIssue, viewer
 
   let primary: CollaborationDetailAction | null = null;
   if (available.includes("return_information")) primary = "return_information";
+  else if (available.includes("repair_information")) primary = "repair_information";
   else if (canAccept || canSelfComplete) primary = "complete";
   else if (stage === "legacy_review" && available.includes("return_acceptance")) primary = "return_acceptance";
   else if (stage === "legacy_review" && creator && currentSubmission === null && available.includes("change_status")) primary = "change_status";

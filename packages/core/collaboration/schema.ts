@@ -9,10 +9,14 @@ import { CollaborationStageRefusalFieldsSchema, parseCollaborationStageRefusalFi
 import { nonnegativeVersion, positiveVersion } from "./version";
 import { CollaborationAccountSummarySchema } from "./account-schema";
 import { CollaborationAIPolicySchema, CollaborationDeliverySummarySchema, CollaborationDeliveryConfirmationSchema, type CollaborationAIPolicy } from "./delivery-schema";
+import { CollaborationInformationBlockSchema, CollaborationInformationWorkflowSchema,
+  CollaborationInformationRepairStatusOptionsSchema, CollaborationInformationRepairConfirmationSchema,
+  collaborationInformationTextValid, type CollaborationInformationRepairSelection } from "./information-schema";
 export { CollaborationAccountSummarySchema } from "./account-schema";
 
 const statusCategory = z.enum(["backlog", "todo", "in_progress", "in_review", "blocked", "done", "cancelled"]);
-const statusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance", "return_acceptance"]);
+const legacyStatusAction = z.enum(["change_status", "complete", "cancel", "reopen", "request_information", "return_information", "submit_acceptance", "return_acceptance"]);
+const statusAction = z.union([legacyStatusAction, z.literal("repair_information")]);
 
 export type CollaborationStatusAction = z.infer<typeof statusAction>;
 export type CollaborationLifecycleAction = Extract<CollaborationStatusAction, "complete" | "cancel" | "reopen">;
@@ -211,7 +215,8 @@ const informationRequest = z.object({
   return_status: z.string().min(1).nullable(),
   return_status_fallback: z.boolean(),
   created_at: z.string().datetime({ offset: true }),
-});
+  block: CollaborationInformationBlockSchema.optional(),
+}).refine((value) => value.block?.state !== "complete" || collaborationInformationTextValid(value.note));
 
 export const CollaborationIssueSchema = z.object({
   id: z.string().uuid(),
@@ -265,6 +270,7 @@ export const CollaborationIssueSchema = z.object({
     change_ai_policy: z.boolean().optional(),
   }),
   current_information_request: informationRequest.nullish(),
+  information_workflow: CollaborationInformationWorkflowSchema.optional(),
 }).refine((issue) => {
   const delivery = issue.delivery;
   if (delivery === undefined) return true;
@@ -311,8 +317,8 @@ export const CollaborationWorkbenchSchema = z.object({
 
 export type CollaborationWorkbench = z.infer<typeof CollaborationWorkbenchSchema>;
 
-export const CollaborationStatusOptionsSchema = z.object({
-  action: statusAction,
+export const LegacyCollaborationStatusOptionsSchema = z.object({
+  action: legacyStatusAction,
   status_options_version: z.string().regex(/^[a-f0-9]{64}$/),
   default_status: z.string().min(1),
   options: z.array(z.object({
@@ -346,6 +352,7 @@ export const CollaborationStatusOptionsSchema = z.object({
   (value) => !["request_information", "return_information", "submit_acceptance", "return_acceptance"].includes(value.action) || value.options.length === 1,
   "A directed handoff has exactly one prescribed status",
 );
+export const CollaborationStatusOptionsSchema = z.union([LegacyCollaborationStatusOptionsSchema, CollaborationInformationRepairStatusOptionsSchema]);
 
 export type CollaborationStatusOptions = z.infer<typeof CollaborationStatusOptionsSchema>;
 
@@ -357,9 +364,14 @@ export const CollaborationOperationSchema = z.object({
   collaboration_revision: positiveVersion,
   status_options: CollaborationStatusOptionsSchema.nullish(),
   delivery_confirmation: CollaborationDeliveryConfirmationSchema.optional(),
+  information_repair_confirmation: CollaborationInformationRepairConfirmationSchema.optional(),
 }).refine((value) => parseCollaborationStageRefusalFields(value, value.code) !== null &&
   ((value.code !== "stage_incomplete" && value.code !== "stage_policy_exit_required") || value.status === 409 && value.delivery_confirmation === undefined),
-  "Stage refusals require their exact status and content-free evidence shape");
+  "Stage refusals require their exact status and content-free evidence shape")
+  .refine((value) => value.code === "information_repaired"
+    ? value.information_repair_confirmation !== undefined && value.delivery_confirmation === undefined && (value.status === undefined || value.status < 300)
+    : value.information_repair_confirmation === undefined,
+  "Only a confirmed information repair carries its exact content-free confirmation");
 
 export type CollaborationOperation = z.infer<typeof CollaborationOperationSchema>;
 
@@ -377,7 +389,7 @@ export interface CollaborationParticipantInput extends CollaborationWriteInput {
 }
 
 /** An ordinary transfer and an information request have different effects. */
-export type CollaborationHandoffPurpose = "transfer" | "information";
+export type CollaborationHandoffPurpose = "transfer" | "information" | "information_repair";
 
 /** Preserve both values from the action options shown for this exact intent. */
 export interface CollaborationDirectedStatusInput {
@@ -387,7 +399,8 @@ export interface CollaborationDirectedStatusInput {
 
 export type CollaborationHandoffInput = CollaborationParticipantInput & { note: string } & (
   | { purpose: "transfer" }
-  | ({ purpose: "information" } & CollaborationDirectedStatusInput)
+  | ({ purpose: "information"; unblockCondition?: string; estimatedResolutionAt?: string } & CollaborationDirectedStatusInput)
+  | ({ purpose: "information_repair"; informationRepair: CollaborationInformationRepairSelection } & CollaborationDirectedStatusInput)
 );
 
 export interface CollaborationInformationReturnInput extends CollaborationWriteInput, CollaborationDirectedStatusInput {

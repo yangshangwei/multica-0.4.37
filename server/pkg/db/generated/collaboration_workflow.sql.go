@@ -85,23 +85,26 @@ func (q *Queries) ClearCollaborationInformationRequest(ctx context.Context, issu
 
 const createCollaborationHandoff = `-- name: CreateCollaborationHandoff :one
 INSERT INTO issue_handoff (issue_id, actor_user_id, from_user_id, to_user_id, purpose, note,
-    requester_user_id, parent_request_id, previous_status)
+    requester_user_id, parent_request_id, previous_status, unblock_condition, estimated_resolution_at)
 VALUES ($1::uuid, $2::uuid, $3::uuid,
     $4::uuid, $5::text, $6::text,
-    $7::uuid, $8::uuid, $9::text)
-RETURNING id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at
+    $7::uuid, $8::uuid, $9::text,
+    $10::text, $11::timestamptz)
+RETURNING id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id
 `
 
 type CreateCollaborationHandoffParams struct {
-	IssueID         pgtype.UUID `json:"issue_id"`
-	ActorUserID     pgtype.UUID `json:"actor_user_id"`
-	FromUserID      pgtype.UUID `json:"from_user_id"`
-	ToUserID        pgtype.UUID `json:"to_user_id"`
-	Purpose         string      `json:"purpose"`
-	Note            string      `json:"note"`
-	RequesterUserID pgtype.UUID `json:"requester_user_id"`
-	ParentRequestID pgtype.UUID `json:"parent_request_id"`
-	PreviousStatus  string      `json:"previous_status"`
+	IssueID               pgtype.UUID        `json:"issue_id"`
+	ActorUserID           pgtype.UUID        `json:"actor_user_id"`
+	FromUserID            pgtype.UUID        `json:"from_user_id"`
+	ToUserID              pgtype.UUID        `json:"to_user_id"`
+	Purpose               string             `json:"purpose"`
+	Note                  string             `json:"note"`
+	RequesterUserID       pgtype.UUID        `json:"requester_user_id"`
+	ParentRequestID       pgtype.UUID        `json:"parent_request_id"`
+	PreviousStatus        string             `json:"previous_status"`
+	UnblockCondition      pgtype.Text        `json:"unblock_condition"`
+	EstimatedResolutionAt pgtype.Timestamptz `json:"estimated_resolution_at"`
 }
 
 // requester_user_id is set only on information requests. parent_request_id
@@ -118,6 +121,8 @@ func (q *Queries) CreateCollaborationHandoff(ctx context.Context, arg CreateColl
 		arg.RequesterUserID,
 		arg.ParentRequestID,
 		arg.PreviousStatus,
+		arg.UnblockCondition,
+		arg.EstimatedResolutionAt,
 	)
 	var i IssueHandoff
 	err := row.Scan(
@@ -133,6 +138,9 @@ func (q *Queries) CreateCollaborationHandoff(ctx context.Context, arg CreateColl
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 	)
 	return i, err
 }
@@ -165,7 +173,7 @@ func (q *Queries) EnrollCollaborationParticipant(ctx context.Context, arg Enroll
 }
 
 const getCollaborationInformationRequest = `-- name: GetCollaborationInformationRequest :one
-SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at FROM issue_handoff
+SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id FROM issue_handoff
 WHERE issue_id = $1::uuid AND id = $2::uuid AND purpose = 'information'
 `
 
@@ -192,6 +200,9 @@ func (q *Queries) GetCollaborationInformationRequest(ctx context.Context, arg Ge
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 	)
 	return i, err
 }
@@ -398,7 +409,7 @@ const returnCollaborationInformationRequest = `-- name: ReturnCollaborationInfor
 UPDATE issue_handoff SET resolution = 'returned'
 WHERE issue_id = $1::uuid AND id = $2::uuid
   AND purpose = 'information' AND resolution = 'open'
-RETURNING id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at
+RETURNING id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id
 `
 
 type ReturnCollaborationInformationRequestParams struct {
@@ -422,6 +433,9 @@ func (q *Queries) ReturnCollaborationInformationRequest(ctx context.Context, arg
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 	)
 	return i, err
 }

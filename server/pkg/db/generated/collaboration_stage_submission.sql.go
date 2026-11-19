@@ -345,7 +345,7 @@ func (q *Queries) LockCollaborationStageSubmission(ctx context.Context, arg Lock
 }
 
 const lockCollaborationStageSubmissionHandoff = `-- name: LockCollaborationStageSubmissionHandoff :one
-SELECT handoff.id, handoff.issue_id, handoff.actor_user_id, handoff.from_user_id, handoff.to_user_id, handoff.purpose, handoff.note, handoff.requester_user_id, handoff.parent_request_id, handoff.previous_status, handoff.resolution, handoff.created_at FROM issue_handoff handoff
+SELECT handoff.id, handoff.issue_id, handoff.actor_user_id, handoff.from_user_id, handoff.to_user_id, handoff.purpose, handoff.note, handoff.requester_user_id, handoff.parent_request_id, handoff.previous_status, handoff.resolution, handoff.created_at, handoff.unblock_condition, handoff.estimated_resolution_at, handoff.superseded_by_repair_handoff_id FROM issue_handoff handoff
 WHERE handoff.issue_id=$1 AND handoff.id=$2
  AND EXISTS (SELECT 1 FROM issue WHERE id=handoff.issue_id AND workspace_id=$3)
 FOR SHARE NOWAIT
@@ -373,6 +373,9 @@ func (q *Queries) LockCollaborationStageSubmissionHandoff(ctx context.Context, a
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 	)
 	return i, err
 }

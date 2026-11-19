@@ -171,30 +171,39 @@ function SelectedCreationSource({ scope, sourceId, onCreated, constrained, onCan
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
+  const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId,
+    context: { kind: "creation", sourceWorkspaceId: sourceId } }, "creation");
+  const projectId = draft.form.initialFields?.project_id ?? undefined;
   const [parentSearch, setParentSearch] = useState("");
   const [parentQuery, setParentQuery] = useState("");
   useEffect(() => {
     const timer = window.setTimeout(() => setParentQuery(parentSearch.trim()), 250);
     return () => window.clearTimeout(timer);
   }, [parentSearch]);
-  const query = useQuery({ ...collaborationCreationOptions(client, scope, sourceId, parentQuery), placeholderData: keepPreviousData });
+  const queryOptions = collaborationCreationOptions(client, scope, sourceId, parentQuery, projectId);
+  const query = useQuery({ ...queryOptions, placeholderData: keepPreviousData });
   // Reuse authorized Query data after a transient search failure, never after
   // source access loss, so retry keeps this form mounted with its input intact.
-  const options = isCollaborationDenied(query.error) ? undefined : query.data
-    ?? client.getQueryData(collaborationCreationOptions(client, scope, sourceId).queryKey);
+  const retained = client.getQueriesData<CollaborationCreationOptions>({ queryKey: [...collaborationDeliveryKey(scope, { kind: "creation", sourceWorkspaceId: sourceId }), "options"] })
+    .sort(([left], [right]) => (client.getQueryState(right)?.dataUpdatedAt ?? 0) - (client.getQueryState(left)?.dataUpdatedAt ?? 0))
+    .find(([, value]) => value?.source?.id === sourceId)?.[1];
+  const loaded = isCollaborationDenied(query.error) ? undefined : query.data ?? retained;
+  const options = loaded?.stage_policy_observation?.state === "known" && loaded.stage_policy_observation.project_id !== projectId
+    ? { ...loaded, stage_policy_observation: undefined } : loaded;
   if (!options?.source) return <div className={constrained ? "flex min-h-0 flex-1 flex-col" : undefined}>
     <CreationContents constrained={constrained} actions={onCancel && <CancelCreation onCancel={onCancel} />}>{notices}
       {query.isPending && !options ? <p role="status">{t(($) => $.page.loading)}</p> : <CollaborationQueryState error={query.error} retry={() => void query.refetch()} />}
     </CreationContents>
   </div>;
-  return <CreationForm scope={scope} options={options} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch}
+  return <CreationForm scope={scope} options={options} draft={draft} onCreated={onCreated} parentSearch={parentSearch} onParentSearch={setParentSearch}
     optionsPending={parentSearch.trim() !== parentQuery || query.isFetching || query.isPlaceholderData} optionsError={query.error} onRetryOptions={() => void query.refetch()}
-    sourceAccessCurrent={() => !isCollaborationDenied(client.getQueryState(collaborationCreationOptions(client, scope, sourceId, parentQuery).queryKey)?.error)}
+    sourceAccessCurrent={() => !isCollaborationDenied(client.getQueryState(queryOptions.queryKey)?.error)}
     constrained={constrained} onCancel={onCancel} notices={notices} onNeedsSpace={onNeedsSpace} />;
 }
 
-function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch, optionsPending, optionsError, onRetryOptions, sourceAccessCurrent, constrained, onCancel, notices, onNeedsSpace }: {
+function CreationForm({ scope, options, draft, onCreated, parentSearch, onParentSearch, optionsPending, optionsError, onRetryOptions, sourceAccessCurrent, constrained, onCancel, notices, onNeedsSpace }: {
   scope: CollaborationScope; options: CollaborationCreationOptions; onCreated: (issue: CollaborationIssue) => void;
+  draft: ReturnType<typeof useCollaborationDeliveryForm>;
   parentSearch: string; onParentSearch: (search: string) => void; optionsPending: boolean; optionsError: unknown; onRetryOptions: () => void; sourceAccessCurrent: () => boolean;
   constrained: boolean; onCancel?: () => void; notices: ReactNode; onNeedsSpace?: () => void;
 }) {
@@ -206,7 +215,6 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   useEffect(() => { if (constrained) recoverFocus(() => titleInput.current); }, [constrained]);
   const sourceId = options.source!.id;
   const context = { kind: "creation" as const, sourceWorkspaceId: sourceId };
-  const draft = useCollaborationDeliveryForm({ server: scope.server, userId: scope.userId, context }, "creation");
   const { form } = draft;
   const descriptionInput = useRef<HTMLTextAreaElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -254,11 +262,12 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   const initialResult = CollaborationCreationFieldsSchema.safeParse(initial);
   const stageError = !initialResult.success && initialResult.error.issues.some((issue) => issue.path[0] === "stage")
     ? labels.creationRejection("invalid_stage") : undefined;
-  const catalogValid = fields === undefined ? Object.keys(initial).length === 0 :
+  const catalogCurrent = !optionsPending && !optionsError;
+  const catalogValid = !catalogCurrent || (fields === undefined ? Object.keys(initial).length === 0 :
     (!initial.status || fields.statuses.some((item) => item.key === initial.status)) &&
     (initial.label_ids ?? []).every((id) => fields.labels.some((item) => item.id === id)) &&
     Object.entries(properties).every(([id, value]) => fields.properties.some((definition) => definition.id === id && collaborationPropertyValueMatchesDefinition(value, definition))) &&
-    (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id));
+    (!initial.current_iteration_id || fields.source_options.iterations_enabled && fields.source_options.iterations.some((item) => item.id === initial.current_iteration_id)));
   const initialValid = initialResult.success && catalogValid;
   const invalidSelection = !catalogValid || (!initialResult.success && initialResult.error.issues.some((issue) => issue.path[0] !== "stage"));
   const iterationChanged = initial.current_iteration_id && fields?.source_options.iterations.some((item) => item.id === initial.current_iteration_id && item.revision !== initial.expected_iteration_revision);
@@ -275,11 +284,12 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
   ].filter(Boolean).length + Object.keys(properties).length;
   const submitHint = draft.uploads.length > 0 && !uploading ? t(($) => $.creation.uploadRecoveryHint)
     : editable && initialValid && !form.title.trim() ? t(($) => $.creation.titleRequired) : null;
+  const canSubmit = editable && catalogCurrent && form.title.trim() !== "" && initialValid;
   return <form className={`min-w-0 ${constrained ? "flex min-h-0 flex-1 flex-col" : "space-y-5"}`}
     onKeyDownCapture={(event) => { if (event.key === "Enter" && isImeComposing(event)) event.preventDefault(); }}
     onSubmit={(event) => {
     if (event.target !== event.currentTarget) return;
-    event.preventDefault(); if (!editable || !form.title.trim() || !initialValid) return;
+    event.preventDefault(); if (!canSubmit) return;
     create.mutate({ value: prepareCollaborationCreation(form, crypto.randomUUID()), recovery: false });
   }}>
     <CollaborationAttachmentPicker scope={scope} form={form} update={draft.update} uploads={draft.uploads}
@@ -308,11 +318,16 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
           <p className="text-caption text-muted-foreground">{t(($) => $.creation.saved)}</p>
         </div>
         <div className="flex min-w-0 flex-wrap items-center justify-end gap-1.5 max-sm:w-full">{onCancel && <CancelCreation onCancel={onCancel} />}
-          <Button type="submit" disabled={!editable || !form.title.trim() || !initialValid} aria-describedby={submitHint ? `${id}-submit-hint` : undefined}
+          <Button type="submit" disabled={!canSubmit} aria-describedby={submitHint ? `${id}-submit-hint` : undefined}
             aria-busy={create.isPending || undefined} className="max-w-full whitespace-normal text-caption pointer-coarse:min-h-11">{t(($) => $.creation.submit)}</Button>
         </div>
       </>}>
     {notices}
+    {Boolean(optionsError) && <CollaborationQueryState error={optionsError} retry={onRetryOptions} />}
+    {initial.project_id && (optionsPending ? <p role="status" className="text-caption text-muted-foreground">{t(($) => $.information.creation.pending)}</p>
+      : !optionsError && options.stage_policy_observation?.state === "known" && options.stage_policy_observation.managed === true
+        ? <p className="text-caption text-muted-foreground">{t(($) => $.information.creation.managed)}</p>
+        : !optionsError && options.stage_policy_observation === undefined && <p className="text-caption text-muted-foreground">{t(($) => $.information.creation.unknown)}</p>)}
     <div className="space-y-1">
       {/* The hint sits at the far end so it reads as a status, not as part of the label. */}
       <div className="flex min-w-0 flex-wrap items-baseline justify-between gap-x-3 gap-y-1 text-caption text-muted-foreground">
@@ -340,7 +355,7 @@ function CreationForm({ scope, options, onCreated, parentSearch, onParentSearch,
       <fieldset disabled={!editable} className="min-w-0 space-y-5">
         <div className="grid min-w-0 gap-4 sm:grid-cols-2">
           <div className="space-y-2"><label htmlFor={`${id}-status`} className="text-body">{t(($) => $.detail.status)}</label>
-            <select id={`${id}-status`} value={initial.status ?? fields.default_status} className={collaborationSelectClass} onChange={(event) => updateFields({ status: event.target.value })}>
+            <select id={`${id}-status`} value={initial.status ?? fields.default_status} disabled={!catalogCurrent} className={collaborationSelectClass} onChange={(event) => updateFields({ status: event.target.value })}>
               {initial.status && !fields.statuses.some((item) => item.key === initial.status) && <option value={initial.status}>{t(($) => $.fields.unavailableSelection, { value: initial.status })}</option>}
               {fields.statuses.map((status) => <option key={status.key} value={status.key}>{labels.status(status.key) === status.key ? status.name : labels.status(status.key)}</option>)}
             </select>

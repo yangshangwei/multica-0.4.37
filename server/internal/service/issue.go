@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"net/http"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -97,6 +98,8 @@ type IssueCreateParams struct {
 	// inside its own transaction. It is unexported on purpose: no transport or
 	// request field can claim that a machine-driven child was approved.
 	stagePermit *stageMaterializationPermit
+	// Set only by CollaborationService for a new root, never by transport.
+	collaborationRoot bool
 }
 
 // IssueCreateOpts groups optional knobs for IssueService.Create. Most
@@ -477,6 +480,21 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 				return IssueCreateResult{}, ErrProjectNotFound
 			}
 			return IssueCreateResult{}, fmt.Errorf("lock project association: %w", err)
+		}
+	}
+	if p.collaborationRoot {
+		policy, err := informationPolicyFor(ctx, qtx, db.Issue{WorkspaceID: p.WorkspaceID, ProjectID: projectID}, false)
+		if err != nil {
+			return IssueCreateResult{}, err
+		}
+		if policy.Managed {
+			status, err := issuestatus.Resolve(ctx, qtx, p.WorkspaceID, p.Status)
+			if err != nil {
+				return IssueCreateResult{}, err
+			}
+			if status.Category == "blocked" {
+				return IssueCreateResult{}, collaborationError(http.StatusConflict, "status_unavailable")
+			}
 		}
 	}
 

@@ -23,6 +23,8 @@ export function prepareCollaborationAction(scope: CollaborationScope, issue: Col
   const completionSource = intent.action === "complete" && intent.completion ? { completionSourceWorkspaceId: issue.source_workspace.id } : {};
   const parsed = CollaborationActionSchema.safeParse({ ...intent, ...observation, ...completionSource, ...collaborationWriteContext(issue, requestId) });
   if (!parsed.success) throw new CollaborationUnavailableError();
+  if (parsed.data.action === "request_information" && issue.information_workflow?.managed === true &&
+    (parsed.data.unblockCondition === undefined || parsed.data.estimatedResolutionAt === undefined)) throw new CollaborationUnavailableError();
   return { scope: { server: scope.server, userId: scope.userId, issueId: issue.id }, requestId, kind: "operation", payload: parsed.data, createdAt: Date.now() };
 }
 
@@ -44,15 +46,23 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
       try {
         const result = recovery && denied ? await getApi().getCollaborationOperation(draft.scope.issueId, draft.requestId)
           : await (recovery ? recoverCollaborationAction(scope, draft) : sendCollaborationAction(scope, draft.scope.issueId, action));
-        const refusalStatus = result ? collaborationDeliveryRefusalStatus(result.code) : null;
+        const originalReceiptStatus = recovery && action.action === "repair_information" ? result?.status : undefined;
+        const refusalStatus = result ? collaborationDeliveryRefusalStatus(result.code, originalReceiptStatus) : null;
         if (result && refusalStatus !== null) {
-          if (result.delivery_confirmation !== undefined || result.status !== undefined && result.status !== refusalStatus) throw new CollaborationUnavailableError();
+          if (result.delivery_confirmation !== undefined || result.information_repair_confirmation !== undefined ||
+            result.status !== undefined && result.status !== refusalStatus || refusalStatus === 503 && result.status_options != null) throw new CollaborationUnavailableError();
           return { ...result, status: refusalStatus };
         }
-        const formal = action.action === "submit_acceptance" || action.action === "complete" || action.action === "return_acceptance" || action.action === "change_ai_policy";
+        const formal = action.action === "submit_acceptance" || action.action === "complete" || action.action === "return_acceptance" || action.action === "change_ai_policy" || action.action === "repair_information";
         if (result && formal && result.status !== undefined && result.status >= 300) throw new CollaborationUnavailableError();
         if (result && action.action === "return_acceptance" && result.code !== "acceptance_returned") throw new CollaborationUnavailableError();
         if (result && action.action === "change_ai_policy" && result.code !== "ai_policy_changed" && result.code !== "ai_policy_unchanged") throw new CollaborationUnavailableError();
+        if (result && action.action === "repair_information") {
+          const confirmation = result.information_repair_confirmation;
+          if (result.code !== "information_repaired" || confirmation === undefined || confirmation.status !== action.expectedStatus ||
+            confirmation.handler_user_id !== action.targetUserId.toLowerCase() ||
+            confirmation.prior_active_request_id !== (action.informationRepair.active_request_id?.toLowerCase() ?? null)) throw new CollaborationUnavailableError();
+        }
         if (result && (action.action === "submit_acceptance" || action.action === "complete") && (result.status === undefined || result.status < 300)) {
           const expectedCode = action.action === "complete" ? "completed" : "acceptance_submitted";
           const expectedFiles = action.action === "complete" && action.submissionId !== undefined ? action.submissionAttachmentIds : action.attachmentIds;
@@ -72,7 +82,7 @@ export async function executeCollaborationAction(client: QueryClient, scope: Col
       } catch (error) {
         if (error instanceof ApiError && !error.isStaleAuthResponse) {
           const receipt = parseCollaborationOperation(error.body);
-          if (receipt && receipt.delivery_confirmation === undefined && collaborationDeliveryRefusalStatus(receipt.code) === error.status && (receipt.status === undefined || receipt.status === error.status)) return { ...receipt, status: error.status };
+          if (receipt && receipt.delivery_confirmation === undefined && receipt.information_repair_confirmation === undefined && collaborationDeliveryRefusalStatus(receipt.code) === error.status && (receipt.status === undefined || receipt.status === error.status)) return { ...receipt, status: error.status };
         }
         throw error;
       }

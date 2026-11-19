@@ -19,6 +19,7 @@
 | [Database test isolation](./database-test-isolation.md) | Explicit test databases, TestMain guards, compile-only commands and bounded audit | Active |
 | [Joint verification environment](./verification-environment.md) | API/test environment separation, Make-safe configuration, exact Go package permits, mixed build/test JSON inventories and reviewed run identity | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
+| [Human information recovery](./collaboration-information-recovery.md) | Structured block metadata, atomic repair, retained history and bounded authority cursors | Controlled Web/Desktop and owning-layer acceptance |
 | [Collaboration stage authority](./collaboration-stage-approvals.md) | Source-member fences, original signer expiry, protected evidence and migration retry contracts | Scope/code-review boundaries checked; full stage activation separate |
 | [Collaboration results and manual policy](./collaboration-delivery.md) | Immutable delivery, exact initiator decisions, self-completion, bounded history and task-owned AI admission | Human Web/Electron journey verified; provider/installed Main evidence separate |
 | [Collaboration content](./collaboration-content.md) | Gated atomic creation, encrypted drafts, retained references and current-authority native downloads | Public API implemented; full product gate retained |

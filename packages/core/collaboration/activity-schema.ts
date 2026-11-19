@@ -2,6 +2,7 @@ import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationAccountSummarySchema } from "./schema";
 import { positiveVersion } from "./version";
+import { CollaborationInformationRepairBasisSchema } from "./information-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const stageId = uuid.refine((value) => value !== "00000000-0000-0000-0000-000000000000");
@@ -20,7 +21,7 @@ const stageMetadata = {
 };
 function stageKind(value: string): value is keyof typeof stageMetadata { return Object.hasOwn(stageMetadata, value); }
 const kind = z.enum(["created", "participant_added", "participant_removed", "participant_left", "transferred", "information_requested",
-  "information_returned", "acceptance_submitted", "status_changed", "completed", "cancelled", "reopened", "issue_edited",
+  "information_returned", "information_repaired", "acceptance_submitted", "status_changed", "completed", "cancelled", "reopened", "issue_edited",
   "iteration_changed", "comment_created", "comment_edited", "comment_deleted", "other",
   "stage_roles_configured", "stage_roles_unchanged", "stage_proposal_created", "stage_proposal_revised", "stage_proposal_accepted", "stage_proposal_rejected",
   "stage_scope_confirmed", "stage_code_candidate_created", "stage_decision_recorded", "stage_decision_revoked", "stage_advanced", "stage_execution_admitted", "stage_execution_observed", "stage_rollback_observed"]);
@@ -32,22 +33,33 @@ const handoff = z.object({
   id: uuid, purpose: z.enum(["transfer", "information", "information_return", "acceptance", "removal_return"]),
   from: CollaborationAccountSummarySchema.nullable(), to: CollaborationAccountSummarySchema.nullable(), note: z.string(),
 });
+const informationRepair = z.strictObject({
+  handoff_id: uuid, previous_status: z.string().min(1), restored_status: z.string().min(1),
+  target_user_id: uuid, basis: CollaborationInformationRepairBasisSchema,
+});
 export const CollaborationActivityEntrySchema = z.object({
   id: uuid, issue_id: uuid, event_seq: positiveVersion, kind,
   actor: CollaborationAccountSummarySchema.nullable(), created_at: z.iso.datetime({ offset: true }),
   details_available: z.boolean(), target: CollaborationAccountSummarySchema.nullable(),
   note: z.string().max(2000).optional(),
   handoff: handoff.nullable(), comment_id: uuid.nullable(), changes: z.array(change),
-  stage: z.unknown().optional(),
+  stage: z.unknown().optional(), information_repair: z.unknown().optional(),
 }).transform((entry) => {
   if (stageKind(entry.kind) || entry.kind === "stage_execution_admitted" || entry.kind === "stage_execution_observed" || entry.kind === "stage_rollback_observed") {
     const parsed = stageKind(entry.kind) ? stageMetadata[entry.kind].safeParse(entry.stage) : null;
     if (!parsed?.success || !entry.details_available || entry.target !== null || entry.handoff !== null || entry.comment_id !== null || entry.changes.length > 0 || entry.note !== undefined) {
-      return { ...entry, stage: null, details_available: false, target: null, handoff: null, comment_id: null, changes: [], note: undefined };
+      return { ...entry, stage: null, information_repair: undefined, details_available: false, target: null, handoff: null, comment_id: null, changes: [], note: undefined };
     }
-    return { ...entry, stage: parsed.data };
+    return { ...entry, stage: parsed.data, information_repair: undefined };
   }
-  return { ...entry, stage: undefined };
+  if (entry.kind === "information_repaired") {
+    const repair = informationRepair.safeParse(entry.information_repair);
+    if (!repair.success || !entry.details_available || entry.target !== null || entry.handoff !== null || entry.comment_id !== null || entry.changes.length > 0 || entry.note !== undefined) {
+      return { ...entry, stage: undefined, information_repair: undefined, details_available: false, target: null, handoff: null, comment_id: null, changes: [], note: undefined };
+    }
+    return { ...entry, stage: undefined, information_repair: repair.data };
+  }
+  return { ...entry, stage: undefined, information_repair: undefined };
 }).refine((entry) => {
   if (!entry.details_available) return entry.target === null && entry.handoff === null && entry.comment_id === null && entry.changes.length === 0 && !entry.note;
   if (entry.note !== undefined && entry.kind !== "iteration_changed") return false;

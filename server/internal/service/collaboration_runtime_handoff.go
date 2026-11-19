@@ -194,6 +194,7 @@ func buildCollaborationHandoff(ctx context.Context, q *db.Queries, a Collaborati
 		return out, err
 	}
 	if a.InformationRequestID.Valid {
+		out.Missing = append(out.Missing, "information_block_metadata_unavailable_v1")
 		h, e := q.GetCollaborationInformationRequest(ctx, db.GetCollaborationInformationRequestParams{IssueID: a.Issue.ID, RequestID: a.InformationRequestID})
 		if e != nil {
 			return out, e
