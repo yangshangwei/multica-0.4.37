@@ -81,6 +81,10 @@ func checkStageSubmissionSchema(ctx context.Context, tx pgx.Tx) error {
 }
 
 func stageCompletionState(ctx context.Context, tx pgx.Tx, issue db.Issue, lifecycle int64) (*collaborationStageState, error) {
+	return stageCompletionStateInTx(ctx, tx, issue, lifecycle, false)
+}
+
+func stageCompletionStateInTx(ctx context.Context, tx pgx.Tx, issue db.Issue, lifecycle int64, readProjection bool) (*collaborationStageState, error) {
 	q := db.New(tx)
 	shared, err := q.IsCollaborationIssue(ctx, issue.ID)
 	if err != nil || !shared || !issue.ProjectID.Valid {
@@ -112,7 +116,15 @@ func stageCompletionState(ctx context.Context, tx pgx.Tx, issue db.Issue, lifecy
 	if state.lastDisabled, err = q.GetProjectStagePolicyLastDisabled(ctx, db.GetProjectStagePolicyLastDisabledParams{WorkspaceID: issue.WorkspaceID, ProjectID: issue.ProjectID}); err != nil {
 		return nil, err
 	}
-	if err = loadStageDetails(ctx, q, issue, lifecycle, state, true); err != nil {
+	if readProjection {
+		// The root SHARE fence prevents concurrent head creation. No row
+		// preserves loadStageDetails' existing virtual-head semantics.
+		var id pgtype.UUID
+		if err = tx.QueryRow(ctx, `SELECT issue_id FROM collaboration_stage_task WHERE issue_id=$1 FOR SHARE NOWAIT`, issue.ID).Scan(&id); err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			return nil, err
+		}
+	}
+	if err = loadStageDetails(ctx, q, issue, lifecycle, state, !readProjection); err != nil {
 		return nil, err
 	}
 	return state, nil
@@ -121,12 +133,20 @@ func stageCompletionState(ctx context.Context, tx pgx.Tx, issue db.Issue, lifecy
 // Root completion consumes retained approvers' current artifact authority. The
 // actual completer keeps their own identity and need not read that artifact.
 func stageCompletionFacts(ctx context.Context, tx pgx.Tx, sources StageExecutionSources, access CollaborationIssueAccess) (out stageCompletionEvidence, err error) {
-	return stageCompletionFactsWithFinalCheck(ctx, tx, sources, access, nil)
+	return stageCompletionFactsInTx(ctx, tx, sources, access, nil, false)
 }
 
 func stageCompletionFactsWithFinalCheck(ctx context.Context, tx pgx.Tx, sources StageExecutionSources, access CollaborationIssueAccess, finalCheck func() (time.Time, error)) (out stageCompletionEvidence, err error) {
+	return stageCompletionFactsInTx(ctx, tx, sources, access, finalCheck, false)
+}
+
+func readStageCompletionFacts(ctx context.Context, tx pgx.Tx, sources StageExecutionSources, access CollaborationIssueAccess) (out stageCompletionEvidence, err error) {
+	return stageCompletionFactsInTx(ctx, tx, sources, access, nil, true)
+}
+
+func stageCompletionFactsInTx(ctx context.Context, tx pgx.Tx, sources StageExecutionSources, access CollaborationIssueAccess, finalCheck func() (time.Time, error), readProjection bool) (out stageCompletionEvidence, err error) {
 	q := db.New(tx)
-	state, err := stageCompletionState(ctx, tx, access.Issue, access.LifecycleEpoch)
+	state, err := stageCompletionStateInTx(ctx, tx, access.Issue, access.LifecycleEpoch, readProjection)
 	if err != nil || state == nil {
 		return out, err
 	}
@@ -157,7 +177,12 @@ func stageCompletionFactsWithFinalCheck(ctx context.Context, tx pgx.Tx, sources 
 	if err != nil {
 		return out, err
 	}
-	child, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: util.MustParseUUID(content.Baseline.ChildIssueID), WorkspaceID: access.Issue.WorkspaceID})
+	var child db.Issue
+	if readProjection {
+		child, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: util.MustParseUUID(content.Baseline.ChildIssueID), WorkspaceID: access.Issue.WorkspaceID})
+	} else {
+		child, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: util.MustParseUUID(content.Baseline.ChildIssueID), WorkspaceID: access.Issue.WorkspaceID})
+	}
 	if errors.Is(err, pgx.ErrNoRows) {
 		return refuse("stage_evidence_unavailable")
 	}

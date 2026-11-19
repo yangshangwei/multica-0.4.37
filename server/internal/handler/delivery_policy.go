@@ -132,7 +132,7 @@ func (h *Handler) deliveryPolicyInTx(r *http.Request, tx pgx.Tx, q *db.Queries, 
 		if role := members[p.UserID].Role; role != "owner" && role != "admin" {
 			return out, artifactFailure{403, "delivery_policy_management_denied"}
 		}
-		_, err = q.LockDeliveryPolicyProject(ctx, db.LockDeliveryPolicyProjectParams{ID: projectID, WorkspaceID: ws})
+		_, err = q.LockDeliveryPolicyProjectWait(ctx, db.LockDeliveryPolicyProjectWaitParams{ID: projectID, WorkspaceID: ws})
 	} else {
 		_, err = q.LockProjectForAssociationNowait(ctx, db.LockProjectForAssociationNowaitParams{ID: projectID, WorkspaceID: ws})
 	}

@@ -90,13 +90,23 @@ func stageExecutionApprovalChain(ctx context.Context, tx pgx.Tx, sources StageEx
 		if payload.Evidence.TestReportID == nil {
 			return nil, collaborationError(409, "stage_test_report_unusable")
 		}
-		issuerAccess, err := completionCollaborationAccess(ctx, tx, access.Issue, d.ActorUserID)
+		projectIssuerAccess := completionCollaborationAccess
+		if _, readProjection := tx.(collaborationStageEvidenceReadTx); readProjection {
+			projectIssuerAccess = readCompletionCollaborationAccess
+		}
+		issuerAccess, err := projectIssuerAccess(ctx, tx, access.Issue, d.ActorUserID)
 		if err != nil {
 			return nil, err
 		}
 		sourceAccess := access
 		sourceAccess.SourceMember = issuerAccess.SourceMember
-		_, code, err := stageQAReportAs(ctx, tx, sourceAccess, candidate, *payload.Evidence.TestReportID, true, signer.credential(util.UUIDToString(d.ActorUserID)))
+		credential := signer.credential(util.UUIDToString(d.ActorUserID))
+		var code string
+		if _, readProjection := tx.(collaborationStageEvidenceReadTx); readProjection {
+			_, code, err = stageQAReportReadAs(ctx, tx, sourceAccess, candidate, *payload.Evidence.TestReportID, credential)
+		} else {
+			_, code, err = stageQAReportAs(ctx, tx, sourceAccess, candidate, *payload.Evidence.TestReportID, true, credential)
+		}
 		if err != nil {
 			return nil, err
 		}

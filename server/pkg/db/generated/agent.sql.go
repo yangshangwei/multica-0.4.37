@@ -5557,6 +5557,31 @@ func (q *Queries) HasPendingTaskForIssueAndAgentExcludingTriggerComment(ctx cont
 	return has_pending, err
 }
 
+const hasPotentialDispatchedReclaimForRuntimes = `-- name: HasPotentialDispatchedReclaimForRuntimes :one
+SELECT EXISTS (
+    SELECT 1 FROM agent_task_queue t
+    WHERE t.runtime_id = ANY($1::uuid[])
+      AND t.status = 'dispatched'
+      AND t.started_at IS NULL
+      AND t.dispatched_at < now() - make_interval(secs => $2::double precision)
+      AND (t.prepare_lease_expires_at IS NULL OR t.prepare_lease_expires_at < now())
+)
+`
+
+type HasPotentialDispatchedReclaimForRuntimesParams struct {
+	RuntimeIds        []pgtype.UUID `json:"runtime_ids"`
+	ClaimRecoverySecs float64       `json:"claim_recovery_secs"`
+}
+
+// A conservative existence check only; positive results still require the
+// canonical reclaim's current authority and writer fences.
+func (q *Queries) HasPotentialDispatchedReclaimForRuntimes(ctx context.Context, arg HasPotentialDispatchedReclaimForRuntimesParams) (bool, error) {
+	row := q.db.QueryRow(ctx, hasPotentialDispatchedReclaimForRuntimes, arg.RuntimeIds, arg.ClaimRecoverySecs)
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
+}
+
 const hasRetryTaskForParent = `-- name: HasRetryTaskForParent :one
 SELECT count(*) > 0
 FROM agent_task_queue

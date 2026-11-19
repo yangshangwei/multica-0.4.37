@@ -760,7 +760,7 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	}
 	defer rollbackCollaborationQueue(ctx, tx)
 	q := s.Queries.WithTx(tx)
-	users, err := q.LockCollaborationUsers(ctx, []pgtype.UUID{actor})
+	users, err := q.LockArtifactUsers(ctx, []pgtype.UUID{actor})
 	if err != nil {
 		return CollaborationWorkflowOperationReceipt{}, err
 	}

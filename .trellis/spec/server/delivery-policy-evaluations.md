@@ -12,6 +12,9 @@ collaboration completion still require a separate complete enforcement package.
 ## 2. Signatures
 
 - Human-only GET/PUT `/api/projects/{id}/delivery-policy`.
+- `LockDeliveryPolicyProjectWait` selects the same project/workspace under
+  exclusive `FOR UPDATE` for the M1 PUT only. The original
+  `LockDeliveryPolicyProject` retains `FOR UPDATE NOWAIT` for its other callers.
 - Human-only POST `/api/issues/{id}/delivery-evidence/evaluations`, mandatory
   canonical nonzero UUID `Idempotency-Key`.
 - Human-only GET `/api/issues/{id}/delivery-evidence/evaluations/{key}`.
@@ -67,9 +70,20 @@ match, original resource/policy revisions match, and the original window is
 unexpired. Current or historical pass is not authorization for later actions.
 The observed PR head is only a database observation, never remote live Git HEAD.
 
-Reuse artifact current-principal fences, bounded no-retry transactions, issue
-lifecycle and project SHARE/UPDATE NOWAIT locks. Policy writes serialize through
-the project row, including absent first-policy rows. Evaluation and observation
+Reuse artifact current-principal fences, bounded no-retry transactions, and the
+existing issue/project read and writer fences. M1 policy PUT uses the exclusive
+`LockDeliveryPolicyProjectWait` after its current authority checks. It waits for
+a brief reader or writer within the existing `SET LOCAL lock_timeout='250ms'`,
+then reads the latest policy and checks CAS before appending. This is a budget
+per lock acquisition, not a total transaction deadline. A long-held lock still
+returns `409 artifact_authority_busy`; a competing writer that commits first
+can produce `409 delivery_policy_revision_conflict`. Neither case appends a
+second row. Keep the final credential check after response construction.
+
+The original project NOWAIT query and the stage-policy writer remain unchanged;
+do not broaden this M1-only wait by altering a shared lock helper or adding a
+retry. Policy writes serialize through the project row, including absent
+first-policy rows. Evaluation and observation
 commit atomically with no packager, queue, lifecycle or comment side effect.
 Do not wrap these paths in the retrying project helper. Verify new schema and
 exact usable unique-index shapes separately from artifact schema readiness.
@@ -88,7 +102,8 @@ register retained history for ordinary teardown or create database foreign keys.
 | Invalid/extra/duplicate fields, key, unsupported mode/stage/version | 400, no write |
 | Machine/forged/revoked current authority | 403/404 or authentication refusal |
 | Stale policy CAS/new-admission version or changed same-key request | 409 |
-| Lock contention | 409, no partial success |
+| M1 PUT brief project lock released within existing250ms budget | Continue under exclusive lock; check latest CAS/current authority before append |
+| M1 PUT long project lock, other NOWAIT fence contention | 409, no partial success |
 | Missing/invalid new schema or failed/uncertain commit | Non-success, no claimed persistence |
 | Same authorized key after policy/resource change | Original observation, stale applicability |
 | Original window elapsed | Expired applicability, original facts retained |
@@ -121,12 +136,30 @@ permit downgrade. Run old observer/artifact compatibility, backend build/vet,
 formatting, sqlc idempotence, static contracts and independent final source/log
 hash verification. Tests do not close historical real-model acceptance gates.
 
+`delivery_policy_project_wait_test.go` is the canonical M1 project-wait
+regression. Hold an actual policy GET after its shared project fence, then
+observe a different backend's actual PUT lock attempt before releasing the
+reader. Preserve a short-reader200, long-reader55P03/busy with no append,
+short competing-writer stale CAS and current-member denial. Keep original
+50ms test release, 250ms product lock budget and test orchestration bounds;
+prepare a dedicated read-only lock-witness connection before the timed phase.
+A query-entry notification alone does not prove lock contention. Initial
+coordinator failures remain separate from genuine RED. Retain the original
+policy/role/request/schema/enforcement/concurrent-CAS/writer controls; the
+focused normal/race union has40 named tests. These are scoped policy checks,
+not full S2 acceptance.
+
 ## 7. Wrong versus correct
 
 Wrong: gate one done writer and call this a global gate, or return an old pass
 after the evaluator exits early on resource-version mismatch.
 Correct: keep this package observe-only, explicitly defer all done writers, and
 finish current authority validation before projecting historical applicability.
+
+Wrong: remove NOWAIT from the original shared query or treat a short wait as
+permission to skip CAS or final credential validation. Correct: use the M1-only
+exclusive waiting query under the existing budget, retain all authority checks,
+and leave the stage-policy NOWAIT caller unchanged.
 
 ## Later explicit hint consumer
 

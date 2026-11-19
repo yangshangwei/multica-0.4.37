@@ -126,8 +126,8 @@ func parseDeliveryCandidateCursor(raw string) (deliveryCandidateCursor, error) {
 	return c, nil
 }
 
-// lockDeliveryPreviewIssue takes the ordinary completion lock prefix without any
-// business writes. SQL READ ONLY cannot be used because these are real row locks.
+// lockDeliveryPreviewIssue retains the ordinary authority prefix for pure
+// projections. SQL READ ONLY cannot be used because these are real row locks.
 func lockDeliveryPreviewIssue(ctx context.Context, tx pgx.Tx, access ArtifactAccess, initial db.Issue) (db.Issue, error) {
 	if tx == nil {
 		return db.Issue{}, completionInvalid()
@@ -155,7 +155,7 @@ func lockDeliveryPreviewIssue(ctx context.Context, tx pgx.Tx, access ArtifactAcc
 	if err = q.LockIssueStatusCatalogShared(ctx, initial.WorkspaceID); err != nil {
 		return db.Issue{}, err
 	}
-	issue, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID})
+	issue, err := q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID})
 	if err == nil {
 		err = completionOrdinary(ctx, q, issue)
 	}
@@ -219,7 +219,7 @@ func ListDeliveryEvidenceCandidatesInTx(ctx context.Context, tx pgx.Tx, access A
 		if i == deliveryCandidateScanLimit {
 			return DeliveryEvidenceCandidates{}, DeliveryCompletionError{503, "delivery_completion_candidates_unavailable"}
 		}
-		live, task, approval, e2 := lockDeliveryArtifactInTx(ctx, tx, access, issue, e)
+		live, task, approval, e2 := readDeliveryArtifactInTx(ctx, tx, access, issue, e)
 		if e2 != nil {
 			var denied ArtifactError
 			if errors.As(e2, &denied) && denied.Status == 403 || errors.Is(e2, pgx.ErrNoRows) {

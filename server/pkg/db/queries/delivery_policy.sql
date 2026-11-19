@@ -31,6 +31,9 @@ EXISTS (
 -- name: LockDeliveryPolicyProject :one
 SELECT * FROM project WHERE id=$1 AND workspace_id=$2 FOR UPDATE NOWAIT;
 
+-- name: LockDeliveryPolicyProjectWait :one
+SELECT * FROM project WHERE id=$1 AND workspace_id=$2 FOR UPDATE;
+
 -- name: GetDeliveryPolicy :one
 SELECT * FROM project_delivery_policy WHERE workspace_id=$1 AND project_id=$2 ORDER BY revision DESC LIMIT 1;
 

@@ -244,7 +244,11 @@ func stageArtifactObservationAs(ctx context.Context, tx pgx.Tx, child db.Issue, 
 		id, revision := util.UUIDToString(project.ID), project.Revision
 		request.ProjectID, request.ProjectRevision = &id, &revision
 	}
-	return EvaluateDeliveryEvidenceInTx(ctx, tx, ArtifactAccess{Credential: credential, RequestedWorkspaceID: util.UUIDToString(child.WorkspaceID)}, child, request)
+	access := ArtifactAccess{Credential: credential, RequestedWorkspaceID: util.UUIDToString(child.WorkspaceID)}
+	if _, readProjection := tx.(collaborationStageEvidenceReadTx); readProjection {
+		return evaluateDeliveryEvidenceReadInTx(ctx, tx, access, child, request)
+	}
+	return EvaluateDeliveryEvidenceInTx(ctx, tx, access, child, request)
 }
 
 func checkStageArtifactCurrent(ctx context.Context, tx pgx.Tx, content stageCodeContent) (string, error) {

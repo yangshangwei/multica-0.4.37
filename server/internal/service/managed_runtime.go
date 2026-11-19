@@ -121,9 +121,21 @@ func LockManagedDaemonRegistration(ctx context.Context, q *db.Queries, workspace
 // LockManagedRuntime fences a claim against binding, account and runtime-owner
 // changes. Call before taking an agent/task lock, using transaction queries.
 func LockManagedRuntime(ctx context.Context, lookup RuntimeLookup, runtime db.AgentRuntime) (db.InstallationDaemonBinding, error) {
+	return lockManagedRuntime(ctx, lookup, runtime, false)
+}
+
+// Only the mutation-free capability GET uses the shared account fence.
+// Namespace, installation admission and runtime identity checks stay common.
+func lockManagedRuntime(ctx context.Context, lookup RuntimeLookup, runtime db.AgentRuntime, readAccount bool) (db.InstallationDaemonBinding, error) {
 	q := lookup.Queries
 	if _, ok := auth.PasswordSessionFromContext(ctx); ok {
-		if _, err := auth.LockPasswordSession(ctx, q); err != nil {
+		var err error
+		if readAccount {
+			err = lockManagedRuntimeAccountRead(ctx, q)
+		} else {
+			_, err = auth.LockPasswordSession(ctx, q)
+		}
+		if err != nil {
 			return db.InstallationDaemonBinding{}, err
 		}
 	}
@@ -149,6 +161,26 @@ func LockManagedRuntime(ctx context.Context, lookup RuntimeLookup, runtime db.Ag
 		return binding, err
 	}
 	return binding, nil
+}
+
+func lockManagedRuntimeAccountRead(ctx context.Context, q *db.Queries) error {
+	source, ok := auth.PasswordSessionFromContext(ctx)
+	if !ok || source.Setup || source.Change || source.Version <= 0 {
+		return auth.ErrPasswordSession
+	}
+	id, err := util.ParseUUID(source.UserID)
+	if err != nil {
+		return auth.ErrPasswordSession
+	}
+	users, err := q.LockArtifactUsers(ctx, []pgtype.UUID{id})
+	if err != nil {
+		return err
+	}
+	if len(users) != 1 || users[0].ID != id {
+		return auth.ErrPasswordSession
+	}
+	_, err = auth.CheckPasswordVersion(ctx, q, source.UserID, source.Version)
+	return err
 }
 
 func LockManagedRuntimes(ctx context.Context, lookup RuntimeLookup, ids []pgtype.UUID) error {

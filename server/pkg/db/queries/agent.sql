@@ -1034,6 +1034,18 @@ WHERE id = (
 )
 RETURNING *;
 
+-- name: HasPotentialDispatchedReclaimForRuntimes :one
+-- A conservative existence check only; positive results still require the
+-- canonical reclaim's current authority and writer fences.
+SELECT EXISTS (
+    SELECT 1 FROM agent_task_queue t
+    WHERE t.runtime_id = ANY(@runtime_ids::uuid[])
+      AND t.status = 'dispatched'
+      AND t.started_at IS NULL
+      AND t.dispatched_at < now() - make_interval(secs => @claim_recovery_secs::double precision)
+      AND (t.prepare_lease_expires_at IS NULL OR t.prepare_lease_expires_at < now())
+);
+
 -- name: ReclaimStaleDispatchedTasksForRuntimes :many
 -- Batch variant of ReclaimStaleDispatchedTaskForRuntime (MUL-4257): re-delivers
 -- up to @max_tasks tasks across the whole runtime set in one round trip, so a

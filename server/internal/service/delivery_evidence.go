@@ -77,13 +77,27 @@ func DeliveryHex(s string, sizes ...int) bool {
 // EvaluateDeliveryEvidenceInTx observes current locked facts using the caller
 // transaction. It neither owns that transaction nor grants completion authority.
 func EvaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, initial db.Issue, req DeliveryEvidenceRequest) (DeliveryObservation, error) {
+	return evaluateDeliveryEvidenceInTx(ctx, tx, access, initial, req, false)
+}
+
+func evaluateDeliveryEvidenceReadInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, initial db.Issue, req DeliveryEvidenceRequest) (DeliveryObservation, error) {
+	return evaluateDeliveryEvidenceInTx(ctx, tx, access, initial, req, true)
+}
+
+func evaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, initial db.Issue, req DeliveryEvidenceRequest, readProjection bool) (DeliveryObservation, error) {
 	q := db.New(tx)
 	p := access.Credential.Principal
 	out := DeliveryObservation{Mode: "observe", PolicyVersion: DeliveryEvidencePolicy, Verdict: "unknown", Reason: "evidence_missing", ApprovalID: req.ApprovalID, SourceRevision: req.SourceRevision, RevisionProvenance: "database_observed_pr_head_not_remote_verified"}
 	if err := LockArtifactWorkspace(ctx, q, initial.WorkspaceID); err != nil {
 		return out, err
 	}
-	issue, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID})
+	var issue db.Issue
+	var err error
+	if readProjection {
+		issue, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID})
+	} else {
+		issue, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: initial.ID, WorkspaceID: initial.WorkspaceID})
+	}
 	if err != nil {
 		return out, err
 	}
@@ -147,7 +161,7 @@ func EvaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access Artifac
 	if err != nil {
 		return out, err
 	}
-	e, task, approval, err := lockDeliveryArtifactInTx(ctx, tx, access, issue, e)
+	e, task, approval, err := lockDeliveryArtifactWithReadMode(ctx, tx, access, issue, e, readProjection)
 	if err != nil {
 		return out, err
 	}
@@ -218,6 +232,14 @@ func EvaluateDeliveryEvidenceInTx(ctx context.Context, tx pgx.Tx, access Artifac
 // lockDeliveryArtifactInTx shares the observer's retained/current artifact
 // authority with candidate discovery. It does not observe PRs or create evidence.
 func lockDeliveryArtifactInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, issue db.Issue, execution db.AgentArtifactExecution) (e db.AgentArtifactExecution, task db.AgentTaskQueue, approval db.AgentApprovalRequest, err error) {
+	return lockDeliveryArtifactWithReadMode(ctx, tx, access, issue, execution, false)
+}
+
+func readDeliveryArtifactInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, issue db.Issue, execution db.AgentArtifactExecution) (e db.AgentArtifactExecution, task db.AgentTaskQueue, approval db.AgentApprovalRequest, err error) {
+	return lockDeliveryArtifactWithReadMode(ctx, tx, access, issue, execution, true)
+}
+
+func lockDeliveryArtifactWithReadMode(ctx context.Context, tx pgx.Tx, access ArtifactAccess, issue db.Issue, execution db.AgentArtifactExecution, readProjection bool) (e db.AgentArtifactExecution, task db.AgentTaskQueue, approval db.AgentApprovalRequest, err error) {
 	e = execution
 	q := db.New(tx)
 	if e.WorkspaceID != issue.WorkspaceID || e.ResourceID != issue.ID {
@@ -237,7 +259,12 @@ func lockDeliveryArtifactInTx(ctx context.Context, tx pgx.Tx, access ArtifactAcc
 	}
 	// Historical producer tasks may be completed. Their scope, generation and all
 	// current principals remain mandatory; the running-only claim gate is not reused.
-	if _, err = q.LockTaskCapabilityPrincipals(ctx, e.TaskID); err != nil {
+	if readProjection {
+		_, err = q.LockDeliveryArtifactPrincipalsRead(ctx, e.TaskID)
+	} else {
+		_, err = q.LockTaskCapabilityPrincipals(ctx, e.TaskID)
+	}
+	if err != nil {
 		return e, task, approval, err
 	}
 	task, err = q.GetAgentTask(ctx, e.TaskID)
@@ -281,14 +308,23 @@ func lockDeliveryArtifactInTx(ctx context.Context, tx pgx.Tx, access ArtifactAcc
 			return e, task, approval, artifactDeny()
 		}
 	}
-	approval, err = q.LockAgentApprovalRequest(ctx, e.ApprovalID)
+	if readProjection {
+		approval, err = q.LockDeliveryArtifactApprovalRead(ctx, e.ApprovalID)
+	} else {
+		approval, err = q.LockAgentApprovalRequest(ctx, e.ApprovalID)
+	}
 	if err != nil {
 		return e, task, approval, err
 	}
 	if approval.DecidedBy != initialApproval.DecidedBy || approval.WorkspaceID != e.WorkspaceID || approval.TaskID != e.TaskID || approval.AgentID != e.AgentID || approval.IssueID != e.ResourceID {
 		return e, task, approval, artifactConflict()
 	}
-	live, err := q.LockAgentArtifactExecutionByApproval(ctx, e.ApprovalID)
+	var live db.AgentArtifactExecution
+	if readProjection {
+		live, err = q.LockDeliveryArtifactExecutionRead(ctx, e.ApprovalID)
+	} else {
+		live, err = q.LockAgentArtifactExecutionByApproval(ctx, e.ApprovalID)
+	}
 	if err != nil {
 		return e, task, approval, err
 	}
