@@ -1,3 +1,7 @@
+## 2026-11-20 已接受切片：TC-01 完整正向创建补证
+
+按[TC-01执行计划](../../../docs/plans/2026-11-20-pay-241-creation-proof.md)补充真实Web/Desktop创建、初始字段/状态/actor/time和原键身份。预登记2旅程、6授权会话、2个实际UI创建根，零重试；仅新增2测试文件。完整正向例不能证明所有PAY业务字段全局强制，也不能映射P1=High；TC-01至多推进PARTIAL、TC-03保持PARTIAL，完整r02两端2/2、独立检查已接受正向切片，矩阵TC-01更新PARTIAL。复用字节核验过的TC-02产物，新专库/API/私有状态，保留其他会话改动。TC-02/13已提交推送；当前父9PASS/10PARTIAL/5NOT_RUN。本轮定向工作/记录提交推送，父任务保持开放。
+
 ## 2026-11-20 已接受切片：TC-02 验收标准同步和历史回看
 
 TC-02完整r02两端2/2通过并独立接受；父矩阵9PASS/9PARTIAL/6NOT_RUN。TC-13已提交推送。沿用[TC-02执行计划](../../../docs/plans/2026-11-19-pay-241-requirements-history.md)，新增双端真实三会话测试，验证description V1→V2→V3实际编辑、同步及Activity完整历史与原回执。预登记2顶层、6会话、4次显式UI编辑、18次当前版本观察和6次Activity回看；生产Web与匹配Desktop renderer/preload，零重试。Main负责隔离环境和整合，原生实施/检查代理分别负责夹具和独立验收。实际结果及剩余范围见research/tc02-independent-check-20261119.md；本轮工作和记录定向提交推送。以下TC-13及更早段落保留历史，不作为当前待办。

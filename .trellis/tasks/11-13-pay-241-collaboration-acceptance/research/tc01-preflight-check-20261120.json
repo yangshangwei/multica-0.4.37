@@ -1,0 +1,132 @@
+{
+  "at": "2026-11-19T16:56:36.370282+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "tc01_review",
+  "verdict": "TC01_POSITIVE_HARNESS_AND_PREPARATION_ACCEPTED_PENDING_RUNTIME",
+  "blocking_findings": [],
+  "accepted_scope": "two new test files and reused-product fresh-runtime preparation only",
+  "actual_UI_tests_executed_by_reviewer": 0,
+  "parent_TC01": "NOT_RUN until complete actual proof; at most PARTIAL for this positive slice",
+  "parent_TC03": "PARTIAL; P1/global mandatory-field/occupational-role/triage-notification semantics not decided",
+  "registered_denominator": {
+    "tops": 2,
+    "sessions": 6,
+    "actual_UI_creations": 2,
+    "blank_title_UI_preventions": 2,
+    "original_key_GETs": 2,
+    "creation_result_GETs": 2,
+    "same_key_API_replays": 2,
+    "retries": 0
+  },
+  "static": {
+    "typescript_diagnostics": 0,
+    "eslint_errors": 0,
+    "eslint_warnings": 0,
+    "discovered_tops": 2
+  },
+  "bindings": {
+    "products-before.json": {
+      "rows": 1698,
+      "mismatches": []
+    },
+    "browser-native-resources-before.json": {
+      "rows": 1107,
+      "mismatches": []
+    },
+    "workspace-dependency-links-before.json": {
+      "rows": 2062,
+      "mismatches": []
+    },
+    "candidate-after-runtime.json": {
+      "rows": 31700,
+      "mismatches": []
+    },
+    "new_harness_links": {
+      "rows": 2062,
+      "mismatches": []
+    },
+    "new_harness_source": {
+      "rows": 31207,
+      "mismatches": []
+    }
+  },
+  "catalog": {
+    "database": "multica_pay241_tc01_20261120_a8pqkttd_r01",
+    "ledger": 856,
+    "indexes": 663,
+    "all_valid_ready": true,
+    "empty_business_counts": {
+      "user": 0,
+      "issue": 0,
+      "collaboration_event": 0,
+      "collaboration_operation": 0
+    },
+    "template_comparison": {
+      "ledger": true,
+      "indexes": true,
+      "gate": true,
+      "table_counts": true
+    },
+    "connections_before": 0,
+    "gate": {
+      "id": 1,
+      "epoch": 2,
+      "enabled": false,
+      "freeze_progress": null,
+      "creation_enabled": true,
+      "freeze_operation_id": null,
+      "host_execution_enabled": false
+    }
+  },
+  "retained_corrections": [
+    "Initial author TS deepimport unsupported; removed and statically verified before runtime.",
+    "Original creation POST defaults execution projection5; original-key recovery uses same representation5, actual UI observations may negotiate6. Exact original response equality preserved.",
+    "Reviewer credential-key substring incorrectly classified nonsecret auth-mode flags; exact credential set corrected; no credentials output."
+  ],
+  "key_contracts": [
+    "No root issue seeded by API; actual UI creates it.",
+    "Successful create operation result is null, identity joins actor/source/request/resolved_issue_id and complete immutable operation; do not invent edit-style receipt.",
+    "Created_at exists on stored issue/event; public Activity event time is compared as exact UTC instant, not a nonexistent issue DTO field.",
+    "High is a selected product enum; P1 only business prose, no enum equivalence.",
+    "Source-only catalogs do not grant external participant source membership; selected field summary is safe projection.",
+    "UI blank-title prevention is not proof that all PAY business fields are mandatory."
+  ],
+  "evidence_refs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/preflight-bindings-r01.json",
+      "sha256": "749736f0bfde873fae46877d1c36fcceca78b47f61ffa06e5d06ecadc526abaf"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/environment-readiness-r01.json",
+      "sha256": "14cd3150255cef0367724c8cb4cd7cdb6151b96a9a0d7439f7f290d3445df405"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/static-r01.json",
+      "sha256": "78e43004d41e584fda30ca1a2b5dfbfbe5353cc4a7f8c53196bead113d2512c4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/static-command-r01.json",
+      "sha256": "00061e61684a0d881b2ea9e723c68bda09fd70b0d3f6a73f3e52c4313d727133"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/list-r01.json",
+      "sha256": "574784cf8eb8c41a97a2d9ac92b9254f721de393653fdf4f02507421f36e1467"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/allocation-r01.json",
+      "sha256": "0a853db7998a2ffd6b21b3dffabb1b1ae56d200cfd15b84b9dd59ccace1b4493"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/harness-frozen-r01.json",
+      "sha256": "592d5619cc2112d28d792c5a634338fedf266f90833251b7c654238bacccdf07"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/r01-live.json",
+      "sha256": "c3607194eb8e32a780b1809370b44500bfc6ef8fccbe7b8b1c1ec49d69a594a7"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/docs/plans/2026-11-20-pay-241-creation-proof.md",
+      "sha256": "13e26adb69a695772754179596d248566d3f26d547fa1eae262f1628edfe6503"
+    }
+  ]
+}

@@ -1,0 +1,1898 @@
+{
+  "at": "2026-11-19T17:09:10.492695+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "tc01_review",
+  "verdict": "ACCEPTED_TC01_POSITIVE_CREATION_SUBSCOPE_FULL_CASE_REMAINS_PARTIAL",
+  "blocking_findings": [],
+  "recommended_parent_disposition": {
+    "TC-01": "PARTIAL",
+    "TC-03": "PARTIAL with source-qualified project/due/handler/High enrichment only",
+    "counts_after_TC01_promotion": {
+      "PASS": 9,
+      "PARTIAL": 10,
+      "NOT_RUN": 5
+    },
+    "parent_status": "in_progress"
+  },
+  "actual_results": {
+    "at": "2026-11-19T17:07:14.307849+00:00",
+    "stats": {
+      "startTime": "2026-11-19T17:03:25.934Z",
+      "duration": 42211.418,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "platform": "Desktop",
+        "raw": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-pay-creation.json",
+          "sha256": "539bda31a545f7244cc9cd4dd86fe12c9e13b7f407354608e9a8743c3e3ee03a"
+        },
+        "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+        "generated_identifier": "PAY-1",
+        "actors": [
+          {
+            "role": "product",
+            "id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+            "name": "TC01 product 0dfc25ed64f4"
+          },
+          {
+            "role": "developer",
+            "id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+            "name": "TC01 developer 0dfc25ed64f4"
+          },
+          {
+            "role": "qa",
+            "id": "56b2f5bd-bf7e-4de7-b714-eab16f9a8cfa",
+            "name": "TC01 qa 0dfc25ed64f4"
+          }
+        ],
+        "request_id": "2d2ba69e-dff7-4fd7-b34d-1f8e8bf7a2e5",
+        "issue_actor_time": {
+          "id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+          "workspace_id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+          "number": 1,
+          "title": "PAY-241 scenario: payment succeeds but order awaits payment 0dfc25ed64f4",
+          "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+          "status": "todo",
+          "priority": "high",
+          "start_date": "2026-11-19",
+          "due_date": "2026-11-26",
+          "creator_type": "member",
+          "creator_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+          "assignee_type": "member",
+          "assignee_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+          "project_id": "8f882ecc-bcbf-4235-b808-42aa899f0914",
+          "parent_issue_id": null,
+          "created_at": "2026-11-19 17:03:52.935389+00",
+          "updated_at": "2026-11-19 17:03:52.935389+00",
+          "revision": "1"
+        },
+        "operation": {
+          "id": "e57a25d1-264e-448a-a492-3e8d484d01cf",
+          "scope_kind": "create",
+          "scope_id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+          "actor_user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+          "request_id": "2d2ba69e-dff7-4fd7-b34d-1f8e8bf7a2e5",
+          "kind": "create",
+          "payload_hash": "edf778c62a908d0a10361521c08de56977263ed5ae2a1d687f5096194a3366ec",
+          "result_code": "created",
+          "result": null,
+          "resolved_issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+          "created_at": "2026-11-19 17:03:52.935389+00",
+          "completed_at": "2026-11-19 17:03:52.935389+00"
+        },
+        "event": {
+          "id": "7c331421-2209-483f-862d-52c1d899f8d5",
+          "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+          "event_seq": "1",
+          "actor_user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+          "kind": "created",
+          "created_at": "2026-11-19 17:03:52.935389+00",
+          "payload": {
+            "handler_user_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62"
+          }
+        },
+        "original_result_metadata": {
+          "request_id": "2d2ba69e-dff7-4fd7-b34d-1f8e8bf7a2e5",
+          "source_workspace_id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+          "actor_user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+          "outcome": "created",
+          "code": "created"
+        },
+        "session_observations": [
+          {
+            "at": "2026-11-19T17:04:02.203Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+            "UI_response": {
+              "at": "2026-11-19T17:03:56.277Z",
+              "body_sha256": "416a46a3b6aeceb31c029a1ac280d9e6e5a7a0803b5387f79c6fdc9e4f65ae2a",
+              "issue": {
+                "id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 0dfc25ed64f4",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "8f882ecc-bcbf-4235-b808-42aa899f0914",
+                    "name": "Payment callback recovery 0dfc25ed64f4"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": "tc01-desktop-0dfc25ed64f4"
+                },
+                "source_workspace": {
+                  "id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+                  "name": "TC01 payment Desktop 0dfc25ed64f4",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+                  "name": "TC01 product 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+                  "name": "TC01 developer 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                  "session_id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": true,
+                  "transfer": true,
+                  "remove_participants": true,
+                  "leave": false,
+                  "edit": true,
+                  "edit_source_structure": true,
+                  "reorder": true,
+                  "change_status": true,
+                  "complete": true,
+                  "cancel": true,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": true,
+                  "return_information": false,
+                  "submit_acceptance": false,
+                  "return_acceptance": false,
+                  "change_ai_policy": true
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "5fd775d7bad58864e2696cca7a391cc78c4d65899ffe15aedf44c00152937741",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": true,
+                      "code": null
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 0dfc25ed64f4External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 0dfc25ed64f4",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-cf79838c-be5b-4780-9846-8287aa15ce0b-creation-fields.png"
+          },
+          {
+            "at": "2026-11-19T17:04:04.296Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+            "UI_response": {
+              "at": "2026-11-19T17:04:03.665Z",
+              "body_sha256": "ca1e7b6a03e639297c608ea6a8836c5d60e6f4046bf6f6dcea60f81dd127c60f",
+              "issue": {
+                "id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 0dfc25ed64f4",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "8f882ecc-bcbf-4235-b808-42aa899f0914",
+                    "name": "Payment callback recovery 0dfc25ed64f4"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": null
+                },
+                "source_workspace": {
+                  "id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+                  "name": "TC01 payment Desktop 0dfc25ed64f4",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+                  "name": "TC01 product 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+                  "name": "TC01 developer 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                  "session_id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": true,
+                  "transfer": true,
+                  "remove_participants": false,
+                  "leave": false,
+                  "edit": true,
+                  "edit_source_structure": false,
+                  "reorder": false,
+                  "change_status": true,
+                  "complete": false,
+                  "cancel": false,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": true,
+                  "return_information": false,
+                  "submit_acceptance": true,
+                  "return_acceptance": false,
+                  "change_ai_policy": false
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "2296b8ef7539d1eeae1bae72e869fcda93b8f3150723eb611280f9f84677d688",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": true,
+                      "code": null
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 0dfc25ed64f4External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 0dfc25ed64f4",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-56d68dc2-66d9-42e3-98de-4a9e3d108e62-creation-fields.png"
+          },
+          {
+            "at": "2026-11-19T17:04:06.331Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "56b2f5bd-bf7e-4de7-b714-eab16f9a8cfa",
+            "UI_response": {
+              "at": "2026-11-19T17:04:05.546Z",
+              "body_sha256": "9121fa5264b3c14e153bc35a299f3ed15ade4c1becb086f3dac504c6defeb823",
+              "issue": {
+                "id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 0dfc25ed64f4",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "8f882ecc-bcbf-4235-b808-42aa899f0914",
+                    "name": "Payment callback recovery 0dfc25ed64f4"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": null
+                },
+                "source_workspace": {
+                  "id": "e1a96a2c-9d4f-4bdb-a038-a9bb3c584e79",
+                  "name": "TC01 payment Desktop 0dfc25ed64f4",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+                  "name": "TC01 product 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "56d68dc2-66d9-42e3-98de-4a9e3d108e62",
+                  "name": "TC01 developer 0dfc25ed64f4",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+                  "session_id": "f7b0a908-89c8-4d39-beec-6a23e0e69708",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": false,
+                  "transfer": false,
+                  "remove_participants": false,
+                  "leave": true,
+                  "edit": false,
+                  "edit_source_structure": false,
+                  "reorder": false,
+                  "change_status": false,
+                  "complete": false,
+                  "cancel": false,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": false,
+                  "return_information": false,
+                  "submit_acceptance": false,
+                  "return_acceptance": false,
+                  "change_ai_policy": false
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "3b4e4e771959329de1019358125be62e5617782a8e7287a999663a489773ba64",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": false,
+                      "code": "forbidden"
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 0dfc25ed64f4 records acceptance. Developer TC01 developer 0dfc25ed64f4 is the sole current handler. QA TC01 qa 0dfc25ed64f4 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 0dfc25ed64f4External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 0dfc25ed64f4",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-56b2f5bd-bf7e-4de7-b714-eab16f9a8cfa-creation-fields.png"
+          }
+        ],
+        "activity": {
+          "at": "2026-11-19T17:04:07.268Z",
+          "stage": "actual_Activity_creation_actor_and_time",
+          "original_event": {
+            "id": "7c331421-2209-483f-862d-52c1d899f8d5",
+            "issue_id": "01a1f4c3-c51a-71ff-8c9f-9966bcf7e125",
+            "event_seq": "1",
+            "kind": "created",
+            "actor": {
+              "user_id": "cf79838c-be5b-4780-9846-8287aa15ce0b",
+              "name": "TC01 product 0dfc25ed64f4",
+              "avatar_url": "",
+              "external": false
+            },
+            "created_at": "2026-11-20T01:03:52.935389+08:00",
+            "details_available": true,
+            "target": null,
+            "handoff": null,
+            "comment_id": null,
+            "changes": []
+          },
+          "SQL_issue_created_at": "2026-11-19 17:03:52.935389+00",
+          "SQL_event_created_at": "2026-11-19 17:03:52.935389+00",
+          "UTC_event_nanoseconds": "1795107832935389000",
+          "actor_and_datetime_visible": true
+        },
+        "snapshot_counts": {
+          "created": {
+            "workspace": 1,
+            "issues": 1,
+            "collaboration": 1,
+            "sessions": 1,
+            "participants": 2,
+            "events": 1,
+            "operations": 1,
+            "commands": 0,
+            "runs": 0,
+            "dispatches": 0,
+            "comments": 0,
+            "notifications": 1
+          },
+          "final": {
+            "workspace": 1,
+            "issues": 1,
+            "collaboration": 1,
+            "sessions": 1,
+            "participants": 3,
+            "events": 2,
+            "operations": 2,
+            "commands": 0,
+            "runs": 0,
+            "dispatches": 0,
+            "comments": 0,
+            "notifications": 3
+          }
+        },
+        "cleanup": [
+          {
+            "status": "fulfilled"
+          },
+          {
+            "status": "fulfilled"
+          },
+          {
+            "status": "fulfilled"
+          }
+        ],
+        "lifecycles": [
+          {
+            "profile": "/Users/artisan/.multica/acceptance/pay241-tc01-20261120-a8pqkttd/r02-browser/profiles/pay241-s3-client-tFYYi4",
+            "native_pid": 4685,
+            "page_closed_at": "2026-11-19T17:04:07.799Z",
+            "context_closed_at": "2026-11-19T17:04:07.932Z",
+            "native_exit": {
+              "at": "2026-11-19T17:04:07.923Z",
+              "code": 0,
+              "signal": null
+            },
+            "close_started_at": "2026-11-19T17:04:07.673Z",
+            "close_ended_at": "2026-11-19T17:04:07.940Z"
+          },
+          {
+            "profile": "/Users/artisan/.multica/acceptance/pay241-tc01-20261120-a8pqkttd/r02-browser/profiles/pay241-s3-client-z8B3Lz",
+            "native_pid": 4833,
+            "page_closed_at": "2026-11-19T17:04:07.810Z",
+            "context_closed_at": "2026-11-19T17:04:07.923Z",
+            "native_exit": {
+              "at": "2026-11-19T17:04:07.910Z",
+              "code": 0,
+              "signal": null
+            },
+            "close_started_at": "2026-11-19T17:04:07.673Z",
+            "close_ended_at": "2026-11-19T17:04:07.931Z"
+          },
+          {
+            "profile": "/Users/artisan/.multica/acceptance/pay241-tc01-20261120-a8pqkttd/r02-browser/profiles/pay241-s3-client-Lsergc",
+            "native_pid": 4957,
+            "page_closed_at": "2026-11-19T17:04:07.832Z",
+            "context_closed_at": "2026-11-19T17:04:07.911Z",
+            "native_exit": {
+              "at": "2026-11-19T17:04:07.910Z",
+              "code": 0,
+              "signal": null
+            },
+            "close_started_at": "2026-11-19T17:04:07.673Z",
+            "close_ended_at": "2026-11-19T17:04:07.921Z"
+          }
+        ],
+        "same_key_entire_DTO_equal": true,
+        "original_SQL_facts_preserved": true,
+        "observer_business_writes": 0,
+        "new_commands_runs_dispatches": 0
+      },
+      {
+        "platform": "Web",
+        "raw": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-pay-creation.json",
+          "sha256": "b623a17daf224a40fdadb0c3470bdb9a6e18b9a0319a51891dc114221098160d"
+        },
+        "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+        "generated_identifier": "PAY-1",
+        "actors": [
+          {
+            "role": "product",
+            "id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+            "name": "TC01 product 6ce14d3b0231"
+          },
+          {
+            "role": "developer",
+            "id": "96208573-5063-48b6-9e10-c0015324b95a",
+            "name": "TC01 developer 6ce14d3b0231"
+          },
+          {
+            "role": "qa",
+            "id": "7ca0ecbb-39db-4b0c-8fed-859cc79aa8ab",
+            "name": "TC01 qa 6ce14d3b0231"
+          }
+        ],
+        "request_id": "30cd6ab9-cda6-4adc-b07a-57708a1d82f9",
+        "issue_actor_time": {
+          "id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+          "workspace_id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+          "number": 1,
+          "title": "PAY-241 scenario: payment succeeds but order awaits payment 6ce14d3b0231",
+          "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+          "status": "todo",
+          "priority": "high",
+          "start_date": "2026-11-19",
+          "due_date": "2026-11-26",
+          "creator_type": "member",
+          "creator_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+          "assignee_type": "member",
+          "assignee_id": "96208573-5063-48b6-9e10-c0015324b95a",
+          "project_id": "f99c9f80-1c22-43c7-9911-1d218400187b",
+          "parent_issue_id": null,
+          "created_at": "2026-11-19 17:03:36.244399+00",
+          "updated_at": "2026-11-19 17:03:36.244399+00",
+          "revision": "1"
+        },
+        "operation": {
+          "id": "41905747-3045-4d14-b9ba-82fee9b35105",
+          "scope_kind": "create",
+          "scope_id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+          "actor_user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+          "request_id": "30cd6ab9-cda6-4adc-b07a-57708a1d82f9",
+          "kind": "create",
+          "payload_hash": "c08feff6dea4deac6f700cb0768fc008cfe935a0824adcfd99dbdcf4592f80b4",
+          "result_code": "created",
+          "result": null,
+          "resolved_issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+          "created_at": "2026-11-19 17:03:36.244399+00",
+          "completed_at": "2026-11-19 17:03:36.244399+00"
+        },
+        "event": {
+          "id": "30b7ae47-f852-4553-a992-7d08e8120f0f",
+          "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+          "event_seq": "1",
+          "actor_user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+          "kind": "created",
+          "created_at": "2026-11-19 17:03:36.244399+00",
+          "payload": {
+            "handler_user_id": "96208573-5063-48b6-9e10-c0015324b95a"
+          }
+        },
+        "original_result_metadata": {
+          "request_id": "30cd6ab9-cda6-4adc-b07a-57708a1d82f9",
+          "source_workspace_id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+          "actor_user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+          "outcome": "created",
+          "code": "created"
+        },
+        "session_observations": [
+          {
+            "at": "2026-11-19T17:03:42.255Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+            "UI_response": {
+              "at": "2026-11-19T17:03:39.028Z",
+              "body_sha256": "fb31dbfe0e034d1fc76f512b7303f37c8a30f252120d1d0cec3979249f1caaca",
+              "issue": {
+                "id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 6ce14d3b0231",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "f99c9f80-1c22-43c7-9911-1d218400187b",
+                    "name": "Payment callback recovery 6ce14d3b0231"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": "tc01-web-6ce14d3b0231"
+                },
+                "source_workspace": {
+                  "id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+                  "name": "TC01 payment Web 6ce14d3b0231",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+                  "name": "TC01 product 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "96208573-5063-48b6-9e10-c0015324b95a",
+                  "name": "TC01 developer 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                  "session_id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": true,
+                  "transfer": true,
+                  "remove_participants": true,
+                  "leave": false,
+                  "edit": true,
+                  "edit_source_structure": true,
+                  "reorder": true,
+                  "change_status": true,
+                  "complete": true,
+                  "cancel": true,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": true,
+                  "return_information": false,
+                  "submit_acceptance": false,
+                  "return_acceptance": false,
+                  "change_ai_policy": true
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "f32d8aa3a2625d57c1937e6995ebdc6d01af5a4cb9440e0cd278459d15b01174",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": true,
+                      "code": null
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 6ce14d3b0231External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 6ce14d3b0231",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-aa9dae4e-5516-48e8-b945-da73e07288be-creation-fields.png"
+          },
+          {
+            "at": "2026-11-19T17:03:45.304Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "96208573-5063-48b6-9e10-c0015324b95a",
+            "UI_response": {
+              "at": "2026-11-19T17:03:44.073Z",
+              "body_sha256": "0d05476295971e16d11a967e215f63568d1962c6268676a38af5725833c5d17a",
+              "issue": {
+                "id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 6ce14d3b0231",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "f99c9f80-1c22-43c7-9911-1d218400187b",
+                    "name": "Payment callback recovery 6ce14d3b0231"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": null
+                },
+                "source_workspace": {
+                  "id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+                  "name": "TC01 payment Web 6ce14d3b0231",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+                  "name": "TC01 product 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "96208573-5063-48b6-9e10-c0015324b95a",
+                  "name": "TC01 developer 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                  "session_id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": true,
+                  "transfer": true,
+                  "remove_participants": false,
+                  "leave": false,
+                  "edit": true,
+                  "edit_source_structure": false,
+                  "reorder": false,
+                  "change_status": true,
+                  "complete": false,
+                  "cancel": false,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": true,
+                  "return_information": false,
+                  "submit_acceptance": true,
+                  "return_acceptance": false,
+                  "change_ai_policy": false
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "8db3d4dcd9b132b66455b3d9912a0185d1e4c9a91a73b6999296b85f61b46ad8",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": true,
+                      "code": null
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 6ce14d3b0231External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 6ce14d3b0231",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-96208573-5063-48b6-9e10-c0015324b95a-creation-fields.png"
+          },
+          {
+            "at": "2026-11-19T17:03:47.099Z",
+            "stage": "actual_session_created_issue_and_fields",
+            "actor_id": "7ca0ecbb-39db-4b0c-8fed-859cc79aa8ab",
+            "UI_response": {
+              "at": "2026-11-19T17:03:46.399Z",
+              "body_sha256": "7962c86d9e5764108f0fa747d98bb409c2e730c2e9ea6b9d2e0fb813ada25a16",
+              "issue": {
+                "id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                "title": "PAY-241 scenario: payment succeeds but order awaits payment 6ce14d3b0231",
+                "description": "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.\n\nReproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.\n\nBusiness priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.\n\nResponsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.\n\nSchedule: Start 2026-11-19; due 2026-11-26.\n\nAcceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence.",
+                "ai_policy": "manual",
+                "delivery": {
+                  "current": null,
+                  "latest": null,
+                  "has_history": false
+                },
+                "start_date": "2026-11-19",
+                "due_date": "2026-11-26",
+                "status": "todo",
+                "status_category": "todo",
+                "priority": "high",
+                "labels": [],
+                "properties": {},
+                "property_definitions": [],
+                "source_structure": {
+                  "issue_revision": "1",
+                  "project": {
+                    "id": "f99c9f80-1c22-43c7-9911-1d218400187b",
+                    "name": "Payment callback recovery 6ce14d3b0231"
+                  },
+                  "parent_issue": null,
+                  "iteration": null,
+                  "stage": null
+                },
+                "ordinary_children": {
+                  "items": [],
+                  "source_workspace_slug": null
+                },
+                "source_workspace": {
+                  "id": "45af7b4d-9013-448c-b030-693d8d0c3410",
+                  "name": "TC01 payment Web 6ce14d3b0231",
+                  "identifier": "PAY-1"
+                },
+                "creator": {
+                  "user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+                  "name": "TC01 product 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": false
+                },
+                "handler": {
+                  "user_id": "96208573-5063-48b6-9e10-c0015324b95a",
+                  "name": "TC01 developer 6ce14d3b0231",
+                  "avatar_url": "",
+                  "external": true
+                },
+                "collaboration_revision": "2",
+                "lifecycle_epoch": "1",
+                "realtime": {
+                  "event_seq": "2",
+                  "authority_epoch": "2"
+                },
+                "write_context": {
+                  "participant_epoch": "1",
+                  "account_epoch": "1"
+                },
+                "session": {
+                  "id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "queue_state": "paused",
+                  "control_version": "1"
+                },
+                "execution": {
+                  "protocol_version": 6,
+                  "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+                  "session_id": "50427f39-6a4e-4513-91a1-560fc5936c13",
+                  "availability": "unavailable",
+                  "unavailable_reason": "shared_runtime_unavailable",
+                  "target_set_version": "1",
+                  "execution_gate": {
+                    "enabled": false,
+                    "epoch": "2"
+                  },
+                  "control": {
+                    "scope": "issue",
+                    "queue_state": "paused",
+                    "control_version": "1"
+                  },
+                  "channels": [],
+                  "targets": [],
+                  "commands": [],
+                  "groups": [],
+                  "runs": []
+                },
+                "capabilities": {
+                  "reference": true,
+                  "read": true,
+                  "comment": true,
+                  "control_ai": true,
+                  "submit_command": false,
+                  "invite": false,
+                  "transfer": false,
+                  "remove_participants": false,
+                  "leave": true,
+                  "edit": false,
+                  "edit_source_structure": false,
+                  "reorder": false,
+                  "change_status": false,
+                  "complete": false,
+                  "cancel": false,
+                  "reopen": false,
+                  "resolve_thread": true,
+                  "react": true,
+                  "request_information": false,
+                  "return_information": false,
+                  "submit_acceptance": false,
+                  "return_acceptance": false,
+                  "change_ai_policy": false
+                },
+                "current_information_request": null,
+                "information_workflow": {
+                  "protocol_version": 1,
+                  "managed": false,
+                  "context_version": "1a2797ac1b811518a656371f7b15015895d61993451009e406d5cb82091a3b64",
+                  "active_request_id": null,
+                  "record_state": "none",
+                  "actions": {
+                    "request": {
+                      "available": false,
+                      "code": "forbidden"
+                    },
+                    "return": {
+                      "available": false,
+                      "code": "information_request_not_active"
+                    },
+                    "repair": {
+                      "available": false,
+                      "code": "information_repair_not_applicable"
+                    }
+                  }
+                }
+              }
+            },
+            "description_paragraphs": [
+              "Impact: A successful customer payment leaves the original order awaiting payment. Duplicate charging or fulfillment must not occur.",
+              "Reproduction: Create a sandbox order, deliver its successful payment callback, and compare the payment, order and fulfillment identities.",
+              "Business priority: P1 is the supplied scenario label. The selected product priority is High; their equivalence is not established.",
+              "Responsibilities: Product TC01 product 6ce14d3b0231 records acceptance. Developer TC01 developer 6ce14d3b0231 is the sole current handler. QA TC01 qa 6ce14d3b0231 verifies results; these names do not grant stage roles.",
+              "Schedule: Start 2026-11-19; due 2026-11-26.",
+              "Acceptance criteria: The original order becomes paid after the successful callback. Three duplicate callbacks cause no duplicate charge or fulfillment. A callback delayed by 45 seconds and a recovered consumer failure retain traceable recovery evidence."
+            ],
+            "status_label": "Todo",
+            "handler_name": "TC01 developer 6ce14d3b0231External collaborator",
+            "detail_fields": "Issue fields\nPriority\nHigh\nStart date\n2026-11-19\nDue date\n2026-11-26\nProject\nPayment callback recovery 6ce14d3b0231",
+            "screenshot": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-7ca0ecbb-39db-4b0c-8fed-859cc79aa8ab-creation-fields.png"
+          }
+        ],
+        "activity": {
+          "at": "2026-11-19T17:03:47.627Z",
+          "stage": "actual_Activity_creation_actor_and_time",
+          "original_event": {
+            "id": "30b7ae47-f852-4553-a992-7d08e8120f0f",
+            "issue_id": "01a1f4c3-83ed-71a1-a879-1aadf454bb0d",
+            "event_seq": "1",
+            "kind": "created",
+            "actor": {
+              "user_id": "aa9dae4e-5516-48e8-b945-da73e07288be",
+              "name": "TC01 product 6ce14d3b0231",
+              "avatar_url": "",
+              "external": false
+            },
+            "created_at": "2026-11-20T01:03:36.244399+08:00",
+            "details_available": true,
+            "target": null,
+            "handoff": null,
+            "comment_id": null,
+            "changes": []
+          },
+          "SQL_issue_created_at": "2026-11-19 17:03:36.244399+00",
+          "SQL_event_created_at": "2026-11-19 17:03:36.244399+00",
+          "UTC_event_nanoseconds": "1795107816244399000",
+          "actor_and_datetime_visible": true
+        },
+        "snapshot_counts": {
+          "created": {
+            "workspace": 1,
+            "issues": 1,
+            "collaboration": 1,
+            "sessions": 1,
+            "participants": 2,
+            "events": 1,
+            "operations": 1,
+            "commands": 0,
+            "runs": 0,
+            "dispatches": 0,
+            "comments": 0,
+            "notifications": 1
+          },
+          "final": {
+            "workspace": 1,
+            "issues": 1,
+            "collaboration": 1,
+            "sessions": 1,
+            "participants": 3,
+            "events": 2,
+            "operations": 2,
+            "commands": 0,
+            "runs": 0,
+            "dispatches": 0,
+            "comments": 0,
+            "notifications": 3
+          }
+        },
+        "cleanup": [
+          {
+            "status": "fulfilled"
+          },
+          {
+            "status": "fulfilled"
+          },
+          {
+            "status": "fulfilled"
+          }
+        ],
+        "lifecycles": [
+          {
+            "profile": null,
+            "native_pid": null,
+            "page_closed_at": "2026-11-19T17:03:48.582Z",
+            "context_closed_at": "2026-11-19T17:03:48.595Z",
+            "native_exit": null,
+            "close_started_at": "2026-11-19T17:03:48.552Z",
+            "close_ended_at": "2026-11-19T17:03:48.595Z"
+          },
+          {
+            "profile": null,
+            "native_pid": null,
+            "page_closed_at": "2026-11-19T17:03:48.598Z",
+            "context_closed_at": "2026-11-19T17:03:48.600Z",
+            "native_exit": null,
+            "close_started_at": "2026-11-19T17:03:48.552Z",
+            "close_ended_at": "2026-11-19T17:03:48.600Z"
+          },
+          {
+            "profile": null,
+            "native_pid": null,
+            "page_closed_at": "2026-11-19T17:03:48.596Z",
+            "context_closed_at": "2026-11-19T17:03:48.597Z",
+            "native_exit": null,
+            "close_started_at": "2026-11-19T17:03:48.552Z",
+            "close_ended_at": "2026-11-19T17:03:48.598Z"
+          }
+        ],
+        "same_key_entire_DTO_equal": true,
+        "original_SQL_facts_preserved": true,
+        "observer_business_writes": 0,
+        "new_commands_runs_dispatches": 0
+      }
+    ],
+    "totals": {
+      "tops": 2,
+      "sessions": 6,
+      "UI_creations": 2,
+      "title_preventions": 2,
+      "recovery_GETs": 2,
+      "result_GETs": 2,
+      "same_key_API_replays": 2,
+      "actual_details_views": 6,
+      "Activity_created_inspections": 2,
+      "observer_business_writes": 0,
+      "Agent_dispatches": 0
+    },
+    "transport_failures": [
+      {
+        "method": "GET",
+        "message": "net::ERR_ABORTED",
+        "count": 54
+      },
+      {
+        "method": "POST",
+        "message": "net::ERR_ABORTED",
+        "count": 4
+      }
+    ],
+    "failed_POST_paths": {
+      "/api/collaboration/recipients/search": 1,
+      "/api/client-usage": 3
+    },
+    "reviewer_execution": {
+      "DB": 0,
+      "API": 0,
+      "browser": 0
+    },
+    "reviewer_parser_correction": "Initial audit assumed request failure was an error object; actual retained failure is a string. Corrected classification only, no input change."
+  },
+  "source_resources_closure": {
+    "at": "2026-11-19T17:08:16.277875+00:00",
+    "checks": {
+      "products-before.json": {
+        "rows": 1698,
+        "mismatches": []
+      },
+      "browser-native-resources-before.json": {
+        "rows": 1107,
+        "mismatches": []
+      },
+      "workspace-dependency-links-before.json": {
+        "rows": 2062,
+        "mismatches": []
+      },
+      "candidate-after-runtime.json": {
+        "rows": 31700,
+        "mismatches": []
+      },
+      "final_harness": {
+        "rows": 31209,
+        "mismatches": []
+      },
+      "new_harness_links": {
+        "rows": 2062,
+        "mismatches": []
+      }
+    },
+    "allowed_new_harness_paths": [
+      "e2e/collaboration-pay-creation.spec.ts",
+      "e2e/fixtures/collaboration-pay-creation.ts"
+    ],
+    "catalogs": {
+      "r01": {
+        "database": "multica_pay241_tc01_20261120_a8pqkttd_r01",
+        "connections": 0,
+        "ledger": 856,
+        "indexes": 663,
+        "gate": {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        },
+        "retained_counts": {
+          "user": 6,
+          "workspace": 2,
+          "issue": 2,
+          "collaboration_event": 4,
+          "collaboration_operation": 4,
+          "collaboration_notification": 6
+        }
+      },
+      "r02": {
+        "database": "multica_pay241_tc01_20261120_a8pqkttd_r02",
+        "connections": 0,
+        "ledger": 856,
+        "indexes": 663,
+        "gate": {
+          "id": 1,
+          "epoch": 2,
+          "enabled": false,
+          "freeze_progress": null,
+          "creation_enabled": true,
+          "freeze_operation_id": null,
+          "host_execution_enabled": false
+        },
+        "retained_counts": {
+          "user": 6,
+          "workspace": 2,
+          "issue": 2,
+          "collaboration_event": 4,
+          "collaboration_operation": 4,
+          "collaboration_notification": 6
+        }
+      }
+    },
+    "services": {
+      "r01-api": {
+        "pid": 81244,
+        "pgid": 81244,
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/source/candidate-r02/server",
+        "config_sha256": "fd635b692d23ca731cff96276bb22720e06f2a872dbf9b8f6a179eac40f57577",
+        "stopped": true
+      },
+      "r02-api": {
+        "pid": 2747,
+        "pgid": 2747,
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/source/candidate-r02/server",
+        "config_sha256": "132656c9ed4ce296e820b249397272409cf593b36a27eb4174127482bf284dd8",
+        "stopped": true
+      },
+      "r01-web": {
+        "pid": 81250,
+        "pgid": 81250,
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/source/candidate-r02/apps/web",
+        "config_sha256": "9002a909326cdc4114a1f7b1d82e1e27a530d1c0f3afaf8c33e499deccb92d7e",
+        "stopped": true
+      },
+      "r01-renderer": {
+        "pid": 81282,
+        "pgid": 81282,
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/source/candidate-r02/apps/desktop",
+        "config_sha256": "d6ec9243acf446321051d70eb10a41eda9162531338b030b3913f7ad9e1103d1",
+        "stopped": true
+      }
+    },
+    "browser_command": {
+      "started_at": "2026-11-19T17:03:24.961116+00:00",
+      "ended_at": "2026-11-19T17:04:19.451971+00:00",
+      "exit": 0,
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": [],
+      "stdout_sha256": "19b82336948eafe2831b62320fe1dff2c7484d5bdb280181615744c22bc4292d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_harness_ROOT_matches": true,
+    "reviewer_DB_API_services_browser": 0
+  },
+  "retained_failed_round": {
+    "at": "2026-11-19T16:59:34.714548+00:00",
+    "stats": {
+      "startTime": "2026-11-19T16:56:35.726Z",
+      "duration": 69040.57299999999,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 2,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "platform": "Desktop",
+        "source_raw": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-pay-creation.json",
+        "sha256": "27fbd4e0dd2d04dafb0c6152d1b780e34160edaaf1cf5a2633fa3bafe7d65c1d",
+        "status": "FAILED_OR_INCOMPLETE",
+        "UI_create_status": 201,
+        "created_issue": "01a1f4bd-90d9-7cc1-ba55-a03fc1220cb7",
+        "key": "6de72b37-b122-4816-80a4-741982f3b469",
+        "recovery_statuses": [
+          200,
+          200,
+          201
+        ],
+        "creation_state_equal_after_original_key_controls": true,
+        "completed_session_view_checkpoints": 0,
+        "created_Activity_checkpoint": 0,
+        "failure": {
+          "type": "TimeoutError",
+          "message": "locator.innerText: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'PAY-241 scenario: payment succeeds but order awaits payment e6f134d1797e', exact: true }).locator('../../..').locator(':scope > header').locator('dl > div').filter({ has: getByText('Handler', { exact: true }) }).locator('dd')\u001b[22m\n"
+        },
+        "session_cleanup_count": 3,
+        "native_exits": [
+          {
+            "at": "2026-11-19T16:57:44.521Z",
+            "code": 0,
+            "signal": null
+          },
+          {
+            "at": "2026-11-19T16:57:44.521Z",
+            "code": 0,
+            "signal": null
+          },
+          {
+            "at": "2026-11-19T16:57:44.512Z",
+            "code": 0,
+            "signal": null
+          }
+        ]
+      },
+      {
+        "platform": "Web",
+        "source_raw": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-pay-creation.json",
+        "sha256": "783173b044aa7ccf47174da4e8334c398dd98cec9cbbd12cac41b4d05580fde6",
+        "status": "FAILED_OR_INCOMPLETE",
+        "UI_create_status": 201,
+        "created_issue": "01a1f4bd-31d9-7651-9075-7dd1b01eb9a8",
+        "key": "a5b20825-304f-40dc-ba42-f903aaedaf5b",
+        "recovery_statuses": [
+          200,
+          200,
+          201
+        ],
+        "creation_state_equal_after_original_key_controls": true,
+        "completed_session_view_checkpoints": 0,
+        "created_Activity_checkpoint": 0,
+        "failure": {
+          "type": "TimeoutError",
+          "message": "locator.innerText: Timeout 15000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'PAY-241 scenario: payment succeeds but order awaits payment 6dcd64b44332', exact: true }).locator('../../..').locator(':scope > header').locator('dl > div').filter({ has: getByText('Handler', { exact: true }) }).locator('dd')\u001b[22m\n"
+        },
+        "session_cleanup_count": 3,
+        "native_exits": []
+      }
+    ],
+    "root_cause": "Fixture rereads header role locator after modal marks background inaccessible; capture visible handler text before opening drawer; no product behavior defect established",
+    "runtime_by_reviewer": 0
+  },
+  "final_harness": {
+    "at": "2026-11-19T17:01:23.704734+00:00",
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/source/harness",
+    "files": {
+      "e2e/collaboration-pay-creation.spec.ts": "ff73fda7d90e7745b9fb41f083cae4fe7a218a822d5de719e9cd695185164a47",
+      "e2e/fixtures/collaboration-pay-creation.ts": "c9ac16dd10e9c794d32ada2f4c615bef9d894c466d1b58cdb48aeb522ae43b9e"
+    },
+    "r01_source_backup": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/pay-creation-fixture-r01.ts",
+    "correction": "Read previously asserted header handler before opening modal; preserve assertions/timeouts"
+  },
+  "static": {
+    "strict_TS_diagnostics": 0,
+    "actual_ESLint_errors": 0,
+    "actual_ESLint_warnings": 0,
+    "list_tops": 2
+  },
+  "source_reuse": {
+    "committed_harness": "6a7f76cf1fbc2531cf9e775497e14337a67159a3",
+    "actual_client_product": "5eff9b013c135be79afd7bf84cdb5d9605c5b38f",
+    "API_build_stamp": "e9e97785286f881abc9cb54e2092f5a0f53ec2e8",
+    "relevant_committed_product_difference": [],
+    "new_builds_or_unaffected_history_repeats": 0,
+    "peer_WIP_in_runtime": false
+  },
+  "scope_limits": [
+    "Full mandatory PAY business fields are not established by UI title prevention or a complete positive fixture.",
+    "Business P1 is not mapped to selected High; occupational authority remains separate from prose roles.",
+    "Generic current handler and existing selected field projection do not redefine stable S2 business ownership.",
+    "Assigned notification rows are retained by SQL, but the meaning/full UI delivery of business triage notification is not accepted here.",
+    "API original-key recovery/replay is not a lost-ACK UI recovery journey.",
+    "Creation result stores null result; preserve real operation identity rather than inventing receipt.",
+    "Real Electron renderer/preload with fixture Main is not installed production Main or OS pointer acceptance.",
+    "No real model/payment/S4/final S5/business signing evidence is supplied by this slice."
+  ],
+  "reviewer_actions": {
+    "DB": 0,
+    "API": 0,
+    "browser_native": 0,
+    "service_lifecycle": 0,
+    "static_check_commands": 3,
+    "runtime_duplicate": 0
+  },
+  "spec_review": "QA Positive PAY creation and original identity section matches final implementation and limits; no additional correction needed.",
+  "evidence_refs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/preflight-bindings-r01.json",
+      "sha256": "749736f0bfde873fae46877d1c36fcceca78b47f61ffa06e5d06ecadc526abaf"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/environment-readiness-r01.json",
+      "sha256": "14cd3150255cef0367724c8cb4cd7cdb6151b96a9a0d7439f7f290d3445df405"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/static-r01.json",
+      "sha256": "78e43004d41e584fda30ca1a2b5dfbfbe5353cc4a7f8c53196bead113d2512c4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/static-r02.json",
+      "sha256": "4bcd502f56d5f4de1078bba0aaf51eb70acceb6ecba6f41498a86701ae161f67"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/static-command-r02.json",
+      "sha256": "70c26f46aca24e157306e70e26d660a85491ef8a3d5babf945618aacf91eabcc"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/list-r01.json",
+      "sha256": "574784cf8eb8c41a97a2d9ac92b9254f721de393653fdf4f02507421f36e1467"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/r01-failure-review.json",
+      "sha256": "069656fc403d49f5518330e5e3a77a3d2b84079a155e2141eec44beaaa8c7d2c"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/r02-raw-reconciliation.json",
+      "sha256": "481257a8b096c00b4a701edb78f25c10caf6b0848a3f9c523b8220138d02746d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/final-bindings-r01.json",
+      "sha256": "50813f28d98902c34402777dc2d15da6fb28817da2f37d36b8aaf859dc3f5721"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/reconcile-r02.py",
+      "sha256": "c9d505ee0690f53adbeeb1f6de66e2c83bc0dc49dbcbafdb7672065a2a3033c3"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/tc01-review/check.mjs",
+      "sha256": "9389f70cc926c829e18d79a34b22af4d9dcbb22ae01f4753993caa710247bb46"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/initial.json",
+      "sha256": "bca831dc26f368ef48c52305bcac59f8fe297cdcb20f8d4378742f341952dc64"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/allocation-r01.json",
+      "sha256": "0a853db7998a2ffd6b21b3dffabb1b1ae56d200cfd15b84b9dd59ccace1b4493"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/allocation-r02.json",
+      "sha256": "2cc8c6d8dfa1a15df4372bfb12621dd9cd7207914017915776338a645e827478"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/harness-frozen-r01.json",
+      "sha256": "592d5619cc2112d28d792c5a634338fedf266f90833251b7c654238bacccdf07"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/harness-frozen-r02.json",
+      "sha256": "29f7276d83402b0fb13849cd787a99aea824422bbeddd0ef448ab774c1220e6e"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/r01-live.json",
+      "sha256": "c3607194eb8e32a780b1809370b44500bfc6ef8fccbe7b8b1c1ec49d69a594a7"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/r02-live.json",
+      "sha256": "e05052c82ddb5e7ad0c325c56954f7d58fb8f669cdd74ea20ab8b84d1ce66471"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/reused-products-preflight.json",
+      "sha256": "1a123339790577e4a20a3cfa054bc74850893c66b1a56696fe6b4a52e1b9e61f"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/closure-r02.json",
+      "sha256": "f87c139548a3002a336deda9eff0ec0e83fe7d51ec439168801be658c7b0b067"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/current-commit-source-binding.json",
+      "sha256": "121e9649b99826d7a3d704a20df5d74518cf13ef7d313b6213d20ae6e775f599"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/final-harness-source-audit.json",
+      "sha256": "a5a386fb88b1ab5dc535586a268e917f1d5ab39e73c67a0e50138531ccc2d826"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/intake/pay-creation-fixture-r01.ts",
+      "sha256": "06af7eec6599a112f4afbf92530853f480db10225496f616c6493aabe03ca4e1"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/audit/r01-before.json",
+      "sha256": "ef54b4a6fb0d8115b0a243c002e6285a3428edf37f70a4296c2624bc5e51362d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/audit/r01-after.json",
+      "sha256": "6c216c965ab68c1ecd8711a63fd3d1b0b261813dc9334f47e388f8f7672e17c8"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/audit/r02-before.json",
+      "sha256": "b164f1380914a2d0db3ad1d592471baf86ccba9e303f2c6f5f720c3638935db6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/audit/r02-after.json",
+      "sha256": "f593a4b47fd581568917d97cb06d79fec98e3e47af05232a3a7c4181061b29a3"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/audit/r02-before-service-connections.json",
+      "sha256": "c216bc4862887d8c2fc2364ee7c2f31505ae93d25c1dee2c2daf1e777ad5d54c"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r01/command.json",
+      "sha256": "12560b005a72801a8d2a3cda1f239ed4862914cf8830f8a85e13496ec6548037"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r01/result.json",
+      "sha256": "b221e0a0eb83bb2d2935860c7ef364896af02b31e1f4e41b2f99c2a9a2d1ff7a"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r01/stdout.log",
+      "sha256": "6906287615831033dcd617ce0d54cc13e43b83e53f41e7d5bfd6ef2174908992"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/result.json",
+      "sha256": "9398dbe6232fc0ed4b86612476477f6613a7a0f2b4764bf7e44d20e7d95fd144"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/permit.json",
+      "sha256": "81f85a0ce8cafa165d3238a8666943bad82ad4cbc7fb96391e4988dcb5e6360b"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-pay-creation.json",
+      "sha256": "27fbd4e0dd2d04dafb0c6152d1b780e34160edaaf1cf5a2633fa3bafe7d65c1d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r01/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-pay-creation.json",
+      "sha256": "783173b044aa7ccf47174da4e8334c398dd98cec9cbbd12cac41b4d05580fde6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r02/command.json",
+      "sha256": "b44e66d56d2d2a3b15b0bd2b31e2059d297893e040ce4281d4a1c08c0d53abc6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r02/result.json",
+      "sha256": "9b1da8a631c4852deada8e85c9a095c9179bb41cc3e1c5bcdf88dfcc9cb4c1f0"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r02/stdout.log",
+      "sha256": "19b82336948eafe2831b62320fe1dff2c7484d5bdb280181615744c22bc4292d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/verification/browser-r02/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/result.json",
+      "sha256": "aaa3ef04814ab4017a2e650071e864d04bbd921f868c53c94e42afe51264d401"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/permit.json",
+      "sha256": "2b67bf0df3a80a840294615724e70d3255b46601ff50c401ba6739d7bcae979d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-pay-creation.json",
+      "sha256": "539bda31a545f7244cc9cd4dd86fe12c9e13b7f407354608e9a8743c3e3ee03a"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-pay-creation.json",
+      "sha256": "b623a17daf224a40fdadb0c3470bdb9a6e18b9a0319a51891dc114221098160d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-api/launch.json",
+      "sha256": "0d862e4a37a206b56c692054a23764d6f5a07a0d3c122bb4a96a21f5bb6f388b"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-api/ready.json",
+      "sha256": "c09b511b336d05fee1f50be50d233ee1985767a8cd10519673eeeb4407b0ee16"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-api/stopped.json",
+      "sha256": "313e6de74a6cf0a75110a254f6962f62094acb9927a951bd3b7f275bddd9c864"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r02-api/launch.json",
+      "sha256": "18ef613264f474e242783bb6b40a35dcc13cb92acff7736bc8724ed2d80c46ea"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r02-api/ready.json",
+      "sha256": "d4c7ecc72da2895254f9921745ee51d276e9bd072329da8fd6a466fc7c3b7933"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r02-api/stopped.json",
+      "sha256": "9f17a8cc5dc13360b605ab3957195fcc46fd0f2d273208ceb223368e2a402f9d"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-web/launch.json",
+      "sha256": "eb5ba4aa20b96af55bba09c79e02cfd4a9bd0b2e4a01b6c29198b4772b8ca70e"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-web/ready.json",
+      "sha256": "92871588a7e988e21adf02ed2fd860848aa63de2b68ff5e43c4cf15adc025292"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-web/stopped.json",
+      "sha256": "b24f06d9ce7e8f49859a8518f6e43f23b0ccc2d4bc2a7e6fbd3ff288d8aedef4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-renderer/launch.json",
+      "sha256": "c67f9f3294dc3a5b7d626a0e26cfed22d3076eecfad09fc50010983abbde0fd0"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-renderer/ready.json",
+      "sha256": "17e84f021663f06e59736b260ee0735ed1aad62ea0f9eb1163f9544effa433f4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/r01-renderer/stopped.json",
+      "sha256": "ebd1540ab2ea91660eb35d5cdf0ba48ebc78ac92ea7df4519b1c88ef56042484"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-cf79838c-be5b-4780-9846-8287aa15ce0b-creation-fields.png",
+      "sha256": "7ced25cce9de9bf9a8bb73afa6e93f204b6aef43f2e6b5594eff3d49ce811101"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-56d68dc2-66d9-42e3-98de-4a9e3d108e62-creation-fields.png",
+      "sha256": "19a46e98753fd62ba56fad8ca59f8142de26f9358cf2e0bd66aac27a550d7556"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-2efe8--original-creation-identity-chromium/desktop-56b2f5bd-bf7e-4de7-b714-eab16f9a8cfa-creation-fields.png",
+      "sha256": "a3d909d47b155b7147f7ebe2e4c742880e55da130def3fca1c777e5ed992531b"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-aa9dae4e-5516-48e8-b945-da73e07288be-creation-fields.png",
+      "sha256": "562f53ae7b1fe03790e9a4ebf7f94b59096290d02eafe8c17d7ca48b36698183"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-96208573-5063-48b6-9e10-c0015324b95a-creation-fields.png",
+      "sha256": "e80ef0f6bd026ac6ad0302175d4b4a069e79605f7cddac3d55a1457de28de07b"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc01-20261120-a8pqkttd/runtime/acceptance-r02/results/collaboration-pay-creation-deeea--original-creation-identity-chromium/web-7ca0ecbb-39db-4b0c-8fed-859cc79aa8ab-creation-fields.png",
+      "sha256": "49dc86150e0ad6dfd0107b7cb98b596d70284427f834bf310e61f420a7707695"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-pay-creation.spec.ts",
+      "sha256": "ff73fda7d90e7745b9fb41f083cae4fe7a218a822d5de719e9cd695185164a47"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-pay-creation.ts",
+      "sha256": "c9ac16dd10e9c794d32ada2f4c615bef9d894c466d1b58cdb48aeb522ae43b9e"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/docs/plans/2026-11-20-pay-241-creation-proof.md",
+      "sha256": "13e26adb69a695772754179596d248566d3f26d547fa1eae262f1628edfe6503"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/web/frontend/collaboration-recovery-qa.md",
+      "sha256": "0faa87767e4c5b5ffd1cfaadffd77891918e9fe4c5996f4f94905a3013554965"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/products-before.json",
+      "sha256": "41345f0fb20b70a4b1764f5ddde636c706e97865ad2a9e9667a01948e106621f"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/browser-native-resources-before.json",
+      "sha256": "91f9171f4ac35dc47a1df34de713004606849d36d26bb8bf127d98cf54ab1c1a"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/workspace-dependency-links-before.json",
+      "sha256": "470edc5962b7c93c873f31a48f318d8c77809e42317d8b0300b308f22f58d5a0"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/candidate-after-runtime.json",
+      "sha256": "cc1f90ca4069aaffd87a9cbea6a15eeadba59ce06cdc6818395ff1ab5695daa6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/tools-and-dependencies.json",
+      "sha256": "b49be96c4ce70c63c8990eaec1223b3f576f7959decdff98ea5e2baf58b13181"
+    }
+  ]
+}

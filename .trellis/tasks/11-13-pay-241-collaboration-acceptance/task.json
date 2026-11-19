@@ -34,7 +34,7 @@
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
   ],
-  "notes": "2026-11-20：TC-02真实三会话description同步/Activity历史独立通过，Web/Desktop r02各1顶层，共6会话18观察/30分页/4UI编辑，父9PASS/9PARTIAL/6NOT_RUN。仅2测试+规范，无产品改动；原r01时间格式夹具失败保留。S1-S3已归档；TC01正向创建待补，全局必填/P1映射、真实模型/S4/最终S5/业务签字独立。",
+  "notes": "2026-11-20：TC-01正向创建r02两端2/2独立接受，6会话、2UI创建/空标题门禁及原键GET/结果GET/同body重放，整例PARTIAL；TC03补项目/排期/当前handler/High，仍PARTIAL。父9PASS/10PARTIAL/5NOT_RUN，无产品改动，原失败保留。全局必填/P1/分诊语义、真实模型/S4/最终S5/签字继续开放。",
   "meta": {
     "progress_history": [
       {
@@ -1888,12 +1888,17 @@
         "at": "2026-11-19T16:22:33.672589+00:00",
         "reason": "TC02 accepted fresh full Web/Desktop description history; preserve prior notes",
         "previous_notes": "2026-11-19：S1/S2/S3已归档提交推送。补齐TC-13有效QA后机器覆盖/撤销：service+真实router普通/race各17命名通过、独立接受，父8PASS/9PARTIAL/7NOT_RUN。仅新增2测试及spec，无产品改动；下一TC02历史同步，S4真实输入/最终S5/签字独立。"
+      },
+      {
+        "at": "2026-11-19T17:10:36.654944+00:00",
+        "reason": "TC01 bounded positive creation accepted, entire case remainspartial",
+        "previous_notes": "2026-11-20：TC-02真实三会话description同步/Activity历史独立通过，Web/Desktop r02各1顶层，共6会话18观察/30分页/4UI编辑，父9PASS/9PARTIAL/6NOT_RUN。仅2测试+规范，无产品改动；原r01时间格式夹具失败保留。S1-S3已归档；TC01正向创建待补，全局必填/P1映射、真实模型/S4/最终S5/业务签字独立。"
       }
     ],
     "current_pay241_progress": {
-      "at": "2026-11-19T16:22:33.672589+00:00",
+      "at": "2026-11-19T17:10:36.654944+00:00",
       "active_child": null,
-      "phase": "TC02_ACCEPTED_PARENT_OPEN",
+      "phase": "TC01_POSITIVE_ACCEPTED_PARENT_OPEN",
       "P2_verdict": "P2_CODE_ACCEPTED_R09_SCOPED",
       "joint_service_verdict": "JOINT_SERVICE_ACCEPTED_R09_SCOPED",
       "P2_available": true,
@@ -1906,21 +1911,21 @@
       "full_S2_accepted": true,
       "parent24": {
         "PASS": 9,
-        "PARTIAL": 9,
-        "NOT_RUN": 6
+        "PARTIAL": 10,
+        "NOT_RUN": 5
       },
       "progress_report": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
       "runtime_services_stopped": true,
       "handoff_document": ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md",
-      "latest_completed_round": "TC02 requirements history r02",
-      "current_blocker": "TC01 precise creation proof/TC03 business mapping; real models/S4 inputs/final S5 and business signatures remain.",
+      "latest_completed_round": "TC01 positive creation r02",
+      "current_blocker": "GlobalmandatoryPAY/P1/triagenotificationsemantics; realmodel/S4inputs/finalS5/businesssignatures remain.",
       "progress_review": {
-        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc02-independent-check-20261119.json",
-        "sha256": "98374f22ac428406cd8d8911fbee8c0a33e85e1c4dae65066714d7d77898dc8a"
+        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.json",
+        "sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7"
       },
       "S2_R33_actual_result_sha256": "41cf801e5bb428f3c76f4e4184352f825d04d21148d7549687686bbde4cf0782",
-      "latest_actual_result_sha256": "ccac43997e3a0eb5316c9001182718d9ad9b38f662b09a9438aa8a53c17ecbc3",
-      "continuation_plan": "docs/plans/2026-11-19-pay-241-requirements-history.md",
+      "latest_actual_result_sha256": "aaa3ef04814ab4017a2e650071e864d04bbd921f868c53c94e42afe51264d401",
+      "continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
       "r20_code_and_output_verdict": "ACCEPTED_SCOPE_ONLY",
       "r20_original_four_commands_started": 0,
       "r20_code_review": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json",
@@ -3539,7 +3544,7 @@
       }
     ],
     "r16_progress_reconciled_at": "2026-11-16T02:56:13.022636+00:00",
-    "latest_continuation_plan": "docs/plans/2026-11-19-pay-241-requirements-history.md",
+    "latest_continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
     "continuation_checkpoints": [
       {
         "at": "2026-11-17T12:28:43.553554+00:00",
@@ -4525,12 +4530,12 @@
         "previous_notes": "2026-11-18 最新R32原四3PASS1FAIL0NOTRUN/retry0：前三PASS，第四完成/回执恢复通过后587策略off失败409。策略only37条diagnostics无cap，原PUTrequest/trace/user/PID4038 LockDeliveryPolicyProject55P03→HTTP409artifact_authority_busy已证明，非CAS；原holder未知。R31空claim修复37pkg命名每mode接受/ROOT5+五build保持，R32仅2私有测试改动11每mode通过。API85045/bridge85029正常一次SIGTERM停止、连接0/gate82恢复/70settled55complete/租约预留0，Web86953/renderer86966保留；381旧制品保留/424当前7新槽位冻结。R33同层短reader等待回归与M1专用现250ms预算计划推进，旧stage-policy NOWAIT不改变；真实RED前产品未改。全部旧成功写入/失败不重放，完整S2/A12/S3-S5/父24仍开放0PASS9PARTIAL15NOTRUN。无新依赖/Git/真实模型资金生产。"
       }
     ],
-    "acceptance_state": "in_progress_TC02_TC13_accepted_parent_open",
+    "acceptance_state": "in_progress_TC01_positive_accepted_parent_open",
     "parent_matrix_current_counts": {
       "PASS": 9,
-      "PARTIAL": 9,
-      "NOT_RUN": 6,
-      "matrix_sha256": "25054be89a17deb3ccd997003a8b5154d887ef8c4c47a808e61c1b6f6c918640"
+      "PARTIAL": 10,
+      "NOT_RUN": 5,
+      "matrix_sha256": "ac849f56b40ff8afcdc7760354b1beb6d9828b49a72519aa171f36e207eead5e"
     },
     "field_CAS_increment_acceptance": {
       "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/cas-independent-check-20261118.json",
@@ -6692,10 +6697,10 @@
       "report": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md"
     },
     "next_internal_slice": {
-      "case": "TC-01",
-      "phase": "BOUNDED_POSITIVE_CREATION_EVIDENCE_NEXT",
+      "case": "TC-04",
+      "phase": "EXACT_MACHINE_CLOSE_APPROVAL_REFUSAL_RESEARCH_NEXT",
       "source": "research/remaining-internal-acceptance-20261119.md",
-      "limits": "Global mandatory PAY fields and P1 mapping are not confirmed; do not infer."
+      "limits": "Real-model analysis quality stays separately untested; no real account authorized."
     },
     "TC13_acceptance": {
       "at": "2026-11-19T15:33:38.477789+00:00",
@@ -6729,6 +6734,22 @@
       "source_client_head": "5eff9b013",
       "preserved_failed_round": "r01 0PASS2FAIL",
       "work_commit": "b100d0e6c9c0de4dc1588bbc2848ccc2ac200d9f"
+    },
+    "TC01_positive_acceptance": {
+      "at": "2026-11-19T17:10:36.654944+00:00",
+      "status": "ACCEPTED_POSITIVE_SUBSCOPE",
+      "case_status": "PARTIAL",
+      "report": "research/tc01-independent-check-20261120.md",
+      "report_json_sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7",
+      "round": "r02",
+      "tops_pass": 2,
+      "sessions": 6,
+      "UI_creations": 2,
+      "retries": 0,
+      "product_changes": 0,
+      "global_mandatory_fields_or_P1_mapping": false,
+      "preserved_failed_round": "r01 0PASS2FAIL modal-background evidence locator",
+      "work_commit": "f79df9a22eadaf8d145d0d3c458ed4b1b4a535e5"
     }
   }
 }

@@ -1,5 +1,18 @@
 # PAY-241 当前会话进度
 
+## 2026-11-20：TC-01完整正向创建补证通过，整例保持PARTIAL
+
+父矩阵 **9 PASS /10 PARTIAL /5 NOT_RUN**。仅将TC-01从NOT_RUN推进PARTIAL；TC-03补充项目/排期/唯一当前handler/High证据，仍为PARTIAL，其他22行和全部历史列保持。[独立检查](research/tc01-independent-check-20261120.md)接受正向创建切片、阻挡项0，未接受全局PAY字段强制或P1映射。
+
+新r02生产Web/匹配Electron renderer-preload单轮 **2 PASS /0 FAIL /0 SKIP、零重试**，42.211秒。两次真实New collaboration issue各生成独立workspace的PAY-1，六个password授权会话核对完整影响/复现/职责/验收description、项目、Todo、High、唯一当前研发handler和起止日期。两次空白标题阻止提交；每平台各原键GET200/结果GET200/同body重放201保持与实际UI201相同default-v5完整DTO及所有SQL事实。每根一个issue/session/createdevent/createoperation，QA邀请后明确分列为2events/2operations/3notifications。
+
+创建操作result按原合同为null，通过actor/source/request/payloadhash/resolved_issue_id关联；公开issue DTO没有created_at，以实际Activity原创建事件与SQL任务/事件/操作UTC时间和服务时钟范围证明追溯。六会话的观察者业务写入、新增command/run/dispatch为0。58条ERR_ABORTED（54GET、1收件人查询POST、3遥测POST）保留，不宣称零网络错误。
+
+原r01为0PASS/2FAIL：抽屉打开后夹具重新读取被模态隐藏的背景handler，原15秒超时。只把已断言的handler文本取值前移两行，保留原源码/库/日志；新专库完整r02通过，未拼接局部成功。严格TypeScript/实际ESLint和两次独立检查通过。没有产品/依赖改动，复用已按哈希核对的TC-02构建：client5eff9b013/APIe9e977852，相关产品源码至当前6a7f76cf1不变；新harness31209记录仅2测试新增，原31700来源/1698产物/1107原生资源/2062链接无漂移。六会话/三原生进程及全部所属服务关闭，两轮专库连接0，856迁移/663索引/gateepoch2保持，历史保留。
+
+TC-01必填完整性、TC-03 P1与分诊通知语义仍开放，不把文本责任声明当职业权限。后续可从research/remaining-internal-acceptance-20261119.md继续TC-04精确机器关闭/审批拒绝等内部证明，真实模型质量独立；S4 I02–I09、最终S5和业务签字继续待补。父任务in_progress，不新建/归档任务；测试/规范已定向提交`f79df9a22`（4路径、未含peer WIP），验收记录另提交；推送以最终远端核对为准。
+
+
 ## 2026-11-20：TC-02 验收标准同步与历史回看通过
 
 父矩阵 **9 PASS / 9 PARTIAL / 6 NOT_RUN**。沿用原父任务完成TC-02测试补充，[独立检查](research/tc02-independent-check-20261119.md)接受定义场景、阻挡项0。生产Web与匹配Desktop renderer/preload完整新r02单轮 **2 PASS /0 FAIL /0 SKIP、零重试**，44.803秒；没有TC-02产品逻辑或依赖改动。
