@@ -34,7 +34,7 @@
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
   ],
-  "notes": "2026-11-19：S1/S2/S3已验收提交并归档；S2三批代码已推送。父7PASS/10PARTIAL/7NOT_RUN。继续核对内部TC01/02/13精确缺口，S4真实输入/最终S5及业务签字独立；quickcreate在途工作未纳入。",
+  "notes": "2026-11-19：S1/S2/S3已归档提交推送。补齐TC-13有效QA后机器覆盖/撤销：service+真实router普通/race各17命名通过、独立接受，父8PASS/9PARTIAL/7NOT_RUN。仅新增2测试及spec，无产品改动；下一TC02历史同步，S4真实输入/最终S5/签字独立。",
   "meta": {
     "progress_history": [
       {
@@ -1888,7 +1888,7 @@
     "current_pay241_progress": {
       "at": "2026-11-19T13:28:41.353673+00:00",
       "active_child": "11-13-pay-241-s4-external-integrations",
-      "phase": "S1_S2_S3_ARCHIVED_REMAINING_INTERNAL_AND_REAL_S4_ACCEPTANCE",
+      "phase": "TC13_ACCEPTED_NEXT_REQUIREMENTS_HISTORY",
       "P2_verdict": "P2_CODE_ACCEPTED_R09_SCOPED",
       "joint_service_verdict": "JOINT_SERVICE_ACCEPTED_R09_SCOPED",
       "P2_available": true,
@@ -1900,15 +1900,15 @@
       },
       "full_S2_accepted": true,
       "parent24": {
-        "PASS": 7,
-        "PARTIAL": 10,
+        "PASS": 8,
+        "PARTIAL": 9,
         "NOT_RUN": 7
       },
       "progress_report": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
       "runtime_services_stopped": true,
       "handoff_document": ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md",
       "latest_completed_round": "Ordinary UI GREEN R02 and final S3 R01–R09",
-      "current_blocker": "Remaining precise internal TC01/02/13 coverage; S4 I02–I09 real inputs; finalS5/business signatures.",
+      "current_blocker": "TC02 three-session acceptance criteria history, TC01/03 precise business mapping; S4 realinputs and finalS5/signatures remain.",
       "progress_review": {
         "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-runtime-r08-independent-check-20261118.md",
         "sha256": "45c81697d44b2b5cb5ae2c2d11b8190c76107f314511519a0ec1824908c5b6d0"
@@ -4522,11 +4522,10 @@
     ],
     "acceptance_state": "in_progress_S2_accepted_parent_open",
     "parent_matrix_current_counts": {
-      "at": "2026-11-19T13:04:24.638720+00:00",
-      "PASS": 7,
-      "PARTIAL": 10,
+      "PASS": 8,
+      "PARTIAL": 9,
       "NOT_RUN": 7,
-      "matrix_sha256": "4ccd4bc60bbaad830361b9a64675600c2b171e304d08688818494a25ad000113"
+      "matrix_sha256": "398a2b694a941b2dcf1880b72cd4e6e85bed24e0898ce06bc7b310a316d1f495"
     },
     "field_CAS_increment_acceptance": {
       "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/cas-independent-check-20261118.json",
@@ -6686,6 +6685,26 @@
         "2e706092a"
       ],
       "report": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md"
+    },
+    "next_internal_slice": {
+      "case": "TC-02",
+      "phase": "PLAN_READY_FOR_TEST_ONLY_COMPOSITION",
+      "source": "research/remaining-internal-acceptance-20261119.md"
+    },
+    "TC13_acceptance": {
+      "at": "2026-11-19T15:33:38.477789+00:00",
+      "status": "PASS",
+      "report": "research/tc13-independent-check-20261119.md",
+      "service_each_mode": {
+        "tops": 2,
+        "names": 10
+      },
+      "router_each_mode": {
+        "tops": 1,
+        "names": 7
+      },
+      "product_changes": 0,
+      "work_commit": "b4f27d9ac"
     }
   }
 }

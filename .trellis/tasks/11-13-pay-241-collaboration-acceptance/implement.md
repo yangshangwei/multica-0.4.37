@@ -1,3 +1,7 @@
+## 2026-11-19 当前切片：TC-13 精确覆盖请求
+
+S1/S2/S3已归档；父矩阵7PASS/10PARTIAL/7NOT_RUN。按[QA决定保护计划](../../../docs/plans/2026-11-19-pay-241-qa-decision-protection.md)继续父任务补充验证。当前仅新增两个Go测试文件：service两个顶层覆盖有效return/approval后机器Decide/Revoke，生产router一个顶层覆盖实际签发mat凭据的正向读取及QA纠正后的拒绝；不调用真实模型，不改变产品行为。普通/竞态按package分别使用新专库，独立验收后再更新TC-13。
+
 # 分阶段执行草案
 
 最新交接：S2 `research/r33-full-s2-a01-a12-independent-check-20261118.md` 已完整接受；本次执行计划为 `docs/plans/2026-11-19-pay-241-continuation.md`，实时结果记入父 `session-progress.md`。现有S3已完成字段并发、55评论补读、Extras-A R05和阻塞R08，按子任务 `implement.md` 继续普通评论事件去重、双端订阅及Extras-B受控运行。下文2026-11-15 r05及S2实施顺序保留为历史草案，其等待字段不作为当前阻挡项。

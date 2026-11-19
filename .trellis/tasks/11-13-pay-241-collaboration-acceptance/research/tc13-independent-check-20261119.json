@@ -1,0 +1,943 @@
+{
+  "at": "2026-11-19T15:33:54.618906+00:00",
+  "verdict": "ACCEPTED_TC13_DEFINED_QA_PROTECTION_CASE",
+  "blocking_findings": [],
+  "TC13_recommendation": "PASS afterexacttwofileintegration; originalR33humanUIevidence plusnewservice/actualrouter refusalproof.",
+  "full_parent_acceptance": false,
+  "source_HEAD": "50b50a7c9cb836a299704af8c36a8fc82083cc66",
+  "new_test_files": [
+    {
+      "path": "server/internal/service/collaboration_stage_qa_protection_test.go",
+      "sha256": "090e46545b770b5bae4d958a8060a306f59821321f29c16cc47db16296bb8d3a"
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_qa_protection_test.go",
+      "sha256": "985acd0d76b54d3a487db5e6ff5ad30e2181354893edaec52ce12e46659e0e90"
+    }
+  ],
+  "product_changes": 0,
+  "private_baseline_files": 5089,
+  "private_baseline_drift": 0,
+  "ROOT_current_production_source_drift": 0,
+  "ROOT_noncode_runtime_drift": [
+    ".omc/state/sessions/491d592f-7740-4a8d-be3b-4ad29328a6a9/hud-state.json"
+  ],
+  "denominator": {
+    "unique_tops": 3,
+    "unique_names": 17,
+    "unique_refusal_children": 14,
+    "normal_named": 17,
+    "race_named": 17,
+    "total_named_executions": 34,
+    "business_cases": 1
+  },
+  "results": [
+    {
+      "label": "tc13-service-normal-r01",
+      "tops": 2,
+      "names": 10,
+      "named_identities": [
+        "TestStageQAApprovalProtectedFromAgentOverride",
+        "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+        "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+        "TestStageQAApprovalProtectedFromAgentOverride/task_principal/exact_revocation",
+        "TestStageQAApprovalProtectedFromAgentOverride/task_principal/opposite_decision",
+        "TestStageQAReturnProtectedFromAgentOverride",
+        "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+        "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+        "TestStageQAReturnProtectedFromAgentOverride/task_principal/exact_revocation",
+        "TestStageQAReturnProtectedFromAgentOverride/task_principal/opposite_decision"
+      ],
+      "exit": 0,
+      "source_records": 5090,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+      "source_config_tool_raw_verified": true,
+      "command": {
+        "started_at": "2026-11-19T15:12:55.894787+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestStageQA(Return|Approval)ProtectedFromAgentOverride$",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+        "pid": 79710,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/service_n_r01.json",
+        "config_sha256": "6fa26cfdb42722ea2526aa6b6094385774c5fa2a72a1c359785446a945ee28e3",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "DATABASE_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TASK_DATABASE_NAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-service-race-r01",
+      "tops": 2,
+      "names": 10,
+      "named_identities": [
+        "TestStageQAApprovalProtectedFromAgentOverride",
+        "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+        "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+        "TestStageQAApprovalProtectedFromAgentOverride/task_principal/exact_revocation",
+        "TestStageQAApprovalProtectedFromAgentOverride/task_principal/opposite_decision",
+        "TestStageQAReturnProtectedFromAgentOverride",
+        "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+        "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+        "TestStageQAReturnProtectedFromAgentOverride/task_principal/exact_revocation",
+        "TestStageQAReturnProtectedFromAgentOverride/task_principal/opposite_decision"
+      ],
+      "exit": 0,
+      "source_records": 5090,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+      "source_config_tool_raw_verified": true,
+      "command": {
+        "started_at": "2026-11-19T15:14:13.651436+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-race",
+          "-count=1",
+          "-run",
+          "^TestStageQA(Return|Approval)ProtectedFromAgentOverride$",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/service-frozen-r01",
+        "pid": 81888,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/service_r_r01.json",
+        "config_sha256": "b001c4a60ccadae298964ae74c79d15bd149778658dbeec1e2cdebf0e73796bf",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "DATABASE_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TASK_DATABASE_NAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-router-normal-r01",
+      "tops": 1,
+      "names": 7,
+      "named_identities": [
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/generic_claimed_task/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/generic_claimed_task/opposite_decision",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/human_with_agent_hint/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/human_with_agent_hint/opposite_decision",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/restricted_claimed_task/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/restricted_claimed_task/opposite_decision"
+      ],
+      "exit": 0,
+      "source_records": 5091,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+      "source_config_tool_raw_verified": true,
+      "command": {
+        "started_at": "2026-11-19T15:25:56.274206+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestStageQAReturnProtectedThroughClaimedTaskRouter$",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "pid": 88510,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/router_n_r01.json",
+        "config_sha256": "54d34677d619ab26086f087fb6c007785916b2a2831271961dc8579694ed7918",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "DATABASE_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TASK_DATABASE_NAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-router-race-r01",
+      "tops": 1,
+      "names": 7,
+      "named_identities": [
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/generic_claimed_task/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/generic_claimed_task/opposite_decision",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/human_with_agent_hint/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/human_with_agent_hint/opposite_decision",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/restricted_claimed_task/exact_revocation",
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter/restricted_claimed_task/opposite_decision"
+      ],
+      "exit": 0,
+      "source_records": 5091,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+      "source_config_tool_raw_verified": true,
+      "command": {
+        "started_at": "2026-11-19T15:26:36.169109+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-race",
+          "-count=1",
+          "-run",
+          "^TestStageQAReturnProtectedThroughClaimedTaskRouter$",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "pid": 89168,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/router_r_r01.json",
+        "config_sha256": "39f99770451317d4ac3b67861fd72b96c4557c0d041b3b6b65bfe11c6f0b00f3",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "DATABASE_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TASK_DATABASE_NAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    }
+  ],
+  "static": [
+    {
+      "label": "tc13-service-compile-r01",
+      "exit": 0,
+      "empty_output": true,
+      "command": {
+        "started_at": "2026-11-19T15:10:28.288965+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/build/service.test",
+          "./internal/service"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server",
+        "pid": 76965,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/compile.json",
+        "config_sha256": "d19dcf15da912ea3946f594c14c09bd8b5e7b6cba6b255bc0e8b2b6effa3215f",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "COLLABORATION_E2E_API_URL",
+          "COLLABORATION_ELECTRON_RENDERER_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_PUBLIC_API_URL",
+          "NEXT_PUBLIC_WS_URL",
+          "NEXT_TELEMETRY_DISABLED",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE",
+          "PAY241_S3_RECOVERY_ACCEPTANCE",
+          "PLAYWRIGHT_BASE_URL",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-router-compile-r02",
+      "exit": 0,
+      "empty_output": true,
+      "command": {
+        "started_at": "2026-11-19T15:19:58.231557+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/build/router-r02.test",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server",
+        "pid": 85178,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/compile.json",
+        "config_sha256": "d19dcf15da912ea3946f594c14c09bd8b5e7b6cba6b255bc0e8b2b6effa3215f",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "COLLABORATION_E2E_API_URL",
+          "COLLABORATION_ELECTRON_RENDERER_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_PUBLIC_API_URL",
+          "NEXT_PUBLIC_WS_URL",
+          "NEXT_TELEMETRY_DISABLED",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE",
+          "PAY241_S3_RECOVERY_ACCEPTANCE",
+          "PLAYWRIGHT_BASE_URL",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-vet-r01",
+      "exit": 0,
+      "empty_output": true,
+      "command": {
+        "started_at": "2026-11-19T15:28:30.438620+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "vet",
+          "./internal/service",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "pid": 91109,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/compile.json",
+        "config_sha256": "d19dcf15da912ea3946f594c14c09bd8b5e7b6cba6b255bc0e8b2b6effa3215f",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "COLLABORATION_E2E_API_URL",
+          "COLLABORATION_ELECTRON_RENDERER_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_PUBLIC_API_URL",
+          "NEXT_PUBLIC_WS_URL",
+          "NEXT_TELEMETRY_DISABLED",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE",
+          "PAY241_S3_RECOVERY_ACCEPTANCE",
+          "PLAYWRIGHT_BASE_URL",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    },
+    {
+      "label": "tc13-gofmt-r01",
+      "exit": 0,
+      "empty_output": true,
+      "command": {
+        "started_at": "2026-11-19T15:28:49.390748+00:00",
+        "argv": [
+          "/opt/homebrew/bin/gofmt",
+          "-l",
+          "internal/service/collaboration_stage_qa_protection_test.go",
+          "cmd/server/collaboration_stage_qa_protection_test.go"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/router-frozen-r01",
+        "pid": 91375,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/configs/compile.json",
+        "config_sha256": "d19dcf15da912ea3946f594c14c09bd8b5e7b6cba6b255bc0e8b2b6effa3215f",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "COLLABORATION_E2E_API_URL",
+          "COLLABORATION_ELECTRON_RENDERER_URL",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_PUBLIC_API_URL",
+          "NEXT_PUBLIC_WS_URL",
+          "NEXT_TELEMETRY_DISABLED",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PAY241_S3_ORDINARY_UI_CAS_ACCEPTANCE",
+          "PAY241_S3_RECOVERY_ACCEPTANCE",
+          "PLAYWRIGHT_BASE_URL",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/gofmt": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185"
+        },
+        "recorder_sha256": "377e27a2efc8648eae8bf5719da9f892f0f65f53b451185539b1eb4b1babc65f",
+        "ambient_environment_inherited": false
+      }
+    }
+  ],
+  "database_closure": [
+    {
+      "profile": "service_n_r01",
+      "database": "multica_pay241_tc13_20261119_ugzeeke_service_n_r01",
+      "ledger": 856,
+      "indexes": 663,
+      "connections": 0,
+      "original_gate_final_restored": true,
+      "Main_restored_creation_only": true,
+      "retained": {
+        "config": 6,
+        "knowledge": 6,
+        "organization": 1
+      },
+      "raw_after_retained": true
+    },
+    {
+      "profile": "service_r_r01",
+      "database": "multica_pay241_tc13_20261119_ugzeeke_service_r_r01",
+      "ledger": 856,
+      "indexes": 663,
+      "connections": 0,
+      "original_gate_final_restored": true,
+      "Main_restored_creation_only": true,
+      "retained": {
+        "config": 6,
+        "knowledge": 6,
+        "organization": 1
+      },
+      "raw_after_retained": true
+    },
+    {
+      "profile": "router_n_r01",
+      "database": "multica_pay241_tc13_20261119_ugzeeke_router_n_r01",
+      "ledger": 856,
+      "indexes": 663,
+      "connections": 0,
+      "original_gate_final_restored": true,
+      "Main_restored_creation_only": false,
+      "retained": {
+        "config": 6,
+        "knowledge": 2
+      },
+      "raw_after_retained": true
+    },
+    {
+      "profile": "router_r_r01",
+      "database": "multica_pay241_tc13_20261119_ugzeeke_router_r_r01",
+      "ledger": 856,
+      "indexes": 663,
+      "connections": 0,
+      "original_gate_final_restored": true,
+      "Main_restored_creation_only": false,
+      "retained": {
+        "config": 6,
+        "knowledge": 2
+      },
+      "raw_after_retained": true
+    }
+  ],
+  "service_scope": "Realpassingreport/settledprotocolrun;actualhumanQAreturnandapproval;CredentialTaskandJWTAgentActoroppositedecision/exactrevoke;freshhumanoppositepositiveprovesotherwisevalidrequest.17SQLcollections+exactprojection/receipt;actualdecisionExpiresAtpreserved;onlyreadCheckedAt/SignableMaxExpiresAtnormalized.",
+  "router_scope": "ActualNewRouter/Auth/TaskCapabilityGuard;realdaemonclaimedgeneric/restrictedmat_ positiveordinaryGET;humanQAreturncurrent;6machineopposite/revoke403refusals;generic/hintedforbiddenversusrestrictedcapabilitygate;full17workspacefactsandoriginalreceipt. Oppositeapprovalhasno report andauthgateonly;humancontrol409stage_test_report_unusable explicitlyretained.",
+  "history_scope": "Allprofilesretainconfig/knowledgeinvalidationhistory;serviceinternalorgretained. Source/time/shapeexplain3invitesper2servicefixtures and2routerinvites; rawsuccessfultestlogs omitfixtureIDs so no exactcauseIDjoinclaimed. Denialnoeffectrestswithin-test17collectionequality,notcleanupcounts.",
+  "spec_review": "Newpost-QAmachinerefusalcontractmatcheslayeredproof;no realmodel/newbrowserclaim.",
+  "limits": [
+    "No freshbrowser orphysicalProvider/modelexecution;R33UIevidence sourcequalified.",
+    "RouterfullysignableQAapproval notnewlyexecuted;servicecoversvalidoppositeapproval.",
+    "HTTProuterauthislegacyTestMain;nofreshpassworddeploymentclaim.",
+    "Servicecreationflagcleanupknownexistinghelperfalse;Mainrestoredonlyoriginalfield/epochunchanged/rawafterretained.",
+    "RealS4/finalS5/otherparentcasesremainopen."
+  ],
+  "reviewer_actions": {
+    "tests_DB_API_processes": 0,
+    "product_config_edits": 0,
+    "writes": [
+      "research/tc13-independent-check-20261119.md",
+      "research/tc13-independent-check-20261119.json"
+    ]
+  },
+  "evidence_refs": {
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/intake/source-before-tests-r01.json": {
+      "sha256": "fed08f60631070dc07ba94c0009fdd004993154bf9d7f75ac4c5858b62fa7c0b",
+      "bytes": 1368382
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server/internal/service/collaboration_stage_qa_protection_test.go": {
+      "sha256": "090e46545b770b5bae4d958a8060a306f59821321f29c16cc47db16296bb8d3a",
+      "bytes": 9616
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server/cmd/server/collaboration_stage_qa_protection_test.go": {
+      "sha256": "985acd0d76b54d3a487db5e6ff5ad30e2181354893edaec52ce12e46659e0e90",
+      "bytes": 18573
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/command.json": {
+      "sha256": "04fc223ab3516dffc00e991069179f1308c18a4909961cf642164b29ebb745df",
+      "bytes": 1716
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/result.json": {
+      "sha256": "b9779f422144c679f80cc75338404a434be78a8d5e653fe0fefe313b84ef6db7",
+      "bytes": 1515
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/stdout.log": {
+      "sha256": "5549685301674da21a9a80b605dc0471b231c8c6b11dbe9c529c9e1d8dbc5a7a",
+      "bytes": 11632
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/source-before.json": {
+      "sha256": "4afd60f5fbe877cb30d222e1150fc37a43c759ec1eb174dbab1accc7cd414100",
+      "bytes": 1429743
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-normal-r01/source-after.json": {
+      "sha256": "4afd60f5fbe877cb30d222e1150fc37a43c759ec1eb174dbab1accc7cd414100",
+      "bytes": 1429743
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/command.json": {
+      "sha256": "60937106edcde04ed6c9174903a635c4346d8afab2101a3315c6bfcb1e8b2a50",
+      "bytes": 1729
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/result.json": {
+      "sha256": "ddc6f5eca1b7031038b4e003c817566abecd5e0486b570ff5cd7a2a0575aa81a",
+      "bytes": 1515
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/stdout.log": {
+      "sha256": "cef297beae4ee28be2e788ed3206d5dc2c71cd7be082a477e7834836966f39c4",
+      "bytes": 11633
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/source-before.json": {
+      "sha256": "4afd60f5fbe877cb30d222e1150fc37a43c759ec1eb174dbab1accc7cd414100",
+      "bytes": 1429743
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-race-r01/source-after.json": {
+      "sha256": "4afd60f5fbe877cb30d222e1150fc37a43c759ec1eb174dbab1accc7cd414100",
+      "bytes": 1429743
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/command.json": {
+      "sha256": "74190ac07fdd8095f1a44cefa7db8baaf6971ea0b8d3e694922a65b016ee4dc9",
+      "bytes": 1703
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/result.json": {
+      "sha256": "f66aaa783465f22ea16443d3db53308a53bffc7329c2882224162c966fb3370f",
+      "bytes": 1341
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/stdout.log": {
+      "sha256": "38a8e687ba902e43b84e99365bb2066ed69d1d7eb758a4b7d36310fd974ba647",
+      "bytes": 48777
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/source-before.json": {
+      "sha256": "9c4ea956594ee0c15b6b3ca1a5d280c928dc0ef0da038b22ca9fdac0e6460795",
+      "bytes": 1424939
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-normal-r01/source-after.json": {
+      "sha256": "9c4ea956594ee0c15b6b3ca1a5d280c928dc0ef0da038b22ca9fdac0e6460795",
+      "bytes": 1424939
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/command.json": {
+      "sha256": "fd07c0965b8dda242f7c3efc6455e65ce076001e9ffdb30ad31c4cbf6038d613",
+      "bytes": 1716
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/result.json": {
+      "sha256": "ba320da3cf5c0d3a73feda5c6abfc5030be1289c49dc72d8df5d6b38f830351b",
+      "bytes": 1341
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/stdout.log": {
+      "sha256": "f9b86b0a25f02b05e05f82e8ace7ec3e6ccfbb39a0937097a6e0a113b4e0aaea",
+      "bytes": 48809
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/source-before.json": {
+      "sha256": "9c4ea956594ee0c15b6b3ca1a5d280c928dc0ef0da038b22ca9fdac0e6460795",
+      "bytes": 1424939
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-race-r01/source-after.json": {
+      "sha256": "9c4ea956594ee0c15b6b3ca1a5d280c928dc0ef0da038b22ca9fdac0e6460795",
+      "bytes": 1424939
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-compile-r01/result.json": {
+      "sha256": "89d59c30bd4841b3d98ced5d492dbb5e2d11f5150cba1d301eef0167ba4747a8",
+      "bytes": 359
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-service-compile-r01/command.json": {
+      "sha256": "ffda3ff6b79c222d0aa34a9cdd15f099268cbfb54420ff0f294385cf2ee44318",
+      "bytes": 1851
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-compile-r02/result.json": {
+      "sha256": "99cdf6b9777e941bd5c2ae412d40704fb4b57dfedc7ba61040545be1a2c6e8a2",
+      "bytes": 359
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-router-compile-r02/command.json": {
+      "sha256": "eabe14e37914e28b7d605fdd0b34fd6712c8cd0bc23f55ab7f5e961736b76a3e",
+      "bytes": 1848
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-vet-r01/result.json": {
+      "sha256": "0d321ae252bc13d171aac8fee126fb6218569bbe56a06d2646ee99f1aaac7e5b",
+      "bytes": 359
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-vet-r01/command.json": {
+      "sha256": "450c6bebbf204757a02f36681401fb771cb50cba72ef77ac2913e0e8fea3557d",
+      "bytes": 1779
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-gofmt-r01/result.json": {
+      "sha256": "4543c22e7619ab5d45f30dde0455d5de907cc4786a8ddce95d645cf620f63044",
+      "bytes": 359
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/verification/tc13-gofmt-r01/command.json": {
+      "sha256": "0d2ec47d39f85f156f8999d56e21fae259cff2fe1263a63f04f639d1222e775a",
+      "bytes": 1864
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_n_r01-before.json": {
+      "sha256": "7a01f0a5d57953f13c618f1a4ffb25a1e0bf45acae16e16dcb2fe94952a5dd11",
+      "bytes": 206957
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_n_r01-after.json": {
+      "sha256": "853b17a3cdee52682618943475c42eafb7409bae08b9d2065b5706ce8a945d22",
+      "bytes": 206958
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_n_r01-closure.json": {
+      "sha256": "263c23a289fa61eee6394ec4e74fc72a181c02a9c5708c38c4c842a4557efefb",
+      "bytes": 438
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_n_r01-retained-fixture-rows.json": {
+      "sha256": "61f7714c17105f94f856b4835f5cda667cb8d44b15c95e3e2b987d579598e62d",
+      "bytes": 6089
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_n_r01-restored.json": {
+      "sha256": "c4d8368e9add0ffb37ab123e4a1e5cbe290ecf26f87dae1d1fab32df95fccb70",
+      "bytes": 206957
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_r_r01-before.json": {
+      "sha256": "9b6c11be53b97c6bc0f12bc6fdccbf4bdfd67b3e3b3639fbe3bb2afef90b32ae",
+      "bytes": 206957
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_r_r01-after.json": {
+      "sha256": "59fdc8caa24703c787cd97f5931f9dcafaa56bdd6be857ed1a5826a003f4b0fa",
+      "bytes": 206958
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_r_r01-closure.json": {
+      "sha256": "75a457a1ebd03c8e7c1157b5722617cc95687d5d8c51ff032c7c1a1d525b5d6c",
+      "bytes": 438
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_r_r01-retained-fixture-rows.json": {
+      "sha256": "1ac52e8ae58509a6450dca61f389739c1f7bd30163c00272b8af24578ddd7600",
+      "bytes": 6087
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/service_r_r01-restored.json": {
+      "sha256": "ab94d1dcd5cddd2e3404e09663fa28f28dcaff442724c05663b3865fa8204676",
+      "bytes": 206957
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_n_r01-before.json": {
+      "sha256": "b7d5cab5da6952d111ad50b9adfb4698012ee01bfc02958367dc39533850d6d6",
+      "bytes": 206956
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_n_r01-after.json": {
+      "sha256": "bdd14d545a4c434078441f4f50f066851ab80ebfb4c479fa590d1fbbde1897af",
+      "bytes": 206956
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_n_r01-closure.json": {
+      "sha256": "017cbaa6f7f01322852b196f02bc457a8af09a73a9e6105eda092ab868130927",
+      "bytes": 439
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_n_r01-retained-fixture-rows.json": {
+      "sha256": "97b6954aa8ad472a7e941efb9db3331f4dfa2ee7c3b74a549e59bb99aec7384d",
+      "bytes": 3421
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_r_r01-before.json": {
+      "sha256": "f06d7e7d61eca994b6eb87d8d5be01b2f246b5a03aafe3d8023bf0b3e5ae1b9f",
+      "bytes": 206956
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_r_r01-after.json": {
+      "sha256": "04ac49e1d76dfdb53d200046510e526c62552d18913a2829baeb71d80302ed85",
+      "bytes": 206956
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_r_r01-closure.json": {
+      "sha256": "ff16a3ebbf4f7040f156ad0bcf619139a924e4fbda5b95837ae5cb883539a0ae",
+      "bytes": 439
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/audit/router_r_r01-retained-fixture-rows.json": {
+      "sha256": "10c5f4b900d92c336d683c6129bc569faf2c6a80d74fbfe1d1cb0c647e49736a",
+      "bytes": 3421
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/docs/plans/2026-11-19-pay-241-qa-decision-protection.md": {
+      "sha256": "38ef44b90033fc2eae2cd0c783b7ded64411a48de5f6ab2d8b3addb44ed97b63",
+      "bytes": 2830
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-stage-approvals.md": {
+      "sha256": "3dc20c6b3a3faa01f71e25e25baceb7e20833ebc426b77528ea5fa75c3685336",
+      "bytes": 45241
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json": {
+      "sha256": "cb5120ea32a92ad4cd11445103ea2b6af3322476b311d382ae647e09c34e69f7",
+      "bytes": 66748
+    }
+  }
+}

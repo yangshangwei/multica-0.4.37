@@ -1,0 +1,213 @@
+{
+  "at": "2026-11-19T15:25:52.236792+00:00",
+  "status": "TEST_ONLY_FROZEN_ROUTER_RUNTIME_PENDING",
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-tc13-20261119-_ugzeeke/source/server",
+  "base_head": "50b50a7c9",
+  "files": [
+    {
+      "path": "internal/service/collaboration_stage_qa_protection_test.go",
+      "sha256": "090e46545b770b5bae4d958a8060a306f59821321f29c16cc47db16296bb8d3a",
+      "lines": 172
+    },
+    {
+      "path": "cmd/server/collaboration_stage_qa_protection_test.go",
+      "sha256": "985acd0d76b54d3a487db5e6ff5ad30e2181354893edaec52ce12e46659e0e90",
+      "lines": 280
+    }
+  ],
+  "ownership": "Only two new private test files; ROOT research report pair; no product or pre-existing test edits",
+  "scope_choice": {
+    "service": [
+      "valid reason-only QA return with actual passing report available for opposite approval",
+      "valid QA approval with actual settled passing report and exact code-review dependency"
+    ],
+    "router": "actual production NewRouter human QA return then minted generic/restricted mat_ claims with positive ordinary GET and exact override/revocation; no fresh router approval proof",
+    "approved_by_main": true
+  },
+  "planned_tests": {
+    "service": {
+      "tops": [
+        "TestStageQAReturnProtectedFromAgentOverride",
+        "TestStageQAApprovalProtectedFromAgentOverride"
+      ],
+      "children_per_top": [
+        "task_principal/opposite_decision",
+        "task_principal/exact_revocation",
+        "human_with_agent_actor/opposite_decision",
+        "human_with_agent_actor/exact_revocation"
+      ],
+      "named_total": 10
+    },
+    "router": {
+      "tops": [
+        "TestStageQAReturnProtectedThroughClaimedTaskRouter"
+      ],
+      "children": [
+        "generic_claimed_task/opposite_decision",
+        "generic_claimed_task/exact_revocation",
+        "restricted_claimed_task/opposite_decision",
+        "restricted_claimed_task/exact_revocation",
+        "human_with_agent_hint/opposite_decision",
+        "human_with_agent_hint/exact_revocation"
+      ],
+      "named_total": 7
+    }
+  },
+  "checks": [
+    {
+      "label": "tc13-service-compile-r01",
+      "result": {
+        "started_at": "2026-11-19T15:10:28.288965+00:00",
+        "ended_at": "2026-11-19T15:10:54.445216+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_sha256": "89d59c30bd4841b3d98ced5d492dbb5e2d11f5150cba1d301eef0167ba4747a8",
+      "command_sha256": "ffda3ff6b79c222d0aa34a9cdd15f099268cbfb54420ff0f294385cf2ee44318",
+      "executed_by": "implementer_compile_only"
+    },
+    {
+      "label": "tc13-router-compile-r01",
+      "result": {
+        "started_at": "2026-11-19T15:17:14.029424+00:00",
+        "ended_at": "2026-11-19T15:17:31.967511+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_sha256": "24595e332f36077e6b480eb5d2a92b88b6fb5540cb8e8963f478913389ab95d6",
+      "command_sha256": "31d843712ddb5ce6931cd15fc4eef385da3e3f3ac8de6b360074c7000882c0bb",
+      "executed_by": "implementer_compile_only"
+    },
+    {
+      "label": "tc13-router-compile-r02",
+      "result": {
+        "started_at": "2026-11-19T15:19:58.231557+00:00",
+        "ended_at": "2026-11-19T15:20:16.041440+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_sha256": "99cdf6b9777e941bd5c2ae412d40704fb4b57dfedc7ba61040545be1a2c6e8a2",
+      "command_sha256": "eabe14e37914e28b7d605fdd0b34fd6712c8cd0bc23f55ab7f5e961736b76a3e",
+      "executed_by": "implementer_compile_only"
+    },
+    {
+      "label": "tc13-service-normal-r01",
+      "result": {
+        "started_at": "2026-11-19T15:12:55.894787+00:00",
+        "ended_at": "2026-11-19T15:13:19.318199+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "5549685301674da21a9a80b605dc0471b231c8c6b11dbe9c529c9e1d8dbc5a7a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "go_inventory": {
+          "named_counts": {
+            "PASS": 10,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "top_counts": {
+            "PASS": 2,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "names": [
+            "TestStageQAApprovalProtectedFromAgentOverride",
+            "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+            "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+            "TestStageQAApprovalProtectedFromAgentOverride/task_principal/exact_revocation",
+            "TestStageQAApprovalProtectedFromAgentOverride/task_principal/opposite_decision",
+            "TestStageQAReturnProtectedFromAgentOverride",
+            "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+            "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+            "TestStageQAReturnProtectedFromAgentOverride/task_principal/exact_revocation",
+            "TestStageQAReturnProtectedFromAgentOverride/task_principal/opposite_decision"
+          ],
+          "invalid_lines": [],
+          "unfinished": [],
+          "duplicate_names": [],
+          "build_events": 0,
+          "build_failures": 0
+        }
+      },
+      "result_sha256": "b9779f422144c679f80cc75338404a434be78a8d5e653fe0fefe313b84ef6db7",
+      "command_sha256": "04fc223ab3516dffc00e991069179f1308c18a4909961cf642164b29ebb745df",
+      "executed_by": "Main"
+    },
+    {
+      "label": "tc13-service-race-r01",
+      "result": {
+        "started_at": "2026-11-19T15:14:13.651436+00:00",
+        "ended_at": "2026-11-19T15:15:09.625829+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "cef297beae4ee28be2e788ed3206d5dc2c71cd7be082a477e7834836966f39c4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "go_inventory": {
+          "named_counts": {
+            "PASS": 10,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "top_counts": {
+            "PASS": 2,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "names": [
+            "TestStageQAApprovalProtectedFromAgentOverride",
+            "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+            "TestStageQAApprovalProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+            "TestStageQAApprovalProtectedFromAgentOverride/task_principal/exact_revocation",
+            "TestStageQAApprovalProtectedFromAgentOverride/task_principal/opposite_decision",
+            "TestStageQAReturnProtectedFromAgentOverride",
+            "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/exact_revocation",
+            "TestStageQAReturnProtectedFromAgentOverride/human_with_agent_actor/opposite_decision",
+            "TestStageQAReturnProtectedFromAgentOverride/task_principal/exact_revocation",
+            "TestStageQAReturnProtectedFromAgentOverride/task_principal/opposite_decision"
+          ],
+          "invalid_lines": [],
+          "unfinished": [],
+          "duplicate_names": [],
+          "build_events": 0,
+          "build_failures": 0
+        }
+      },
+      "result_sha256": "ddc6f5eca1b7031038b4e003c817566abecd5e0486b570ff5cd7a2a0575aa81a",
+      "command_sha256": "60937106edcde04ed6c9174903a635c4346d8afab2101a3315c6bfcb1e8b2a50",
+      "executed_by": "Main"
+    }
+  ],
+  "assertions": [
+    "Original QA actor, created timestamp, decision ID/state and QA head are real",
+    "Current observed workflow/policy/role/stage/candidate values; distinct attempt keys",
+    "Service exact opposite approval usable with frozen report, dependency and future expiry; fresh human opposite action succeeds after refusals",
+    "Both service task principal and same QA JWT+AgentActor require forbidden",
+    "Router actual daemon claim returns mat_; stored task/Agent/user/workspace binding and restricted scope verified; same token GET200 prior to refusal baseline",
+    "Router generic mat_ and humanAgentHint require403codeforbidden; restricted mat_ requires exact capability403",
+    "17 exact persisted relation snapshots before/after each refusal; complete stage/evidence projection except read-time CheckedAt/signability MaxExpiresAt; immutable decision expiry retained",
+    "Original human operation GET equality and zero persisted operations for refused keys",
+    "No provider CLI/model execution or external network required; synthetic source CI only"
+  ],
+  "limits": [
+    "Router opposite approval has well-formed current envelope but no settled report; independently named human control reaches409stage_test_report_unusable, while service proves full admissibility",
+    "No fresh browser QA execution; existing archived R33 UI proof remains separately source-qualified",
+    "No product defect asserted; runtime acceptance and parent TC13 promotion belong to Main/independent checker"
+  ],
+  "pre_runtime_correction": "Router expected human negative-control code corrected from draft stage_test_report_required to source-defined stage_test_report_unusable after compileR01, before any runtime; compileR01 source retained in raw manifest and compileR02 is final."
+}
