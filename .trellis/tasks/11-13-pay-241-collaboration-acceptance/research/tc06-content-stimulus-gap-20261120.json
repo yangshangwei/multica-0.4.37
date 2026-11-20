@@ -1,0 +1,151 @@
+{
+  "at": "2026-11-20T02:30:52.230753+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "verdict": "FEASIBLE_SERVICE_ONLY_LIVE_HUMAN_EDIT_RUNTIME_REPLY_SUPPLEMENT",
+  "main_committed_baseline": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
+  "research_only": true,
+  "tests_run": false,
+  "database_connected": false,
+  "git_operations": false,
+  "product_changes": false,
+  "proposed_file": "server/internal/service/collaboration_concurrent_content_test.go",
+  "proposed_test": "TestCollaborationHumanEditRuntimeReplyBothCommitOrders",
+  "denominator": {
+    "tops_per_mode": 1,
+    "leaves_per_mode": 2,
+    "named_per_mode": 3,
+    "modes": [
+      "normal",
+      "race"
+    ],
+    "unique_named": 3,
+    "named_executions": 6,
+    "business_case_supplements": 1
+  },
+  "case_status_after_success": "PARTIAL",
+  "parent_counts_unchanged": {
+    "PASS": 9,
+    "PARTIAL": 11,
+    "NOT_RUN": 4
+  },
+  "barrier_helpers": [
+    "runtimeSourceCommitStarter",
+    "recipientCommitStarter",
+    "waitFIFOBlocked"
+  ],
+  "orders": [
+    "human_edit_first",
+    "runtime_reply_first"
+  ],
+  "critical_distinctions": [
+    "Human exact replay returns original content-free receipt, not current V2 comment",
+    "Runtime comment replay requires live current admission and must precede settlement",
+    "Report ACK recovery survives settlement",
+    "Current V2 discussion does not amend V1 frozen input or typed candidate",
+    "Ordinary comment admin machine exception belongs to separate planning task"
+  ],
+  "peer_task_excluded": ".trellis/tasks/11-20-comment-admin-human-authority",
+  "limits": [
+    "service_only",
+    "synthetic_PR_CI_preparation_consent_settlement",
+    "no_remote_repository_CI",
+    "no_real_model_payment",
+    "no_HTTP_browser_Desktop",
+    "no_production_Switch_or_daemon_checkout",
+    "no_parent_acceptance"
+  ],
+  "markdown": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-content-stimulus-gap-20261120.md",
+  "markdown_sha256": "615395f82995aa184564a9a5d91ce0e07d2b91fa84d783c8761198b65f1df0dd",
+  "references": [
+    {
+      "file": "server/internal/service/collaboration_comments_create.go",
+      "sha256": "92830ce01ba00b3ae3bc2d2614e86f58ddaced2c474d1c31fcc05c5edb5219e2"
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_edit.go",
+      "sha256": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063"
+    },
+    {
+      "file": "server/internal/service/collaboration_comments.go",
+      "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79"
+    },
+    {
+      "file": "server/internal/service/collaboration_squad.go",
+      "sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72"
+    },
+    {
+      "file": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b"
+    },
+    {
+      "file": "server/internal/service/collaboration_test_subject.go",
+      "sha256": "6ae551c727f3de62ea2d267cb19790b745b37642f6260efe8e43a6b7f08efa7d"
+    },
+    {
+      "file": "server/internal/service/collaboration_test_report.go",
+      "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44"
+    },
+    {
+      "file": "server/internal/service/collaboration_comments_test.go",
+      "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0"
+    },
+    {
+      "file": "server/internal/service/collaboration_comment_edit_delete_test.go",
+      "sha256": "37849f45948264b9c99257823935138d974797103be14ab3b4b48bc58aa0a3c2"
+    },
+    {
+      "file": "server/internal/service/collaboration_runtime_output_concurrency_test.go",
+      "sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c"
+    },
+    {
+      "file": "server/internal/service/collaboration_test_report_boundaries_test.go",
+      "sha256": "787f435341e9c98582fa5acdd0346732a48ac88185cdf3e5fab5e2a97eac5d6e"
+    },
+    {
+      "file": "server/internal/service/collaboration_test_report_test.go",
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696"
+    },
+    {
+      "file": "server/internal/service/collaboration_recipient_eligibility_test.go",
+      "sha256": "6b0cee90974986966b8da3df013d5d64631320c5e48b8af40689d765656c53ea"
+    },
+    {
+      "file": "server/internal/service/collaboration_fifo_test.go",
+      "sha256": "0b15cafe54deab9448eb69716988bacae14e6df0ca3fc0e603af7075a3453f70"
+    },
+    {
+      "file": "server/internal/service/collaboration_code_revision_regression_test.go",
+      "sha256": "a7224031b0ff558106ef48606e2e7b2a61ee555d05172c2a2526799905e27ae4"
+    },
+    {
+      "file": ".trellis/tasks/11-20-comment-admin-human-authority/prd.md",
+      "sha256": "c92dd12a0ba4a2f6ca7b14576a60267d5fcd3a0e65d3169c7ab9796a3175ff81"
+    },
+    {
+      "file": ".trellis/tasks/11-20-comment-admin-human-authority/design.md",
+      "sha256": "b48306d822e3547eb87e9aef264e49772083f88d5af2d0232728b9f0423c63ea"
+    },
+    {
+      "file": ".trellis/tasks/11-20-comment-admin-human-authority/implement.md",
+      "sha256": "ca0c12ca114ce1d8297d31f2f63a3d890d560aff7080a8f666a5876c859721a7"
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "b61e0df49fc49de4084ddbb2258379559423be69e85bad3ae3c9af124a03e241"
+    },
+    {
+      "file": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.md",
+      "sha256": "56c83e2ca50bda78089c721e4e5465877f7c453390c7b76663550351c57ef385"
+    },
+    {
+      "file": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.md",
+      "sha256": "d609ee11bd1e4e6a212270e3c6129c1cdcb9d88bb78813e910a7e5c6641e4baa"
+    },
+    {
+      "file": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/report.md",
+      "sha256": "7d8c5d884b8023e8c2123954a4d9362607a0bba6ee25705fa39c1e2dc8ca8da2"
+    }
+  ],
+  "plan": "docs/plans/2026-11-20-pay-241-concurrent-content-proof.md",
+  "suite_timeout": "10m"
+}

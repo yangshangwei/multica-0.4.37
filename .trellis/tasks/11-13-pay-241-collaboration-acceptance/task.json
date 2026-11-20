@@ -6697,10 +6697,10 @@
       "report": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md"
     },
     "next_internal_slice": {
-      "case": "TC-12",
-      "phase": "LOCAL_CODE_REVISION_SUPPLEMENT_ACCEPTED_REAL_PAYMENT_REPAIR_PENDING_S4",
-      "source": "research/tc12-code-revision-gap-20261120.md",
-      "limits": "Local actual source revision/report association supplement complete; full TC12 remains PARTIAL. Real repository/CI/payment repair requires S4 I02-I09. Select another exact internal stimulus through research before implementation; do not repeat accepted gate matrices."
+      "case": "TC-06",
+      "phase": "CONCURRENT_CONTENT_SUPPLEMENT_ACCEPTED_REMOTE_REPOSITORY_CI_PENDING_S4",
+      "source": "research/tc06-content-stimulus-gap-20261120.md",
+      "limits": "Live human-edit/runtime-reply and frozen-source supplement complete. Full TC06 remains PARTIAL; real remote branch/PR/CI requires S4 I02/I03. No next internal implementation preregistered. Preserve TC12 accepted local supplement and all existing acceptances."
     },
     "TC13_acceptance": {
       "at": "2026-11-19T15:33:38.477789+00:00",
@@ -6808,6 +6808,36 @@
       "all_seven_databases_connections": 0,
       "owned_container_stopped": true,
       "work_commit": "6ef6d152c807d9cec9659a6b0649c9c5dd0fc25d"
+    },
+    "TC06_concurrent_content_acceptance": {
+      "at": "2026-11-20T02:55:07.934483+00:00",
+      "status": "ACCEPTED_INTERNAL_SERVICE_SUPPLEMENT",
+      "case_status": "PARTIAL",
+      "report": "research/tc06-independent-check-20261120.md",
+      "source_head": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
+      "integration_head": "d4bc3a523675b6c7c1fdcb28c531d6db7bc5ba0f",
+      "test_sha256": "3634456cdbe128e7f3005af2be00b58c9f748e70c18b71ad6221138ce4d6cde8",
+      "round": "r01",
+      "each_mode": {
+        "tops": 1,
+        "leaves": 2,
+        "named_pass": 3,
+        "fail": 0,
+        "skip": 0
+      },
+      "named_executions": 6,
+      "full_collections": 31,
+      "private_evidence_files": 28,
+      "product_changes": 0,
+      "database_connections": 0,
+      "owned_container_stopped": true,
+      "parent_counts": {
+        "PASS": 9,
+        "PARTIAL": 11,
+        "NOT_RUN": 4
+      },
+      "report_json_sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57",
+      "work_commit": "0d3cc34be910e2d2b6c56d11892a34951fe6b9b7"
     }
   }
 }

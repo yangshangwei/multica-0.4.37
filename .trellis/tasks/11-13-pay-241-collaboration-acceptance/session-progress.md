@@ -1,5 +1,17 @@
 # PAY-241 当前会话进度
 
+## 2026-11-20：TC-06 人工编辑／运行回复并发内部补证完成
+
+父矩阵保持 **9 PASS /11 PARTIAL /4 NOT_RUN**，父任务继续 `in_progress`。沿用 TC-12 已接受内部补证后的准确状态，研究选定 TC-06 已派发人工输入与运行回复的并发缺口；未重跑 S2/S3/TC-12。新增一个 service 测试，完整新 r01 普通/竞态各 **1顶层、2顺序叶、3命名PASS，零FAIL/SKIP**。三种不同测试名、六次模式执行，支持一个内部补证，不是六条业务用例。[TC-06独立检查](research/tc06-independent-check-20261120.md)已接受内部补证，阻挡项0。
+
+每种顺序真实阻挡来源事务并观察 PostgreSQL `pg_blocking_pids` 后放行：人工 V1→V2 编辑与同一已准入运行的独立 Agent 回复各提交一次。人工作者/V2/revision2、Agent身份/原parent/run、两条时间线顺序和精确UTC时刻保持；原 command/group input/prompt/candidate/test subject 仍为冻结V1。同一run新增合成报告绑定原候选，未再次派发。运行有效期间原人工create/edit与runtime reply重放及改变原body的精确409不改变31组完整业务集合；结算后报告原ACK及人工原回执恢复仍保持完整历史。人工create原回执revision1不代表当前评论回到V1；runtime回复不声称结算后可重放。
+
+测试源码 `3634456cdbe128e7f3005af2be00b58c9f748e70c18b71ad6221138ce4d6cde8`；原执行基线 `d1b25077b` 的5096文件加新测试冻结5097，编译/gofmt/service vet及普通/竞态通过。共享HEAD随后前进至 `d4bc3a523`，整合守卫在复制前检测两份peer测试时钟文件差异并保留拒绝回执；独立确认不在本轮调用链，生产服务字节不变。当前HEAD加精确新测试的5098文件另完成compile/vet；不冒称新HEAD重跑数据库。无产品逻辑、依赖、迁移或普通评论管理员修复。
+
+共享PG本轮只读探针已可连接，不沿用上轮不可用结论；为隔离并行负载使用新自有容器。template与两模式库均856迁移/663索引/gateepoch2、停机前连接0；两执行库raw清理结果保留，仅将原creation_enabled恢复true，其他gate不变。每模式实际残留organization1/config invalidation6/knowledge invalidation6；瞬态业务行由旧fixture清理，31集合快照保存在28份私有文件，不能声称全行仍在SQL。八个迁移/编译/静态/测试命令全部退出，自有容器停止PID0/exit0、数据卷保留，未启动独立API/Web/Electron/Provider。
+
+TC-06继续PARTIAL：生产content/report服务与明确合成PR/CI、managed preparation/consent/settlement夹具；test-only retired ReconfigureTarget不证明生产Switch。没有新router/password/browser/daemon checkout/模型/支付/远端CI验收。真实分支/PR/CI归S4 I02/I03，普通评论机器管理员权限归已有独立规划任务。下一接续按现有账本补最小业务语义/外部输入：TC-01必填、TC-03 P1/分诊、TC-04/14模型、S4 I02–I09、最终S5与签字；本轮不预设新的内部实施切片。测试/规范/计划已定向Lore提交`0d3cc34be`（3路径），记录另提交并推送，最终Git回执保留；父任务不归档。
+
 ## 2026-11-20：TC-12 本地真实代码修订回归完成，整例保持 PARTIAL
 
 父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**，原父任务继续 `in_progress`。一个新增 service 测试在完整新 r03 普通/竞态各 **1 顶层 PASS、零 FAIL/SKIP**；一个不同命名、两次模式执行，不是两条业务用例。[TC-12 独立检查](research/tc12-independent-check-20261120.md)已接受内部补证，阻挡项0。

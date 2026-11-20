@@ -1,5 +1,7 @@
 # 技术设计草案
 
+最新（2026-11-20 TC-06）：仅新增service测试，验证人工已派发V1评论改V2与同run Agent回复的两种真实提交顺序。固定原输入/候选/subject、精确原回执、31集合及合成报告关联保持；完整r01普通/竞态各1顶层2叶通过，无产品改动。runtime评论在live恢复，报告ACK在settled恢复，两种合同不混用。TC-06仍PARTIAL，父9PASS/11PARTIAL/4NOT_RUN；远端分支/PR/CI待S4，普通评论管理权限归独立任务。以下保留历史。
+
 最新（2026-11-20 TC-12）：仅新增一个service测试，以真实本地business-only Git A→B和固定runner/input证明失败→修订后通过，复用生产报告/阶段与明确managed preparation/consent/settlement夹具。完整新r03普通/竞态各1顶层通过，12组A历史与原回执保持；无产品改动，TC-12仍PARTIAL，父9PASS/11PARTIAL/4NOT_RUN。真实支付修复、daemon checkout/远端CI仍为S4，以下为保留历史。
 
 最新（2026-11-20 TC-04）：一个新router测试证明真实机器凭据无法签发/撤销人工完成授权或关闭具备有效交付和人工授权的协作任务。合法人类同请求成功，产品逻辑未改；内部切片独立接受，TC-04保持PARTIAL，父9PASS/11PARTIAL/4NOT_RUN。真实模型与S4/S5/签字仍开放；以下均保留历史。

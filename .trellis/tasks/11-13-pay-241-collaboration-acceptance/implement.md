@@ -1,3 +1,7 @@
+## 2026-11-20 已执行切片：TC-06 人工编辑与运行回复并发
+
+按[精确刺激研究](research/tc06-content-stimulus-gap-20261120.md)与[最小计划](../../../docs/plans/2026-11-20-pay-241-concurrent-content-proof.md)只新增一个service测试。完整r01普通/竞态各1顶层2叶3命名PASS，31组完整业务集合、原请求和冻结来源保持；gofmt/vet/compile通过，peer新HEAD两份无关测试时钟改动经来源桥接并另compile/vet。资源已收拢，最终独立检查和定向Lore提交推送见本轮记录。TC-06仍PARTIAL、父9PASS/11PARTIAL/4NOT_RUN；真实远端来源和普通评论管理员权限仍各归S4/独立任务。父任务不归档。
+
 ## 2026-11-20 已执行切片：TC-12 本地实际代码修订回归
 
 按[最小补证计划](../../../docs/plans/2026-11-20-pay-241-code-revision-regression.md)新增单个service测试。一顶层，普通/竞态新r03各1PASS；真实本地Git A→business-only B、固定oracle/input/argv、原失败/QA退回、新候选/run/report/QA批准、12组A历史与原key保持。原r01/r02各0PASS1FAIL及source/config/raw保留，修正仅明确Resume/Stop夹具顺序；没有产品/依赖改动。生产report/stage与test-only managed preparation/consent/settlement分列，真实支付修复仍S4，TC-12保持PARTIAL。Main完成独立检查、资源/源核对、父记录及定向Lore提交推送，父任务不归档。
