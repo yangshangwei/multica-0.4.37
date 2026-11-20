@@ -1,11 +1,11 @@
 # #37、#38 首批交付与验收
 
-首批两项已按 #37 → #38 完成稳定 RED、最小修复、原整文件回归和最终联验，独立审查无剩余发现。仅接受这两个原编号；父任务保留，继续跟踪其他未验收编号。
+首批两项已按 #37 → #38 完成稳定 RED、最小修复、原整文件回归和最终联验，独立审查无剩余发现。仅接受这两个原编号。首批交付时父任务保留以跟踪其他编号；2026-11-20 用户要求归档父任务，见[归档说明](archive-20261120.md)。
 
 | 编号 | 交付结果 | 详细记录 |
 | --- | --- | --- |
-| #37 | UUID/可读编号入口在 PUT 待响应时保持 In Progress；更早的 Todo GET 不能覆盖；503 回到 Todo，一次显式重试、刷新后仍为 In Progress | [#37 执行记录](../../archive/2026-11/11-18-e2e-37-issue-optimistic-status/research/execution-20261119.md) |
-| #38 | 在 UUID 上展开历史后，即使历史响应未返回，换到同事项可读编号仍展开；正确迭代链接可打开；从展开 A 站内切 B 后默认折叠，不提前读 B 历史 | [#38 执行记录](../../archive/2026-11/11-18-e2e-38-iteration-history/research/execution-20261119.md) |
+| #37 | UUID/可读编号入口在 PUT 待响应时保持 In Progress；更早的 Todo GET 不能覆盖；503 回到 Todo，一次显式重试、刷新后仍为 In Progress | [#37 执行记录](../../11-18-e2e-37-issue-optimistic-status/research/execution-20261119.md) |
+| #38 | 在 UUID 上展开历史后，即使历史响应未返回，换到同事项可读编号仍展开；正确迭代链接可打开；从展开 A 站内切 B 后默认折叠，不提前读 B 历史 | [#38 执行记录](../../11-18-e2e-38-iteration-history/research/execution-20261119.md) |
 
 ## 修改清单
 
@@ -23,7 +23,7 @@
 - Core/Views lint、typecheck，两端生产构建和三份新 E2E 严格类型检查均退出 0。Views 的 27 条既有 lint 警告及两条 highlight CSS 优化警告保留。
 - Playwright 单 worker、零自动重试，0 skipped/unexpected/flaky；没有放宽超时或断言。原两文件的 SHA 与原版一致，所有输入/结果/trace 与构建指纹保留。
 
-运行号 `20261119-002358-fc3f5ec4`，全新私有库 `e2e_fix_37_38_20261119_002358_fc3f5ec4`，API/Web 54150/54151。最终 Web 构建 `C2Kji8hfWmojMSLxyjsnu`；9014 个源码输入审计通过。总证据：[verification-summary.json](../../../../.artifacts/e2e-fix-20261119-002358-fc3f5ec4/joint/verification-summary.json)。只停止本轮自建进程，保留新库、私有源码、构建和报告。
+运行号 `20261119-002358-fc3f5ec4`，全新私有库 `e2e_fix_37_38_20261119_002358_fc3f5ec4`，API/Web 54150/54151。最终 Web 构建 `C2Kji8hfWmojMSLxyjsnu`；9014 个源码输入审计通过。总证据：[verification-summary.json](../../../../../../.artifacts/e2e-fix-20261119-002358-fc3f5ec4/joint/verification-summary.json)。只停止本轮自建进程，保留新库、私有源码、构建和报告。
 
 本批未跑原 52 标题的全量 E2E、打包后的 Electron main/安装器或真实智能体。原保留库、KEEP-1、原报告/trace、导出和备份未操作。两条收集错误仍归 PAY-241 S3，不补占位 schema；#51/#52 仍与 `11-17-quick-create-blocked-feedback` 核对，#51 不作为跨区串数据证据。
 

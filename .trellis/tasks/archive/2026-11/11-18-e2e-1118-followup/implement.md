@@ -1,6 +1,6 @@
 # 首批共用执行约束（本批已执行）
 
-以下保留规划时的运行与保留约束；#37、#38 已完成，[首批交付记录](./research/first-batch-20261119.md)列出实际验收范围。
+以下保留规划时的运行与保留约束；#37、#38 已完成，[首批交付记录](research/first-batch-20261119.md)列出实际验收范围。
 
 1. 得到对本方案的明确确认后才启动子任务，先 #37 再 #38；父任务不代两项实现。逐项执行子任务的 RED → 最小修改 → GREEN。若涉及同一详情/路由文件，保留两项各自的红样本，合并后同时复验。若当前原用例转绿，先固定原交互顺序再定性，不为制造失败改产品；不可复现就保留为未证实。
 2. 使用任务私有的源码/构建目录（含所需的当前未提交变更）、全新且有唯一运行号的本机 PostgreSQL 库、未占用的 API/Web 端口和独立 HOME/上传目录。按 `.trellis/spec/web/frontend/e2e-run-environment.md` 使用匹配源码的 API 和生产构建的 Web，核对实际提供的 CSS；不要在样式扫描器忽略的目录构建。两条原用例用邮箱验证码的 legacy 环境。显式绑定 `DATABASE_URL`、`NEXT_PUBLIC_API_URL`、`PLAYWRIGHT_BASE_URL`，交叉核对分配记录、`SELECT current_database()`、监听进程、`/readyz` 和 `/api/config`；任一不符不开跑。不能从默认端口或共享 `.env` 猜环境。
