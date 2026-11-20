@@ -272,4 +272,13 @@ Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1
 
 已完成并归档的F3-S1仅观察、不拦截，人工API/CLI与quick-create归属已交付。功能提交584846f95、与当前共享源码集成8126073f6；交付分支codex/f3-completion-20261120，共享本地codex/cross-workspace-collaboration已快进到同一验证源码。62行S1和91项既有Go用例有逐名normal/race证据；合并后Core374files/5355tests、Views619files/7610tests全通过。
 
-完整交付、生产证据限制、原失败与可校验清单见 [F3最终交付](../archive/2026-11/11-16-f3-parent-budget-root/research/codex-final-delivery-20261120.md)。生产actual没有可信来源，估算/未知不能当真实账单；没有结算释放或金额强制。M1-S2–S6、F3-S2、F4、F5-A–E仍开放，父任务维持in_progress。
+完整交付、生产证据限制、原失败与可校验清单见 [F3最终交付](../archive/2026-11/11-16-f3-parent-budget-root/research/codex-final-delivery-20261120.md)。生产actual没有可信来源，估算/未知不能当真实账单；没有结算释放或金额强制。M1-S2–S6、F4、F5-A–E仍开放，父任务维持in_progress。F3-S2按下节用户决定停止投入。
+
+
+## 17. 预算方向停止后续投入（2026-11-20）
+
+用户决定：“先不撤销了。先停止继续投入这个方向，不做预算页面和 S2 强制预算”。
+
+保留已经交付的F3-S1代码和验收归档，不执行撤销。停止预算方向的后续开发，不做Web/Desktop预算页面、不实施F3-S2强制预算，也不自动新建相关实施任务。旧记录中的F3-S2待办只保留为历史规划；恢复投入须有用户新的明确指示。
+
+F3子任务维持completed并已归档；父roadmap因其他M1/F4/F5工作保持in_progress，此决定不改变那些工作的状态或授权。

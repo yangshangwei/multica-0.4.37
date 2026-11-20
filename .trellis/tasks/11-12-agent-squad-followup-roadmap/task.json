@@ -5,7 +5,7 @@
   "description": "承接2026-11-12阶段归档后的M1剩余交付与授权交互、M2报告快照/父级预算/能力负载调度、M3持续治理；已交付能力不重做，待办规划不自动启动实现。",
   "status": "in_progress",
   "dev_type": "fullstack",
-  "scope": "M1-S1, F2 minimum and F3-S1 observe-only delivered locally; remaining M1-S2–S6, F3-S2, F4 and F5-A–E open",
+  "scope": "M1-S1, F2 minimum and F3-S1 delivered locally; F3 follow-up investment stopped by user (no budget UI or S2 enforcement); M1-S2–S6, F4 and F5-A–E remain open",
   "package": null,
   "priority": "P1",
   "creator": "artisan",
@@ -58,7 +58,7 @@
     "research/f2-handler-expected-tests.json",
     "research/f2-router-expected-tests.json"
   ],
-  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现并提交于 463b201fa。修复后 Views 全量套件通过 602 files / 7,332 tests。真实 enforcing Web production 与 Electron renderer 在 task-owned DB/project/local-synthetic artifact 上均完成候选→明确授权→提交→原 authorization receipt/current issue 查询；收据 consumed、当前 status done revision 2；键盘与 390x844/680x900 截图见 research/m1-renderer-evidence-20261113。provider_calls=0、daemon_starts=0、skip_supported=false。未操作 POLA-1 或共享 project policy。\n2026-11-13：按既定顺序开始 F2 确定性报告快照设计/验收规划，见 research/f2-deterministic-report-snapshot-planning-20261113.md；仅设计，不授权实现。roadmap 保持 in_progress。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账仍未开放。\n2026-11-13 F2续接：HEAD c79dfe304，原session指针为空、任务目录干净、工作区374项并行改动；恢复原任务指针，状态保持in_progress。只补充F2设计、F2-01–12/A01–A16与D1–D6；更正PRD过期M1验收描述。仍无F2实现授权，不修改代码/迁移/路由，不调用Provider、不操作POLA-1、不改变共享策略，不新建或归档任务。\n2026-11-13：用户明确“F2 授权 ，请推进”，F2 获得独立实现授权；按已审阅建议收敛 D1–D6，来源能力不足保留 unknown，真实 Provider/POLA-1/共享策略及其他 roadmap 包不在授权内。\n2026-11-13 本次设计续接：用户明确仅F2设计/验收，不实施。入口425项并行改动含F2执行草稿；保留既有独立授权/代码/测试记录，不据此扩展本轮范围。恢复同一session任务指针，status保持in_progress；补充冻结日历、formal/business scope、来源完整性、coverage、逐指标旧规则只读parity、exact Reporter首次RR查询与拒绝/最小披露矩阵。D1–D6见research §8；M1-S1不重做、其他M1/F3/F4/F5不关闭，不新建/归档、不调用Provider、不操作POLA-1或共享策略。\n2026-11-13 F2实现验收：用户明确授权并选择本报告全部快照终止撤回。最小首包代码/CLI/来源审计/当前权限完成；handler与router独立normal/race均通过，pure/CLI/builtin/build/vet通过。原fixture与文档预算失败保留。M1其他入口/F3–F5未完成，task仍in_progress，不归档，不调用Provider或操作POLA-1/共享策略。\n2026-11-13 F3规划续接：用户限定只做研究/设计/验收；核对HEAD feb87aee7包含fafb27b1d、task目录干净、392项并行改动，恢复原会话指针且status=in_progress。用户确认“长期绑定父事项”，仅设计选择，不授予F3实施权。M1/F2交付与F4/F5未完成项保留。\n2026-11-16：用户明确“D2–D6 按建议接受，授权 F3，拆成子任务”。F3-S1（observe 首包，含 quick-create）拆为子任务 11-16-f3-parent-budget-root 并启动，产品代码在独立 worktree mc-f3-budget-root-20261116 / 分支 codex/f3-budget-root-20261116。F3-S2 强制、F4、F5-A–E、M1-S2–S6 仍未授权、未完成；真实 Provider、POLA-1、共享策略、push/PR/部署不在授权内。\n2026-11-20：F3-S1已交付，功能584846f95、集成8126073f6，共享本地分支已快进。62行S1/91项M1-F2逐名normal/race通过，Core5355、Views7610全量通过；生产仅有限估算/未知，无真实费用或结算/强制承诺。子任务归档，父任务仍in_progress；其他切片及真实Provider/发布授权边界不变。",
+  "notes": "2026-11-12：承接用户批准的阶段归档；后续真实调用授权、历史失败与系列预算按原记录保留。\n2026-11-12：用户批准 M1-S1 规划并启动 implementation。\n2026-11-13：M1-S1 backend、Core、共享 Web/Desktop、CLI 已实现并提交于 463b201fa。修复后 Views 全量套件通过 602 files / 7,332 tests。真实 enforcing Web production 与 Electron renderer 在 task-owned DB/project/local-synthetic artifact 上均完成候选→明确授权→提交→原 authorization receipt/current issue 查询；收据 consumed、当前 status done revision 2；键盘与 390x844/680x900 截图见 research/m1-renderer-evidence-20261113。provider_calls=0、daemon_starts=0、skip_supported=false。未操作 POLA-1 或共享 project policy。\n2026-11-13：按既定顺序开始 F2 确定性报告快照设计/验收规划，见 research/f2-deterministic-report-snapshot-planning-20261113.md；仅设计，不授权实现。roadmap 保持 in_progress。真实 Provider、知识注入、发布、Hosted CI、部署与账单对账仍未开放。\n2026-11-13 F2续接：HEAD c79dfe304，原session指针为空、任务目录干净、工作区374项并行改动；恢复原任务指针，状态保持in_progress。只补充F2设计、F2-01–12/A01–A16与D1–D6；更正PRD过期M1验收描述。仍无F2实现授权，不修改代码/迁移/路由，不调用Provider、不操作POLA-1、不改变共享策略，不新建或归档任务。\n2026-11-13：用户明确“F2 授权 ，请推进”，F2 获得独立实现授权；按已审阅建议收敛 D1–D6，来源能力不足保留 unknown，真实 Provider/POLA-1/共享策略及其他 roadmap 包不在授权内。\n2026-11-13 本次设计续接：用户明确仅F2设计/验收，不实施。入口425项并行改动含F2执行草稿；保留既有独立授权/代码/测试记录，不据此扩展本轮范围。恢复同一session任务指针，status保持in_progress；补充冻结日历、formal/business scope、来源完整性、coverage、逐指标旧规则只读parity、exact Reporter首次RR查询与拒绝/最小披露矩阵。D1–D6见research §8；M1-S1不重做、其他M1/F3/F4/F5不关闭，不新建/归档、不调用Provider、不操作POLA-1或共享策略。\n2026-11-13 F2实现验收：用户明确授权并选择本报告全部快照终止撤回。最小首包代码/CLI/来源审计/当前权限完成；handler与router独立normal/race均通过，pure/CLI/builtin/build/vet通过。原fixture与文档预算失败保留。M1其他入口/F3–F5未完成，task仍in_progress，不归档，不调用Provider或操作POLA-1/共享策略。\n2026-11-13 F3规划续接：用户限定只做研究/设计/验收；核对HEAD feb87aee7包含fafb27b1d、task目录干净、392项并行改动，恢复原会话指针且status=in_progress。用户确认“长期绑定父事项”，仅设计选择，不授予F3实施权。M1/F2交付与F4/F5未完成项保留。\n2026-11-16：用户明确“D2–D6 按建议接受，授权 F3，拆成子任务”。F3-S1（observe 首包，含 quick-create）拆为子任务 11-16-f3-parent-budget-root 并启动，产品代码在独立 worktree mc-f3-budget-root-20261116 / 分支 codex/f3-budget-root-20261116。F3-S2 强制、F4、F5-A–E、M1-S2–S6 仍未授权、未完成；真实 Provider、POLA-1、共享策略、push/PR/部署不在授权内。\n2026-11-20：F3-S1已交付，功能584846f95、集成8126073f6，共享本地分支已快进。62行S1/91项M1-F2逐名normal/race通过，Core5355、Views7610全量通过；生产仅有限估算/未知，无真实费用或结算/强制承诺。子任务归档，父任务仍in_progress；其他切片及真实Provider/发布授权边界不变。\n2026-11-20 后续决定：用户明确保留已交付F3-S1，不撤销；停止继续投入预算方向，不做预算页面和F3-S2强制预算。F3子任务保持已归档，不新建后续实施任务，不因旧roadmap待办自动恢复。其他M1/F4/F5范围不变。",
   "meta": {
     "created_from_delivered_stage_archive": true,
     "scope_authorization": {
@@ -472,6 +472,16 @@
       "archive": ".trellis/tasks/archive/2026-11/11-16-f3-parent-budget-root",
       "report": "research/codex-final-delivery-20261120.md",
       "scope": "observe-only; API/CLI; estimates and unknowns; no provider execution or enforcement"
+    },
+    "f3_followup_decision": {
+      "date": "2026-11-20",
+      "user_instruction": "先不撤销了。先停止继续投入这个方向，不做预算页面和 S2 强制预算",
+      "existing_s1": "retain_delivered_code_and_completed_archive",
+      "followup_status": "stopped_by_user",
+      "budget_ui": "do_not_implement",
+      "s2_enforcement": "do_not_implement",
+      "resume_requires": "new_explicit_user_direction",
+      "other_roadmap_items": "unchanged"
     }
   }
 }
