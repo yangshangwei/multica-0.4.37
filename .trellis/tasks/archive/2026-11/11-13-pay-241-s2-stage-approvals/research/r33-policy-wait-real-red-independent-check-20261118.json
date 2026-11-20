@@ -1,0 +1,1202 @@
+{
+  "GREEN_runtime_fullS2_accepted": false,
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "actual_run": {
+    "ambient_environment_inherited": false,
+    "command": {
+      "bytes": 921,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/command.json",
+      "sha256": "7da9c356d55d32c3f855afaa2b9116a6b929197e796de17c13344e5b0ad917cb"
+    },
+    "effect_leaf_cases": 4,
+    "effect_records_raw_count": 5,
+    "exit": 1,
+    "leaf_counts": {
+      "FAIL": 2,
+      "PASS": 2,
+      "SKIP": 0
+    },
+    "leaves": {
+      "TestDeliveryPolicyProjectWaitBoundaries/competing_writer": {
+        "HTTP": {
+          "first": 200,
+          "second": 409,
+          "second_body": {
+            "error": "artifact_authority_busy"
+          }
+        },
+        "effects": [
+          {
+            "after_sha256": "20e84d2095d3fd75a32ffafd9eea00a6989e865b6a9079c5b13a4342e742f49d",
+            "before_sha256": "589b566da39c78294dacde697c280b5ed601160fc242601cea77be98368d9321",
+            "policy_rows": 1,
+            "protected_equal": true,
+            "test": "TestDeliveryPolicyProjectWaitBoundaries/competing_writer"
+          }
+        ],
+        "failures": [
+          "    delivery_policy_project_wait_test.go:464: waiting competing writer did not reach the exact stale-revision CAS refusal"
+        ],
+        "held": {
+          "at": "2026-11-18T00:37:34.711531Z",
+          "operation": 1,
+          "phase": "actual_transaction_held",
+          "pid": 29994,
+          "query": "CreateDeliveryPolicy",
+          "tx_status": "T"
+        },
+        "observations": [
+          {
+            "at": "2026-11-18T00:37:34.701744Z",
+            "operation": 1,
+            "phase": "read_only_witness_ready",
+            "pid": 29991
+          },
+          {
+            "at": "2026-11-18T00:37:34.703405Z",
+            "milliseconds": 250,
+            "operation": 1,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+            "at": "2026-11-18T00:37:34.7056Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.535916,
+            "no_rows": false,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "LockDeliveryPolicyProject",
+            "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+            "succeeded": true,
+            "uuid_args": [
+              "1c5080dc-bbf5-4124-86d9-a535a97499fc",
+              "88a0c83f-ce3b-4c78-be6b-65d165771231"
+            ]
+          },
+          {
+            "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+            "at": "2026-11-18T00:37:34.705824Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.21995900000000002,
+            "no_rows": true,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "query_sha256": "aa5eb5a19e0fec700585d4ecdfc4aa95b732c2bfb0058fa7a09aae5c55f52d0c",
+            "succeeded": false,
+            "uuid_args": null
+          },
+          {
+            "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+            "at": "2026-11-18T00:37:34.711529Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 5.703208,
+            "no_rows": false,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "CreateDeliveryPolicy",
+            "query_sha256": "b575fb4085a1a60fd84dbd448ec17efdb82ef2321b3099c5bddee35431a393e2",
+            "succeeded": true,
+            "uuid_args": null
+          },
+          {
+            "at": "2026-11-18T00:37:34.711531Z",
+            "operation": 1,
+            "phase": "actual_transaction_held",
+            "pid": 29994,
+            "query": "CreateDeliveryPolicy",
+            "tx_status": "T"
+          },
+          {
+            "at": "2026-11-18T00:37:34.765664Z",
+            "operation": 1,
+            "phase": "holder_release",
+            "pid": 29994,
+            "second_pid": 29995,
+            "since_project_entry_ms": 52.02325
+          },
+          {
+            "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+            "at": "2026-11-18T00:37:34.766298Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.622541,
+            "no_rows": false,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "query_sha256": "aa5eb5a19e0fec700585d4ecdfc4aa95b732c2bfb0058fa7a09aae5c55f52d0c",
+            "succeeded": true,
+            "uuid_args": null
+          },
+          {
+            "at": "2026-11-18T00:37:34.712005Z",
+            "milliseconds": 250,
+            "operation": 2,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+            "at": "2026-11-18T00:37:34.714192Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.5389579999999999,
+            "error_type": "*pgconn.PgError",
+            "no_rows": false,
+            "operation": 2,
+            "phase": "actual_scan",
+            "pid": 29995,
+            "query": "LockDeliveryPolicyProject",
+            "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+            "source_frames": [
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+                "line": 50
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+                "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+                "line": 209
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+                "line": 135
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+                "line": 107
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+                "line": 76
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+                "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+                "line": 96
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+                "line": 358
+              }
+            ],
+            "sqlstate": "55P03",
+            "succeeded": false,
+            "uuid_args": [
+              "1c5080dc-bbf5-4124-86d9-a535a97499fc",
+              "88a0c83f-ce3b-4c78-be6b-65d165771231"
+            ]
+          },
+          {
+            "at": "2026-11-18T00:37:34.715033Z",
+            "holder_pid": 29994,
+            "operation": 2,
+            "phase": "failed_before_holder_release",
+            "pid": 29995
+          }
+        ],
+        "outcome": "FAIL",
+        "pre_release_native_proof": {
+          "at": "2026-11-18T00:37:34.715033Z",
+          "holder_pid": 29994,
+          "operation": 2,
+          "phase": "failed_before_holder_release",
+          "pid": 29995
+        },
+        "query_failure": {
+          "actor": "13910acf-5bc5-420b-b41f-51fa56423718",
+          "at": "2026-11-18T00:37:34.714192Z",
+          "credential_kind": "jwt",
+          "elapsed_ms": 0.5389579999999999,
+          "error_type": "*pgconn.PgError",
+          "no_rows": false,
+          "operation": 2,
+          "phase": "actual_scan",
+          "pid": 29995,
+          "query": "LockDeliveryPolicyProject",
+          "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+          "source_frames": [
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+              "line": 50
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+              "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+              "line": 209
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+              "line": 135
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+              "line": 107
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+              "line": 76
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+              "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+              "line": 96
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+              "line": 358
+            }
+          ],
+          "sqlstate": "55P03",
+          "succeeded": false,
+          "uuid_args": [
+            "1c5080dc-bbf5-4124-86d9-a535a97499fc",
+            "88a0c83f-ce3b-4c78-be6b-65d165771231"
+          ]
+        },
+        "release": {
+          "at": "2026-11-18T00:37:34.765664Z",
+          "operation": 1,
+          "phase": "holder_release",
+          "pid": 29994,
+          "second_pid": 29995,
+          "since_project_entry_ms": 52.02325
+        },
+        "witness_PID": 29991
+      },
+      "TestDeliveryPolicyProjectWaitBoundaries/long_reader": {
+        "HTTP": {
+          "first": 200,
+          "second": 409,
+          "second_body": {
+            "error": "artifact_authority_busy"
+          }
+        },
+        "effects": [
+          {
+            "after_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+            "before_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+            "policy_rows": 0,
+            "protected_equal": true,
+            "test": "TestDeliveryPolicyProjectWaitBoundaries/long_reader"
+          },
+          {
+            "after_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+            "before_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+            "policy_rows": 0,
+            "protected_equal": true,
+            "test": "TestDeliveryPolicyProjectWaitBoundaries/long_reader"
+          }
+        ],
+        "failures": [],
+        "held": {
+          "at": "2026-11-18T00:37:34.266545Z",
+          "operation": 1,
+          "phase": "actual_transaction_held",
+          "pid": 29994,
+          "query": "GetDeliveryPolicy",
+          "tx_status": "T"
+        },
+        "observations": [
+          {
+            "at": "2026-11-18T00:37:34.264238Z",
+            "operation": 1,
+            "phase": "read_only_witness_ready",
+            "pid": 29991
+          },
+          {
+            "at": "2026-11-18T00:37:34.264657Z",
+            "milliseconds": 250,
+            "operation": 1,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "619da968-cdaf-4c9f-abae-5ec3e4b7d69c",
+            "at": "2026-11-18T00:37:34.266334Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.196791,
+            "no_rows": false,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "LockProjectForAssociationNowait",
+            "query_sha256": "5e4d910894b15364fcba5d6cf330a20473857bb4e3e393ad49bc203e56b31d16",
+            "succeeded": true,
+            "uuid_args": [
+              "6b0a127a-2fe4-4223-b65a-ef18ae88d6d3",
+              "e993f18d-cf75-473e-a02f-5c311f3cf583"
+            ]
+          },
+          {
+            "actor": "619da968-cdaf-4c9f-abae-5ec3e4b7d69c",
+            "at": "2026-11-18T00:37:34.266544Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.207458,
+            "no_rows": true,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "query_sha256": "aa5eb5a19e0fec700585d4ecdfc4aa95b732c2bfb0058fa7a09aae5c55f52d0c",
+            "succeeded": false,
+            "uuid_args": null
+          },
+          {
+            "at": "2026-11-18T00:37:34.266545Z",
+            "operation": 1,
+            "phase": "actual_transaction_held",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "tx_status": "T"
+          },
+          {
+            "at": "2026-11-18T00:37:34.638337Z",
+            "operation": 1,
+            "phase": "holder_release",
+            "pid": 29994,
+            "second_pid": 29995,
+            "since_project_entry_ms": 369.668583
+          },
+          {
+            "at": "2026-11-18T00:37:34.267139Z",
+            "milliseconds": 250,
+            "operation": 2,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "619da968-cdaf-4c9f-abae-5ec3e4b7d69c",
+            "at": "2026-11-18T00:37:34.2692Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 0.517542,
+            "error_type": "*pgconn.PgError",
+            "no_rows": false,
+            "operation": 2,
+            "phase": "actual_scan",
+            "pid": 29995,
+            "query": "LockDeliveryPolicyProject",
+            "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+            "source_frames": [
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+                "line": 50
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+                "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+                "line": 209
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+                "line": 135
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+                "line": 107
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+                "line": 76
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+                "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+                "line": 96
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+                "line": 358
+              }
+            ],
+            "sqlstate": "55P03",
+            "succeeded": false,
+            "uuid_args": [
+              "6b0a127a-2fe4-4223-b65a-ef18ae88d6d3",
+              "e993f18d-cf75-473e-a02f-5c311f3cf583"
+            ]
+          },
+          {
+            "at": "2026-11-18T00:37:34.270027Z",
+            "holder_pid": 29994,
+            "operation": 2,
+            "phase": "failed_before_holder_release",
+            "pid": 29995
+          }
+        ],
+        "outcome": "PASS",
+        "pre_release_native_proof": {
+          "at": "2026-11-18T00:37:34.270027Z",
+          "holder_pid": 29994,
+          "operation": 2,
+          "phase": "failed_before_holder_release",
+          "pid": 29995
+        },
+        "query_failure": {
+          "actor": "619da968-cdaf-4c9f-abae-5ec3e4b7d69c",
+          "at": "2026-11-18T00:37:34.2692Z",
+          "credential_kind": "jwt",
+          "elapsed_ms": 0.517542,
+          "error_type": "*pgconn.PgError",
+          "no_rows": false,
+          "operation": 2,
+          "phase": "actual_scan",
+          "pid": 29995,
+          "query": "LockDeliveryPolicyProject",
+          "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+          "source_frames": [
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+              "line": 50
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+              "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+              "line": 209
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+              "line": 135
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+              "line": 107
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+              "line": 76
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+              "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+              "line": 96
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+              "line": 358
+            }
+          ],
+          "sqlstate": "55P03",
+          "succeeded": false,
+          "uuid_args": [
+            "6b0a127a-2fe4-4223-b65a-ef18ae88d6d3",
+            "e993f18d-cf75-473e-a02f-5c311f3cf583"
+          ]
+        },
+        "release": {
+          "at": "2026-11-18T00:37:34.638337Z",
+          "operation": 1,
+          "phase": "holder_release",
+          "pid": 29994,
+          "second_pid": 29995,
+          "since_project_entry_ms": 369.668583
+        },
+        "witness_PID": 29991
+      },
+      "TestDeliveryPolicyProjectWaitBoundaries/member_denied": {
+        "HTTP": null,
+        "effects": [
+          {
+            "after_sha256": "7f97f8cdbc69cba749503e6d2c482cf5e5367e3c9e87289a5dce8606800d129f",
+            "before_sha256": "7f97f8cdbc69cba749503e6d2c482cf5e5367e3c9e87289a5dce8606800d129f",
+            "policy_rows": 0,
+            "protected_equal": true,
+            "test": "TestDeliveryPolicyProjectWaitBoundaries/member_denied"
+          }
+        ],
+        "failures": [],
+        "observations": [],
+        "outcome": "PASS"
+      },
+      "TestDeliveryPolicyProjectWaitShortReader/short_reader_release": {
+        "HTTP": {
+          "first": 200,
+          "second": 409,
+          "second_body": {
+            "error": "artifact_authority_busy"
+          }
+        },
+        "effects": [
+          {
+            "after_sha256": "7be32905873fb41e541173861e3553792eab1d239d70cd27746127c5ef16ac1a",
+            "before_sha256": "7be32905873fb41e541173861e3553792eab1d239d70cd27746127c5ef16ac1a",
+            "policy_rows": 0,
+            "protected_equal": true,
+            "test": "TestDeliveryPolicyProjectWaitShortReader/short_reader_release"
+          }
+        ],
+        "failures": [
+          "    delivery_policy_project_wait_test.go:459: PUT /api/projects/c7c554fa-0e63-49bb-ae65-fd62747546eb/delivery-policy: expected 200, got 409: {\"error\":\"artifact_authority_busy\"}"
+        ],
+        "held": {
+          "at": "2026-11-18T00:37:34.042365Z",
+          "operation": 1,
+          "phase": "actual_transaction_held",
+          "pid": 29994,
+          "query": "GetDeliveryPolicy",
+          "tx_status": "T"
+        },
+        "observations": [
+          {
+            "at": "2026-11-18T00:37:33.972251Z",
+            "operation": 1,
+            "phase": "read_only_witness_ready",
+            "pid": 29991
+          },
+          {
+            "at": "2026-11-18T00:37:33.992045Z",
+            "milliseconds": 250,
+            "operation": 1,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "b09a69d2-e568-4d51-85ae-502005e9727d",
+            "at": "2026-11-18T00:37:34.041139Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 1.751292,
+            "no_rows": false,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "LockProjectForAssociationNowait",
+            "query_sha256": "5e4d910894b15364fcba5d6cf330a20473857bb4e3e393ad49bc203e56b31d16",
+            "succeeded": true,
+            "uuid_args": [
+              "c7c554fa-0e63-49bb-ae65-fd62747546eb",
+              "702857f7-f9a0-42ba-aa7b-3c7464776c9d"
+            ]
+          },
+          {
+            "actor": "b09a69d2-e568-4d51-85ae-502005e9727d",
+            "at": "2026-11-18T00:37:34.042363Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 1.2137090000000001,
+            "no_rows": true,
+            "operation": 1,
+            "phase": "actual_scan",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "query_sha256": "aa5eb5a19e0fec700585d4ecdfc4aa95b732c2bfb0058fa7a09aae5c55f52d0c",
+            "succeeded": false,
+            "uuid_args": null
+          },
+          {
+            "at": "2026-11-18T00:37:34.042365Z",
+            "operation": 1,
+            "phase": "actual_transaction_held",
+            "pid": 29994,
+            "query": "GetDeliveryPolicy",
+            "tx_status": "T"
+          },
+          {
+            "at": "2026-11-18T00:37:34.156932Z",
+            "operation": 1,
+            "phase": "holder_release",
+            "pid": 29994,
+            "second_pid": 29995,
+            "since_project_entry_ms": 50.968708
+          },
+          {
+            "at": "2026-11-18T00:37:34.061969Z",
+            "milliseconds": 250,
+            "operation": 2,
+            "phase": "original_lock_budget"
+          },
+          {
+            "actor": "b09a69d2-e568-4d51-85ae-502005e9727d",
+            "at": "2026-11-18T00:37:34.109297Z",
+            "credential_kind": "jwt",
+            "elapsed_ms": 3.11025,
+            "error_type": "*pgconn.PgError",
+            "no_rows": false,
+            "operation": 2,
+            "phase": "actual_scan",
+            "pid": 29995,
+            "query": "LockDeliveryPolicyProject",
+            "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+            "source_frames": [
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+                "line": 50
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+                "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+                "line": 209
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+                "line": 135
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+                "line": 107
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+                "line": 76
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+                "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+                "line": 96
+              },
+              {
+                "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+                "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+                "line": 358
+              }
+            ],
+            "sqlstate": "55P03",
+            "succeeded": false,
+            "uuid_args": [
+              "c7c554fa-0e63-49bb-ae65-fd62747546eb",
+              "702857f7-f9a0-42ba-aa7b-3c7464776c9d"
+            ]
+          },
+          {
+            "at": "2026-11-18T00:37:34.109349Z",
+            "holder_pid": 29994,
+            "operation": 2,
+            "phase": "failed_before_holder_release",
+            "pid": 29995
+          }
+        ],
+        "outcome": "FAIL",
+        "pre_release_native_proof": {
+          "at": "2026-11-18T00:37:34.109349Z",
+          "holder_pid": 29994,
+          "operation": 2,
+          "phase": "failed_before_holder_release",
+          "pid": 29995
+        },
+        "query_failure": {
+          "actor": "b09a69d2-e568-4d51-85ae-502005e9727d",
+          "at": "2026-11-18T00:37:34.109297Z",
+          "credential_kind": "jwt",
+          "elapsed_ms": 3.11025,
+          "error_type": "*pgconn.PgError",
+          "no_rows": false,
+          "operation": 2,
+          "phase": "actual_scan",
+          "pid": 29995,
+          "query": "LockDeliveryPolicyProject",
+          "query_sha256": "f56557e1843a2ebb4a8d99175df7e5edd369d42445f06127536eab0cd93eab7e",
+          "source_frames": [
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/project_update_concurrency_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.progressObservedRow.Scan",
+              "line": 50
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/pkg/db/generated/delivery_policy.sql.go",
+              "function": "github.com/multica-ai/multica/server/pkg/db/generated.(*Queries).LockDeliveryPolicyProject",
+              "line": 209
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicyInTx",
+              "line": 135
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).deliveryPolicy",
+              "line": 107
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.(*Handler).UpdateDeliveryPolicy",
+              "line": 76
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/testutil/http.go",
+              "function": "github.com/multica-ai/multica/server/internal/testutil.Call",
+              "line": 96
+            },
+            {
+              "file": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+              "function": "github.com/multica-ai/multica/server/internal/handler.r33PolicyWaitCase.func2.1",
+              "line": 358
+            }
+          ],
+          "sqlstate": "55P03",
+          "succeeded": false,
+          "uuid_args": [
+            "c7c554fa-0e63-49bb-ae65-fd62747546eb",
+            "702857f7-f9a0-42ba-aa7b-3c7464776c9d"
+          ]
+        },
+        "release": {
+          "at": "2026-11-18T00:37:34.156932Z",
+          "operation": 1,
+          "phase": "holder_release",
+          "pid": 29994,
+          "second_pid": 29995,
+          "since_project_entry_ms": 50.968708
+        },
+        "witness_PID": 29991
+      }
+    },
+    "missing_extra_parse_duplicate_pending_drift": [],
+    "named_counts": {
+      "FAIL": 4,
+      "PASS": 2,
+      "SKIP": 0
+    },
+    "package_terminal": "FAIL",
+    "permit": {
+      "bytes": 1317061,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/evidence/real-red-handler-permit-r02.json",
+      "sha256": "5e59a4bfca460b95b578d8496df2f0e2fbd39f2bc9adc32bc62f2312c8f73e3b"
+    },
+    "permit_required_refs": 5062,
+    "result": {
+      "bytes": 1751,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/result.json",
+      "sha256": "3b94b4a452213059922556d102f58735f06a7ba8c1be6434a1f16b5819bfc92f"
+    },
+    "stderr": {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stdout": {
+      "bytes": 32978,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/stdout.jsonl",
+      "sha256": "1a8b5e80e14b6ac89311c034b1530929561e652181854f28bb0050c537161176"
+    },
+    "suite_reran": false,
+    "top_failures_propagated": 2,
+    "unique_starts": 6,
+    "unique_terminals": 6,
+    "valid_events": 75
+  },
+  "at": "2026-11-18T00:42:43.010346Z",
+  "changed_files": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-real-red-independent-check-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-real-red-independent-check-20261118.json"
+  ],
+  "effects": {
+    "all_protected_equal": true,
+    "database": "multica_pay241_20261117_s2_policywait_red_r33b",
+    "database_after": {
+      "bytes": 219866,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/database-after.json",
+      "sha256": "609dc457f623a9cb300fe8cd28a7566b70599bc6945f861903f0850894886695"
+    },
+    "database_before": {
+      "bytes": 219866,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/database-before.json",
+      "sha256": "b61055b7c5b67fe217a2c0544c2b312babc8be1d764a0c2c64a9bac5768a09b8"
+    },
+    "migration_ledger_indexes_equal": true,
+    "other_connections_before_after": [
+      0,
+      0
+    ],
+    "percase_policy_rows": {
+      "competing_winner": 1,
+      "long_reader": 0,
+      "member": 0,
+      "short_reader": 0
+    },
+    "raw_records": [
+      {
+        "after_sha256": "7be32905873fb41e541173861e3553792eab1d239d70cd27746127c5ef16ac1a",
+        "before_sha256": "7be32905873fb41e541173861e3553792eab1d239d70cd27746127c5ef16ac1a",
+        "policy_rows": 0,
+        "protected_equal": true,
+        "test": "TestDeliveryPolicyProjectWaitShortReader/short_reader_release"
+      },
+      {
+        "after_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+        "before_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+        "policy_rows": 0,
+        "protected_equal": true,
+        "test": "TestDeliveryPolicyProjectWaitBoundaries/long_reader"
+      },
+      {
+        "after_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+        "before_sha256": "90ebfd9784bb10f598f8e6f225e4c75b66611d2a23cbf18062f295e6a7325b71",
+        "policy_rows": 0,
+        "protected_equal": true,
+        "test": "TestDeliveryPolicyProjectWaitBoundaries/long_reader"
+      },
+      {
+        "after_sha256": "20e84d2095d3fd75a32ffafd9eea00a6989e865b6a9079c5b13a4342e742f49d",
+        "before_sha256": "589b566da39c78294dacde697c280b5ed601160fc242601cea77be98368d9321",
+        "policy_rows": 1,
+        "protected_equal": true,
+        "test": "TestDeliveryPolicyProjectWaitBoundaries/competing_writer"
+      },
+      {
+        "after_sha256": "7f97f8cdbc69cba749503e6d2c482cf5e5367e3c9e87289a5dce8606800d129f",
+        "before_sha256": "7f97f8cdbc69cba749503e6d2c482cf5e5367e3c9e87289a5dce8606800d129f",
+        "policy_rows": 0,
+        "protected_equal": true,
+        "test": "TestDeliveryPolicyProjectWaitBoundaries/member_denied"
+      }
+    ],
+    "retained_count_deltas": {
+      "agent_invocation_target": {
+        "after": 1,
+        "before": 0
+      },
+      "collaboration_config_invalidation": {
+        "after": 32,
+        "before": 21
+      },
+      "project_delivery_policy": {
+        "after": 1,
+        "before": 0
+      }
+    },
+    "whole_database_zerochange_claimed": false,
+    "winner_exact_revision_mode_actor_check_passed": true
+  },
+  "evidence_bindings": [
+    {
+      "bytes": 3058,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/database/handler-profiles-r02/red-environment.json",
+      "sha256": "01d9109a34fd13daf93e077ce47b1cb6329199c24ba3adf83340c82774f729a0"
+    },
+    {
+      "bytes": 1316542,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/evidence/real-red-handler-permit-draft-r02.json",
+      "sha256": "d777eb4668a9cd8790bfd31a03834ccea0de58856cbfaa6c13396f06fb12f9f3"
+    },
+    {
+      "bytes": 1317061,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/evidence/real-red-handler-permit-r02.json",
+      "sha256": "5e59a4bfca460b95b578d8496df2f0e2fbd39f2bc9adc32bc62f2312c8f73e3b"
+    },
+    {
+      "bytes": 20049,
+      "mode": "0644",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+      "sha256": "443fc8a99a88130df7005854d9759360341c982190c75b0e84100de7547f22b3"
+    },
+    {
+      "bytes": 1751,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r01/result.json",
+      "sha256": "ba917c29dbf4f835b310e94586605b0e573b446783e3fd954aa531095661e2da"
+    },
+    {
+      "bytes": 921,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/command.json",
+      "sha256": "7da9c356d55d32c3f855afaa2b9116a6b929197e796de17c13344e5b0ad917cb"
+    },
+    {
+      "bytes": 219866,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/database-after.json",
+      "sha256": "609dc457f623a9cb300fe8cd28a7566b70599bc6945f861903f0850894886695"
+    },
+    {
+      "bytes": 219866,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/database-before.json",
+      "sha256": "b61055b7c5b67fe217a2c0544c2b312babc8be1d764a0c2c64a9bac5768a09b8"
+    },
+    {
+      "bytes": 1751,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/result.json",
+      "sha256": "3b94b4a452213059922556d102f58735f06a7ba8c1be6434a1f16b5819bfc92f"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 32978,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r02/stdout.jsonl",
+      "sha256": "1a8b5e80e14b6ac89311c034b1530929561e652181854f28bb0050c537161176"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/compile.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/compile.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/gofmt.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/gofmt.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 3362,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/result.json",
+      "sha256": "f24101138123f0261e3e8d7aed7368865a0cb6bb91d4fe02c9d888fb634fdb56"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/vet.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 0,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/vet.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 75695,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r32-runtime-after-independent-check-20261118.json",
+      "sha256": "ecdd27b0ce5bf2ec6ea7e22f5a226b74bcd39506c0ff0e53b8bb26cae4cdf686"
+    },
+    {
+      "bytes": 8700,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-project-wait-plan-20261118.json",
+      "sha256": "64486bd4ff02d9a88eb46f507c52abc18104fc09d2ac41311cbb3e22212d7e8a"
+    },
+    {
+      "bytes": 974933,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-test-coordination-followup-20261118.json",
+      "sha256": "0b303509cee0f274cd10cf113afc184559f919ce36b55d25c25ab9d33b81b436"
+    },
+    {
+      "bytes": 16988,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-test-coordination-independent-check-20261118.json",
+      "sha256": "ee1f1bbe359008614e7a0ea4f2c1c72080a8026d7d6b65676213ab41543b1d50"
+    },
+    {
+      "bytes": 7287,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-test-coordination-independent-check-20261118.md",
+      "sha256": "6cff9117dc2edd0e147c0aaf25feb94aceaa63c47cdcee93126d5029cf3e01f3"
+    }
+  ],
+  "evidence_semantics": {
+    "R32_physical_holder_identified": false,
+    "actual_query_Scan_errors_PID_args_JWT_source_frames": true,
+    "competing_release_ms": 52.02325,
+    "first_holder_PID": 29994,
+    "long_NOWAIT_actual_wait250ms_claimed": false,
+    "long_release_ms": 369.668583,
+    "member403_noquery_noappend_assertions_pass": true,
+    "native55P03_before_release_all3": true,
+    "product_nonnative_fake_witness": false,
+    "realGET_SHARED_and_virtual0_preserved": true,
+    "second_PUT_PID": 29995,
+    "short_release_ms": 50.968708,
+    "witness_PID": 29991
+  },
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "actual_HTTP": {
+        "first": 200,
+        "second": 409,
+        "second_body": {
+          "error": "artifact_authority_busy"
+        }
+      },
+      "desired_second_status": 200,
+      "id": "SHORT_READER_REQUIRED200_ACTUAL_BUSY409",
+      "leaf": "TestDeliveryPolicyProjectWaitShortReader/short_reader_release",
+      "nativeSQLSTATE": "55P03",
+      "not_fixed_reason": "product outside report-only scope; separate admitted M1-only repair next"
+    },
+    {
+      "actual_HTTP": {
+        "first": 200,
+        "second": 409,
+        "second_body": {
+          "error": "artifact_authority_busy"
+        }
+      },
+      "desired_error": "delivery_policy_revision_conflict",
+      "id": "COMPETING_WRITER_REQUIRED_CAS_ACTUAL_BUSY409",
+      "leaf": "TestDeliveryPolicyProjectWaitBoundaries/competing_writer",
+      "loser_appends": 0,
+      "not_fixed_reason": "desired wait/CAS path requires separate product scope",
+      "winner_policy_rows": 1
+    }
+  ],
+  "full_S2_accepted": false,
+  "genuine_RED_accepted": true,
+  "initial_run_preserved": {
+    "classification": "coordination_failure_not_accepted_business_RED",
+    "counts": {
+      "FAIL": 5,
+      "PASS": 1
+    },
+    "result": {
+      "bytes": 1751,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/policy-wait-red-r01/result.json",
+      "sha256": "ba917c29dbf4f835b310e94586605b0e573b446783e3fd954aa531095661e2da"
+    },
+    "retroactively_accepted": false
+  },
+  "long_reader_member_controls_pass": true,
+  "markdown": {
+    "bytes": 9097,
+    "mode": "0444",
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-real-red-independent-check-20261118.md",
+    "sha256": "f34a02b7bd4d3327683ab62a37ff35943b36d3bbc426c511007a13375240765b"
+  },
+  "pending_within_genuine_RED_review": false,
+  "preserved_limits": {
+    "fullS2_S3_S4_S5_complete": false,
+    "oldsuccessful_completed_keys_replayed": false,
+    "original_runtime_R32": {
+      "FAIL": 1,
+      "NOT_RUN": 0,
+      "PASS": 3,
+      "retry": 0
+    },
+    "parent24": {
+      "NOT_RUN": 15,
+      "PARTIAL": 9,
+      "PASS": 0
+    },
+    "physical_holder_known": false
+  },
+  "product_implementation_accepted": false,
+  "recommendation": {
+    "ROOT_owns_product_Green_race_build_runtime_gates": true,
+    "existing250ms_perlock_budget_authority_CAS_preserved": true,
+    "existing_query_and_stage_NOWAIT_unchanged_required": true,
+    "new_query": "LockDeliveryPolicyProjectWait",
+    "next_product_files": [
+      "server/internal/handler/delivery_policy.go",
+      "server/pkg/db/queries/delivery_policy.sql",
+      "server/pkg/db/generated/delivery_policy.sql.go"
+    ],
+    "sole_caller": "M1 delivery-policy PUT"
+  },
+  "reviewer": "/root/r32_after_check",
+  "reviewer_execution": {
+    "API_HTTP": 0,
+    "Git": 0,
+    "Go_build_test_vet_AST_list_TestMain": 0,
+    "Redis": 0,
+    "agents_spawned": 0,
+    "browser": 0,
+    "database_SQL": 0,
+    "lint_typecheck_commands": 0,
+    "old_evidence_edits": 0,
+    "process_queries_signals": 0,
+    "saved_file_hash_raw_parsing_only": true,
+    "source_config_edits": 0
+  },
+  "schema_version": 1,
+  "sealed_mode": "0444",
+  "simplifications_made": [],
+  "source": {
+    "accepted_coord_boundary": {
+      "bytes": 16988,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-test-coordination-independent-check-20261118.json",
+      "sha256": "ee1f1bbe359008614e7a0ea4f2c1c72080a8026d7d6b65676213ab41543b1d50"
+    },
+    "accepted_owner": {
+      "bytes": 974933,
+      "mode": "0444",
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-test-coordination-followup-20261118.json",
+      "sha256": "0b303509cee0f274cd10cf113afc184559f919ce36b55d25c25ab9d33b81b436"
+    },
+    "actual_input_drift": [],
+    "files": 5056,
+    "final_manifest_sha256": "735b08eb19afc0a278b78b08ed99811582d6f81ae3a4d44d653f0d0ee82c9e89",
+    "frozen_test": {
+      "bytes": 20049,
+      "mode": "0644",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/source-red-r02/server/internal/handler/delivery_policy_project_wait_test.go",
+      "sha256": "443fc8a99a88130df7005854d9759360341c982190c75b0e84100de7547f22b3"
+    },
+    "lines": 491,
+    "product_delta": 0,
+    "protected_files": 5055,
+    "wider_source_graph_tests_reexecuted": false
+  },
+  "static": {
+    "gofmt_vet_compile_exits": [
+      0,
+      0,
+      0
+    ],
+    "record": {
+      "bytes": 3362,
+      "mode": "0600",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/verification/static-red-r02/result.json",
+      "sha256": "f24101138123f0261e3e8d7aed7368865a0cb6bb91d4fe02c9d888fb634fdb56"
+    },
+    "rerun_by_reviewer": false,
+    "six_empty_logs_verified": true
+  },
+  "status": "ACCEPTED_R33_GENUINE_POLICY_PROJECT_WAIT_RED_CONTROLS_PASS",
+  "type": "pay241_r33_policy_wait_real_red_independent_check",
+  "verification": {
+    "Lint": "PASS retained scoped gofmt/vet",
+    "Product_fullS2": "NOT_ACCEPTED_HERE",
+    "Tests": "FAIL genuineRED2PASS4FAIL0SKIP named;2PASS2FAIL leaf; long/memberPASS",
+    "TypeCheck": "PASS retained exact-source compile-only",
+    "genuine_RED_acceptance": "PASS"
+  },
+  "write_ownership": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-real-red-independent-check-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-real-red-independent-check-20261118.json"
+  ]
+}

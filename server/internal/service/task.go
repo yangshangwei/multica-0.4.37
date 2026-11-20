@@ -4009,29 +4009,36 @@ func (s *TaskService) ClaimTasksForRuntimes(ctx context.Context, runtimeIDs []pg
 	var reclaimed []db.AgentTaskQueue
 	var reclaimCheckAfter time.Time
 	if len(dueKeys) > 0 {
-		reclaimCheckAfter = time.Now().Add(claimResponseRecoveryWindow + ReclaimCheckHintSafetyMargin)
-		err = s.runInTx(ctx, func(qtx *db.Queries) error {
-			if err := LockManagedRuntimes(ctx, s.runtimeLookup(qtx), uniqueIDs); err != nil {
-				return err
-			}
-			var err error
-			reclaimed, err = qtx.ReclaimStaleDispatchedTasksForRuntimes(ctx, db.ReclaimStaleDispatchedTasksForRuntimesParams{RuntimeIds: uniqueIDs, ClaimRecoverySecs: claimResponseRecoveryWindow.Seconds(), PrepareLeaseSecs: prepareLeaseDuration.Seconds(), RuntimeStaleSecs: RuntimeClaimFreshnessSeconds, MaxTasks: int32(maxTasks)})
-			if err != nil {
-				return err
-			}
-			for _, task := range reclaimed {
-				if err := ValidateManagedTaskBinding(ctx, task); err != nil {
+		// This necessary-condition probe is not authority. An empty result skips
+		// only reclaim's writer fences; queued work still follows the path below.
+		potential, err := s.Queries.HasPotentialDispatchedReclaimForRuntimes(ctx, db.HasPotentialDispatchedReclaimForRuntimesParams{RuntimeIds: uniqueIDs, ClaimRecoverySecs: claimResponseRecoveryWindow.Seconds()})
+		if err != nil {
+			return nil, fmt.Errorf("check potential dispatched reclaim: %w", err)
+		}
+		if potential {
+			reclaimCheckAfter = time.Now().Add(claimResponseRecoveryWindow + ReclaimCheckHintSafetyMargin)
+			err = s.runInTx(ctx, func(qtx *db.Queries) error {
+				if err := LockManagedRuntimes(ctx, s.runtimeLookup(qtx), uniqueIDs); err != nil {
 					return err
 				}
+				var err error
+				reclaimed, err = qtx.ReclaimStaleDispatchedTasksForRuntimes(ctx, db.ReclaimStaleDispatchedTasksForRuntimesParams{RuntimeIds: uniqueIDs, ClaimRecoverySecs: claimResponseRecoveryWindow.Seconds(), PrepareLeaseSecs: prepareLeaseDuration.Seconds(), RuntimeStaleSecs: RuntimeClaimFreshnessSeconds, MaxTasks: int32(maxTasks)})
+				if err != nil {
+					return err
+				}
+				for _, task := range reclaimed {
+					if err := ValidateManagedTaskBinding(ctx, task); err != nil {
+						return err
+					}
+				}
+				return nil
+			})
+			if err != nil {
+				return nil, fmt.Errorf("reclaim stale dispatched tasks: %w", err)
 			}
-			return nil
-		})
-		if err != nil {
-			return nil, fmt.Errorf("reclaim stale dispatched tasks: %w", err)
 		}
-		// The UPDATE's fixed setup/locking cost dominates array width. Query and
-		// advance the complete machine-level set together so per-runtime backstops
-		// cannot drift into one UPDATE on almost every daemon poll.
+		// Advance the complete runtime set after a reliable negative or the
+		// successful canonical reclaim, preserving the original retry backstop.
 		s.ReclaimCheck.MarkChecked(
 			ctx,
 			runtimeKeys,

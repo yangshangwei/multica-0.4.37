@@ -59,7 +59,9 @@ check_cleanup() {
 }
 
 prepare_check_environment() {
-  local source_env=$1 offset task_id origins
+  local source_env=$1 offset task_id origins task_jwt_secret
+  task_jwt_secret="$(node -e 'process.stdout.write(require("node:crypto").randomBytes(32).toString("hex"))')" \
+    || die "Could not generate an isolated check signing key."
   task_id="$(date -u '+%Y%m%d%H%M%S')-$$"
   acquire_lock
   trap release_lock EXIT
@@ -95,6 +97,8 @@ prepare_check_environment() {
     write_manifest_value POSTGRES_DB "$DB_NAME"
     write_manifest_value GO_TEST_DB_NAME "$CHECK_GO_DB_NAME"
     write_manifest_value DATABASE_URL "$DATABASE_URL"
+    # Private history cursors reject development defaults; never reuse a deployment key.
+    write_manifest_value JWT_SECRET "$task_jwt_secret"
     write_manifest_value FRONTEND_ORIGIN "http://localhost:$FRONTEND_PORT"
     write_manifest_value CORS_ALLOWED_ORIGINS "$origins"
     write_manifest_value ALLOWED_ORIGINS "$origins"

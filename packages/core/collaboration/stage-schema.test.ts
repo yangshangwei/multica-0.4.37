@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from "vitest";
 import {
-  CollaborationStageConfirmationSchema, CollaborationStageRequestSchemas, COLLABORATION_STAGE_ROUTE_UNAVAILABLE, COLLABORATION_STAGE_SUCCESS_CODES,
+  CollaborationStageBlockerSchema, CollaborationStageConfirmationSchema, CollaborationStageRequestSchemas, COLLABORATION_STAGE_ROUTE_UNAVAILABLE, COLLABORATION_STAGE_SUCCESS_CODES,
   classifyCollaborationStageError, classifyCollaborationStageResponse, collaborationStageBodyLimit, collaborationStageRefusalStatus, collaborationStageRoleConflicts,
   matchesCollaborationStageConfirmation, collaborationStageConfirmationIdentity, parseCollaborationStagePolicy, parseCollaborationStageProposalDetail, parseCollaborationStageProposalPage, parseCollaborationStageView,
   type CollaborationStageFrozenRequest, type CollaborationStageWriteResult,
@@ -29,6 +29,27 @@ const roles = {
 };
 const candidate2 = { candidate_id: stageIds.candidate2, version: "2", content_digest: stageDigests.content2 };
 const candidate1 = { candidate_id: stageIds.candidate1, version: "1", content_digest: stageDigests.content1 };
+
+describe("frozen execution and rollback refusal vocabulary", () => {
+  it.each([
+    "stage_execution_unavailable", "stage_execution_target_changed", "stage_execution_pending", "stage_execution_conflict",
+    "stage_rollback_observation_unavailable", "stage_rollback_observation_changed",
+  ])("recognizes %s in R4 and its original stored HTTP409 receipt", (code) => {
+    expect(CollaborationStageBlockerSchema.parse({ code, stage: "release" }).code).toBe(code);
+    expect(collaborationStageRefusalStatus(code)).toBe(409);
+    const receipt = { code, error: code, status: 409, collaboration_revision: "14" };
+    const expected = { type: "refusal", stored: true, status: 409, code, collaborationRevision: "14" };
+    expect(classifyCollaborationStageError(409, receipt, "write", "issue")).toEqual(expected);
+    expect(classifyCollaborationStageResponse(200, receipt, "recovery", "issue")).toEqual(expected);
+    expect(classifyCollaborationStageResponse(200, { ...receipt, status: 403 }, "recovery", "issue")).toMatchObject({ type: "unknown", reason: "malformed" });
+  });
+  it("retains genuinely unfamiliar blockers and unconfirmed plain errors as unknown", () => {
+    expect(CollaborationStageBlockerSchema.parse({ code: "stage_future_execution_gate", stage: "release" }).code).toBe("unknown");
+    expect(collaborationStageRefusalStatus("stage_future_execution_gate")).toBeNull();
+    expect(classifyCollaborationStageError(409, { code: "stage_future_execution_gate", error: "unknown" }, "write", "issue"))
+      .toMatchObject({ type: "unknown", reason: "malformed" });
+  });
+});
 
 describe("P1 project policy", () => {
   it("parses a revision and the virtual disabled revision", () => {

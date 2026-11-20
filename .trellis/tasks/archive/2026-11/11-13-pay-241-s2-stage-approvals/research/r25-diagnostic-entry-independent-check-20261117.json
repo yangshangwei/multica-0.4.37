@@ -1,0 +1,435 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-17T09:20:09.104166+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r25_diagnostic_entry_check",
+  "verdict": "READY_R25_DIAGNOSTIC_ENTRY_SCOPED",
+  "entry_ready": true,
+  "blocking_findings_open": 0,
+  "reviewed_draft": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/runtime/api-start-plan-draft-current-r01.json",
+    "sha256": "41221895acf5b97a8121f4f7c05803c850960e19612a69d7a3eea2ce597f463d",
+    "bytes": 11601,
+    "mode": "0o600"
+  },
+  "final_reference_check": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/independent-check/final-reference-check-r01.json",
+    "sha256": "8933ba4149e3e9ba3e512517d581797ed2bd517f78b76f1e626d7db9bac01052",
+    "bytes": 21686,
+    "mode": "0o600"
+  },
+  "source_build_check": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/independent-check/source-build-check-r02.json",
+    "sha256": "1fa7cb39ddb7cf442c42777fd28742d7d48dd260282e82828717be4f827042b5",
+    "bytes": 25588,
+    "mode": "0o600"
+  },
+  "runtime_preparation_check": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/independent-check/runtime-preparation-check-r02.json",
+    "sha256": "c488d65ac02af9225169194cef929d7c4c15da0e5043dd4d05607a637b36879c",
+    "bytes": 113318,
+    "mode": "0o600"
+  },
+  "implementation_report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r25-candidate-diagnostics-implementation-20261117.json",
+    "sha256": "a6b2f31f31d6b952a1fb65f7e4509bc5d5af59f630176a63a3368a20a7d27f98",
+    "bytes": 17775,
+    "mode": "0o644"
+  },
+  "implementation_seal": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/evidence/report-seal.json",
+    "sha256": "7bdd25174e13e354b6de57fd898fba0da2c519cfaa71911125c19b739668a2b1",
+    "bytes": 1854,
+    "mode": "0o600"
+  },
+  "source": {
+    "files": 5047,
+    "source_files_sha256": "a3c2eab3f743dfe5fab86a66fd27134ae54c91c5bef162b8302c25bb1d56466b",
+    "changed_existing_files": [
+      "server/cmd/server/pay241_read_diagnostics_test.go"
+    ],
+    "unchanged_files": 5046,
+    "paths_and_modes_unchanged": true,
+    "outside_function_bytes_unchanged": true,
+    "production_SQL_locks_authority_deadlines_unchanged": true
+  },
+  "diagnostic_policy": {
+    "method": "GET",
+    "path": "/api/collaboration/issues/{canonical_nonzero_UUID}/delivery-evidence/candidates",
+    "segments": 7,
+    "R1_R2_R4_T4_preview_POST_excluded": true,
+    "record_cap": 4096,
+    "body_limit_bytes": 1048576,
+    "Tee_raw_base64_stream_hash_byte_count_completeness_unchanged": true,
+    "exclusive_sink0600_parent0700_unchanged": true,
+    "pgx_request_backend_identity_error_correlation_unchanged": true,
+    "production_SQL_locks_authority_deadlines_unchanged": true
+  },
+  "compile": {
+    "exit_code": 0,
+    "count": 1,
+    "TestMain_execution": false,
+    "database_API_binary_execution": false,
+    "binary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/build/stage-router.test",
+      "sha256": "2dcecad3096983d825ad3c3274969097003d49e1a36d0cf22c3674729ba4b177",
+      "bytes": 118534498,
+      "mode": "0o755"
+    },
+    "original_86fea651_ldflags": true,
+    "current_HEAD_claim": false
+  },
+  "RED": {
+    "command": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/evidence/capture-policy-red-r01.command.json",
+      "sha256": "506e2f1eee510578315426096c839ccc27c0ddb47c12f47fc04e7b3f0dd54e91",
+      "bytes": 1727,
+      "mode": "0o600"
+    },
+    "raw": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/evidence/capture-policy-red-r01.stdout.log",
+      "sha256": "e2188d01565c3612a4cd3eec24f2e4e460e08d216d7ec482b4b45349019d8133",
+      "bytes": 62396,
+      "mode": "0o600"
+    },
+    "exit_code": 1,
+    "top_level": {
+      "fail": 2,
+      "pass": 1
+    },
+    "named": {
+      "pass": 58,
+      "fail": 10
+    },
+    "leaf": {
+      "pass": 57,
+      "fail": 9
+    },
+    "named_names": [
+      "TestCapturePolicyExactSourceBinding",
+      "TestCapturePolicyExactSourceBinding/ParseUUID",
+      "TestCapturePolicyExactSourceBinding/UUIDToString",
+      "TestCapturePolicyExactSourceBinding/pay241DiagnosticPath",
+      "TestCapturePolicyExactSourceBinding/stageControlUUID",
+      "TestPay241DiagnosticPathCaptureBoundary",
+      "TestPay241DiagnosticPathCaptureBoundary/CONNECT_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/DELETE_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/HEAD_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/OPTIONS_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/PATCH_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/POST_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/PUT_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/R1_issue_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/R2_stage",
+      "TestPay241DiagnosticPathCaptureBoundary/R4_code_candidate",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_list",
+      "TestPay241DiagnosticPathCaptureBoundary/TRACE_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/absolute_URL_as_path",
+      "TestPay241DiagnosticPathCaptureBoundary/administrator_gate",
+      "TestPay241DiagnosticPathCaptureBoundary/authentication",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_empty_middle_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_extra_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_trailing_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_nonzero_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v4_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v7_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/compact_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/duplicate_leading_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_method",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_path",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/invalid_uuid_hex",
+      "TestPay241DiagnosticPathCaptureBoundary/issue_grants",
+      "TestPay241DiagnosticPathCaptureBoundary/long_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/lowercase_method",
+      "TestPay241DiagnosticPathCaptureBoundary/missing_leading_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/ordinary_issue_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/padded_method",
+      "TestPay241DiagnosticPathCaptureBoundary/preview_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/preview_POST",
+      "TestPay241DiagnosticPathCaptureBoundary/raw_path_with_fragment",
+      "TestPay241DiagnosticPathCaptureBoundary/raw_path_with_query",
+      "TestPay241DiagnosticPathCaptureBoundary/runtime_grants",
+      "TestPay241DiagnosticPathCaptureBoundary/short_api",
+      "TestPay241DiagnosticPathCaptureBoundary/short_collaboration",
+      "TestPay241DiagnosticPathCaptureBoundary/short_issue_prefix",
+      "TestPay241DiagnosticPathCaptureBoundary/short_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/slash_only",
+      "TestPay241DiagnosticPathCaptureBoundary/unrelated_leading_prefix",
+      "TestPay241DiagnosticPathCaptureBoundary/uppercase_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_NUL",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_braces",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_encoded_hyphens",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_extra_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_leading_space",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_newline",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_trailing_space",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_unicode",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_urn",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_api_case",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_candidate_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_collaboration_case",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_delivery_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_resource",
+      "TestPay241DiagnosticPathCaptureBoundary/zero_uuid",
+      "TestPay241DiagnosticPathUsesURLPath"
+    ],
+    "failure_names": [
+      "TestPay241DiagnosticPathCaptureBoundary",
+      "TestPay241DiagnosticPathCaptureBoundary/R1_issue_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/R2_stage",
+      "TestPay241DiagnosticPathCaptureBoundary/R4_code_candidate",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_list",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_nonzero_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v4_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v7_GET",
+      "TestPay241DiagnosticPathUsesURLPath"
+    ],
+    "skip_names": [],
+    "unfinished_names": [],
+    "build_event_count": 0,
+    "explicit_file_list_excludes_package_TestMain": true
+  },
+  "GREEN": {
+    "command": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/evidence/capture-policy-green-r01.command.json",
+      "sha256": "77f8d8a182ba2ffbe64b811ff90f2755e5e7cd58afcb233e7fdaaadeaee8f872",
+      "bytes": 1735,
+      "mode": "0o600"
+    },
+    "raw": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/evidence/capture-policy-green-r01.stdout.log",
+      "sha256": "7b91d1535e03e2ba7f4596a50ed12a66d3e2e37b9d18a39537d765b9dfb7b733",
+      "bytes": 59110,
+      "mode": "0o600"
+    },
+    "exit_code": 0,
+    "top_level": {
+      "pass": 3
+    },
+    "named": {
+      "pass": 68
+    },
+    "leaf": {
+      "pass": 66
+    },
+    "named_names": [
+      "TestCapturePolicyExactSourceBinding",
+      "TestCapturePolicyExactSourceBinding/ParseUUID",
+      "TestCapturePolicyExactSourceBinding/UUIDToString",
+      "TestCapturePolicyExactSourceBinding/pay241DiagnosticPath",
+      "TestCapturePolicyExactSourceBinding/stageControlUUID",
+      "TestPay241DiagnosticPathCaptureBoundary",
+      "TestPay241DiagnosticPathCaptureBoundary/CONNECT_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/DELETE_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/HEAD_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/OPTIONS_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/PATCH_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/POST_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/PUT_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/R1_issue_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/R2_stage",
+      "TestPay241DiagnosticPathCaptureBoundary/R4_code_candidate",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_detail",
+      "TestPay241DiagnosticPathCaptureBoundary/T4_test_report_list",
+      "TestPay241DiagnosticPathCaptureBoundary/TRACE_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/absolute_URL_as_path",
+      "TestPay241DiagnosticPathCaptureBoundary/administrator_gate",
+      "TestPay241DiagnosticPathCaptureBoundary/authentication",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_empty_middle_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_extra_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/candidate_trailing_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_nonzero_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v4_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/canonical_v7_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/compact_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/duplicate_leading_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_method",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_path",
+      "TestPay241DiagnosticPathCaptureBoundary/empty_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/invalid_uuid_hex",
+      "TestPay241DiagnosticPathCaptureBoundary/issue_grants",
+      "TestPay241DiagnosticPathCaptureBoundary/long_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/lowercase_method",
+      "TestPay241DiagnosticPathCaptureBoundary/missing_leading_slash",
+      "TestPay241DiagnosticPathCaptureBoundary/ordinary_issue_candidates",
+      "TestPay241DiagnosticPathCaptureBoundary/padded_method",
+      "TestPay241DiagnosticPathCaptureBoundary/preview_GET",
+      "TestPay241DiagnosticPathCaptureBoundary/preview_POST",
+      "TestPay241DiagnosticPathCaptureBoundary/raw_path_with_fragment",
+      "TestPay241DiagnosticPathCaptureBoundary/raw_path_with_query",
+      "TestPay241DiagnosticPathCaptureBoundary/runtime_grants",
+      "TestPay241DiagnosticPathCaptureBoundary/short_api",
+      "TestPay241DiagnosticPathCaptureBoundary/short_collaboration",
+      "TestPay241DiagnosticPathCaptureBoundary/short_issue_prefix",
+      "TestPay241DiagnosticPathCaptureBoundary/short_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/slash_only",
+      "TestPay241DiagnosticPathCaptureBoundary/unrelated_leading_prefix",
+      "TestPay241DiagnosticPathCaptureBoundary/uppercase_uuid",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_NUL",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_braces",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_encoded_hyphens",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_extra_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_leading_space",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_newline",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_trailing_space",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_unicode",
+      "TestPay241DiagnosticPathCaptureBoundary/uuid_urn",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_api_case",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_candidate_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_collaboration_case",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_delivery_segment",
+      "TestPay241DiagnosticPathCaptureBoundary/wrong_resource",
+      "TestPay241DiagnosticPathCaptureBoundary/zero_uuid",
+      "TestPay241DiagnosticPathUsesURLPath"
+    ],
+    "failure_names": [],
+    "skip_names": [],
+    "unfinished_names": [],
+    "build_event_count": 0,
+    "explicit_file_list_excludes_package_TestMain": true
+  },
+  "prepared_artifacts": {
+    "old_paths_preserved": 231,
+    "fresh_empty0700_slots": 8,
+    "current_paths": 239,
+    "staging_mode": "0500",
+    "output_mode": "0700"
+  },
+  "database_before_api": {
+    "reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/runtime/database-before-api-r01.json",
+      "sha256": "83d2a1da48dc9d6b6325d65c4ece7da341f754f6a7cf10d88959b21747cfa74e",
+      "bytes": 125041,
+      "mode": "0o600"
+    },
+    "same_all_eight_history_sets_as_R24_after_stop": true,
+    "summary": {
+      "database": "multica_pay241_20261116_s2_runtime_r11",
+      "other_connections": 0,
+      "gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "44"
+      },
+      "queue_rows": 28,
+      "queue_status_counts": {
+        "failed": 20,
+        "deferred": 4,
+        "running": 4
+      },
+      "leased_or_bound": 0,
+      "host_runs": 39,
+      "unsettled": 0,
+      "unreleased": 0,
+      "artifacts": 26,
+      "incomplete_artifacts": 0,
+      "stage_intents": 12,
+      "stage_observations": 18,
+      "unresolved_stage_intents": 1,
+      "rollback_metrics": 9
+    },
+    "SQL_by_reviewer": 0
+  },
+  "frontend_binding": {
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01",
+    "inputs": 3359,
+    "links": 1961,
+    "outputs": 1676,
+    "same_files_links_as_R24": true,
+    "fresh_main_audit": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/runtime/current-consuming-source-before-api-r01.json",
+      "sha256": "b0a2ef01272df4f3acf0d21001efe7608db2c836f2fe7a4a0ea10bff2dd22149",
+      "bytes": 2970,
+      "mode": "0o600"
+    },
+    "historical_full_graph_rerun_by_reviewer": false
+  },
+  "four_case_discovery": {
+    "reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/runtime/discovery-current-r02/result.json",
+      "sha256": "949b881705a712f42d47a095ea159dbf93c090e747c16d125d71b2709b9eb233",
+      "bytes": 2160,
+      "mode": "0o600"
+    },
+    "pass": 4,
+    "case_bodies_executed": 0,
+    "workers": 1,
+    "retries": 0,
+    "maxFailures": 1,
+    "read_deadline_seconds": 5,
+    "action_deadline_seconds": 20,
+    "case_deadline_seconds": 480
+  },
+  "findings_fixed": [
+    {
+      "id": "R25-ENTRY-C01",
+      "files": [
+        "runtime/collect-runtime-database-r02.mjs",
+        "runtime/run-original-four-scenarios-r02.mjs",
+        "runtime/playwright-four-scenarios-r02.config.mjs"
+      ],
+      "issue": "Prepared derivatives pointed at a nonexistent R25 parent instead of the reused R24 parent.",
+      "fix": "Main created corrected r02 variants; exact path/config-name correction verified, broken originals preserved.",
+      "fix_owner": "main",
+      "repair": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/r25-m1-candidate-diagnostic-r01/runtime/adapter-path-repair-r02.json",
+        "sha256": "9bf9cdec1cea8dc6d1057c985d6aedb7e19a49e06391ac44b303ef272ef623f8",
+        "bytes": 2785,
+        "mode": "0o600"
+      }
+    },
+    {
+      "id": "REVIEWER-R01-HISTORICAL-ORIGIN",
+      "file": "independent-check/verify-source-build-r02.py",
+      "issue": "Reviewer first compared historical RED source_origin to current GREEN bytes.",
+      "fix": "Validated its explicitly declared immutable before snapshot and exact source declaration; failed first checker and receipt preserved."
+    },
+    {
+      "id": "REVIEWER-R01-CANONICAL-SIZE",
+      "file": "independent-check/verify-runtime-preparation-r02.py",
+      "issue": "Reviewer first compared canonical size-bearing entries to worker path/hash/mode entries as identical objects.",
+      "fix": "Compared exact common fields and independently validated every one of the5047 canonical file sizes; failed first checker and receipt preserved."
+    }
+  ],
+  "findings_not_fixed": [
+    {
+      "issue": "Original R24 remains3PASS/1FAIL/0NOT_RUN,retry0; original candidate GET409 body/SQLSTATE/holder was not captured.",
+      "reason": "A passive capture readiness check cannot establish the old refusal cause; no product or waiter fix is authorized.",
+      "original_result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/runtime/four-scenarios-r01/result.json",
+        "sha256": "9ed5f3d54e38cd718fd5a97d84f1e13df4d749eb8bf309d5e3534742f42a84a3",
+        "bytes": 7313,
+        "mode": "0o600"
+      },
+      "original_reporter": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/runtime/four-scenarios-r01/playwright-report.json",
+        "sha256": "2d43f2b9ad576bd62c27bafef0c749411f20b1229714303acc12626656fff5d5",
+        "bytes": 13176,
+        "mode": "0o644"
+      }
+    },
+    {
+      "issue": "Live matching API/admin/platform preflight, one fresh full four-case run, final after/stop evidence and complete S2/A01\u2013A12 are still pending.",
+      "reason": "Main owns execution and final acceptance; this entry review is limited to source/build/prepared runtime."
+    }
+  ],
+  "verification": {
+    "Lint": "PASS recorded standalone go vet and empty owned-file gofmt-d; hashes independently verified; no lint rerun",
+    "TypeCheck": "PASS recorded matching Go harness compile-only; no TypeScript rerun because frontend is unchanged and assignment forbids extra checks",
+    "Tests": "PASS recorded AST-bound capture matrix3top/68named/66leaf,61boundary+4bindings; REDsame68IDs; discovery4 with bodies0; no suite/browser rerun",
+    "runtime_original_R24": "FAIL3PASS1FAIL0NOT_RUN,retry0",
+    "spec_sync": "No production contract or spec update required for this private diagnostic-only predicate change"
+  },
+  "operations": {
+    "write_scope": "Only two new research reports and new private independent-check support",
+    "source_config_old_reports_history_writes": 0,
+    "SQL_API_browser_signals_builds_test_suites_Git": 0,
+    "real_accounts_models_funds_production": 0
+  },
+  "readiness_scope": "Main may finalize the bound single API admission, perform actual live preflight, then issue one separately bound original four-case permit using corrected r02 runner/config/collector.",
+  "full_S2_A01_A12_parent_S3_S4_S5_accepted": false
+}

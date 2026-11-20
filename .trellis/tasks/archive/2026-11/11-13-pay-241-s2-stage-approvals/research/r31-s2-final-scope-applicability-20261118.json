@@ -1,0 +1,2117 @@
+{
+  "schema": "pay241-r31-s2-final-scope-applicability/v1",
+  "date": "2026-11-18",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "query": "R31 update of the canonical12 A/18 W/12 Q whole-S2 applicability,retained116/99/54 proof chain,current37 per-mode claim controls and remaining full-scope final acceptance.",
+  "scope": "Read-only filesystem/docs/bounded frozen source; only this new pair writable; no current runtime result/diagnostic/command read for this slice.",
+  "status": "R31_FINAL_SCOPE_APPLICABILITY_READY_NOT_S2_ACCEPTED_CURRENT_POLICY_FAILURE_UNRESOLVED",
+  "write_scope": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.json"
+  ],
+  "seal_mode": "0444",
+  "latest_ROOT_attestation": {
+    "source": "ROOT same-thread steering before report seal; no current runtime file read or result reparse by this research",
+    "original_four": {
+      "pass": 3,
+      "fail": 1,
+      "not_run": 0,
+      "retry": 0
+    },
+    "E04": "Original M1 Desktop completion and Web recovery spec573–583 passed; next spec587 setStageM1Policy expected200 returns409,fixture356. Exact native policy cause still unknown.",
+    "processes": "API35740/bridge35737 already stopped once normally",
+    "database_after": {
+      "other_connections": 0,
+      "gate_epoch": 74,
+      "settled_runs": 64,
+      "complete_artifacts": 48,
+      "stage_intents": 22,
+      "stage_observations": 33,
+      "rollback_metrics": 18,
+      "unknown_intents": 1
+    },
+    "artifact_descriptors": "old338/current381 reported preserved; raw final audit not consumed here"
+  },
+  "denominators": {
+    "A": 12,
+    "W": 18,
+    "Q": 12,
+    "applicability_rows": 42,
+    "business_original_cases": 4,
+    "parent_business_cases": 24,
+    "R31_distinct_named_per_mode": 37,
+    "current_R31_per_mode": {
+      "main_service": {
+        "top": 19,
+        "named": 34,
+        "leaf": 29
+      },
+      "temporal_handler": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "cache_service": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      }
+    },
+    "not_additive_with_business_cases": true
+  },
+  "evidence_aliases": {
+    "PRIOR_42": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+      "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "CANONICAL_42": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.json",
+      "sha256": "8cc9195cd50d415b51ff3552f6dd01abd10f00a370988a17371a6fc94600cacb",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "ORIGINAL_GO": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.json",
+      "sha256": "01162af46f6d74d5e3a145a7283e891bd9279cce4005c9193afb5b8ad45f2153",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R29_76_6_DEFAULTS": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-independent-check-20261118.json",
+      "sha256": "662d3113fd5820f3d6771cdbb521ef3be8d5bcdadb62d63d6bdf5bb3e02e7031",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R22_CAPABILITIES": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-green-check-20261116.json",
+      "sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R26_CANDIDATES": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r26-candidates-read-green-independent-check-20261117.json",
+      "sha256": "ebc30fde6b5a456cb6a3681247f1b8311d77606780037fcf671b6124a1f76e5c",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R27_BINDING": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-independent-check-20261117.json",
+      "sha256": "ef03680d53d69bef593c7c49072ba522595ab397bf84aaf55c7037fe70bc30d9",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R28_PREVIEW": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-green-independent-check-20261117.json",
+      "sha256": "d2a5017e76662f94d4490eb3abc88f1d72898caafa9c92616ac1e8b10626419e",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R28_HISTORY": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-current-controls-and-runtime-after-independent-check-20261118.json",
+      "sha256": "661baeba237af31309ec99beefe690cbdeccf425d2e46facfbefebc7e6f4f7a5",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R30_DIAGNOSTIC": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-independent-check-20261118.json",
+      "sha256": "2191a2eefbb91599473e44c7dc5cea6f02a5669f718509805e1585782dc8a99c",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "R31_GREEN_37": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.json",
+      "sha256": "d63f8ed8db89091cb52be9f6cfd957ebaf5b3e3758054207e76f656990d46283",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "ROOT_FIVE_PREP": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-root-runtime-preparation-check-20261118.json",
+      "sha256": "6ac5365d18f395b30d3091af4ca536dbf204317314080b72eb48578d2a3d6b9c",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    },
+    "CLAIM_ORIGINALS": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-original-control-inventory-20261118.json",
+      "sha256": "aa2dd4e25ab19fddd9ed65718b1da73bc6479cf2eec91270498764570580584f",
+      "use": "Sealed accepted/canonical evidence or applicability inventory; contents read as documents, raw executions not repeated."
+    }
+  },
+  "retained_original_groups": [
+    {
+      "label": "joint_completion",
+      "package": "./internal/service",
+      "counts_each_mode": {
+        "top_level": 37,
+        "named": 128,
+        "leaf": 95
+      },
+      "runs": [
+        {
+          "mode": "normal",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_normal/result.json",
+            "sha256": "9a9cbd699b3b0b401e335e2756f9a530cddb647977fd6a76616c9e7fef6927f8",
+            "bytes": 118311,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "joint_completion_normal"
+        },
+        {
+          "mode": "race",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_race/result.json",
+            "sha256": "bd78c3ae09acdd77f31b5def644e592c40912236f04135eae26cffb176646632",
+            "bytes": 118307,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "joint_completion_race"
+        }
+      ],
+      "raw_proof_ref": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json#/retained_raw_proof_refs",
+      "original_scope_equivalence": "Original writer/authority/receipt/transport contracts remain eligible through unchanged source/default proof chain. R31 batch negative/error behavior is separately covered by current37 names; no current full-suite rerun is claimed."
+    },
+    {
+      "label": "joint_foundation",
+      "package": "./internal/service",
+      "counts_each_mode": {
+        "top_level": 79,
+        "named": 193,
+        "leaf": 168
+      },
+      "runs": [
+        {
+          "mode": "normal",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_normal/result.json",
+            "sha256": "8d3a3bb3e6af8e727f742ae6486319e0365c483414c94d3a9e7ae37c4fbf7497",
+            "bytes": 140055,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "joint_foundation_normal"
+        },
+        {
+          "mode": "race",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_race/result.json",
+            "sha256": "15b6399ae3a789063d1e626767597413dbbb53e44910b85ebbff43c11a58ecbe",
+            "bytes": 140051,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "joint_foundation_race"
+        }
+      ],
+      "raw_proof_ref": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json#/retained_raw_proof_refs",
+      "original_scope_equivalence": "Original writer/authority/receipt/transport contracts remain eligible through unchanged source/default proof chain. R31 batch negative/error behavior is separately covered by current37 names; no current full-suite rerun is claimed."
+    },
+    {
+      "label": "handler",
+      "package": "./internal/handler",
+      "counts_each_mode": {
+        "top_level": 99,
+        "named": 326,
+        "leaf": 275
+      },
+      "runs": [
+        {
+          "mode": "normal",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_normal/result.json",
+            "sha256": "dff56bf802a5aded49d040665fcf0ff8e55bf5177f23296f96d9aaecc192947e",
+            "bytes": 53914,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "handler_normal"
+        },
+        {
+          "mode": "race",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_race/result.json",
+            "sha256": "36ee60daabd92cfd315c87043a66c4320b74a2076ca957323546c3ebc75ef2b2",
+            "bytes": 53894,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "handler_race"
+        }
+      ],
+      "raw_proof_ref": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json#/retained_raw_proof_refs",
+      "original_scope_equivalence": "Original writer/authority/receipt/transport contracts remain eligible through unchanged source/default proof chain. R31 batch negative/error behavior is separately covered by current37 names; no current full-suite rerun is claimed."
+    },
+    {
+      "label": "router",
+      "package": "./cmd/server",
+      "counts_each_mode": {
+        "top_level": 54,
+        "named": 208,
+        "leaf": 174
+      },
+      "runs": [
+        {
+          "mode": "normal",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_normal/result.json",
+            "sha256": "c31bfb7ccb80db68e5447454041de9d962681387150b6fc955fe609abfabc38e",
+            "bytes": 39537,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "router_normal"
+        },
+        {
+          "mode": "race",
+          "result": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_race/result.json",
+            "sha256": "026106d4ba9426183508c7d0d3a85a816c2d6699af6b5de50b2958d1d0c8f3f1",
+            "bytes": 39517,
+            "mode": "0o600"
+          },
+          "accepted_raw_audit_label": "router_race"
+        }
+      ],
+      "raw_proof_ref": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json#/retained_raw_proof_refs",
+      "original_scope_equivalence": "Original writer/authority/receipt/transport contracts remain eligible through unchanged source/default proof chain. R31 batch negative/error behavior is separately covered by current37 names; no current full-suite rerun is claimed."
+    }
+  ],
+  "retained_old_raw_bindings": [
+    {
+      "label": "joint_completion_normal",
+      "mode": "normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_normal/raw.jsonl",
+        "sha256": "ef5e36156a08902dd2444843a00f6bacfb0e4aac7e3625beb4c533ce38e2a8bc",
+        "bytes": 133577,
+        "mode": "0600"
+      },
+      "top": 37,
+      "named": 128,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "joint_completion_race",
+      "mode": "race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_race/raw.jsonl",
+        "sha256": "4995cddde933d06351e06170464c8da9a302abfde2b44c5596637537eb00c200",
+        "bytes": 133586,
+        "mode": "0600"
+      },
+      "top": 37,
+      "named": 128,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "joint_foundation_normal",
+      "mode": "normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_normal/raw.jsonl",
+        "sha256": "fae06e8613411b8d2caa4fbffc6949f273aaa7bd8fb64c7c79496e3c84cc3f7d",
+        "bytes": 196428,
+        "mode": "0600"
+      },
+      "top": 79,
+      "named": 193,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "joint_foundation_race",
+      "mode": "race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_race/raw.jsonl",
+        "sha256": "b1b56515a18a88203673959c96e9ce95ede910e53b7bda2a3c9225333b56eb78",
+        "bytes": 196418,
+        "mode": "0600"
+      },
+      "top": 79,
+      "named": 193,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "handler_normal",
+      "mode": "normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_normal/raw-go-events.stdout",
+        "sha256": "7f5db5ed2a3cf2bbf849aff446c5c3bcd900226b4cf33f4cb68686345e970e45",
+        "bytes": 397557,
+        "mode": "0644"
+      },
+      "top": 99,
+      "named": 326,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "handler_race",
+      "mode": "race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_race/raw-go-events.stdout",
+        "sha256": "a7a5663bcebf9dcd3417b8a4d1c50c7be32f00de04a12c5a29a11a4b9ef38daa",
+        "bytes": 397552,
+        "mode": "0644"
+      },
+      "top": 99,
+      "named": 326,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "router_normal",
+      "mode": "normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_normal/raw-go-events.stdout",
+        "sha256": "53268fc1374c67301644935466ec556ee799c26f95a10cd01198313d15cbdb32",
+        "bytes": 1632073,
+        "mode": "0644"
+      },
+      "top": 54,
+      "named": 208,
+      "accepted_once_PASS": true
+    },
+    {
+      "label": "router_race",
+      "mode": "race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_race/raw-go-events.stdout",
+        "sha256": "33050e9b7e52dd1cc00c74ae6b60f4a637613f1b98c8939352975e64bc1a1f2d",
+        "bytes": 1632163,
+        "mode": "0644"
+      },
+      "top": 54,
+      "named": 208,
+      "accepted_once_PASS": true
+    }
+  ],
+  "current_R31_accepted_run_bindings": [
+    {
+      "label": "service_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/result.json",
+        "sha256": "5d763b8b7aa6541d9b3f4c3803e499c03109f575cea6fd99a3a70e40b1ffa82d"
+      },
+      "counts": {
+        "top": 19,
+        "leaf": 29,
+        "named": 34
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/stdout.jsonl",
+        "sha256": "bfaa8343016ea78afcb4a03322498e3297ca49dd072d816808e20541d5c5df27"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-green-union-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    },
+    {
+      "label": "service_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/result.json",
+        "sha256": "0206354a77861c8fd1f07095e60f703e013e0b971f3697b863a9aeeb734dc095"
+      },
+      "counts": {
+        "top": 19,
+        "leaf": 29,
+        "named": 34
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/stdout.jsonl",
+        "sha256": "a6fd6f6ced3b4ea1d8c2c5b805a1524a11d621e0d1189734001b74f5d1a5375b"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/idle-preflight-race-union-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    },
+    {
+      "label": "temporal_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/result.json",
+        "sha256": "0835f94401ee635037597c0c05087854b11cfd1347fab56966b2fe8f632f6f47"
+      },
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/stdout.jsonl",
+        "sha256": "dfeef431a21b451b2a497c9c9d76c72e945b4935086db72eebc2980c68c38dcb"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-normal-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    },
+    {
+      "label": "temporal_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/result.json",
+        "sha256": "925cc54146aa6eceb2d2dd5682e31001f100308883a91b7c49bef927093ad092"
+      },
+      "counts": {
+        "top": 1,
+        "named": 1,
+        "leaf": 1
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/stdout.jsonl",
+        "sha256": "696e68a6a0aa5a5a3cc54fc10243317691bec59053f96325ff7aacb974e990b7"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/temporal-handler-race-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    },
+    {
+      "label": "cache_normal",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/result.json",
+        "sha256": "89bc19b57260fa728cee3dfbe27eedd179bd0fedda1c6a4365e4de3814d250a1"
+      },
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/stdout.jsonl",
+        "sha256": "234356732d7eab1ad279018004a68f460363b28558dae49036ac0b3274a0e976"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-normal-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    },
+    {
+      "label": "cache_race",
+      "result": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/result.json",
+        "sha256": "ffe72d45d7e73be766f7261f3df0d983a2955f9a704dc67265b6ef6f8cca0894"
+      },
+      "counts": {
+        "top": 2,
+        "named": 2,
+        "leaf": 2
+      },
+      "exit": 0,
+      "raw_stdout": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/stdout.jsonl",
+        "sha256": "dda07c4b261841594537591bf6c9dbf8acdd5778384a47af3fa9d48141991388"
+      },
+      "raw_stderr": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/verification/cache-backstop-race-r01/stderr.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "accepted_reference": "R31_GREEN_37",
+      "reparsed_by_this_research": false
+    }
+  ],
+  "whole_scope_retention": {
+    "eligible": true,
+    "acceptance_authority": "Final independent A12,not this research",
+    "chain": "Original actual116/321/263 service +99/326/275 handler +54/208/174 router raw/default proof → accepted R22/R26/R27/R28/R29read/default supplements → R30test-only/product0 → R31exact batch branch +canonical getter/current37names →ROOTfive5055/current FRONT →current four/post-stop/final audit.",
+    "intentional_non_equivalence": "Old batch no-work/error path is intentionally replaced and covered by current R31; original positive/shared/singular/writer/schema/transport/receipt paths remain equivalent.",
+    "trust_reused": "Accepted34original-function/3false-body/caller proof and R31positive block SHA6deced... retained; not reconstructed/reparsed here.",
+    "full116_rerun_required_solely_by_R31": false,
+    "current_full116_99_54_reexecuted_claimed": false,
+    "unmatched_code_dependency_in_frozen_R31_slice": [],
+    "unmatched_final_evidence": [
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "F05",
+      "F06"
+    ],
+    "invalidate_retention_if": "Actual changed caller/default/authority/finalization/canonical SQL/schema/type/side effect outside the bound R31delta or final source drift; then delimit genuine affected tests instead of blanket reruns."
+  },
+  "source_refs": [
+    {
+      "file": "server/internal/service/task.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task.go",
+      "sha256": "bcfb7399e75040f8eeb809cada849e11095ba1a105b9553d322d450397fdd7bc",
+      "bytes": 347058,
+      "mode": "0755",
+      "description": "Only batch ClaimTasksForRuntimes changes; outside-batch/singular/shared/finalization remains covered by accepted structural proof.",
+      "R30_comparison": "changed_R31_admitted_product"
+    },
+    {
+      "file": "server/pkg/db/queries/agent.sql",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/pkg/db/queries/agent.sql",
+      "sha256": "4a661a0c1374525177d4cd103b3d47aa39ea67c1a0a32c3eb4bf4067aa6494be",
+      "bytes": 138912,
+      "mode": "0755",
+      "description": "One non-authorizing necessary-condition EXISTS; canonical claims/reclaim/admission/lease/capacity SQL retained.",
+      "R30_comparison": "changed_R31_admitted_product"
+    },
+    {
+      "file": "server/pkg/db/generated/agent.sql.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/pkg/db/generated/agent.sql.go",
+      "sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+      "bytes": 384621,
+      "mode": "0755",
+      "description": "One canonical generated25-line bool getter block; other142 generated outputs retained.",
+      "R30_comparison": "changed_R31_admitted_product"
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task_idle_claim_read_concurrency_test.go",
+      "sha256": "b07397c51e304ef51e95d3c3757143600a8a37528b96005e5641df9f765f300b",
+      "bytes": 18961,
+      "mode": "0644",
+      "description": "Unchanged six-name genuine idle/reclaim regression; ROOT integrated new test.",
+      "R30_comparison": "new_R31_test"
+    },
+    {
+      "file": "server/internal/service/task_idle_claim_preflight_failure_test.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/task_idle_claim_preflight_failure_test.go",
+      "sha256": "1cb4fac1359b96fd29a0b4812a7e461250752b42b1eb7d56e1f750a3c8c8db8a",
+      "bytes": 4150,
+      "mode": "0644",
+      "description": "One exact sentinel preflight-error/no-authorizing-effect regression; ROOT integrated new test.",
+      "R30_comparison": "new_R31_test"
+    },
+    {
+      "file": "server/internal/service/managed_runtime.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/managed_runtime.go",
+      "sha256": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96",
+      "bytes": 10289,
+      "mode": "0644",
+      "description": "Original current source validation/exclusive writer default/namespace/admission runtime locks.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/auth/password_session.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/auth/password_session.go",
+      "sha256": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c",
+      "bytes": 5943,
+      "mode": "0644",
+      "description": "Original current source version and password-session account fence.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/service/reclaim_check_cache.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/reclaim_check_cache.go",
+      "sha256": "7fa0f3a8ec6568e4d6bf3abcdc2088ac131f79656715f19fead5ea78b0c8dfe3",
+      "bytes": 10998,
+      "mode": "0755",
+      "description": "Original due/MarkChecked/backstop/retry implementation.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/service/empty_claim_cache.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/empty_claim_cache.go",
+      "sha256": "71d40bbf6d1b936532868c6562ad3b3147170f6552f16fdfaf5e408652841430",
+      "bytes": 7739,
+      "mode": "0755",
+      "description": "Original queued-only empty cache/version behavior.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/handler/daemon.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/handler/daemon.go",
+      "sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73",
+      "bytes": 239130,
+      "mode": "0755",
+      "description": "Unchanged HTTP batch handler, response/token/comment preparation and finalization.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/handler/daemon_rpc.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/handler/daemon_rpc.go",
+      "sha256": "5fb862e72fff347a5fa15b0c71954608b8467bb49404c4abd5c7796fa967da55",
+      "bytes": 4177,
+      "mode": "0755",
+      "description": "Unchanged RPC forwarding into the same HTTP batch handler with current context.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/handler/daemon_ws.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/handler/daemon_ws.go",
+      "sha256": "4fffa90be8343fabf1f4a2b4f04310468e169f4493da54296da5961f0b734e4b",
+      "bytes": 5565,
+      "mode": "0755",
+      "description": "Unchanged daemon connection runtime/current identity path.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/daemon/client.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/daemon/client.go",
+      "sha256": "ba1b521622c9e6ad2461271ac30ea8517da59c871ad78128421fa0ca310e83ec",
+      "bytes": 50823,
+      "mode": "0755",
+      "description": "Unchanged machine-level client request and five-second batch deadline.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/daemon/managed_transport.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/daemon/managed_transport.go",
+      "sha256": "0252432eb59fbe39c270b6122e83896ede8e942aca5c1aee2dd3b643755ecf2e",
+      "bytes": 10831,
+      "mode": "0644",
+      "description": "Unchanged managed workspace grouping and calls to batch client.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/daemon/managed_wakeup.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/daemon/managed_wakeup.go",
+      "sha256": "d1a3f29fc4a1bcda667e8f4a93925a90d807ea220695841c4943626a85c2ef37",
+      "bytes": 3995,
+      "mode": "0644",
+      "description": "Unchanged managed WS-first claim transport.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/daemon/wsrpc.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/daemon/wsrpc.go",
+      "sha256": "31ca2ceb3173f1e0278e8ae74b4ac16742af5e3fbfb22e0a0bcb53dbc1f372ab",
+      "bytes": 14389,
+      "mode": "0755",
+      "description": "Unchanged RPC/HTTP fallback to batch client; singular compatibility remains separate.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/cmd/server/router.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/cmd/server/router.go",
+      "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+      "bytes": 151540,
+      "mode": "0755",
+      "description": "Unchanged canonical batch route/alias and both cache factories.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/cmd/server/collaboration_stage_execution_control_test.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/cmd/server/collaboration_stage_execution_control_test.go",
+      "sha256": "5a8dceb725802a80d61438e0f6b1f2055eefffa88b964ab203f6b8a05fca579e",
+      "bytes": 17212,
+      "mode": "0644",
+      "description": "Original actual router/harness entry with nil Redis; no source R31 harness delta.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/service/delivery_completion_authorization.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/delivery_completion_authorization.go",
+      "sha256": "a8445340a055faa12fceaa04e70f62eb213e3aeac333b0bc5abff50520e4f0b0",
+      "bytes": 38270,
+      "mode": "0644",
+      "description": "Accepted R29 receipt read/default/issuer/current consumer predicates unchanged by R31.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/service/delivery_completion_collaboration.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/service/delivery_completion_collaboration.go",
+      "sha256": "50c048f059392bed2f1b5c99cedba605c6fade3facbc28b963fee2f0c586183b",
+      "bytes": 25556,
+      "mode": "0644",
+      "description": "Accepted R29 exact-source read/default writer predicates unchanged by R31.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "server/internal/handler/managed_claim_recovery_test.go",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/source-green-r01/server/internal/handler/managed_claim_recovery_test.go",
+      "sha256": "e85a824c8f13ef97f5dd4bb7cd65eb5b035252730d427fecc6e1a48d11c41460",
+      "bytes": 3727,
+      "mode": "0644",
+      "description": "Current actual temporal handler normal/race proves finalization/credentials/generation/lease/started boundary.",
+      "R30_comparison": "equal_bytes_modes"
+    },
+    {
+      "file": "e2e/collaboration-stage-approvals.spec.ts",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "bytes": 49079,
+      "mode": "0600",
+      "description": "Unchanged canonical R24 FRONT source; full3359/1961/1676 identity retained through ROOT_FIVE_PREP/current consuming manifest.",
+      "R30_comparison": "same_canonical_FRONT_root; whole frontend scan not repeated"
+    },
+    {
+      "file": "e2e/collaboration-stage-execution.spec.ts",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/e2e/collaboration-stage-execution.spec.ts",
+      "sha256": "6d08bb644417d3c23b579564b7110a6d234773df7e68e187bfa03ab1175573f4",
+      "bytes": 59025,
+      "mode": "0600",
+      "description": "Unchanged canonical R24 FRONT source; full3359/1961/1676 identity retained through ROOT_FIVE_PREP/current consuming manifest.",
+      "R30_comparison": "same_canonical_FRONT_root; whole frontend scan not repeated"
+    },
+    {
+      "file": "packages/core/collaboration/operation.ts",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r24-continuation-20261117-32uud2uo/frontend-base-r01/packages/core/collaboration/operation.ts",
+      "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+      "bytes": 9479,
+      "mode": "0600",
+      "description": "Unchanged canonical R24 FRONT source; full3359/1961/1676 identity retained through ROOT_FIVE_PREP/current consuming manifest.",
+      "R30_comparison": "same_canonical_FRONT_root; whole frontend scan not repeated"
+    }
+  ],
+  "actual_claim_callgraph": [
+    {
+      "edge": "Managed grouping → batch client",
+      "source": "server/internal/daemon/managed_transport.go:243,253",
+      "fact": "claimManagedTasks groups runtime IDs by managed workspace and calls group.workspace.client.ClaimTasks with remaining capacity."
+    },
+    {
+      "edge": "RPC/HTTP transport → client",
+      "source": "server/internal/daemon/wsrpc.go:323,371; server/internal/daemon/managed_wakeup.go:115",
+      "fact": "Unchanged WS-first/RPC fallback uses batch client; old singular compatibility is not covered as repaired."
+    },
+    {
+      "edge": "Client → actual canonical HTTP route",
+      "source": "server/internal/daemon/client.go:298,310; server/cmd/server/router.go:1577",
+      "fact": "Client.ClaimTasks posts /api/daemon/tasks/claim; router registers h.ClaimTasksByRuntime. Alias/legacy singular routes remain unchanged."
+    },
+    {
+      "edge": "RPC → same batch HTTP handler",
+      "source": "server/internal/handler/daemon_rpc.go:66,103,119",
+      "fact": "Current daemon/session request context is forwarded into POST /api/daemon/tasks/claim and h.ClaimTasksByRuntime; it does not bypass the service."
+    },
+    {
+      "edge": "Actual router harness → original production handler",
+      "source": "server/cmd/server/collaboration_stage_execution_control_test.go:321,331; server/cmd/server/router.go:1316,1320",
+      "fact": "stageExecutionRouter constructs NewRouterWithOptions with nil Redis; factories retain the supported nil-cache path rather than inventing a harness cache."
+    },
+    {
+      "edge": "Authorized batch handler → changed service",
+      "source": "server/internal/handler/daemon.go:1812,1841; server/internal/service/task.go:3915,3995",
+      "fact": "Existing managed source/workspace/daemon checks produce authorized runtime array; ClaimTasksForRuntimes then runs initial validation/promotion and the new due-only scalar probe."
+    },
+    {
+      "edge": "Positive returned claim → unchanged atomic finalizer",
+      "source": "server/internal/handler/daemon.go:1911,1936; server/internal/service/task.go:3734",
+      "fact": "Handler invokes FinalizeTaskClaim and assigns response credentials/receipt only after success; existing temporal handler normal/race reaches this actual path."
+    }
+  ],
+  "all_affected_modules": [
+    {
+      "id": "CLAIM",
+      "module": "Task service batch polling",
+      "treatment": "direct_R31",
+      "matched": "R31_GREEN_37 structural proof and actual34 service names/mode; only reliable negative/error branch changes.",
+      "retain": "Singular/shared/finalization/outside-batch functions and positive callback retain original defaults.",
+      "final": "Bind current complete consumed source; singular idle sibling remains explicitly unchanged."
+    },
+    {
+      "id": "SQLGEN",
+      "module": "Agent SQL/generated DB queries",
+      "treatment": "direct_R31",
+      "matched": "One12-line EXISTS/one25-line getter; canonical generation and original query blocks accepted in d63f8.",
+      "retain": "Schema/readiness/migrations/canonical update/capacity/lease/generation unchanged.",
+      "final": "Use current query4a661a.../generated2f6233... and ROOT generation/final-source proof; supersede old zero-SQL claim."
+    },
+    {
+      "id": "DAEMON_HTTP",
+      "module": "Daemon HTTP/RPC and finalization",
+      "treatment": "unchanged_adapters_with_changed_service_dependency",
+      "matched": "Bound unchanged handler/router/RPC source plus temporal handler1 normal/race actual batch call/token/finalization.",
+      "retain": "Old99handler/54router transport/UUID/auth/body/receipt/mint/refusal contracts.",
+      "final": "Final actual API/router/client products and current runtime routing/actor binding; no new HTTP type or route."
+    },
+    {
+      "id": "AUTH",
+      "module": "Managed/password/runtime authority",
+      "treatment": "retained_default",
+      "matched": "Unchanged helpers; original source/admission/binding/history controls included in current service union.",
+      "retain": "Current actor/version/owner/workspace/MDT/PAT and exclusive writer order; no authority cache/public read flag.",
+      "final": "Current source/credential/runtime identities in four/post-stop evidence; new boolean is not permission."
+    },
+    {
+      "id": "CACHE",
+      "module": "Queued and reclaim schedule caches",
+      "treatment": "unchanged_code_new_negative_call_context",
+      "matched": "Nil/failure control source retained; two actual owned-Redis controls/mode show complete-set/retry scheduling.",
+      "retain": "All-runtime MarkChecked,30-second retry/90-second backstop/5-second margin and nil fallback.",
+      "final": "Do not confuse private test Redis with runtime configuration; nil production/harness remains supported."
+    },
+    {
+      "id": "M1",
+      "module": "All delivery completion writers and receipts",
+      "treatment": "retained_R29_and_original_whole_scope",
+      "matched": "Accepted R29 default34-function/3body-reduction/76service+6handler proof, R30product0 and R31 unchanged closure.",
+      "retain": "Submit/submission/self/R38/ordinary/batch/create/VCS/revoke/cancel/project/source-child/commit-clock/unknown original contracts.",
+      "final": "Complete current E04 operation/grant/body/submission proof and late project-policy failure;37 names do not replace three-mode matrix."
+    },
+    {
+      "id": "STAGE",
+      "module": "Roles/CI/QA/release/rollback/R4/T4/preview",
+      "treatment": "retained_writers_with_R31_polling_context",
+      "matched": "Original116 + accepted R22/R26/R27/R28/R29 read supplements; R31 only removes empty ordinary batch writer fence.",
+      "retain": "All current source/issuer/evidence/artifact/target/human decisions and actual writer defaults.",
+      "final": "Current original four content and immutable old artifacts; no stale/private evidence or inferred sign-off."
+    },
+    {
+      "id": "HARNESS",
+      "module": "Server/daemon runtime harness and test-only observer",
+      "treatment": "retained_source_rebuilt_products",
+      "matched": "R30 diagnostic11/default forwarding accepted; unchanged R31 harness source and eba476 five matching programs.",
+      "retain": "Original deadlines,ctx,callbacks,diagnostic limits and controlled-source adapters.",
+      "final": "Use current result/after records from ROOT only; old native holder unknown and read capture cap cannot name new policy cause."
+    },
+    {
+      "id": "CLI",
+      "module": "Current CLI/run-local machine boundaries",
+      "treatment": "retained_source_new_binary_identity",
+      "matched": "CLI source boundary retained; current five-build record selects c1a8a4... CLI.",
+      "retain": "Ordinary completion refusal and run-local report/approval identity allowlist.",
+      "final": "Current R31 W10 exact CLI/source/env/actor/result/no-effects receipt required; prior R29 binary cannot alone prove current program."
+    },
+    {
+      "id": "FRONT",
+      "module": "Core/Views/Web/Desktop shared front and platform wiring",
+      "treatment": "retained_frozen_R24",
+      "matched": "ROOT current consuming manifest binds3359 FRONT files/1961 links/1676 outputs/buildID; canonical source root unchanged.",
+      "retain": "Strict schemas,source/access epochs,original pending key/body/GET recovery,shared components/platform boundaries.",
+      "final": "Current rendered API/WS/native profile/actor/PNG and original four journeys; no new frontend rebuild/test required solely for R31."
+    },
+    {
+      "id": "DATA",
+      "module": "Schema/readiness/history/artifact/lifecycle",
+      "treatment": "retained_contract_current_after_required",
+      "matched": "No R31DDL/readiness/default changes; ROOT preparation keeps seven raw domain sets and persistent tasks with one computed freshness expiry.",
+      "retain": "Original schema/CONCURRENTLY/noFK/readiness audits,old failed/unknown/history/archive bytes.",
+      "final": "Resolve exact stopped-after/source/artifact descriptors/gate booleans and monotonic epoch plus declared additions."
+    }
+  ],
+  "A": [
+    {
+      "id": "A01",
+      "canonical_requirement": "Roles, stable business owner/current handler and authority",
+      "label": "Roles, stable business owner/current handler and authority",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/0"
+      },
+      "R31_treatment": "retained_roles",
+      "source_raw_applicability": "Role/owner/handler authority is unchanged. R31 changes neither signer selection nor configuration.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E01 current role/config/history evidence remains required.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A02",
+      "canonical_requirement": "Immutable proposals, decisions, single materialization/no dispatch",
+      "label": "Immutable proposals, decisions, single materialization/no dispatch",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/1"
+      },
+      "R31_treatment": "retained_proposal",
+      "source_raw_applicability": "Proposal/version/decision/materialization writers are unchanged; negative batch preflight grants no enqueue.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E01 exact single materialization and rejected/unapproved no-dispatch evidence.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A03",
+      "canonical_requirement": "Exact PR/head/trust/strict CI refusal",
+      "label": "Exact PR/head/trust/strict CI refusal",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/2"
+      },
+      "R31_treatment": "retained_CI",
+      "source_raw_applicability": "PR/head/trust/strict CI and review refusal predicates remain original.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E01 exact failed/missing/mismatched CI/head/trust denial and unchanged stage.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A04",
+      "canonical_requirement": "Human reviewer, self/machine/revocation exclusion",
+      "label": "Human reviewer, self/machine/revocation exclusion",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/3"
+      },
+      "R31_treatment": "retained_human_review",
+      "source_raw_applicability": "Self/machine/revoked/rejoin/human reviewer and final signer clocks remain original defaults.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E01 genuine reviewer identity and negative human/authority boundaries.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A05",
+      "canonical_requirement": "Immutable actual run/case/log, QA return/retest history",
+      "label": "Immutable actual run/case/log, QA return/retest history",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/4"
+      },
+      "R31_treatment": "R31_polling_R4_context",
+      "source_raw_applicability": "R31 actual idle/read orders remove only empty batch account exclusion; report/QA/test/run writers and earlier read supplements remain retained.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current E01 failed run/log/QA-return/retest history and E02 QA evidence, with source/current-R4 identity.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A06",
+      "canonical_requirement": "QA/build/release authority and transitive issuer validity",
+      "label": "QA/build/release authority and transitive issuer validity",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/5"
+      },
+      "R31_treatment": "retained_release_with_current_reads",
+      "source_raw_applicability": "QA/build/release authority and controlled execution defaults are unchanged; new polling context does not approve release.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E02 exact QA/build/release/issuer/deployment evidence; test-synthetic scope remains explicit.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A07",
+      "canonical_requirement": "Target/physical conflict, rollback observation and single execution",
+      "label": "Target/physical conflict, rollback observation and single execution",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/6"
+      },
+      "R31_treatment": "retained_rollback",
+      "source_raw_applicability": "Rollback proposal/decision/metric/physical target/execution constraints are unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "E02 exact prior deployment/target/metric/approved rollback and one controlled receipt.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A08",
+      "canonical_requirement": "Versions, authority/expiry, original keys and late history",
+      "label": "Versions, authority/expiry, original keys and late history",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/7"
+      },
+      "R31_treatment": "retained_recovery_plus_R31_error",
+      "source_raw_applicability": "R29 immutable GET recovery/version/expiry defaults remain intact; R31 error is not empty success or renewed authority.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "E03 historical late fact and E04 original key/body/operation/grant recovery; ROOT reports573–583 passed, raw/content acceptance remains final-checker work.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A09",
+      "canonical_requirement": "Stage plus M1 all writers/three modes/R38 and outside consumer",
+      "label": "Stage plus M1 all writers/three modes/R38 and outside consumer",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/8"
+      },
+      "R31_treatment": "retained_completion_matrix_current_policy_failure",
+      "source_raw_applicability": "R31 claim/finalization supplement preserves real generation/binding/lease; it does not replace retained all-writer M1/off/observe/enforce/R38 evidence.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current E04 completion/recovery passed per ROOT, but later project-policy PUT409 precedes final R38 branch. Resolve that actual in-scope failure without replaying completed writes.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A10",
+      "canonical_requirement": "Current source privacy and mid-revocation reads/cache",
+      "label": "Current source privacy and mid-revocation reads/cache",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/9"
+      },
+      "R31_treatment": "R31_current_source_read_coexistence",
+      "source_raw_applicability": "Initial current runtime validation remains before the non-authorizing bool; same-Q R4 coexists only for true-idle. Current source/privacy/cache/GET contracts remain retained.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current source-denial/private-view/access-epoch evidence plus accepted R31 genuine actor/read/real-writer controls.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A11",
+      "canonical_requirement": "Matching production Web/Desktop real four-case verification",
+      "label": "Matching production Web/Desktop real four-case verification",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/10"
+      },
+      "R31_treatment": "current_R31_products_and_four_gate",
+      "source_raw_applicability": "ROOT selected five integration/build/current FRONT identities are accepted preparation. Current original-four outcome reported3PASS1FAIL0NOTRUN,retry0 is not4PASS.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current four raw/content/profile/PNG/actor/API/CLI evidence and resolved late-policy failure; no accepted full journey yet.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "A12",
+      "canonical_requirement": "Independent complete evidence, scoped diff/after and parent ledger",
+      "label": "Independent complete evidence, scoped diff/after and parent ledger",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/A/11"
+      },
+      "R31_treatment": "final_whole_scope_independent_gate",
+      "source_raw_applicability": "This inventory updates applicability only. Original proofs+accepted R31+matching programs need one final independent full42-row/current-after audit.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Four current cases all PASS,owned lifecycle/currentCLI/history/artifact/DB/source evidence and final independent A12 acceptance before ROOT bookkeeping.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    }
+  ],
+  "W": [
+    {
+      "id": "W01",
+      "canonical_requirement": "M1三模式下stage不完整都409，附件/新submission/handler/status零效果；合法submission持久绑定唯一精确candidate并在最终提交时钟再核查。",
+      "label": "协作正式交付submit",
+      "actual_entry_path": "server/internal/handler/collaboration_workflow.go:SubmitCollaborationAcceptance → server/internal/service/collaboration_handoff.go:SubmitAcceptance → mutateCollaborationWorkflow",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/0"
+      },
+      "R31_treatment": "retained_submit",
+      "source_raw_applicability": "Submit current authority/final clock/materialization unchanged; R31 adds no stage or M1 admission.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retain three-mode submit matrix; current E04 negatives and exact positive immutable submission.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W02",
+      "canonical_requirement": "同精确submission，stage有效才允许；enforce原grant一次消费；Web失败前转发→GET404→Desktop同key/body完成→Web双回执。",
+      "label": "协作精确submission完成",
+      "actual_entry_path": "ChangeCollaborationLifecycle → CollaborationService.ChangeLifecycle → PrepareDeliveryMutationInTx → prepareCompletion → changeLifecycle → 最终stage guard → outer commit",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/1"
+      },
+      "R31_treatment": "retained_completion_recovery",
+      "source_raw_applicability": "Actual submission completion/default M1 consume is unchanged; R29 receipt-read proof retained.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "ROOT reports Desktop original completion and Web recovery573–583 passed; final raw/key/body/receipt/content reconciliation remains required, with no replay.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W03",
+      "canonical_requirement": "结果/附件先只读验证，拒绝零绑定；合法路径真实生成自己的submission；阶段三模式都生效，enforce原M1仍独立。",
+      "label": "协作self-result完成",
+      "actual_entry_path": "ChangeLifecycle/prepareCompletionMode(false) → PrepareDeliveryMutationInTx → prepareCompletion",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/2"
+      },
+      "R31_treatment": "retained_self",
+      "source_raw_applicability": "Self writer/result/attachment/consumer behavior remains unchanged; same-P recovery is not a backend self-positive matrix.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retain backend three-mode self positives and current E04 self negatives.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W04",
+      "canonical_requirement": "当前真实password admin/organization且creator disabled；无stage豁免；合法三模式/admin grant正例，不造initiator accepted；最终guard在admin历史和原回执写完后。",
+      "label": "R38失能发起人管理完成",
+      "actual_entry_path": "server/internal/service/admin_collaboration.go:ChangeLifecycle → PrepareDeliveryMutationInTx → recordAdminCollaborationHistory/CompleteCollaborationOperation → commit",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/3"
+      },
+      "R31_treatment": "retained_R38_current_branch_unfinished",
+      "source_raw_applicability": "R38 admin/default issuer/organization/disabled creator gates are unchanged. Current E04 policy setup409 occurs before remaining admin branch.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retain backend R38 positives; current full-case R38/disable/restore composition remains unresolved until the late policy failure is settled.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W05",
+      "canonical_requirement": "协作root保留既有不支持普通mutation边界；普通task与普通child不被强加整个root阶段流程；M1/custom-done、事务guard及Agent真实身份不退化。",
+      "label": "普通PUT/旧client/Agent的完成请求",
+      "actual_entry_path": "server/internal/handler/issue.go:UpdateIssue → updateIssueAtomicallyOnce",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/4"
+      },
+      "R31_treatment": "retained_ordinary",
+      "source_raw_applicability": "Ordinary/custom-done/Agent/legacy completion writer and principal gates unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained handler/router matrix plus exact current R31 W10 ordinary refusal; old installed-client limits separate.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W06",
+      "canonical_requirement": "同W05完成器；真实Move不能绕开root限制或M1，合法child move使旧语义candidate stale；并发后再读。",
+      "label": "普通Move",
+      "actual_entry_path": "server/internal/handler/issue_move.go:MoveIssue → UpdateIssue → updateIssueAtomicallyOnce",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/5"
+      },
+      "R31_treatment": "retained_move",
+      "source_raw_applicability": "Ordinary Move/source semantic invalidation/default writer unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained actual Move/child semantic atomic proofs.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W07",
+      "canonical_requirement": "root批次在副作用前拒绝；普通逐项committed/rejected/not_attempted/unknown前缀保留；重复authorization/key在写前拒绝；合法child不全禁。",
+      "label": "普通批量更新",
+      "actual_entry_path": "server/internal/handler/issue.go:BatchUpdateIssues → updateIssueAtomicallyOnce per item",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/6"
+      },
+      "R31_treatment": "retained_batch_completion",
+      "source_raw_applicability": "Completion batch committed prefix/key/grant/mixed-root behavior unchanged; this is distinct from ordinary daemon task batch claim.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained original99/54 batch completion/refusal/unknown controls; no new full batch suite.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W08",
+      "canonical_requirement": "先解析继承project；机器拆解需要内部proposal许可；人类手建不造批准。协作root本来不能初始done；普通child由既有M1 create-as-done规则管，不强加root verification。",
+      "label": "Create/快速创建/comment-to-child/create-as-done",
+      "actual_entry_path": "server/internal/service/issue.go:IssueService.CreateInTx → checkStageChildCreate → CheckDeliveryCreateInTx",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/7"
+      },
+      "R31_treatment": "retained_create_with_claim_dependency",
+      "source_raw_applicability": "Create/manual-child/proposal/admission remains original; new reliable false reclaim precheck still reaches queued/deferred claims.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Retained creation/no-unapproved-dispatch plus current queued/deferred/capacity controls and E01 materialization.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W09",
+      "canonical_requirement": "IsCollaborationIssue稳定拒绝system完成root；普通child GitHub/VCS保持exact trust/signature/唯一grant与M1；所有新写的最终guard同tx，不把202当done。",
+      "label": "GitHub/VCS/system状态writer",
+      "actual_entry_path": "server/internal/handler/github.go:advanceIssueToDone; vcs_webhook.go → server/internal/service/issue_status_write.go:WriteIssueStatus",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/8"
+      },
+      "R31_treatment": "retained_system",
+      "source_raw_applicability": "GitHub/VCS/system signed completion/trust/root refusal unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained signed writer/default proof; real external integration remains S4.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W10",
+      "canonical_requirement": "已有ordinary CLI不得把collaboration variant强转/创建第二完成器；mcb命令allowlist不能签真人或完成root。实际匹配CLI报告可用，越权completion拒绝且零副作用。",
+      "label": "完成CLI及run-local machine边界",
+      "actual_entry_path": "server/cmd/multica/cmd_issue_completion.go:runIssueCompletionSubmit → ordinary issue PUT；cmd_collaboration.go运行能力allowlist",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/9"
+      },
+      "R31_treatment": "current_CLI_identity",
+      "source_raw_applicability": "CLI source allowlist and ordinary completion path are retained, but binary identity is current eba476/c1a8a4 rather than R29cd60ed.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "ROOT exact current W10 CLI/actor/env/results/no-effects receipt; E01/E02 run-local report positives separate.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W11",
+      "canonical_requirement": "stage启用时M1 off/observe/enforce均stage_policy_exit_required；版本CAS+理由显式关政策后才按原权限移动；root状态/回执不伪成功。",
+      "label": "协作root project move/clear",
+      "actual_entry_path": "server/internal/service/collaboration_edit.go:EditIssue → CheckDeliveryProjectChangeInTx → workflow commit",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/10"
+      },
+      "R31_treatment": "retained_project_exit_with_actual_policy_gap",
+      "source_raw_applicability": "Root project move/clear completion/exit semantics unchanged. Policy-setter failure is a current Q10 dependency, not evidence of a changed Move default.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained move/clear transaction proof and current E04 early project probes; diagnose late UpdateDeliveryPolicy409 independently.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W12",
+      "canonical_requirement": "启用stage的项目即使M1 off也报告阻挡并零删除/清空；显式关闭仍受project_has_collaboration_issues等原限制；policy竞争锁至commit。",
+      "label": "项目delete-impact和实际delete",
+      "actual_entry_path": "server/internal/handler/project.go:GetProjectDeleteImpact / DeleteProject → CheckDeliveryProjectDeleteInTx",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/11"
+      },
+      "R31_treatment": "retained_project_delete",
+      "source_raw_applicability": "Project delete-impact/actual delete ordering/current authority unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retain managed refusal/unrelated empty project delete and prior races; no destructive replay.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W13",
+      "canonical_requirement": "root仍unsupported_collaboration_action；批次/普通父含collaboration child在CancelTasks/FailAutopilot前拒绝，事务内复检，不能先产生取消效果。",
+      "label": "managed root普通delete与batch-delete",
+      "actual_entry_path": "server/internal/handler/issue.go:DeleteIssue/loadIssueForUser；BatchDeleteIssues/rejectLegacyCollaborationBatch",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/12"
+      },
+      "R31_treatment": "retained_issue_delete",
+      "source_raw_applicability": "Managed root/parent/mixed batch delete-before-effects and rollback unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained original delete/raw controls; no new matrix solely for R31.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W14",
+      "canonical_requirement": "普通child按原权限可操作；内容/project/parent变化使semantic_version或缺失观察失效，不能靠拆parent抹映射。仅状态更新不使已审代码自身失效。",
+      "label": "普通child语义编辑/换parent/project/删除",
+      "actual_entry_path": "CheckStageChildUpdateInTx/updateIssueAtomicallyOnce；deleteIssueAndCollectAttachmentURLs/deleteIssuesAndCollectAttachmentURLs",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/13"
+      },
+      "R31_treatment": "retained_child_source",
+      "source_raw_applicability": "Child semantic/parent/project/delete and R29exact-source default remain unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained child mapping/semantic edits/ordinary lifecycle/default checks.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W15",
+      "canonical_requirement": "未批准机器child、已过期root lifecycle映射拒绝；接受proposal零自动enqueue；合法已确认普通child仍能按原invoke规则启动；两种并发顺序。",
+      "label": "真正enqueue与queued→started",
+      "actual_entry_path": "TaskService.checkIssueExecution；EnqueuePreparedIssueTaskInTx；startTaskAtomically",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/14"
+      },
+      "R31_treatment": "direct_R31_batch_claim",
+      "source_raw_applicability": "Actual daemon HTTP/RPC authorized runtime array reaches changed ClaimTasksForRuntimes; false continues queued, true keeps exact real writer/finalization. Enqueue/Start remain original.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Accepted34 service+1 temporal+2 cache names/mode plus retained enqueue/start orders. Bind actual current source/router/client/harness; singular idle sibling remains unchanged.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W16",
+      "canonical_requirement": "cancel独立不被stage阻止；reopen回development、stage_revision递增、新lifecycle需新A5；旧批准不复活但已消费原key历史仍恢复。",
+      "label": "cancel与reopen",
+      "actual_entry_path": "CollaborationService.ChangeLifecycle / admin原允许动作 → changeLifecycle",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/15"
+      },
+      "R31_treatment": "retained_cancel_reopen",
+      "source_raw_applicability": "Cancel/reopen/Resume/generation/admin cleanup defaults and historical consumed receipts unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retain cancelled/reopened/newscope/current GET history; no original successful completion replay.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W17",
+      "canonical_requirement": "numeric root/child revision，直接普通child同workspace/project；done child可提供artifact；preview无授权/写入；stage不完整三模式200非授权；源拒绝无泄漏，root不存在/旧route区分。",
+      "label": "root/R38 completion candidates与preview",
+      "actual_entry_path": "冻结F06四路由 → root/source同事务当前权限+M1 observer+stage blocker",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/16"
+      },
+      "R31_treatment": "retained_preview_R31_polling_context",
+      "source_raw_applicability": "R27binding/UTC,R26/R28preview/R29receipt reads retain exact source/access/transaction predicates; idle preflight adds no preview authorization.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Retained F06/read supplements and current E04 exact preview/child/build/submission/issued reference.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "W18",
+      "canonical_requirement": "closed stage metadata不带私有hash/prose/report，execution仅hint；stored stage_blockers按wire保留且O1不能掉字段；原key恢复不写事件/重复消费。",
+      "label": "活动与原操作回执投影",
+      "actual_entry_path": "collaboration workflow event/finishWith、activity allowlist、GetWorkflowOperation/O1、原M1 GET",
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/W/17"
+      },
+      "R31_treatment": "retained_activity_receipts",
+      "source_raw_applicability": "Activity/minimal operation/grant projection and Core recovery wire/schema remain unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current E04 original operation/consumed receipt/pending retirement equality per ROOT report; preserve old failed/unknown history.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    }
+  ],
+  "Q": [
+    {
+      "id": "Q01",
+      "canonical_requirement": "stage enabled × M1 off/observe/enforce：submit/submission/self/admin每个适用writer分别验证stage不完整拒绝与合法正例，enforce缺grant仍拒绝；不把重复fixture次数当新业务分母。",
+      "label": "Three modes × submit/submission/self/R38 verified and incomplete; enforce missing grant remains refused",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/0"
+      },
+      "R31_treatment": "retained_three_mode_matrix",
+      "source_raw_applicability": "R31 does not alter any completion mode/actor guard. Current37 claim-related names do not replace R29all40 M1 mode/writer names or original matrix.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained source/raw three-mode writer positives/negatives and current E04 representative composition.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q02",
+      "canonical_requirement": "私有stage guard绑定原pgx.Tx与before及该writer允许after；错误tx/复用guard/未finalize/无guard不得放行。M1 NotApplicable仍跑stage最终检查，Replayed不做新消费。",
+      "label": "Owning Tx/before/allowed after, wrong Tx, missing/unfinalized/reuse, NA finalization, original actor/header/result",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/1"
+      },
+      "R31_treatment": "retained_guard_plus_R31_optional_reclaim_Tx",
+      "source_raw_applicability": "M1 owning pgx.Tx/guard/Prepare/Finish stays original; new scalar absence read is intentionally before optional reclaimTx, with actual positive callback unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Accepted R29Tx/default and R31real-writer/idle/error controls; final actual actor/header/body/source identity.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q03",
+      "canonical_requirement": "最终database clock在全部状态、handoff/submission、attachment、iteration、Stop/queue、event/outbox、原operation/admin审计写完后、commit前；原审批/issuer/caller expiry、role/credential/source/trust更换两种顺序都覆盖。",
+      "label": "Last DB clock after receipts/audit, issuer/caller/PAT/source/CI/artifact/target/metrics; real orders distinct from same-Tx seams",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/2"
+      },
+      "R31_treatment": "R31_eligibility_clock_retained_completion_clock",
+      "source_raw_applicability": "New EXISTS uses DB now and original90-second recovery/lease predicates; final completion/approval/issuer/consumer/CI/target clocks remain unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current temporal handler both modes plus retained final-clock/writer orders/E03 history.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q04",
+      "canonical_requirement": "submit持久绑定candidate/lifecycle/语义证据；legacy或未绑定submission在启用stage后stage_submission_unbound，不能根据当前候选事后补绑。",
+      "label": "Exact immutable submission/candidate/lifecycle/scope/operation/handoff locks and legacy/corrupt refusal",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/3"
+      },
+      "R31_treatment": "retained_immutable_identity",
+      "source_raw_applicability": "Submission/candidate/lifecycle/original receipt binding remains unchanged; new bool returns no private task/evidence and cannot backfill history.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained immutable/refusal/mismatch controls; current actual E04 exact submission/grant/operation receipt.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q05",
+      "canonical_requirement": "consumer E与source issuer P分离：E无source membership且仍当前initiator；P当前可读artifact通过既有授权API签给E；E仅读最小grant并实际完成。错consumer、P撤权/过期、E撤权、错误组织admin均拒绝，零隐私/副作用。",
+      "label": "P ≠ E without source membership, real issuer authorization, minimal grant, revoked/expired roles and frozen refusal recovery",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/4"
+      },
+      "R31_treatment": "retained_distinct_principals",
+      "source_raw_applicability": "Current source/consumer/issuer/PAT/MDT/admin checks remain original. Same-Q R31 and same-P browser recovery do not establish backend P≠E.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Retained distinct-principal/minimal/private-denial matrix with current authority identity.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q06",
+      "canonical_requirement": "preview只读及附件只读：0 authorization/evaluation/submission/status/attachment-link/queue writes；done child不能早退root preview；绑定root/child数字revision和精确source。",
+      "label": "Read-only source/root preview and self attachment inspection, zero business-write witnesses",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/5"
+      },
+      "R31_treatment": "R31_true_idle_error_no_effects",
+      "source_raw_applicability": "Accepted R31 genuine idle/error/blocked76-relation+stage-exit witnesses and exact allowed reclaim generation/lease changes supplement prior72-relation read proofs.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Final current four/after audit must classify real writes and artifact additions; per-call equal snapshots do not prove whole DB unchanged.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q07",
+      "canonical_requirement": "HTTP strict unknown/duplicate/case alias/trailing JSON、64KiB及分页1..50、cursor root/source/viewer/revision绑定；list/detail/empty/cursor mid-revoke竞争均保留。",
+      "label": "Strict objects/aliases/limits, root/source/viewer/revision cursor, empty/cached/mid-revoke orders",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/6"
+      },
+      "R31_treatment": "retained_HTTP_with_current_claim_finalization",
+      "source_raw_applicability": "HTTP/DTO/router/aliases/cursors/budgets/FRONT parsing unchanged; actual temporal batch handler re-exercises positive credential finalization.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Old99/54 remains source/raw-bound; new source/caller/default delta alone discharges with R31current controls,not full rerun.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q08",
+      "canonical_requirement": "late error或commit unknown不自动重试；已提交refusal原status/code/blockers冻结；原GET404无POST；已consumed key在reopen/当前stage变化后仍历史回执且当前权限重检。",
+      "label": "Lost/unknown commit, original refused/consumed key and current read authority; late external fact history",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/7"
+      },
+      "R31_treatment": "R31_error_and_lost_response_supplement",
+      "source_raw_applicability": "Probe error wraps/returns before MarkChecked/claim; true reclaim/lost response preserves original execution and generation; grant/operation unknown recovery unchanged.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Accepted one sentinel control/temporal2mode and current completed Desktop/Web original receipt chain; late policy failure cause remains separate.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q09",
+      "canonical_requirement": "stage schema readiness与所有实际writer依赖一致；缺表/索引/trigger/partial migration为不可用不是off。全部writer齐备验证后才stagePolicyActivationAvailable=true，再真实P2启用，不能测试开关绕过。",
+      "label": "Exact864 ledger and readiness dependencies; missing state is unavailable, P2 remains false",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/8"
+      },
+      "R31_treatment": "R31_SQL_generated_no_DDL",
+      "source_raw_applicability": "Prior R29zero SQL/generated statement is superseded: one EXISTS/one getter added. No migration/schema/readiness/role/epoch/default change; dependencies are a subset of original reclaim columns.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Current canonical generation143outputs/current query/generated hashes plus retained exact readiness/ledger/physical-DDL evidence; no migration rerun solely for R31.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q10",
+      "canonical_requirement": "项目policy change/root move/clear/delete与完成/提交锁争用；同target物理冲突不能经localbinding/workspace/trust改键绕过；普通child独立生命周期/手建控制组保持。",
+      "label": "Policy/project/submit/complete ordering, physical-target uncertainty, human-child independence",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/9"
+      },
+      "R31_treatment": "retained_policy_target_actual409_unresolved",
+      "source_raw_applicability": "Policy/project/submit/complete/physical target and child locking defaults remain unchanged; actual late E04project delivery-policy PUT409 is unresolved current business evidence.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "R32 bounded source/CAS/native evidence diagnosis; do not attribute CAS/lock/holder cause from nearby reads or change policy/locks/retries without proof.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q11",
+      "canonical_requirement": "2d新DDL单条CONCURRENTLY索引全部注册cleanup、真实shape/noFK、empty down/up及各直接table-drop保留历史拒绝；不得执行并行knowledge844–860+迁移。",
+      "label": "Four exact835/864 schemas plus source shapes/cleanup map; root-owned six raw controls + one immutable supplement,39 assertions",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/10"
+      },
+      "R31_treatment": "retained_DDL_history",
+      "source_raw_applicability": "R31 has no DDL/index/FK/cleanup/readiness delta; canonical old six controls+supplement39 assertions stay applicable.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS"
+      ],
+      "final_required_evidence": "Final current schema/history identity; keep old cleanup/Go1.26/Linux/true external limits declared.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    },
+    {
+      "id": "Q12",
+      "canonical_requirement": "配置/源码/数据冻结后才执行四场景；进程只关自有，gate恢复allocation原booleans且epoch单调；原始fail/skip/NOT_RUN、源版本、完整分母不覆盖。",
+      "label": "Immutable inputs/configs/owned cleanup collected",
+      "actual_entry_path": null,
+      "canonical_row_reference": {
+        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-s2-final-gate-inventory-20261118.json",
+        "sha256": "5a30432b9ceadca7fb5291fd5ae4d783f6a3b6e51f7a3e79f4b3d46142e2dcf2",
+        "json_pointer": "/Q/11"
+      },
+      "R31_treatment": "current_R31_after_and_full_scope",
+      "source_raw_applicability": "Current five products5055source/retainedFRONT/current run and stopped-after identity are required. ROOT reports one owned stop,0otherconn/gate74/64settled48complete/history unknown1.",
+      "evidence_aliases": [
+        "PRIOR_42",
+        "CANONICAL_42",
+        "ORIGINAL_GO",
+        "R29_76_6_DEFAULTS",
+        "R31_GREEN_37",
+        "ROOT_FIVE_PREP"
+      ],
+      "final_required_evidence": "Final raw/currentCLI/live-after/stopped-after/source/archive/permission/gate restoration and independent42-row audit; parent24 unchanged.",
+      "current_status": "APPLICABILITY_READY_FINAL_A12_NOT_ACCEPTED; current_original_four_has_one_reported_failure",
+      "accepted_row_by_research": false
+    }
+  ],
+  "ROOT_and_FRONT": {
+    "integration_ref": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/ROOT-integration-r01/integration-proof.json",
+      "sha256": "7b191f4db3306fdafcb7b2cebc49be3d7e6138fe816cf4816088322fa2f7f9fc"
+    },
+    "build_ref": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/build-result-r01.json",
+      "sha256": "eba476b5e65245524d1e9195c3cdd8d2d22c75b20be32a49a30b09839ab43b85"
+    },
+    "ROOT_static_ref": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/ROOT-integration-r01/checks/result.json",
+      "sha256": "2128db3a91da2691dcf2b273fd5ef4434657efd7606dbdb3b16bc319b845910a"
+    },
+    "consuming_ref": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/runtime/current-consuming-source-before-four-r01.json",
+      "sha256": "eb4781cd615cd65412a08304ae08cb86d62f13c9706d85f406b9ebe1cfc37c81"
+    },
+    "source_regular_files": 5055,
+    "selected_integration_paths": [
+      {
+        "path": "server/internal/service/task.go",
+        "ROOT_before_sha256": "28c28dfe8bc3a75bb6e38d9727ed8632d7d52ac120d3d61cb06422021625fd50",
+        "ROOT_after_sha256": "bcfb7399e75040f8eeb809cada849e11095ba1a105b9553d322d450397fdd7bc",
+        "ROOT_mode": "0o755",
+        "private_mode": "0o755",
+        "source_identical": true
+      },
+      {
+        "path": "server/pkg/db/queries/agent.sql",
+        "ROOT_before_sha256": "4d900ec193fb94e9b3c8f4835224ab64035872a85788bb2b42526cd0ea3999a1",
+        "ROOT_after_sha256": "4a661a0c1374525177d4cd103b3d47aa39ea67c1a0a32c3eb4bf4067aa6494be",
+        "ROOT_mode": "0o755",
+        "private_mode": "0o755",
+        "source_identical": true
+      },
+      {
+        "path": "server/pkg/db/generated/agent.sql.go",
+        "ROOT_before_sha256": "234283e657fcdb39c14bea05decb8005cf20e43b5bb63b29ba7f99a3347a42a5",
+        "ROOT_after_sha256": "2f6233d3d901d96c03f3964b69319932cf8246f65402c2123c1d9a5c2eb7c794",
+        "ROOT_mode": "0o755",
+        "private_mode": "0o755",
+        "source_identical": true
+      },
+      {
+        "path": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+        "ROOT_before_sha256": null,
+        "ROOT_after_sha256": "b07397c51e304ef51e95d3c3757143600a8a37528b96005e5641df9f765f300b",
+        "ROOT_mode": "0o644",
+        "private_mode": "0o644",
+        "source_identical": true
+      },
+      {
+        "path": "server/internal/service/task_idle_claim_preflight_failure_test.go",
+        "ROOT_before_sha256": null,
+        "ROOT_after_sha256": "1cb4fac1359b96fd29a0b4812a7e461250752b42b1eb7d56e1f750a3c8c8db8a",
+        "ROOT_mode": "0o644",
+        "private_mode": "0o644",
+        "source_identical": true
+      }
+    ],
+    "binary_records": [
+      {
+        "name": "server",
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/multica-server",
+          "sha256": "d3ace666eb875d1f9ab4bec8afc628dbd8a306c2053ac8117b9dae6850c0bb9e",
+          "bytes": 108857458,
+          "mode": "0o755"
+        }
+      },
+      {
+        "name": "cli",
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/multica",
+          "sha256": "c1a8a4bb71071994667d58062dc4255f80034c9d3d7c1053b33be29d6b98b9ee",
+          "bytes": 36943090,
+          "mode": "0o755"
+        }
+      },
+      {
+        "name": "router",
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/stage-router.test",
+          "sha256": "10190a1e5ad10ad41d02ea505fced83dcb9adb9e7d27da3d38830ae4e748d98a",
+          "bytes": 118589218,
+          "mode": "0o755"
+        }
+      },
+      {
+        "name": "host",
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/host-daemon.test",
+          "sha256": "70abeb7770208a70c35a8742c91cd16243ab7786aec1bd1b193cc1d9313d912e",
+          "bytes": 44069954,
+          "mode": "0o755"
+        }
+      },
+      {
+        "name": "provider",
+        "binary": {
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/build-final-r01/host-provider",
+          "sha256": "8f7d46803a1ca68944a579651394ac0e3f5c5b17063af36659881478fe64389d",
+          "bytes": 5530802,
+          "mode": "0o755"
+        }
+      }
+    ],
+    "frontend": {
+      "backend_files": 5055,
+      "frontend_records": 3359,
+      "dependency_links": 1961,
+      "production_output_records": 1676,
+      "production_build_id": "PpNZY2bAtTOUVfi6UgJKT",
+      "manifest_hash_verified": true,
+      "current_five_products_bound": true,
+      "live_frontend_or_API_probe_by_reviewer": false
+    },
+    "whole_ROOT_workspace_equivalence_claimed": false,
+    "live_current_result_read_by_research": false
+  },
+  "final_next_step": {
+    "name": "One full-scope independent A12 reconciliation after the actual policy failure and current runtime/post-stop evidence are resolved",
+    "evidence_required": [
+      {
+        "id": "F01",
+        "need": "Current original-four raw/content acceptance",
+        "required": "ROOT deliver current exact four result/reporter/raw/one-start/permit/config/case-local HTTP/actor/profile/PNG; every original case must PASS once/retry0. ROOT reports3/1/0 with successful E04completion/recovery but later policy409; report does not parse current runtime files.",
+        "state": "actual current failure remains unresolved"
+      },
+      {
+        "id": "F02",
+        "need": "Late policy failure/current R38 composition",
+        "required": "Resolve E04spec587/fixture356 UpdateDeliveryPolicy409 with exact input/current revision/policy/lock/result evidence; no completed Desktop/Web write replay, no cause attribution or blanket rerun. Remaining R38/admin branch cannot be inferred from earlier success.",
+        "state": "R32 diagnosis next; no product authorization"
+      },
+      {
+        "id": "F03",
+        "need": "Current program/CLI/platform/source binding",
+        "required": "Bind exact R31currentCLI W10,API/rendered origins/WS/native account/profile/harness/current five products plus5055source and FRONT3359/1961/1676 before/after identities. ROOT selected five integration is not whole-workspace equivalence.",
+        "state": "ROOT final evidence receipt needed"
+      },
+      {
+        "id": "F04",
+        "need": "Owned stop and stopped-after domains",
+        "required": "ROOT reports API35740/bridge35737 already stopped once,0otherconn/gate74/64settled48complete. Final reviewer verifies exact owning stop,absence/listeners/preserved platform processes,selected DB,restored original gate booleans/monotonic epoch and no live lease/bound/unsettled/unreleased work. No additional signals from research.",
+        "state": "ROOT attestation available; raw stopped-after audit not consumed here"
+      },
+      {
+        "id": "F05",
+        "need": "Immutable history/archive/permission identity",
+        "required": "Verify old338 descriptor/source/history records and declared381 current descriptor set,old unknown1/new archive/tar/input/spec/receipt bytes,staging/output modes/UID/type/path/inode/source,current complete48 artifacts and every declared addition. Computed freshness is classified without rewriting raw data.",
+        "state": "ROOT attestation available; full final audit remains"
+      },
+      {
+        "id": "F06",
+        "need": "One final independent full-S2 A12",
+        "required": "Combine every42 A/W/Q row and all affected modules from this applicability map with original raw/default chains,accepted R31+ROOT integration/builds,current original-four/resolved failure and after evidence. Broaden tests only if real unbound code/default/schema/caller or failed actual contract demands it.",
+        "state": "not accepted by this inventory"
+      }
+    ],
+    "outcome_rule": "FullS2 only when current original four allPASS,all owned currentCLI/source/history/archive/DB/permission/zero-effect/default proofs match,and independent full42row A12 accepts. This inventory/source/build/current37named PASS alone cannot close S2.",
+    "bookkeeping_owner": "ROOT after independent acceptance; no user reapproval or archival requested now"
+  },
+  "specs": [
+    {
+      "file": ".trellis/workflow.md",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "reason": "Full-scope final2.2 at568"
+    },
+    {
+      "file": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "sha256": "7693fd1e610b244932a399ff23041a74a69e354fe22a6ac04f7dc0b0a4e44880",
+      "reason": "Updated R31batch-only probe/current-R4/error/realwriter contract at128–186"
+    },
+    {
+      "file": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "sha256": "0ffa7cea0570f89f4c6067d637bf4fa746540738fd1cd0c1cd310844f891a289",
+      "reason": "M1 borrowed Tx/original-key/consumer/default all-writer semantics"
+    },
+    {
+      "file": ".trellis/spec/server/managed-installations.md",
+      "sha256": "637282c9698b9e5e1966626817dccfefb42fc58f290b9e82ad56367ab391e20e",
+      "reason": "Current binding/owner/PAT/admission/history/generation/lease"
+    },
+    {
+      "file": ".trellis/spec/server/database-test-isolation.md",
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8",
+      "reason": "Task-owned package DB/TestMain and actual evidence"
+    },
+    {
+      "file": ".trellis/spec/server/verification-environment.md",
+      "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f",
+      "reason": "Final source/command/resource/configuration/JSON inventory"
+    },
+    {
+      "file": ".trellis/spec/core/frontend/index.md",
+      "sha256": "9847e8646955a178d16c4df628da51143494e1d7c1f040069f3e5b747543543c",
+      "reason": "Core package boundary"
+    },
+    {
+      "file": ".trellis/spec/views/frontend/index.md",
+      "sha256": "0f38d782c44b0e71bae8792dd9ff533b2a2313760720557fa553515724b33c88",
+      "reason": "Shared Views boundary"
+    },
+    {
+      "file": ".trellis/spec/web/frontend/index.md",
+      "sha256": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f",
+      "reason": "Web platform boundary"
+    },
+    {
+      "file": ".trellis/spec/desktop/frontend/index.md",
+      "sha256": "ad02ed18c809c0e9816cb95c3e13827f051e555c4cc9fde9b2139d8717bab4c1",
+      "reason": "Desktop platform/native identity"
+    },
+    {
+      "file": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "sha256": "1246539800787b057417b536162ceb34ae24dfc69f34d563f5e4226c25e6dd2e",
+      "reason": "Shared original-intent/source epoch recovery"
+    }
+  ],
+  "external_references": [
+    {
+      "url": "https://docs.sqlc.dev/en/stable/",
+      "version": "sqlc1.31.1",
+      "basis": "Accepted actual ROOTgeneration; no generator or external fetch by research"
+    },
+    {
+      "url": "https://github.com/jackc/pgx",
+      "version": "v5.9.2",
+      "basis": "Frozen Go module/shared actual transaction source"
+    },
+    {
+      "url": "https://github.com/redis/go-redis",
+      "version": "v9.18.0",
+      "basis": "Existing cache code and accepted private ownedRedis controls"
+    }
+  ],
+  "parent24": {
+    "pass": 0,
+    "partial": 9,
+    "not_run": 15,
+    "status_source": "ROOT dispatch; matrix not modified",
+    "acceptance_not_inflated": true
+  },
+  "history_preserved": {
+    "R30_original_four": "2PASS/1FAIL/1NOT_RUN,retry0",
+    "R28_original_four": "3PASS/1FAIL/0NOT_RUN,retry0",
+    "R28_successful_completed_writes": "retained,not replayed",
+    "historical_native_holder": "unknown; not itself a S2gate,while current failed business path remains unresolved"
+  },
+  "execution_by_research": {
+    "Go": false,
+    "AST": false,
+    "DB_SQL": false,
+    "Redis": false,
+    "API_browser": false,
+    "process_signals": false,
+    "Git": false,
+    "agents": false,
+    "source_test_spec_config_history_edits": false,
+    "runtime_result_diagnostic_command_read": false
+  },
+  "caveats": [
+    "This is an updated applicability inventory,not independent finalA12 acceptance. R31current3/1/0 and after facts are ROOT steering attestations,not a fresh research result audit.",
+    "37 package-qualified current names per mode do not replace old whole-scope writer/source/DDL/transport matrices or four business cases.",
+    "Retained whole-scope semantics apply to original positive/default contracts; the intentional batch negative/error change is separately bound to d63f8 and current controls.",
+    "No unmatched code dependency found within the accepted frozen R31slice; late E04policy409/current runtime and final after/source/artifact acceptance remain unclosed.",
+    "Original singular idle polling is unchanged. Historical physical holder is unknown; do not attribute it or the new policy409 to the preflight by proximity.",
+    "Current source/ROOT five integration/build/preparation is not a whole-workspace or final live audit. FRONT3359/1961/1676/buildID remains R24bound.",
+    "Only the two new report files written/sealed0444. No successful completion/policy write replay,permission request,archive or parent/status update."
+  ],
+  "markdown": {
+    "path": "r31-s2-final-scope-applicability-20261118.md",
+    "sha256": "1881d9748cc5fdf43e8cfae1019fa355af2ebc1a9f6f66c918b9f030c055480c",
+    "bytes": 37737
+  }
+}

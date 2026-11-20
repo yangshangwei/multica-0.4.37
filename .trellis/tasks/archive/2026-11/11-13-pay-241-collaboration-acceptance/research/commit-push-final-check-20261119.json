@@ -1,0 +1,590 @@
+{
+  "at": "2026-11-19T14:37:43.803792+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "/root/ui_cas_readiness",
+  "verdict": "READY_FOR_USER_AUTHORIZED_PUSH_EXACT_S2_COMMITS",
+  "blocking_findings": [],
+  "base_HEAD": "7ad863a08066a78f61f73a1c5b0e10472e526a05",
+  "reviewed_HEAD": "2e706092a8fe39a9651cf2128263def1d19f64ed",
+  "campaign": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb",
+  "candidate": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02",
+  "candidate_comparison": {
+    "manifest_rows": 9038,
+    "base_archive_files": 9021,
+    "exact_selected_changes": 50,
+    "new_code_files": 17,
+    "candidate_source_drift": 0,
+    "selected_provenance_hash_mismatch": 0,
+    "currentHEAD_exact_blob_matches": 9037,
+    "currentHEAD_qualified_EOL_matches": [
+      {
+        "path": "scripts/uninstall-desktop-windows.bat",
+        "Git_blob_sha256": "6e4671df0f7e965556118507db30de9dd37447914c12e47791d3003956bd59f6",
+        "candidate_sha256": "b42fc96300d51840c575971783f0e17588088a7643594d277a5b7c00251a9a12",
+        "Git_eol_attribute": "crlf",
+        "LF_lines": 389,
+        "CRLF_lines": 389,
+        "normalized_equal": true,
+        "preexisting_HEAD_blob_unchanged": true
+      }
+    ],
+    "quickcreate_and_liveUI_code_paths_checked": 71,
+    "excluded_scope_contamination": 0,
+    "additional_unowned_code_delta": 0
+  },
+  "dependency_links": {
+    "inventory": 2061,
+    "changed": 0,
+    "workspace_multica_links": 32,
+    "workspace_links_resolve_into_candidate": true,
+    "external_installed_dependencies": "Shared installed pnpmpackagefiles reused; linktargets verified, not everythirdpartybyte rehashed."
+  },
+  "commits": [
+    {
+      "commit": "726c6fce2688e0f0c5bb400531caaff0ad0e0e63",
+      "group": "server",
+      "paths": [
+        ".trellis/spec/server/collaboration-stage-approvals.md",
+        ".trellis/spec/server/delivery-completion-enforcement.md",
+        ".trellis/spec/server/delivery-policy-evaluations.md",
+        "server/internal/handler/delivery_policy.go",
+        "server/internal/handler/delivery_policy_project_wait_test.go",
+        "server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+        "server/internal/service/collaboration_completion_preview.go",
+        "server/internal/service/collaboration_completion_preview_admin_submission_test.go",
+        "server/internal/service/collaboration_completion_preview_managed_submission_test.go",
+        "server/internal/service/collaboration_completion_preview_read_concurrency_test.go",
+        "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go",
+        "server/internal/service/collaboration_runtime_preparation_capabilities.go",
+        "server/internal/service/collaboration_stage_completion.go",
+        "server/internal/service/collaboration_stage_evidence.go",
+        "server/internal/service/collaboration_stage_evidence_read.go",
+        "server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+        "server/internal/service/collaboration_stage_execution_approvals.go",
+        "server/internal/service/collaboration_stage_execution_read_concurrency_test.go",
+        "server/internal/service/collaboration_stage_execution_run_read_fences_test.go",
+        "server/internal/service/collaboration_stage_qa.go",
+        "server/internal/service/collaboration_workflow.go",
+        "server/internal/service/collaboration_workflow_read_concurrency_test.go",
+        "server/internal/service/delivery_completion_authorization.go",
+        "server/internal/service/delivery_completion_collaboration.go",
+        "server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+        "server/internal/service/delivery_completion_preview.go",
+        "server/internal/service/delivery_evidence.go",
+        "server/internal/service/managed_runtime.go",
+        "server/internal/service/task.go",
+        "server/internal/service/task_idle_claim_preflight_failure_test.go",
+        "server/internal/service/task_idle_claim_read_concurrency_test.go",
+        "server/pkg/db/generated/agent.sql.go",
+        "server/pkg/db/generated/delivery_evidence_read.sql.go",
+        "server/pkg/db/generated/delivery_policy.sql.go",
+        "server/pkg/db/queries/agent.sql",
+        "server/pkg/db/queries/delivery_evidence_read.sql",
+        "server/pkg/db/queries/delivery_policy.sql"
+      ],
+      "count": 37,
+      "exact_ready_group": true
+    },
+    {
+      "commit": "2bd043c068383a27b56778c3c8fc5304af94b5d1",
+      "group": "frontend",
+      "paths": [
+        "packages/core/collaboration/stage-code-presentation.test.ts",
+        "packages/core/collaboration/stage-schema.test.ts",
+        "packages/core/collaboration/stage-schema.ts",
+        "packages/views/collaboration/stage-code-panel.test.tsx",
+        "packages/views/collaboration/stage-code-panel.tsx",
+        "packages/views/collaboration/stage-labels.test.ts",
+        "packages/views/collaboration/stage-labels.ts",
+        "packages/views/locales/en/collaboration.json",
+        "packages/views/locales/zh-Hans/collaboration.json"
+      ],
+      "count": 9,
+      "exact_ready_group": true
+    },
+    {
+      "commit": "2e706092a8fe39a9651cf2128263def1d19f64ed",
+      "group": "e2e",
+      "paths": [
+        ".trellis/spec/web/frontend/e2e-run-environment.md",
+        "e2e/collaboration-stage-execution.spec.ts",
+        "e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+        "e2e/fixtures/collaboration-host-runtime.ts",
+        "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-control.ts",
+        "e2e/fixtures/collaboration-stage-execution.node-test.mjs",
+        "e2e/fixtures/collaboration-stage-execution.ts"
+      ],
+      "count": 8,
+      "exact_ready_group": true
+    }
+  ],
+  "spec_hashes": [
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "current_sha256": "7693fd1e610b244932a399ff23041a74a69e354fe22a6ac04f7dc0b0a4e44880",
+      "mode": "0644",
+      "qualification": "S2-only documented current contracts, manual diff checked; not an executable-source hash claim"
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "current_sha256": "0ffa7cea0570f89f4c6067d637bf4fa746540738fd1cd0c1cd310844f891a289",
+      "mode": "0644",
+      "qualification": "S2-only documented current contracts, manual diff checked; not an executable-source hash claim"
+    },
+    {
+      "path": ".trellis/spec/server/delivery-policy-evaluations.md",
+      "current_sha256": "6cdaba00c90025ed5d0604d0cccb5cb0a056d8f2595de031df00456923068a57",
+      "mode": "0644",
+      "qualification": "S2-only documented current contracts, manual diff checked; not an executable-source hash claim"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "current_sha256": "19c77e3e102099e149b212f84d795f74cc4398eabac1c3ce15d8cf6a58e2fb96",
+      "mode": "0644",
+      "qualification": "S2-only documented current contracts, manual diff checked; not an executable-source hash claim"
+    }
+  ],
+  "checks": [
+    {
+      "label": "typecheck-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/pnpm",
+          "typecheck"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02",
+        "started_at": "2026-11-19T14:18:20.799097+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:28:44.690326+00:00",
+        "source_drift": [],
+        "stdout_sha256": "d25aa77fff8d1a540770f8723881cef3cd96ecdfd265940007ec6a3189a74dbc",
+        "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "lint-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/pnpm",
+          "lint"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02",
+        "started_at": "2026-11-19T14:18:20.799012+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:23:37.362365+00:00",
+        "source_drift": [],
+        "stdout_sha256": "c8c57b758d373a2905dd850d8bbf8d1915fc6cd6e205915838fe626825a387e0",
+        "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "ui-core-stage-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "collaboration/stage-schema.test.ts",
+          "collaboration/stage-code-presentation.test.ts",
+          "--reporter=json"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/packages/core",
+        "started_at": "2026-11-19T14:18:20.799458+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:18:34.776961+00:00",
+        "source_drift": [],
+        "stdout_sha256": "35cd8805ac107c8bdae6c53c60d7ad6fafed7e994f7126aae56d0119ab38d086",
+        "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "ui-views-stage-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "collaboration/stage-code-panel.test.tsx",
+          "collaboration/stage-labels.test.ts",
+          "--reporter=json"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/packages/views",
+        "started_at": "2026-11-19T14:18:20.799291+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:19:22.102674+00:00",
+        "source_drift": [],
+        "stdout_sha256": "eca95015ae7db5c25c1bda66a31c9258fe147c8ee6af5b9acd020eae24de9d75",
+        "stderr_sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "go-compile-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Users/artisan/.multica/acceptance/pay241-commit-push-20261119-x9n4klsb/compile/",
+          "./internal/service",
+          "./internal/handler",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/server",
+        "started_at": "2026-11-19T14:18:55.127703+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:26:50.679705+00:00",
+        "source_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "go-vet-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "vet",
+          "./internal/service",
+          "./internal/handler",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/server",
+        "started_at": "2026-11-19T14:29:22.563627+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:29:28.189475+00:00",
+        "source_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "e2e-fixture-node-r01",
+      "command": {
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "--test",
+          "e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+          "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+          "e2e/fixtures/collaboration-stage-execution.node-test.mjs"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02",
+        "started_at": "2026-11-19T14:18:55.127695+00:00",
+        "closed_environment": true,
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02"
+      },
+      "result": {
+        "exit": 1,
+        "finished_at": "2026-11-19T14:18:57.258287+00:00",
+        "source_drift": [],
+        "stdout_sha256": "9029b9f32566ef0891e6d31c2f7bd5adfd958e29ef99ababea2b04a1c5163d9a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "raw_hashes_verified": true
+    },
+    {
+      "label": "e2e-fixture-node-r02",
+      "command": {
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "--test",
+          "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+          "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/e2e/fixtures/collaboration-stage-control.node-test.mjs",
+          "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02/e2e/fixtures/collaboration-stage-execution.node-test.mjs"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/source/candidate-r02",
+        "closed_environment": true,
+        "fixture_binding": {
+          "source_sha256": "9454aba098a9210dd9c6eae54cf0be4e1f33d3d4bedd245c882e8fd65c2088a3",
+          "control_sha256": "a6e433acdb92f943cbe0c1288908ffcfe5ab667b2a0771106c7a090979e51c96",
+          "test_sha256": "d90fcd2a0b74c60e355092226f8e37b34ead4829931d180a7c99e77bcce91591"
+        }
+      },
+      "result": {
+        "exit": 0,
+        "finished_at": "2026-11-19T14:26:10.731193+00:00",
+        "stdout_sha256": "fe967c15c76474922ffeca99adf4703c8cc1b04410cd1a01542bf1d4c09c2834",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_unchanged": true
+      },
+      "raw_hashes_verified": true
+    }
+  ],
+  "counts": {
+    "typecheck_tasks": 9,
+    "lint_tasks": 6,
+    "lint_errors": 0,
+    "lint_warnings": 31,
+    "Core_named_tests": 149,
+    "Views_named_tests": 30,
+    "fixture_R02_tests": 26,
+    "fixture_R02_failed_cancelled_skipped_todo": 0,
+    "Go_compile_packages": 3,
+    "Go_vet_packages": 3,
+    "Go_test_bodies_executed": 0
+  },
+  "compiled_test_binaries": [
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-commit-push-20261119-x9n4klsb/compile/handler.test",
+      "sha256": "db5000c6dee64d83177ea6d14442666dddce00dc4458941fe14e488b908d196c",
+      "bytes": 114951970
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-commit-push-20261119-x9n4klsb/compile/server.test",
+      "sha256": "825fe86804c841a16b50f25b4285d44a894214095f3d72f7a599040cae8201f1",
+      "bytes": 119058994
+    },
+    {
+      "path": "/Users/artisan/.multica/acceptance/pay241-commit-push-20261119-x9n4klsb/compile/service.test",
+      "sha256": "edbc9f777aef8633db7faa035f4d0f2f3773fc3dac8d135e6be403e2e4f9f4ba",
+      "bytes": 87088626
+    }
+  ],
+  "fixture_R01": {
+    "status": "RETAINED_SETUP_FAILURE",
+    "tests": 26,
+    "passed": 25,
+    "failed": 1,
+    "cause": "RequiredPAY241_R19_CAPTURE_DIR/COMMAND_PATH absent; finalcase rejectedbeforeprivatecontrolbody",
+    "source_unchanged": true
+  },
+  "fixture_R02": {
+    "status": "PASS",
+    "explicit_capture_and_command_binding": true,
+    "bindings": {
+      "source_sha256": "9454aba098a9210dd9c6eae54cf0be4e1f33d3d4bedd245c882e8fd65c2088a3",
+      "control_sha256": "a6e433acdb92f943cbe0c1288908ffcfe5ab667b2a0771106c7a090979e51c96",
+      "test_sha256": "d90fcd2a0b74c60e355092226f8e37b34ead4829931d180a7c99e77bcce91591"
+    },
+    "captured_metric_freshness_seconds": 120,
+    "socket_metadata_bound": true,
+    "source_unchanged": true
+  },
+  "residual_limits": [
+    "No freshdatabase-backedGo tests or productionbrowser/build/realruntime; priorR33functional/sourceacceptance reusedviareadinessreport.",
+    "Go test-c only compiles testbinaries;notclaimedtestbodyPASS.",
+    "Lint31existingwarningsretained;nozerowarningclaim.",
+    "9,038row manifest pins codebytes; generatedtypecheck/MDXoutputs excluded; Windows389lineCRLF archiveconversionqualified.",
+    "Recordedcommands useclosedenvironment; normalhelper doesnotrecordper-commandenv/toolhashes. Currentconfig/helper/toolresolution boundedbyinspection, notclaimedhistoricalfulltool-bytefreeze.",
+    "2,061links verified,32workspaceedges local; externalpackages reuseinstalledpnpmstore without fullthirdpartybyte audit.",
+    "Quick-create23paths and ongoingCoreUIauditremainexcluded/uncommitted.",
+    "S4realexternalinputs/finalS5/businesssignatures/unrelatedtaskworkremainopen.",
+    "Reviewer performsnogitwrites; thisverdict isclearance, notobservedpushreceipt."
+  ],
+  "reviewer_actions": {
+    "new_tests_DB_API_process": 0,
+    "source_config_changes": 0,
+    "stage_commit_push": 0,
+    "writes": [
+      "research/commit-push-final-check-20261119.md",
+      "research/commit-push-final-check-20261119.json"
+    ]
+  },
+  "evidence_refs": {
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-s2-20261119.json": {
+      "sha256": "42f9154361f07fb65f0254e5261af1f1a29c6406c0325bbe6aeb08510946ed93",
+      "bytes": 83847
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/intake/baseline.json": {
+      "sha256": "fe3af9c22724a25001316ec087db97b25f01fd5b1448343fdd54f76202e9f166",
+      "bytes": 105369
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/intake/candidate-code-source-r02.json": {
+      "sha256": "928549a7c7a86d5244c0af95d69a345956bb25a27e94096d5ec3d4410d2999c6",
+      "bytes": 1409676
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/intake/candidate-dependency-links-r02.json": {
+      "sha256": "67993d94947707389d7f2804df9585b55e81f45189f8e42cdfc93c6783196264",
+      "bytes": 608484
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-ui-20261119.json": {
+      "sha256": "395fe7a04975724ca01309a95390a8b4e55bc7dc7aa7c13f7972bbaf3ffd2457",
+      "bytes": 44317
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/typecheck-r01/result.json": {
+      "sha256": "34d3fc3d202dd40b551216b5725b15238cf305f36153c1da68652ecc8d4a07b1",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/typecheck-r01/command.json": {
+      "sha256": "108ec8862f11c78af28df108aabde3269f790957ab0132d1bf7f3e83f671b6a1",
+      "bytes": 365
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/typecheck-r01/stdout.log": {
+      "sha256": "d25aa77fff8d1a540770f8723881cef3cd96ecdfd265940007ec6a3189a74dbc",
+      "bytes": 4106
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/typecheck-r01/stderr.log": {
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/lint-r01/result.json": {
+      "sha256": "4843ee929ef281c76d29a93bf59220bdf0582791d0da8c890beabfe99f1578d2",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/lint-r01/command.json": {
+      "sha256": "c997fb0dddbac32438de9b60ea83bcdcb135b511b5f9d21fa5f44cf66f3abeba",
+      "bytes": 360
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/lint-r01/stdout.log": {
+      "sha256": "c8c57b758d373a2905dd850d8bbf8d1915fc6cd6e205915838fe626825a387e0",
+      "bytes": 11681
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/lint-r01/stderr.log": {
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-core-stage-r01/result.json": {
+      "sha256": "6c1ce14592dae57afa9f8430bd0e3d9387806d6bdad4bff87ead339d3f39027d",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-core-stage-r01/command.json": {
+      "sha256": "aafca495e81a66588241245bffe250b3fd78fc6970855353fbff7041c8da3fae",
+      "bytes": 517
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-core-stage-r01/stdout.log": {
+      "sha256": "35cd8805ac107c8bdae6c53c60d7ad6fafed7e994f7126aae56d0119ab38d086",
+      "bytes": 48362
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-core-stage-r01/stderr.log": {
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-views-stage-r01/result.json": {
+      "sha256": "a9a3adfcee2342630910b0ec8829abcf814e8d33e48ef1c5311fb6bcd0582054",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-views-stage-r01/command.json": {
+      "sha256": "3d737f8140b3fe1c412db916b282cbdf37fe7f35faf9c634d4598dc1981b5b7b",
+      "bytes": 512
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-views-stage-r01/stdout.log": {
+      "sha256": "eca95015ae7db5c25c1bda66a31c9258fe147c8ee6af5b9acd020eae24de9d75",
+      "bytes": 10048
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/ui-views-stage-r01/stderr.log": {
+      "sha256": "1a585257c58d9c0b02938c759c56c62971c922be22bdf610a77bfbaa9528539f",
+      "bytes": 211
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-compile-r01/result.json": {
+      "sha256": "699738fdde78f4a022177dabe68f6224a49bd100227f8832d7daf9a3c5095a30",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-compile-r01/command.json": {
+      "sha256": "34bcd53bfbf22cc73e7816d4852a30ca31c9b85ddbd008aedc40ac25158e0f62",
+      "bytes": 545
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-compile-r01/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-compile-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-vet-r01/result.json": {
+      "sha256": "8b051f23ae8bc36c4faba8ecf5bbb7553b7920f572fbf1aaef1f86d3d08536f2",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-vet-r01/command.json": {
+      "sha256": "a35661c31e43c7aabf8025ab305465ebb8d10bf3a1668a79a93c87a492169d5e",
+      "bytes": 436
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-vet-r01/stdout.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/go-vet-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r01/result.json": {
+      "sha256": "be88e47f4e11989ab9e17d6e30ae183dd9a2c1f8de4eab3678348470be3686c2",
+      "bytes": 265
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r01/command.json": {
+      "sha256": "82086162c9a1f4bbca87610f41ad6f62eedbfc8d24aa6545101fd403aabc4b87",
+      "bytes": 561
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r01/stdout.log": {
+      "sha256": "9029b9f32566ef0891e6d31c2f7bd5adfd958e29ef99ababea2b04a1c5163d9a",
+      "bytes": 6922
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r01/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/result.json": {
+      "sha256": "2992fa58c9dd54c316a95f099700003f86b2407cc03b9833d4e85f6c64b95685",
+      "bytes": 271
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/command.json": {
+      "sha256": "5bd60591903f30896e5701a60266355989c8c49471881be6406d065a0564962d",
+      "bytes": 977
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/stdout.log": {
+      "sha256": "fe967c15c76474922ffeca99adf4703c8cc1b04410cd1a01542bf1d4c09c2834",
+      "bytes": 6111
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/stderr.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/fixture-command.json": {
+      "sha256": "d14b4181099744f7e018c21c5291d0a5fe695e94c81fb309de04a1a9d1b223fe",
+      "bytes": 263
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/verification/e2e-fixture-node-r02/capture/source.configure.capture.json": {
+      "sha256": "b2c3ce27c139d42d8324216511ae6210ac71432d2f39399569e55cd3455eec6d",
+      "bytes": 6158
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/helpers/check.py": {
+      "sha256": "2ec9b3a9b03f59f6ae37a762010595980534fb2cfd0fd2e7f316f2495b343bfe",
+      "bytes": 1370
+    },
+    "/Volumes/artisan/.multica-acceptance/pay241-commit-push-20261119-x9n4klsb/intake/check-environment.json": {
+      "sha256": "cf484010a1901341c34a5851b0664a072c30c0cd14a1b1cd9dc928fcb7734f80",
+      "bytes": 969
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-s2-20261119.md": {
+      "sha256": "44ca045e36f945b72f30f0845a0e724a8a1c2df4a581654a1d42e190ca426dec",
+      "bytes": 16032
+    },
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-ui-20261119.md": {
+      "sha256": "f78aee2d3656725673c2dfa0fa14d5feacbd0185ba722ae8bef7f537b868444e",
+      "bytes": 7221
+    }
+  }
+}

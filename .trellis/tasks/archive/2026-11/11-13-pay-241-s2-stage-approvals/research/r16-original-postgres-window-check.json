@@ -1,0 +1,251 @@
+{
+  "at": "2026-11-16T03:20:17.732795+00:00",
+  "researcher": "/root/r16_candidate_read_research",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "ORIGINAL_WINDOW_LOCK_ERRORS_CONFIRMED_HTTP_SECOND_CORRELATED_HOLDER_UNRESOLVED",
+  "postgres_original_errors": [
+    {
+      "container_timestamp": "2026-11-16T02:16:57.544297672Z",
+      "postgres_timestamp_UTC": "2026-11-16 02:16:57.543",
+      "failing_backend_PID": 39390,
+      "message": "could not obtain lock on row in relation \"issue\"",
+      "statement_name": "LockLifecycleIssue",
+      "clause": "FOR NO KEY UPDATE NOWAIT",
+      "parameters_present": false,
+      "SQLSTATE_explicit": null,
+      "holder_PID": null
+    },
+    {
+      "container_timestamp": "2026-11-16T02:17:12.570231888Z",
+      "postgres_timestamp_UTC": "2026-11-16 02:17:12.570",
+      "failing_backend_PID": 39491,
+      "message": "could not obtain lock on row in relation \"issue\"",
+      "statement_name": "LockLifecycleIssue",
+      "clause": "FOR NO KEY UPDATE NOWAIT",
+      "parameters_present": false,
+      "SQLSTATE_explicit": null,
+      "holder_PID": null
+    }
+  ],
+  "harness_candidate_HTTP_records": [
+    {
+      "line": 8512,
+      "rendered_timestamp": "2026/11/16 10:16:56",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:16:56+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 200,
+      "request_id": "22dd27cf",
+      "user_id": "486de1ce-aa43-49df-94b1-f711a5374e83",
+      "duration": "103.931ms"
+    },
+    {
+      "line": 8557,
+      "rendered_timestamp": "2026/11/16 10:16:57",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:16:57+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 200,
+      "request_id": "7594e192",
+      "user_id": "a56c5bfb-ff4f-464c-b926-e1b59c30ac00",
+      "duration": "141.863ms"
+    },
+    {
+      "line": 8602,
+      "rendered_timestamp": "2026/11/16 10:16:57",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:16:57+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 503,
+      "request_id": "ced94b1e",
+      "user_id": "a56c5bfb-ff4f-464c-b926-e1b59c30ac00",
+      "duration": "12.227ms"
+    },
+    {
+      "line": 8603,
+      "rendered_timestamp": "2026/11/16 10:16:57",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:16:57+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 200,
+      "request_id": "eaba2e3f",
+      "user_id": "0a4c2faa-13e5-40ef-a3f2-9db05e528d75",
+      "duration": "60.162ms"
+    },
+    {
+      "line": 8621,
+      "rendered_timestamp": "2026/11/16 10:17:11",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:17:11+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 200,
+      "request_id": "82789b00",
+      "user_id": "486de1ce-aa43-49df-94b1-f711a5374e83",
+      "duration": "72.186ms"
+    },
+    {
+      "line": 8656,
+      "rendered_timestamp": "2026/11/16 10:17:12",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:17:12+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 503,
+      "request_id": "d589f97e",
+      "user_id": "a56c5bfb-ff4f-464c-b926-e1b59c30ac00",
+      "duration": "16.582ms"
+    },
+    {
+      "line": 8657,
+      "rendered_timestamp": "2026/11/16 10:17:12",
+      "UTC_second_after_offset_normalization": "2026-11-16T02:17:12+00:00",
+      "method": "GET",
+      "path": "/api/collaboration/issues/01a1e224-a6de-7ea9-9d56-3c009b9c1460/stage/code-candidates/01a1e224-a964-769b-af29-70fbc780f8eb",
+      "HTTP": 200,
+      "request_id": "db95fa5e",
+      "user_id": "0a4c2faa-13e5-40ef-a3f2-9db05e528d75",
+      "duration": "47.918ms"
+    }
+  ],
+  "timestamp_normalization": {
+    "HTTP_prefix_has_timezone": false,
+    "HTTP_prefix_subsecond_precision": false,
+    "rendering_offset_hours": 8,
+    "alignment_basis": "retained r15 UTC execution timestamps and Asia/Shanghai environment; normalize seconds only"
+  },
+  "identities": {
+    "root_issue_id": "01a1e224-a6de-7ea9-9d56-3c009b9c1460",
+    "project_id": "f0e7079d-b901-4a45-a884-e0419be2c3cf",
+    "candidate": {
+      "candidate_id": "01a1e224-a964-769b-af29-70fbc780f8eb",
+      "version": "1",
+      "content_digest": "ab2b969d0940ae8ab3208f824fafe7c729877f7a9e5fd3a83315b3edbfda6387"
+    },
+    "source_child_id": "01a1e224-a7a2-794e-a81a-fd0ec5b7de7f",
+    "source_workspace_id": "18602f78-e225-4465-8c50-42834f332cdd",
+    "selected_artifact_approval_id": "239a4aa4-42f2-4feb-8136-08b9a8d45ad6",
+    "selected_artifact_execution_id": "01a1e224-a8dc-7e19-a6fa-5ed44b9b8e85",
+    "reviewer_user_id": "a56c5bfb-ff4f-464c-b926-e1b59c30ac00",
+    "QA_reader_user_id": "0a4c2faa-13e5-40ef-a3f2-9db05e528d75"
+  },
+  "candidate_creation_HTTP": {
+    "at": "2026-11-16T02:16:55.913Z",
+    "HTTP": 200,
+    "request_id": "a10a9c7b-5a50-46f7-9570-095a40ca9e70",
+    "child_issue_id": "01a1e224-a7a2-794e-a81a-fd0ec5b7de7f",
+    "artifact_approval_id": "239a4aa4-42f2-4feb-8136-08b9a8d45ad6",
+    "response": {
+      "code": "stage_code_candidate_created",
+      "collaboration_revision": "8",
+      "stage_confirmation": {
+        "action": "create_code_candidate",
+        "candidate_id": "01a1e224-a964-769b-af29-70fbc780f8eb",
+        "content_digest": "ab2b969d0940ae8ab3208f824fafe7c729877f7a9e5fd3a83315b3edbfda6387",
+        "issue_id": "01a1e224-a6de-7ea9-9d56-3c009b9c1460",
+        "parent_candidate_id": null,
+        "version": "1"
+      }
+    }
+  },
+  "advance_HTTP": {
+    "at": "2026-11-16T02:16:55.994Z",
+    "HTTP": 200,
+    "request_id": "cad9c728-6c0a-4315-8c18-4f1733181940",
+    "response": {
+      "code": "stage_advanced",
+      "collaboration_revision": "9",
+      "stage_confirmation": {
+        "action": "advance_stage",
+        "issue_id": "01a1e224-a6de-7ea9-9d56-3c009b9c1460",
+        "stage": "code_review",
+        "stage_revision": "2"
+      }
+    }
+  },
+  "confirmed": [
+    "two original issue-row NOWAIT lock failures",
+    "named LockLifecycleIssue statement and exact FOR NO KEY UPDATE NOWAIT clause",
+    "two same-candidate reviewer GET503 events in matching UTC-normalized seconds",
+    "same-candidate QA GET200 after each reviewer503 in log order",
+    "earlier same-candidate reviewerGET200"
+  ],
+  "not_confirmed": [
+    "explicit original SQLSTATE",
+    "requestID-to-PG-backendPID join",
+    "locked issue row UUID or SQL arguments",
+    "lockholder PID/query/mode",
+    "QA is the blocker",
+    "read-read versus writer interference",
+    "subsecond request begin/commit/release times",
+    "503 response body"
+  ],
+  "read_read_hypothesis": "same-artifact R4 observers take exclusive child/approval/execution NOWAIT locks; pairedR503/QA200 is consistent but does not identifyholder",
+  "writer_interference_alternative": "a lifecycle or other issue writer may hold the same row; retained originalwindow does not rule itout",
+  "existing_deterministic_regression_target": {
+    "fixture": "stageArtifactReportFixture",
+    "wrapper": "stageSourceFenceStarter",
+    "barrier": "GetCollaborationAttempt",
+    "second_call": "legitimate samecandidate R4 through copied service/rawfixturepool",
+    "implemented_or_executed": false
+  },
+  "canonical_result": {
+    "PASS": 1,
+    "FAIL": 1,
+    "NOT_RUN": 2,
+    "total": 4,
+    "new_PASS_added": 0,
+    "A11_A12": "OPEN"
+  },
+  "actions": {
+    "API_calls": 0,
+    "DB_queries": 0,
+    "browser_runs": 0,
+    "builds": 0,
+    "tests": 0,
+    "product_or_source_changes": 0,
+    "spec_changes": 0,
+    "previous_reports_preserved_exactly": true,
+    "writes_only_assigned_two_new_research_files": true
+  },
+  "references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r16-get503-diagnosis-r01/evidence/postgres-r15-failure-window.log",
+      "bytes": 1630,
+      "sha256": "0af05198c488f63b190d5fbeafb9cfbc8461bff7a416d2f925961611cee7aee8"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r16-get503-diagnosis-r01/evidence/postgres-r15-failure-window-summary.json",
+      "bytes": 997,
+      "sha256": "2739a1fae1174a6c50ca636a8b6d6a84898be677fa629f78ae9971f9cd8c71e5"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/artifact-config-repair-r15/harness.stderr.log",
+      "bytes": 2200943,
+      "sha256": "69acce9e5821dc032e8409eeaa328face09ddb88bea957505aae7720836539c6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "bytes": 50451,
+      "sha256": "4f127394753b4ba057c9878b8686b928de9ab7f6d36822c6c1cda083d2b32f21"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/acceptance/four-scenarios-r15-r01/result.json",
+      "bytes": 8365,
+      "sha256": "d236ece490d9fca4702f617fc1cd8b71540254796d1885442de3bb22b66e97c7"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-candidate-read-research.md",
+      "bytes": 13839,
+      "sha256": "5d8cbaf00d264215ced51d0d5b1fbc83a09eae84729fbb1aa4c7b972700fbf04"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-candidate-read-research.json",
+      "bytes": 14876,
+      "sha256": "7f3aabe240383520c7b7a66bba879284af1c01d85b842e3848ccbca6f66eb879"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r16-original-postgres-window-check.md",
+      "bytes": 7726,
+      "sha256": "73735fb09ad385eb71763933e1cb236d399dc23d2b75bf7cb42a1a7ca267a60e"
+    }
+  ]
+}

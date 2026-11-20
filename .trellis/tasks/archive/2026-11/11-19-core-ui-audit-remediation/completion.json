@@ -1,0 +1,117 @@
+{
+  "scope": "F01-F11 confirmed core UI audit findings; no backend/API changes",
+  "branch": "codex/cross-workspace-collaboration",
+  "head": "726c6fce2688e0f0c5bb400531caaff0ad0e0e63",
+  "source_sha256": {
+    "apps/web/app/brand-variant-cascade.test.ts": "27ef4fb3117780651b0292d18f1ffd7c956da26377d7de396ea2e3b098129fde",
+    "apps/web/app/custom.css": "f87683ce3c70d8b326f3fea79489f45da5f4938aac991deaa3efdf0b40709dce",
+    "apps/web/app/text-contrast.test.ts": "1f3237d2e72754ce9676450f99ea318da6a34dea3035b0f6a5d0dc961131cc5e",
+    "packages/core/workspace/queries.ts": "d9482b3ea38e6b6785d03e5ca2e94bd62b4bd2a76a0320359d515849710ccddd",
+    "packages/core/workspace/squad-queries.test.ts": "5380a45d7776ff8da7a9409a7bd9a1d73a978ec63688913e0da4d11d1b9f2304",
+    "packages/ui/components/ui/alert-dialog.tsx": "3a7e0cf7f7722be85d31abff6c70255172294d0156fb68d0ffcbfc2eeaed8192",
+    "packages/ui/components/ui/button.tsx": "1e4a2fd59e2548555a68247490ffa963044019fb3bbadf025cdb68b3d8096f4e",
+    "packages/ui/components/ui/dialog.tsx": "d2ce21fe68fbb62edf601e2d539cdf0de3624245b783bb1690f58d8ad32a035b",
+    "packages/ui/components/ui/dropdown-menu.tsx": "b95f6d9972088e616a8147ea362d8f4431b003dca4b4274357b78ea22ea1b2cc",
+    "packages/ui/components/ui/hover-card.tsx": "7ef7e8881bb061a8e21a5a1eeefd96353de88d38bec1edd79d732b1c57933d7b",
+    "packages/ui/components/ui/popover.tsx": "51283208fbd423cb80e0fd7ea115fbd3a0eba1a19baf434e599a34b408f0f45d",
+    "packages/ui/components/ui/popup-visibility.tsx": "c28ac47f1f8c12adb05218ac045d3830e60c72ba2b31207e957f8795ca19429d",
+    "packages/ui/components/ui/select.tsx": "5f6687bc03bd052872b13362520d88d06822c739cc1b9b9aadf72e3d3b69355e",
+    "packages/ui/components/ui/sheet.tsx": "9a623935b2c44037486e2e182512748f0dd0a195ae51e10d1bcbe5014febb930",
+    "packages/ui/components/ui/tooltip.tsx": "aeaefbfede5dc64834d8b614f6284693c99a874d440ba09614f1192e3a495890",
+    "packages/ui/styles/tokens.css": "c0c5365f288b36a2139e3906a0b502e8a5234e48c89120cad12798e617e12b54",
+    "packages/views/autopilots/components/autopilot-list-toolbar.tsx": "00542df29be1bb82f70608c0e0b00aa22c7dad8b36bb8978b36983fd4b69e7d2",
+    "packages/views/inbox/components/inbox-filter-menu.tsx": "e605e17b4e0843a7403e4698176d8a573e6cf732e3ac75daa9a473efc9b444a4",
+    "packages/views/issues/components/board-card-assignee-picker.test.tsx": "b2c6232f8112038d432645477cda3b242a380d83dfc814e693f4369554407372",
+    "packages/views/issues/components/comment-composers.test.tsx": "3e3c7707cff8e2f1897448d55cb3e85d539b98f452af45823108f751935dd0cc",
+    "packages/views/issues/components/comment-input.tsx": "c6eb03aa057168133adc16b3be1077813a21aeb3a7cf81ac9d72a362a31dd519",
+    "packages/views/issues/components/issue-detail.test.tsx": "ab9af47879d2a68f3c7b2aebbc1be06eb39fc9197bd09164d1ec58ad7a98e277",
+    "packages/views/issues/components/issue-detail.tsx": "a3bc89198fb078df1772b39da0377a940928a3b43f40cd6cceae5a5f99da2fbe",
+    "packages/views/issues/components/issues-header.tsx": "89a480b1962137dfc12e1c7464be7abdedd5c71c262a94e00fda63623b8a3e15",
+    "packages/views/issues/components/pickers/assignee-picker.recovery.test.tsx": "e37d92583d934bd87b4e89eadd557a00dbeedde9ef7edaf26538d012abf4e13b",
+    "packages/views/issues/components/pickers/assignee-picker.tsx": "5ffda609a103655c8d72c927a04cfc0779a979e80f5dcdce78ec4570e1a52fc1",
+    "packages/views/issues/components/pickers/label-picker.tsx": "ae8243b5d327ec0283eb517d244be955a91236c9c5efbe7623d549c82700c81e",
+    "packages/views/issues/components/pickers/priority-picker.tsx": "97406265d3544efe4f34606995c982656b077022e90f5d77bdf3e92655f1353b",
+    "packages/views/issues/components/pickers/property-picker.test.tsx": "085431be971f30f6fc3935079639ba01e619338265ec78e44fabb2359e5d1cec",
+    "packages/views/issues/components/pickers/property-picker.tsx": "a6cdfba459e157211f64ca29dd8439825fd5a3aa3e2da595320995f6183ddf91",
+    "packages/views/issues/components/pickers/status-picker.test.tsx": "eafbb9b0f733c4b8d5ed1c9f31c3cc7f719e35e2f79d37e498f00f79188277be",
+    "packages/views/issues/components/pickers/status-picker.tsx": "dcb2abcf4b2d38e08736e69f495d8f7cf53a54c81f1001eb26317266bc7cb4cd",
+    "packages/views/issues/components/reply-input.tsx": "7302870303465d2d8d747080bfe6e3bc0976e3eb9b2c185628ebae52d144665f",
+    "packages/views/issues/components/table-view-editing.test.tsx": "08e3b879f3765ad62b0b977c63b51b258d13b1e796233f5feb07d98dfa7b94f5",
+    "packages/views/layout/animated-right-sidebar.test.tsx": "1cf8efb19d955957fdf6613e795f7e9798515de65ba2a6f9b3d5782551ccd7f9",
+    "packages/views/layout/animated-right-sidebar.tsx": "ea42b40ccb97801e64231be188e3b6d49d2a6eb44fda4e03bbe49e0a0e517e60",
+    "packages/views/layout/collection-page.tsx": "ae14dfcc86ea75de924fd90e68942ac4a8a4340a77532210c7c46f50d1e275c1",
+    "packages/views/locales/en/issues.json": "c58caed05aa2eeccd2d6711bdaa2e0cad2bd3922fd4e1048c5a8c041c6d77310",
+    "packages/views/locales/en/squads.json": "2e4b78e2b8cc56806c8f88d2aa5099b347e0399efb25f7d6285f775ffaa44529",
+    "packages/views/locales/zh-Hans/issues.json": "c92212bc5c66955aa0ee8163c595763bdbfc99d6131227b2e8f47e82baaffd41",
+    "packages/views/locales/zh-Hans/squads.json": "58ca6bb5c89e7b3c9bd82e79341bf81ab76e69cf7ff7f327b0d28cf4067f4b21",
+    "packages/views/projects/components/project-detail.tsx": "ab0e3579d44f19e56e778b81ecf717b23b92e371fd9e4a5bb1cd1de5e85a1b20",
+    "packages/views/projects/components/projects-page.tsx": "5080afdde399f8ec250f8806d73be9ba21eecc26decb38c82df43f5998f5d3fd",
+    "packages/views/squads/components/squad-detail-page.test.tsx": "8f61e02a8db9c1179632deacf999637409b254cff739bb161f831f2fa9a7bd68",
+    "packages/views/squads/components/squad-detail-page.tsx": "1bfb130303a872761a16af647594ddbc98ceb9bd09ec7a21b4f683725e7efb71",
+    "packages/views/squads/components/squad-query-feedback.tsx": "9ce33f73614e5fb4478126f11ea42d91945618ba0a6ce0107423d3e8b27af800",
+    "packages/views/squads/create/manual-create-squad-page.keyboard.test.tsx": "440e8f1acb91359b864736c94e7ad2cc23ceab916d3175d15499411251e8b88f",
+    "packages/views/squads/create/manual-create-squad-page.test.tsx": "9a1e79d4ef3b62b25bc5319c8bbce3bdc520bf13f575f5bcc283638371a1963d",
+    "packages/views/squads/create/manual-create-squad-page.tsx": "bcf44cf73b46397dbaa6d6925f17e0c95e309574fb607dcbd260ee495c52f955",
+    "packages/views/squads/create/template-create-squad-page.test.tsx": "8aee049ef05792ba2b9f4826a2b70da962aa7bb2b37f0518b2b438c1fd7d9bb5",
+    "packages/views/squads/create/template-create-squad-page.tsx": "3705a02d8037234d72552b2aa75ffa44ecf18d627e75e7482432897067e777aa"
+  },
+  "tests": {
+    "views": {
+      "files": 28,
+      "passed": 453,
+      "failed": 0,
+      "maxWorkers": 2,
+      "log": "verify-integrated-final.log"
+    },
+    "web": {
+      "files": 3,
+      "passed": 56,
+      "failed": 0,
+      "log": "verify-web-theme-tests.log"
+    },
+    "core": {
+      "files": 3,
+      "passed": 24,
+      "failed": 0,
+      "evidence": "review.md and evidence/core-ui-directory-*"
+    }
+  },
+  "typecheck": {
+    "core": "passed",
+    "ui": "passed",
+    "views": "passed",
+    "web": "passed",
+    "desktop_node_and_web": "passed"
+  },
+  "lint": {
+    "errors": 0,
+    "existing_warnings": [
+      "project-detail.tsx hooks dependency warnings2"
+    ],
+    "scope": "Task TS/TSX changes; final reviewer additions separately linted"
+  },
+  "detector": {
+    "targets": 31,
+    "findings": 0,
+    "exit": 0,
+    "file": "detector-final.json",
+    "note": "Last product change after this scan was callback order in popup hook; no visual/style target changes since scan."
+  },
+  "native": "native-remediation.json",
+  "compiled_sizing": "evidence/collection-header-compiled-sizing.json",
+  "contrast": "evidence/brand-contrast-final.json",
+  "independent_review": "review.md",
+  "limitations": [
+    "No full repository build/E2E/Go checks (backend unchanged)",
+    "No phone touch or spoken screen reader validation",
+    "F10 sizes verified against compiled CSS, not physical device hit-testing",
+    "Two original unconfirmed narrow layout candidates remain out of scope"
+  ],
+  "commit": "b6b07c3067bccaf3a76de960872a41e0f687d276",
+  "commit_verification": {
+    "all_51_source_hashes_match": true,
+    "work_commit_paths": 60,
+    "unrelated_changes_excluded": true,
+    "raw_log_policy": "*.log files remain local according to existing gitignore; JSON/Markdown evidence summaries are tracked."
+  }
+}

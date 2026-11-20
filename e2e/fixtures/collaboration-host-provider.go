@@ -36,6 +36,10 @@ func main() {
 		fmt.Println(`{"test_report":true,"failure_release":true,"prepared_git_marker":true}`)
 		return
 	}
+	if len(os.Args) == 2 && os.Args[1] == "--fixture-output-capabilities" {
+		fmt.Println(`{"mode":"agent_output_v1","regular_file_generation":true,"bound_comment_attachment_cli":true,"process_start_observation":true}`)
+		return
+	}
 	if err := runHostFixture(); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -51,16 +55,23 @@ func fixtureDigest(value []byte) string {
 // go through the run-local CLI and therefore the same capability, allowlist and
 // request-id rules as an agent; write_file only touches the issue workdir.
 type fixtureAction struct {
-	Kind      string `json:"kind"`
-	RequestID string `json:"request_id"`
-	Content   string `json:"content"`
-	Outcome   string `json:"outcome"`
-	Reason    string `json:"reason"`
-	Path      string `json:"path"`
-	Fault     string `json:"fault"`
+	Kind            string `json:"kind"`
+	RequestID       string `json:"request_id"`
+	Content         string `json:"content"`
+	Outcome         string `json:"outcome"`
+	Reason          string `json:"reason"`
+	Path            string `json:"path"`
+	Fault           string `json:"fault"`
+	Mode            string `json:"mode"`
+	Generate        bool   `json:"generate"`
+	FileContent     string `json:"file_content"`
+	ProcessCallback string `json:"process_callback"`
 }
 
 func runFixtureAction(cli, issueID, work string, action fixtureAction) map[string]any {
+	if action.Mode == "agent_output_v1" {
+		return runFixtureOutput(cli, issueID, work, action)
+	}
 	receipt := map[string]any{"kind": action.Kind, "request_id": action.RequestID}
 	var args []string
 	switch action.Kind {
@@ -110,6 +121,136 @@ func runFixtureAction(cli, issueID, work string, action fixtureAction) map[strin
 		return receipt
 	}
 	receipt["result"] = result
+	return receipt
+}
+
+// This opt-in action generates one real regular file, invokes the exact
+// run-local CLI, and reports child identity immediately after Start. Old
+// comment, file, report and release actions retain their original paths.
+func runFixtureOutput(cli, issueID, work string, action fixtureAction) map[string]any {
+	receipt := map[string]any{"kind": action.Kind, "request_id": action.RequestID, "mode": action.Mode}
+	if action.Kind != "comment" || !fixtureUUID.MatchString(action.RequestID) ||
+		!filepath.IsLocal(action.Path) || filepath.Base(action.Path) != action.Path ||
+		len(action.FileContent) > 64<<10 || len(action.Content) > 16<<10 {
+		receipt["error"] = "output fixture action was invalid"
+		return receipt
+	}
+	host, port, err := net.SplitHostPort(action.ProcessCallback)
+	portNumber, portErr := strconv.Atoi(port)
+	if err != nil || host != "127.0.0.1" || portErr != nil || portNumber < 1 || portNumber > 65535 {
+		receipt["error"] = "output fixture process observer was not explicit loopback"
+		return receipt
+	}
+	path := filepath.Join(work, action.Path)
+	if action.Generate {
+		file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_EXCL, 0o600)
+		if err != nil {
+			receipt["error"] = "output fixture could not create its original file"
+			return receipt
+		}
+		_, writeErr := file.WriteString(action.FileContent)
+		closeErr := file.Close()
+		if writeErr != nil || closeErr != nil {
+			receipt["error"] = "output fixture could not finish its original file"
+			return receipt
+		}
+	}
+	file, err := os.Open(path)
+	if err != nil {
+		receipt["error"] = "output fixture original file was missing"
+		return receipt
+	}
+	info, statErr := file.Stat()
+	content, readErr := io.ReadAll(io.LimitReader(file, (64<<10)+1))
+	closeErr := file.Close()
+	if statErr != nil || !info.Mode().IsRegular() || readErr != nil || closeErr != nil || len(content) > 64<<10 {
+		receipt["error"] = "output fixture original file was not a bounded regular file"
+		return receipt
+	}
+	if string(content) != action.FileContent {
+		receipt["error"] = "output fixture original file changed before retry"
+		return receipt
+	}
+	programHash := func(path string) (string, error) {
+		file, err := os.Open(path)
+		if err != nil {
+			return "", err
+		}
+		hash := sha256.New()
+		_, readErr := io.Copy(hash, io.LimitReader(file, 256<<20))
+		closeErr := file.Close()
+		if readErr != nil || closeErr != nil {
+			return "", fmt.Errorf("program hash could not be read")
+		}
+		return hex.EncodeToString(hash.Sum(nil)), nil
+	}
+	provider, providerErr := os.Executable()
+	providerHash, providerHashErr := programHash(provider)
+	cliHash, cliHashErr := programHash(cli)
+	if providerErr != nil || providerHashErr != nil || cliHashErr != nil {
+		receipt["error"] = "output fixture program identity was unavailable"
+		return receipt
+	}
+	observation := map[string]any{"mode": action.Mode, "issue_id": issueID,
+		"run_id": os.Getenv("MULTICA_COLLABORATION_RUN_ID"), "request_id": action.RequestID,
+		"provider_pid": os.Getpid(), "provider_parent_pid": os.Getppid(), "cli_parent_pid": os.Getpid(),
+		"provider_sha256": providerHash, "cli_sha256": cliHash,
+		"run_context_sha256":    fixtureDigest([]byte(os.Getenv("MULTICA_COLLABORATION_CONTEXT"))),
+		"business_token_sha256": fixtureDigest([]byte(os.Getenv("MULTICA_COLLABORATION_TOKEN"))),
+		"cwd_sha256":            fixtureDigest([]byte(work)), "file_name": action.Path,
+		"file_sha256": fixtureDigest(content), "file_bytes": len(content), "regular_file": true,
+		"command": []string{"issue", "comment", "add", issueID, "--content", "[test-owned content]", "--request-id", action.RequestID,
+			"--attachment", action.Path, "--output", "json"}}
+	observe := func(phase string) error {
+		connection, err := net.DialTimeout("tcp4", action.ProcessCallback, 5*time.Second)
+		if err != nil {
+			return err
+		}
+		defer connection.Close()
+		if err := connection.SetDeadline(time.Now().Add(5 * time.Second)); err != nil {
+			return err
+		}
+		observation["phase"], observation["captured_at"] = phase, time.Now().UTC().Format(time.RFC3339Nano)
+		return json.NewEncoder(connection).Encode(observation)
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+	args := []string{"issue", "comment", "add", issueID, "--content", action.Content, "--request-id", action.RequestID,
+		"--attachment", action.Path, "--output", "json"}
+	command := exec.CommandContext(ctx, cli, args...)
+	command.Dir = work
+	var stdout, stderr fixtureBoundedOutput
+	command.Stdout, command.Stderr = &stdout, &stderr
+	if err := command.Start(); err != nil {
+		receipt["error"] = "output fixture bound CLI could not start"
+		return receipt
+	}
+	observation["cli_pid"] = command.Process.Pid
+	if err := observe("started"); err != nil {
+		cancel()
+		_ = command.Wait()
+		receipt["error"] = "output fixture could not retain the actual CLI start"
+		return receipt
+	}
+	runErr := command.Wait()
+	exitCode := command.ProcessState.ExitCode()
+	observation["exit_code"] = exitCode
+	if err := observe("completed"); err != nil {
+		receipt["error"] = "output fixture could not retain the actual CLI completion"
+		return receipt
+	}
+	receipt["file"] = map[string]any{"name": action.Path, "sha256": fixtureDigest(content), "size_bytes": len(content),
+		"regular_file": true, "generated": action.Generate, "cwd_sha256": fixtureDigest([]byte(work))}
+	receipt["cli"] = map[string]any{"success": runErr == nil, "exit_code": exitCode, "stdout_sha256": fixtureDigest(stdout.Bytes()),
+		"stdout_bytes": stdout.Len(), "stderr_sha256": fixtureDigest(stderr.Bytes()), "stderr_bytes": stderr.Len()}
+	if runErr == nil {
+		raw := bytes.TrimSpace(stdout.Bytes())
+		if !json.Valid(raw) {
+			receipt["error"] = "output fixture bound CLI success was not JSON"
+			return receipt
+		}
+		receipt["result"] = append(json.RawMessage(nil), raw...)
+	}
 	return receipt
 }
 

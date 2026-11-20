@@ -1,0 +1,31 @@
+{
+  "id": "codex-project-doc-budget",
+  "name": "codex-project-doc-budget",
+  "title": "Codex 注入指令：按完整文档字节数配置读取上限",
+  "description": "使守护进程按实际注入说明长度管理 project_doc_max_bytes，明确用户配置优先级、超限处理与真实运行验证。来源 security-remediation v2 14.2。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-20",
+  "completedAt": null,
+  "branch": "codex/security-remediation-v2-20261118",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/tasks/11-18-security-remediation-v2-template/design.md"
+  ],
+  "notes": "",
+  "meta": {
+    "origin_task": "11-18-security-remediation-squad-v2",
+    "authorization": "2026-11-20 explicit user decision; planning only"
+  }
+}

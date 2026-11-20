@@ -30,14 +30,15 @@ type stageSourceProofFixture struct {
 	Metric      StageRollbackMetric
 }
 type stageExecutionSourceFixture struct {
-	mu            sync.Mutex
-	key           []byte
-	target        StageExecutionTarget
-	metricSource  StageIntegrationIdentity
-	calls         int
-	behavior      string
-	last          StageExecutionInvocation
-	consumerUntil time.Time
+	mu               sync.Mutex
+	key              []byte
+	target           StageExecutionTarget
+	metricSource     StageIntegrationIdentity
+	calls            int
+	behavior         string
+	last             StageExecutionInvocation
+	consumerUntil    time.Time
+	observationClock func(context.Context) (time.Time, error)
 }
 
 func (s *stageExecutionSourceFixture) proof(value stageSourceProofFixture) StageExecutionProof {
@@ -106,7 +107,7 @@ func (s *stageExecutionSourceFixture) AuthorizeExecution(ctx context.Context, tx
 	}
 	return StageExecutionConsumer{Subject: value.Subject, ValidUntil: value.ValidUntil}, nil
 }
-func (s *stageExecutionSourceFixture) Execute(_ context.Context, inv StageExecutionInvocation) (StageExecutionProof, error) {
+func (s *stageExecutionSourceFixture) Execute(ctx context.Context, inv StageExecutionInvocation) (StageExecutionProof, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.calls++
@@ -124,7 +125,11 @@ func (s *stageExecutionSourceFixture) Execute(_ context.Context, inv StageExecut
 	if !stageTargetStateEqual(s.target, inv.Target) {
 		result = "not_started"
 	}
-	o := StageExecutionObservation{NativeID: "callback:" + inv.IntentID, NativeVersion: "1", Source: inv.Target.Source, ExternalRequestKey: inv.ExternalRequestKey, Result: result, TargetDigest: inv.TargetDigest, ConditionalVersion: inv.Target.ConditionalVersion, BeforeArtifactDigest: inv.Target.CurrentArtifactDigest, ObservedAt: time.Now().UTC(), EvidenceDigest: strings.Repeat("a", 64), Summary: "Controlled integration observation"}
+	observedAt, err := s.observationClock(ctx)
+	if err != nil {
+		return StageExecutionProof{}, err
+	}
+	o := StageExecutionObservation{NativeID: "callback:" + inv.IntentID, NativeVersion: "1", Source: inv.Target.Source, ExternalRequestKey: inv.ExternalRequestKey, Result: result, TargetDigest: inv.TargetDigest, ConditionalVersion: inv.Target.ConditionalVersion, BeforeArtifactDigest: inv.Target.CurrentArtifactDigest, ObservedAt: observedAt.UTC(), EvidenceDigest: strings.Repeat("a", 64), Summary: "Controlled integration observation"}
 	if result == "succeeded" || result == "failed" {
 		operation := "native-operation/" + inv.IntentID
 		o.ExternalOperationID = &operation
@@ -217,6 +222,12 @@ func newStageExecutionFixture(t *testing.T, setup ...func(*testing.T, *stageRevi
 	metricID := f.fx.Insert(t, "github_installation", testutil.Cols{"workspace_id": f.workspace, "installation_id": int64(3), "account_login": "controlled-metrics", "account_type": "User"})
 	previous := strings.Repeat("e", 64)
 	source := &stageExecutionSourceFixture{key: make([]byte, 32), behavior: "succeeded", target: StageExecutionTarget{WorkspaceID: f.workspace, Environment: "synthetic", Source: StageIntegrationIdentity{Adapter: "controlled-deployment", AdapterVersion: "1", IntegrationID: deploymentID, TrustRevision: "1", ConfigRevision: "1"}, ConcurrencyDomain: "controlled-provider", RemoteInstance: "local", RemoteTenant: "tenant", RemoteTarget: uuid.NewString(), SupportsConditional: true, SupportsOriginalQuery: true, ConditionalVersion: "initial", CurrentArtifactDigest: &previous}, metricSource: StageIntegrationIdentity{Adapter: "controlled-metrics", AdapterVersion: "1", IntegrationID: metricID, TrustRevision: "1", ConfigRevision: "1"}}
+	// The synthetic proof and its verifier must share the database clock. The
+	// host clock can lead a container clock even when both are synchronized.
+	source.observationClock = func(ctx context.Context) (time.Time, error) {
+		observed, err := f.svc.Queries.ArtifactExecutionDatabaseTime(ctx)
+		return observed.Time, err
+	}
 	if _, err = rand.Read(source.key); err != nil {
 		t.Fatal(err)
 	}

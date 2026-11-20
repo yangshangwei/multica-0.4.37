@@ -1,10 +1,10 @@
 import { webcrypto } from "node:crypto";
 import { afterEach, expect, it, vi } from "vitest";
-import { act, fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
-import { collaborationScope, saveCollaborationDeliveryRecord } from "@multica/core/collaboration";
+import { collaborationScope, newCollaborationDeliveryForm, saveCollaborationDeliveryRecord, type CollaborationCreationFields } from "@multica/core/collaboration";
 import { collaborationIssueFixture } from "@multica/core/collaboration/test-fixtures";
 import { SidebarMenuButton, SidebarProvider } from "@multica/ui/components/ui/sidebar";
 import { renderWithI18n } from "../test/i18n";
@@ -29,6 +29,16 @@ const designParent = { id: "00000000-0000-4000-8000-000000000006", identifier: "
 function parentOptions(parents = [releaseParent, designParent]) {
   return { ...options, source: sourceChoice, fields: { labels: [], properties: [], statuses: [{ key: "todo", name: "Todo", category: "todo" }], default_status: "todo",
     source_options: { projects: [], parents, parents_truncated: false, iterations: [], iterations_enabled: false } } };
+}
+
+function saveInitialFields(initialFields: CollaborationCreationFields) {
+  setApiInstance(new ApiClient("https://server.example"));
+  const scope = collaborationScope(actor);
+  const form = { ...newCollaborationDeliveryForm({ server: scope.server, userId: actor,
+    context: { kind: "creation", sourceWorkspaceId: source } }, "creation"),
+    title: "Keep the initial-field draft", content: "Keep the description while correcting fields", initialFields };
+  saveCollaborationDeliveryRecord(form);
+  return form;
 }
 
 async function chooseExactRecipient(user: ReturnType<typeof userEvent.setup>, value: string) {
@@ -678,6 +688,153 @@ it("summarizes retained non-default fields on the collapsed toolbar toggle", asy
   await user.selectOptions(screen.getByLabelText("Priority"), "none");
   await user.clear(screen.getByLabelText("Due date"));
   expect(screen.queryByText(/fields? set/)).not.toBeInTheDocument();
+});
+
+// Core creation-schema/delivery-draft tests own the numeric validity matrix.
+// These regressions prove field attribution, mounted draft correction and the
+// distinct catalog-failure feedback through the actual creation form.
+it("locates invalid stage values and enables corrected submission without losing the draft or file", async () => {
+  const saved = saveInitialFields({ parent_issue_id: releaseParent.id, stage: 0, priority: "high" });
+  saveCollaborationDeliveryRecord({ ...saved,
+    recipient: { user_id: other, name: "External recipient", avatar_url: "", external: true }, selectedAttachmentIds: [fileId] });
+  const attachment = { id: fileId, draft_id: saved.draftId, issue_id: null, intended_issue_id: null, source_workspace_id: source,
+    uploader_user_id: actor, name: "stage-notes.txt", content_type: "text/plain", size_bytes: 5, version: "1",
+    created_at: "2026-10-18T00:00:00Z", delivered_at: null };
+  const writes: unknown[] = [];
+  vi.stubGlobal("fetch", vi.fn(async (input: string, init?: RequestInit) => {
+    const url = new URL(input);
+    if (url.pathname.endsWith("creation-options")) return json(url.searchParams.has("source_workspace_id") ? parentOptions() : options);
+    if (url.pathname.includes("/attachments/drafts/")) return json({ draft_id: saved.draftId, attachments: [attachment] });
+    if (url.pathname === "/api/collaboration/issues") { writes.push(JSON.parse(String(init?.body))); return json(created); }
+    throw new Error(`Unexpected test path ${url.pathname}`);
+  }));
+  const user = userEvent.setup();
+  const { onCreated } = mount(vi.fn(), source);
+  const stage = await screen.findByRole("spinbutton", { name: "Subtask stage number (optional)" });
+  const submit = screen.getByRole("button", { name: "Create collaboration issue" });
+  const reason = "Enter a whole number from 1 to 2,147,483,647, or leave the stage blank.";
+  for (const value of [0, 1.5, 2147483648]) {
+    fireEvent.change(stage, { target: { value: String(value) } });
+    expect(stage).toHaveValue(value);
+    expect(stage).toHaveAttribute("aria-invalid", "true");
+    expect(stage).toHaveAccessibleDescription(/1 to 2,147,483,647.*leave the stage blank/);
+    expect(screen.getByText(reason, { selector: '[role="alert"]' })).toBeVisible();
+    expect(screen.queryByText("A selected value is no longer available. Review it before saving.")).not.toBeInTheDocument();
+    expect(submit).toBeDisabled();
+    await user.click(submit);
+  }
+  expect(writes).toEqual([]);
+  expect(screen.getByLabelText("Title")).toHaveValue(saved.title);
+  expect(screen.getByLabelText("Description")).toHaveValue(saved.content);
+  expect(screen.getByLabelText("Priority")).toHaveValue("high");
+  expect(screen.getByText("Assigned to External recipient", { selector: '[role="status"]' })).toBeVisible();
+  const included = await screen.findByRole("checkbox", { name: "Include stage-notes.txt" });
+  expect(included).toBeChecked();
+  for (const value of [1, 2147483647]) {
+    fireEvent.change(stage, { target: { value: String(value) } });
+    expect(stage).not.toHaveAttribute("aria-invalid");
+    expect(screen.queryByText(reason)).not.toBeInTheDocument();
+    expect(submit).toBeEnabled();
+  }
+  await user.clear(stage);
+  expect(stage).toHaveValue(null);
+  expect(stage).not.toHaveAttribute("aria-invalid");
+  expect(submit).toBeEnabled();
+  expect(included).toBeChecked();
+  fireEvent.change(stage, { target: { value: "2" } });
+  await user.click(submit);
+  await waitFor(() => expect(onCreated).toHaveBeenCalledOnce());
+  expect(writes).toEqual([expect.objectContaining({ title: saved.title, description: saved.content, handler_user_id: other,
+    priority: "high", parent_issue_id: releaseParent.id, stage: 2, attachment_ids: [fileId] })]);
+});
+
+it("describes an invalid stage in Chinese and clears its error when the field is left blank", async () => {
+  saveInitialFields({ parent_issue_id: releaseParent.id, stage: 0 });
+  const fetch = vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (!url.pathname.endsWith("creation-options")) throw new Error(`Unexpected test path ${url.pathname}`);
+    return json(url.searchParams.has("source_workspace_id") ? parentOptions() : options);
+  });
+  vi.stubGlobal("fetch", fetch);
+  const user = userEvent.setup();
+  mount(vi.fn(), source, "zh-Hans");
+  const stage = await screen.findByRole("spinbutton", { name: "子任务阶段编号（可选）" });
+  expect(stage).toHaveAttribute("aria-invalid", "true");
+  expect(stage).toHaveAccessibleDescription(/阶段编号请填写 1 到 2,147,483,647 之间的整数，或留空。/);
+  expect(screen.queryByText("部分所选值已不可用，请检查后再保存。")).not.toBeInTheDocument();
+  const submit = screen.getByRole("button", { name: "创建协作任务" });
+  expect(submit).toBeDisabled();
+  await user.clear(stage);
+  expect(stage).not.toHaveAttribute("aria-invalid");
+  expect(submit).toBeEnabled();
+  expect(fetch.mock.calls.every(([input]) => new URL(input).pathname.endsWith("creation-options"))).toBe(true);
+});
+
+it("keeps a restored invalid stage without a parent visible and directly clearable", async () => {
+  const saved = saveInitialFields({ stage: 0, priority: "high" });
+  const writes: unknown[] = [];
+  vi.stubGlobal("fetch", vi.fn(async (input: string, init?: RequestInit) => {
+    const url = new URL(input);
+    if (url.pathname.endsWith("creation-options")) return json(url.searchParams.has("source_workspace_id") ? parentOptions() : options);
+    if (url.pathname === "/api/collaboration/issues") { writes.push(JSON.parse(String(init?.body))); return json(created); }
+    throw new Error(`Unexpected test path ${url.pathname}`);
+  }));
+  const user = userEvent.setup();
+  const { onCreated } = mount(vi.fn(), source);
+  const stage = await screen.findByRole("spinbutton", { name: "Subtask stage number (optional)" });
+  const submit = screen.getByRole("button", { name: "Create collaboration issue" });
+  expect(stage).toBeVisible();
+  expect(stage).toHaveValue(0);
+  expect(stage).toHaveAttribute("aria-invalid", "true");
+  expect(stage).toHaveAccessibleDescription(/1 to 2,147,483,647.*leave the stage blank/);
+  expect(screen.getByRole("alert")).toHaveTextContent("Enter a whole number from 1 to 2,147,483,647, or leave the stage blank.");
+  expect(screen.getByRole("button", { name: "Parent issue" })).toHaveTextContent("Choose a parent issue (optional)");
+  expect(submit).toBeDisabled();
+  expect(writes).toEqual([]);
+  await user.clear(stage);
+  expect(screen.queryByRole("spinbutton", { name: "Subtask stage number (optional)" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Title")).toHaveValue(saved.title);
+  expect(screen.getByLabelText("Description")).toHaveValue(saved.content);
+  expect(screen.getByLabelText("Priority")).toHaveValue("high");
+  expect(submit).toBeEnabled();
+  expect(writes).toEqual([]);
+  await user.click(submit);
+  await waitFor(() => expect(onCreated).toHaveBeenCalledOnce());
+  expect(writes).toEqual([expect.objectContaining({ title: saved.title, description: saved.content,
+    priority: "high", parent_issue_id: null, stage: null })]);
+});
+
+it("keeps unavailable label/property feedback distinct when a simultaneous stage error is corrected", async () => {
+  const saved = saveInitialFields({ parent_issue_id: releaseParent.id, stage: 0,
+    label_ids: [fileId], properties: { [otherSource]: "Retained unavailable value" } });
+  vi.stubGlobal("fetch", vi.fn(async (input: string) => {
+    const url = new URL(input);
+    if (!url.pathname.endsWith("creation-options")) throw new Error(`Unexpected test path ${url.pathname}`);
+    return json(url.searchParams.has("source_workspace_id") ? parentOptions() : options);
+  }));
+  const user = userEvent.setup();
+  mount(vi.fn(), source);
+  const stage = await screen.findByRole("spinbutton", { name: "Subtask stage number (optional)" });
+  const submit = screen.getByRole("button", { name: "Create collaboration issue" });
+  const catalogReason = "A selected value is no longer available. Review it before saving.";
+  expect(stage).toHaveAttribute("aria-invalid", "true");
+  expect(screen.getByText(catalogReason)).toBeVisible();
+  fireEvent.change(stage, { target: { value: "2" } });
+  expect(stage).not.toHaveAttribute("aria-invalid");
+  expect(screen.getByText(catalogReason)).toBeVisible();
+  expect(submit).toBeDisabled();
+  await user.click(screen.getByRole("button", { name: "Labels" }));
+  await user.click(await screen.findByRole("button", { name: new RegExp(fileId) }));
+  await user.keyboard("{Escape}");
+  expect(screen.getByText(catalogReason)).toBeVisible();
+  expect(submit).toBeDisabled();
+  const unavailable = screen.getByText(new RegExp(otherSource));
+  await user.click(within(unavailable.parentElement!).getByRole("button", { name: "Clear" }));
+  expect(screen.queryByText(catalogReason)).not.toBeInTheDocument();
+  expect(submit).toBeEnabled();
+  expect(screen.getByLabelText("Title")).toHaveValue(saved.title);
+  expect(screen.getByLabelText("Description")).toHaveValue(saved.content);
 });
 
 it("keeps composing Enter out of native submission while plain Enter still creates", async () => {

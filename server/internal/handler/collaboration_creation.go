@@ -122,6 +122,12 @@ func (h *Handler) CreateCollaborationIssue(w http.ResponseWriter, r *http.Reques
 func (h *Handler) GetCollaborationCreationOptions(w http.ResponseWriter, r *http.Request) {
 	prepareCollaborationContentRequest(w, r)
 	var source pgtype.UUID
+	for name, values := range r.URL.Query() {
+		if (name != "source_workspace_id" && name != "project_id" && name != "parent_search") || len(values) != 1 {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "invalid_request"})
+			return
+		}
+	}
 	if values, present := r.URL.Query()["source_workspace_id"]; present {
 		if len(values) != 1 {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "invalid_request"})
@@ -138,7 +144,19 @@ func (h *Handler) GetCollaborationCreationOptions(w http.ResponseWriter, r *http
 	if !ok {
 		return
 	}
-	out, err := svc.CreationOptions(r.Context(), source, search)
+	var project pgtype.UUID
+	if values, present := r.URL.Query()["project_id"]; present {
+		if !source.Valid {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "invalid_request"})
+			return
+		}
+		var valid bool
+		project, valid = parseUUIDOrBadRequest(w, values[0], "project_id")
+		if !valid {
+			return
+		}
+	}
+	out, err := svc.CreationOptionsForProject(r.Context(), source, project, search)
 	if err != nil {
 		writeCollaborationError(w, err)
 		return

@@ -1,0 +1,469 @@
+{
+  "kind": "Static compiled-CSS cascade evidence; not browser, touch, device, or hit-testing measurement",
+  "sourceHashes": {
+    "action": {
+      "path": "packages/views/layout/collection-page.tsx",
+      "sha256": "ae14dfcc86ea75de924fd90e68942ac4a8a4340a77532210c7c46f50d1e275c1"
+    },
+    "button": {
+      "path": "packages/ui/components/ui/button.tsx",
+      "sha256": "1e4a2fd59e2548555a68247490ffa963044019fb3bbadf025cdb68b3d8096f4e"
+    },
+    "tokens": {
+      "path": "packages/ui/styles/tokens.css",
+      "sha256": "c0c5365f288b36a2139e3906a0b502e8a5234e48c89120cad12798e617e12b54"
+    },
+    "entry": {
+      "path": "apps/web/app/globals.css",
+      "sha256": "967d8eb07f8942998e433272175d6a21b8d30857118973db177a1349164fd63a"
+    }
+  },
+  "method": "Extract source classes using TypeScript AST; apply actual tailwind-merge composition; compile current Web entry with PostCSS/Tailwind; resolve matching dimension declarations and media queries",
+  "assumptions": {
+    "rootFontPx": 16,
+    "defaultActionProps": {
+      "variant": "outline",
+      "size": "sm",
+      "className": "none"
+    },
+    "noAncestorOverride": true
+  },
+  "cssOutputSha256": "15c0b2ce267e8800e6b894038d7e05ba8440a1d1bd364c183ff5fbc809a4a903",
+  "spacingToken": {
+    "selector": ":root, :host",
+    "property": "--spacing",
+    "value": "0.25rem",
+    "important": false,
+    "media": [],
+    "layer": "theme",
+    "order": 46
+  },
+  "mergedClasses": [
+    "group/button",
+    "inline-flex",
+    "shrink-0",
+    "items-center",
+    "justify-center",
+    "border",
+    "bg-clip-padding",
+    "font-medium",
+    "whitespace-nowrap",
+    "transition-[color,background-color,border-color,box-shadow,transform]",
+    "outline-none",
+    "select-none",
+    "focus-visible:border-ring",
+    "focus-visible:ring-3",
+    "focus-visible:ring-ring/50",
+    "active:not-aria-[haspopup]:translate-y-px",
+    "disabled:pointer-events-none",
+    "disabled:opacity-50",
+    "aria-invalid:border-destructive",
+    "aria-invalid:ring-3",
+    "aria-invalid:ring-destructive/20",
+    "dark:aria-invalid:border-destructive/50",
+    "dark:aria-invalid:ring-destructive/40",
+    "[&_svg]:pointer-events-none",
+    "[&_svg]:shrink-0",
+    "border-border",
+    "bg-background",
+    "hover:bg-muted",
+    "hover:text-foreground",
+    "aria-expanded:bg-muted",
+    "aria-expanded:text-foreground",
+    "dark:border-input-fill",
+    "dark:bg-input-fill/30",
+    "dark:hover:bg-input-fill/50",
+    "rounded-[min(var(--radius-md),12px)]",
+    "text-label",
+    "in-data-[slot=button-group]:rounded-lg",
+    "has-data-[icon=inline-end]:pr-1.5",
+    "has-data-[icon=inline-start]:pl-1.5",
+    "[&_svg:not([class*='size-'])]:size-3.5",
+    "h-8",
+    "w-8",
+    "gap-1",
+    "px-0",
+    "max-md:min-h-11",
+    "max-md:min-w-11",
+    "md:w-auto",
+    "md:px-2.5",
+    "pointer-coarse:min-h-11",
+    "pointer-coarse:min-w-11"
+  ],
+  "matchingCompiledDeclarations": [
+    {
+      "selector": ".h-8",
+      "property": "height",
+      "value": "calc(var(--spacing) * 8)",
+      "important": false,
+      "media": [],
+      "layer": "utilities",
+      "order": 534
+    },
+    {
+      "selector": ".w-8",
+      "property": "width",
+      "value": "calc(var(--spacing) * 8)",
+      "important": false,
+      "media": [],
+      "layer": "utilities",
+      "order": 693
+    },
+    {
+      "selector": ".shrink-0",
+      "property": "flex-shrink",
+      "value": "0",
+      "important": false,
+      "media": [],
+      "layer": "utilities",
+      "order": 865
+    },
+    {
+      "selector": ".px-0",
+      "property": "padding-inline",
+      "value": "calc(var(--spacing) * 0)",
+      "important": false,
+      "media": [],
+      "layer": "utilities",
+      "order": 1580
+    },
+    {
+      "selector": ".max-md\\:min-h-11",
+      "property": "min-height",
+      "value": "calc(var(--spacing) * 11)",
+      "important": false,
+      "media": [
+        "(width < 48rem)"
+      ],
+      "layer": "utilities",
+      "order": 3213
+    },
+    {
+      "selector": ".max-md\\:min-w-11",
+      "property": "min-width",
+      "value": "calc(var(--spacing) * 11)",
+      "important": false,
+      "media": [
+        "(width < 48rem)"
+      ],
+      "layer": "utilities",
+      "order": 3215
+    },
+    {
+      "selector": ".md\\:w-auto",
+      "property": "width",
+      "value": "auto",
+      "important": false,
+      "media": [
+        "(width >= 48rem)"
+      ],
+      "layer": "utilities",
+      "order": 3396
+    },
+    {
+      "selector": ".md\\:px-2\\.5",
+      "property": "padding-inline",
+      "value": "calc(var(--spacing) * 2.5)",
+      "important": false,
+      "media": [
+        "(width >= 48rem)"
+      ],
+      "layer": "utilities",
+      "order": 3440
+    },
+    {
+      "selector": ".pointer-coarse\\:min-h-11",
+      "property": "min-height",
+      "value": "calc(var(--spacing) * 11)",
+      "important": false,
+      "media": [
+        "(pointer: coarse)"
+      ],
+      "layer": "utilities",
+      "order": 3731
+    },
+    {
+      "selector": ".pointer-coarse\\:min-w-11",
+      "property": "min-width",
+      "value": "calc(var(--spacing) * 11)",
+      "important": false,
+      "media": [
+        "(pointer: coarse)"
+      ],
+      "layer": "utilities",
+      "order": 3734
+    }
+  ],
+  "scenarios": [
+    {
+      "name": "narrow fine pointer",
+      "viewportWidthPx": 390,
+      "pointer": "fine",
+      "declarations": {
+        "height": {
+          "selector": ".h-8",
+          "property": "height",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 534
+        },
+        "width": {
+          "selector": ".w-8",
+          "property": "width",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 693
+        },
+        "flex-shrink": {
+          "selector": ".shrink-0",
+          "property": "flex-shrink",
+          "value": "0",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 865
+        },
+        "padding-inline": {
+          "selector": ".px-0",
+          "property": "padding-inline",
+          "value": "calc(var(--spacing) * 0)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 1580
+        },
+        "min-height": {
+          "selector": ".max-md\\:min-h-11",
+          "property": "min-height",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(width < 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3213
+        },
+        "min-width": {
+          "selector": ".max-md\\:min-w-11",
+          "property": "min-width",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(width < 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3215
+        }
+      },
+      "resolved": {
+        "heightPx": 44,
+        "widthPx": 44,
+        "minWidthPx": 44,
+        "widthBehavior": "fixed width constrained by min-width"
+      }
+    },
+    {
+      "name": "narrow coarse pointer",
+      "viewportWidthPx": 390,
+      "pointer": "coarse",
+      "declarations": {
+        "height": {
+          "selector": ".h-8",
+          "property": "height",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 534
+        },
+        "width": {
+          "selector": ".w-8",
+          "property": "width",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 693
+        },
+        "flex-shrink": {
+          "selector": ".shrink-0",
+          "property": "flex-shrink",
+          "value": "0",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 865
+        },
+        "padding-inline": {
+          "selector": ".px-0",
+          "property": "padding-inline",
+          "value": "calc(var(--spacing) * 0)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 1580
+        },
+        "min-height": {
+          "selector": ".pointer-coarse\\:min-h-11",
+          "property": "min-height",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(pointer: coarse)"
+          ],
+          "layer": "utilities",
+          "order": 3731
+        },
+        "min-width": {
+          "selector": ".pointer-coarse\\:min-w-11",
+          "property": "min-width",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(pointer: coarse)"
+          ],
+          "layer": "utilities",
+          "order": 3734
+        }
+      },
+      "resolved": {
+        "heightPx": 44,
+        "widthPx": 44,
+        "minWidthPx": 44,
+        "widthBehavior": "fixed width constrained by min-width"
+      }
+    },
+    {
+      "name": "desktop fine pointer",
+      "viewportWidthPx": 1280,
+      "pointer": "fine",
+      "declarations": {
+        "height": {
+          "selector": ".h-8",
+          "property": "height",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 534
+        },
+        "width": {
+          "selector": ".md\\:w-auto",
+          "property": "width",
+          "value": "auto",
+          "important": false,
+          "media": [
+            "(width >= 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3396
+        },
+        "flex-shrink": {
+          "selector": ".shrink-0",
+          "property": "flex-shrink",
+          "value": "0",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 865
+        },
+        "padding-inline": {
+          "selector": ".md\\:px-2\\.5",
+          "property": "padding-inline",
+          "value": "calc(var(--spacing) * 2.5)",
+          "important": false,
+          "media": [
+            "(width >= 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3440
+        }
+      },
+      "resolved": {
+        "heightPx": 32,
+        "widthPx": null,
+        "minWidthPx": 0,
+        "widthBehavior": "content-sized, subject to min-width; no device/DOM text measurement performed"
+      }
+    },
+    {
+      "name": "desktop coarse pointer",
+      "viewportWidthPx": 1280,
+      "pointer": "coarse",
+      "declarations": {
+        "height": {
+          "selector": ".h-8",
+          "property": "height",
+          "value": "calc(var(--spacing) * 8)",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 534
+        },
+        "width": {
+          "selector": ".md\\:w-auto",
+          "property": "width",
+          "value": "auto",
+          "important": false,
+          "media": [
+            "(width >= 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3396
+        },
+        "flex-shrink": {
+          "selector": ".shrink-0",
+          "property": "flex-shrink",
+          "value": "0",
+          "important": false,
+          "media": [],
+          "layer": "utilities",
+          "order": 865
+        },
+        "padding-inline": {
+          "selector": ".md\\:px-2\\.5",
+          "property": "padding-inline",
+          "value": "calc(var(--spacing) * 2.5)",
+          "important": false,
+          "media": [
+            "(width >= 48rem)"
+          ],
+          "layer": "utilities",
+          "order": 3440
+        },
+        "min-height": {
+          "selector": ".pointer-coarse\\:min-h-11",
+          "property": "min-height",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(pointer: coarse)"
+          ],
+          "layer": "utilities",
+          "order": 3731
+        },
+        "min-width": {
+          "selector": ".pointer-coarse\\:min-w-11",
+          "property": "min-width",
+          "value": "calc(var(--spacing) * 11)",
+          "important": false,
+          "media": [
+            "(pointer: coarse)"
+          ],
+          "layer": "utilities",
+          "order": 3734
+        }
+      },
+      "resolved": {
+        "heightPx": 44,
+        "widthPx": null,
+        "minWidthPx": 44,
+        "widthBehavior": "content-sized, subject to min-width; no device/DOM text measurement performed"
+      }
+    }
+  ]
+}

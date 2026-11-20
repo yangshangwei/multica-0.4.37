@@ -13,6 +13,12 @@ authorization/binding below; a source-comment edit/delete cannot mutate a
 submitted result or erase retained evidence. Server upload bytes are encrypted;
 client form/operation JSON uses the existing scoped plaintext StorageAdapter.
 
+Run-bound Agent output writes reuse this encrypted namespace and issue/native
+reader contract with actual nullable human/Agent provenance. Their multipart
+writer, original comment identity and frozen result references follow
+[run-bound Agent outputs](./collaboration-runtime-output.md); human draft upload
+identity does not authorize or stand in for that writer.
+
 ## 2. Signatures
 
 The authenticated `/api/collaboration` group owns these endpoints:

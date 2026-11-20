@@ -225,6 +225,32 @@ new mutation while own content-free recovery stays available. Both positive
 paths must run; a successful resolve plus a forbidden unresolve is not complete
 thread-operation evidence.
 
+### Human edits during run-bound replies
+
+`TestCollaborationHumanEditRuntimeReplyBothCommitOrders` composes the author's
+`EditComment` with an admitted run's `CreateRuntimeComment` replying to that
+human comment. These are distinct content identities, so both writes succeed:
+the current human body becomes V2/revision2 and the Agent reply keeps its own
+comment, parent, Agent and run identity. The already-dispatched command, group
+input, prompt and typed test subject retain V1 and their original candidate.
+Current discussion and frozen execution input intentionally show different
+versions; a display edit does not amend the admitted execution or dispatch again.
+
+Use `runtimeSourceCommitStarter` around the existing commit barrier so the held
+transaction actually owns the source locks. Observe `pg_blocking_pids` before
+release in both orders and join both writers before fixture cleanup. Preserve
+original rows and explicitly account for new events and session sequence;
+complete replay snapshots must compare without removing changing business fields.
+
+Human create/edit replay returns the original content-free receipt, even when
+the current comment has a later revision. Runtime comment replay instead requires
+live business authority before reading its original receipt; verify it before
+settlement. Original report ACK recovery has its own post-settlement contract.
+Do not infer post-settlement comment-write permission from report recovery.
+These service tests use synthetic PR/CI and managed preparation/settlement facts;
+they do not prove remote Git, daemon execution, model quality or ordinary-comment
+administrator permissions.
+
 
 ## Current source surface and phase evidence
 
@@ -253,3 +279,43 @@ adds explicit authorizations and current checks in actual writers. The historica
 observe/hint increment above remains non-authorizing; its private evidence and
 original actor/retention boundaries remain. Current source-policy enforcement,
 project-change rules and distinct R38 handling follow that shared contract.
+
+## Priority/handler conflicts and original receipts
+
+`TestCollaborationRecoveryPriorityConcurrentIdentity` owns priority-only
+same-key/same-payload convergence, changed-priority idempotency refusal and
+different-key/same-revision competition. Inspect the winning priority, exact
+ordinary/collaboration revisions, event identity and persisted operation hash/JSON;
+the existing title race alone does not identify a priority winner.
+
+`TestCollaborationRecoveryPriorityTransferCommitOrders` uses the existing real
+commit/PID barriers in both orders. Current authority precedes revision: a former
+noncreator handler's priority edit after transfer is forbidden403, while an old
+revision transfer after a priority commit is stale409. After losing write authority,
+recover the actor's content-free original result with `GetWorkflowOperation`;
+reposting an old key does not restore authority. Fresh authorized continuation
+must preserve earlier success/refusal receipts and retained execution identities.
+
+`TestCollaborationOrdinaryChildPriorityAssigneeCASCommitOrders` owns the ordinary
+linked-child field pair: numeric `expected_revision`, one200/one409 with exact
+`revision_conflict`, `resource_type=issue`, child `resource_id`, and numeric
+expected/actual revisions. Only the winning field changes; a deliberate fresh
+request applies the other field once. Ordinary omitted-version compatibility
+remains unchanged. Priority/assignee-only edits emit no parent-reference hint:
+that publisher is selected only for parent, title or admission changes. Keep the
+exact committed ordinary update events and unchanged parent collaboration state.
+
+These Go service/HTTP regressions use legacy-auth JWT fixtures and actual
+PostgreSQL writer waits. They do not replace current password/API/Web/Desktop
+composition or the remaining S3 recovery/notification/upload/blocking matrix.
+
+The separately accepted current-password R06 composition now verifies genuine
+Web/Electron priority/transfer requests in both submission orders, exact
+original GET results, deliberate committed-response loss and a fresh authorized
+UI continuation. Ordinary child numeric CAS is explicit API evidence; its
+unmodified picker writes still omit the optional version and are recorded as
+compatibility evidence. Earlier service/PID-lock tests and these current
+submission-order journeys keep their distinct denominators. See
+[recovery QA](../web/frontend/collaboration-recovery-qa.md) for actual native
+transport, UI pending-intent retirement and retained-failure contracts. Complete
+S3 and parent TC-16 are not accepted by this bounded field composition.

@@ -78,8 +78,9 @@ func readCollaborationRecording(ctx context.Context, q *db.Queries, issue, run p
 			state.stream = p.StreamID
 			state.seal = &p
 		case "outcome":
-			var p protocol.CollaborationRunOutcome
-			if state.outcome || decodeCollaborationPreparationJSON(event.Payload, &p) != nil || p.Identity.RunID != util.UUIDToString(run) || p.Identity.IssueID != util.UUIDToString(issue) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: p.Outcome, Body: p.Body, Record: p.Record}) != nil {
+			saved, decodeErr := decodeCollaborationStoredOutcome(event.Payload)
+			p := saved.CollaborationRunOutcome
+			if state.outcome || decodeErr != nil || p.Identity.RunID != util.UUIDToString(run) || p.Identity.IssueID != util.UUIDToString(issue) || protocol.ValidateCollaborationProviderResult(protocol.CollaborationProviderResult{Outcome: p.Outcome, Body: p.Body, Record: p.Record}) != nil {
 				return state, invalidCollaborationLedger("invalid recording outcome")
 			}
 			if p.Record != nil && p.Record.Version == 2 {

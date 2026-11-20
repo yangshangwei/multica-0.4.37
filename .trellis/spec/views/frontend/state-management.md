@@ -34,6 +34,17 @@ Questions to answer:
 
 (To be filled by the team)
 
+### Core store injection through navigation plumbing
+
+Shared Zustand stores stay in Core. A mounted `NavigationProvider` may inject a
+Core-owned StoreApi through Context when a routed component must retain client
+intent across a platform page-segment remount. Context supplies the dependency;
+it must not become another owner of business values or API response data.
+Selectors return stable state references. The current-issue history disclosure
+is the bounded example: one ephemeral record per mounted navigation surface,
+not a persisted preference or a registry of visited entities. Its executable
+contract and tests live in [Iteration Operations](../../core/frontend/iteration-operations.md).
+
 ---
 
 ## Server State

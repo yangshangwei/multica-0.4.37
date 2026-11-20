@@ -1,0 +1,24 @@
+{
+  "evidence_type": "offline-nested-namespace-capability-probe",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--security-opt=seccomp=unconfined",
+    "--tmpfs=/tmp:rw,nosuid,size=32m",
+    "--tmpfs=/root/.codex:rw,nosuid,size=32m",
+    "--entrypoint",
+    "sh",
+    "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "-c",
+    "unshare --user --map-root-user --net sh -c \"cat /proc/net/route; echo nested-network-namespace-ran\""
+  ],
+  "exit": 1,
+  "stdout": "",
+  "stderr": "unshare: write failed /proc/self/uid_map: Operation not permitted\n"
+}

@@ -2,6 +2,8 @@ import { test, expect } from "@playwright/test";
 import { createTestApi, loginAsDefault, waitForPageText } from "./helpers";
 import type { TestApiClient } from "./fixtures";
 
+test.use({ trace: "retain-on-failure", screenshot: "only-on-failure" });
+
 test.describe("Comments", () => {
   let api: TestApiClient;
   let issueId: string;
@@ -41,15 +43,24 @@ test.describe("Comments", () => {
       .locator('.ProseMirror[data-placeholder="Leave a comment..."], .ProseMirror:has([data-placeholder="Leave a comment..."])')
       .first();
     await expect(editor).toBeVisible();
-    await editor.click({ force: true });
+    await editor.click();
+    await expect(editor).toBeFocused();
     await editor.fill(commentText);
 
+    let submissions = 0;
+    page.on("request", (request) => {
+      if (request.method() === "POST" && new URL(request.url()).pathname === `/api/issues/${issueId}/comments`) submissions += 1;
+    });
+    const submitted = page.waitForResponse((response) => response.request().method() === "POST" && new URL(response.url()).pathname === `/api/issues/${issueId}/comments`);
     await page.keyboard.press("ControlOrMeta+Enter");
+    expect((await submitted).ok()).toBe(true);
+    expect(submissions).toBe(1);
 
     // Comment should appear in the activity section
-    await expect(page.locator(`text=${commentText}`)).toBeVisible({
-      timeout: 5000,
-    });
+    await expect(page.getByText(commentText, { exact: true })).toBeVisible({ timeout: 5000 });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.getByText(commentText, { exact: true })).toBeVisible();
+    expect(submissions).toBe(1);
   });
 
   test("comment submit button is disabled when empty", async ({ page }) => {

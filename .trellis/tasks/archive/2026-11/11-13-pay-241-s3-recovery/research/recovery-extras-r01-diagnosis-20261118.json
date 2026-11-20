@@ -1,0 +1,187 @@
+{
+  "at": "2026-11-18T11:12:03.365118+00:00",
+  "owner": "/root/s3_extras_fix_r02",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "R02_EXTRAS_FIXTURE_STATIC_READY_RUNTIME_NOT_RUN",
+  "original_R01": {
+    "raw": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r01/playwright-report.json",
+    "sha256": "754706272fb293f6a9643e5ea7bd18f3311eb98f2c7cfbd16c7a084d152aceed",
+    "tops": {
+      "PASS": 0,
+      "FAIL": 1,
+      "NOT_RUN": 5
+    },
+    "subcases_started": 1,
+    "retry": 0,
+    "disposition": "NOT_ACCEPTED",
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/harness-extrasA-r01",
+    "API_PID80515_stopped_main_evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r01/stop-owned-api-r01.json"
+  },
+  "fixes": [
+    {
+      "case": "mixed_repeat_replay_reconnect",
+      "observed_failure": "R01 firstWebcase read_at remains null after notification link navigation; actual link only navigates",
+      "minimal_change": "Use same current notification ID and explicit Mark read UI POST, canonical200 receipt/timestamp, refreshed row and then original link/comment anchor"
+    },
+    {
+      "case": "source_only_membership_loss",
+      "static_defect": "Source member without participation returns before manager-only edit_source_structure",
+      "minimal_change": "Require actual read/comment/reorder=true and edit_source_structure=false before loss, real workspace200 then403/404 plus existing all private read404/old stamp/UI denial"
+    },
+    {
+      "case": "source_loss_participation_survives",
+      "static_defect": "Invited survivor is neither creator nor handler; source membership does not grant its manager-only field options",
+      "minimal_change": "Require read/comment/reorder=true and edit_source_structure=false before, unchangedparticipant/read/comment and reorder=false after, real fieldoptions403 in both phases/source workspace200 then403/404"
+    }
+  ],
+  "files": [
+    {
+      "path": "e2e/collaboration-recovery.spec.ts",
+      "before_sha256": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+      "sha256": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+      "mode": "0o644",
+      "bytes": 3473
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery.ts",
+      "before_sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "mode": "0o644",
+      "bytes": 76868
+    },
+    {
+      "path": "e2e/collaboration-recovery-extras.spec.ts",
+      "before_sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "mode": "0o644",
+      "bytes": 1710
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-extras.ts",
+      "before_sha256": "a2d96cfcf477440a1c6bec5177cf5b4cbdd68d76b60b7a454b5c2b0ceea371ca",
+      "sha256": "f04e7009b98666eee64496812d41ed524449073fa9db12611fee2e486318bd93",
+      "mode": "0o644",
+      "bytes": 73955
+    }
+  ],
+  "changed_paths": [
+    "e2e/fixtures/collaboration-recovery-extras.ts"
+  ],
+  "diff": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r02/extras-fixture-r01-to-r02.diff",
+    "sha256": "67b125c42158e71a6fab2b93738dcb3214c730e8b52bea5927d1220944989c9b"
+  },
+  "source_evidence": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery-extras.ts",
+      "sha256": "a2d96cfcf477440a1c6bec5177cf5b4cbdd68d76b60b7a454b5c2b0ceea371ca",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-recovery-extras.spec.ts",
+      "sha256": "9c1030bb0291118e691ebe6412f77dc794c2ac21003420b61ab15fe07423144b",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery.ts",
+      "sha256": "7f125d331adcfa85dab491b3def6ec07bca084238b71eae90f8e5eafcbffb3d1",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/collaboration/notifications.tsx",
+      "sha256": "ed9a744ae3e61b5387135a1f8cc9b9499dceff1f824bb770542fd30d22ee1264",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/collaboration/access.go",
+      "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_fields.go",
+      "sha256": "f88a2fe800a8f5d36dd067c43c887b734cd3d337aa6b3d72f9f140a7a7af17ec",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/workspace.go",
+      "sha256": "1e7c3d39771dca05dfb4bb35f27485d7f78532a04c5480d00781082db2d38328",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/content-schema.ts",
+      "sha256": "7f83b682b18066c66171aa188b4d1590d66894d2a4a213d8adc0590e7fc04dcb",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/index.ts",
+      "sha256": "c5209dc9aa4a9e7e0b99de9e74d10b6cea12d90644095dc91aa1ededb07a55f2",
+      "mode": "0o644"
+    }
+  ],
+  "static": {
+    "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r02/result.json",
+    "sha256": "3e3dbaaea3769ff6284876430a5c9c045a05ae36431d4fe61e753bf550077a78",
+    "typecheck": {
+      "started_at": "2026-11-18T11:10:08.468083+00:00",
+      "ended_at": "2026-11-18T11:10:12.229419+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "eslint": {
+      "started_at": "2026-11-18T11:10:08.468522+00:00",
+      "ended_at": "2026-11-18T11:10:10.265813+00:00",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    },
+    "resolved_source_files": 639,
+    "input_bytes_modes_before_after_equal": true,
+    "strict_entry_roots": 2,
+    "whole_repository_lint_claim": false
+  },
+  "inventory": {
+    "platforms": [
+      "Web",
+      "Desktop"
+    ],
+    "tops": 6,
+    "named_subcases": 18,
+    "per_platform": {
+      "notifications": [
+        "mixed_repeat_replay_reconnect",
+        "late_join_and_edit_delta",
+        "target_withdrawal_after_preview"
+      ],
+      "uploads": [
+        "committed_upload_GET_reload",
+        "same_bytes_unknown_retry",
+        "changed_reselection_matching_retry"
+      ],
+      "revocations": [
+        "participant_last_basis_offline_and_delayed_read",
+        "source_only_membership_loss",
+        "source_loss_participation_survives"
+      ]
+    },
+    "spec_unchanged": true
+  },
+  "original_source_snapshot": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r02/source-before-fix.json",
+  "before_edit_plan": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/extras-a-fix-r02/repair-plan-before-edit.json",
+  "product_Core_Views_router_auth_or_dependencies_changed": false,
+  "shared_recovery_exports_changed": false,
+  "deadline_forceclick_or_storage_reset": false,
+  "DB_API_browser_Provider_body_execution_by_child": 0,
+  "runtime_acceptance": false,
+  "full_S3_acceptance": false,
+  "parent_matrix_or_task_status_changed_by_child": false,
+  "remaining": [
+    "Main must freeze exact final fixture, allocate a new managed database/profile, execute all6/18 and audit original IDs/objects/read fences",
+    "Independent runtime check and guarded atomic commit remain main-owned",
+    "Extras-B actual run/proof/business-token readers and complete S3 remain outside this test-only fix"
+  ]
+}

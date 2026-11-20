@@ -95,6 +95,8 @@ if (scope && isQuickCreateScopeCurrent(scope)) {
 - Mutation `gcTime:0` alone does not clear an observed mutation. Reset the mutation observer on current-request settlement, clear/cancel and unmount, guarded by request identity. Retain only the visible local result/context; do not leave task text in the global mutation cache. `creator-recommendations-cache.test.tsx` exercises the real QueryClient.
 - New endpoint responses use Zod business-field validation while allowing harmless added fields. Missing/invalid/duplicate/over-limit results are errors, not authoritative no-match responses. Requests pin workspace UUID and forward AbortSignal; the mutation has no automatic retries.
 - Manual selection and task creation remain available without configured AI or on an older server returning404. The interface says Send to (交给 in Chinese), with a persistent hint below the picker explaining issue creation and default assignment.
+- An explicit request shows its three recommendation states the same way the description helper does. While pending, the main button itself reads Cancel and aborts; there is no second cancel control. A failure is `role="alert"` in the destructive tone with an outline Try again that focuses the persistent button and calls `start()`. When a context change discards a shown result or an in-flight request, a `role="status"` notice says so until the next request; discarding only an error, a deliberate cancel and an adoption are silent. With no eligible candidate the button is natively disabled, described by a visible reason, and `start()` returns early.
+- Each suggestion's button shows the bare Use verb; its accessible name stays `use_named` ("Use {{name}}"), so the visible text is contained in the name.
 
 Tests: core creator-selection/API/preference suites; views creator-recommendations and cache suites plus phase1 picker regressions; `e2e/quick-create-actor-picker-phase2.spec.ts` covers realAPI defaults/projects, deterministic-provider recommendations, cancellation/failure, actual Electron and Chinese narrow layouts.
 
@@ -143,6 +145,40 @@ Tests: core creator-selection/API/preference suites; views creator-recommendatio
 - Actor names truncate only when constrained; normal short names must remain fully visible. Negative margins on an intrinsic-width trigger can consume its text space, so avoid that combination.
 - Browser verification can use actual shared UI with isolated Query data and stubbed API acceptance. Distinguish these checks from backend dispatch, physical touch and real screen-reader testing. Hidden editor bubble-menu geometry does not prove visible horizontal overflow.
 
+
+## Agent create submission and blocked states
+
+- The submit button reads Send to agent (交给智能体); pending, done and count use the same verb (正在交给... / 已交给 / 已交给 N). The recipient trigger's name also starts with Send to / 交给, so browser selectors for the trigger must exclude the submit name, for example `/^Send to (?!agent$)/` and `/^交给(?!智能体$)/`.
+- `resolveQuickCreateSubmitState` in core is the single source for the button, the notice and the keyboard path. Its order and its equivalence with "may submit" are pinned in `packages/core/issues/quick-create-submit-state.test.ts`; do not re-run that matrix through a DOM mount. It changes how a blocked state is presented, never whether a submit is allowed.
+- Derive `sourceRequired` with `Boolean(anchorCommentId)`, matching the existing composer guard. An empty source ID follows ordinary creation; treating every non-null string as a required source would add a new blocker.
+- Native `disabled` is reserved for submitting and uploading. Every other blocker uses `aria-disabled`: the button stays focusable and activatable, carries no `pointer-events-none` and no native `title`. One reason sentence is shown in a Tooltip and is also the button's accessible description through an always-rendered `sr-only` element, so it does not depend on the tooltip being open.
+- `submit()` is the only entry for the button, the editor shortcut and the dialog shortcut. It re-evaluates with live editor Markdown, because `hasContent` trails the editor by its debounce. Use the live value alone: `hasContent || liveMarkdown` incorrectly treats a just-cleared description as ready, after which the composer silently refuses it without focusing the editor. Keep regressions for immediate typing, immediate clearing, and attachment-only Markdown. A blocked attempt keeps the draft and moves focus:
+
+  In browser debounce regressions, install the browser clock before navigation,
+  pause after the nonempty draft renders, then clear and prove the submit still
+  appears enabled before the actual pointer click. Advance only the focus frame
+  (32ms, below the 150ms editor debounce), assert editor focus and zero POSTs, and
+  resume in `finally`. Host/CDP round-trip timing below 150ms does not prove this
+  race and is load-dependent. The unit suite owns the full deferred-editor matrix.
+
+| State | Reason shown | Focus goes to |
+| --- | --- | --- |
+| `no_recipients` | No agent or squad can take this | First exit of the notice |
+| `autonomy_blocked` | Existing autonomy tooltip | The notice's manual hand-off button |
+| `version_blocked` | Existing CLI version tooltip | Recipient trigger |
+| `source_unavailable` | Source context not ready | Unchanged; the source card owns retry |
+| `missing_description` | Write a description first | Description editor |
+| `recipients_failed` / `loading_recipients` / `missing_recipient` | Load failed / still loading / choose a recipient | Recipient trigger |
+
+- `no_recipients` (lists and preferences known, nothing passes `canCreateAs`) outranks a missing description and renders a `role="status"` warning notice where the autonomy notice sits, with what, why and next. Exits: an `AppLink` to the agents list that saves the prompt and closes only on an in-place navigation (a modifier click keeps the dialog), and a plain Switch to Manual button calling `switchToManual()`. Only the footer switch carries `pen-sheen`. A list load failure does not show this notice; the picker owns that retry.
+- The configured send chord also submits from non-input controls anywhere in the dialog, including the recipient trigger that receives focus after adopting a recommendation. It is a native `keydown` listener on the closest `[role="dialog"]`, not a React handler: React would also deliver keys from portaled popups through the component tree. Exclusions, in order: `defaultPrevented` (the editor handled it, so one press submits once); `repeat` and IME composition; send configured as a bare Enter, which disables the binding so Enter keeps activating the focused control; an editable target; a chord mismatch. Manual create does not have this binding.
+- The default recipient trigger is outlined like a property pill, with no negative margin; callers that pass `triggerRender` are unchanged. Keep the persistent hint with the picker inside `CreatorRecommendations`'s child group, so a wrapped recommendation prerequisite cannot separate them. Its gap to the trigger frame must stay smaller than its gap to the Task description label at both default and 375px widths; measuring only a ready desktop row misses the empty/narrow reversal.
+
+## Wording without an umbrella noun
+
+- The recipient position has no collective noun. Actions say 智能体 / agent; drop the noun where context already supplies it (No matches, Loading..., Set current as default); write 智能体或AI小队 / agent or squad only when both must be named. 助手, 对象, assistant and actors do not appear in `create_issue.agent`, `create_issue.actor_picker` or `create_issue.creator_recommendations`. This supersedes the phase 2 "创建助手" naming. Selecting a squad still hands the request to its leader agent, so "sent to agent" holds for squads.
+- `actor_picker.no_matches` and `actor_picker.loading` are also rendered by manual assignment and Chat; keep them noun-free so they stay true on all three surfaces.
+- A recommendation discarded after a context change exposes the existing stale status, including when the live editor check catches that change at adoption before the debounced draft updates. Explicit cancellation and successful adoption clear results without the stale notice.
 
 ## Manual creation refinement
 

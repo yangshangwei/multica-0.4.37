@@ -153,6 +153,50 @@ it("returns the exact result with a reason and defaults to its actual author", a
   expect(JSON.parse(String(write?.[1]?.body))).toMatchObject({ submission_id: submissionId, target_user_id: recipientId, note: "Cover the missing case" });
 });
 
+it("retries failed status candidates in the same dialog while preserving the reason and blocking pending submission", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,
+    delivery: { current: submission, latest: submission, has_history: true }, capabilities: { ...issue.capabilities, return_acceptance: true } };
+  let finishRetry!: (response: Response) => void;
+  const fetch = vi.fn<(url: string, init?: RequestInit) => Promise<Response>>()
+    .mockResolvedValueOnce(new Response(JSON.stringify({ error: "Temporarily unavailable" }), { status: 503 }))
+    .mockImplementationOnce(() => new Promise<Response>((resolve) => { finishRetry = resolve; }));
+  vi.stubGlobal("fetch", fetch);
+  renderWithI18n(<QueryClientProvider client={client}><CollaborationWorkflow scope={collaborationScope(id)} issue={source} /></QueryClientProvider>);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole("button", { name: "Return for revision" }));
+  const dialog = screen.getByRole("dialog", { name: "Return for revision" });
+  const form = within(dialog).getByRole("form", { name: "Return for revision" });
+  expect(await within(form).findByRole("alert")).toHaveTextContent("Could not load collaboration. Try again.");
+  const reason = within(form).getByRole("textbox", { name: "Revision reason" });
+  await user.type(reason, "Cover the missing case without losing this reason");
+  const confirm = within(form).getByRole("button", { name: "Return for revision" });
+  expect(confirm).toBeDisabled();
+  expect(fetch).toHaveBeenCalledTimes(1);
+
+  await user.click(within(form).getByRole("button", { name: "Refresh" }));
+  await waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
+  expect(within(form).getByText("Loading collaboration...")).toHaveAttribute("role", "status");
+  expect(screen.getByRole("dialog", { name: "Return for revision" })).toBe(dialog);
+  expect(within(dialog).getByRole("form", { name: "Return for revision" })).toBe(form);
+  expect(within(form).getByRole("textbox", { name: "Revision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Cover the missing case without losing this reason");
+  expect(confirm).toBeDisabled();
+  fireEvent.submit(form);
+  expect(fetch.mock.calls.every(([, init]) => init?.method !== "POST")).toBe(true);
+
+  await act(async () => finishRetry(new Response(JSON.stringify({ action: "return_acceptance", status_options_version: "b".repeat(64),
+    default_status: "in_progress", options: [{ key: "in_progress", name: "In progress", category: "in_progress" }] }))));
+  await waitFor(() => expect(confirm).toBeEnabled());
+  expect(within(form).getByRole("combobox", { name: "Status" })).toHaveValue("in_progress");
+  expect(within(form).queryByText("Loading collaboration...")).not.toBeInTheDocument();
+  expect(within(form).queryByRole("alert")).not.toBeInTheDocument();
+  expect(within(form).getByRole("textbox", { name: "Revision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Cover the missing case without losing this reason");
+  expect(fetch.mock.calls.every(([url, init]) => new URL(url).pathname.endsWith("status-options") && init?.method !== "POST")).toBe(true);
+  expect(readCollaborationDrafts({ ...collaborationScope(id), issueId: id })).toEqual([]);
+});
+
 it("explains an oversized revision reason, preserves it, and clears the error after correction", async () => {
   setApiInstance(new ApiClient("https://server.example"));
   const source = { ...issue, status: "in_review", status_category: "in_review" as const, ai_policy: "manual" as const,

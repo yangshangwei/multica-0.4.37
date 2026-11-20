@@ -194,6 +194,7 @@ func buildCollaborationHandoff(ctx context.Context, q *db.Queries, a Collaborati
 		return out, err
 	}
 	if a.InformationRequestID.Valid {
+		out.Missing = append(out.Missing, "information_block_metadata_unavailable_v1")
 		h, e := q.GetCollaborationInformationRequest(ctx, db.GetCollaborationInformationRequestParams{IssueID: a.Issue.ID, RequestID: a.InformationRequestID})
 		if e != nil {
 			return out, e
@@ -444,10 +445,8 @@ func projectHandoffResults(ctx context.Context, q *db.Queries, a CollaborationIs
 }
 func handoffResultText(e db.CollaborationRunEvent) (string, string, error) {
 	if e.Kind == "outcome" {
-		var p struct {
-			Body string `json:"body"`
-		}
-		if json.Unmarshal(e.Payload, &p) != nil {
+		p, err := decodeCollaborationStoredOutcome(e.Payload)
+		if err != nil {
 			return "", "", invalidCollaborationLedger("invalid result source")
 		}
 		return p.Body, "provider_result", nil

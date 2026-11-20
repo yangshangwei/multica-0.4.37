@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useId, useImperativeHandle, useRef, useState, type CSSProperties } from "react";
 import { deriveCollaborationDetailState, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import type { AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -14,6 +14,8 @@ import { CollaborationKnowledgePanel } from "./knowledge-panel";
 import { useCollaborationLabels } from "./labels";
 import { CollaborationMemoryPanel } from "./memory-panel";
 import type { CollaborationPanelStatus } from "./panel-status";
+import { CollaborationInformationBlock } from "./information-block";
+import { RichContent } from "../rich-content";
 
 type Panel = "details" | "files" | "memory" | "knowledge" | "children" | "activity";
 const icons = { details: Info, files: Paperclip, memory: FileText, knowledge: BookOpen, children: GitBranch, activity: History };
@@ -83,6 +85,7 @@ export const CollaborationDetailAuxiliary = forwardRef<CollaborationDetailAuxili
       if (!next && afterClose.current) { const callback = afterClose.current; afterClose.current = null; requestAnimationFrame(callback); }
     }}>
       <DialogContent id={id} keepMounted showCloseButton={false}
+        style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
         initialFocus={() => !destination.memoryVersion && destination.anchor === "memory" && selected === "memory" ? content.current?.querySelector<HTMLElement>("#memory") ?? heading.current : heading.current}
         finalFocus={() => navigating.current ? false : opener.current?.isConnected ? opener.current : toolbar.current?.querySelector<HTMLButtonElement>("button")}
         className="top-0 right-0 left-auto flex h-dvh w-full max-w-full translate-x-0 translate-y-0 flex-col gap-0 rounded-none p-0 sm:max-w-[44rem] data-open:zoom-in-100 data-closed:zoom-out-100 data-open:slide-in-from-right-4 data-closed:slide-out-to-right-4 motion-reduce:animate-none">
@@ -104,12 +107,21 @@ export const CollaborationDetailAuxiliary = forwardRef<CollaborationDetailAuxili
               {stage !== "working" && <div><dt>{t(($) => $.detail.status)}</dt><dd>{labels.status(issue.status)}</dd></div>}
               <div><dt>{t(($) => $.policy.title)}</dt><dd>{issue.ai_policy === "manual" ? t(($) => $.policy.manual) : issue.ai_policy === "assisted" ? t(($) => $.policy.assisted) : t(($) => $.policy.unknown)}</dd></div>
             </dl><CollaborationFieldSummary issue={issue} />
+            {issue.current_information_request && <section aria-label={t(($) => $.workflow.requestInformation)} className="min-w-0 space-y-4 [overflow-wrap:anywhere]">
+              <h4 className="text-body font-medium">{t(($) => $.workflow.requestInformation)}</h4>
+              <dl className="grid min-w-0 gap-x-6 gap-y-3 text-body sm:grid-cols-2 [&_dt]:mb-1 [&_dt]:text-caption [&_dt]:text-muted-foreground">
+                <div><dt>{t(($) => $.information.metadata.reason)}</dt><dd>{issue.current_information_request.note.trim() ? <RichContent resourcePolicy="restricted" content={issue.current_information_request.note} /> : t(($) => $.workflow.requestNoNote)}</dd></div>
+                <div><dt>{t(($) => $.workflow.recipient)}</dt><dd>{issue.current_information_request.recipient.name}<span className="mt-1 block select-text text-caption text-muted-foreground">{issue.current_information_request.recipient.user_id}</span></dd></div>
+              </dl>
+              <CollaborationInformationBlock block={issue.current_information_request.block} />
+            </section>}
+            {!issue.current_information_request && issue.information_workflow?.managed === true && issue.status_category === "blocked" && <p className="text-body text-muted-foreground">{t(($) => $.information.reasons.repairRequired)}</p>}
           </div>
           <div hidden={!open || selected !== "files"} inert={!open || selected !== "files"} className="[&>section>h3]:sr-only"><CollaborationAttachmentPanel scope={scope} issue={issue} onStatusChange={filesStatus} active={open && selected === "files"} /></div>
           <div hidden={!open || selected !== "memory"} inert={!open || selected !== "memory"} className="[&>#memory]:border-0 [&>#memory]:p-0 [&>#memory>div:first-child>h3]:sr-only"><CollaborationMemoryPanel scope={scope} issue={issue} destination={destination} isScopeResume={isScopeResume} navigationKey={navigationKey} active={open && selected === "memory"} onStatusChange={memoryStatus} /></div>
-          <div hidden={!open || selected !== "knowledge"} inert={!open || selected !== "knowledge"} className="[&>section]:border-0 [&>section]:p-0"><CollaborationKnowledgePanel scope={scope} issue={issue} onStatusChange={knowledgeStatus} /></div>
+          <div hidden={!open || selected !== "knowledge"} inert={!open || selected !== "knowledge"} className="[&>section]:border-0 [&>section]:p-0"><CollaborationKnowledgePanel scope={scope} issue={issue} active={open && selected === "knowledge"} onStatusChange={knowledgeStatus} /></div>
           <div hidden={!open || selected !== "children"} inert={!open || selected !== "children"} className="[&>section>h3]:sr-only"><CollaborationChildren issue={issue} /></div>
-          <div hidden={!open || selected !== "activity"} inert={!open || selected !== "activity"} className="[&>section>h3]:sr-only"><CollaborationActivity scope={scope} destination={destination} onStatusChange={activityStatus} /></div>
+          <div hidden={!open || selected !== "activity"} inert={!open || selected !== "activity"} className="[&>section>h3]:sr-only"><CollaborationActivity scope={scope} destination={destination} issue={issue} active={open && selected === "activity"} onStatusChange={activityStatus} /></div>
         </div>
       </DialogContent>
     </Dialog>

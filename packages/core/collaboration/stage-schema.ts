@@ -161,7 +161,8 @@ const blockerCodes = ["stage_roles_unconfigured", "stage_scope_unconfirmed", "st
   "stage_pull_request_unavailable", "stage_head_changed", "stage_trust_changed", "stage_ci_missing", "stage_ci_failed", "stage_ci_stale", "stage_ci_unsupported",
   "stage_code_review_missing", "stage_qa_missing", "stage_release_approval_missing", "stage_test_report_unusable", "stage_execution_fact_missing",
   "stage_decision_expired", "stage_decision_revoked", "stage_signer_changed", "stage_roles_changed", "stage_policy_changed", "stage_evidence_changed",
-  "stage_evidence_unavailable", "stage_submission_unbound"] as const;
+  "stage_evidence_unavailable", "stage_submission_unbound", "stage_execution_unavailable", "stage_execution_target_changed", "stage_execution_pending",
+  "stage_execution_conflict", "stage_rollback_observation_unavailable", "stage_rollback_observation_changed"] as const;
 export const CollaborationStageBlockerSchema = z.strictObject({
   code: openEnum(blockerCodes), stage: openEnum(COLLABORATION_STAGES), candidate_id: stageId.optional(), decision_id: stageId.optional(), child_issue_id: stageId.optional(),
 }).refine((v) => v.code !== "stage_evidence_unavailable" || v.candidate_id === undefined && v.decision_id === undefined && v.child_issue_id === undefined, "Unavailable evidence is anonymous");
@@ -581,6 +582,8 @@ const STORED_REFUSALS: Record<string, number> = {
   stage_evidence_changed: 409, stage_evidence_unavailable: 409, stage_dependency_invalid: 409, stage_test_report_unusable: 409,
   stage_execution_fact_missing: 409, stage_stage_changed: 409, stage_decision_expired: 409, stage_signer_changed: 409,
   stage_decision_not_found: 404, stage_decision_not_revocable: 409, stage_transition_invalid: 409,
+  stage_execution_unavailable: 409, stage_execution_target_changed: 409, stage_execution_pending: 409,
+  stage_execution_conflict: 409, stage_rollback_observation_unavailable: 409, stage_rollback_observation_changed: 409,
 };
 /** Issue-action refusals without an operation row (contract 3.4): this attempt wrote nothing. */
 const UNSTORED_ISSUE_REFUSALS: Record<string, number> = {

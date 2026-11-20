@@ -98,6 +98,8 @@ export function PropertyPicker({
   navigationResetKey,
   searchInputRef,
   listboxId,
+  listboxLabel,
+  multiple = false,
   contentClassName,
   header,
   tooltip,
@@ -123,6 +125,9 @@ export function PropertyPicker({
   searchInputRef?: React.Ref<HTMLInputElement>;
   /** Opt-in native textbox relationship; children own the named listbox/options. */
   listboxId?: string;
+  /** Own the named option list here instead of requiring a caller wrapper. */
+  listboxLabel?: string;
+  multiple?: boolean;
   contentClassName?: string;
   /** Custom sticky header rendered above the scrollable list. Use for
    *  filter toggles, search inputs, or any UI that must stay visible while
@@ -152,7 +157,14 @@ export function PropertyPicker({
   const navigation = useRef<{ key: string | undefined; items: HTMLButtonElement[] }>({ key: navigationResetKey, items: [] });
   const suppressUniqueSelection = useRef(false);
   const [tooltipHover, setTooltipHover] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const setSearchInput = useCallback((node: HTMLInputElement | null) => {
+    inputRef.current = node;
+    if (typeof searchInputRef === "function") return searchInputRef(node);
+    if (searchInputRef) searchInputRef.current = node;
+  }, [searchInputRef]);
   const listRef = useRef<HTMLDivElement>(null);
+  const ownsListbox = !!listboxId && !!listboxLabel;
   // Show the tooltip only while the trigger is hovered AND the popover is
   // closed — avoids the awkward state where the tooltip floats next to (or
   // on top of) the popover that just opened on click.
@@ -242,7 +254,14 @@ export function PropertyPicker({
         const next = highlightedIndex.current > 0 ? highlightedIndex.current - 1 : items.length - 1;
         paintHighlight(items, next);
         items[next]?.scrollIntoView({ block: "nearest" });
-      } else if (e.key === "Enter") {
+      } else if (e.key === "Home" || e.key === "End") {
+        if (e.currentTarget instanceof HTMLInputElement) return;
+        e.preventDefault();
+        suppressUniqueSelection.current = false;
+        const next = e.key === "Home" ? 0 : items.length - 1;
+        paintHighlight(items, next);
+        items[next]?.scrollIntoView({ block: "nearest" });
+      } else if (e.key === "Enter" || (e.key === " " && !(e.currentTarget instanceof HTMLInputElement))) {
         e.preventDefault();
         if (highlightedIndex.current >= 0 && highlightedIndex.current < items.length) {
           items[highlightedIndex.current]?.click();
@@ -276,11 +295,19 @@ export function PropertyPicker({
       ) : (
         popoverTrigger
       )}
-      <PopoverContent align={align} side={side} className={cn(width, "gap-0 p-0", contentClassName)}>
+      <PopoverContent align={align} side={side} className={cn(width, "gap-0 p-0", contentClassName)}
+        aria-label={listboxLabel}
+        initialFocus={ownsListbox && !searchable ? () => {
+          const items = getItems();
+          const selected = items.findIndex((item) => item.getAttribute("aria-selected") === "true");
+          paintHighlight(items, selected >= 0 ? selected : 0);
+          return listRef.current;
+        } : undefined}
+      >
         {searchable && (
           <div className="px-2 py-1.5 border-b">
             <input
-              ref={searchInputRef}
+              ref={setSearchInput}
               type="text"
               value={query}
               maxLength={searchMaxLength}
@@ -295,12 +322,41 @@ export function PropertyPicker({
               aria-controls={open ? listboxId : undefined}
               aria-haspopup={listboxId ? "listbox" : undefined}
               aria-activedescendant={open ? activeOptionId : undefined}
-              className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
+              className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none pointer-coarse:min-h-11"
             />
           </div>
         )}
         {header && <div className="border-b">{header}</div>}
-        <div ref={listRef} className="p-1 max-h-72 overflow-y-auto">{children}</div>
+        <div ref={listRef}
+          id={ownsListbox ? listboxId : undefined}
+          role={ownsListbox ? "listbox" : undefined}
+          aria-label={listboxLabel}
+          aria-multiselectable={ownsListbox && multiple ? true : undefined}
+          aria-activedescendant={ownsListbox && !searchable ? activeOptionId : undefined}
+          tabIndex={ownsListbox && !searchable ? 0 : undefined}
+          onKeyDown={ownsListbox ? handleKeyDown : undefined}
+          onClickCapture={ownsListbox ? (event) => {
+            const target = event.target instanceof Element ? event.target.closest<HTMLButtonElement>(ITEM_SELECTOR) : null;
+            if (!target) return;
+            const items = getItems();
+            const index = items.indexOf(target);
+            if (index < 0) return;
+            paintHighlight(items, index);
+            // The textbox/listbox owns active-descendant focus. Return to it
+            // before the row toggles or unmounts, including multi-selection.
+            (searchable ? inputRef.current : listRef.current)?.focus({ preventScroll: true });
+          } : undefined}
+          onFocusCapture={ownsListbox ? (event) => {
+            const items = getItems();
+            const focusedItem = items.findIndex((item) => item.isSameNode(event.target));
+            if (focusedItem >= 0) paintHighlight(items, focusedItem);
+            else if (event.target === event.currentTarget && highlightedIndex.current < 0) {
+              const selected = items.findIndex((item) => item.getAttribute("aria-selected") === "true");
+              paintHighlight(items, selected >= 0 ? selected : 0);
+            }
+          } : undefined}
+          className="p-1 max-h-72 overflow-y-auto outline-none"
+        >{children}</div>
         {footer && <div className="border-t p-1">{footer}</div>}
       </PopoverContent>
     </Popover>
@@ -321,6 +377,7 @@ export function PickerItem({
   className,
   tooltip,
   emptyValue = false,
+  toggle = false,
   children,
 }: {
   selected: boolean;
@@ -329,6 +386,9 @@ export function PickerItem({
   hoverClassName?: string;
   /** Supplying an option ID opts this native row into listbox semantics. */
   optionId?: string;
+  /** Expose native pressed state for reversible choices. Listbox options and
+   * fixed empty-value commands keep their existing semantics. */
+  toggle?: boolean;
   ariaLabel?: string;
   className?: string;
   /**
@@ -356,12 +416,13 @@ export function PickerItem({
       role={optionId ? "option" : undefined}
       aria-label={ariaLabel}
       aria-selected={optionId ? selected : undefined}
+      aria-pressed={!optionId && toggle && !emptyValue ? selected : undefined}
       aria-disabled={optionId ? disabled === true : undefined}
       tabIndex={optionId ? -1 : undefined}
       {...(emptyValue ? { [EMPTY_ITEM_ATTR]: "" } : {})}
       disabled={disabled}
       onClick={onClick}
-      className={cn("flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body", disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent", "transition-colors", className)}
+      className={cn("flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-left text-body pointer-coarse:min-h-11", disabled ? "opacity-50 cursor-not-allowed" : hoverClassName ?? "hover:bg-accent", "transition-colors", className)}
     >
       {/* min-w-0 lets long children (like truncated label names) shrink
           inside the flex row instead of pushing the selected checkmark off
@@ -417,7 +478,7 @@ export function PickerSection({
 export function PickerEmpty() {
   const { t } = useT("issues");
   return (
-    <div className="px-2 py-3 text-center text-body text-muted-foreground">
+    <div role="status" className="px-2 py-3 text-center text-body text-muted-foreground">
       {t(($) => $.pickers.no_results)}
     </div>
   );

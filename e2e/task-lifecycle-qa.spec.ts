@@ -38,10 +38,10 @@ test("persists a manually created feature request through edits, workflow, comme
     await page.getByRole("button", { name: "New Issue", exact: true }).click();
     const title = `Team weekly report ${suffix}`;
     const description = "Let team members write a weekly report and share progress with their manager.";
-    const titleInput = page.getByRole("textbox", { name: "Title (required)", exact: true });
+    const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await titleInput.fill(title);
     const dialog = page.getByRole("dialog").filter({ has: titleInput });
-    await dialog.locator('.ProseMirror[contenteditable="true"]:not([aria-label="Issue title"])').fill(description);
+    await dialog.locator('.ProseMirror[contenteditable="true"]:not([aria-required="true"])').fill(description);
     const createdResponse = page.waitForResponse((response) => responseFor(response, "/api/issues", "POST"));
     await dialog.getByRole("button", { name: "Create Issue", exact: true }).click();
     const created = await createdResponse;

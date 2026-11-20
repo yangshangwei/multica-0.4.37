@@ -290,7 +290,7 @@ describe("IssueDescriptionAssist", () => {
     act(() => { onText?.("Provisional text"); });
     expect(screen.getByText("Provisional text")).toBeInTheDocument();
     await act(async () => { response.reject(new Error("Incomplete stream")); });
-    expect(screen.getByRole("alert")).toHaveTextContent("Optimization failed");
+    expect(screen.getByRole("alert")).toHaveTextContent("Refinement failed");
     expect(screen.queryByText("Provisional text")).not.toBeInTheDocument();
     act(() => { onText?.("Late failed stream text"); });
     expect(screen.queryByText("Late failed stream text")).not.toBeInTheDocument();
@@ -327,7 +327,7 @@ describe("IssueDescriptionAssist", () => {
     await act(async () => { response.resolve({ text: "Improved request", questions: [] }); });
     expect(view.read()).toBe("Newer unsaved edit");
     expect(view.editorRef.current.adoptContent).not.toHaveBeenCalled();
-    expect(screen.getByRole("status")).toHaveTextContent("Content changed. Optimize again to use your latest edits.");
+    expect(screen.getByRole("status")).toHaveTextContent("Content changed. Refine again to use your latest edits.");
     expect(screen.getByTestId("ai-readonly")).toHaveTextContent("Improved request");
   });
 
@@ -384,7 +384,7 @@ describe("IssueDescriptionAssist", () => {
     optimize.mockRejectedValueOnce(new Error("Private provider diagnostics"));
     const view = setup();
     await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("Optimization failed. Try again or create with your current content.");
+    expect(await screen.findByRole("alert")).toHaveTextContent("Refinement failed. Try again or create with your current content.");
     expect(screen.queryByText("Private provider diagnostics")).not.toBeInTheDocument();
     view.type("Latest edit");
     await userEvent.click(screen.getByRole("button", { name: "Try again" }));
@@ -398,7 +398,7 @@ describe("IssueDescriptionAssist", () => {
     optimize.mockRejectedValueOnce(new ApiError("Private provider details", 503, "Unavailable"));
     const view = setup();
     await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
-    expect(await screen.findByRole("alert")).toHaveTextContent("AI optimization is unavailable. You can still create with your current content.");
+    expect(await screen.findByRole("alert")).toHaveTextContent("AI refinement is unavailable. You can still create with your current content.");
     expect(view.read()).toBe("Original request");
     expect(screen.queryByText("Private provider details")).not.toBeInTheDocument();
   });

@@ -1,0 +1,42 @@
+{
+  "evidence_type": "scripted-production-router-daemon-native-adapter",
+  "real_model_turns": 0,
+  "entry": "TestSecurityRemediationO1Fake",
+  "result": {
+    "criteria": {
+      "all_four_runs_complete": true,
+      "comment_identity_and_scope": true,
+      "exact_role_task_counts": true,
+      "issue_in_review": true,
+      "no_extra_workspace_issue": true,
+      "owner_releases_new_and_unchanged": true,
+      "restricted_reviewer_result_dispatch_inert": true,
+      "roster_and_config_unchanged": true
+    },
+    "evidence_type": "fake",
+    "manual_review_required": [
+      "G1 type other, hold/unknown, evidence owner and missing materials",
+      "reviewer result grounded in synthetic source",
+      "plain leader only explains valid release, no false approval",
+      "human hold conclusion covers each G1 decision with reason/date",
+      "final summary cites original reviewer/owner and preserves unresolved risk",
+      "broker and filesystem evidence contain no forbidden attempts"
+    ],
+    "scenario": "O1",
+    "task_counts": {
+      "security-remediation-lead/false": 1,
+      "security-remediation-lead/true": 2,
+      "security-reviewer/false": 1
+    },
+    "verdict": "platform-checks-passed-semantic-review-pending"
+  },
+  "source_sha256": "fa48b9c2e7f6f266ca40945b1ce35d9d5583716b6a6b6ec7b1662a097507e982",
+  "binary_sha256": "3a908655866602ca9bfb46c2cd3ad570bd972f909aa8c9b4b559580c80a31a84",
+  "log_sha256": "263767c609e902e1e8af9d3be9860d1940a3b90312be10d5b3c9d78ac41dd929",
+  "changes_after_fake02": [
+    "typeother routehuman validenum",
+    "release posted only after serialized reviewer timestamp+2seconds",
+    "real-only exactreview/decision operator permit",
+    "incomplete execution verdict separate from behaviorfailure"
+  ]
+}

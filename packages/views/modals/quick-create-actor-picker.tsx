@@ -230,7 +230,7 @@ export function QuickCreateActorPicker({
   return <PropertyPicker open={open} onOpenChange={changeOpen} width="w-96 max-w-[calc(100vw-24px)] max-h-(--available-height)" align={align} side={side} searchable
     searchInputRef={searchRef} searchPlaceholder={t(($) => $.create_issue.actor_picker.search_placeholder)}
     onSearchChange={(value) => { setQuery(value); setLimit(ACTOR_PAGE_SIZE); }} navigationResetKey={navigationResetKey}
-    triggerRender={triggerRender ?? (!trigger ? <button type="button" className="flex min-h-8 w-fit max-w-full items-center rounded-md px-2 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-sm:min-h-11 pointer-coarse:min-h-11" /> : undefined)}
+    triggerRender={triggerRender ?? (!trigger ? <button type="button" className="flex min-h-7 w-fit max-w-full items-center rounded-full border px-2 transition-colors hover:bg-accent/60 data-popup-open:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-sm:min-h-11 pointer-coarse:min-h-11" /> : undefined)}
     trigger={trigger ?? <span className="flex min-w-0 items-center gap-2 whitespace-nowrap text-caption text-muted-foreground">
       <span className="shrink-0">{t(($) => $.create_issue.agent.created_by)}</span>{" "}
       {actor && display ? <span className="flex min-w-0 items-center gap-1.5 text-foreground">

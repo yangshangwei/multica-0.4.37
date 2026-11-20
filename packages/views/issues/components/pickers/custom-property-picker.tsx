@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { CalendarDays, Check, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import type { Issue, IssueProperty, IssuePropertyValue } from "@multica/core/types";
@@ -23,7 +23,7 @@ import {
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { useT } from "../../../i18n";
-import { PropertyPicker, PickerItem } from "./property-picker";
+import { PropertyPicker, PickerItem, PickerEmpty } from "./property-picker";
 import { ActorPropertyPicker, ActorPropertyDisplay } from "./actor-property-picker";
 
 type PropertyValueDefinition = Pick<IssueProperty, "id" | "name" | "type" | "icon" | "config" | "archived">;
@@ -150,6 +150,11 @@ export function CustomPropertyValueInput({
   const open = controlledOpen ?? internalOpen;
   const setOpen = controlledOnOpenChange ?? setInternalOpen;
   const hasValue = value !== undefined;
+  const [search, setSearch] = useState("");
+  const options = property.config.options ?? [];
+  const query = search.trim().toLocaleLowerCase();
+  const filteredOptions = options.filter((option) => option.name.toLocaleLowerCase().includes(query));
+  const choiceNavigationKey = `${query}:${filteredOptions.map((option) => option.id).join(",")}`;
 
   const commit = (next: IssuePropertyValue) => onChange(next);
   const clear = () => onChange(undefined);
@@ -202,18 +207,19 @@ export function CustomPropertyValueInput({
 
   switch (property.type) {
     case "select": {
-      const options = property.config.options ?? [];
       return (
         <PropertyPicker
           open={open}
           onOpenChange={setOpen}
           align="start"
           searchable={options.length > 7}
+          onSearchChange={setSearch}
+          navigationResetKey={choiceNavigationKey}
           trigger={valueTrigger}
           triggerRender={triggerRender}
         >
           {emptyRow}
-          {options.map((option) => (
+          {filteredOptions.map((option) => (
             <PickerItem
               key={option.id}
               selected={value === option.id}
@@ -223,14 +229,14 @@ export function CustomPropertyValueInput({
               }}
             >
               <span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: option.color }} />
-              <span className="truncate">{option.name}</span>
+              <span className="min-w-0 whitespace-normal [overflow-wrap:anywhere]">{option.name}</span>
             </PickerItem>
           ))}
+          {filteredOptions.length === 0 && <PickerEmpty />}
         </PropertyPicker>
       );
     }
     case "multi_select": {
-      const options = property.config.options ?? [];
       const selected = Array.isArray(value) ? value : [];
       const toggle = (optionId: string) => {
         const next = selected.includes(optionId)
@@ -245,20 +251,24 @@ export function CustomPropertyValueInput({
           onOpenChange={setOpen}
           align="start"
           searchable={options.length > 7}
+          onSearchChange={setSearch}
+          navigationResetKey={choiceNavigationKey}
           trigger={valueTrigger}
           triggerRender={triggerRender}
         >
           {emptyRow}
-          {options.map((option) => (
+          {filteredOptions.map((option) => (
             <PickerItem
               key={option.id}
+              toggle
               selected={selected.includes(option.id)}
               onClick={() => toggle(option.id)}
             >
               <span className="size-2.5 shrink-0 rounded-full" style={{ backgroundColor: option.color }} />
-              <span className="truncate">{option.name}</span>
+              <span className="min-w-0 whitespace-normal [overflow-wrap:anywhere]">{option.name}</span>
             </PickerItem>
           ))}
+          {filteredOptions.length === 0 && <PickerEmpty />}
         </PropertyPicker>
       );
     }
@@ -384,6 +394,7 @@ function TextishPropertyEditor({
   triggerRender?: React.ReactElement<Record<string, unknown>>;
 }) {
   const { t } = useT("issues");
+  const inputId = useId();
   const [draft, setDraft] = useState("");
 
   useEffect(() => {
@@ -426,15 +437,17 @@ function TextishPropertyEditor({
           <CustomPropertyValueDisplay property={property} value={value} />
         ))}
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-2" align="start">
+      <PopoverContent className="w-64 max-w-[calc(100vw-2rem)] p-2" align="start">
+        <label htmlFor={inputId} className="min-w-0 text-body font-medium [overflow-wrap:anywhere]">{property.name}</label>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             submit();
           }}
-          className="flex items-center gap-2"
+          className="flex min-w-0 items-center gap-2"
         >
           <Input
+            id={inputId}
             autoFocus
             type={property.type === "number" ? "number" : "text"}
             step={property.type === "number" ? "any" : undefined}
@@ -442,13 +455,14 @@ function TextishPropertyEditor({
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             placeholder={placeholder}
-            className="h-8"
+            className="h-8 pointer-coarse:min-h-11"
           />
           {property.type === "url" && typeof value === "string" && (
             <Button
               type="button"
               variant="ghost"
               size="icon-sm"
+              className="pointer-coarse:min-h-11 pointer-coarse:min-w-11"
               aria-label={t(($) => $.pickers.custom_property.open_link)}
               onClick={() => window.open(value, "_blank", "noopener,noreferrer")}
             >

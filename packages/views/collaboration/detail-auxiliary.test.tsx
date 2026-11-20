@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -21,7 +21,7 @@ vi.mock("./attachment-panel", () => ({ CollaborationAttachmentPanel: function Fi
   return <section aria-label="File editor"><label>File note<input value={draft} onChange={(e) => setDraft(e.target.value)} /></label></section>;
 } }));
 vi.mock("./memory-panel", () => ({ CollaborationMemoryPanel: ({ active }: { active: boolean }) => <section id="memory" tabIndex={-1}><p>{active ? "Visible memory" : "Hidden memory"}</p></section> }));
-vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: () => <section><button>Review candidate</button></section> }));
+vi.mock("./knowledge-panel", () => ({ CollaborationKnowledgePanel: ({ active }: { active: boolean }) => <section><p>{active ? "Visible knowledge" : "Hidden knowledge"}</p><button>Review candidate</button></section> }));
 vi.mock("./field-summary", () => ({ CollaborationFieldSummary: () => null }));
 vi.mock("./activity", () => ({ CollaborationActivity: () => <section>Recorded history</section> }));
 vi.mock("./children", () => ({ CollaborationChildren: () => <section>Child references</section> }));
@@ -40,6 +40,8 @@ it("keeps one editor mounted through category switches and close, with inactive 
   renderWithI18n(setup());
   expect(within(resources()).getAllByRole("button")).toHaveLength(6);
   expect(screen.queryByRole("dialog")).toBeNull();
+  expect(document.querySelector('[data-slot="dialog-content"]')).not.toBeVisible();
+  expect(document.querySelector('[data-slot="dialog-overlay"]')).not.toBeVisible();
   expect(screen.queryByRole("textbox", { name: "File note" })).toBeNull();
   expect(fileState.mounts).toBe(1);
   const files = within(resources()).getByRole("button", { name: "Attachments" });
@@ -60,6 +62,43 @@ it("keeps one editor mounted through category switches and close, with inactive 
   expect(fileState.mounts).toBe(1);
 });
 
+it("hides the complete drawer and backdrop with its close button while retaining drafts for reopening", async () => {
+  const user = userEvent.setup();
+  renderWithI18n(setup());
+  const files = within(resources()).getByRole("button", { name: "Attachments" });
+  await user.click(files);
+  const drawer = screen.getByRole("dialog", { name: "Attachments" });
+  // Electron drag regions intercept OS pointer input before DOM events. This
+  // guards the popup boundary; userEvent clicks do not prove native hit testing.
+  expect((drawer.style as CSSProperties & { WebkitAppRegion?: string }).WebkitAppRegion).toBe("no-drag");
+  const backdrop = document.querySelector('[data-slot="dialog-overlay"]');
+  const editor = screen.getByRole("textbox", { name: "File note" });
+  await user.type(editor, "Keep this draft after closing");
+  await user.click(within(categories()).getByRole("button", { name: "Activity" }));
+  expect(drawer).toBeVisible();
+  expect(backdrop).toBeVisible();
+  expect(screen.getByText("Recorded history")).toBeVisible();
+
+  await user.click(within(drawer).getByRole("button", { name: "Close resources" }));
+  await waitFor(() => {
+    expect(drawer).not.toBeVisible();
+    expect(backdrop).not.toBeVisible();
+    expect(files).toHaveFocus();
+  });
+  expect(screen.queryByRole("button", { name: "Close resources" })).toBeNull();
+  expect(drawer).toBeInTheDocument();
+  expect(editor).toBeInTheDocument();
+
+  await user.click(within(resources()).getByRole("button", { name: "Activity" }));
+  expect(screen.getByRole("dialog", { name: "Activity" })).toBe(drawer);
+  expect(backdrop).toBeVisible();
+  expect(screen.getByText("Recorded history")).toBeVisible();
+  await user.click(within(categories()).getByRole("button", { name: "Attachments" }));
+  expect(screen.getByRole("textbox", { name: "File note" })).toBe(editor);
+  expect(editor).toHaveValue("Keep this draft after closing");
+  expect(fileState.mounts).toBe(1);
+});
+
 it("reports attention without opening a modal and only displays confirmed counts", async () => {
   const user = userEvent.setup();
   const view = renderWithI18n(setup());
@@ -76,6 +115,26 @@ it("reports attention without opening a modal and only displays confirmed counts
   expect(screen.queryByRole("status")).toBeNull();
   expect(within(resources()).getByRole("button", { name: "Attachments" })).toBeVisible();
   expect(within(resources()).queryByRole("button", { name: /Attachments 0/ })).toBeNull();
+});
+
+it("passes knowledge visibility through open, category switch and close without unmounting", async () => {
+  const user = userEvent.setup();
+  renderWithI18n(setup());
+  const hidden = screen.getByText("Hidden knowledge");
+  expect(hidden).not.toBeVisible();
+  const knowledge = within(resources()).getByRole("button", { name: "Knowledge candidates" });
+  await user.click(knowledge);
+  expect(screen.getByText("Visible knowledge")).toBeVisible();
+  const panel = screen.getByText("Visible knowledge").closest("section");
+  await user.click(within(categories()).getByRole("button", { name: "Shared context" }));
+  expect(screen.getByText("Hidden knowledge").closest("section")).toBe(panel);
+  expect(screen.getByText("Hidden knowledge")).not.toBeVisible();
+  await user.click(within(categories()).getByRole("button", { name: "Knowledge candidates" }));
+  expect(screen.getByText("Visible knowledge").closest("section")).toBe(panel);
+  await user.keyboard("{Escape}");
+  await waitFor(() => expect(knowledge).toHaveFocus());
+  expect(screen.getByText("Hidden knowledge").closest("section")).toBe(panel);
+  expect(screen.getByText("Hidden knowledge")).not.toBeVisible();
 });
 
 it("returns focus to an external opener and waits for the modal to close before main navigation", async () => {

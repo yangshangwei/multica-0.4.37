@@ -1,0 +1,19 @@
+{
+  "evidence_type": "deterministic-fixture-control-not-model-repair",
+  "temporary_lock_only": true,
+  "scanner": {
+    "synthetic": true,
+    "scanner": "local-fixture-only-v1",
+    "advisory_id": "SYNTHETIC-DEPENDENCY-001",
+    "package": "pilot-labelkit",
+    "resolved_version": "2.0.0",
+    "source_sha256": "520e06ee1887d5fc831434152d5606d8323510c9144ab883167c5ad5e8156063",
+    "affected_by_fixture_advisory": false,
+    "dependency_path": [
+      "application",
+      "pilot-labelkit"
+    ],
+    "indirect_dependencies": [],
+    "limitations": "Only the local synthetic advisory and lockfile; no real vulnerability coverage or producer trust assertion"
+  }
+}

@@ -13,11 +13,17 @@ import { IterationError } from "./iteration-error";
 import { useIterationLabels } from "./labels";
 import { iterationDisclosureClass } from "./iteration-presentation";
 
-export function IterationParticipation({ wsId, issueId }: { wsId: string; issueId: string }) {
+export function IterationParticipation({ wsId, issueId, open: controlledOpen, onOpenChange }: {
+  wsId: string;
+  issueId: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+}) {
   const { t } = useT("projects");
   const labels = useIterationLabels();
   const paths = useWorkspacePaths();
-  const [open, setOpen] = useState(false);
+  const [localOpen, setLocalOpen] = useState(false);
+  const open = controlledOpen ?? localOpen;
   const [cursor, setCursor] = useState("");
   const capability = useQuery(iterationCapabilitiesOptions(wsId));
   const history = useQuery({
@@ -28,7 +34,12 @@ export function IterationParticipation({ wsId, issueId }: { wsId: string; issueI
   return (
     <details
       className="group/participation col-span-2 min-w-0"
-      onToggle={(event) => setOpen(event.currentTarget.open)}
+      open={open}
+      onToggle={(event) => {
+        const nextOpen = event.currentTarget.open;
+        if (controlledOpen === undefined) setLocalOpen(nextOpen);
+        onOpenChange?.(nextOpen);
+      }}
     >
       <summary className={`${iterationDisclosureClass} -mx-2 flex list-none items-center gap-1 px-2 transition-colors hover:bg-accent/50 focus-visible:bg-accent/50 group-open/participation:text-foreground [&::-webkit-details-marker]:hidden`}>
         <span className="min-w-0">{t(($) => $.iterations.participation)}</span>

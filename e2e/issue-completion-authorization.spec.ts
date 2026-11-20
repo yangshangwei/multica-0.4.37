@@ -119,12 +119,14 @@ async function completeFromKeyboard(
   const dialog = page.getByRole("dialog", { name: "Authorize issue completion", exact: true });
   await expect(dialog).toBeVisible();
   await expect.poll(() => writes.filter((write) => write.method === "POST" && write.path === "/api/delivery-completion-authorizations").length).toBe(0);
-  const evidence = dialog.locator('input[name="completion-evidence"]').first();
+  const evidence = dialog.locator(`input[name="completion-evidence"][value="${item.approvalID}"]`);
   await expect(evidence).toBeVisible();
+  await expect(evidence, "The task-owned approval must still be current and selectable").toBeEnabled();
   const previewResponse = page.waitForResponse((response) =>
     new URL(response.url()).pathname === `/api/issues/${item.issueID}/delivery-evidence/completion-preview`,
   );
   await evidence.focus();
+  await expect(evidence).toBeFocused();
   await page.keyboard.press("Space");
   const preview = await previewResponse;
   expect(preview.status()).toBe(200);

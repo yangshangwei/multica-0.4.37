@@ -60,8 +60,9 @@ function OtherTarget({ disabled, onChange }: { disabled: boolean; onChange: (tar
   </div>;
 }
 
-export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, locked, onSubmit, onCancel }: {
+export function KnowledgeProposalForm({ scope, issue, active = true, view, refreshView, mode, locked, onSubmit, onCancel }: {
   scope: CollaborationScope; issue: CollaborationIssue; view: CollaborationKnowledgeCandidates | undefined;
+  active?: boolean;
   refreshView: () => Promise<CollaborationKnowledgeCandidates | undefined>;
   mode: KnowledgeProposalMode; locked: boolean; onSubmit: (intent: KnowledgeIntent) => Promise<void>; onCancel: () => void;
 }) {
@@ -113,7 +114,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
   }}>
     {(mode.supersedesId || mode.derivedId) && <p className="text-caption text-muted-foreground">{t(($) => $.knowledge.blankRevision)}</p>}
     <div className="space-y-2"><label htmlFor={`${id}-summary`} className="text-body font-medium">{t(($) => $.knowledge.summary)}</label>
-      <Input id={`${id}-summary`} autoFocus value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required className="pointer-coarse:min-h-11"
+      <Input id={`${id}-summary`} autoFocus={active} value={summary} onChange={(event) => setSummary(event.target.value)} disabled={disabled} required className="pointer-coarse:min-h-11"
         aria-invalid={summaryOver || undefined} aria-describedby={summaryOver ? `${id}-summary-limit` : undefined} />
       <KnowledgeByteLimit id={`${id}-summary-limit`} value={summary} max={KNOWLEDGE_SUMMARY_MAX_BYTES} /></div>
     <div className="space-y-2"><label htmlFor={`${id}-content`} className="text-body font-medium">{t(($) => $.knowledge.content)}</label>
@@ -130,7 +131,7 @@ export function KnowledgeProposalForm({ scope, issue, view, refreshView, mode, l
         {destination === "other" && <OtherTarget disabled={disabled} onChange={setOtherTarget} />}
       </>}
     </div>
-    <KnowledgeSourcePicker scope={scope} issue={issue} selected={selected} onChange={setSelected} disabled={disabled} deliveryCandidateId={mode.deliveryCandidateId} />
+    <KnowledgeSourcePicker scope={scope} issue={issue} active={active} selected={selected} onChange={setSelected} disabled={disabled} deliveryCandidateId={mode.deliveryCandidateId} />
     <div className="space-y-2"><label htmlFor={`${id}-evidence`} className="text-body font-medium">{t(($) => $.knowledge.evidence)}</label>
       <Textarea id={`${id}-evidence`} value={evidence} onChange={(event) => setEvidence(event.target.value)} disabled={disabled} rows={2}
         aria-invalid={evidenceOver || undefined} aria-describedby={evidenceOver ? `${id}-evidence-limit` : undefined} />

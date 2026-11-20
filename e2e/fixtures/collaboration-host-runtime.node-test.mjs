@@ -88,3 +88,123 @@ test("Windows suspend and resume helpers refuse before sending unsupported signa
   }
   assert.deepEqual(signals, []);
 });
+
+function controlFixture({ squad = false, singleTarget = false, duplicateRow = false } = {}) {
+  const targets = [
+    { id: "11111111-1111-4111-8111-111111111111", resource_id: "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa", kind: "agent" },
+    { id: "22222222-2222-4222-8222-222222222222", resource_id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", kind: squad ? "squad" : "agent" },
+  ];
+  if (singleTarget) targets.splice(0, 1);
+  const snapshot = { id: "99999999-9999-4999-8999-999999999999", execution: { protocol_version: 6, targets } };
+  const selected = targets.at(-1);
+  const issue = { id: snapshot.id, targetId: selected.id,
+    agentId: squad ? "cccccccc-cccc-4ccc-8ccc-cccccccccccc" : selected.resource_id, name: "Shared synthetic QA name" };
+  const states = new Map(targets.map(target => [target.id, "paused"]));
+  const reads = [], writes = [], schemaReads = [], waiters = [];
+  const emit = (action, target) => {
+    const scope = target ? "target" : "issue";
+    for (const id of target ? [target.id] : states.keys()) states.set(id, action === "resume" ? "active" : "paused");
+    const body = { action, scope, execution_view_version: 6, ...(target ? { targets: [{ target_id: target.id }] } : {}) };
+    writes.push(body);
+    const response = { url: () => `http://127.0.0.1:64922/api/collaboration/issues/${issue.id}/control`, status: () => 200,
+      request: () => ({ method: () => "POST", postDataJSON: () => body }),
+      json: async () => ({ action, scope, target_id: target?.id ?? null, queue_state: action === "resume" ? "active" : "paused" }) };
+    for (const waiter of waiters.splice(0)) { assert(waiter.match(response)); waiter.resolve(response); }
+  };
+  const button = (action, target) => ({ role: "button", name: `${action === "stop" ? "Stop" : "Resume"} ${target ? "target" : "all"}`,
+    children: [], click: () => emit(action, target) });
+  const resourceRow = target => ({ role: "listitem", children: [{ text: target.resource_id, children: [] }, button("stop", target), button("resume", target)] });
+  const rows = targets.map(resourceRow);
+  if (duplicateRow) rows.push(resourceRow(selected));
+  // A retained execution record repeats the resource ID without target controls.
+  rows.push({ role: "listitem", children: [{ text: selected.resource_id, children: [] }] });
+  const panel = { role: "region", name: "AI execution", children: [...rows, button("stop"), button("resume")] };
+  const descendants = node => node.children.flatMap(child => [child, ...descendants(child)]);
+  const roleMatch = (role, options = {}) => node => node.role === role && (!options.name || node.name === options.name);
+  const locator = (elements, matches) => ({ elements, matches,
+    getByRole(role, options) { const predicate = roleMatch(role, options); return locator(elements.flatMap(descendants).filter(predicate), predicate); },
+    filter({ has }) { return locator(elements.filter(node => descendants(node).some(has.matches)), matches); },
+    async click() { assert.equal(elements.length, 1, "strict mode violation: target control is not unique"); elements[0].click(); },
+  });
+  const page = {
+    getByRole(role, options) { const predicate = roleMatch(role, options); return locator([panel, ...descendants(panel)].filter(predicate), predicate); },
+    getByText(text, options) { assert.equal(options.exact, true); const predicate = node => node.text === text;
+      return locator(descendants(panel).filter(predicate), predicate); },
+    evaluate: (callback, argument) => callback(argument),
+    waitForResponse: match => new Promise(resolve => waiters.push({ match, resolve })),
+  };
+  const partial = (actual, expected) => {
+    if (Array.isArray(expected)) assert.equal(actual.length, expected.length);
+    if (expected && typeof expected === "object") for (const [key, value] of Object.entries(expected)) partial(actual[key], value);
+    else assert.equal(actual, expected);
+  };
+  const expect = value => ({ toBe: expected => assert.equal(value, expected), toMatchObject: expected => partial(value, expected),
+    toHaveCount: async expected => assert.equal(value.elements.length, expected, "Target resource must have exactly one control row") });
+  const context = vm.createContext({ URL,
+    localStorage: { getItem(key) { assert.equal(key, "multica_token"); return squad ? "synthetic-native-token" : null; } },
+    fetch: async (url, options) => { reads.push({ url, options }); return { ok: true, status: 200, json: async () => structuredClone(snapshot) }; },
+  });
+  const start = source.indexOf("export async function hostControl(");
+  const end = source.indexOf("\nexport async function sendHostComment", start);
+  assert(start > 0 && end > start, "Read the actual shared Host control helper");
+  const body = source.slice(start, end)
+    .replace('export async function hostControl(page: Page, issue: HostIssue, action: "stop" | "resume", scope: "target" | "issue")',
+      "async function hostControl(page, issue, action, scope)")
+    .replace("const receipt: CollaborationControlReceipt", "const receipt");
+  const factory = vm.compileFunction(`${body}; return hostControl;`, ["expect", "hostPanel", "issueRoot", "versioned", "CollaborationIssueSchema", "process"], { parsingContext: context });
+  const control = factory(expect, page => page.getByRole("region", { name: "AI execution", exact: true }),
+    id => `/api/collaboration/issues/${id}`, path => `${path}?execution_view_version=6`,
+    { parse(value) { schemaReads.push(value); return value; } }, { env: { COLLABORATION_E2E_API_URL: "http://127.0.0.1:64922" } });
+  return { control: (action, scope, candidate = issue) => control(page, candidate, action, scope), issue, selected, targets, states, reads, writes, schemaReads };
+}
+
+test("Host target Resume controls the selected public target among repeated buttons and retained run rows", async () => {
+  const f = controlFixture();
+  const before = f.states.get(f.targets[0].id);
+  const receipt = await f.control("resume", "target");
+  assert.equal(receipt.target_id, f.selected.id);
+  assert.equal(f.states.get(f.selected.id), "active");
+  assert.equal(f.states.get(f.targets[0].id), before);
+  assert.equal(f.reads.length, 1);
+  assert.equal(f.schemaReads.length, 1);
+  assert.equal(f.reads[0].url, `http://127.0.0.1:64922/api/collaboration/issues/${f.issue.id}?execution_view_version=6`);
+  assert.equal(f.reads[0].options.credentials, "include");
+  assert.deepEqual(f.writes[0].targets, [{ target_id: f.selected.id }]);
+});
+
+test("Host target Stop resolves the squad resource independently of its current leader agent", async () => {
+  const f = controlFixture({ squad: true });
+  for (const id of f.states.keys()) f.states.set(id, "active");
+  assert.notEqual(f.issue.agentId, f.selected.resource_id);
+  const receipt = await f.control("stop", "target");
+  assert.equal(receipt.target_id, f.selected.id);
+  assert.equal(f.states.get(f.selected.id), "paused");
+  assert.equal(f.states.get(f.targets[0].id), "active");
+  assert.equal(f.reads.length, 1);
+  assert.equal(f.reads[0].options.headers.Authorization, "Bearer synthetic-native-token");
+});
+
+test("Host issue Resume retains the all-target control without a target lookup", async () => {
+  const f = controlFixture({ squad: true });
+  const receipt = await f.control("resume", "issue");
+  assert.equal(receipt.target_id, null);
+  assert.equal(receipt.scope, "issue");
+  assert.deepEqual([...f.states.values()], ["active", "active"]);
+  assert.equal(f.reads.length, 0);
+  assert.equal(f.schemaReads.length, 0);
+  assert.deepEqual(f.writes, [{ action: "resume", scope: "issue", execution_view_version: 6 }]);
+});
+
+test("Host control refuses a missing public target before any control submission", async () => {
+  const f = controlFixture({ singleTarget: true });
+  await assert.rejects(f.control("resume", "target", { ...f.issue, targetId: "33333333-3333-4333-8333-333333333333" }));
+  assert.equal(f.writes.length, 0);
+  assert.equal(f.states.get(f.selected.id), "paused");
+});
+
+test("Host control refuses duplicate resource controls before any control submission", async () => {
+  const f = controlFixture({ duplicateRow: true });
+  await assert.rejects(f.control("resume", "target"), /strict mode violation|exactly one control row/);
+  assert.equal(f.writes.length, 0);
+  assert.deepEqual([...f.states.values()], ["paused", "paused"]);
+});

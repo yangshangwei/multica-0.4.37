@@ -34,22 +34,45 @@ func syncDirectory(dir string) error {
 }
 
 func privateFile(path string, flags int) (*os.File, error) {
-	fd, err := unix.Open(path, flags|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0600)
-	if err != nil {
-		return nil, err
+	return privateFileWithOpen(path, flags, unix.Open)
+}
+
+func privateFileWithOpen(path string, flags int, open func(string, int, uint32) (int, error)) (*os.File, error) {
+	for attempt := 0; attempt < 3; attempt++ {
+		fd, err := open(path, flags|unix.O_NOFOLLOW|unix.O_CLOEXEC, 0600)
+		if err != nil {
+			if attempt > 0 {
+				// A previously opened record existed. Losing its replacement
+				// must not become the initial-absence path used by registration.
+				return nil, ErrUnconfirmed
+			}
+			return nil, err
+		}
+		f := os.NewFile(uintptr(fd), path)
+		info, err := f.Stat()
+		if err != nil {
+			_ = f.Close()
+			return nil, err
+		}
+		stat, ok := info.Sys().(*syscall.Stat_t)
+		if !info.Mode().IsRegular() || info.Mode().Perm()&0077 != 0 || !ownedByCurrentUser(info) || !ok {
+			_ = f.Close()
+			return nil, errors.New("collaboration ledger file is not private")
+		}
+		if stat.Nlink == 1 {
+			return f, nil
+		}
+		if err := f.Close(); err != nil {
+			return nil, err
+		}
+		// Atomic publication can unlink this inode between Open and Stat.
+		// Reopen and validate the current path; never accept the stale inode,
+		// retry a lock file, or treat multiple links as ordinary replacement.
+		if flags != unix.O_RDONLY || stat.Nlink != 0 {
+			return nil, errors.New("collaboration ledger file is not private")
+		}
 	}
-	f := os.NewFile(uintptr(fd), path)
-	info, err := f.Stat()
-	if err != nil {
-		_ = f.Close()
-		return nil, err
-	}
-	stat, ok := info.Sys().(*syscall.Stat_t)
-	if !info.Mode().IsRegular() || info.Mode().Perm()&0077 != 0 || !ownedByCurrentUser(info) || !ok || stat.Nlink != 1 {
-		_ = f.Close()
-		return nil, errors.New("collaboration ledger file is not private")
-	}
-	return f, nil
+	return nil, ErrUnconfirmed
 }
 
 func openPrivateFile(path string) (*os.File, error) { return privateFile(path, unix.O_RDONLY) }

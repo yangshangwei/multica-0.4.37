@@ -10,6 +10,12 @@ import (
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
+// Only this read projection can construct the marker. Inherited Begin returns
+// an unmarked nested transaction, so real writers retain their original fences.
+type collaborationStageEvidenceReadTx struct {
+	pgx.Tx
+}
+
 // Stage evidence changes no data, but M1's current-authority observer must hold
 // permission row locks. Keep one snapshot without declaring it READ ONLY.
 func (s *CollaborationService) readCollaborationStageEvidence(ctx context.Context, issueID pgtype.UUID, read func(pgx.Tx, *db.Queries, CollaborationIssueAccess) error) error {
@@ -21,12 +27,13 @@ func (s *CollaborationService) readCollaborationStageEvidence(ctx context.Contex
 	if _, err = tx.Exec(ctx, "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ"); err != nil {
 		return err
 	}
-	q := s.Queries.WithTx(tx)
+	readTx := collaborationStageEvidenceReadTx{Tx: tx}
+	q := s.Queries.WithTx(readTx)
 	access, err := s.ResolveIssueAccess(ctx, q, issueID)
 	if err != nil {
 		return err
 	}
-	if err = read(tx, q, access); err != nil {
+	if err = read(readTx, q, access); err != nil {
 		return err
 	}
 	return tx.Commit(ctx)
@@ -81,7 +88,12 @@ func stageArtifactSourceReadAs(ctx context.Context, tx pgx.Tx, access Collaborat
 	if err != nil {
 		return err
 	}
-	execution, _, _, err = lockDeliveryArtifactInTx(ctx, tx, ArtifactAccess{Credential: credential, RequestedWorkspaceID: util.UUIDToString(access.Issue.WorkspaceID)}, child, execution)
+	artifactAccess := ArtifactAccess{Credential: credential, RequestedWorkspaceID: util.UUIDToString(access.Issue.WorkspaceID)}
+	if _, readProjection := tx.(collaborationStageEvidenceReadTx); readProjection {
+		execution, _, _, err = readDeliveryArtifactInTx(ctx, tx, artifactAccess, child, execution)
+	} else {
+		execution, _, _, err = lockDeliveryArtifactInTx(ctx, tx, artifactAccess, child, execution)
+	}
 	if stageArtifactUnavailable(err) {
 		return collaborationError(404, "not_found")
 	}

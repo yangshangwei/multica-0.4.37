@@ -1,0 +1,98 @@
+{
+  "evidence_type": "scripted-official-cli-not-model",
+  "provider_requests": 0,
+  "exit": 0,
+  "synthetic_request_count": 9,
+  "native_user_agent": "codex_exec/0.164.0 (Debian 12.0.0; aarch64) unknown (codex_exec; 0.164.0)",
+  "api_calls": [
+    {
+      "method": "GET",
+      "path": "/api/issues/71e2744c-5563-4b52-8750-3b3c81026d59",
+      "body": "",
+      "task_identity": true,
+      "workspace": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/squads",
+      "body": "",
+      "task_identity": true,
+      "workspace": true
+    },
+    {
+      "method": "POST",
+      "path": "/api/issues/71e2744c-5563-4b52-8750-3b3c81026d59/comments",
+      "body": "合成移交内容\n",
+      "task_identity": true,
+      "workspace": true
+    }
+  ],
+  "live_peer_control": {
+    "status": 200,
+    "body": "{\"data\":[]}"
+  },
+  "passed": true,
+  "source_hashes": {
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/codex_exec_container.py": "f4fc42205e08f80f6f86908a1509c55fc51c3a64c1e55bdde83cb6557099bfd9",
+    "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/exec-scratch-r1/fake_exec_responses.py": "1b8f697eaaa89f9b83cb9d957b6e12ca59766a70ae734702ce91027c79633f27",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/probe_exec_transport.py": "d704a96afd8e9e92877460914d8a10f7c94c552d96c82b26c468965efb20af8a",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/codex_container.py": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+    "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/multica_spool.py": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5"
+  },
+  "metadata": {
+    "agents_bytes": 61,
+    "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+    "agents_unchanged": true,
+    "config_sha256": "fc7319c229ac928a21584e660ef9f6ae4c5e852501ed7523ecc21930d84348de",
+    "container": "secrem-v2-cli-role-64b3902c4680",
+    "execution_mode": "official_cli_exec",
+    "exit_code": 0,
+    "finished_at": 1795150829.200154,
+    "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+    "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "immutable_files": {
+      "drill.json": "1d72c90bc027596fac6816c7b5f58cc9b8cadc8a136cf3941cb74ffd6886b72c"
+    },
+    "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+    "native_argv": [
+      "codex",
+      "exec",
+      "--json",
+      "--skip-git-repo-check",
+      "--output-last-message",
+      "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/exec-scratch-r1/codex/last-message.txt",
+      "-"
+    ],
+    "no_repository": true,
+    "outcome": "completed",
+    "project_doc_max_bytes": 131072,
+    "prompt_bytes": 71,
+    "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+    "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+    "resume_session_id": null,
+    "run_id": "249dc8ba-df24-489e-8eab-a6b89494e623-10ae294dc3",
+    "sequence": 1,
+    "session_retention_refused": false,
+    "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+    "started_at": 1795150811.262657,
+    "terminal": {
+      "completed_turns": 1,
+      "failed_events": 0,
+      "invalid_lines": 0,
+      "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+      "thread_ids": [
+        "01a1f753-a77a-7332-b93d-7b711520e85f"
+      ],
+      "usage": {
+        "cache_write_input_tokens": 0,
+        "cached_input_tokens": 0,
+        "input_tokens": 90,
+        "output_tokens": 45,
+        "reasoning_output_tokens": 0
+      },
+      "valid": true
+    },
+    "wrapper_sha256": "f4fc42205e08f80f6f86908a1509c55fc51c3a64c1e55bdde83cb6557099bfd9"
+  },
+  "raw_result_sha256": "5c42b8f91bb4f78f3088101eb5519ab2bf033aa0635abd1362d00426d533d25c"
+}

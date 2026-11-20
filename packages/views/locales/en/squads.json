@@ -144,7 +144,8 @@
     "description": "Squad instructions are injected into the leader agent's prompt whenever it works on an issue assigned to this squad. Use them to give the leader squad-wide guidance, working agreements, or context the leader should follow on every task.",
     "unsaved_changes": "Unsaved changes",
     "save_button": "Save",
-    "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits."
+    "placeholder": "e.g. Always start by writing a failing test. Prefer small, atomic commits.",
+    "remote_changed": "Instructions changed elsewhere. Your unsaved draft is preserved; saving will replace the latest instructions."
   },
   "scope": {
     "mine": "Created by me",
@@ -183,7 +184,7 @@
       "discovery": "Clarify a request and assess feasibility before committing to implementation.",
       "docs": "Keep release notes, API docs, and runbooks aligned with shipped code.",
       "maintenance": "Upgrade dependencies and resolve security advisories or flaky tests.",
-      "security_remediation": "Triage security risks, repair them outside production, and verify with independent review.",
+      "security_remediation": "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
       "release": "Verify a release and prepare its notes and rollback before human approval.",
       "incident": "Restore service, verify recovery, then investigate the root cause."
     }
@@ -209,5 +210,22 @@
     "applying": "Preparing squad...",
     "cancel": "Cancel",
     "failed": "Could not update the project's squad. Try again."
+  },
+  "recovery": {
+    "loading": "Loading...",
+    "agents_loading": "Loading agents...",
+    "agents_error": "Could not load agents.",
+    "members_loading": "Loading squad members...",
+    "members_error": "Could not load squad members.",
+    "workspace_members_loading": "Loading workspace members...",
+    "workspace_members_error": "Could not load workspace members.",
+    "runtimes_loading": "Loading runtimes...",
+    "runtimes_error": "Could not load runtimes.",
+    "detail_error": "Could not load this squad.",
+    "detail_refresh_error": "Could not refresh this squad. Your current work is preserved.",
+    "not_found": "Squad not found.",
+    "access_denied": "You no longer have access to this squad.",
+    "unknown_count": "Not loaded",
+    "retry": "Retry"
   }
 }

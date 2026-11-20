@@ -24,7 +24,7 @@ func (q *Queries) GetCollaborationDeliveryLifecycleBoundary(ctx context.Context,
 }
 
 const listCollaborationDeliveryAttachments = `-- name: ListCollaborationDeliveryAttachments :many
-SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at FROM collaboration_attachment
+SELECT id, issue_id, draft_id, uploader_user_id, storage_key, version, name, content_type, size_bytes, created_at, delivered_at, source_workspace_id, intended_issue_id, upload_request_id, content_sha256, encryption_key, discarded_at, uploader_agent_id, run_id, attempt_seq FROM collaboration_attachment
 WHERE issue_id = $1::uuid AND id = ANY($2::uuid[])
   AND discarded_at IS NULL
 `
@@ -61,6 +61,9 @@ func (q *Queries) ListCollaborationDeliveryAttachments(ctx context.Context, arg 
 			&i.ContentSha256,
 			&i.EncryptionKey,
 			&i.DiscardedAt,
+			&i.UploaderAgentID,
+			&i.RunID,
+			&i.AttemptSeq,
 		); err != nil {
 			return nil, err
 		}
@@ -167,7 +170,7 @@ func (q *Queries) ListCollaborationDeliveryEvents(ctx context.Context, arg ListC
 }
 
 const listCollaborationDeliveryHandoffs = `-- name: ListCollaborationDeliveryHandoffs :many
-SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at FROM issue_handoff
+SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id FROM issue_handoff
 WHERE issue_id = $1::uuid AND id = ANY($2::uuid[])
   AND purpose = 'acceptance'
 `
@@ -199,6 +202,9 @@ func (q *Queries) ListCollaborationDeliveryHandoffs(ctx context.Context, arg Lis
 			&i.PreviousStatus,
 			&i.Resolution,
 			&i.CreatedAt,
+			&i.UnblockCondition,
+			&i.EstimatedResolutionAt,
+			&i.SupersededByRepairHandoffID,
 		); err != nil {
 			return nil, err
 		}

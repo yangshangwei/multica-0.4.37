@@ -1,0 +1,151 @@
+{
+  "mode": "official-cli-direct",
+  "evidence_type": "scripted-platform-and-contained-artifact-transfer",
+  "source_commit": "624eb71b96de1f1945d269c47378d6a31005ccd9",
+  "sources": {
+    "direct_cli_code_harness_test.go": "b8f44fb777292a3879389629565f861c68022341c40b566c901e600adb17834a",
+    "direct_cli_followup_harness_test.go": "5d99e2138caa4d98e305d4dfb6d9d4b69b0d0cca212fe9d305587f34c9c513ac",
+    "direct_cli_harness_test.go": "0dfb11b6c99ba5c327903b5ff0bcf132b97888e0025a32847ae04e6e8a548b6b",
+    "direct_cli_backend.go": "e5ddd3157bd6044b6242c6aaca54725a7f57391dd869fcc026e6e91a8351e905",
+    "real_platform_harness_test.go": "5bc9529464a423d2668c23cba48e2e1bf242a58e2e80518a21e1d3a7194fe248",
+    "fake_direct_code.py": "7e35a3ddb818c96fe0532b25ba61a719a918e905c00889b3dc12cd788b1e1d8d",
+    "contained_git_role_handoff.py": "8f938ed796a43093da177e5f657234a9ef666af79ca0c6334eab8f7ab269de66",
+    "git_role_handoff.py": "d24be01ce99e74fa7202a806092c21eef80dc99871f21b5565c89952036d2fc4"
+  },
+  "documented_verifier_sha256": "f08d13e669ec7b8edd51cc68e2ea0d776c4a90e47dc9bca0fe9756cc25455b8c",
+  "binary_sha256": "9292472c79b89c0d7d07e0d0029db9fca36f7c3cec8a2f507edf2c94ab96cb41",
+  "C1": {
+    "log_sha256": "07c895559a5d9fada93f17033a7c4fcb5362660c08e6b6ff3e33156c481da172",
+    "result": {
+      "criteria": {
+        "agent_config_unchanged": true,
+        "all_actual_tasks_complete": true,
+        "comment_actor_source_binding": true,
+        "exact_role_run_count": true,
+        "expected_unassigned_backlog_variants": true,
+        "fix_commit_differs_from_baseline": true,
+        "issue_in_review_not_done": true,
+        "members_unchanged": true,
+        "no_off_issue_comments": true,
+        "separate_test_and_patch_commits": true,
+        "squad_unchanged": true
+      },
+      "evidence_type": "fake",
+      "execution_mode": "official-cli-direct",
+      "fix_commit": "ccb1e11e7295cd309bc1afd279ee8e3e88d487e4",
+      "handoffs": [
+        {
+          "base": "3716afeea6426c996aab0d3fb5fc8bc2b445841f",
+          "head": "614b87ba7611f321a5eca4142f75f2939403d31e",
+          "path": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/runs/direct-fake-c1-05/handoffs/01-vulnerability-verifier",
+          "sha": "55edd82eaae33dc939e089c57a263bb19fb55de2d716bfa899ffdff97ba0782f"
+        },
+        {
+          "base": "614b87ba7611f321a5eca4142f75f2939403d31e",
+          "head": "ccb1e11e7295cd309bc1afd279ee8e3e88d487e4",
+          "path": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/runs/direct-fake-c1-05/handoffs/02-implementer",
+          "sha": "94007bd4a53673d872be8fa3a798fdd7a0a0075779c36e5c1f0be89f7c798b8a"
+        }
+      ],
+      "initial_commit": "3716afeea6426c996aab0d3fb5fc8bc2b445841f",
+      "manual_review_required": [
+        "actual failure before patch and success after patch, exact test bytes",
+        "reviewer/human identity, timestamps, commit references and complete decisions",
+        "no forbidden operations or altered test boundaries",
+        "complete source/role/time evidence and unresolved limitations"
+      ],
+      "protected_tests": {
+        "tests/test_baseline.py": "680d1dba31612eaa24e5e93a4f0e50b5ae1624e56dcd81a49a41889bba9358e6",
+        "tests/test_security_property.py": "2f6f769e623762612828c3887f6bf485bb3c3242e2de8167754c66c135612434"
+      },
+      "scenario": "C1",
+      "verdict": "platform-checks-passed-semantic-review-pending"
+    }
+  },
+  "D1_previous": {
+    "log_sha256": "6b21fee27aed3e3f712ba49782658c47a4d0b256ca7c168c8bc096e1e9ae83fe",
+    "result": {
+      "criteria": {
+        "agent_config_unchanged": true,
+        "all_actual_tasks_complete": true,
+        "comment_actor_source_binding": true,
+        "exact_role_run_count": true,
+        "expected_unassigned_backlog_variants": true,
+        "fix_commit_differs_from_baseline": true,
+        "issue_in_review_not_done": true,
+        "members_unchanged": true,
+        "no_off_issue_comments": true,
+        "one_dependency_patch_artifact": true,
+        "squad_unchanged": true
+      },
+      "evidence_type": "fake",
+      "execution_mode": "official-cli-direct",
+      "fix_commit": "b45f3fd884b5c8f2b215f506a9a4038905db9e75",
+      "handoffs": [
+        {
+          "base": "419628870908bc275ed9bbec58c0076f3ad7ada3",
+          "head": "b45f3fd884b5c8f2b215f506a9a4038905db9e75",
+          "path": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/runs/direct-fake-d1-02/handoffs/01-implementer",
+          "sha": "bffa561cf500d024dc5733dfdce66c71a7c951850afced8bf267061cd960866f"
+        }
+      ],
+      "initial_commit": "419628870908bc275ed9bbec58c0076f3ad7ada3",
+      "manual_review_required": [
+        "actual failure before patch and success after patch, exact test bytes",
+        "reviewer/human identity, timestamps, commit references and complete decisions",
+        "no forbidden operations or altered test boundaries",
+        "complete source/role/time evidence and unresolved limitations"
+      ],
+      "protected_tests": {
+        "tests/test_dependency.py": "db1d4bc4fb9ba9e242b46c13794cc051119b576a95f46ac7e498c53d8eea49ac"
+      },
+      "scenario": "D1",
+      "verdict": "platform-checks-passed-semantic-review-pending"
+    },
+    "source_note": "before final C1 source added ignored_project_paths; new final-source D1 replay pending"
+  },
+  "actual_verifier_platform_autonomy": "empty; manually created per current docs",
+  "real_model_calls": 0,
+  "D1": {
+    "log_sha256": "419b8d9085378754b84d0fdd225957024be3e90f02395d808f78febb5ac7b906",
+    "result": {
+      "criteria": {
+        "agent_config_unchanged": true,
+        "all_actual_tasks_complete": true,
+        "comment_actor_source_binding": true,
+        "exact_role_run_count": true,
+        "expected_unassigned_backlog_variants": true,
+        "fix_commit_differs_from_baseline": true,
+        "issue_in_review_not_done": true,
+        "members_unchanged": true,
+        "no_off_issue_comments": true,
+        "one_dependency_patch_artifact": true,
+        "squad_unchanged": true
+      },
+      "evidence_type": "fake",
+      "execution_mode": "official-cli-direct",
+      "fix_commit": "978633a25082215af52e4a67abc6ceb76bc85657",
+      "handoffs": [
+        {
+          "base": "b5b4c3f1c4f285291ee930452ad8335445af34b2",
+          "head": "978633a25082215af52e4a67abc6ceb76bc85657",
+          "path": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/runs/direct-fake-d1-03/handoffs/01-implementer",
+          "sha": "6c8b84f83b54fd3b29ff0bcedebf8f1496e25926a453c9ff1b16261e5a21ed85"
+        }
+      ],
+      "initial_commit": "b5b4c3f1c4f285291ee930452ad8335445af34b2",
+      "manual_review_required": [
+        "actual failure before patch and success after patch, exact test bytes",
+        "reviewer/human identity, timestamps, commit references and complete decisions",
+        "no forbidden operations or altered test boundaries",
+        "complete source/role/time evidence and unresolved limitations"
+      ],
+      "protected_tests": {
+        "tests/test_dependency.py": "db1d4bc4fb9ba9e242b46c13794cc051119b576a95f46ac7e498c53d8eea49ac"
+      },
+      "scenario": "D1",
+      "verdict": "platform-checks-passed-semantic-review-pending"
+    },
+    "source_aligned": true
+  }
+}

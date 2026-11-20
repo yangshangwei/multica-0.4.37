@@ -1,0 +1,433 @@
+{
+  "status": "IMPLEMENTED_STATIC_CHECKS_PASSED_DB_AND_NATIVE_ACCEPTANCE_PENDING",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "implementation_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+  "baseline_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-base-r01",
+  "source_manifest": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-compile-packages-r03/source-after.json",
+  "source_manifest_sha256": "1434404569bcdb4ad362c039c7d50d44f14b6f35a21906ed8980368935d57a89",
+  "main_owned_red_test": {
+    "path": "cmd/server/collaboration_runtime_output_test.go",
+    "sha256": "db50f2c0ddef0de1b4be1ace3924a75e539d425c45b388f9f27b046efe7c1f9d",
+    "matches_frozen_red": true,
+    "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-route-red-reconciliation-r03.json",
+    "execution_owner": "Main"
+  },
+  "changed_files": [
+    {
+      "path": "cmd/migrate/migrate_collaboration_runtime_output_test.go",
+      "status": "added",
+      "sha256": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+      "baseline_sha256": null
+    },
+    {
+      "path": "cmd/multica/cmd_collaboration.go",
+      "status": "modified",
+      "sha256": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+      "baseline_sha256": "6aa066fa82508e2cf7590972c0ee7c35b29bdc99d352635bb84bbe68ab32c71e"
+    },
+    {
+      "path": "cmd/multica/cmd_collaboration_output_test.go",
+      "status": "added",
+      "sha256": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+      "baseline_sha256": null
+    },
+    {
+      "path": "cmd/multica/cmd_issue.go",
+      "status": "modified",
+      "sha256": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+      "baseline_sha256": "193bcb6a2a8519d767f00bab779333ae88acd6a70b05ac7090459d27a719cc59"
+    },
+    {
+      "path": "cmd/server/router.go",
+      "status": "modified",
+      "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "baseline_sha256": "f35ca9f952d9d75619316db05f7a98522e36d5a2576612ade2e9f31ff44a1b8c"
+    },
+    {
+      "path": "internal/cli/collaboration_output.go",
+      "status": "added",
+      "sha256": "993f5b4e4badb464fd76e461ec3c6b4e98e3b752660a04a973ffd444ca98a51d",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/cli/collaboration_output_test.go",
+      "status": "added",
+      "sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/handler/collaboration_runtime_output.go",
+      "status": "added",
+      "sha256": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "status": "added",
+      "sha256": "e36d8fcbaa405831bf0f90f3e2b1a6d0ce13b68fa73fe5509d25aca92e80f91a",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "status": "modified",
+      "sha256": "d22ef6807c97eaafb720cdab0c7533db6f59d1507eafed2b982679d6ea4b4877",
+      "baseline_sha256": "a24cc7256b9f38d4f942c2e1276be95fe9f8bc37cbe82551884e0c2253ed80f6"
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "status": "modified",
+      "sha256": "7fc3420311688274e10e856667cace77a2429dc8afe4cdb34e3817af0d7cb2fe",
+      "baseline_sha256": "f06fb450b15766b2600d91da3ff98c08d5e2852783f0ef1c6f1a05e1d2aa1249"
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "status": "modified",
+      "sha256": "bb263bf6c799f81362e7ae309ddcd6e5a30102f988a2040193f0b9d59d6d57e8",
+      "baseline_sha256": "43ed97a0a49464d3ad30fa1f2a3086aaa4fc7a05f005f1cd747b43897c4f7faa"
+    },
+    {
+      "path": "internal/service/collaboration_attachments.go",
+      "status": "modified",
+      "sha256": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+      "baseline_sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22"
+    },
+    {
+      "path": "internal/service/collaboration_checkpoints.go",
+      "status": "modified",
+      "sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+      "baseline_sha256": "7bd01f667e6bc2fc9e3c4e67a64741c8b4b7df41c8b2f01db4198ec18e3b182f"
+    },
+    {
+      "path": "internal/service/collaboration_records.go",
+      "status": "modified",
+      "sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+      "baseline_sha256": "943c7a80c9cbc66e97da9b42fc6a7ca03590e59bf0dacf476ea64b4cac9c5e10"
+    },
+    {
+      "path": "internal/service/collaboration_runtime_capabilities.go",
+      "status": "modified",
+      "sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+      "baseline_sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614"
+    },
+    {
+      "path": "internal/service/collaboration_runtime_handoff.go",
+      "status": "modified",
+      "sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+      "baseline_sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80"
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output.go",
+      "status": "added",
+      "sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_concurrency_test.go",
+      "status": "added",
+      "sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "status": "added",
+      "sha256": "0b9de9f15255b66df037c58a47d17d5b47fff479d629bd7e09006e61509a6ceb",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "status": "added",
+      "sha256": "a803675ae2d7e8353a9f41d15a8af72e20047885af44f2a83cc328abe80406f6",
+      "baseline_sha256": null
+    },
+    {
+      "path": "internal/service/collaboration_runtime_preparation.go",
+      "status": "modified",
+      "sha256": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+      "baseline_sha256": "ab064e11e61320eb8ce62573226f9a2eebede36d4103652f2ecb63a8716c1227"
+    },
+    {
+      "path": "internal/service/collaboration_squad.go",
+      "status": "modified",
+      "sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+      "baseline_sha256": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71"
+    },
+    {
+      "path": "internal/service/collaboration_test_report.go",
+      "status": "modified",
+      "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+      "baseline_sha256": "fe59a237b93eb3b72a94faf784544cb760df167a3572efffb7f6b4fd18810437"
+    },
+    {
+      "path": "migrations/868_collaboration_runtime_output.down.sql",
+      "status": "added",
+      "sha256": "1476b6b0b73c26a7348e69460441b379e4c04154efa27e5f8547b0f5fbb63981",
+      "baseline_sha256": null
+    },
+    {
+      "path": "migrations/868_collaboration_runtime_output.up.sql",
+      "status": "added",
+      "sha256": "22eddb7c43a91ee5d653c77074f3cedebc6526d04245900ee7730c6ff093c727",
+      "baseline_sha256": null
+    },
+    {
+      "path": "pkg/db/generated/collaboration_attachments.sql.go",
+      "status": "modified",
+      "sha256": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+      "baseline_sha256": "c4ee837c620134e6b8a544f635525d4465600a75cecabe1ff3e0496f010b1ab7"
+    },
+    {
+      "path": "pkg/db/generated/collaboration_delivery.sql.go",
+      "status": "modified",
+      "sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+      "baseline_sha256": "7f016ff6d4823da77616c06e4ec7279f5aefb2dafbd73ac5961dd0a727cfe272"
+    },
+    {
+      "path": "pkg/db/generated/collaboration_preparation.sql.go",
+      "status": "modified",
+      "sha256": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+      "baseline_sha256": "cdaac78e1bb31b7a0536001364824b290181266a298381abab95385f14f11817"
+    },
+    {
+      "path": "pkg/db/generated/models.go",
+      "status": "modified",
+      "sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+      "baseline_sha256": "6778ee8971752a2c1666706044f0c19eb7389df35fc001c48c561af189affe28"
+    },
+    {
+      "path": "pkg/db/queries/collaboration_attachments.sql",
+      "status": "modified",
+      "sha256": "3df4eb5d265a2db3d750a41df73a64a828be09c29ba2b4ea53e55025bbe0a58b",
+      "baseline_sha256": "76b0b8e90767596fccae049db23d24b02237d8c6550d32020958c0919ca18364"
+    }
+  ],
+  "new_top_level_tests": [
+    {
+      "package": "./cmd/migrate",
+      "path": "cmd/migrate/migrate_collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity"
+    },
+    {
+      "package": "./cmd/migrate",
+      "path": "cmd/migrate/migrate_collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputMigrationRefusesUncommittedWriter"
+    },
+    {
+      "package": "./cmd/multica",
+      "path": "cmd/multica/cmd_collaboration_output_test.go",
+      "name": "TestCollaborationCLIOutputO09RegistrationAndFileGuards"
+    },
+    {
+      "package": "./cmd/multica",
+      "path": "cmd/multica/cmd_collaboration_output_test.go",
+      "name": "TestCollaborationCLIOutputO09UsesBoundAgentCommentEndpoint"
+    },
+    {
+      "package": "./cmd/multica",
+      "path": "cmd/multica/cmd_collaboration_output_test.go",
+      "name": "TestCollaborationCLIOutputO09WholeCommandGuardAllowsOnlyOneFile"
+    },
+    {
+      "package": "./internal/cli",
+      "path": "internal/cli/collaboration_output_test.go",
+      "name": "TestCollaborationOutputO09FileReadUsesProcessCWD"
+    },
+    {
+      "package": "./internal/cli",
+      "path": "internal/cli/collaboration_output_test.go",
+      "name": "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity"
+    },
+    {
+      "package": "./internal/cli",
+      "path": "internal/cli/collaboration_output_test.go",
+      "name": "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK"
+    },
+    {
+      "package": "./internal/cli",
+      "path": "internal/cli/collaboration_output_test.go",
+      "name": "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess"
+    },
+    {
+      "package": "./internal/handler",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart"
+    },
+    {
+      "package": "./internal/handler",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputHTTPOriginalReceiptAndFinalByteRevocation"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_concurrency_test.go",
+      "name": "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_concurrency_test.go",
+      "name": "TestCollaborationRuntimeOutputO07ConcurrentThirtySecondOutputBound"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_concurrency_test.go",
+      "name": "TestCollaborationRuntimeOutputO05RolledBackCallbackNeverOwnsReplayedObject"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "name": "TestCollaborationRuntimeOutputO01SquadFilePreservesOriginalDelegation"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "name": "TestCollaborationRuntimeOutputO07HostAttemptOwnershipAndFrozenCurrentFiles"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "name": "TestCollaborationRuntimeOutputO08HostCheckpointSealReportAndOriginalACK"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "name": "TestCollaborationRuntimeOutputO07ExplicitNewRunKeepsOriginalFailure"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "name": "TestCollaborationRuntimeOutputO08OldNoFileEventBytesRemainStable"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO01AgentIdentityCiphertextAndReferences"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO02UnknownCommitOriginalRecovery"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO03SameIdentityConcurrentConvergence"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO06UnfrozenAndMissingFilesHaveSameRefusal"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites"
+    },
+    {
+      "package": "./internal/service",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "name": "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords"
+    }
+  ],
+  "new_top_level_count": 28,
+  "test_selectors": {
+    "./internal/service": {
+      "pattern": "^TestCollaborationRuntimeOutputO[0-9]{2}",
+      "top_count": 17
+    },
+    "./internal/handler": {
+      "pattern": "^TestCollaborationRuntimeOutputHTTP",
+      "top_count": 2
+    },
+    "./internal/cli": {
+      "pattern": "^TestCollaborationOutputO09",
+      "top_count": 4
+    },
+    "./cmd/multica": {
+      "pattern": "^TestCollaborationCLIOutputO09",
+      "top_count": 3
+    },
+    "./cmd/migrate": {
+      "pattern": "^TestCollaborationRuntimeOutputMigration",
+      "top_count": 2
+    }
+  },
+  "checks": [
+    {
+      "label": "output-sqlc-r01",
+      "purpose": "Regenerate SQL/model mirrors without database",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-sqlc-r01/result.json",
+      "result_sha256": "5c7575503132425872f745afbcf4d78c816744ee40c8eac8947b014c43ed3117",
+      "exit": 0,
+      "source_drift": [
+        "pkg/db/generated/collaboration_attachments.sql.go",
+        "pkg/db/generated/collaboration_delivery.sql.go",
+        "pkg/db/generated/collaboration_preparation.sql.go",
+        "pkg/db/generated/models.go"
+      ],
+      "config_drift": false,
+      "tool_drift": []
+    },
+    {
+      "label": "output-compile-packages-r03",
+      "purpose": "Genuine go test -c for six packages; no test execution",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-compile-packages-r03/result.json",
+      "result_sha256": "8c8178faa21609bc8312ae8ca7374860d12bfda3adbd33bc2da0a54e2aa8be69",
+      "exit": 0,
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": []
+    },
+    {
+      "label": "output-vet-packages-r02",
+      "purpose": "Static analysis for six affected packages",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-vet-packages-r02/result.json",
+      "result_sha256": "b63673561fbe9c41a6e20758c485c176930267cc10a9f471f3b28272020dd2c1",
+      "exit": 0,
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": []
+    },
+    {
+      "label": "output-gofmt-r03",
+      "purpose": "Format final two-file reader adjustment",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-gofmt-r03/result.json",
+      "result_sha256": "3606edf05df2e2e6fdcfb3567d4433b2b152668633e517267cf13220b874f190",
+      "exit": 0,
+      "source_drift": [],
+      "config_drift": false,
+      "tool_drift": []
+    }
+  ],
+  "database_executions_by_implementer": [],
+  "runtime_executions_by_implementer": [],
+  "root_server_written_by_implementer": false,
+  "scope_preserved": [
+    "Original Provider/Runner/ledger/outcome wire",
+    "Old no-file comment/event absence",
+    "Existing human uploader/draft branch",
+    "Main-owned route RED and all prior failures",
+    "Default-closed execution/creation gates",
+    "No FK/cascade/new dependency/index/journal"
+  ],
+  "remaining": [
+    "Main-owned fresh normal/race package profiles, complete named inventories and cleanup audit",
+    "Main-owned exact route GREEN",
+    "Independent current implementation check",
+    "New actual controlled Provider/CLI and matching production Web/Desktop output acceptance",
+    "ROOT integration and full S3 R02/R09 reconciliation remain Main responsibilities"
+  ]
+}

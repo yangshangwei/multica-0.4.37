@@ -610,6 +610,18 @@ make a routing assertion race the normal canonicalization effect.
 
 ### Packaged-controller dependencies and current account pickers
 
+Private packaging copies must also rebind workspace dependency symlinks into
+the frozen source. A copied app whose `node_modules` still resolves
+`@multica/*` to the live checkout is not isolated: a growing `.turbo` log between
+ASAR stat/integrity and stream writing can shift every later member offset while
+electron-builder exits zero. Exclude copied development caches, preserve runtime
+dependency selection, validate every packed/unpacked member hash and archive
+bounds, and compare extracted product outputs with the pinned source manifest
+before functional acceptance. Preserve corrupt originals and rebuild into a new
+directory. Do not substitute older product artifacts. The r2 regression found
+41,855 failed member hashes after a single live log grew; the frozen rebuild
+retained all 495 product output files and removed only cache logs/directories.
+
 The plain-Node packaged Main controller and its host Playwright process must
 resolve the same installed Playwright version. An absolute host `node_modules`
 symlink is not available inside a container that mounts only the checkout.
@@ -629,6 +641,15 @@ steps because plain Node cannot assume Playwright's TypeScript loader. Bind new
 untracked harness files by content hash as well as the tracked patch. Keep all
 receipt, revision, authorization and workflow assertions when adapting controls.
 
+The exact lookup result can coexist with a recent/search option for the same
+account. Anchor its card to the unique `Use this account` button, then assert
+both the exact display name and `Account ID: <full lowercase UUID>` inside that
+card before clicking. A popup-wide exact-name locator is ambiguous after a
+previous transfer has made the recipient recent. Keep the TypeScript helper
+and `collaboration-recipient-picker.mjs` aligned; do not resolve ambiguity with
+`.first()` or remove the account-identity assertion. Replay the complete detail
+and handoff journeys, preserving the original strict-locator failure.
+
 Collaboration actions move between the primary controls and More actions as
 responsibility and status change. In `uiWorkflow`, locate the exact requested
 button and, if it is not visible, call the existing
@@ -636,6 +657,26 @@ button and, if it is not visible, call the existing
 this to both inviting and transferring: Transfer can be primary for the creator
 but collapsed for the recipient after a reload. Expand the section before
 asserting that an unauthorized action is absent; keep capability/API refusals.
+
+For an already visible toolbar action, click its unique exact button before
+opening More actions. The Base UI root menu is modal: its pointer backdrop
+leaves the dropdown trigger accessible but blocks neighboring toolbar buttons.
+Opening a menu that lacks Submit result and then selecting the toolbar button
+can therefore time out even while that button is visible, enabled and stable.
+
+```typescript
+await page.getByRole("button", { name: "Submit result", exact: true }).click();
+```
+
+When an action actually belongs in More actions, open the menu and scope its
+unique menuitem to that visible menu. Dismiss an unrelated open menu through
+Escape or its trigger and await closure before returning to a toolbar action.
+Do not use a button/menuitem union with `.first()`, force clicks, remove the
+normal backdrop or increase deadlines to conceal the wrong active surface.
+Preserve the failed run and verify the real form, request identity and subsequent
+business assertions in a fresh complete journey. PAY-241 R23 retained this
+20-second click failure; R24's spec-only repair preserves the original 480-second
+scenario deadline and all later M1/authorization/recovery assertions.
 
 The password handoff chain submits through Submit result with explicit Result
 and Basis. Bind its `delivery_confirmation.submission_id` to the immutable
@@ -655,6 +696,24 @@ state's authority. Preserve the original failed run when adapting that visible
 interaction; the observed collapsed state alone does not identify its cause.
 
 ## Collaboration drawers and visible authorization assertions
+
+### Native startup waits for the renderer document
+
+`e2e/fixtures/collaboration-native.ts:openDesktop().start()` must await both
+the existing `desktopAccountAcceptance.start()` IPC call and
+`page.waitForURL(new URL(COLLABORATION_ELECTRON_RENDERER_URL).href,
+{ waitUntil: "domcontentloaded", timeout: 20_000 })`. Arm the URL waiter before
+starting navigation. Production `loadRenderer()` returns void after initiating
+`BrowserWindow.loadURL()`, so awaiting only `app.evaluate(start)` can leave the
+page at `about:blank` and spend the entire five-second business assertion on
+renderer bootstrap. Require the explicit renderer origin and propagate actual
+navigation failure; leave task-heading and workflow assertion budgets unchanged.
+
+The fresh native probe retained start returning at 6.425s, DOMContentLoaded at
+13.006s and the requested task heading at 15.508s. After the fixture correction,
+start returned after DOMContentLoaded and the heading appeared about one second
+later. Keep both probes and replay complete native journeys; a successful IPC
+call alone never proves the renderer is ready.
 
 Resource drawers are modal. Before using background controls such as Copy link,
 Notifications, Submit result or application navigation, dismiss the active
@@ -691,6 +750,29 @@ record layout/scroll measurements separately if restoration still fails.
 Evidence: `11-01-branch-e2e-acceptance/research/continuation-20261107/`.
 The fixture repairs preserve the failed original runs and unchanged product
 bytes; successful repaired journeys do not retroactively pass the originals.
+
+### Immutable preparation and selectable completion fixtures
+
+Complete `verifyAPIPaging()` before starting native clients whose initial deep
+links read run records. Its direct synthetic SQL appends an immutable event but
+publishes no WebSocket invalidation. Pass that already verified evidence into
+`exercisePreparationRecords()` once; do not append twice or require the product
+to refresh a frozen page after an unannounced database write. Preserve old cursor,
+privacy, preparation summary and termination-proof assertions on Web and Desktop.
+
+M1 completion evidence has a real expiry. Create fresh staging/package approvals
+immediately before a complete replay and retain the original expired evidence.
+Select the exact fixture `approvalID`, assert its radio is enabled and focused,
+then press Space and observe the actual preview/authorization/completion requests.
+A disabled radio cannot take focus; pressing Space on a previously focused Close
+button can otherwise appear as a missing preview. Never extend an immutable
+approval's expiry or change the product's selection guard to repair this fixture.
+
+View-switch tests must use the exact current toolbar button and its
+`menuitemradio`, then assert the target view, the expected row and unchanged
+collection URL. A `text=List` locator can select a task card whose title contains
+List and test navigation instead. R3 retains the actual wrong-card trace and
+complete corrected file replay.
 
 ### Business-scenario fixture contracts
 
@@ -810,3 +892,75 @@ An unconditional Knowledge native case needs the explicit renderer/source root;
 it must not acquire a new skip to compensate for missing preparation. The
 password-session persistence test has its own synthetic password API and needs
 only the same built Desktop assets, not a real password-mode server.
+
+## Controlled Agent output allocation
+
+`collaboration-runtime-output.ts` admits its current task before any database
+gate write, actor registration, upload inspection or daemon launch. Its historical
+exact database and storage guard remains available only when every new allocation
+environment field is absent. A partial or invalid explicit allocation must fail;
+it must never fall back to the historical paths.
+
+For the 2026-11-20 full regression, explicitly set `COLLABORATION_OUTPUT_TASK`
+to the task's actual active or archived path (see the lifecycle contract below),
+`COLLABORATION_OUTPUT_STATE_ROOT`, `COLLABORATION_OUTPUT_ALLOCATION_FILE` and
+`COLLABORATION_OUTPUT_ALLOCATION_SHA256`. The hash pins the complete JSON record:
+task, source root, private state and storage roots, database name and connection
+URL digest, API/Web/renderer origins and deployment ID. The task directory must
+exist under the exact checkout. Keep the record mode0600 within an externally
+allocated owner0700 state directory; storage must be an owner0700 descendant and
+equal both `LOCAL_UPLOAD_DIR` and `COLLABORATION_OUTPUT_STORAGE_ROOT`.
+Reject symlink path segments, noncanonical paths and mismatching ownership.
+
+The database URL must identify the exact nondefault loopback database and contain
+no query or fragment. `pg.Client` can honor `?host=` and `?port=` overrides even
+when `new URL(...).hostname` is loopback. Pinning that URL does not remove the
+override: reject it before connecting. The Node guard suite verifies the actual
+effective PG connection parameters without opening a connection, as well as
+historical admission, fresh allocation, partial/malformed records, task/source
+mismatch, storage escapes, permissions and origin/deployment drift. POSIX ownership
+verification explicitly skips on platforms without `getuid`; it does not establish
+Windows acceptance.
+
+Retain each allocation and source/artifact hash set with its browser report. If a
+stopped container receives a new ephemeral port, record and pin its new exact
+connection identity before restarting the owned services. Verify real API identity,
+production Web runtime URLs, built native renderer and effective PG destination.
+The canonical two output journeys exercise genuine local daemon/provider/CLI
+processes with deterministic fixture output; they do not establish real-model,
+packaged-Main or installer acceptance. Restore the original gate booleans, keep
+their epoch monotonic, and stop only the recorded owned services.
+
+### Task archival and explicit allocation identity
+
+1. **Scope:** archiving the full-regression task must not require retaining an
+   empty active task directory or prevent later controlled output acceptance.
+   `assertRuntimeOutputAllocation(env, checkout, io)` still runs before side
+   effects in the output fixture.
+2. **Signatures:** `COLLABORATION_OUTPUT_TASK` and the pinned JSON `task` field
+   select the same exact relative path. Allowed paths are
+   `.trellis/tasks/11-20-full-e2e-regression-20261120` and
+   `.trellis/tasks/archive/YYYY-MM/11-20-full-e2e-regression-20261120`, with a
+   four-digit year and month 01–12. No search or implicit redirection occurs.
+3. **Contract:** the selected canonical directory must exist under the recorded
+   checkout. Its regular, nonsymlink `task.json` must contain both `id` and
+   `name` equal to `full-e2e-regression-20261120`. Lifecycle status may change;
+   it is not the identity. All existing allocation digest, database, private
+   state/storage, ownership and service-origin checks still apply.
+4. **Validation:** reject foreign task names, malformed archive paths,
+   traversal/aliases/symlinks, missing or invalid task metadata and a record
+   naming a different path. A stale active-path allocation fails after the
+   directory moves. Partial explicit configuration never enters the historical
+   branch.
+5. **Cases:** an active task with its exact allocation passes; after a normal
+   archive move, a new allocation explicitly pinning the real archive path
+   passes. Reusing the old path or merely creating an empty directory fails.
+6. **Tests:** retain the existing guard matrix and a real temporary-filesystem
+   sequence: admit active, move to archive, refuse the stale allocation, then
+   explicitly repin and admit the archive. These tests make no database or
+   network connection. Actual output journeys remain a separate acceptance gate.
+7. **Wrong / correct:** do not rewrite retained reports/allocation records or
+   keep a symlink at the active path to manufacture continuity. Preserve old
+   evidence; subsequent runs create their own private allocation using the
+   archived task path and a newly computed digest. Archive only after current
+   verification and owned-resource cleanup are complete.

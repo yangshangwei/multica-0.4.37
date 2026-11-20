@@ -24,6 +24,14 @@ test_env.pop("MULTICA_RESOURCE_PUBLISH_DIR", None)
 
 The publisher key is removed from the ordinary top-level package child, not globally. API startup, non-test/compile commands and a recursive test's explicitly selected publisher configuration retain their intended values. API pool overrides are removed from actual ordinary and recursive test branches. Individual tests may set their own environment.
 
+`scripts/check.sh:prepare_check_environment()` generates a new 32-byte signing
+key for each isolated check and appends its hexadecimal value as `JWT_SECRET`
+only to the private task copy. Never inherit a deployment key into test actors
+or leave the public development default in place: private history cursors
+correctly reject that default. `scripts/check.test.sh` exercises missing, blank,
+both public defaults and custom source values, verifies distinct generated keys
+and mode0600 task files, and compares source bytes unchanged.
+
 `MULTICA_RESOURCE_PUBLISH_DIR` enables organization-scoped catalog reads. The router's ordinary `TestMain` inserts user/workspace fixtures directly; it does not perform the public `CreateWorkspace` call that ensures an active internal organization. An API publishing path inherited by this fixture can therefore make an embedded-only skill catalog return503. Do not add an organization seed or change a product assertion to hide this configuration leak.
 
 Use a private0700 HOME for the launcher child and a separate HOME per top-level Go package. Pin actual `GOCACHE`, `GOMODCACHE` and `GOPATH` explicitly. Recursive tests retain a test-selected HOME. Do not export global task config/workspace roots that override `t.Setenv("HOME", ...)`.
@@ -291,3 +299,55 @@ Git's path-aware clean object ID. The P6 `9b0291c83697` failure involved only
 unchanged, and the source/configuration rollback was independently accepted.
 The new executor's CRLF regression changes from one named failure to passing
 while all eight bounded fixture cases remain covered.
+
+
+## Synthetic execution observation clocks
+
+### 1. Scope / trigger
+
+Apply to test-only stage deployment sources whose signed observations are
+validated against PostgreSQL time. A container clock can lag the host by a few
+milliseconds even when both clocks appear synchronized.
+
+### 2. Signatures
+
+`stageExecutionSourceFixture.observationClock(context.Context) (time.Time, error)`
+is supplied by `newStageExecutionFixture` using
+`Queries.ArtifactExecutionDatabaseTime(ctx)`. `Execute` signs that UTC timestamp;
+`stageObservationValid` remains the production validator.
+
+### 3. Contracts
+
+Synthetic proof creation and verification use the same authoritative clock.
+Propagate clock-read errors without producing a signed observation. Preserve the
+strict production rejection of future observations; this fixture adjustment does
+not introduce clock tolerance or alter external deployment semantics.
+
+### 4. Validation / error matrix
+
+| Condition | Required behavior |
+| --- | --- |
+| Fixture clock succeeds | Signed observation contains that exact UTC instant |
+| Fixture clock fails | Return the error and no proof |
+| Observation is after verifier time | Production validation still rejects it |
+| Host and database clocks differ | Fixture does not use host `time.Now()` |
+
+### 5. Good / base / bad cases
+
+Good: a synthetic deployment receives database time before signing its proof.
+Base: retain an unknown receipt when a real external observation is invalid.
+Bad: relax production future-time checks to make a test-generated receipt pass.
+
+### 6. Required tests and assertion points
+
+`collaboration_stage_execution_fixture_clock_test.go` verifies exact supplied
+time, retained future-proof rejection, and clock failure without a proof. Repeat
+affected completion-preview/stage-completion cases against a fresh database.
+The 2026-11-20 diagnostics observed synthetic host timestamps 14–19ms ahead of
+PostgreSQL and `stage_execution_conflict`; keep that evidence alongside replays.
+
+### 7. Wrong vs correct
+
+Wrong: classify every unknown synthetic receipt as a timeout and raise budgets.
+Correct: inspect the observation refusal, use database time in the test source,
+and retain strict production checks plus the original failed runs.

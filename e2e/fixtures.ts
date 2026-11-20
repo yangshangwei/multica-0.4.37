@@ -69,11 +69,24 @@ export class TestApiClient {
   }
 
   async registerPassword(username: string, password: string, name: string): Promise<{ id: string; email: string; onboarded_at: string | null }> {
-    const response = await fetch(`${API_BASE}/auth/register`, {
+    const url = `${API_BASE}/auth/register`;
+    const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password, name }),
-    });
+    };
+    let response = await fetch(url, request);
+    if (process.env.E2E_WAIT_FOR_REGISTRATION_WINDOW === "1" && response.status === 429 && !response.redirected) {
+      const retryAfter = response.headers.get("Retry-After") ?? "";
+      const seconds = Number(retryAfter);
+      if (/^[1-9]\d{0,2}$/.test(retryAfter) && seconds <= 300) {
+        const denial = await response.json().catch(() => null);
+        if (denial?.code === "rate_limited" && typeof denial.error === "string" && denial.error.length > 0) {
+          await new Promise<void>((resolve) => setTimeout(resolve, seconds * 1000));
+          response = await fetch(url, request);
+        }
+      }
+    }
     if (!response.ok) throw new Error(`password registration failed: ${response.status}`);
     const data = await response.json();
     if (typeof data.token !== "string" || !data.token || typeof data.user?.id !== "string") {

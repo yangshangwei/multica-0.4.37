@@ -1,0 +1,376 @@
+{
+  "at": "2026-11-19T15:02:32.599521+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "role": "trellis-research",
+  "status": "PLANNING_ONLY_TC13_SELECTED_BY_MAIN_NO_ACCEPTANCE_PROMOTION",
+  "HEAD": "50b50a7c9cb836a299704af8c36a8fc82083cc66",
+  "matrix": {
+    "TC-01": {
+      "case_id": "TC-01",
+      "priority": "P0",
+      "requirement_ids": "R01",
+      "required_outcome": "创建成功、必填完整、初始状态映射、创建人与时间可追溯",
+      "historical_result": "PASS",
+      "historical_scope": "真实 API 创建；同请求重放仍为 PAY-1",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:2",
+      "current_result": "NOT_RUN",
+      "proposed_package": "S1",
+      "remaining_gap": "逐项核对原必填及初始状态，不沿用旧PASS认定所有字段受约束",
+      "current_evidence": ""
+    },
+    "TC-02": {
+      "case_id": "TC-02",
+      "priority": "P0",
+      "requirement_ids": "R01",
+      "required_outcome": "验收标准多会话同步且历史版本可追溯",
+      "historical_result": "PASS",
+      "historical_scope": "产品修改后研发/QA读取同一内容",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:3",
+      "current_result": "NOT_RUN",
+      "proposed_package": "S1/S3",
+      "remaining_gap": "补历史版本可回看证明，现有双读一致性不足以证明完整历史",
+      "current_evidence": ""
+    },
+    "TC-03": {
+      "case_id": "TC-03",
+      "priority": "P0",
+      "requirement_ids": "R01",
+      "required_outcome": "项目、P1、唯一责任、研发与QA责任、截止时间和分诊通知",
+      "historical_result": "PASS",
+      "historical_scope": "urgent、项目和起止日期已记录",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:4",
+      "current_result": "PARTIAL",
+      "proposed_package": "S1/S2",
+      "remaining_gap": "S2稳定业务责任人/当前处理人、指定角色和当前权限门禁已完整接受；父例的P1、截止时间和分诊通知仍未全量验证。",
+      "current_evidence": "../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/server-increment-1-results.md (increment only; full TC NOT_RUN); /Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-a01-a12-r09-r02-check/runtime-r02-subset-and-parent-progress-recommendations-r01.md (actual r02 subset; full scenario failed, no PASS); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json (full S2 code + synthetic acceptance; current original four4PASS/retry0); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json"
+    },
+    "TC-04": {
+      "case_id": "TC-04",
+      "priority": "P0",
+      "requirement_ids": "R02/R12",
+      "required_outcome": "分析包含依据风险置信度，Agent不可关闭任务",
+      "historical_result": "CONTROLLED_PASS",
+      "historical_scope": "真实调度/CLI/身份回写；分析内容为脚本控制，不代表模型质量",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:5",
+      "current_result": "NOT_RUN",
+      "proposed_package": "S1/S2",
+      "remaining_gap": "受控输出不证明真实模型质量，补直接越权请求被拒绝",
+      "current_evidence": ""
+    },
+    "TC-12": {
+      "case_id": "TC-12",
+      "priority": "P0",
+      "requirement_ids": "R06",
+      "required_outcome": "测试失败自动关联对应运行失败用例和日志，由有权QA决定退回修改后再测试",
+      "historical_result": "PASS",
+      "historical_scope": "v1乱序失败，QA提交不通过，产品退研发，v2回归通过",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:13",
+      "current_result": "PARTIAL",
+      "proposed_package": "S1/S2",
+      "remaining_gap": "S2实际失败run/case/log、QA退回和独立重试历史已接受；两个run使用同一代码，尚未验证业务代码修改后的真实回归。",
+      "current_evidence": "../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md (contract; no acceptance evidence); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r16-progress-reconciliation.json (r15 actual controlled Web/Desktop review/QA and retained run evidence; fullS2 not accepted); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json (full S2 code + synthetic acceptance; current original four4PASS/retry0); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json"
+    },
+    "TC-13": {
+      "case_id": "TC-13",
+      "priority": "P0",
+      "requirement_ids": "R06/R12",
+      "required_outcome": "QA纠正结论后Agent不得覆盖有效人工判断",
+      "historical_result": "PARTIAL",
+      "historical_scope": "QA明确限定模拟结论；未构造智能体覆盖QA结论的越权写入",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:14",
+      "current_result": "PARTIAL",
+      "proposed_package": "S2",
+      "remaining_gap": "机器/Agent签字入口拒绝和QA退回决定未被后续runtime报告覆盖已验证；尚未执行有效QA结论之后的精确Agent覆盖请求。",
+      "current_evidence": "../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json (full S2 code + synthetic acceptance; current original four4PASS/retry0); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json"
+    },
+    "TC-14": {
+      "case_id": "TC-14",
+      "priority": "P0",
+      "requirement_ids": "R07",
+      "required_outcome": "真实超时失败重试可见，不重复评论附件或结果",
+      "historical_result": "PARTIAL",
+      "historical_scope": "受控Provider真实退出失败、重放不重复、人工重发成功；真实模型超时未测",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:15",
+      "current_result": "PARTIAL",
+      "proposed_package": "S3",
+      "remaining_gap": "受控超时与原回执、R05 双端人工上传保持原证据；R03 双端真实受控失败→新成功→Stop、原 run/attempt/回执恢复和迟到事实拒绝通过。Agent 输出附件及真实模型超时仍未核销。",
+      "current_evidence": "../archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md (feb87aee7 + test/fixture overlay; controlled Provider only); ../archive/2026-11/11-13-pay-241-s3-recovery/research/extras-a-upload-reconciliation-20261118.md; ../archive/2026-11/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.json (bounded current4tops/10subcases,10controlledProviderturns/12originalinputs; no Agent-output-upload or real-model acceptance)"
+    },
+    "TC-20": {
+      "case_id": "TC-20",
+      "priority": "P0",
+      "requirement_ids": "R03/R09",
+      "required_outcome": "每个动作实际人或Agent身份时间输入输出证据可审计",
+      "historical_result": "PARTIAL",
+      "historical_scope": "运行/数据库保留具体身份；公共评论author=null，界面仅显示通用Agent，已登记后续问题",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:21",
+      "current_result": "PARTIAL",
+      "proposed_package": "S1/S2/S3",
+      "remaining_gap": "S1/S2 具体人/Agent、版本、请求和审批证据保留；R05 普通订阅与 R03 受控恢复的原事件/run、当前身份、配置/程序来源及终结账本已核对。完整后续 S3 动作及真实 S4 分支/CI/部署输入输出审计仍开放。",
+      "current_evidence": "../archive/2026-11/11-13-collaboration-agent-identity-baseline/report.md (S1 identity scope); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/baseline-results.json (current original-receipt subset); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.json (full S2 code + synthetic acceptance; current original four4PASS/retry0); ../archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json; ../archive/2026-11/11-13-pay-241-s3-recovery/research/ordinary-subscription-r05-independent-check-20261119.json; ../archive/2026-11/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.json (bounded current recovery provenance; full S3/S4 action audit remains separate)"
+    },
+    "TC-24": {
+      "case_id": "TC-24",
+      "priority": "P1",
+      "requirement_ids": "R11",
+      "required_outcome": "100独立协作者状态事件p95≤2秒，Agent回写p95≤5秒",
+      "historical_result": "PARTIAL",
+      "historical_scope": "仅四账号100并发读取；不等于100独立协作者及状态同步p95验收",
+      "historical_evidence": "artifacts/qa/pay-collaboration-20261113/retained-files/test-case-matrix-v2.csv:25",
+      "current_result": "NOT_RUN",
+      "proposed_package": "S5",
+      "remaining_gap": "r01失败保留；r02在S2前产品源码上完成10000传播与100次独立run完整回写，独立79项核对及资源恢复通过。仅工具演练；正式验收仍须S2-S4最终候选及业务证据，不能核销TC-24",
+      "current_evidence": "../11-13-pay-241-s5-performance-acceptance/research/rehearsal-r01.md; ../11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.md; ../11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02-review.json (rehearsals only; TC-24 NOT_RUN)"
+    }
+  },
+  "references": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+      "sha256": "b3dd08ad8187fd6f00db8a7ea19e525effa59a8d3efa99c586e2cf140143b705",
+      "bytes": 9291
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "4ccd4bc60bbaad830361b9a64675600c2b171e304d08688818494a25ad000113",
+      "bytes": 20471
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md",
+      "sha256": "6af194e529c0042e560cfe7e3dadab7ee2d55ff6aed8b401122025cdbd23eb27",
+      "bytes": 8125
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-collaboration-agent-identity-baseline/report.md",
+      "sha256": "04020af876fced413e83781088e95233a331e791bbb48aa7f83e41544700e339",
+      "bytes": 4585
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.md",
+      "sha256": "d609ee11bd1e4e6a212270e3c6129c1cdcb9d88bb78813e910a7e5c6641e4baa",
+      "bytes": 21127
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md",
+      "sha256": "ddd1a2ce283150966bb1da673c864ec2f28e4e7109cf13ace40a86c2d9f10e8d",
+      "bytes": 2537
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/report.md",
+      "sha256": "7d8c5d884b8023e8c2123954a4d9362607a0bba6ee25705fa39c1e2dc8ca8da2",
+      "bytes": 2807
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-source-editing.md",
+      "sha256": "513eca305b48ddf96216c007388cba6e5a4f9be7210aadbd68d464045b03237d",
+      "bytes": 18681
+    }
+  ],
+  "code_fingerprints": [
+    {
+      "path": "server/internal/service/collaboration_stage_actions.go",
+      "sha256": "7475ab8dd32e88b334f2db4d5fd1fa0f0b4f5df642f5f80abd9b1bb8c88aeb62",
+      "bytes": 35944
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "sha256": "a46178705d208bbd7aa7b3080e79927dac7bd3fef81d5b051dd0130f21cadc56",
+      "bytes": 31292
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_test.go",
+      "sha256": "aa20739aaf5e381768b73ab48ed79457d03326d20a16fb81785440fc7a483d1c",
+      "bytes": 31394
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report_test.go",
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "bytes": 15333
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_review.go",
+      "sha256": "decfadbdfe4d4da253e85de2b2f987a28af0a70c983f43b5c0acd0d482d86fd4",
+      "bytes": 10001
+    },
+    {
+      "path": "server/internal/handler/collaboration_stage_test.go",
+      "sha256": "b4988f82295c6792522877ae762faf928d2e0899b99dd1a7c4f28b1c577c0941",
+      "bytes": 58128
+    },
+    {
+      "path": "server/internal/handler/task_capability_test.go",
+      "sha256": "66349bdc4e87460c0fd602a84b681f462671eb92002c850c83b5e8c886e1b252",
+      "bytes": 21393
+    },
+    {
+      "path": "server/internal/handler/task_capability.go",
+      "sha256": "5b72e4f688ae834c846c2f55f00d726a977f51c7812219ca9b6f9b9f0f350c42",
+      "bytes": 10471
+    },
+    {
+      "path": "server/internal/middleware/auth.go",
+      "sha256": "18392905c77f59897c63b4bc2490b20c95389bf49c88748e934643ca9b6e5dfe",
+      "bytes": 13398
+    },
+    {
+      "path": "server/internal/auth/principal.go",
+      "sha256": "98d96ce37a00a74153c344797ccbc4b8f053766bcf37696b5253d4a40cd3c538",
+      "bytes": 1446
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "bytes": 4085
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_routes_test.go",
+      "sha256": "a5191e8f690c7ae1395198fe25681bb727f92f077a02aef69218a38e794e8b34",
+      "bytes": 30157
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "sha256": "0ca75701bab3d2dc5051d6c4ca7de1a0e58b7bc010191fcb8f3b7f18b7c16ad4",
+      "bytes": 19961
+    },
+    {
+      "path": "server/internal/service/collaboration_creation_fields.go",
+      "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+      "bytes": 7356
+    },
+    {
+      "path": "server/internal/service/collaboration_edit.go",
+      "sha256": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+      "bytes": 7404
+    },
+    {
+      "path": "server/internal/service/collaboration_activity.go",
+      "sha256": "a36f968bf42d28d4344e7916aa710b553cec60b9045c623f3199f7b760e860d7",
+      "bytes": 13356
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields_test.go",
+      "sha256": "ac335a446057ea2dcc62590a6cefcc22140efa08e773260a5fcceb84d7115825",
+      "bytes": 17320
+    },
+    {
+      "path": "packages/core/collaboration/creation-schema.ts",
+      "sha256": "bf3ae63f755ac053e64a4b2cb05eb3b3022665436ccfc6fa99f84b93834e664c",
+      "bytes": 5886
+    },
+    {
+      "path": "packages/core/collaboration/activity-schema.ts",
+      "sha256": "dd253b876a5e6a256450825f41f07f2f8c557b0d662f6c9f38fc625285d35ccc",
+      "bytes": 7732
+    },
+    {
+      "path": "packages/core/issues/config/priority.ts",
+      "sha256": "642078f04c1822be48ce999f1bf85d07c887269eee2c1aae55272a5e1fe78f5f",
+      "bytes": 1652
+    },
+    {
+      "path": "packages/views/collaboration/creation-form.tsx",
+      "sha256": "c20109240f16015d0b42ba21ac67c5f2c4c9e7f481d8c0e773fef3c9cea7429c",
+      "bytes": 36986
+    },
+    {
+      "path": "packages/views/collaboration/activity.tsx",
+      "sha256": "08c432308351cfc91529bb5b38e47b951139701ffe2aee4180d5964aaea1d9a0",
+      "bytes": 6874
+    },
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "bytes": 49079
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-approvals.ts",
+      "sha256": "00405f3f5b6d978fe22ae54a35500a9481888a0cd4976aefe29df8a346dd3f27",
+      "bytes": 24909
+    },
+    {
+      "path": "e2e/fixtures/collaboration-editing.ts",
+      "sha256": "4eeb33972dca05af48af009b7d89aa02108bf884fe5c08cfb407358681036d0e",
+      "bytes": 17172
+    },
+    {
+      "path": "e2e/collaboration-editing-web.spec.ts",
+      "sha256": "fb45a67d82c01bd5f0fbdb124e2fdf3bf0b33bf1501823eb4374fe3cb0e1036b",
+      "bytes": 11014
+    }
+  ],
+  "selected_slice": {
+    "case": "TC-13",
+    "nature": "missing precise post-valid-QA authenticated-machine stimulus; no product defect shown",
+    "proposed_new_files": [
+      "server/internal/service/collaboration_stage_qa_override_test.go",
+      "server/cmd/server/collaboration_stage_qa_override_integration_test.go"
+    ],
+    "existing_helpers": {
+      "service": [
+        "server/internal/service/collaboration_test_report_test.go:newStageRuntimeFixture",
+        "server/internal/service/collaboration_stage_review_test.go:stageReviewFixture.req/reviewParams/evidence",
+        "server/internal/service/collaboration_stage_execution_fixture_test.go:newStageExecutionFixture (reuse if applicable; do not fabricate QA decision)"
+      ],
+      "machine_claim_pattern": [
+        "server/internal/handler/task_capability_test.go:newTaskCapabilityFixture (handler-package-only; pattern, not crosspackagecall)",
+        "server/internal/handler/task_capability_test.go:capabilityCall/taskCapabilityRouter (partialrouter only, not productionroute proof)"
+      ],
+      "router": [
+        "server/cmd/server/collaboration_stage_routes_test.go:TestCollaborationStageRoutesActivateReadyPolicyAndPreserveOriginalKey (testServer.Config.Handler.ServeHTTP/testutil pattern)",
+        "server/internal/handler/collaboration_stage_test.go:stageHTTPFixture/observations/body (handler-package-only source pattern)",
+        "server/internal/handler/task_capability_test.go:newTaskCapabilityFixture returns real claim AuthToken; local cmd/server helper must drive real claim route or use actual handler with owned fixture"
+      ]
+    },
+    "phases": [
+      "human QA return correcting a passing machine report, same candidate/currentstage/validhumanrecord",
+      "human QA approve after exact settled report; before expiry and without upstreamrevocation"
+    ],
+    "stimuli": [
+      "fresh syntacticallyvalid opposite QA DecideStage with actual valid serverissued mat_ credential",
+      "fresh RevokeStageDecision targeting exact human decision with same mat_ credential",
+      "separate validQA JWT+X-Agent-ID deny-onlycontrol, notAgentidentityproof"
+    ],
+    "positive_control": "same mat_ first reads its supported ordinary bound issue via actual middleware, proving nonexpired authenticated machine; never substitute mcb_ onhumanstage routes",
+    "assertions": [
+      "exact403/authenticationboundary code by route, not400malformed or401invalidtoken",
+      "unchangeddecision rowID/actor/reason/candidate/digest/created_at/expires/dependencies and no newreview/revocation/head",
+      "same human-visible projection/currentstate and originalhumanreceipt before/after",
+      "no extrastageadvance/grant/command/run/outboxnotification effects; expectedfixtureclaim effects counted beforebaseline",
+      "rawrequest/body/hash/tokenhash/route/currentobservations retained, secrets excluded"
+    ],
+    "normal_race": "fresh service and cmd/server databases per mode, default ordinary testenv no ambientAgentCLI; existingtestutilcleanup reused",
+    "optional_UI": "No extra UI mandatory for exact APIguard when combinedwithacceptedR33UI; never claimfreshUIrun",
+    "completion": "independentcheck then preciseTC13disposition; no automaticotherrowpromotion",
+    "setup_uncertainty": "No single ready crosspackage exactQA+claimedmat productionrouter helper found; compose boundedexistingcmd/server publicsetup or reportwidening. HandlerAuth/taskmiddleware alternative is owninglayeronly with productionroute trace, not fullrouterexecution."
+  },
+  "next_candidates": {
+    "TC02": "minimal2descriptionedits/3independentsessions/actualActivitybeforeafteractorUTC/eventIDs+paging; sourcealreadyhasowners",
+    "TC01": "positivecompletePAYfixtureandactualrequiredtechnicalfields/defaultstatus/creatorUTC; businessrequiredfields interpretation unresolved, no globalrequiredfieldfeatureinferred",
+    "TC03": "P1mappingexplicitlyunresolved: codeonlyurgent/high/medium/low/none andnoP1contract found; role/due/assignmentnotice canbeverified internally"
+  },
+  "external_limits": [
+    "TC04realmodelanalysisquality requires distinct authorizedrealmodelproof; machinecannotclosecontrol itselfinternal",
+    "TC09-11 realpayments/fulfilment/delay/MQ not localplatformsimulation",
+    "TC06/07/17-19 realremoteCI/deploy/rollback/metrics remainS4",
+    "TC12businesscodechangedregression separatefromsamecodefaultswitch",
+    "TC14realmodeltimeout separatefromcompletedS3controlledoutput/recovery",
+    "TC24finalcandidate100independentobservers/runwritebacks separateS5; oldrehearsal notPASS"
+  ],
+  "operations": {
+    "code_changes": 0,
+    "new_tasks": 0,
+    "test_build_API_DB_account_service_execution": 0,
+    "Git_writes": 0,
+    "matrix_promotions": 0
+  },
+  "markdown_report": {
+    "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-internal-acceptance-20261119.md",
+    "sha256": "f9fd5c6f1f6f539859472509ae44afe1afe4bf829350cb461ac6c57c4568458a",
+    "bytes": 20349
+  },
+  "verification": {
+    "source_fingerprints_unchanged": 26,
+    "all_relative_artifact_links_exist": true,
+    "test_or_account_execution": 0,
+    "no_promotion": true
+  }
+}

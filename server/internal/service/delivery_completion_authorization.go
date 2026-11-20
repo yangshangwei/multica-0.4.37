@@ -212,11 +212,14 @@ func GetDeliveryCompletionAuthorizationInTx(ctx context.Context, tx pgx.Tx, acce
 	if err = completionReadSetup(ctx, tx, access); err != nil {
 		return out, err
 	}
-	row, err := db.New(tx).LockDeliveryCompletionAuthorization(ctx, id)
+	if _, err = tx.Exec(ctx, `SELECT id FROM delivery_completion_authorization WHERE id=$1 FOR SHARE NOWAIT`, id); err != nil {
+		return out, err
+	}
+	row, err := db.New(tx).GetDeliveryCompletionAuthorization(ctx, id)
 	if err != nil {
 		return out, err
 	}
-	if err = completionReadAuthority(ctx, tx, access, row); err != nil {
+	if err = readCompletionAuthority(ctx, tx, access, row); err != nil {
 		return out, err
 	}
 	return completionView(ctx, tx, row)
@@ -325,6 +328,14 @@ func completionReadSetup(ctx context.Context, tx pgx.Tx, access ArtifactAccess) 
 	return CheckArtifactCredentialInTx(ctx, tx, access.Credential)
 }
 func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {
+	return completionReadAuthorityInTx(ctx, tx, access, row, false)
+}
+
+func readCompletionAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {
+	return completionReadAuthorityInTx(ctx, tx, access, row, true)
+}
+
+func completionReadAuthorityInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, readProjection bool) error {
 	if _, err := completionStoredRequest(row); err != nil {
 		return err
 	}
@@ -335,7 +346,13 @@ func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAcce
 	if err := LockArtifactWorkspace(ctx, q, row.WorkspaceID); err != nil {
 		return err
 	}
-	issue, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})
+	var issue db.Issue
+	var err error
+	if readProjection {
+		issue, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})
+	} else {
+		issue, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})
+	}
 	if err != nil {
 		return err
 	}
@@ -344,6 +361,9 @@ func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAcce
 		return actorErr
 	}
 	if kind == "human" && access.Credential.Principal.UserID == util.UUIDToString(row.IssuerUserID) {
+		if readProjection {
+			return readCompletionIssuer(ctx, tx, access, row, issue)
+		}
 		return completionIssuerRead(ctx, tx, access, row, issue)
 	}
 	if row.TargetKind == "collaboration_admin" && !access.CollaborationAdministrationEnabled {
@@ -352,21 +372,37 @@ func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAcce
 	return completionConsumerAuthority(ctx, tx, row, access.Credential, issue, false)
 }
 func completionIssuerRead(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {
+	return completionIssuerReadInTx(ctx, tx, access, row, issue, false)
+}
+
+func readCompletionIssuer(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {
+	return completionIssuerReadInTx(ctx, tx, access, row, issue, true)
+}
+
+func completionIssuerReadInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue, readProjection bool) error {
 	if kind, _, err := access.Credential.Actor(); err != nil || kind != "human" || access.Credential.Principal.UserID != util.UUIDToString(row.IssuerUserID) {
 		return completionDenied()
+	}
+	projectAccess := completionCollaborationAccess
+	sourceIssue := completionSourceIssue
+	observe := EvaluateDeliveryEvidenceInTx
+	if readProjection {
+		projectAccess = readCompletionCollaborationAccess
+		sourceIssue = readCompletionSourceIssue
+		observe = evaluateDeliveryEvidenceReadInTx
 	}
 	if row.TargetKind == "ordinary" {
 		if err := completionOrdinary(ctx, db.New(tx), issue); err != nil {
 			return err
 		}
-	} else if _, err := completionCollaborationAccess(ctx, tx, issue, row.IssuerUserID); err != nil {
+	} else if _, err := projectAccess(ctx, tx, issue, row.IssuerUserID); err != nil {
 		return err
 	}
 	req, err := completionStoredRequest(row)
 	if err != nil {
 		return err
 	}
-	evidenceIssue, err := completionSourceIssue(ctx, tx, req, issue, false)
+	evidenceIssue, err := sourceIssue(ctx, tx, req, issue, false)
 	if err != nil {
 		return err
 	}
@@ -378,7 +414,7 @@ func completionIssuerRead(ctx context.Context, tx pgx.Tx, access ArtifactAccess,
 			return err
 		}
 	}
-	observed, err := EvaluateDeliveryEvidenceInTx(ctx, tx, access, evidenceIssue, completionEvidenceRequest(req, evidenceIssue, project))
+	observed, err := observe(ctx, tx, access, evidenceIssue, completionEvidenceRequest(req, evidenceIssue, project))
 	if err != nil {
 		return err
 	}

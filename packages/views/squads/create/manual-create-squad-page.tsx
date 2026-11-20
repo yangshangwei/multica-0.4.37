@@ -31,10 +31,12 @@ import { ActorAvatar } from "../../common/actor-avatar";
 import { AvatarUploadControl } from "../../common/avatar-upload-control";
 import { CharCounter } from "../../agents/components/char-counter";
 import {
+  PropertyPicker,
   PickerEmpty,
   PickerItem,
   PickerSection,
 } from "../../issues/components/pickers/property-picker";
+import { getSquadQueryState, SquadQueryFeedback } from "../components/squad-query-feedback";
 import { matchesPinyin } from "../../editor/extensions/pinyin-match";
 import { useT } from "../../i18n";
 
@@ -59,12 +61,15 @@ export function ManualCreateSquadPage() {
   const currentUser = useAuthStore((s) => s.user);
   const currentUserId = currentUser?.id ?? null;
 
-  const { data: agents = [] } = useQuery(agentListOptions(wsId));
-  const { data: wsMembers = [] } = useQuery(memberListOptions(wsId));
+  const agentsQuery = useQuery(agentListOptions(wsId));
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const agentsState = getSquadQueryState(agentsQuery);
+  const membersState = getSquadQueryState(membersQuery);
+  const wsMembers = membersState.hasData ? membersQuery.data ?? [] : [];
 
   const activeAgents = useMemo(
-    () => agents.filter((a: Agent) => !a.archived_at && a.runtime_id),
-    [agents],
+    () => agentsState.hasData ? (agentsQuery.data ?? []).filter((a: Agent) => !a.archived_at && a.runtime_id) : [],
+    [agentsState.hasData, agentsQuery.data],
   );
 
   const [name, setName] = useState("");
@@ -86,7 +91,7 @@ export function ManualCreateSquadPage() {
     }
   };
 
-  const canSubmit = !!name.trim() && !!leaderId && !creating;
+  const canSubmit = !!name.trim() && membersState.hasData && activeAgents.some((agent) => agent.id === leaderId) && !creating;
 
   const handleSubmit = async () => {
     if (!canSubmit) return;
@@ -202,13 +207,17 @@ export function ManualCreateSquadPage() {
               </div>
             </div>
 
-            <LeaderPicker
+            <div className="space-y-2">
+              <SquadQueryFeedback query={agentsQuery} loadingMessage={tSquads(($) => $.recovery.agents_loading)} errorMessage={tSquads(($) => $.recovery.agents_error)} />
+            {agentsState.hasData && <LeaderPicker
               agents={activeAgents}
               currentUserId={currentUserId}
               value={leaderId}
               onChange={handleLeaderChange}
-            />
+            />}
+            </div>
 
+            <SquadQueryFeedback query={membersQuery} loadingMessage={tSquads(($) => $.recovery.workspace_members_loading)} errorMessage={tSquads(($) => $.recovery.workspace_members_error)} />
             <AdditionalMembersPicker
               agents={activeAgents}
               members={wsMembers}
@@ -216,6 +225,7 @@ export function ManualCreateSquadPage() {
               leaderId={leaderId}
               value={selectedMembers}
               onChange={setSelectedMembers}
+              candidatesReady={agentsState.hasData && membersState.hasData}
             />
           </div>
         </div>
@@ -395,6 +405,7 @@ function AdditionalMembersPicker({
   leaderId,
   value,
   onChange,
+  candidatesReady,
 }: {
   agents: Agent[];
   members: MemberWithUser[];
@@ -402,10 +413,12 @@ function AdditionalMembersPicker({
   leaderId: string;
   value: SelectedMember[];
   onChange: (next: SelectedMember[]) => void;
+  candidatesReady: boolean;
 }) {
   const { t } = useT("modals");
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
+  const listboxId = useId();
 
   const isSelected = (type: "agent" | "member", id: string) =>
     value.some((m) => m.type === type && m.id === id);
@@ -463,85 +476,51 @@ function AdditionalMembersPicker({
         {t(($) => $.create_squad.members_hint)}
       </p>
 
-      <Popover
+      <PropertyPicker
         open={open}
-        onOpenChange={(v) => {
-          setOpen(v);
-          if (!v) setFilter("");
-        }}
-      >
-        {/* render={<div role="combobox" />} — chips contain their own remove
-            <button>, so the trigger cannot itself be a <button> without
-            nesting interactive content. Base UI injects click/keyboard/ARIA
-            wiring into the rendered element. */}
-        <PopoverTrigger
-          nativeButton={false}
-          render={
-            <div
-              role="combobox"
+        onOpenChange={setOpen}
+        align="start"
+        width="w-[var(--anchor-width)]"
+        searchable
+        searchPlaceholder={t(($) => $.create_squad.picker_search_placeholder)}
+        onSearchChange={setFilter}
+        listboxId={listboxId}
+        listboxLabel={t(($) => $.create_squad.members_label)}
+        multiple
+        trigger={null}
+        triggerRender={
+            <button
+              type="button"
               aria-label={t(($) => $.create_squad.members_label)}
               aria-haspopup="listbox"
               aria-expanded={open}
-              aria-controls="squad-member-listbox"
-              tabIndex={0}
+              aria-controls={open ? listboxId : undefined}
               className="flex w-full min-w-0 cursor-pointer items-center gap-3 rounded-lg border border-border bg-background px-3 py-2.5 text-left text-body transition-colors hover:bg-muted focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              {value.length === 0 ? (
-                <>
-                  <UserPlus className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  <span className="min-w-0 flex-1 truncate text-muted-foreground">
-                    {t(($) => $.create_squad.members_placeholder)}
-                  </span>
-                </>
-              ) : (
-                <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1.5">
-                  {value.slice(0, CHIP_DISPLAY_LIMIT).map((m) => (
-                    <MemberChip
-                      key={`${m.type}:${m.id}`}
-                      m={m}
-                      onRemove={() => remove(m)}
-                    />
-                  ))}
-                  {value.length > CHIP_DISPLAY_LIMIT && (
-                    <span className="rounded-md bg-muted px-1.5 py-0.5 text-caption font-medium text-muted-foreground tabular-nums">
-                      {t(($) => $.create_squad.members_more_count, {
-                        count: value.length - CHIP_DISPLAY_LIMIT,
-                      })}
-                    </span>
-                  )}
-                </div>
-              )}
+              <UserPlus className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                {value.length > 0 ? value.map((member) => member.name).join(", ") : t(($) => $.create_squad.members_placeholder)}
+              </span>
               <ChevronDown
                 className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${
                   open ? "rotate-180" : ""
                 }`}
               />
-            </div>
-          }
-        />
-        <PopoverContent align="start" className="w-[var(--anchor-width)] p-0">
-          <div className="border-b px-2 py-1.5">
-            <input
-              autoFocus
-              type="text"
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              placeholder={t(($) => $.create_squad.picker_search_placeholder)}
-              className="w-full bg-transparent text-body placeholder:text-muted-foreground outline-none"
-            />
-          </div>
-          <div id="squad-member-listbox" role="listbox" className="max-h-72 overflow-y-auto p-1">
+            </button>
+        }
+      >
             {filteredMine.length > 0 && (
               <PickerSection label={t(($) => $.create_squad.group_my_agents)}>
                 {filteredMine.map((a) => (
                   <PickerItem
                     key={a.id}
+                    optionId={`${listboxId}-agent-${a.id}`}
                     selected={isSelected("agent", a.id)}
                     onClick={() =>
                       toggle({ type: "agent", id: a.id, name: a.name })
                     }
                   >
-                    <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot />
+                    <ActorAvatar actorType="agent" actorId={a.id} profileLink={false} size="sm" showStatusDot />
                     <span className="truncate">{a.name}</span>
                   </PickerItem>
                 ))}
@@ -552,12 +531,13 @@ function AdditionalMembersPicker({
                 {filteredOthers.map((a) => (
                   <PickerItem
                     key={a.id}
+                    optionId={`${listboxId}-agent-${a.id}`}
                     selected={isSelected("agent", a.id)}
                     onClick={() =>
                       toggle({ type: "agent", id: a.id, name: a.name })
                     }
                   >
-                    <ActorAvatar actorType="agent" actorId={a.id} size="sm" showStatusDot />
+                    <ActorAvatar actorType="agent" actorId={a.id} profileLink={false} size="sm" showStatusDot />
                     <span className="truncate">{a.name}</span>
                   </PickerItem>
                 ))}
@@ -568,21 +548,24 @@ function AdditionalMembersPicker({
                 {filteredMembers.map((m) => (
                   <PickerItem
                     key={m.user_id}
+                    optionId={`${listboxId}-member-${m.user_id}`}
                     selected={isSelected("member", m.user_id)}
                     onClick={() =>
                       toggle({ type: "member", id: m.user_id, name: m.name })
                     }
                   >
-                    <ActorAvatar actorType="member" actorId={m.user_id} size="sm" />
+                    <ActorAvatar actorType="member" actorId={m.user_id} profileLink={false} size="sm" />
                     <span className="truncate">{m.name}</span>
                   </PickerItem>
                 ))}
               </PickerSection>
             )}
-            {!anyResults && <PickerEmpty />}
-          </div>
-        </PopoverContent>
-      </Popover>
+            {candidatesReady && !anyResults && <PickerEmpty />}
+      </PropertyPicker>
+      {value.length > 0 && <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        {value.slice(0, CHIP_DISPLAY_LIMIT).map((member) => <MemberChip key={`${member.type}:${member.id}`} m={member} onRemove={() => remove(member)} />)}
+        {value.length > CHIP_DISPLAY_LIMIT && <span className="text-caption text-muted-foreground">{t(($) => $.create_squad.members_more_count, { count: value.length - CHIP_DISPLAY_LIMIT })}</span>}
+      </div>}
     </div>
   );
 }

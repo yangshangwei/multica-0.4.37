@@ -4,7 +4,12 @@ export interface NavigationAdapter {
   /** Changes for explicit opens even when the destination URL is unchanged. */
   navigationKey?: number;
   push(path: string): void;
-  replace(path: string): void;
+  /**
+   * `preserveView` only normalizes an alias for the already-rendered resource.
+   * Web updates browser history without a route transition; SPA adapters may
+   * use their ordinary replacement. Never use it to open a different entity.
+   */
+  replace(path: string, options?: { preserveView?: boolean }): void;
   back(): void;
   pathname: string;
   searchParams: URLSearchParams;

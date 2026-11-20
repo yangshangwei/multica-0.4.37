@@ -1,0 +1,35 @@
+test_destination_alias_refused (test_codex_container.ContextCopy.test_destination_alias_refused) ... ok
+test_driver_private_opt_in_survives_filtered_multica_env (test_codex_container.ContextCopy.test_driver_private_opt_in_survives_filtered_multica_env) ... ok
+test_nested_symlink_and_fifo_refused (test_codex_container.ContextCopy.test_nested_symlink_and_fifo_refused) ... ok
+test_regular_transcript_preserved (test_codex_container.ContextCopy.test_regular_transcript_preserved) ... ok
+test_rejected_retention_stops_durable_ledger (test_codex_container.ContextCopy.test_rejected_retention_stops_durable_ledger) ... ok
+test_source_absolute_host_symlink_refused (test_codex_container.ContextCopy.test_source_absolute_host_symlink_refused) ... ok
+test_bundle_keeps_commit_and_authors (test_git_role_handoff.GitTransfer.test_bundle_keeps_commit_and_authors) ... ok
+test_bundle_tamper_and_wrong_base_refused (test_git_role_handoff.GitTransfer.test_bundle_tamper_and_wrong_base_refused) ... ok
+test_changed_protected_test_refused (test_git_role_handoff.GitTransfer.test_changed_protected_test_refused) ... ok
+test_manifest_path_projection_cannot_lie (test_git_role_handoff.GitTransfer.test_manifest_path_projection_cannot_lie) ... ok
+test_outside_role_and_symlink_refused (test_git_role_handoff.GitTransfer.test_outside_role_and_symlink_refused) ... ok
+test_receiver_baseline_must_match (test_git_role_handoff.GitTransfer.test_receiver_baseline_must_match) ... ok
+test_original_actor_and_stdin_preserved_without_shell (test_multica_spool.SpoolTests.test_original_actor_and_stdin_preserved_without_shell) ... ok
+test_replayed_request_is_not_executed_twice (test_multica_spool.SpoolTests.test_replayed_request_is_not_executed_twice) ... ok
+test_review_scope_preserves_allow_read_post_only (test_multica_spool.SpoolTests.test_review_scope_preserves_allow_read_post_only) ... ok
+test_scope_and_global_override_refused (test_multica_spool.SpoolTests.test_scope_and_global_override_refused) ... ok
+test_symlink_and_outside_cwd_refused (test_multica_spool.SpoolTests.test_symlink_and_outside_cwd_refused) ... ok
+test_variant_only_backlog_unassigned (test_multica_spool.SpoolTests.test_variant_only_backlog_unassigned) ... ok
+test_apparently_complete_real_registration_is_still_disabled (test_runtime_controls.Controls.test_apparently_complete_real_registration_is_still_disabled) ... ok
+test_concurrent_reservations_admit_one (test_runtime_controls.Controls.test_concurrent_reservations_admit_one) ... ok
+test_expiry_hash_and_disabled_real_gate (test_runtime_controls.Controls.test_expiry_hash_and_disabled_real_gate) ... ok
+test_failed_launch_debits_and_stops (test_runtime_controls.Controls.test_failed_launch_debits_and_stops) ... ok
+test_gateway_allowlist_auth_identity_redirect_and_request_cap (test_runtime_controls.Controls.test_gateway_allowlist_auth_identity_redirect_and_request_cap) ... ok
+test_private_ledger_rejects_another_registration (test_runtime_controls.Controls.test_private_ledger_rejects_another_registration) ... ok
+test_request_time_and_no_active_process_are_refused (test_runtime_controls.Controls.test_request_time_and_no_active_process_are_refused) ... ok
+test_reservation_cap_and_ambiguous_predecessor (test_runtime_controls.Controls.test_reservation_cap_and_ambiguous_predecessor) ... ok
+test_reviewed_real_admission_is_bound_without_launching (test_runtime_controls.Controls.test_reviewed_real_admission_is_bound_without_launching) ... ok
+test_timeout_is_recorded_and_stops (test_runtime_controls.Controls.test_timeout_is_recorded_and_stops) ... ok
+test_uncapped_authority_retains_failures_and_requires_diagnosis (test_runtime_controls.Controls.test_uncapped_authority_retains_failures_and_requires_diagnosis) ... ok
+test_uncapped_without_explicit_authority_is_rejected (test_runtime_controls.Controls.test_uncapped_without_explicit_authority_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 30 tests in 4.042s
+
+OK

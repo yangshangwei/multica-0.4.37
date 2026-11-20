@@ -17,6 +17,14 @@ func stageQAReport(ctx context.Context, tx pgx.Tx, access CollaborationIssueAcce
 }
 
 func stageQAReportAs(ctx context.Context, tx pgx.Tx, access CollaborationIssueAccess, candidate db.CollaborationStageCandidate, id string, lock bool, credential ArtifactCredentialSnapshot) (collaborationStoredTestReport, string, error) {
+	return stageQAReportInTx(ctx, tx, access, candidate, id, lock, credential, false)
+}
+
+func stageQAReportReadAs(ctx context.Context, tx pgx.Tx, access CollaborationIssueAccess, candidate db.CollaborationStageCandidate, id string, credential ArtifactCredentialSnapshot) (collaborationStoredTestReport, string, error) {
+	return stageQAReportInTx(ctx, tx, access, candidate, id, true, credential, true)
+}
+
+func stageQAReportInTx(ctx context.Context, tx pgx.Tx, access CollaborationIssueAccess, candidate db.CollaborationStageCandidate, id string, lock bool, credential ArtifactCredentialSnapshot, readProjection bool) (collaborationStoredTestReport, string, error) {
 	q := db.New(tx)
 	var p collaborationStoredTestReport
 	if !access.SourceMember {
@@ -53,7 +61,18 @@ func stageQAReportAs(ctx context.Context, tx pgx.Tx, access CollaborationIssueAc
 		return p, "", err
 	}
 	if lock {
-		run, err = q.LockCollaborationStageTestRun(ctx, run.ID)
+		if readProjection {
+			tag, err := tx.Exec(ctx, `SELECT id FROM collaboration_run WHERE id=$1 FOR SHARE NOWAIT`, run.ID)
+			if err != nil {
+				return p, "", err
+			}
+			if tag.RowsAffected() != 1 {
+				return p, "", pgx.ErrNoRows
+			}
+			run, err = q.GetCollaborationRecordedRun(ctx, db.GetCollaborationRecordedRunParams{IssueID: access.Issue.ID, RunID: run.ID})
+		} else {
+			run, err = q.LockCollaborationStageTestRun(ctx, run.ID)
+		}
 		if err != nil {
 			return p, "", err
 		}

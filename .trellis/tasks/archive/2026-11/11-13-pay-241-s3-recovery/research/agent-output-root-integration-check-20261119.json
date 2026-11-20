@@ -1,0 +1,1289 @@
+{
+  "at": "2026-11-19T10:17:32.273639+00:00",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "reviewer": "/root/root_output_integration_check",
+  "status": "ROOT_OUTPUT_INTEGRATION_COMPATIBILITY_PASS",
+  "markdown": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/agent-output-root-integration-check-20261119.md",
+  "markdown_sha256": "5b36bd9b597bd28b574249062488f95772e7b57e467de1f536025ae50e8f088b",
+  "write_scope": [
+    "research/agent-output-root-integration-check-20261119.md",
+    "research/agent-output-root-integration-check-20261119.json",
+    "privateverification/build/audit outputs"
+  ],
+  "ROOT_product_writes": 0,
+  "helper_config_writes": 0,
+  "Git_or_spec_or_task_or_journal_writes": 0,
+  "actual_named_test_or_DB_or_browser_or_Provider_bodies": 0,
+  "checks": [
+    {
+      "label": "root-output-compile-r01",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-c",
+        "-o",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/server",
+        "./internal/migrations",
+        "./internal/cli",
+        "./cmd/multica"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "pid": 2090,
+      "started_at": "2026-11-19T09:59:01.219170+00:00",
+      "ended_at": "2026-11-19T10:04:19.153808+00:00",
+      "exit": 0,
+      "result_sha256": "21c696ac5736420662c5178db56cc1e44929d977133cec7390a52163c5767a49",
+      "command_sha256": "21a00bff87b47819a32f1502e8f6b7712f88c994d2fdff2c1fa9b3c82c91ea21",
+      "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+      "source_after_sha256": "00f6644820fc227a18391050044c803abd4d9839ba1ce764776231038a667fe1",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+        ".omc/state/hud-stdin-cache.json"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-vet-r01",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "vet",
+        "./internal/service",
+        "./internal/handler",
+        "./cmd/server",
+        "./internal/migrations",
+        "./internal/cli",
+        "./cmd/multica"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/server",
+      "pid": 2091,
+      "started_at": "2026-11-19T09:59:01.228164+00:00",
+      "ended_at": "2026-11-19T10:02:09.205182+00:00",
+      "exit": 0,
+      "result_sha256": "3689795a2d7d3bf197563fd55c8a2ea6193e5524b7021cf8c721894622dd8d8c",
+      "command_sha256": "45e17605e38d2578b0a2649ff4a3283eb1d68fffd05933563aa81c0db6d00ad6",
+      "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+      "source_after_sha256": "405e8b5623b031d4bc5ecc5db967e7d6795b076c7ba3588a6f45988addc83ca0",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+        ".omc/state/hud-stdin-cache.json"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-core-typecheck-r01",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/typescript/lib/tsc.js",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core",
+      "pid": 2089,
+      "started_at": "2026-11-19T09:59:01.213773+00:00",
+      "ended_at": "2026-11-19T10:02:05.359696+00:00",
+      "exit": 0,
+      "result_sha256": "5c2aa81ba2bd5da451b52ff1b350fae1c6829f9f9e24ec2a579346359434b9b4",
+      "command_sha256": "0d5bd1222b2b31141546f3358f876e67c0d587acf536cc7ef8558f6bd1768ef5",
+      "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+      "source_after_sha256": "405e8b5623b031d4bc5ecc5db967e7d6795b076c7ba3588a6f45988addc83ca0",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+        ".omc/state/hud-stdin-cache.json"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/typescript/lib/tsc.js": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-views-typecheck-r01",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/typescript/lib/tsc.js",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views",
+      "pid": 2088,
+      "started_at": "2026-11-19T09:59:01.212870+00:00",
+      "ended_at": "2026-11-19T10:04:33.957708+00:00",
+      "exit": 0,
+      "result_sha256": "695c148629074bf88821a4af49f9623d28646fe4b399809a0c8413ae0288b02d",
+      "command_sha256": "506397104367e370a8f8a2b9deb517802884d334892aa0004a82e92389bb3509",
+      "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+      "source_after_sha256": "d9d982d2b3eef1fada76d91f7b8d9467c2d8c6ce77f1afd73ca0502c5f966b88",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+        ".omc/state/hud-stdin-cache.json"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/typescript/lib/tsc.js": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-core-lint-r01",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js",
+        "api/client.ts",
+        "collaboration/attachment-schema.test.ts",
+        "collaboration/attachment-schema.ts",
+        "collaboration/run-records-schema.test.ts",
+        "collaboration/run-records-schema.ts",
+        "--max-warnings",
+        "0"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core",
+      "pid": 3660,
+      "started_at": "2026-11-19T10:04:18.827309+00:00",
+      "ended_at": "2026-11-19T10:06:21.168754+00:00",
+      "exit": 0,
+      "result_sha256": "8faa0b2793c32a10b2d03fac5edcbe994222e0a10a043e1938a7d7d1615a26fc",
+      "command_sha256": "5108c2645efb55153821ebd20aabf7ad9632178f764f1d50d5160f6f9fb35a3f",
+      "source_before_sha256": "a27a9101ea0cf446083a5c08490a362915ff483881c043af24982c39d28b584d",
+      "source_after_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-views-lint-r01",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js",
+        "collaboration/run-records.test.tsx",
+        "collaboration/run-records.tsx",
+        "--max-warnings",
+        "0"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views",
+      "pid": 3659,
+      "started_at": "2026-11-19T10:04:18.797954+00:00",
+      "ended_at": "2026-11-19T10:06:21.244122+00:00",
+      "exit": 0,
+      "result_sha256": "0734c5560f7d45b02e1d52249adce1420f060fe1e25359bbdc5bb8ce30623f79",
+      "command_sha256": "20f0d25b4519766259b7247adb9a7da71d12a5086b19d3ba5cdaa28a52809284",
+      "source_before_sha256": "a27a9101ea0cf446083a5c08490a362915ff483881c043af24982c39d28b584d",
+      "source_after_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-e2e-lint-r01",
+      "argv": [
+        "/opt/homebrew/opt/node@22/bin/node",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js",
+        "--config",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/eslint-root-output-r01.config.mjs",
+        "e2e/collaboration-runtime-output.spec.ts",
+        "e2e/fixtures/collaboration-runtime-output.ts",
+        "e2e/fixtures/collaboration-recovery-runtime.ts",
+        "--max-warnings",
+        "0"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "pid": 3815,
+      "started_at": "2026-11-19T10:06:19.839614+00:00",
+      "ended_at": "2026-11-19T10:07:23.803396+00:00",
+      "exit": 0,
+      "result_sha256": "4b0a5e248f763ce305723a7160bfe190dc09088c7c60f67ab49cd5f41fcc2712",
+      "command_sha256": "4b3c87461f6b3e833294806e096b997eab3c3dd68bcecf4f03cb7da115eb9c22",
+      "source_before_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+      "source_after_sha256": "748141e23f3932c2b26f9bef4f3752f6de1c9564832459aa773b52bd8ab03036",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+        "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/eslint/bin/eslint.js": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8",
+        "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/eslint-root-output-r01.config.mjs": "c959c4f71984d4fd5a284fb7bb8f8c5f73da5a78d491e8b3a737ee0887694069"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    },
+    {
+      "label": "root-output-gofmt-r01",
+      "argv": [
+        "/opt/homebrew/bin/gofmt",
+        "-l",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/migrate/migrate_collaboration_runtime_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_collaboration.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_collaboration_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_issue.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/server/router.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/collaboration_output.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/collaboration_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_runtime_output.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_runtime_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_attachments.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_checkpoints.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_records.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_capabilities.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_handoff.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_concurrency_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_host_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_preparation.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_squad.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_test_report.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_attachments.sql.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_delivery.sql.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_preparation.sql.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/models.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/server/collaboration_runtime_output_test.go",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-host-provider.go"
+      ],
+      "cwd": "/Volumes/artisan/code/2026/multica-0.4.37",
+      "pid": 3814,
+      "started_at": "2026-11-19T10:06:19.746198+00:00",
+      "ended_at": "2026-11-19T10:07:23.803398+00:00",
+      "exit": 0,
+      "result_sha256": "75f44ec68e6455e97551b5f6bf6e7a5b3d82c16a265c93567e717299e51cda54",
+      "command_sha256": "081111ab860c4f84deb18e4a7ebd688875865ab758916bcd4aba993968f2a14f",
+      "source_before_sha256": "d2fb759f7e4458e1a0682034dcdf548cc39b22fd352fedf40bb05e2cafbc4d5d",
+      "source_after_sha256": "748141e23f3932c2b26f9bef4f3752f6de1c9564832459aa773b52bd8ab03036",
+      "source_record_count": 69259,
+      "raw_source_drift": [
+        ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+      ],
+      "code_source_drift": [],
+      "config_sha256": "4a32aceeab90097ac4856cbbc2f0553f48d4227be765f2a5b4ebf352f21ebd6f",
+      "recorder_sha256": "f1c049dcf839752144999b1d909738a124c815ce36a621c79c20d10668f920fa",
+      "tools": {
+        "/opt/homebrew/bin/gofmt": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/migrate/migrate_collaboration_runtime_output_test.go": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_collaboration.go": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_collaboration_output_test.go": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/multica/cmd_issue.go": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/server/router.go": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/collaboration_output.go": "bcb9f3f392e752519e39a4612cb9c372f63cba16ea7790b8d2259d26ede14ecf",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/cli/collaboration_output_test.go": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_runtime_output.go": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/handler/collaboration_runtime_output_test.go": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_attachments.go": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_checkpoints.go": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_records.go": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_capabilities.go": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_handoff.go": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output.go": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_concurrency_test.go": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_host_test.go": "4d5b82859dfde15030701860688976c09c8b5e0f09cdd537815ab401db17822c",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_output_test.go": "6e30ac720ee65cbf9eaba7650c1463d30b7a9a79006dc15f96504ebfe949ae19",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_runtime_preparation.go": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_squad.go": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/service/collaboration_test_report.go": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_attachments.sql.go": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_delivery.sql.go": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/collaboration_preparation.sql.go": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/pkg/db/generated/models.go": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+        "/Volumes/artisan/code/2026/multica-0.4.37/server/cmd/server/collaboration_runtime_output_test.go": "23535a40f490f4b4427cb946454de35616bcd63eb457f2b6d73b94d86fa3f9e7",
+        "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-host-provider.go": "dd97c9266823a1fe6617e760306d18e17165f67fd2f981ae8a93f7fa4aca2f89"
+      },
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "empty_stdout_stderr": true
+    }
+  ],
+  "43_owned_bindings": [
+    {
+      "path": "server/cmd/migrate/migrate_collaboration_runtime_output_test.go",
+      "ROOT_sha256": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+      "candidate_sha256": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration.go",
+      "ROOT_sha256": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+      "candidate_sha256": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/cmd/multica/cmd_collaboration_output_test.go",
+      "ROOT_sha256": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+      "candidate_sha256": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue.go",
+      "ROOT_sha256": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+      "candidate_sha256": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "ROOT_sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "candidate_sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": true,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/cli/collaboration_output.go",
+      "ROOT_sha256": "bcb9f3f392e752519e39a4612cb9c372f63cba16ea7790b8d2259d26ede14ecf",
+      "candidate_sha256": "bcb9f3f392e752519e39a4612cb9c372f63cba16ea7790b8d2259d26ede14ecf",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/cli/collaboration_output_test.go",
+      "ROOT_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+      "candidate_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_output.go",
+      "ROOT_sha256": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+      "candidate_sha256": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/handler/collaboration_runtime_output_test.go",
+      "ROOT_sha256": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+      "candidate_sha256": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "ROOT_sha256": "d22ef6807c97eaafb720cdab0c7533db6f59d1507eafed2b982679d6ea4b4877",
+      "candidate_sha256": "d22ef6807c97eaafb720cdab0c7533db6f59d1507eafed2b982679d6ea4b4877",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "ROOT_sha256": "7fc3420311688274e10e856667cace77a2429dc8afe4cdb34e3817af0d7cb2fe",
+      "candidate_sha256": "7fc3420311688274e10e856667cace77a2429dc8afe4cdb34e3817af0d7cb2fe",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "ROOT_sha256": "bb263bf6c799f81362e7ae309ddcd6e5a30102f988a2040193f0b9d59d6d57e8",
+      "candidate_sha256": "bb263bf6c799f81362e7ae309ddcd6e5a30102f988a2040193f0b9d59d6d57e8",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "ROOT_sha256": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+      "candidate_sha256": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_checkpoints.go",
+      "ROOT_sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+      "candidate_sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_records.go",
+      "ROOT_sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+      "candidate_sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "ROOT_sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+      "candidate_sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "ROOT_sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+      "candidate_sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": true,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_output.go",
+      "ROOT_sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+      "candidate_sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_output_concurrency_test.go",
+      "ROOT_sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+      "candidate_sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_output_host_test.go",
+      "ROOT_sha256": "4d5b82859dfde15030701860688976c09c8b5e0f09cdd537815ab401db17822c",
+      "candidate_sha256": "4d5b82859dfde15030701860688976c09c8b5e0f09cdd537815ab401db17822c",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_output_test.go",
+      "ROOT_sha256": "6e30ac720ee65cbf9eaba7650c1463d30b7a9a79006dc15f96504ebfe949ae19",
+      "candidate_sha256": "6e30ac720ee65cbf9eaba7650c1463d30b7a9a79006dc15f96504ebfe949ae19",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_preparation.go",
+      "ROOT_sha256": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+      "candidate_sha256": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "ROOT_sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+      "candidate_sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report.go",
+      "ROOT_sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+      "candidate_sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/migrations/868_collaboration_runtime_output.down.sql",
+      "ROOT_sha256": "1476b6b0b73c26a7348e69460441b379e4c04154efa27e5f8547b0f5fbb63981",
+      "candidate_sha256": "1476b6b0b73c26a7348e69460441b379e4c04154efa27e5f8547b0f5fbb63981",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/migrations/868_collaboration_runtime_output.up.sql",
+      "ROOT_sha256": "22eddb7c43a91ee5d653c77074f3cedebc6526d04245900ee7730c6ff093c727",
+      "candidate_sha256": "22eddb7c43a91ee5d653c77074f3cedebc6526d04245900ee7730c6ff093c727",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_attachments.sql.go",
+      "ROOT_sha256": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+      "candidate_sha256": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_delivery.sql.go",
+      "ROOT_sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+      "candidate_sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": true,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/pkg/db/generated/collaboration_preparation.sql.go",
+      "ROOT_sha256": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+      "candidate_sha256": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/pkg/db/generated/models.go",
+      "ROOT_sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+      "candidate_sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": true,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_attachments.sql",
+      "ROOT_sha256": "3df4eb5d265a2db3d750a41df73a64a828be09c29ba2b4ea53e55025bbe0a58b",
+      "candidate_sha256": "3df4eb5d265a2db3d750a41df73a64a828be09c29ba2b4ea53e55025bbe0a58b",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "server/cmd/server/collaboration_runtime_output_test.go",
+      "ROOT_sha256": "23535a40f490f4b4427cb946454de35616bcd63eb457f2b6d73b94d86fa3f9e7",
+      "candidate_sha256": "23535a40f490f4b4427cb946454de35616bcd63eb457f2b6d73b94d86fa3f9e7",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/core/api/client.ts",
+      "ROOT_sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+      "candidate_sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+      "ROOT_mode": "0o755",
+      "original_ROOT_mode": "0o755",
+      "preexisting_WIP": true,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.test.ts",
+      "ROOT_sha256": "9e1ff6d1571d9a47cc6042128a7b97d2e33ba2721753a5fffe148504daaf96c7",
+      "candidate_sha256": "9e1ff6d1571d9a47cc6042128a7b97d2e33ba2721753a5fffe148504daaf96c7",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.ts",
+      "ROOT_sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+      "candidate_sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.test.ts",
+      "ROOT_sha256": "81c99a488e9f7e3630f1d4879fb5e34fd020a357a430bc8a2e2856c5a3b52896",
+      "candidate_sha256": "81c99a488e9f7e3630f1d4879fb5e34fd020a357a430bc8a2e2856c5a3b52896",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.ts",
+      "ROOT_sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+      "candidate_sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/views/collaboration/run-records.test.tsx",
+      "ROOT_sha256": "b6603e212563cb7f046a34191380d5c39cad2775aa8f2d07485f4e167039a095",
+      "candidate_sha256": "b6603e212563cb7f046a34191380d5c39cad2775aa8f2d07485f4e167039a095",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "packages/views/collaboration/run-records.tsx",
+      "ROOT_sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+      "candidate_sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "e2e/collaboration-runtime-output.spec.ts",
+      "ROOT_sha256": "a0df987a7ad31270b452f93e405115971dda23f6866016cb2b47d2ed5a1aa071",
+      "candidate_sha256": "a0df987a7ad31270b452f93e405115971dda23f6866016cb2b47d2ed5a1aa071",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-runtime-output.ts",
+      "ROOT_sha256": "354a095cb91ff1618889686d3a43dab3160e0ce8a1c82159ea2f875191a9afa1",
+      "candidate_sha256": "354a095cb91ff1618889686d3a43dab3160e0ce8a1c82159ea2f875191a9afa1",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": null,
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-provider.go",
+      "ROOT_sha256": "dd97c9266823a1fe6617e760306d18e17165f67fd2f981ae8a93f7fa4aca2f89",
+      "candidate_sha256": "dd97c9266823a1fe6617e760306d18e17165f67fd2f981ae8a93f7fa4aca2f89",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    },
+    {
+      "path": "e2e/fixtures/collaboration-recovery-runtime.ts",
+      "ROOT_sha256": "d63c4a7a75f7227bf5b7de82b9422f5e3c6add78767399ed3f9890feb452c678",
+      "candidate_sha256": "d63c4a7a75f7227bf5b7de82b9422f5e3c6add78767399ed3f9890feb452c678",
+      "ROOT_mode": "0o644",
+      "original_ROOT_mode": "0o644",
+      "preexisting_WIP": false,
+      "baseline_image_matches": true
+    }
+  ],
+  "six_original_test_source_mode_presence_differences": [
+    {
+      "path": "server/cmd/server/collaboration_knowledge_host_composite_test.go",
+      "BASE_sha256": "65ae484fd2124cfb18403b2dfaa4200c5d65694fd527db0668fe2075011af1e0",
+      "BASE_mode": "0o644",
+      "ROOT_sha256": "2a23b2e20a664bcc5d4f91696f2310f46a50002a14153f33ba6443ed14b9b298",
+      "ROOT_mode": "0o644",
+      "difference_kind": "byte"
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_execution_control_test.go",
+      "BASE_sha256": "5a8dceb725802a80d61438e0f6b1f2055eefffa88b964ab203f6b8a05fca579e",
+      "BASE_mode": "0o644",
+      "ROOT_sha256": "024bdd6c3b19227cc3dceed3debc483fd936cfe86998abc26b7017facb51cc53",
+      "ROOT_mode": "0o644",
+      "difference_kind": "byte"
+    },
+    {
+      "path": "server/cmd/server/integration_test.go",
+      "BASE_sha256": "41f902f7c1194190d27fb293e06e68633149f4ce5dafaf2e2bf9a7bcbb62619d",
+      "BASE_mode": "0o755",
+      "ROOT_sha256": "25f1acc56ce6802909feae8d1e5dca1204cd94428171ccc686de9875ee2adcb1",
+      "ROOT_mode": "0o755",
+      "difference_kind": "byte"
+    },
+    {
+      "path": "server/cmd/server/pay241_read_diagnostics_scope_test.go",
+      "BASE_sha256": "eca97665babb5e64726dd9f47fb9db0d283a553804a2a2a142fc596689432eec",
+      "BASE_mode": "0o644",
+      "ROOT_sha256": null,
+      "ROOT_mode": null,
+      "difference_kind": "BASE_only"
+    },
+    {
+      "path": "server/cmd/server/pay241_read_diagnostics_test.go",
+      "BASE_sha256": "ff9c99202fdb21ab80220ad11f39ad598cc021923346e933ac4a49a9e97f1cb0",
+      "BASE_mode": "0o600",
+      "ROOT_sha256": null,
+      "ROOT_mode": null,
+      "difference_kind": "BASE_only"
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow_read_concurrency_test.go",
+      "BASE_sha256": "0dfec7c38d0cc651aaf614cc9208ab2f00ec055c6cf6f846684ed34e06cf31c6",
+      "BASE_mode": "0o600",
+      "ROOT_sha256": "0dfec7c38d0cc651aaf614cc9208ab2f00ec055c6cf6f846684ed34e06cf31c6",
+      "ROOT_mode": "0o644",
+      "difference_kind": "mode_only"
+    }
+  ],
+  "raw_noncode_reconciliation": {
+    "at": "2026-11-19T10:10:09.076689+00:00",
+    "checker": "/root/root_output_integration_check",
+    "authorized_by_Main_message": true,
+    "allowed_exact_noncode_paths": {
+      ".artifacts/e2e-20261118-203130/legacy/logs/api.log": "unowned legacy acceptance API log",
+      ".omc/state/hud-stdin-cache.json": "generated HUD cache"
+    },
+    "no_recorder_or_raw_result_rewrite": true,
+    "no_rerun": true,
+    "profiles": [
+      {
+        "label": "root-output-compile-r01",
+        "result_sha256": "21c696ac5736420662c5178db56cc1e44929d977133cec7390a52163c5767a49",
+        "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+        "source_after_sha256": "00f6644820fc227a18391050044c803abd4d9839ba1ce764776231038a667fe1",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+          ".omc/state/hud-stdin-cache.json"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "7033a4967b9b08bbafd6d7420c15e133eaa0963280fd9f611e2bdad285b35179"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "12519a807df28702ddbcb2a69560040b85b2bfe49eb73093a850ec6eec2a9c30"
+            }
+          },
+          {
+            "path": ".omc/state/hud-stdin-cache.json",
+            "classification": "generated HUD cache",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "fce5972cf015706a68db06d6be0d7e64b2efb799fe0f325327083de9dba72b79"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "9f7cf3aa06f63d95e3f825359c3037a03c9d7f6dd0f54c151b9ce0a20f2865b7"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-vet-r01",
+        "result_sha256": "3689795a2d7d3bf197563fd55c8a2ea6193e5524b7021cf8c721894622dd8d8c",
+        "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+        "source_after_sha256": "405e8b5623b031d4bc5ecc5db967e7d6795b076c7ba3588a6f45988addc83ca0",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+          ".omc/state/hud-stdin-cache.json"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "7033a4967b9b08bbafd6d7420c15e133eaa0963280fd9f611e2bdad285b35179"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "446e02e7c5eaecd188eebe467e6c9d5ba353a431ce9f38e0a1ad8f457dddbeab"
+            }
+          },
+          {
+            "path": ".omc/state/hud-stdin-cache.json",
+            "classification": "generated HUD cache",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "fce5972cf015706a68db06d6be0d7e64b2efb799fe0f325327083de9dba72b79"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "795350d312e578110be5e09cd1a3213265c88f88b3ede0c400c3ffddabb686e1"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-core-typecheck-r01",
+        "result_sha256": "5c2aa81ba2bd5da451b52ff1b350fae1c6829f9f9e24ec2a579346359434b9b4",
+        "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+        "source_after_sha256": "405e8b5623b031d4bc5ecc5db967e7d6795b076c7ba3588a6f45988addc83ca0",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+          ".omc/state/hud-stdin-cache.json"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "7033a4967b9b08bbafd6d7420c15e133eaa0963280fd9f611e2bdad285b35179"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "446e02e7c5eaecd188eebe467e6c9d5ba353a431ce9f38e0a1ad8f457dddbeab"
+            }
+          },
+          {
+            "path": ".omc/state/hud-stdin-cache.json",
+            "classification": "generated HUD cache",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "fce5972cf015706a68db06d6be0d7e64b2efb799fe0f325327083de9dba72b79"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "795350d312e578110be5e09cd1a3213265c88f88b3ede0c400c3ffddabb686e1"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-views-typecheck-r01",
+        "result_sha256": "695c148629074bf88821a4af49f9623d28646fe4b399809a0c8413ae0288b02d",
+        "source_before_sha256": "343b0c46be00381d5827fb1bfa75643806070e3f1bcef0520b746275579a788a",
+        "source_after_sha256": "d9d982d2b3eef1fada76d91f7b8d9467c2d8c6ce77f1afd73ca0502c5f966b88",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+          ".omc/state/hud-stdin-cache.json"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "7033a4967b9b08bbafd6d7420c15e133eaa0963280fd9f611e2bdad285b35179"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "b43a74cbea83a3304528aca3312bcfed51bd67430d1d988307ba75adcb6fdd3f"
+            }
+          },
+          {
+            "path": ".omc/state/hud-stdin-cache.json",
+            "classification": "generated HUD cache",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "fce5972cf015706a68db06d6be0d7e64b2efb799fe0f325327083de9dba72b79"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".omc/state/hud-stdin-cache.json",
+              "mode": "0o644",
+              "sha256": "9f7cf3aa06f63d95e3f825359c3037a03c9d7f6dd0f54c151b9ce0a20f2865b7"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-core-lint-r01",
+        "result_sha256": "8faa0b2793c32a10b2d03fac5edcbe994222e0a10a043e1938a7d7d1615a26fc",
+        "source_before_sha256": "a27a9101ea0cf446083a5c08490a362915ff483881c043af24982c39d28b584d",
+        "source_after_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "4e7138a222292e53d20a95423bbd466ab93189761a06879dfcb87b0a896a22fe"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "77051dd29146603e6755ac07191fe1072a37809eb38d3c684d55d56e8c2519df"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-views-lint-r01",
+        "result_sha256": "0734c5560f7d45b02e1d52249adce1420f060fe1e25359bbdc5bb8ce30623f79",
+        "source_before_sha256": "a27a9101ea0cf446083a5c08490a362915ff483881c043af24982c39d28b584d",
+        "source_after_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "4e7138a222292e53d20a95423bbd466ab93189761a06879dfcb87b0a896a22fe"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "77051dd29146603e6755ac07191fe1072a37809eb38d3c684d55d56e8c2519df"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-e2e-lint-r01",
+        "result_sha256": "4b0a5e248f763ce305723a7160bfe190dc09088c7c60f67ab49cd5f41fcc2712",
+        "source_before_sha256": "7a761564dceab60642663d7f3ff428444ecde25f647e2738775288354f249bc3",
+        "source_after_sha256": "748141e23f3932c2b26f9bef4f3752f6de1c9564832459aa773b52bd8ab03036",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "77051dd29146603e6755ac07191fe1072a37809eb38d3c684d55d56e8c2519df"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "b4926a2c266bb290a0caa6b8f82c1daf5613de4edde500b8da3e62e853056913"
+            }
+          }
+        ]
+      },
+      {
+        "label": "root-output-gofmt-r01",
+        "result_sha256": "75f44ec68e6455e97551b5f6bf6e7a5b3d82c16a265c93567e717299e51cda54",
+        "source_before_sha256": "d2fb759f7e4458e1a0682034dcdf548cc39b22fd352fedf40bb05e2cafbc4d5d",
+        "source_after_sha256": "748141e23f3932c2b26f9bef4f3752f6de1c9564832459aa773b52bd8ab03036",
+        "raw_source_drift": [
+          ".artifacts/e2e-20261118-203130/legacy/logs/api.log"
+        ],
+        "code_source_drift": [],
+        "exceptions": [
+          {
+            "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+            "classification": "unowned legacy acceptance API log",
+            "before": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "01bce939dd9a7ee44e2d3acda3f9f50c2874bd9805a1aa14cbbd77d0fdf1c0a3"
+            },
+            "after": {
+              "root": "/Volumes/artisan/code/2026/multica-0.4.37",
+              "path": ".artifacts/e2e-20261118-203130/legacy/logs/api.log",
+              "mode": "0o600",
+              "sha256": "b4926a2c266bb290a0caa6b8f82c1daf5613de4edde500b8da3e62e853056913"
+            }
+          }
+        ]
+      }
+    ],
+    "remaining_commands_pending": false
+  },
+  "workspace_edges_current_only": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/core",
+      "target": "../../packages/core",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/desktop",
+      "target": "../../apps/desktop",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/docs",
+      "target": "../../apps/docs",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/apps/docs"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/eslint-config",
+      "target": "../../packages/eslint-config",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/eslint-config"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/mobile",
+      "target": "../../apps/mobile",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/apps/mobile"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/plugin-sdk",
+      "target": "../../packages/plugin-sdk",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/tsconfig",
+      "target": "../../packages/tsconfig",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/ui",
+      "target": "../../packages/ui",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/views",
+      "target": "../../packages/views",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/node_modules/@multica/web",
+      "target": "../../apps/web",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/apps/web"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/node_modules/@multica/eslint-config",
+      "target": "../../../eslint-config",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/eslint-config"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui/node_modules/@multica/tsconfig",
+      "target": "../../../tsconfig",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/node_modules/@multica/eslint-config",
+      "target": "../../../eslint-config",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/eslint-config"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/node_modules/@multica/tsconfig",
+      "target": "../../../tsconfig",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk/node_modules/@multica/eslint-config",
+      "target": "../../../eslint-config",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/eslint-config"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk/node_modules/@multica/tsconfig",
+      "target": "../../../tsconfig",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/node_modules/@multica/core",
+      "target": "../../../core",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/node_modules/@multica/eslint-config",
+      "target": "../../../eslint-config",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/eslint-config"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/node_modules/@multica/plugin-sdk",
+      "target": "../../../plugin-sdk",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/plugin-sdk"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/node_modules/@multica/tsconfig",
+      "target": "../../../tsconfig",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/tsconfig"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/node_modules/@multica/ui",
+      "target": "../../../ui",
+      "resolved": "/Volumes/artisan/code/2026/multica-0.4.37/packages/ui"
+    }
+  ],
+  "compile_only_binaries": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/cli.test",
+      "sha256": "de0d8481fe1bcab39fa1916e6fb31815fa2290a1ea999f7421bb5cd85702af2a",
+      "mode": "0o755",
+      "bytes": 12241554
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/handler.test",
+      "sha256": "a299768d57d00c70cf9f3ce0cf8ae4735c5eb207de6550e854f9fbed5d5efd4d",
+      "mode": "0o755",
+      "bytes": 114885922
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/migrations.test",
+      "sha256": "ca28f42bc9e237908a03d0ef56fcf349554cf8185a5c48581b7a2e0eb2d5e34f",
+      "mode": "0o755",
+      "bytes": 16851890
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/multica.test",
+      "sha256": "ed1fb523a66afb68ee425bf66467d8931a9e706f376668e0c16de9b9cf93ac02",
+      "mode": "0o755",
+      "bytes": 40497842
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/server.test",
+      "sha256": "94a0e146d6221a22848f7bf47a1f5e62401e96526b2d344caaece3efffa7f1ed",
+      "mode": "0o755",
+      "bytes": 118992946
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/root-output-static-r01/service.test",
+      "sha256": "21c0464d06c1030d4e57b293221f8358458a839164e894f541034e2196693614",
+      "mode": "0o755",
+      "bytes": 87039090
+    }
+  ],
+  "proofs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/root-output-checker-final-verification-r01.json",
+      "sha256": "4dcac9fa54eed471aa617cf29076662cecf14c47eef9f000e9917e493ca8c915"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/root-output-checker-admission-r02.json",
+      "sha256": "f8177a490154793c14253d4f118f5e703bdd53339761c1c62d75116f19becc89"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/root-output-checker-owned-binding-r01.json",
+      "sha256": "033b0bc267bd012ffbab5aed3fd87a1b7888037428890cbe6650b3ab7786cc3f"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/root-output-checker-exact-noncode-reconciliation-r01.json",
+      "sha256": "adb6d1f344a86fa4f44a0ae879b9c52b6458d7b12eaa7fbaec0c68458dcd5723"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/root-output-checker-admission-diagnostic-r01.json",
+      "sha256": "5202308558c0c5c347cb7d0d28e34b8a97fa0f9259698e10872eb9a546a4db92"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/root-output-static-permit-r02.json",
+      "sha256": "db2e193f3460260f659adaf3268cd6f5733b80bc21c382ef64b63f6d1f346e2c"
+    }
+  ],
+  "other_baseline_WIP_unchanged": true,
+  "code_package_manifest_drift": 0,
+  "raw_source_drift_retained_not_relabelled_zero": true,
+  "head": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+  "index_diff_bytes": 0,
+  "spec_sync_owner": "Main",
+  "full_S3_accepted_by_this_report": false,
+  "reused_functional_evidence": {
+    "Go_named_PASS": 406,
+    "client_named_PASS": 222,
+    "rerun": false,
+    "live_R03_review_separate": true
+  },
+  "remaining": [
+    "Main spec sync",
+    "delta-only staging of five existing WIP paths",
+    "ordinary current UI numeric CAS",
+    "final S3 R01-R09 acceptance"
+  ]
+}

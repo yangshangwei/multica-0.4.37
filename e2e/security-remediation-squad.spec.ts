@@ -19,14 +19,14 @@ for (const labels of [
   {
     locale: "en", language: "en", title: "Security Remediation Squad",
     catalog: "Squad templates", members: "8 members", project: "Project", runtime: "Execution runtime",
-    summary: "Triage security risks, repair them outside production, and verify with independent review.",
+    summary: "Triage security risks, reproduce code vulnerabilities before repairing outside production, verify with independent review, and have a security owner confirm key decisions.",
     apply: "Apply to project", confirm: "Use for project",
     dialog: "Use Security Remediation Squad for a project",
   },
   {
     locale: "zh-Hans", language: "zh", title: "安全漏洞修复小队",
     catalog: "AI小队模板", members: "8 名成员", project: "项目", runtime: "执行运行时",
-    summary: "分诊安全风险，在非生产环境修复，并由独立成员验证和审查。",
+    summary: "分诊安全风险，代码漏洞先复现再在非生产环境修复，由独立成员验证和审查，关键决策由安全负责人确认。",
     apply: "应用到项目", confirm: "用于项目", dialog: "将安全漏洞修复小队用于项目",
   },
 ]) {
@@ -95,7 +95,7 @@ for (const labels of [
       expect(selection).toMatchObject({ state: "configured", template_key: "security-remediation" });
       expect(selection.squad_id).toBeTruthy();
       const squad = await api.requestJSON<Squad>(`/api/squads/${selection.squad_id}`);
-      expect(squad).toMatchObject({ name: labels.title, template_key: "security-remediation", template_version: 1 });
+      expect(squad).toMatchObject({ name: labels.title, template_key: "security-remediation", template_version: 2 });
 
       const customName = "Application security response";
       const customDescription = "Our application-specific review and repair policy.";

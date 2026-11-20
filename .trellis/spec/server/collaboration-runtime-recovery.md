@@ -65,6 +65,27 @@ Persist and fsync that position **before** taking the run lock or making a proof
 request. HTTP failure and `ErrBusy` both consume an attempt and advance position.
 Keep these sidecars outside the `.json` run inventory.
 
+On Linux/macOS, atomic publication may replace a private ledger after a reader's
+`Open` but before `Stat`, leaving the opened old inode with `Nlink == 0`. Only a
+strict `O_RDONLY` open may close and reopen that path, at most three attempts.
+Every new descriptor must pass the original regular-file, current-owner, private
+mode and single-link checks with `O_NOFOLLOW | O_CLOEXEC`. Never return the
+unlinked descriptor, retry write/lock opens, accept multiple hardlinks or ignore
+an unsafe original file. Exhausted replacement and any failed reopen return
+`ErrUnconfirmed`. In particular, a missing replacement must not expose
+`os.ErrNotExist` to `RunLedger.load` or cursor initialization: this operation has
+already observed an existing record and must not recreate it as fresh state.
+An initially missing path retains its existing initialization behavior; corrupt
+JSON and other validation failures still refuse access.
+
+`collaborationrun/ledger_unix_test.go` deterministically interleaves an actual
+open and atomic rename, verifies the newly published content is read, and rejects
+replacement hardlinks, symlinks, shared permissions, directories and missing
+paths. It also checks write/lock refusal and descriptor closure on the bounded
+retry path. Retain an actual `Ledger.Retained()` recovery witness as well as the
+helper test. A matching race mechanism is not proof that a historical daemon
+exit had that cause when its original diagnostic log was discarded.
+
 At most eight proof attempts share one ten-second context deadline. Retained
 pre-burn recovery keeps that context through sealing and proof upload; it must
 not call the foreground abandonment path that deliberately detaches shutdown

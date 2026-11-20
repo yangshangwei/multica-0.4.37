@@ -512,7 +512,8 @@
       "new_review": "重新查看证据",
       "submit": "提交完成",
       "authorize": "授权此版本完成"
-    }
+    },
+    "description_label": "任务描述"
   },
   "timeline": {
     "loading": "加载中…"
@@ -610,10 +611,12 @@
       "bar_authors_more_other": "{{names}} 等 {{count}} 人",
       "resolve_failed": "标记已解决失败",
       "unresolve_failed": "重新打开失败"
-    }
+    },
+    "field_label": "评论"
   },
   "reply": {
-    "placeholder": "回复..."
+    "placeholder": "回复...",
+    "field_label": "回复"
   },
   "agent_activity": {
     "hover_header_other": "{{count}} 个智能体工作中",
@@ -794,7 +797,11 @@
       "agents_group": "智能体",
       "squads_group": "AI小队",
       "agent_runtime_required": "请先为该智能体绑定运行时，再分配工作",
-      "squad_runtime_required": "请先为该AI小队的负责人绑定运行时，再分配工作"
+      "squad_runtime_required": "请先为该AI小队的负责人绑定运行时，再分配工作",
+      "loading": "正在加载{{group}}…",
+      "load_failed": "{{group}}加载失败。",
+      "refresh_failed": "{{group}}刷新失败，仍显示上次加载的选项。",
+      "retry": "重试加载{{group}}"
     },
     "start_date": {
       "trigger_label": "开始日期",

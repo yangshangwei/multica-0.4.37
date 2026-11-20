@@ -228,3 +228,38 @@ func (q *Queries) LockDeliveryPolicyProject(ctx context.Context, arg LockDeliver
 	)
 	return i, err
 }
+
+const lockDeliveryPolicyProjectWait = `-- name: LockDeliveryPolicyProjectWait :one
+SELECT id, workspace_id, title, description, icon, status, lead_type, lead_id, created_at, updated_at, priority, start_date, due_date, execution_squad, revision, description_revision, in_progress_since, in_progress_since_source FROM project WHERE id=$1 AND workspace_id=$2 FOR UPDATE
+`
+
+type LockDeliveryPolicyProjectWaitParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+}
+
+func (q *Queries) LockDeliveryPolicyProjectWait(ctx context.Context, arg LockDeliveryPolicyProjectWaitParams) (Project, error) {
+	row := q.db.QueryRow(ctx, lockDeliveryPolicyProjectWait, arg.ID, arg.WorkspaceID)
+	var i Project
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.Title,
+		&i.Description,
+		&i.Icon,
+		&i.Status,
+		&i.LeadType,
+		&i.LeadID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Priority,
+		&i.StartDate,
+		&i.DueDate,
+		&i.ExecutionSquad,
+		&i.Revision,
+		&i.DescriptionRevision,
+		&i.InProgressSince,
+		&i.InProgressSinceSource,
+	)
+	return i, err
+}

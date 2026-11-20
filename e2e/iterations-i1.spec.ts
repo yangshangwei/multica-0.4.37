@@ -107,7 +107,7 @@ test("I1 Web retries detail reads, creates work in the searched iteration and op
     await expect(targetChoice).toBeVisible();
 
     const title = "Manual work uses the searched iteration";
-    await createDialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+    await createDialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
     const createdResponse = page.waitForResponse(response => new URL(response.url()).pathname === "/api/issues" && response.request().method() === "POST");
     await createDialog.getByRole("button", { name: "Create Issue", exact: true }).click();
     const response = await createdResponse;

@@ -754,7 +754,7 @@ describe("CreateIssueModal", () => {
 
   it("labels the required title, optional description and window controls", () => {
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    expect(screen.getByRole("textbox", { name: "Title (required)" })).toHaveAttribute("aria-required", "true");
+    expect(screen.getByRole("textbox", { name: "Title" })).toHaveAttribute("aria-required", "true");
     expect(screen.getByRole("textbox", { name: "Description (optional)" })).not.toHaveAttribute("aria-required", "true");
     expect(screen.getByRole("button", { name: "Expand" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
@@ -872,7 +872,7 @@ describe("CreateIssueModal", () => {
     await screen.findByRole("button", { name: "Undo" });
     await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
     await waitFor(() => expect(screen.queryByText("Clarified request")).not.toBeInTheDocument());
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveValue("");
     expect(screen.getByRole("button", { name: "Refine description" })).toBeDisabled();
     expect(onClose).not.toHaveBeenCalled();
   });
@@ -884,7 +884,7 @@ describe("CreateIssueModal", () => {
     await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
     expect(mockCreateIssue).not.toHaveBeenCalled();
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveValue("Clarified request");
     await userEvent.click(screen.getByRole("button", { name: "Create Issue" }));
     expect(mockCreateIssue).toHaveBeenCalledWith(expect.objectContaining({ description: "Clarified request" }));
   });
@@ -894,11 +894,11 @@ describe("CreateIssueModal", () => {
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
     await userEvent.click(screen.getByRole("button", { name: "Refine description" }));
     await screen.findByRole("button", { name: "Undo" });
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Clarified request");
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveValue("Clarified request");
     expect(mockDraftStore.draft.manual.description).toBe("Clarified request");
     expect(mockDraftStore.draft.agent.prompt).toBe("");
     await userEvent.click(screen.getByRole("button", { name: "Undo" }));
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("Original description");
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveValue("Original description");
   });
 
   it("uses the same compact attachment control as agent mode", () => {
@@ -913,7 +913,7 @@ describe("CreateIssueModal", () => {
 
     renderModal(<CreateIssueModal onClose={onClose} />);
 
-    fireEvent.change(screen.getByPlaceholderText("Issue title"), {
+    fireEvent.change(screen.getByPlaceholderText("Summarize the task in one line"), {
       target: { value: "  Ship create issue regression coverage  " },
     });
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
@@ -963,7 +963,7 @@ describe("CreateIssueModal", () => {
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
 
-    fireEvent.change(screen.getByPlaceholderText("Issue title"), {
+    fireEvent.change(screen.getByPlaceholderText("Summarize the task in one line"), {
       target: { value: "Labeled issue" },
     });
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
@@ -1001,7 +1001,7 @@ describe("CreateIssueModal", () => {
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
 
-    fireEvent.change(screen.getByPlaceholderText("Issue title"), {
+    fireEvent.change(screen.getByPlaceholderText("Summarize the task in one line"), {
       target: { value: "Labeled issue" },
     });
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
@@ -1026,8 +1026,8 @@ describe("CreateIssueModal", () => {
 
     renderModal(<CreateIssueModal onClose={onClose} />);
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "First follow-up issue");
-    await user.type(screen.getByPlaceholderText("Add description..."), "Description to clear");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "First follow-up issue");
+    await user.type(screen.getByPlaceholderText("Add context, goals, and acceptance criteria..."), "Description to clear");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => {
@@ -1047,8 +1047,8 @@ describe("CreateIssueModal", () => {
     });
 
     expect(onClose).not.toHaveBeenCalled();
-    expect(screen.getByPlaceholderText("Issue title")).toHaveValue("");
-    expect(screen.getByPlaceholderText("Add description...")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Summarize the task in one line")).toHaveValue("");
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveValue("");
     expect(mockSetManual).toHaveBeenCalledWith({
       title: "",
       description: "",
@@ -1075,7 +1075,7 @@ describe("CreateIssueModal", () => {
     await screen.findByText("Customer tier");
     await user.click(screen.getByText("Customer tier"));
     await user.click(screen.getByRole("button", { name: "Edit Customer tier" }));
-    await user.type(screen.getByPlaceholderText("Issue title"), "Enterprise follow-up");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Enterprise follow-up");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => {
@@ -1143,7 +1143,7 @@ describe("CreateIssueModal", () => {
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
 
-    expect(screen.getByPlaceholderText("Add description...")).toHaveAttribute(
+    expect(screen.getByPlaceholderText("Add context, goals, and acceptance criteria...")).toHaveAttribute(
       "data-attachments-count",
       "1",
     );
@@ -1267,7 +1267,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "Refactor auth");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Refactor auth");
     await user.click(screen.getByRole("button", { name: /Switch to Agent/i }));
 
     expect(onSwitchMode).toHaveBeenCalledTimes(1);
@@ -1300,7 +1300,7 @@ describe("CreateIssueModal", () => {
     );
 
     renderModal(<CreateIssueModal onClose={onClose} />);
-    await user.type(screen.getByPlaceholderText("Issue title"), "Login bug");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Login bug");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => expect(mockToastCustom).toHaveBeenCalledTimes(1));
@@ -1333,7 +1333,7 @@ describe("CreateIssueModal", () => {
     );
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await user.type(screen.getByPlaceholderText("Issue title"), "Login bug");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Login bug");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => expect(mockToastError).toHaveBeenCalledTimes(1));
@@ -1353,7 +1353,7 @@ describe("CreateIssueModal", () => {
     );
 
     renderModal(<CreateIssueModal onClose={onClose} />);
-    await user.type(screen.getByPlaceholderText("Issue title"), "One more issue");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "One more issue");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => {
@@ -1371,7 +1371,7 @@ describe("CreateIssueModal", () => {
     mockCreateIssue.mockRejectedValue(new Error("Server is overloaded, try again"));
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await user.type(screen.getByPlaceholderText("Issue title"), "Anything");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Anything");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => expect(mockToastError).toHaveBeenCalledTimes(1));
@@ -1385,7 +1385,7 @@ describe("CreateIssueModal", () => {
     mockCreateIssue.mockRejectedValue("network exploded");
 
     renderModal(<CreateIssueModal onClose={vi.fn()} />);
-    await user.type(screen.getByPlaceholderText("Issue title"), "Anything");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Anything");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => expect(mockToastError).toHaveBeenCalledTimes(1));
@@ -1409,7 +1409,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "Refactor auth");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Refactor auth");
 
     await user.click(screen.getByRole("button", { name: /Switch to Agent/i }));
 
@@ -1464,7 +1464,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "Refactor auth");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Refactor auth");
     await user.click(screen.getByRole("button", { name: /Switch to Agent/i }));
 
     expect(onSwitchMode).toHaveBeenCalledTimes(1);
@@ -1488,7 +1488,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    const description = screen.getByPlaceholderText("Add description...").closest(".overflow-y-auto");
+    const description = screen.getByPlaceholderText("Add context, goals, and acceptance criteria...").closest(".overflow-y-auto");
     const sourceContext = document.querySelector<HTMLElement>('[data-slot="source-context-preview"]');
 
     expect(description).toHaveClass(
@@ -1555,7 +1555,7 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "Create from source comment");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Create from source comment");
     await user.click(screen.getByRole("button", { name: "Create Issue" }));
 
     await waitFor(() => expect(mockCreateCommentSubIssue).toHaveBeenCalledWith(
@@ -1685,8 +1685,8 @@ describe("CreateIssueModal", () => {
       />,
     );
 
-    await user.type(screen.getByPlaceholderText("Issue title"), "Update");
-    await user.type(screen.getByPlaceholderText("Add description..."), "Some body");
+    await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Update");
+    await user.type(screen.getByPlaceholderText("Add context, goals, and acceptance criteria..."), "Some body");
 
     mockSetManual.mockClear();
     mockSetAgent.mockClear();
@@ -1729,8 +1729,8 @@ describe("CreateIssueModal", () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
       const view = renderManualPanel(onClose);
-      await user.type(screen.getByPlaceholderText("Issue title"), "Draft A");
-      fireEvent.keyDown(screen.getByPlaceholderText("Issue title"), {
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Draft A");
+      fireEvent.keyDown(screen.getByPlaceholderText("Summarize the task in one line"), {
         key: "Enter",
         metaKey: true,
       });
@@ -1827,7 +1827,7 @@ describe("CreateIssueModal", () => {
     it("disables Create and shows Uploading… while an upload is in flight", async () => {
       const user = userEvent.setup();
       renderManual();
-      await user.type(screen.getByPlaceholderText("Issue title"), "Has a screenshot");
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Has a screenshot");
 
       const pending = startPendingUpload();
 
@@ -1855,7 +1855,7 @@ describe("CreateIssueModal", () => {
     it("never submits manual create from plain Enter in the title", async () => {
       const user = userEvent.setup();
       renderManual();
-      const title = screen.getByPlaceholderText("Issue title");
+      const title = screen.getByPlaceholderText("Summarize the task in one line");
       await user.type(title, "Has a screenshot");
 
       fireEvent.keyDown(title, { key: "Enter" });
@@ -1866,7 +1866,7 @@ describe("CreateIssueModal", () => {
     it("blocks the title send chord while an upload is in flight", async () => {
       const user = userEvent.setup();
       renderManual();
-      const title = screen.getByPlaceholderText("Issue title");
+      const title = screen.getByPlaceholderText("Summarize the task in one line");
       await user.type(title, "Has a screenshot");
 
       startPendingUpload();
@@ -1882,7 +1882,7 @@ describe("CreateIssueModal", () => {
       const user = userEvent.setup();
       const onSwitchMode = vi.fn();
       renderManual(onSwitchMode);
-      await user.type(screen.getByPlaceholderText("Issue title"), "Has a screenshot");
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Has a screenshot");
 
       startPendingUpload();
 
@@ -1912,7 +1912,7 @@ describe("CreateIssueModal", () => {
     it("creates from the send chord in the title", async () => {
       const user = userEvent.setup();
       renderManual();
-      const title = screen.getByPlaceholderText("Issue title");
+      const title = screen.getByPlaceholderText("Summarize the task in one line");
       await user.type(title, "Shortcut from title");
 
       fireEvent.keyDown(title, { key: "Enter", metaKey: true });
@@ -1926,8 +1926,8 @@ describe("CreateIssueModal", () => {
     it("creates from the send chord in the description", async () => {
       const user = userEvent.setup();
       renderManual();
-      await user.type(screen.getByPlaceholderText("Issue title"), "Shortcut from body");
-      const description = screen.getByPlaceholderText("Add description...");
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Shortcut from body");
+      const description = screen.getByPlaceholderText("Add context, goals, and acceptance criteria...");
       await user.type(description, "Body text");
 
       fireEvent.keyDown(description, { key: "Enter", ctrlKey: true });
@@ -1944,9 +1944,9 @@ describe("CreateIssueModal", () => {
     it("leaves plain Enter in the description as a newline, not a create", async () => {
       const user = userEvent.setup();
       renderManual();
-      await user.type(screen.getByPlaceholderText("Issue title"), "Still typing");
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Still typing");
 
-      fireEvent.keyDown(screen.getByPlaceholderText("Add description..."), { key: "Enter" });
+      fireEvent.keyDown(screen.getByPlaceholderText("Add context, goals, and acceptance criteria..."), { key: "Enter" });
       await Promise.resolve();
       expect(mockCreateIssue).not.toHaveBeenCalled();
     });
@@ -1954,7 +1954,7 @@ describe("CreateIssueModal", () => {
     it("focuses the title instead of silently doing nothing when it is empty", async () => {
       const user = userEvent.setup();
       renderManual();
-      const description = screen.getByPlaceholderText("Add description...");
+      const description = screen.getByPlaceholderText("Add context, goals, and acceptance criteria...");
       await user.type(description, "Body but no title");
 
       fireEvent.keyDown(description, { key: "Enter", metaKey: true });
@@ -1963,7 +1963,7 @@ describe("CreateIssueModal", () => {
       expect(mockCreateIssue).not.toHaveBeenCalled();
       // The shortcut path can't rely on the button's tooltip, so it has to say
       // where the problem is some other way.
-      expect(screen.getByPlaceholderText("Issue title")).toHaveFocus();
+      expect(screen.getByPlaceholderText("Summarize the task in one line")).toHaveFocus();
     });
 
     it("creates once when the chord is pressed twice in the same tick", async () => {
@@ -1974,7 +1974,7 @@ describe("CreateIssueModal", () => {
         () => new Promise((resolve) => { release = resolve; }),
       );
       renderManual();
-      const title = screen.getByPlaceholderText("Issue title");
+      const title = screen.getByPlaceholderText("Summarize the task in one line");
       await user.type(title, "Double tap");
 
       // Both presses are dispatched inside ONE act, so React cannot re-render
@@ -2005,7 +2005,7 @@ describe("CreateIssueModal", () => {
       expect(document.querySelector("[data-slot='shortcut-keycaps']")).toBeInTheDocument();
 
       // And the affordance survives the empty → filled transition.
-      await user.type(screen.getByPlaceholderText("Issue title"), "Now valid");
+      await user.type(screen.getByPlaceholderText("Summarize the task in one line"), "Now valid");
       expect(screen.getByRole("button", { name: "Create Issue" })).toBeInTheDocument();
       expect(document.querySelector("[data-slot='shortcut-keycaps']")).toBeInTheDocument();
     });

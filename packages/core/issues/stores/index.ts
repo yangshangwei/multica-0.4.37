@@ -69,6 +69,14 @@ export {
 } from "./surface-view-store";
 export { useSubIssuesCollapseStore } from "./sub-issues-collapse-store";
 export {
+  createIterationParticipationStore,
+  registerIterationParticipationStore,
+  resetIterationParticipationStores,
+  type IterationParticipationScope,
+  type IterationParticipationState,
+  type IterationParticipationStore,
+} from "./iteration-participation-store";
+export {
   useSubIssueDisplayStore,
   SUB_ISSUE_ROW_PROPERTY_KEYS,
   DEFAULT_SUB_ISSUE_ROW_PROPERTIES,

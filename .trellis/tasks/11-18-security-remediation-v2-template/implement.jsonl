@@ -1,0 +1,10 @@
+{"file": ".trellis/tasks/11-18-security-remediation-squad-v2/prd.md", "reason": "Parent PRD: source of requirements R1-R13, background facts B1-B8 and decisions K1-K8 that this child implements"}
+{"file": ".trellis/spec/server/index.md", "reason": "Server guideline index; entry point for Go conventions used by the template registry and its tests"}
+{"file": ".trellis/spec/server/builtin-templates.md", "reason": "Registry rules for built-in role/squad templates: version bumps, copy-on-create, the Security remediation section and its regression anchors"}
+{"file": ".trellis/spec/server/task-api-capabilities.md", "reason": "Why restricted reviewer comments never dispatch; the v2 gates must work with this contract, not around it"}
+{"file": ".trellis/spec/server/squad-delegation-receipts.md", "reason": "Receipt and squad-activity contract the injected protocol already teaches; v2 text must not restate or contradict it"}
+{"file": ".trellis/spec/server/durable-delegation-receipts.md", "reason": "Keyed receipt recovery rules referenced by the protocol; same no-contradiction constraint"}
+{"file": ".trellis/spec/server/database-test-isolation.md", "reason": "New handler tests are DB-backed; they need an explicitly selected task-owned database"}
+{"file": ".trellis/spec/docs/frontend/index.md", "reason": "Docs-site conventions for the squads and security-model pages that change with the template"}
+{"file": "apps/docs/content/docs/developers/conventions.zh.mdx", "reason": "Naming, i18n glossary and Chinese product voice; required reading before editing locales and Chinese docs"}
+{"file": ".trellis/spec/guides/index.md", "reason": "Shared thinking guides (cross-layer and reuse checks)"}

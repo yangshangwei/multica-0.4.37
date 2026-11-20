@@ -1,20 +1,30 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
 import { CollaborationFieldCatalogSchema, CollaborationPropertyPatchSchema, CollaborationSourceOptionsSchema } from "./schema";
-import { positiveVersion } from "./version";
+import { nonnegativeVersion, positiveVersion } from "./version";
 import { CollaborationAIPolicySchema } from "./delivery-schema";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const source = z.object({ id: uuid, name: z.string(), slug: z.string().min(1) });
+export const CollaborationStagePolicyObservationSchema = z.discriminatedUnion("state", [
+  z.strictObject({ protocol_version: z.literal(1), state: z.literal("not_selected"), source_workspace_id: uuid.nullable(),
+    project_id: z.null(), policy_revision: z.null(), managed: z.null() }),
+  z.strictObject({ protocol_version: z.literal(1), state: z.literal("known"), source_workspace_id: uuid,
+    project_id: uuid, policy_revision: nonnegativeVersion, managed: z.boolean() }),
+]);
 export const CollaborationCreationOptionsSchema = z.object({
   creation_enabled: z.boolean(), sources: z.array(source), source: source.nullable(),
   max_attachment_bytes: z.number().int().positive().max(104857600),
+  stage_policy_observation: CollaborationStagePolicyObservationSchema.optional(),
   fields: CollaborationFieldCatalogSchema.extend({
     statuses: z.array(z.object({ key: z.string().min(1), name: z.string(), category: z.enum(["backlog", "todo", "in_progress", "in_review", "blocked"]) })),
     default_status: z.string().min(1), source_options: CollaborationSourceOptionsSchema,
   }).refine((value) => new Set(value.statuses.map((item) => item.key)).size === value.statuses.length && value.statuses.some((item) => item.key === value.default_status)).optional(),
 }).refine((value) => new Set(value.sources.map((item) => item.id)).size === value.sources.length &&
-  (value.source === null ? value.fields === undefined : value.sources.some((item) => item.id === value.source?.id && item.slug === value.source.slug)));
+  (value.source === null ? value.fields === undefined : value.sources.some((item) => item.id === value.source?.id && item.slug === value.source.slug)))
+  .refine((value) => value.stage_policy_observation === undefined || value.stage_policy_observation.source_workspace_id === (value.source?.id ?? null))
+  .refine((value) => value.stage_policy_observation?.state !== "known" || value.stage_policy_observation.managed !== true ||
+    value.fields?.statuses.every((item) => item.category !== "blocked") !== false);
 
 export const CollaborationCreationFieldsSchema = z.strictObject({
   status: z.string().min(1).optional(), priority: z.enum(["none", "low", "medium", "high", "urgent"]).optional(),

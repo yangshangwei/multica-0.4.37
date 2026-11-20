@@ -47,6 +47,8 @@ func TestClaimTaskByRuntime_ChatRolloutMissingDisclosesGap(t *testing.T) {
 		t.Skip("database not available")
 	}
 	ctx := context.Background()
+	// This live-runtime scenario needs the heartbeat a daemon sends before claiming.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at=now() WHERE id=$1`, handlerTestRuntimeID(t))
 
 	agentID := createHandlerTestAgent(t, "ChatGapClaimAgent", []byte("[]"))
 	runtimeID := handlerTestRuntimeID(t)
@@ -100,6 +102,8 @@ func TestClaimTaskByRuntime_RerunSourceRolloutMissingDisclosesGap(t *testing.T) 
 		t.Skip("database not available")
 	}
 	ctx := context.Background()
+	// This live-runtime scenario needs the heartbeat a daemon sends before claiming.
+	dbfx.Exec(t, `UPDATE agent_runtime SET last_seen_at=now() WHERE id=$1`, handlerTestRuntimeID(t))
 
 	agentID := createHandlerTestAgent(t, "RerunGapClaimAgent", []byte("[]"))
 	runtimeID := handlerTestRuntimeID(t)

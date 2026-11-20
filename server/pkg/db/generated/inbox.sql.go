@@ -256,6 +256,80 @@ func (q *Queries) CountUnreadInboxByWorkspace(ctx context.Context, recipientID p
 	return items, nil
 }
 
+const createCommentInboxItem = `-- name: CreateCommentInboxItem :one
+INSERT INTO inbox_item (
+    id, workspace_id, recipient_type, recipient_id,
+    type, severity, issue_id, title, body, actor_type, actor_id, details
+)
+SELECT $1::uuid, $2::uuid, 'member', $3::uuid,
+       'new_comment', $4::text, $5::uuid, $6::text,
+       $7::text, $8::text, $9::uuid, $10::jsonb
+WHERE NOT EXISTS (
+    SELECT 1 FROM inbox_item retained
+    WHERE retained.workspace_id = $2::uuid
+      AND retained.issue_id = $5::uuid
+      AND retained.recipient_type = 'member'
+      AND retained.recipient_id = $3::uuid
+      AND retained.type = 'new_comment'
+      AND lower(retained.details->>'comment_id') = $11::uuid::text
+)
+ON CONFLICT (id) DO NOTHING
+RETURNING id, workspace_id, recipient_type, recipient_id, type, severity, issue_id, title, body, read, archived, created_at, actor_type, actor_id, details
+`
+
+type CreateCommentInboxItemParams struct {
+	ID          pgtype.UUID `json:"id"`
+	WorkspaceID pgtype.UUID `json:"workspace_id"`
+	RecipientID pgtype.UUID `json:"recipient_id"`
+	Severity    string      `json:"severity"`
+	IssueID     pgtype.UUID `json:"issue_id"`
+	Title       string      `json:"title"`
+	Body        pgtype.Text `json:"body"`
+	ActorType   pgtype.Text `json:"actor_type"`
+	ActorID     pgtype.UUID `json:"actor_id"`
+	Details     []byte      `json:"details"`
+	CommentID   pgtype.UUID `json:"comment_id"`
+}
+
+// Preserve every retained delivery of this original comment, including legacy
+// random IDs and read/archived rows. The stable ID closes concurrent replays by
+// current writers; this does not fence an older random-ID writer or remove old
+// duplicates. Compare canonical UUID text without casting historical JSON.
+func (q *Queries) CreateCommentInboxItem(ctx context.Context, arg CreateCommentInboxItemParams) (InboxItem, error) {
+	row := q.db.QueryRow(ctx, createCommentInboxItem,
+		arg.ID,
+		arg.WorkspaceID,
+		arg.RecipientID,
+		arg.Severity,
+		arg.IssueID,
+		arg.Title,
+		arg.Body,
+		arg.ActorType,
+		arg.ActorID,
+		arg.Details,
+		arg.CommentID,
+	)
+	var i InboxItem
+	err := row.Scan(
+		&i.ID,
+		&i.WorkspaceID,
+		&i.RecipientType,
+		&i.RecipientID,
+		&i.Type,
+		&i.Severity,
+		&i.IssueID,
+		&i.Title,
+		&i.Body,
+		&i.Read,
+		&i.Archived,
+		&i.CreatedAt,
+		&i.ActorType,
+		&i.ActorID,
+		&i.Details,
+	)
+	return i, err
+}
+
 const createInboxItem = `-- name: CreateInboxItem :one
 INSERT INTO inbox_item (
     workspace_id, recipient_type, recipient_id,

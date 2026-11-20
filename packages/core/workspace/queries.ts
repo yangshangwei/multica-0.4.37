@@ -1,5 +1,6 @@
 import { queryOptions, type QueryClient } from "@tanstack/react-query";
 import { api } from "../api";
+import { ApiError } from "../api/client";
 import { RECOVERY_REQUEST_TIMEOUT_MS } from "../api/request-lifecycle";
 import { withQueryAccessBoundary } from "../query-access";
 import type { Agent, Skill, Squad, Workspace } from "../types";
@@ -109,8 +110,31 @@ export function cacheAgentResponse(
 export function squadListOptions(wsId: string) {
   return queryOptions<Squad[]>({
     queryKey: workspaceKeys.squads(wsId),
-    queryFn: () => api.listSquads(),
+    queryFn: withQueryAccessBoundary(() => api.listSquads()),
     enabled: !!wsId,
+  });
+}
+
+/** A deleted squad is definitive for its detail and membership snapshots. */
+function withSquadAccessBoundary<T>(read: () => Promise<T>) {
+  return withQueryAccessBoundary(async ({ client, queryKey, signal }) => {
+    const query = client.getQueryCache().find({ queryKey, exact: true });
+    try {
+      return await read();
+    } catch (error) {
+      if (!signal.aborted && error instanceof ApiError && !error.isStaleAuthResponse && error.status === 404) {
+        query?.setData(undefined, { manual: true, updatedAt: 0 });
+      }
+      throw error;
+    }
+  });
+}
+
+export function squadDetailOptions(wsId: string, squadId: string) {
+  return queryOptions({
+    queryKey: [...workspaceKeys.squads(wsId), squadId],
+    queryFn: withSquadAccessBoundary(() => api.getSquad(squadId)),
+    enabled: !!wsId && !!squadId,
   });
 }
 
@@ -119,7 +143,7 @@ export function squadListOptions(wsId: string) {
 export function squadMembersOptions(wsId: string, squadId: string) {
   return queryOptions({
     queryKey: workspaceKeys.squadMembers(wsId, squadId),
-    queryFn: () => api.listSquadMembers(squadId),
+    queryFn: withSquadAccessBoundary(() => api.listSquadMembers(squadId)),
     enabled: !!wsId && !!squadId,
   });
 }

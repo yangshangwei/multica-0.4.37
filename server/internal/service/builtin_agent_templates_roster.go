@@ -372,7 +372,7 @@ var builtinAgentRoleTemplates = []AgentRoleTemplate{
 	},
 	{
 		Key:                "security-remediation-lead",
-		Version:            1,
+		Version:            2,
 		DefaultName:        "Security Remediation Lead",
 		AvatarEmoji:        "🛡️",
 		Autonomy:           AutonomyCoordinator,

@@ -113,8 +113,7 @@ test("shared context keeps concurrent edits, restores versions, and permits hist
     await expect(completion).toHaveCount(0);
     expect(await fixture.creator.client.requestJSON<CollaborationIssue>(fixture.root)).toMatchObject({ status_category: "done", handler: { user_id: fixture.creator.id },
       delivery: { current: null, latest: { id: submission.id, decision: { kind: "accepted", submission_id: submission.id, actor_user_id: fixture.creator.id } } } });
-    await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeVisible();
-    await page.keyboard.press("Escape");
+    // Completion keeps the explicitly dismissed resource drawer closed.
     await expect(page.getByRole("dialog", { name: "Shared context", exact: true })).toBeHidden();
     await revealCollaborationDisclosure(page, "More actions");
     await expect(page.getByRole("button", { name: "Reopen issue", exact: true }).or(page.getByRole("menuitem", { name: "Reopen issue", exact: true }))).toBeVisible();

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "9a621a978331",
+    "logs": "",
+    "stderr": "app-server exited 1; stderr=Error: invalid value for `allowed_sandbox_modes`: `[WorkspaceWrite]` is not in the allowed set must include 'read-only' to allow any PermissionProfile (set by /etc/codex/requirements.toml)\n\nError: RPC configRequirements/read timed out; stderr=Error: invalid value for `allowed_sandbox_modes`: `[WorkspaceWrite]` is not in the allowed set must include 'read-only' to allow any PermissionProfile (set by /etc/codex/requirements.toml)\n\n    at Timeout._onTimeout (/probe/native_appserver_probe.js:35:67)\n    at listOnTimeout (node:internal/timers:585:17)\n    at process.processTimers (node:internal/timers:521:7)\n"
+  },
+  {
+    "id": "cfb8ee2e90fc",
+    "logs": "",
+    "stderr": ""
+  }
+]

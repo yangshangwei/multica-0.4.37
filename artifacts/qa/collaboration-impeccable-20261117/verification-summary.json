@@ -1,0 +1,58 @@
+{
+  "issue_ids": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09"
+  ],
+  "status": "fixed_and_verified",
+  "views": {
+    "files": 51,
+    "tests": 590,
+    "exit_code": 0,
+    "log": ".trellis/tasks/11-18-collaboration-impeccable-remediation/research/combined-views.log"
+  },
+  "core": {
+    "files": 7,
+    "tests": 56,
+    "exit_code": 0,
+    "log": ".trellis/tasks/11-18-collaboration-impeccable-remediation/research/combined-core.log"
+  },
+  "chromium": {
+    "engine": "Playwright Chromium 145.0.7632.6",
+    "scenarios": 17,
+    "failures": [],
+    "page_errors": [],
+    "external_requests": [],
+    "evidence": "artifacts/qa/collaboration-impeccable-20261117/browser-regression/results.json"
+  },
+  "typecheck": {
+    "tasks": 9,
+    "exit_code": 0,
+    "log": ".trellis/tasks/11-18-collaboration-impeccable-remediation/research/independent-typecheck.log"
+  },
+  "lint": {
+    "tasks": 6,
+    "exit_code": 0,
+    "preexisting_unrelated_warnings": 31,
+    "log": ".trellis/tasks/11-18-collaboration-impeccable-remediation/research/independent-lint.log"
+  },
+  "detector": {
+    "targets": 11,
+    "findings": [],
+    "exit_code": 0
+  },
+  "no_new_dependencies": true,
+  "business_writes_performed": false,
+  "untested": [
+    "Production Web/API end-to-end",
+    "Installed Electron Main end-to-end",
+    "Physical phone/VoiceOver spoken journey",
+    "Real AI provider or deployed runtime behavior"
+  ]
+}

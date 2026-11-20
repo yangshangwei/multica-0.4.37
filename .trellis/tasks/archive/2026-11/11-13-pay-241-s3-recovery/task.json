@@ -1,0 +1,1061 @@
+{
+  "id": "pay-241-s3-recovery",
+  "name": "pay-241-s3-recovery",
+  "title": "PAY-241 S3 执行与协作恢复",
+  "description": "验证并补齐原请求身份、超时取消重试幂等、并发冲突、批量补读、通知去重和阻塞信息，保留原始失败",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-13",
+  "completedAt": "2026-11-19",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "2a46ff823e91f2ea6bb3fd9bdb869a979d33b349",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-13-pay-241-s3-timeout-proof"
+  ],
+  "parent": "11-13-pay-241-collaboration-acceptance",
+  "relatedFiles": [
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md",
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261119.md"
+  ],
+  "notes": "2026-11-19：S3 R01–R09独立验收完成，UI81fc27ac8、结构化阻塞f6703b7e4、E2E2a46ff823已定向提交。父7PASS/10PARTIAL/7NOT_RUN。原失败保留；工作候选包含单独接受S2基础，未声称干净HEAD完整运行。S4真实输入/最终S5/业务签字另行推进。",
+  "meta": {
+    "field_CAS_verification": {
+      "at": "2026-11-18T04:38:27.858410+00:00",
+      "phase": "FIELD_CAS_ACCEPTED_NEXT_BATCH_RECOVERY",
+      "source_binding": "research/s3-source-binding-20261118.md",
+      "final_S2_accepted": true,
+      "normal_race_executed": true,
+      "full_S3_accepted": false,
+      "parent_TC16_result": "PARTIAL",
+      "continuation_plan": "docs/plans/2026-11-18-pay-241-continuation.md",
+      "normal_race_scope": "service7named/handler3named per mode, exact sets/zero failure-skip-missing-duplicate-unfinished,30counts0/connections0",
+      "diagnosis": "research/testmain-cleanup-diagnosis-20261118.md",
+      "ROOT_integrated_paths": 3,
+      "parent24": {
+        "NOT_RUN": 9,
+        "PARTIAL": 12,
+        "PASS": 3
+      },
+      "scope": "S3 R04 service/HTTP first increment",
+      "ROOT_compile_vet_gofmt": "PASS",
+      "independent_review": {
+        "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/cas-independent-check-20261118.json",
+        "sha256": "0f406f62027a35e0db940bd2f8d362ed9e10dcb1729ec3e11f27d7229e9960e5",
+        "status": "ACCEPTED_S3_R04_FIELD_CAS_SERVICE_HTTP_INCREMENT",
+        "blocking_findings": 0,
+        "scope": "field-CAS service/HTTP increment only"
+      },
+      "reviewed_source_binding_snapshot": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/coordinator-review-input-snapshots/source-binding-before-final-seal.md",
+        "sha256": "7859bc0cdc83449a6ada58cef00df2b9fe41bf3abe7ae1c1ac3417a3f7c6e8f3"
+      },
+      "work_commit": "96a2bffe36803b2005354a213d21bba241286edd"
+    },
+    "field_CAS_quality_gate_passed_at": "2026-11-18T04:38:27.858410+00:00",
+    "field_CAS_work_commit": "96a2bffe36803b2005354a213d21bba241286edd",
+    "new_session_handoff": "research/new-session-handoff-20261119.md",
+    "current_client_composition_r01": {
+      "at": "2026-11-18T08:05:25.840109+00:00",
+      "status": "NOT_ACCEPTED_R01_CURRENT_CLIENT_FIELD_COMPOSITION",
+      "planned_tops": 4,
+      "passed_tops": 2,
+      "failed_tops": 1,
+      "not_run_tops": 1,
+      "planned_orderings": 8,
+      "passed_orderings": 4,
+      "failed_orderings": 1,
+      "not_run_orderings": 3,
+      "retries": 0,
+      "source_drift": 0,
+      "report": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/playwright-report.json",
+      "report_sha256": "279e507376409e920ac2f7a7e75caed71d82b2692194e32964e37f9684dd440e",
+      "cases": [
+        {
+          "title": "Web recovery priority and handler contention preserve original receipts in both submission orders",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration": 10948,
+              "primary_reported_error": null
+            }
+          ]
+        },
+        {
+          "title": "Web recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+          "status": "expected",
+          "results": [
+            {
+              "status": "passed",
+              "retry": 0,
+              "duration": 11606,
+              "primary_reported_error": null
+            }
+          ]
+        },
+        {
+          "title": "Desktop recovery priority and handler contention preserve original receipts in both submission orders",
+          "status": "unexpected",
+          "results": [
+            {
+              "status": "failed",
+              "retry": 0,
+              "duration": 11154,
+              "primary_reported_error": "Error: page.unroute: Target page, context or browser has been closed"
+            }
+          ]
+        },
+        {
+          "title": "Desktop recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+          "status": "skipped",
+          "results": []
+        }
+      ],
+      "failed_source_manifest": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/client-candidate-manifest-r01.json",
+      "original_native_primary_failure": "not retained; outer unroute closure masked primary, no crash/product attribution",
+      "failure_and_all_DB_history_retained": true,
+      "runtime_cleanup": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/stop-owned-api-r02.json",
+      "current_parent_TC16": "PARTIAL",
+      "full_S3_accepted": false,
+      "next": "fix new harness, independent review, fresh R02 DB complete four-case replay"
+    },
+    "field_R02_allocation": "allocation-client-r02.json (private evidence root)",
+    "current_client_failed_rounds": {
+      "at": "2026-11-18T09:07:47.066493+00:00",
+      "runs": [
+        {
+          "run": "r01",
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/playwright-report.json",
+          "sha256": "279e507376409e920ac2f7a7e75caed71d82b2692194e32964e37f9684dd440e",
+          "tops": {
+            "PASS": 2,
+            "FAIL": 1,
+            "NOT_RUN": 1
+          },
+          "orderings": {
+            "PASS": 4,
+            "FAIL": 1,
+            "NOT_RUN": 3
+          },
+          "retry": 0,
+          "disposition": "NOT_ACCEPTED",
+          "source_and_configuration_drift": 0,
+          "API_after_stop_connections": 0,
+          "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/stop-owned-api-r01.json"
+        },
+        {
+          "run": "r02",
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/playwright-report.json",
+          "sha256": "414cb3be2f7f315f3765cb09a43eb01c73d72daed4f16b7e44a9c26e16f410cf",
+          "tops": {
+            "PASS": 2,
+            "FAIL": 1,
+            "NOT_RUN": 1
+          },
+          "orderings": {
+            "PASS": 4,
+            "FAIL": 1,
+            "NOT_RUN": 3
+          },
+          "retry": 0,
+          "disposition": "NOT_ACCEPTED",
+          "source_and_configuration_drift": 0,
+          "API_after_stop_connections": 0,
+          "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/stop-owned-api-r02.json"
+        },
+        {
+          "run": "r03",
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r03/playwright-report.json",
+          "sha256": "1b4adb1904071e2875953898320b9764a327995495fbba51deb373d05e1fbcc9",
+          "tops": {
+            "PASS": 2,
+            "FAIL": 1,
+            "NOT_RUN": 1
+          },
+          "orderings": {
+            "PASS": 4,
+            "FAIL": 1,
+            "NOT_RUN": 3
+          },
+          "retry": 0,
+          "disposition": "NOT_ACCEPTED",
+          "source_and_configuration_drift": 0,
+          "API_after_stop_connections": 0,
+          "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r03/stop-owned-api-r03.json"
+        },
+        {
+          "run": "r04",
+          "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r04/playwright-report.json",
+          "sha256": "d6cc0a2d3816c5f160c85ee825e634006b0aeebe2d48426b64580fa172519428",
+          "tops": {
+            "PASS": 2,
+            "FAIL": 1,
+            "NOT_RUN": 1
+          },
+          "orderings": {
+            "PASS": 5,
+            "FAIL": 1,
+            "NOT_RUN": 2
+          },
+          "retry": 0,
+          "disposition": "NOT_ACCEPTED",
+          "source_and_configuration_drift": 0,
+          "API_after_stop_connections": 0,
+          "cleanup_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r04/stop-owned-api-r04.json"
+        }
+      ],
+      "denominator_per_round": {
+        "tops": 4,
+        "orderings": 8
+      },
+      "passing_cases_from_different_rounds_combined": false,
+      "full_S3_accepted": false,
+      "TC16": "PARTIAL",
+      "next": "retained fresh creator response / browser unknown-result diagnostic, minimal supported fix then fresh whole field replay",
+      "R01_cause": "original later exception not captured; unroute masked it",
+      "R02_cause": "original local pending UI not retired by standalone receipt GET",
+      "R03_cause": "actual original-recovery button in modal portal, wrong fixture region",
+      "R04_cause": "fresh creator PATCH200 while Edit UI remains unknown; cause still under diagnosis"
+    },
+    "current_client_runtime_accepted": true,
+    "canonical_recovery_profiles": {
+      "at": "2026-11-18T09:42:23.332216+00:00",
+      "status": "ACCEPTED_CURRENT_CANONICAL_RECOVERY_SERVICE_HTTP_PROFILES",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01/server",
+      "profiles": 4,
+      "service_names_per_mode": 18,
+      "service_tops_per_mode": 13,
+      "handler_names_per_mode": 3,
+      "named_executions": 42,
+      "business_relation_counts_zero": 30,
+      "all_connections_after": 0,
+      "protected_invalidation_history_retained": true,
+      "service_gate_restored_epoch": 3,
+      "handler_gate_unchanged_epoch": 2,
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/extras-canonical-result-r01.json",
+      "does_not_accept_browser_or_actual_run": true,
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-canonical-independent-check-20261118.json",
+      "sha256": "59ec5ebb17b92b3d7e1a3fb0debc65b97d622165ca2aa52680b1ab868ceeaa06"
+    },
+    "field_client_runtime_R06": {
+      "at": "2026-11-18T09:42:23.332490+00:00",
+      "run": "R06",
+      "status": "ACCEPTED_BOUNDED_FIELD_INCREMENT",
+      "tops": {
+        "PASS": 4,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "orders": {
+        "PASS": 8,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "original_all_failed_rounds_retained": true,
+      "known_cause": "native fetch/fulfill status0 reproduced on /health without business writes",
+      "next": "route.continue real nonlost response, freshR06 complete4top/8orders",
+      "source_product_changes": 0,
+      "native_probe": "research/native-route-forward-diagnosis-20261118.json"
+    },
+    "current_client_field_R06_accepted": {
+      "at": "2026-11-18T10:12:06.822560+00:00",
+      "status": "ACCEPTED_CURRENT_CLIENT_FIELD_AND_ORIGINAL_RECEIPT_INCREMENT_R06",
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/client-field-r06-independent-check-20261118.json",
+      "sha256": "397dd9014a45eb57d00d8a41fea91173c8b1233351a4c40e0e40e542fcb0dc85",
+      "tops": 4,
+      "orderings": 8,
+      "retries": 0,
+      "source_fixture_sha256": "e11aa601afe3bb82d245a6af04c67a99587fbc5f0c4964f284392cd4852d74d5",
+      "private_harness": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/harness-r06",
+      "database": "multica_pay241_s3c_20261118_x4c5mjep_r06",
+      "API_native_cleanup_accepted": true,
+      "actual_original_gate_creation": true,
+      "epoch": 2,
+      "connections_after": 0,
+      "full_S3_accepted": false,
+      "TC16": "PARTIAL",
+      "ordinary_UI_expected_revision": "optional omitted; explicit numeric API CAS separate"
+    },
+    "next": "Literal ordinary-comment event RED/GREEN and persisted inbox identity; fresh Web/Desktop subscriptions; separately bound Extras-B controlled runtime.",
+    "comment_batch_R01_accepted": {
+      "at": "2026-11-18T10:41:59.665058+00:00",
+      "status": "ACCEPTED_CURRENT_55_COMMENT_PAGINATION_AND_REAUTHENTICATION_BATCH_R01",
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/comment-batch-r01-independent-check-20261118.json",
+      "sha256": "2b11f91c762147eb3224ef86481dbe8f0f1da994ec1f896ab31b43794304bd46",
+      "tops": 2,
+      "batches": 2,
+      "original_comments_per_batch": 55,
+      "control_comments_per_batch": 2,
+      "persistent_comment_ids": 114,
+      "page_passes_per_platform": 2,
+      "actual_page_counts": [
+        50,
+        7
+      ],
+      "authenticated_sockets_per_platform": 3,
+      "failed_offline_attempts_per_platform": 1,
+      "retry": 0,
+      "observer_business_writes": 0,
+      "run_command_dispatch": 0,
+      "TC15": "PASS",
+      "fullS3accepted": false
+    },
+    "comment_batch_work_commit": "72c207f72d67af979e6f6222a44d397036f4c79b",
+    "field_current_work_commit": "237b172a6e3b1246fe47d8a05e55ed201f9e7310",
+    "current_next_scope": "S3_COMPLETE_NEXT_PARENT_S4_INPUTS_S5_FINAL",
+    "current_extrasA_R01": {
+      "at": "2026-11-18T10:53:53.346424+00:00",
+      "status": "NOT_ACCEPTED",
+      "tops": {
+        "PASS": 0,
+        "FAIL": 1,
+        "NOT_RUN": 5
+      },
+      "planned_subcases": 18,
+      "started_subcases": 1,
+      "failure": "fixture expected notification auto-read afternavigation; actual Markread explicit owner",
+      "API_stopped": 80515,
+      "connections": 0,
+      "actualgate_ledger_data_preserved": true,
+      "raw": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r01/playwright-report.json"
+    },
+    "block_current_functional_profiles": {
+      "at": "2026-11-18T11:30:39.627652+00:00",
+      "status": "R03_TESTS_CLEANUP_PASS_PENDING_FULL_CODE_AND_CLIENT_ACCEPTANCE",
+      "source_manifest_sha256": "538e4f92de2707285d285a98238260edf2acc3930512056b2f560ba01db6ad36",
+      "service_each": {
+        "tops": 16,
+        "names": 43
+      },
+      "handler_each": {
+        "tops": 3,
+        "names": 3
+      },
+      "migration_each": {
+        "tops": 1,
+        "names": 5
+      },
+      "mode_named_total": 102,
+      "pure_retained": {
+        "tops": 3,
+        "names": 8
+      },
+      "gate_cleanup": {
+        "service_epoch": 3,
+        "handler_migration_epoch": 2,
+        "original_creation_enabled": true,
+        "connections_after": 0
+      },
+      "protected_histories_retained": true,
+      "old_R01_R02_failures_kept": true,
+      "fullS3accepted": false
+    },
+    "current_extrasA_R02": {
+      "status": "NOT_ACCEPTED",
+      "tops": {
+        "PASS": 0,
+        "FAIL": 1,
+        "NOT_RUN": 5
+      },
+      "subcases": {
+        "PASS": 2,
+        "FAIL": 1,
+        "NOT_RUN": 15
+      },
+      "failure": "strictgrantrevoke received extra aggregateworkflowrevision fromfixture",
+      "old_source_DB_raw_preserved": true,
+      "API_stopped": 96088,
+      "connections_after": 0
+    },
+    "block_client_current_code_gap": "TC-23 accepted on matching Web/Desktop in R08; full S3 remains open.",
+    "block_utc_range_checkpoint": {
+      "report": "research/block-utc-range-r04-checkpoint-20261118.md",
+      "scope": "R04 pure Go: 31 named tests. R05 service/handler: 74/15 named tests per normal and race mode. R08 matched Web/Desktop: 12 subcases passed.",
+      "root_integrated": true
+    },
+    "extras_A_client_runtime_R05": {
+      "run": "Extras-A R05",
+      "tops": {
+        "PASS": 6,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "subcases": {
+        "PASS": 18,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "retry": 0,
+      "scope": "Web/Desktop mixed mentions, original human uploads and current human read revocation",
+      "report": "research/extras-a-r05-independent-check-20261118.md"
+    },
+    "latest_client_runtime": {
+      "run": "Structured block/repair R08",
+      "tops": {
+        "PASS": 2,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "subcases": {
+        "PASS": 12,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "retry": 0,
+      "report": "research/block-runtime-r08-independent-check-20261118.md"
+    },
+    "current_verification": {
+      "phase": "S3_TC23_ACCEPTED_NEXT_SUBSCRIPTIONS_AND_RUNTIME",
+      "at": "2026-11-18T15:39:59Z",
+      "final_S2_accepted": true,
+      "full_S3_accepted": false,
+      "parent24": {
+        "PASS": 4,
+        "PARTIAL": 13,
+        "NOT_RUN": 7
+      },
+      "parent_TC16_result": "PARTIAL",
+      "parent_TC22_result": "PARTIAL",
+      "parent_TC23_result": "PASS",
+      "continuation_plan": "docs/plans/2026-11-18-pay-241-continuation.md",
+      "report": "research/block-runtime-r08-independent-check-20261118.md"
+    },
+    "continuation_20261119": {
+      "at": "2026-11-19T03:35:32.072898+00:00",
+      "plan": "docs/plans/2026-11-19-pay-241-continuation.md",
+      "phase": "NOTIFICATION_RUNTIME_INCREMENTS_ACCEPTED_NEXT_OUTPUT_UI_AND_FINAL_SCOPE",
+      "parent24": {
+        "NOT_RUN": 7,
+        "PARTIAL": 11,
+        "PASS": 6
+      },
+      "head": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+      "allocation": {
+        "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly",
+        "state_root": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly",
+        "server_base": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-base-r01"
+      },
+      "full_S3_accepted": false,
+      "latest_regression_status": "CODE_AND_CURRENT_ORDINARY_RUNTIME_INCREMENTS_INDEPENDENTLY_ACCEPTED",
+      "ordinary_work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+      "initial_head": "b1901a48f6990d39e9bd5a588d405342aaa2016f",
+      "notification_new_go_tops": 7,
+      "new_current_client_tops": 6,
+      "case_promotions": [
+        "TC-21",
+        "TC-22"
+      ],
+      "remaining_slices": [
+        "Agent-output write capability and identity/storage/reference tests",
+        "Current ordinary UI optional numeric CAS or explicit bounded R04 disposition",
+        "Final coherent S3 R01-R09 scope and affected-source checks"
+      ],
+      "e2e_spec_work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+      "remaining_map": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-remaining-acceptance-map-20261119.md",
+      "remaining_map_sha256": "5319b5da7ecb1d0c1a9fc10981596ba4f1e7dfd1872ff669baefe8f079e799f0"
+    },
+    "ordinary_comment_replay_red_20261119": {
+      "at": "2026-11-18T23:44:39.673825+00:00",
+      "status": "REAL_RED_EXPECTED_DUPLICATE_COMMENT_NOTIFICATIONS",
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-comment-replay-red-20261119.md",
+      "private_result": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/notification-red-r01/result.json",
+      "raw_sha256": "8e0f2589a84401bc73b2f6d10fb424f291a4dc49a40f6b3acd91fcda19c074f1",
+      "tops": 7,
+      "leaves": 22,
+      "names": 29,
+      "PASS": 6,
+      "FAIL": 23,
+      "SKIP": 0,
+      "connections_after": 0,
+      "full_S3_accepted": false
+    },
+    "ordinary_notification_continuation_current": {
+      "at": "2026-11-19T03:26:22.948741+00:00",
+      "status": "CODE_COMMITTED_ORDINARY_R05_ACCEPTED_TC22_DEFINED_FLOW_PASS",
+      "ordinary_code_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+      "normal_race_each": {
+        "tops": 35,
+        "names": 57,
+        "PASS": 57,
+        "FAIL": 0,
+        "SKIP": 0
+      },
+      "ROOT_product_integrated": true,
+      "client_r01": {
+        "PASS": 0,
+        "FAIL": 2,
+        "SKIP": 0,
+        "retry": 0,
+        "web_cause": "Main Playwright baseURL missing",
+        "desktop_cause": "Fixture marker underscore Markdown serialization"
+      },
+      "next": "Agent output, ordinary UI CAS and final R09; preserve generic-event/mixed-writer limits",
+      "full_S3_accepted": false,
+      "work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+      "current_client_round": "R05",
+      "prior_failed_rounds": {
+        "R01": {
+          "PASS": 0,
+          "FAIL": 2,
+          "retry": 0
+        },
+        "R02": {
+          "PASS": 0,
+          "FAIL": 2,
+          "retry": 0
+        },
+        "R03": {
+          "PASS": 0,
+          "FAIL": 2,
+          "retry": 0
+        },
+        "R04": {
+          "PASS": 0,
+          "FAIL": 2,
+          "retry": 0
+        }
+      },
+      "R03_reached_partial_scope": "Actual subscribed member, first comment and unique inbox per platform, read/comment anchor, physical reconnect/reload, this-issue unsubscribe; second composer Send locator failed",
+      "client_result": {
+        "PASS": 2,
+        "FAIL": 0,
+        "SKIP": 0,
+        "retry": 0
+      },
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-subscription-r06",
+      "fixture_sha256": "11992b524fb3fa7c524b611654ecac0ddc9eafdad4ac5881c825962943d4ee58",
+      "actual_result": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/subscriptions-runtime-r05/result.json",
+      "raw_sha256": "cb0b9f25691f8e24362fd1f420f337a4cbfdd62c25f3953acfb78565a5b1cb56",
+      "poststop": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/subscription-runtime-after-r05.json",
+      "API_pid": 68414,
+      "connections_after": 0,
+      "independent_acceptance": "ACCEPTED_BOUNDED_ORDINARY_SUBSCRIPTION_R05",
+      "independent_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-r05-independent-check-20261119.json",
+      "independent_report_sha256": "68f5c6fcc4b5cc47b5cb8568ca1952547aabd2d64b1f9c08eb637c4a184e386f",
+      "blocking_findings": 0,
+      "parent_TC22": "PASS",
+      "client_work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08"
+    },
+    "ordinary_comment_notification_work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+    "controlled_runtime_current": {
+      "at": "2026-11-19T03:26:22.948741+00:00",
+      "round": "Extras-B R03",
+      "phase": "INDEPENDENTLY_ACCEPTED",
+      "planned_tops": 4,
+      "planned_subcases": 10,
+      "planned_provider_launches": 10,
+      "planned_original_inputs": 12,
+      "actual_tops": {
+        "PASS": 4,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "actual_subcases": {
+        "PASS": 10,
+        "FAIL": 0,
+        "NOT_RUN": 0
+      },
+      "actual_provider_turns": 10,
+      "actual_original_inputs": 12,
+      "retry": 0,
+      "API_pid": 70147,
+      "API_stopped": true,
+      "database": "multica_pay241_s3n_20261119_uwkcehly_runtime_r04",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-runtime-r03",
+      "fixture_sha256": "1669c8356a4cc01720753e5df7280e76fdcf58b19e66da620748fe5ab6c3959c",
+      "actual_result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/runtime-extras-b-r03/result.json",
+      "raw_sha256": "51eff997718ef1d8ff49a99494a9bbd7b7c4283dd75e069417ea299bdb91c21e",
+      "poststop": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/runtime-extras-b-after-r03.json",
+      "connections_after": 0,
+      "gate_flags_restored": true,
+      "actual_gate_epoch": 10,
+      "older_failed_rounds_retained": {
+        "R01": {
+          "tops": {
+            "PASS": 0,
+            "FAIL": 4
+          },
+          "subcases": {
+            "PASS": 0,
+            "FAIL": 2,
+            "NOT_RUN": 8
+          },
+          "provider_turns": 0,
+          "inputs": 0
+        },
+        "R02": {
+          "tops": {
+            "PASS": 2,
+            "FAIL": 2
+          },
+          "subcases": {
+            "PASS": 4,
+            "FAIL": 2,
+            "NOT_RUN": 4
+          },
+          "provider_turns": 6,
+          "inputs": 8
+        }
+      },
+      "full_S3_accepted": false,
+      "real_model_execution": false,
+      "independent_acceptance": "ACCEPTED",
+      "independent_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.json",
+      "independent_report_sha256": "db4acee13872ed7f4dee02b3cedfead714e9be91d0fee272018d32fc5092f89a",
+      "blocking_findings": 0,
+      "actual_recovery_launches": 0,
+      "original_token_authorized_reads": 40,
+      "original_token_denials": 80,
+      "released_reservations": 10,
+      "original_replay_and_late_projection_pairs": 12,
+      "preserved_prior_snapshots": 6,
+      "notification_top_result_notices": 18,
+      "all_round_result_notices": 28,
+      "all_round_total_notices": 74,
+      "parent_defined_TC21": "PASS",
+      "parent_defined_TC22": "PASS",
+      "runtime_build_health_commit": "b1901a48f",
+      "work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08"
+    },
+    "continuation_history_20261119": [
+      {
+        "at": "2026-11-19T02:35:24.695301+00:00",
+        "reason": "Reconcile original failed R01/R02, fresh whole R05/R03 results and owned service closure before independent acceptance.",
+        "previous": {
+          "continuation_20261119": {
+            "at": "2026-11-19T01:41:22.540621+00:00",
+            "plan": "docs/plans/2026-11-19-pay-241-continuation.md",
+            "phase": "CONTROLLED_RUNTIME_R01_RUNNING_SUBSCRIPTION_BINDING_DIAGNOSIS",
+            "parent24": {
+              "PASS": 4,
+              "PARTIAL": 13,
+              "NOT_RUN": 7
+            },
+            "head": "b1901a48f6990d39e9bd5a588d405342aaa2016f",
+            "allocation": {
+              "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly",
+              "state_root": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly",
+              "server_base": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-base-r01"
+            },
+            "new_test_bodies_executed": 7,
+            "full_S3_accepted": false,
+            "latest_regression_status": "EXPECTED_RED",
+            "ordinary_work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a"
+          },
+          "ordinary_notification_continuation_current": {
+            "at": "2026-11-19T01:41:22.540621+00:00",
+            "status": "CODE_COMMITTED_SUBSCRIPTIONS_R04_NOT_ACCEPTED_RUNTIME_R01_RUNNING",
+            "ordinary_code_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+            "normal_race_each": {
+              "tops": 35,
+              "names": 57,
+              "PASS": 57,
+              "FAIL": 0,
+              "SKIP": 0
+            },
+            "ROOT_product_integrated": true,
+            "client_r01": {
+              "PASS": 0,
+              "FAIL": 2,
+              "SKIP": 0,
+              "retry": 0,
+              "web_cause": "Main Playwright baseURL missing",
+              "desktop_cause": "Fixture marker underscore Markdown serialization"
+            },
+            "next": "Actual controlled runtime proof/notification/revocation; fix original-editor binding and full fresh subscription round separately",
+            "full_S3_accepted": false,
+            "work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+            "current_client_round": "R04",
+            "prior_failed_rounds": {
+              "R01": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R02": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R03": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R04": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              }
+            },
+            "R03_reached_partial_scope": "Actual subscribed member, first comment and unique inbox per platform, read/comment anchor, physical reconnect/reload, this-issue unsubscribe; second composer Send locator failed"
+          },
+          "controlled_runtime_current": {
+            "at": "2026-11-19T01:41:22.540621+00:00",
+            "round": "Extras-B R01",
+            "phase": "RUNNING",
+            "planned_tops": 4,
+            "planned_subcases": 10,
+            "planned_provider_launches": 10,
+            "planned_original_inputs": 12,
+            "API_pid": 33903,
+            "database": "multica_pay241_s3n_20261119_uwkcehly_runtime_r02",
+            "actual_result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/runtime-extras-b-r01",
+            "full_S3_accepted": false
+          }
+        }
+      },
+      {
+        "at": "2026-11-19T03:26:22.948741+00:00",
+        "reason": "Formal R05/R03 independent acceptance; only defined TC21/TC22 promoted, required remaining S3 capabilities retained.",
+        "previous": {
+          "continuation_20261119": {
+            "at": "2026-11-19T02:58:45.813298+00:00",
+            "plan": "docs/plans/2026-11-19-pay-241-continuation.md",
+            "phase": "ORDINARY_R05_ACCEPTED_RUNTIME_R03_FINAL_REVIEW",
+            "parent24": {
+              "NOT_RUN": 7,
+              "PARTIAL": 13,
+              "PASS": 4
+            },
+            "head": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+            "allocation": {
+              "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly",
+              "state_root": "/Users/artisan/.multica/acceptance/pay241-s3-continuation-20261119-uwkcehly",
+              "server_base": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/server-base-r01"
+            },
+            "new_test_bodies_executed": 7,
+            "full_S3_accepted": false,
+            "latest_regression_status": "GREEN_CODE_ACCEPTED_FRESH_CLIENT_SCOPES_ACTUAL_PASS_REVIEW_PENDING",
+            "ordinary_work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a"
+          },
+          "ordinary_notification_continuation_current": {
+            "at": "2026-11-19T02:58:45.813298+00:00",
+            "status": "CODE_COMMITTED_ORDINARY_R05_INDEPENDENTLY_ACCEPTED",
+            "ordinary_code_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-notification-green-independent-check-20261119.md",
+            "normal_race_each": {
+              "tops": 35,
+              "names": 57,
+              "PASS": 57,
+              "FAIL": 0,
+              "SKIP": 0
+            },
+            "ROOT_product_integrated": true,
+            "client_r01": {
+              "PASS": 0,
+              "FAIL": 2,
+              "SKIP": 0,
+              "retry": 0,
+              "web_cause": "Main Playwright baseURL missing",
+              "desktop_cause": "Fixture marker underscore Markdown serialization"
+            },
+            "next": "Finalize actual runtime R03 independent acceptance and precise parent/S3 dispositions",
+            "full_S3_accepted": false,
+            "work_commit": "8b1f3dcf626a3da9ea4797ca92ed98284266620a",
+            "current_client_round": "R05",
+            "prior_failed_rounds": {
+              "R01": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R02": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R03": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              },
+              "R04": {
+                "PASS": 0,
+                "FAIL": 2,
+                "retry": 0
+              }
+            },
+            "R03_reached_partial_scope": "Actual subscribed member, first comment and unique inbox per platform, read/comment anchor, physical reconnect/reload, this-issue unsubscribe; second composer Send locator failed",
+            "client_result": {
+              "PASS": 2,
+              "FAIL": 0,
+              "SKIP": 0,
+              "retry": 0
+            },
+            "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-subscription-r06",
+            "fixture_sha256": "11992b524fb3fa7c524b611654ecac0ddc9eafdad4ac5881c825962943d4ee58",
+            "actual_result": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/subscriptions-runtime-r05/result.json",
+            "raw_sha256": "cb0b9f25691f8e24362fd1f420f337a4cbfdd62c25f3953acfb78565a5b1cb56",
+            "poststop": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/subscription-runtime-after-r05.json",
+            "API_pid": 68414,
+            "connections_after": 0,
+            "independent_acceptance": "ACCEPTED_BOUNDED_ORDINARY_SUBSCRIPTION_R05",
+            "independent_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-r05-independent-check-20261119.json",
+            "independent_report_sha256": "68f5c6fcc4b5cc47b5cb8568ca1952547aabd2d64b1f9c08eb637c4a184e386f",
+            "blocking_findings": 0
+          },
+          "controlled_runtime_current": {
+            "at": "2026-11-19T02:35:24.695301+00:00",
+            "round": "Extras-B R03",
+            "phase": "ACTUAL_PASS_PENDING_INDEPENDENT_CHECK",
+            "planned_tops": 4,
+            "planned_subcases": 10,
+            "planned_provider_launches": 10,
+            "planned_original_inputs": 12,
+            "actual_tops": {
+              "PASS": 4,
+              "FAIL": 0,
+              "NOT_RUN": 0
+            },
+            "actual_subcases": {
+              "PASS": 10,
+              "FAIL": 0,
+              "NOT_RUN": 0
+            },
+            "actual_provider_turns": 10,
+            "actual_original_inputs": 12,
+            "retry": 0,
+            "API_pid": 70147,
+            "API_stopped": true,
+            "database": "multica_pay241_s3n_20261119_uwkcehly_runtime_r04",
+            "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/source/client-harness-runtime-r03",
+            "fixture_sha256": "1669c8356a4cc01720753e5df7280e76fdcf58b19e66da620748fe5ab6c3959c",
+            "actual_result_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/verification/runtime-extras-b-r03/result.json",
+            "raw_sha256": "51eff997718ef1d8ff49a99494a9bbd7b7c4283dd75e069417ea299bdb91c21e",
+            "poststop": "/Volumes/artisan/.multica-acceptance/pay241-s3-continuation-20261119-uwkcehly/audit/runtime-extras-b-after-r03.json",
+            "connections_after": 0,
+            "gate_flags_restored": true,
+            "actual_gate_epoch": 10,
+            "older_failed_rounds_retained": {
+              "R01": {
+                "tops": {
+                  "PASS": 0,
+                  "FAIL": 4
+                },
+                "subcases": {
+                  "PASS": 0,
+                  "FAIL": 2,
+                  "NOT_RUN": 8
+                },
+                "provider_turns": 0,
+                "inputs": 0
+              },
+              "R02": {
+                "tops": {
+                  "PASS": 2,
+                  "FAIL": 2
+                },
+                "subcases": {
+                  "PASS": 4,
+                  "FAIL": 2,
+                  "NOT_RUN": 4
+                },
+                "provider_turns": 6,
+                "inputs": 8
+              }
+            },
+            "full_S3_accepted": false,
+            "real_model_execution": false,
+            "independent_acceptance": "PENDING"
+          }
+        }
+      }
+    ],
+    "latest_continuation_plan": "docs/plans/2026-11-19-pay-241-s3-closeout.md",
+    "current_increment_quality_gate": {
+      "at": "2026-11-19T03:26:22.948741+00:00",
+      "status": "PASS",
+      "scope": "ordinary comment listener code + complete ordinary subscription R05 and controlled Extras-B R03 only",
+      "code_normal_race_each": {
+        "tops": 35,
+        "names": 57
+      },
+      "ordinary_R05": {
+        "tops": 2,
+        "retry": 0,
+        "blockers": 0
+      },
+      "runtime_R03": {
+        "tops": 4,
+        "subcases": 10,
+        "retry": 0,
+        "blockers": 0
+      },
+      "whole_S3_quality_gate": false,
+      "work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08"
+    },
+    "ordinary_subscription_runtime_work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+    "new_session_handoff_history": [
+      "research/new-session-handoff-20261118.md"
+    ],
+    "new_session_handoff_sha256": "67860fe8b61685d0ea0b4d5dbd79759682ab11bc79198bcea746cc91f09af685",
+    "new_session_handoff_updated_at": "2026-11-19T04:53:20.526511+00:00",
+    "agent_output_continuation_20261119": {
+      "phase": "OUTPUT_CURRENT_CLIENTS_ACCEPTED_ROOT_COMPATIBILITY_AND_ORDINARY_UI_CAS_NEXT",
+      "allocation": "research/agent-output-allocation-20261119-r01.json",
+      "client_allocation": "research/agent-output-client-allocation-20261119-r01.json",
+      "contract_review": "research/agent-output-contract-check-20261119.json",
+      "route_red": "research/agent-output-route-red-20261119.md",
+      "baseline_head": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
+      "baseline_dirty_entries": 513,
+      "index_empty_at_start": true,
+      "whole_S3_accepted": false,
+      "output_capability_accepted": true,
+      "old_failures_retained": true,
+      "checkpoint": "research/output-continuation-checkpoint-r02-20261119.md",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "client_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+      "runtime_harness": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+      "new_service_tops": 17,
+      "new_service_names": 39,
+      "service_combined_tops": 70,
+      "client_named_pass": 222,
+      "functional_acceptance": false,
+      "native_runtime_acceptance": true,
+      "owning_layer_functional_acceptance": true,
+      "code_functional_review": "research/agent-output-code-check-20261119.json",
+      "Go_normal_top_pass": 82,
+      "Go_race_top_pass": 82,
+      "Go_normal_named_pass": 203,
+      "Go_race_named_pass": 203,
+      "latest_full_runtime_status": "R01_NOT_ACCEPTED",
+      "runtime_R01": {
+        "tops_PASS": 0,
+        "tops_FAIL": 2,
+        "subcases_PASS": 5,
+        "subcases_FAIL": 1,
+        "subcases_NOT_RUN": 10,
+        "actual_providers": 3,
+        "output_CLI_invocations": 4,
+        "startup_issue_get_CLI_invocations": 3,
+        "Agent_files": 3,
+        "human_input_files": 2,
+        "recorded_outcomes": 2,
+        "closure": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-runtime-r01-owned-closure.json",
+        "source_config_raw_retained": true,
+        "database_connections": 0,
+        "gate_epoch_before": 2,
+        "gate_epoch_after": 6
+      },
+      "runtime_R02_allocation": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/allocation-output-runtime-r02.json",
+      "ROOT_product_integrated": true,
+      "ROOT_integrated_paths": 43,
+      "current_runtime_review": "research/agent-output-runtime-r03-independent-check-20261119.json",
+      "current_runtime_review_sha256": "3824724d9b60b5d6c7b0b172a990eddd70663b1c0496df4dc10d4f2a90bdc755",
+      "current_runtime": {
+        "label": "runtime-output-r03",
+        "tops_PASS": 2,
+        "subcases_PASS": 16,
+        "retry": 0,
+        "actual_Providers": 10,
+        "output_CLI_invocations": 12,
+        "startup_CLI_reads": 10,
+        "Agent_file_rows": 10,
+        "Agent_refs": 20,
+        "human_input_files": 6,
+        "objects": 16,
+        "all_refs": 26,
+        "recorded_outcomes": 4,
+        "nonrecorded_stop_withdrawal_runs": 6,
+        "recovery_Provider_launches": 0,
+        "original_permits": 10,
+        "permit_HTTP_replies": 20,
+        "old_token_write_403": 42,
+        "old_token_read_403": 14,
+        "connections": 0,
+        "gate_epoch_before": 2,
+        "gate_epoch_after": 6,
+        "closure": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-runtime-r03-owned-closure.json"
+      },
+      "runtime_R02": {
+        "whole_status": "NOT_ACCEPTED",
+        "tops_FAIL": 2,
+        "subcases_PASS": 16,
+        "sole_failure": "final audit counted5HTTP ratherthan10calls over5originalpermits perplatform",
+        "original_source_config_DB_raw_preserved": true,
+        "connections": 0,
+        "gate_epoch_before": 2,
+        "gate_epoch_after": 6
+      },
+      "next": "ordinary priority/assignee UI numeric revision competition, then final S3 R01-R09 source/resources/acceptance"
+    },
+    "agent_output_work_commit": "89740ed14d1abf1bdc7ba7da26144984884c7cb5",
+    "ordinary_UI_CAS_current": {
+      "at": "2026-11-19T13:04:24.638720+00:00",
+      "phase": "ACCEPTED_AND_COMMITTED",
+      "code_named_PASS": 280,
+      "runtime_tops_PASS": 2,
+      "runtime_subcases_PASS": 6,
+      "retry": 0,
+      "original_ui_puts": 8,
+      "fresh_ui_puts": 4,
+      "versionless_api_puts": 2,
+      "green_result": "research/ordinary-ui-cas-green-r02-independent-check-20261119.json",
+      "red_result": "research/ordinary-ui-cas-red-r02-check-20261119.md",
+      "root_integrated": true,
+      "TC16": "PASS",
+      "real_UI_ACCEPTED": true,
+      "wholeS3accepted": true,
+      "ROOT_integrated": true,
+      "work_commit": "81fc27ac847c6b59782b734eaba70d99f14eed67"
+    },
+    "resume_progress_history_20261119": [
+      {
+        "at": "2026-11-19T12:46:17.084819+00:00",
+        "notes": "2026-11-19：普通评论通知去重已独立接受并提交8b1f3dcf6；普通订阅R05双端2PASS及受控R03四顶层/十子场景PASS均独立接受、零重试/阻挡项0，10受控Provider/12原输入/0恢复启动。TC21/22定义场景PASS，父24例6PASS/11PARTIAL/7NOT_RUN，TC14/20仅补证据；原失败/历史保留。自有服务停止/连接0。Agent输出附件、普通UI版本竞争及最终S3范围继续开放；真实S4、最终S5/签字另测。 E2E/spec/本轮计划已定向本地提交699d510b9；任务研究/进度和共享journal按Trellis保留，S3未归档。 2026-11-19 输出增量：Go406命名/CoreViews222命名及完整智能体输出R03双端2顶层16子场景已独立接受；43路径精确整合ROOT，其他WIP/全部失败保留。原gate2→6、连接0；普通UI版本竞争和最终R09继续，S3未归档。",
+        "ordinary_UI_CAS_current": {
+          "phase": "PRIVATE_PRODUCT_AND_NEW_E2E_IMPLEMENTATION",
+          "plan": "docs/plans/2026-11-19-pay-241-ordinary-ui-cas.md",
+          "allocation": "research/ordinary-ui-cas-allocation-20261119-r01.json",
+          "evidence_root": "/Volumes/artisan/.multica-acceptance/pay241-s3-ui-cas-20261119-u691amwe",
+          "eight_product_paths": [
+            "packages/core/issues/mutations.ts",
+            "packages/views/issues/actions/use-issue-actions.ts",
+            "packages/views/issues/components/board-card.tsx",
+            "packages/views/issues/components/table-view.tsx",
+            "packages/views/issues/components/issue-detail.tsx",
+            "packages/views/issues/actions/run-confirm-gate.ts",
+            "packages/views/modals/run-confirm.tsx",
+            "packages/views/issues/components/batch-action-toolbar.tsx"
+          ],
+          "real_UI_ACCEPTED": false,
+          "old_versionless_API_compatible": true,
+          "wholeS3accepted": false
+        }
+      }
+    ],
+    "parent_matrix_current_counts": {
+      "at": "2026-11-19T13:04:24.638720+00:00",
+      "PASS": 7,
+      "PARTIAL": 10,
+      "NOT_RUN": 7,
+      "matrix_sha256": "e5e97f421a6ce28e68ccf909450f04bbac4d09591a2523fcd9278789e9396942"
+    },
+    "S3_final_functional_acceptance": {
+      "at": "2026-11-19T13:20:59.969254+00:00",
+      "status": "ACCEPTED_R01_R09",
+      "report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-ui-cas-root-final-check-20261119.json",
+      "typecheck_tasks": 9,
+      "lint_tasks": 6,
+      "lint_errors": 0,
+      "lint_warnings": 31,
+      "archive_ready": true,
+      "archive_remaining": null,
+      "work_commits": [
+        "81fc27ac8",
+        "f6703b7e4",
+        "2a46ff823"
+      ]
+    }
+  }
+}

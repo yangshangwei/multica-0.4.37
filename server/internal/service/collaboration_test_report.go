@@ -281,8 +281,9 @@ func resolveTestReportLog(ctx context.Context, q *db.Queries, run pgtype.UUID, i
 		}
 		messages = p.Messages
 	case "outcome":
-		var p protocol.CollaborationRunOutcome
-		if decodeCollaborationPreparationJSON(e.Payload, &p) != nil || p.Record == nil || protocol.ValidateCollaborationRunRecord(p.Record) != nil || p.Identity != identity || p.AttemptSeq != stageVersion(attempt.AttemptSeq) || p.AttemptNonce != attempt.AttemptNonce || !collaborationRuntimeMessageMode(p.ProtocolVersion, p.Containment, attempt.Containment) {
+		saved, decodeErr := decodeCollaborationStoredOutcome(e.Payload)
+		p := saved.CollaborationRunOutcome
+		if decodeErr != nil || p.Record == nil || protocol.ValidateCollaborationRunRecord(p.Record) != nil || p.Identity != identity || p.AttemptSeq != stageVersion(attempt.AttemptSeq) || p.AttemptNonce != attempt.AttemptNonce || !collaborationRuntimeMessageMode(p.ProtocolVersion, p.Containment, attempt.Containment) {
 			return "", missing
 		}
 		messages = p.Record.Messages

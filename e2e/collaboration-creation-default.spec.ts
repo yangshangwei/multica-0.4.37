@@ -41,7 +41,7 @@ test.describe("collaboration creation default", () => {
       const title = dialog.getByRole("textbox", { name: "Title", exact: true });
       await expect(title).toBeEnabled();
       await expect(dialog.getByText(DISABLED, { exact: true })).toHaveCount(0);
-      await expect(dialog.getByText("Assigned to you", { exact: true })).toBeVisible();
+      await expect(dialog.getByText("Assigned to you", { exact: true }).and(dialog.getByRole("status"))).toBeVisible();
 
       await title.fill(`Default-open collaboration ${randomUUID().slice(0, 8)}`);
       const created = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/collaboration/issues" && response.request().method() === "POST");

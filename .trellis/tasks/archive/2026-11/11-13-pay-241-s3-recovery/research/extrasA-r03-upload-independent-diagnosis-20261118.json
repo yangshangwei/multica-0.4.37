@@ -1,0 +1,54 @@
+{
+  "at": "2026-11-18T11:47:46.013802+00:00",
+  "reviewer": "/root/s3_check_batch_block",
+  "status": "NOT_ACCEPTED_CURRENT_EXTRAS_A_R03",
+  "product_defects_demonstrated": 0,
+  "source_fixes": 0,
+  "finding": {
+    "line": 544,
+    "failure_line": 376,
+    "subcase": "same_bytes_unknown_retry",
+    "cause_class": "post-response multipart introspection unavailable; exact raw-versus-header branch not distinguished",
+    "actual_path": "POST /api/collaboration/attachments/drafts",
+    "previous_subcase": "committed_upload_GET_reload PASSED",
+    "previous_second_subcase_assertions": [
+      "response201",
+      "strict attachment parsed",
+      "original attachment equality"
+    ]
+  },
+  "tops": {
+    "passed": 1,
+    "failed": 1,
+    "not_run": 4
+  },
+  "subcases": {
+    "passed": 4,
+    "failed": 1,
+    "not_run": 13
+  },
+  "retries": 0,
+  "source": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/harness-extrasA-r03/e2e/fixtures/collaboration-recovery-extras.ts",
+    "sha256": "9003c65a7ccd2143e180b58def76dce9a314efcdfab292c2be5ffb04cb7537c4",
+    "bytes": 74513
+  },
+  "raw_report": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r03/playwright-report.json",
+    "sha256": "d028b80a1170b862167616ef22d3c4c910f4497bd6626ba3ddf65a3af682a874",
+    "bytes": 12946
+  },
+  "raw_case": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/extrasA-r03/test-results/collaboration-recovery-ext-d0960-try-and-changed-reselection-chromium/web-extras-uploads.json",
+    "sha256": "72260a59ca5d1386064095da39d6d31d1c1bc35c1966c953b7ee1c0b07ac96ba",
+    "bytes": 93846
+  },
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/extrasA-r03-upload-independent-diagnosis-20261118.md",
+    "sha256": "16ecff1a5d20fa34b4fe1ed3c2db6b8a24ffd4c457d96dfb16ae5e69ab05c7fc",
+    "bytes": 2729
+  },
+  "reviewer_execution": 0,
+  "matrix_changes": 0,
+  "full_S3_accepted": false
+}

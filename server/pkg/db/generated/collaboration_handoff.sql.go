@@ -50,7 +50,7 @@ func (q *Queries) CountCollaborationHandoffSnapshots(ctx context.Context, runID 
 }
 
 const getCollaborationHandoffByID = `-- name: GetCollaborationHandoffByID :one
-SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at FROM issue_handoff WHERE issue_id=$1 AND id=$2
+SELECT id, issue_id, actor_user_id, from_user_id, to_user_id, purpose, note, requester_user_id, parent_request_id, previous_status, resolution, created_at, unblock_condition, estimated_resolution_at, superseded_by_repair_handoff_id FROM issue_handoff WHERE issue_id=$1 AND id=$2
 `
 
 type GetCollaborationHandoffByIDParams struct {
@@ -75,6 +75,9 @@ func (q *Queries) GetCollaborationHandoffByID(ctx context.Context, arg GetCollab
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 	)
 	return i, err
 }
@@ -192,25 +195,28 @@ func (q *Queries) GetCollaborationInformationRequestEventSequence(ctx context.Co
 }
 
 const getCollaborationLatestHandoff = `-- name: GetCollaborationLatestHandoff :one
-SELECT h.id, h.issue_id, h.actor_user_id, h.from_user_id, h.to_user_id, h.purpose, h.note, h.requester_user_id, h.parent_request_id, h.previous_status, h.resolution, h.created_at, e.event_seq FROM collaboration_event e
+SELECT h.id, h.issue_id, h.actor_user_id, h.from_user_id, h.to_user_id, h.purpose, h.note, h.requester_user_id, h.parent_request_id, h.previous_status, h.resolution, h.created_at, h.unblock_condition, h.estimated_resolution_at, h.superseded_by_repair_handoff_id, e.event_seq FROM collaboration_event e
 JOIN issue_handoff h ON h.issue_id=e.issue_id AND h.id::text=e.payload->>'handoff_id'
 WHERE e.issue_id=$1 ORDER BY e.event_seq DESC LIMIT 1
 `
 
 type GetCollaborationLatestHandoffRow struct {
-	ID              pgtype.UUID        `json:"id"`
-	IssueID         pgtype.UUID        `json:"issue_id"`
-	ActorUserID     pgtype.UUID        `json:"actor_user_id"`
-	FromUserID      pgtype.UUID        `json:"from_user_id"`
-	ToUserID        pgtype.UUID        `json:"to_user_id"`
-	Purpose         string             `json:"purpose"`
-	Note            string             `json:"note"`
-	RequesterUserID pgtype.UUID        `json:"requester_user_id"`
-	ParentRequestID pgtype.UUID        `json:"parent_request_id"`
-	PreviousStatus  string             `json:"previous_status"`
-	Resolution      string             `json:"resolution"`
-	CreatedAt       pgtype.Timestamptz `json:"created_at"`
-	EventSeq        int64              `json:"event_seq"`
+	ID                          pgtype.UUID        `json:"id"`
+	IssueID                     pgtype.UUID        `json:"issue_id"`
+	ActorUserID                 pgtype.UUID        `json:"actor_user_id"`
+	FromUserID                  pgtype.UUID        `json:"from_user_id"`
+	ToUserID                    pgtype.UUID        `json:"to_user_id"`
+	Purpose                     string             `json:"purpose"`
+	Note                        string             `json:"note"`
+	RequesterUserID             pgtype.UUID        `json:"requester_user_id"`
+	ParentRequestID             pgtype.UUID        `json:"parent_request_id"`
+	PreviousStatus              string             `json:"previous_status"`
+	Resolution                  string             `json:"resolution"`
+	CreatedAt                   pgtype.Timestamptz `json:"created_at"`
+	UnblockCondition            pgtype.Text        `json:"unblock_condition"`
+	EstimatedResolutionAt       pgtype.Timestamptz `json:"estimated_resolution_at"`
+	SupersededByRepairHandoffID pgtype.UUID        `json:"superseded_by_repair_handoff_id"`
+	EventSeq                    int64              `json:"event_seq"`
 }
 
 func (q *Queries) GetCollaborationLatestHandoff(ctx context.Context, issueID pgtype.UUID) (GetCollaborationLatestHandoffRow, error) {
@@ -229,6 +235,9 @@ func (q *Queries) GetCollaborationLatestHandoff(ctx context.Context, issueID pgt
 		&i.PreviousStatus,
 		&i.Resolution,
 		&i.CreatedAt,
+		&i.UnblockCondition,
+		&i.EstimatedResolutionAt,
+		&i.SupersededByRepairHandoffID,
 		&i.EventSeq,
 	)
 	return i, err

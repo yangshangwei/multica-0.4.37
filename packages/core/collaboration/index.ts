@@ -4,6 +4,8 @@ export * from "./knowledge-automation-schema";
 export * from "./knowledge-automation-queries";
 export * from "./knowledge-automation-actions";
 export { collaborationDeliveryHistoryOptions } from "./delivery-queries";
+export * from "./information-schema";
+export * from "./information-queries";
 export { deriveCollaborationDetailState, collaborationHasAIActivity } from "./presentation";
 export type { CollaborationDetailAction, CollaborationDetailStage } from "./presentation";
 export type { CollaborationResultInput, CollaborationAcceptanceReturnInput, CollaborationAIPolicyInput } from "./schema";

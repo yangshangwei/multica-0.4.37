@@ -1,0 +1,2889 @@
+{
+  "schema_version": 1,
+  "type": "r29_consumed_read_red_independent_check",
+  "status": "ACCEPTED_R29_CONSUMED_READ_RED_BOUNDARY_ONLY",
+  "at": "2026-11-17T18:15:03.491Z",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/r27_submission_check",
+  "report_markdown": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-independent-check-20261118.md",
+    "sha256": "8e4d190ddf270634532c1f0a6e4956df68dfa91aeb7f4d9be1bcf7d4b983c8d0"
+  },
+  "write_ownership": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-independent-check-20261118.md",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-red-independent-check-20261118.json"
+  ],
+  "acceptance_scope": "genuine_original_product_consumed_GetByID_read_read_RED_and_passed_writer_current_authority_controls",
+  "blocking_findings_for_RED_acceptance": [],
+  "reviewer_source_fixes": [],
+  "pending_product_findings": [
+    {
+      "files": [
+        "server/internal/service/delivery_completion_authorization.go",
+        "server/internal/service/delivery_completion_collaboration.go"
+      ],
+      "issue": "exclusive_GetByID_grant_root_issuer_source_child_artifact_fences_prevent_pure_read_coexistence",
+      "fixed": false,
+      "why_not_fixed": "filesystem-only RED review; product changes require separate bounded main implementation dispatch",
+      "proven_first_failures": [
+        {
+          "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+          "line": 11,
+          "event_time": "2026-11-18T01:52:40.234286+08:00",
+          "payload": {
+            "label": "R29_GET_terminal_before_R4_release",
+            "actor": "1847526f-5e6e-44e7-8883-1afdb4092322",
+            "backend_pid": 97046,
+            "error_type": "service.DeliveryCompletionError",
+            "status": 409,
+            "code": "delivery_completion_conflict",
+            "first_pg_error": {
+              "query": "LockLifecycleIssue",
+              "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+              "uuid_args": [
+                "c0e93ca6-29f9-4c59-b6d0-69ee3343cd22",
+                "3db9f440-cd9a-4fa9-991b-9b837645351e"
+              ],
+              "phase": "row_scan",
+              "backend_pid": 97046,
+              "sqlstate": "55P03",
+              "outer_type": "*pgconn.PgError",
+              "message": "could not obtain lock on row in relation \"issue\"",
+              "detail": "",
+              "where": "",
+              "table": "",
+              "constraint": "",
+              "recorded_at": "2026-11-17T17:52:40.233784Z"
+            }
+          }
+        },
+        {
+          "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+          "line": 27,
+          "event_time": "2026-11-18T01:52:42.807513+08:00",
+          "payload": {
+            "label": "R29_R4_terminal_before_GET_commit",
+            "actor": "51c209fb-62d2-44e0-a157-0f7ddbe34d7a",
+            "backend_pid": 97071,
+            "error_type": "*pgconn.PgError",
+            "status": 0,
+            "code": "",
+            "first_pg_error": {
+              "query": "LockDeliveryEvidenceIssueRead",
+              "sql_sha256": "a0960f3c146c3313edc3f6f049c26103c341d0c74974669574ad9019f0ed5adc",
+              "uuid_args": [
+                "ef023c7b-f8e3-4c96-af00-316c41435616",
+                "dcd85102-7b8c-4666-bab9-fb4256525c4a"
+              ],
+              "phase": "row_scan",
+              "backend_pid": 97071,
+              "sqlstate": "55P03",
+              "outer_type": "*pgconn.PgError",
+              "message": "could not obtain lock on row in relation \"issue\"",
+              "detail": "",
+              "where": "",
+              "table": "",
+              "constraint": "",
+              "recorded_at": "2026-11-17T17:52:42.807052Z"
+            }
+          }
+        },
+        {
+          "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+          "line": 44,
+          "event_time": "2026-11-18T01:52:45.443527+08:00",
+          "payload": {
+            "label": "R29_sibling_terminal_before_first_GET_commit",
+            "actor": "e8d2af03-cc62-4581-96e0-ac2e90b0fddc",
+            "backend_pid": 97097,
+            "error_type": "service.DeliveryCompletionError",
+            "status": 409,
+            "code": "delivery_completion_conflict",
+            "first_pg_error": {
+              "query": "LockDeliveryCompletionAuthorization",
+              "sql_sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+              "uuid_args": [
+                "01a1eaa3-c9cb-7301-a487-584453b39551"
+              ],
+              "phase": "row_scan",
+              "backend_pid": 97097,
+              "sqlstate": "55P03",
+              "outer_type": "*pgconn.PgError",
+              "message": "could not obtain lock on row in relation \"delivery_completion_authorization\"",
+              "detail": "",
+              "where": "",
+              "table": "",
+              "constraint": "",
+              "recorded_at": "2026-11-17T17:52:45.442994Z"
+            }
+          }
+        }
+      ],
+      "necessary_source_child_factoring": {
+        "source": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionSourceIssue",
+        "line": 92,
+        "lock_line": 100,
+        "optional_exact_validation_lines": [
+          107,
+          108
+        ],
+        "exact_false_is_not_shared": true,
+        "single_existing_validator_body_required": true,
+        "independent_private_exact_and_readProjection_arguments": true,
+        "original_wrapper_constant_false_lock_mode_required": true
+      },
+      "proposed_GetByID_only_boundary": {
+        "product_files": 2,
+        "grant": "real SHARE NOWAIT plus existing GetDeliveryCompletionAuthorization getter",
+        "authority": "private read authority/issuer entry only at GetByID",
+        "root_and_source_child": "existing LockDeliveryEvidenceIssueRead",
+        "collaboration_access": "readCompletionCollaborationAccess",
+        "observation": "evaluateDeliveryEvidenceReadInTx",
+        "required_old_exclusive_callers": [
+          "by_request_completionReadAuthority",
+          "Create_key_replay_completionIssuerRead",
+          "Revoke_completionIssuerRead",
+          "producer_validation_completionSourceIssue_exact_true",
+          "freezeCollaboration_completionSourceIssue_exact_true",
+          "all_actual_completion_terminal_writers"
+        ],
+        "preserve": [
+          "current_ACL_schema_credentials_password_members_source",
+          "stored_request_minimal_receipt_exact_artifact_execution_producer",
+          "consumer_false_means_newAdmission_false",
+          "R38_advisory_and_current_configuration",
+          "handler_final_credential_and_commit"
+        ],
+        "not_needed_or_authorized": [
+          "new_SQL_generated_migrations",
+          "public_flags_marker",
+          "new_Begin_or_transaction_owner",
+          "new_response_contract",
+          "test_source_changes"
+        ]
+      }
+    }
+  ],
+  "actual_result": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/result.json",
+    "sha256": "09765a6246c9a194219f4b91076ef6bc30661735fa6d64496337673f268a90f8",
+    "exit": 1,
+    "top_counts": {
+      "PASS": 2,
+      "FAIL": 1,
+      "SKIP": 0
+    },
+    "leaf_counts": {
+      "PASS": 7,
+      "FAIL": 3,
+      "SKIP": 0
+    },
+    "named_counts": {
+      "PASS": 9,
+      "FAIL": 4,
+      "SKIP": 0
+    },
+    "complete_named_terminal_set": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "action": "fail",
+        "elapsed": 2.75,
+        "raw_event_line": 18
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "action": "fail",
+        "elapsed": 2.55,
+        "raw_event_line": 35
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "action": "fail",
+        "elapsed": 2.63,
+        "raw_event_line": 52
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "action": "pass",
+        "elapsed": 2.76,
+        "raw_event_line": 65
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "action": "pass",
+        "elapsed": 2.43,
+        "raw_event_line": 80
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence",
+        "action": "fail",
+        "elapsed": 13.12,
+        "raw_event_line": 82
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "action": "pass",
+        "elapsed": 2.52,
+        "raw_event_line": 101
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "action": "pass",
+        "elapsed": 2.78,
+        "raw_event_line": 119
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences",
+        "action": "pass",
+        "elapsed": 5.3,
+        "raw_event_line": 121
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "action": "pass",
+        "elapsed": 2.55,
+        "raw_event_line": 135
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "action": "pass",
+        "elapsed": 2.48,
+        "raw_event_line": 147
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "action": "pass",
+        "elapsed": 2.35,
+        "raw_event_line": 160
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority",
+        "action": "pass",
+        "elapsed": 7.37,
+        "raw_event_line": 162
+      }
+    ],
+    "expected_test_names": [
+      "TestDeliveryCompletionConsumedGetReadCoexistence",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+      "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+      "TestDeliveryCompletionConsumedGetWriterFences",
+      "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+      "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+      "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked"
+    ],
+    "suite_reran": false,
+    "raw_event_lines": 165,
+    "parse_errors": [],
+    "shape_issues": [],
+    "duplicate_runs": [],
+    "duplicate_terminals": [],
+    "missing_names": [],
+    "extra_names": [],
+    "pending_names": [],
+    "unfinished_output_fragments": [],
+    "fragment_handling": "reassemble same-test Output fragments into complete logical lines; all10 long72relation count objects complete",
+    "only_assertion_error_outputs": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 13,
+        "end_line": 13,
+        "text": "    delivery_completion_consumed_read_concurrency_test.go:326: same-P consumed GET did not retain its exact receipt: service.DeliveryCompletionError delivery_completion_conflict"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 30,
+        "end_line": 30,
+        "text": "    delivery_completion_consumed_read_concurrency_test.go:341: authorized R4 contended with a candidate reader: SQLSTATE=55P03 err=ERROR: could not obtain lock on row in relation \"issue\" (SQLSTATE 55P03)"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 47,
+        "end_line": 47,
+        "text": "    delivery_completion_consumed_read_concurrency_test.go:356: same-P consumed GET did not retain its exact receipt: service.DeliveryCompletionError delivery_completion_conflict"
+      }
+    ],
+    "recorded_times": {
+      "command": "2026-11-17T17:52:30.362939+00:00",
+      "start": "2026-11-18T01:52:36.679862+08:00",
+      "package_terminal": "2026-11-18T01:53:03.391497+08:00",
+      "package_elapsed": 26.712
+    }
+  },
+  "native_witnesses": {
+    "all_first_pg_failures": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 11,
+        "event_time": "2026-11-18T01:52:40.234286+08:00",
+        "payload": {
+          "label": "R29_GET_terminal_before_R4_release",
+          "actor": "1847526f-5e6e-44e7-8883-1afdb4092322",
+          "backend_pid": 97046,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockLifecycleIssue",
+            "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+            "uuid_args": [
+              "c0e93ca6-29f9-4c59-b6d0-69ee3343cd22",
+              "3db9f440-cd9a-4fa9-991b-9b837645351e"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 97046,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T17:52:40.233784Z"
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 27,
+        "event_time": "2026-11-18T01:52:42.807513+08:00",
+        "payload": {
+          "label": "R29_R4_terminal_before_GET_commit",
+          "actor": "51c209fb-62d2-44e0-a157-0f7ddbe34d7a",
+          "backend_pid": 97071,
+          "error_type": "*pgconn.PgError",
+          "status": 0,
+          "code": "",
+          "first_pg_error": {
+            "query": "LockDeliveryEvidenceIssueRead",
+            "sql_sha256": "a0960f3c146c3313edc3f6f049c26103c341d0c74974669574ad9019f0ed5adc",
+            "uuid_args": [
+              "ef023c7b-f8e3-4c96-af00-316c41435616",
+              "dcd85102-7b8c-4666-bab9-fb4256525c4a"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 97071,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"issue\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T17:52:42.807052Z"
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 44,
+        "event_time": "2026-11-18T01:52:45.443527+08:00",
+        "payload": {
+          "label": "R29_sibling_terminal_before_first_GET_commit",
+          "actor": "e8d2af03-cc62-4581-96e0-ac2e90b0fddc",
+          "backend_pid": 97097,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockDeliveryCompletionAuthorization",
+            "sql_sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+            "uuid_args": [
+              "01a1eaa3-c9cb-7301-a487-584453b39551"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 97097,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"delivery_completion_authorization\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T17:52:45.442994Z"
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 93,
+        "event_time": "2026-11-18T01:52:53.135028+08:00",
+        "payload": {
+          "label": "R29_GET_terminal_before_real_Revoke_release",
+          "actor": "288975f8-1700-4fda-8de6-c0ab57a9d015",
+          "backend_pid": 97173,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockDeliveryCompletionAuthorization",
+            "sql_sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+            "uuid_args": [
+              "01a1eaa3-e7dd-7893-af0c-1b0489f9c6b3"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 97173,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"delivery_completion_authorization\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T17:52:53.134445Z"
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 110,
+        "event_time": "2026-11-18T01:52:55.898497+08:00",
+        "payload": {
+          "label": "R29_Revoke_terminal_before_GET_commit",
+          "actor": "feaa3ebf-677f-48a3-a923-31932e329dd3",
+          "backend_pid": 97200,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 409,
+          "code": "delivery_completion_conflict",
+          "first_pg_error": {
+            "query": "LockDeliveryCompletionAuthorization",
+            "sql_sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+            "uuid_args": [
+              "01a1eaa3-f29d-7c1d-9137-20873350f2d0"
+            ],
+            "phase": "row_scan",
+            "backend_pid": 97200,
+            "sqlstate": "55P03",
+            "outer_type": "*pgconn.PgError",
+            "message": "could not obtain lock on row in relation \"delivery_completion_authorization\"",
+            "detail": "",
+            "where": "",
+            "table": "",
+            "constraint": "",
+            "recorded_at": "2026-11-17T17:52:55.898413Z"
+          }
+        }
+      }
+    ],
+    "exact_query_hash_and_PID_UUID_checks": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "query": "LockLifecycleIssue",
+        "sqlstate": "55P03",
+        "actual_second_PID_matches": true,
+        "exact_SQL_hash_matches": true,
+        "UUID_args": [
+          "c0e93ca6-29f9-4c59-b6d0-69ee3343cd22",
+          "3db9f440-cd9a-4fa9-991b-9b837645351e"
+        ],
+        "UUID_args_valid": true,
+        "first_holder": 97021,
+        "second_reader": 97046
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "query": "LockDeliveryEvidenceIssueRead",
+        "sqlstate": "55P03",
+        "actual_second_PID_matches": true,
+        "exact_SQL_hash_matches": true,
+        "UUID_args": [
+          "ef023c7b-f8e3-4c96-af00-316c41435616",
+          "dcd85102-7b8c-4666-bab9-fb4256525c4a"
+        ],
+        "UUID_args_valid": true,
+        "first_holder": 97048,
+        "second_reader": 97071
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "query": "LockDeliveryCompletionAuthorization",
+        "sqlstate": "55P03",
+        "actual_second_PID_matches": true,
+        "exact_SQL_hash_matches": true,
+        "UUID_args": [
+          "01a1eaa3-c9cb-7301-a487-584453b39551"
+        ],
+        "UUID_args_valid": true,
+        "grant_uuid_matches": true,
+        "first_holder": 97073,
+        "second_reader": 97097
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "query": "LockDeliveryCompletionAuthorization",
+        "sqlstate": "55P03",
+        "actual_second_PID_matches": true,
+        "exact_SQL_hash_matches": true,
+        "UUID_args": [
+          "01a1eaa3-e7dd-7893-af0c-1b0489f9c6b3"
+        ],
+        "UUID_args_valid": true,
+        "grant_uuid_matches": true,
+        "first_holder": 97151,
+        "second_reader": 97173
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "query": "LockDeliveryCompletionAuthorization",
+        "sqlstate": "55P03",
+        "actual_second_PID_matches": true,
+        "exact_SQL_hash_matches": true,
+        "UUID_args": [
+          "01a1eaa3-f29d-7c1d-9137-20873350f2d0"
+        ],
+        "UUID_args_valid": true,
+        "grant_uuid_matches": true,
+        "first_holder": 97175,
+        "second_reader": 97200
+      }
+    ],
+    "SQL_bindings": [
+      {
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/pkg/db/generated/lifecycle.sql.go",
+        "query": "LockLifecycleIssue",
+        "sql": "-- name: LockLifecycleIssue :one\nSELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE id = $1 AND workspace_id = $2\nFOR NO KEY UPDATE NOWAIT\n",
+        "sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+        "all_real_witnesses_match": true
+      },
+      {
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/pkg/db/generated/delivery_evidence_read.sql.go",
+        "query": "LockDeliveryEvidenceIssueRead",
+        "sql": "-- name: LockDeliveryEvidenceIssueRead :one\n\nSELECT id, workspace_id, title, description, status, priority, assignee_type, assignee_id, creator_type, creator_id, parent_issue_id, acceptance_criteria, context_refs, position, due_date, created_at, updated_at, number, project_id, origin_type, origin_id, first_executed_at, start_date, metadata, stage, properties, revision, last_activity_at, admission_status, current_iteration_id, iteration_rollover_count FROM issue WHERE id = $1 AND workspace_id = $2\nFOR SHARE NOWAIT\n",
+        "sha256": "a0960f3c146c3313edc3f6f049c26103c341d0c74974669574ad9019f0ed5adc",
+        "all_real_witnesses_match": true
+      },
+      {
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/pkg/db/generated/delivery_completion.sql.go",
+        "query": "LockDeliveryCompletionAuthorization",
+        "sql": "-- name: LockDeliveryCompletionAuthorization :one\nSELECT id, workspace_id, issuer_user_id, request_key, operation_id, contract_version, request_digest, request_json, created_at, expires_at, reason, target_kind, issue_id, issue_revision, expected_status, target_status, target_position, project_id, project_revision, policy_revision, evidence_issue_id, evidence_issue_revision, approval_id, execution_id, producer_agent_id, producer_task_id, producer_generation, spec_digest, artifact_digest, receipt_digest, source_revision, evidence_expires_at, observation, consumer_kind, consumer_user_id, consumer_agent_id, consumer_task_id, consumer_task_generation, consumer_runtime_id, consumer_originator_user_id, consumer_binding_id, consumer_binding_epoch, integration_id, integration_trust_revision, github_installation_id, vcs_provider, vcs_instance_url, webhook_config_identity, pull_request_id, repo_owner, repo_name, pr_number, pr_head_sha, collaboration_revision, lifecycle_epoch, participant_epoch, account_epoch, status_options_version, submission_id, submission_event_seq, delivery_intent_digest, admin_organization_id, issuer_credential_kind, issuer_credential_expires_at, issuer_pat_id, issuer_pat_hash, issuer_password_mode, issuer_password_version, issuer_password_kind, issuer_binding_id, issuer_binding_epoch, issuer_binding_workspace_id, issuer_binding_daemon_id FROM delivery_completion_authorization WHERE id=$1 FOR UPDATE NOWAIT\n",
+        "sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+        "all_real_witnesses_match": true
+      }
+    ],
+    "actual_distinct_backend_pairs": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 10,
+        "first": 97021,
+        "second": 97046
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 28,
+        "first": 97048,
+        "second": 97071
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 43,
+        "first": 97073,
+        "second": 97097
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "line": 58,
+        "first": 97100,
+        "second": 97124
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "line": 74,
+        "first": 97127,
+        "second": 97149
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 92,
+        "first": 97151,
+        "second": 97173
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 109,
+        "first": 97175,
+        "second": 97200
+      }
+    ],
+    "all_pairs_distinct_nonzero": true,
+    "source_child_vs_root_evidence": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "query": "LockLifecycleIssue",
+        "args": [
+          "c0e93ca6-29f9-4c59-b6d0-69ee3343cd22",
+          "3db9f440-cd9a-4fa9-991b-9b837645351e"
+        ],
+        "root_issue": "01a1eaa3-ad62-7a41-846b-4cc1b293b3e9",
+        "grant": "01a1eaa3-b532-7052-8504-5a4b6bdccdd5"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "query": "LockDeliveryEvidenceIssueRead",
+        "args": [
+          "ef023c7b-f8e3-4c96-af00-316c41435616",
+          "dcd85102-7b8c-4666-bab9-fb4256525c4a"
+        ],
+        "root_issue": "01a1eaa3-b7f3-70b7-9bb6-b88f4e7b76f1",
+        "grant": "01a1eaa3-bf4e-7e38-8c5f-fa3a96432ad6"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "query": "LockDeliveryCompletionAuthorization",
+        "args": [
+          "01a1eaa3-c9cb-7301-a487-584453b39551"
+        ],
+        "root_issue": "01a1eaa3-c1eb-7cc9-9b10-999dc3048fe6",
+        "grant": "01a1eaa3-c9cb-7301-a487-584453b39551"
+      }
+    ],
+    "original_SQL_rows_Scan_credentials_not_rewritten": true,
+    "held_first_until_second_terminal_assertions_reached": true,
+    "no_early_holder_deadline_partial_projection_assertion_failures": true
+  },
+  "genuine_fixture_receipts": {
+    "setup": "bare newStageCompletionFixture→M1enforce→real stage submit/target→sameP issuer_consumer grant→one actual ChangeLifecycle→persisted immutable identity checks→unheld real Get/own operation→baseline",
+    "distinct_fixtures": 10,
+    "distinct_real_grants": 10,
+    "setup_Get_and_own_operation_native_witnesses": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 6,
+        "event_time": "2026-11-18T01:52:40.041645+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "1847526f-5e6e-44e7-8883-1afdb4092322",
+          "backend_pid": 97021,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 8,
+        "event_time": "2026-11-18T01:52:40.043407+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "1847526f-5e6e-44e7-8883-1afdb4092322",
+          "backend_pid": 97021,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 21,
+        "event_time": "2026-11-18T01:52:42.625858+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "51c209fb-62d2-44e0-a157-0f7ddbe34d7a",
+          "backend_pid": 97048,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 23,
+        "event_time": "2026-11-18T01:52:42.627439+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "51c209fb-62d2-44e0-a157-0f7ddbe34d7a",
+          "backend_pid": 97048,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 38,
+        "event_time": "2026-11-18T01:52:45.303736+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "e8d2af03-cc62-4581-96e0-ac2e90b0fddc",
+          "backend_pid": 97073,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 40,
+        "event_time": "2026-11-18T01:52:45.305336+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "e8d2af03-cc62-4581-96e0-ac2e90b0fddc",
+          "backend_pid": 97073,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "line": 55,
+        "event_time": "2026-11-18T01:52:48.042416+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "2ab92cc2-5af3-4d48-9303-acb9b135f084",
+          "backend_pid": 97100,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "line": 57,
+        "event_time": "2026-11-18T01:52:48.043989+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "2ab92cc2-5af3-4d48-9303-acb9b135f084",
+          "backend_pid": 97100,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "line": 68,
+        "event_time": "2026-11-18T01:52:50.516087+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "f1c1f4ec-7d17-4f09-a7ed-5f824d9ac85a",
+          "backend_pid": 97127,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "line": 70,
+        "event_time": "2026-11-18T01:52:50.517516+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "f1c1f4ec-7d17-4f09-a7ed-5f824d9ac85a",
+          "backend_pid": 97127,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 87,
+        "event_time": "2026-11-18T01:52:52.998347+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "288975f8-1700-4fda-8de6-c0ab57a9d015",
+          "backend_pid": 97151,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 89,
+        "event_time": "2026-11-18T01:52:52.999848+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "288975f8-1700-4fda-8de6-c0ab57a9d015",
+          "backend_pid": 97151,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 104,
+        "event_time": "2026-11-18T01:52:55.753186+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "feaa3ebf-677f-48a3-a923-31932e329dd3",
+          "backend_pid": 97175,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 106,
+        "event_time": "2026-11-18T01:52:55.754498+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "feaa3ebf-677f-48a3-a923-31932e329dd3",
+          "backend_pid": 97175,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 126,
+        "event_time": "2026-11-18T01:52:58.36623+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "2041730b-5c6d-4a8f-a2e0-bb0366213cde",
+          "backend_pid": 97203,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 128,
+        "event_time": "2026-11-18T01:52:58.367787+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "2041730b-5c6d-4a8f-a2e0-bb0366213cde",
+          "backend_pid": 97203,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 138,
+        "event_time": "2026-11-18T01:53:00.800231+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "251627ff-004d-41d2-8676-82e6843a091e",
+          "backend_pid": 97227,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 140,
+        "event_time": "2026-11-18T01:53:00.802921+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "251627ff-004d-41d2-8676-82e6843a091e",
+          "backend_pid": 97227,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 150,
+        "event_time": "2026-11-18T01:53:03.166774+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "actor": "c6af5a2d-cedd-46e9-a5a9-ea0318de1398",
+          "backend_pid": 97251,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 152,
+        "event_time": "2026-11-18T01:53:03.169377+08:00",
+        "payload": {
+          "label": "R29_completed_setup_own_operation",
+          "actor": "c6af5a2d-cedd-46e9-a5a9-ea0318de1398",
+          "backend_pid": 97251,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      }
+    ],
+    "actual_complete_minimal_setup_views": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 7,
+        "event_time": "2026-11-18T01:52:40.041694+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-b532-7052-8504-5a4b6bdccdd5",
+            "operation_id": "e6406035-27b4-4525-abbc-87fcdc145ae4",
+            "issue_id": "01a1eaa3-ad62-7a41-846b-4cc1b293b3e9",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:39.729283Z",
+            "expires_at": "2026-11-17T17:53:09.700128Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-b532-7052-8504-5a4b6bdccdd5",
+              "operation_id": "e6406035-27b4-4525-abbc-87fcdc145ae4",
+              "issue_id": "01a1eaa3-ad62-7a41-846b-4cc1b293b3e9",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:39.900188Z",
+              "collaboration_revision": "16",
+              "submission_id": "dde9cf89-7df8-4fa5-8294-71c0f3e3edd8",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 22,
+        "event_time": "2026-11-18T01:52:42.62616+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-bf4e-7e38-8c5f-fa3a96432ad6",
+            "operation_id": "f0a60c27-5d4c-4698-85f3-7f29147e865c",
+            "issue_id": "01a1eaa3-b7f3-70b7-9bb6-b88f4e7b76f1",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:42.318225Z",
+            "expires_at": "2026-11-17T17:53:12.289781Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-bf4e-7e38-8c5f-fa3a96432ad6",
+              "operation_id": "f0a60c27-5d4c-4698-85f3-7f29147e865c",
+              "issue_id": "01a1eaa3-b7f3-70b7-9bb6-b88f4e7b76f1",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:42.492588Z",
+              "collaboration_revision": "16",
+              "submission_id": "4b766299-20ee-4b42-a439-ba613ddc609e",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 39,
+        "event_time": "2026-11-18T01:52:45.303769+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-c9cb-7301-a487-584453b39551",
+            "operation_id": "d6a25bcb-9b7f-4aaa-9a29-5f834af0ec0d",
+            "issue_id": "01a1eaa3-c1eb-7cc9-9b10-999dc3048fe6",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:45.002777Z",
+            "expires_at": "2026-11-17T17:53:14.975472Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-c9cb-7301-a487-584453b39551",
+              "operation_id": "d6a25bcb-9b7f-4aaa-9a29-5f834af0ec0d",
+              "issue_id": "01a1eaa3-c1eb-7cc9-9b10-999dc3048fe6",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:45.173Z",
+              "collaboration_revision": "16",
+              "submission_id": "3f4f1da0-1fc1-40ba-b072-47366062190c",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "line": 56,
+        "event_time": "2026-11-18T01:52:48.04267+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-d481-70fa-a91b-79a5a1e894a1",
+            "operation_id": "9d62a45a-b700-4b45-aef9-2e02d5565fa9",
+            "issue_id": "01a1eaa3-cc32-776e-84ae-9d39d1358bbf",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:47.744641Z",
+            "expires_at": "2026-11-17T17:53:17.719287Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-d481-70fa-a91b-79a5a1e894a1",
+              "operation_id": "9d62a45a-b700-4b45-aef9-2e02d5565fa9",
+              "issue_id": "01a1eaa3-cc32-776e-84ae-9d39d1358bbf",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:47.915419Z",
+              "collaboration_revision": "16",
+              "submission_id": "e8b0ad35-b52e-4b83-a5ce-2fa30eb3a1b2",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "line": 69,
+        "event_time": "2026-11-18T01:52:50.516129+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-de1c-76d2-9cf0-3936b56bf70b",
+            "operation_id": "0bcbcf5e-534d-4f0e-b971-f2112258edeb",
+            "issue_id": "01a1eaa3-d6f8-7445-bbf1-f2316e4639b5",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:50.204001Z",
+            "expires_at": "2026-11-17T17:53:20.175918Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-de1c-76d2-9cf0-3936b56bf70b",
+              "operation_id": "0bcbcf5e-534d-4f0e-b971-f2112258edeb",
+              "issue_id": "01a1eaa3-d6f8-7445-bbf1-f2316e4639b5",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:50.382155Z",
+              "collaboration_revision": "16",
+              "submission_id": "5d4fec74-ba80-4978-9c6a-fb0d47ede254",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 88,
+        "event_time": "2026-11-18T01:52:52.998378+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-e7dd-7893-af0c-1b0489f9c6b3",
+            "operation_id": "7a5f5bfd-cdc4-4f67-97d1-e7fa63d71ece",
+            "issue_id": "01a1eaa3-e075-78f8-ace1-655df8b7a3ed",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:52.701128Z",
+            "expires_at": "2026-11-17T17:53:22.67403Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-e7dd-7893-af0c-1b0489f9c6b3",
+              "operation_id": "7a5f5bfd-cdc4-4f67-97d1-e7fa63d71ece",
+              "issue_id": "01a1eaa3-e075-78f8-ace1-655df8b7a3ed",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:52.874083Z",
+              "collaboration_revision": "16",
+              "submission_id": "a4472b86-48d5-460d-8611-2dee47984390",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 105,
+        "event_time": "2026-11-18T01:52:55.753433+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-f29d-7c1d-9137-20873350f2d0",
+            "operation_id": "050eb739-56c7-4239-89d8-6a8e9b7346ae",
+            "issue_id": "01a1eaa3-ea73-769b-a8f5-db3aa51659a5",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:55.453335Z",
+            "expires_at": "2026-11-17T17:53:25.426537Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-f29d-7c1d-9137-20873350f2d0",
+              "operation_id": "050eb739-56c7-4239-89d8-6a8e9b7346ae",
+              "issue_id": "01a1eaa3-ea73-769b-a8f5-db3aa51659a5",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:55.623173Z",
+              "collaboration_revision": "16",
+              "submission_id": "4dfc52fe-9316-40ff-aac7-f257c0abb31f",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 127,
+        "event_time": "2026-11-18T01:52:58.366254+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa3-fcc3-7e2c-9d23-8689cb95748a",
+            "operation_id": "f52cbc09-7ec1-4a34-be6d-3326badf5410",
+            "issue_id": "01a1eaa3-f528-7ad9-a7c5-724c78b54b53",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:52:58.051461Z",
+            "expires_at": "2026-11-17T17:53:28.001036Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa3-fcc3-7e2c-9d23-8689cb95748a",
+              "operation_id": "f52cbc09-7ec1-4a34-be6d-3326badf5410",
+              "issue_id": "01a1eaa3-f528-7ad9-a7c5-724c78b54b53",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:52:58.234712Z",
+              "collaboration_revision": "16",
+              "submission_id": "f8300def-63ef-42a9-b880-e4e51cd0210a",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 139,
+        "event_time": "2026-11-18T01:53:00.800259+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa4-0659-777a-9f71-271b36bf9e0b",
+            "operation_id": "9a68383e-3b60-4534-b43f-03e95d2a791c",
+            "issue_id": "01a1eaa3-ff2c-75d4-949e-6ee545124866",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:53:00.505047Z",
+            "expires_at": "2026-11-17T17:53:30.478463Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa4-0659-777a-9f71-271b36bf9e0b",
+              "operation_id": "9a68383e-3b60-4534-b43f-03e95d2a791c",
+              "issue_id": "01a1eaa3-ff2c-75d4-949e-6ee545124866",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:53:00.67476Z",
+              "collaboration_revision": "16",
+              "submission_id": "ebcf0c92-67bd-47bc-8e2e-16203cb7fec6",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 151,
+        "event_time": "2026-11-18T01:53:03.166951+08:00",
+        "payload": {
+          "label": "R29_consumed_setup_unheld_GET",
+          "view": {
+            "authorization_id": "01a1eaa4-0f98-74af-9607-5baa50a7251c",
+            "operation_id": "a63e6cd9-de0a-475d-96d0-be724256e2ba",
+            "issue_id": "01a1eaa4-08d0-78b2-b171-6287406d695c",
+            "issue_revision": 4,
+            "target_status": "done",
+            "contract_version": "delivery-completion-enforcement-v1",
+            "created_at": "2026-11-17T17:53:02.871834Z",
+            "expires_at": "2026-11-17T17:53:32.843832Z",
+            "state": "consumed",
+            "applicability": "consumed",
+            "completion_receipt": {
+              "authorization_id": "01a1eaa4-0f98-74af-9607-5baa50a7251c",
+              "operation_id": "a63e6cd9-de0a-475d-96d0-be724256e2ba",
+              "issue_id": "01a1eaa4-08d0-78b2-b171-6287406d695c",
+              "completed_revision": 5,
+              "target_status": "done",
+              "completed_at": "2026-11-17T17:53:03.035006Z",
+              "collaboration_revision": "16",
+              "submission_id": "5f6406d9-9748-47e1-8cff-47d7d139ccb2",
+              "replayed": false
+            },
+            "replayed": false
+          }
+        }
+      }
+    ],
+    "successful_consumed_view_count": 16,
+    "successful_consumed_view_exact_original_comparisons": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "label": "R29_GET_held_before_R4",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "label": "R29_first_same_grant_GET_held",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "label": "R29_GET_terminal_before_operation_release",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "label": "R29_GET_held_before_operation",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "label": "R29_GET_after_Revoke_rollback",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "label": "R29_consumed_GET_held_before_Revoke",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "label": "R29_consumed_setup_unheld_GET",
+        "matches_setup": true
+      }
+    ],
+    "failed_denied_zero_view_count": 6,
+    "failed_denied_views": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 12,
+        "event_time": "2026-11-18T01:52:40.234327+08:00",
+        "payload": {
+          "label": "R29_GET_terminal_before_R4_release",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 45,
+        "event_time": "2026-11-18T01:52:45.443571+08:00",
+        "payload": {
+          "label": "R29_sibling_terminal_before_first_GET_commit",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 94,
+        "event_time": "2026-11-18T01:52:53.135083+08:00",
+        "payload": {
+          "label": "R29_GET_terminal_before_real_Revoke_release",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 130,
+        "event_time": "2026-11-18T01:52:58.427993+08:00",
+        "payload": {
+          "label": "R29_current_authority_wrong_actor",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 142,
+        "event_time": "2026-11-18T01:53:00.915664+08:00",
+        "payload": {
+          "label": "R29_current_authority_changed_password",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 154,
+        "event_time": "2026-11-18T01:53:03.278804+08:00",
+        "payload": {
+          "label": "R29_current_authority_source_revoked",
+          "view": {
+            "authorization_id": "",
+            "operation_id": "",
+            "issue_id": "",
+            "issue_revision": 0,
+            "target_status": "",
+            "contract_version": "",
+            "created_at": "0001-01-01T00:00:00Z",
+            "expires_at": "0001-01-01T00:00:00Z",
+            "state": "",
+            "applicability": "",
+            "replayed": false
+          }
+        }
+      }
+    ],
+    "actual_after_revision_before_revision_advance_checked": true,
+    "artifact_producer_submission_terminal_exact_identity_checks_reached": true,
+    "post_completion_R4_actual_readable_stale_baseline_used": true,
+    "no_epoch_or_QA_chain_reset": true,
+    "no_R28_original_write_replay": true,
+    "read_context_seconds": 5,
+    "artifact_lock_timeout_ms": 250,
+    "default_isolation_pool_unchanged": true,
+    "actual_borrowed_pgx_Tx_final_credentials_commits": true
+  },
+  "passed_controls": {
+    "operation_orders": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "result": "pass"
+      }
+    ],
+    "writer_tests": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences",
+        "result": "pass"
+      }
+    ],
+    "Revoke_scans": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 91,
+        "terminal_scans": 1
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 111,
+        "terminal_scans": 0
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 114,
+        "terminal_scans": 1
+      }
+    ],
+    "writer_first": "actual semantic409/noPgError consumed_terminal_scan1 holds original UPDATE; second_GET55P03 exactgrant; afterrollback exact consumedGET recovers",
+    "reader_first": "held_Get success; original_Revoke exactLockDeliveryCompletionAuthorization55P03/scan0; afterGetcommit originalsemantic409/scan1/noPgError",
+    "authority_tests": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "result": "pass"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority",
+        "result": "pass"
+      }
+    ],
+    "authority_native_witnesses": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 129,
+        "event_time": "2026-11-18T01:52:58.427957+08:00",
+        "payload": {
+          "label": "R29_current_authority_wrong_actor",
+          "actor": "0d89f31e-0731-4d68-853f-278269afe249",
+          "backend_pid": 97203,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 404,
+          "code": "delivery_completion_not_found",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 141,
+        "event_time": "2026-11-18T01:53:00.915628+08:00",
+        "payload": {
+          "label": "R29_current_authority_changed_password",
+          "actor": "251627ff-004d-41d2-8676-82e6843a091e",
+          "backend_pid": 97227,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 403,
+          "code": "delivery_completion_denied",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 153,
+        "event_time": "2026-11-18T01:53:03.278765+08:00",
+        "payload": {
+          "label": "R29_current_authority_source_revoked",
+          "actor": "c6af5a2d-cedd-46e9-a5a9-ea0318de1398",
+          "backend_pid": 97251,
+          "error_type": "service.DeliveryCompletionError",
+          "status": 403,
+          "code": "delivery_completion_denied",
+          "first_pg_error": null
+        }
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 155,
+        "event_time": "2026-11-18T01:53:03.283923+08:00",
+        "payload": {
+          "label": "R29_own_operation_after_source_revocation",
+          "actor": "c6af5a2d-cedd-46e9-a5a9-ea0318de1398",
+          "backend_pid": 97251,
+          "error_type": "<nil>",
+          "status": 0,
+          "code": "",
+          "first_pg_error": null
+        }
+      }
+    ],
+    "authority_setup": "real readable different D; actual password CAS increment with old P session unchanged; actual DeleteMember/count0; changes precede equality baseline",
+    "original_operation_completed_status200_body_confirmation_assertion_reached_after_source_revocation": true
+  },
+  "effects": {
+    "scope": "existing72relation_rows_counts+stage_exit+admin_audit_control+actualadapter_calls_target_invocation",
+    "relation_names": [
+      "activity_log",
+      "agent",
+      "agent_approval_request",
+      "agent_artifact_execution",
+      "agent_runtime",
+      "agent_task_queue",
+      "collaboration_account_fence",
+      "collaboration_account_invalidation",
+      "collaboration_attachment",
+      "collaboration_attachment_reference",
+      "collaboration_attempt",
+      "collaboration_batch",
+      "collaboration_business_capability",
+      "collaboration_channel",
+      "collaboration_command",
+      "collaboration_delegation",
+      "collaboration_event",
+      "collaboration_execution_gate",
+      "collaboration_execution_group",
+      "collaboration_grant",
+      "collaboration_group_dependency",
+      "collaboration_group_input",
+      "collaboration_notification",
+      "collaboration_operation",
+      "collaboration_run",
+      "collaboration_run_event",
+      "collaboration_runtime_enrollment",
+      "collaboration_runtime_reservation",
+      "collaboration_session",
+      "collaboration_stage_candidate",
+      "collaboration_stage_child",
+      "collaboration_stage_decision",
+      "collaboration_stage_execution_intent",
+      "collaboration_stage_execution_observation",
+      "collaboration_stage_revocation",
+      "collaboration_stage_role",
+      "collaboration_stage_rollback_observation",
+      "collaboration_stage_submission",
+      "collaboration_stage_task",
+      "collaboration_target",
+      "collaboration_termination",
+      "collaboration_test_subject",
+      "comment",
+      "delivery_completion_authorization",
+      "delivery_completion_terminal",
+      "delivery_evidence_evaluation",
+      "delivery_project_change",
+      "github_installation",
+      "github_pull_request",
+      "github_pull_request_check_run",
+      "inbox_item",
+      "issue",
+      "issue_collaboration",
+      "issue_handoff",
+      "issue_participant",
+      "issue_pull_request",
+      "issue_status",
+      "issue_vcs_pull_request",
+      "iteration_event",
+      "iteration_notification",
+      "member",
+      "personal_access_token",
+      "project",
+      "project_delivery_policy",
+      "project_stage_policy",
+      "task_usage",
+      "task_usage_hourly",
+      "user",
+      "user_password_credential",
+      "vcs_connection",
+      "vcs_pull_request",
+      "workspace"
+    ],
+    "equality_witnesses": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "line": 14,
+        "end_line": 16,
+        "label": "read/control",
+        "before_sha256": "ba1f248769303158082d9a7c13bc91152aa13d1a1e53b7eb3f037495f479283a",
+        "after_sha256": "ba1f248769303158082d9a7c13bc91152aa13d1a1e53b7eb3f037495f479283a",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 1,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "line": 31,
+        "end_line": 33,
+        "label": "read/control",
+        "before_sha256": "6a9b38f7a108159f89b88066c44a21e77684eb707ebd1026184afa2b3f82759c",
+        "after_sha256": "6a9b38f7a108159f89b88066c44a21e77684eb707ebd1026184afa2b3f82759c",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 2,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "line": 48,
+        "end_line": 50,
+        "label": "read/control",
+        "before_sha256": "631e97985959188332b199f809534cda77812d81eb802f5f6ef2a40668adccaf",
+        "after_sha256": "631e97985959188332b199f809534cda77812d81eb802f5f6ef2a40668adccaf",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 3,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "line": 61,
+        "end_line": 63,
+        "label": "read/control",
+        "before_sha256": "bab38de21660aa81482779dab94d7c4c60c4c1540d0b6101025b35576b664afc",
+        "after_sha256": "bab38de21660aa81482779dab94d7c4c60c4c1540d0b6101025b35576b664afc",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 4,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "line": 76,
+        "end_line": 78,
+        "label": "read/control",
+        "before_sha256": "bd480874511ea85dff174b4e6fd47af9fbd97d23a86878547b37bf6122851c1f",
+        "after_sha256": "bd480874511ea85dff174b4e6fd47af9fbd97d23a86878547b37bf6122851c1f",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 5,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "line": 97,
+        "end_line": 99,
+        "label": "read/control",
+        "before_sha256": "6630d4d8026aa3a1b4613d237c833753152f805743db333baaeca6a85b6fd72b",
+        "after_sha256": "6630d4d8026aa3a1b4613d237c833753152f805743db333baaeca6a85b6fd72b",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 6,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "line": 115,
+        "end_line": 117,
+        "label": "read/control",
+        "before_sha256": "82dead0f6b525dc5caeec8fe28fe1bb6f3148099d8fe47cc1b05b0ef4ddcca99",
+        "after_sha256": "82dead0f6b525dc5caeec8fe28fe1bb6f3148099d8fe47cc1b05b0ef4ddcca99",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 7,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "line": 131,
+        "end_line": 133,
+        "label": "read/control",
+        "before_sha256": "c763a3552d61d1b64b6165f5d11cd54b4356f4077496d60afe8508f424c677e7",
+        "after_sha256": "c763a3552d61d1b64b6165f5d11cd54b4356f4077496d60afe8508f424c677e7",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 8,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "line": 143,
+        "end_line": 145,
+        "label": "read/control",
+        "before_sha256": "efe3fd362fbd3e41214c89c4784e14422da6c740454645e2f81a456ce4c3311b",
+        "after_sha256": "efe3fd362fbd3e41214c89c4784e14422da6c740454645e2f81a456ce4c3311b",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 9,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 5,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "line": 156,
+        "end_line": 158,
+        "label": "read/control",
+        "before_sha256": "155893016be3ee2b924eea34e0ca52e2100009281400b1864cbf4282f64591be",
+        "after_sha256": "155893016be3ee2b924eea34e0ca52e2100009281400b1864cbf4282f64591be",
+        "counts": {
+          "activity_log": 0,
+          "agent": 2,
+          "agent_approval_request": 1,
+          "agent_artifact_execution": 1,
+          "agent_runtime": 2,
+          "agent_task_queue": 1,
+          "collaboration_account_fence": 5,
+          "collaboration_account_invalidation": 0,
+          "collaboration_attachment": 0,
+          "collaboration_attachment_reference": 0,
+          "collaboration_attempt": 1,
+          "collaboration_batch": 1,
+          "collaboration_business_capability": 1,
+          "collaboration_channel": 1,
+          "collaboration_command": 1,
+          "collaboration_delegation": 0,
+          "collaboration_event": 32,
+          "collaboration_execution_gate": 1,
+          "collaboration_execution_group": 1,
+          "collaboration_grant": 2,
+          "collaboration_group_dependency": 1,
+          "collaboration_group_input": 1,
+          "collaboration_notification": 63,
+          "collaboration_operation": 22,
+          "collaboration_run": 1,
+          "collaboration_run_event": 4,
+          "collaboration_runtime_enrollment": 0,
+          "collaboration_runtime_reservation": 1,
+          "collaboration_session": 1,
+          "collaboration_stage_candidate": 1,
+          "collaboration_stage_child": 1,
+          "collaboration_stage_decision": 4,
+          "collaboration_stage_execution_intent": 1,
+          "collaboration_stage_execution_observation": 1,
+          "collaboration_stage_revocation": 0,
+          "collaboration_stage_role": 1,
+          "collaboration_stage_rollback_observation": 0,
+          "collaboration_stage_submission": 1,
+          "collaboration_stage_task": 1,
+          "collaboration_target": 1,
+          "collaboration_termination": 1,
+          "collaboration_test_subject": 1,
+          "comment": 1,
+          "delivery_completion_authorization": 1,
+          "delivery_completion_terminal": 1,
+          "delivery_evidence_evaluation": 0,
+          "delivery_project_change": 0,
+          "github_installation": 3,
+          "github_pull_request": 1,
+          "github_pull_request_check_run": 1,
+          "inbox_item": 0,
+          "issue": 2,
+          "issue_collaboration": 1,
+          "issue_handoff": 10,
+          "issue_participant": 5,
+          "issue_pull_request": 1,
+          "issue_status": 7,
+          "issue_vcs_pull_request": 0,
+          "iteration_event": 0,
+          "iteration_notification": 0,
+          "member": 4,
+          "personal_access_token": 0,
+          "project": 1,
+          "project_delivery_policy": 1,
+          "project_stage_policy": 1,
+          "task_usage": 0,
+          "task_usage_hourly": 0,
+          "user": 6,
+          "user_password_credential": 5,
+          "vcs_connection": 0,
+          "vcs_pull_request": 0,
+          "workspace": 2
+        },
+        "matches": true
+      }
+    ],
+    "all10_before_after_hashes_equal": true,
+    "all10_complete72relation_counts": true,
+    "no_admin_adapter_or_cleanup_assertion_errors": true,
+    "cleanup": "LIFO release/cancel/drain/rollback before registered equality snapshots",
+    "whole_suite_database_not_unchanged": true,
+    "whole_suite_count_changes": [
+      {
+        "table": "issue_handoff",
+        "before": 0,
+        "after": 10
+      },
+      {
+        "table": "collaboration_knowledge_job",
+        "before": 0,
+        "after": 10
+      },
+      {
+        "table": "collaboration_config_invalidation",
+        "before": 21,
+        "after": 71
+      },
+      {
+        "table": "collaboration_knowledge_invalidation",
+        "before": 18,
+        "after": 48
+      }
+    ],
+    "handoff_per_fixture_baseline_counts": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "count": 1
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "count": 2
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "count": 3
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_first",
+        "count": 4
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/operation_after_authorization",
+        "count": 5
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/writer_first",
+        "count": 6
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetWriterFences/reader_first",
+        "count": 7
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/wrong_actor",
+        "count": 8
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/changed_password",
+        "count": 9
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetCurrentAuthority/source_revoked",
+        "count": 10
+      }
+    ],
+    "all_table_or_tar_byte_audit_claimed": false,
+    "keep_retained_RED_database_for_evidence": true
+  },
+  "retained_database_records": {
+    "database_before": "multica_pay241_20261117_s2_receiptread_red_r29",
+    "database_after": "multica_pay241_20261117_s2_receiptread_red_r29",
+    "ledger_entries": 853,
+    "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+    "ledger_equal": true,
+    "index_count": 663,
+    "index_definitions_equal": true,
+    "other_connections_before": 0,
+    "other_connections_after": 0,
+    "cluster_connections_before": 30,
+    "cluster_connections_after": 30,
+    "max_connections": 100,
+    "counts_are_retained_not_current_live_probe": true
+  },
+  "command_and_source": {
+    "command": {
+      "at": "2026-11-17T17:52:30.362939+00:00",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-timeout=10m",
+        "./internal/service",
+        "-run",
+        "^(TestDeliveryCompletionConsumedGetReadCoexistence|TestDeliveryCompletionConsumedGetWriterFences|TestDeliveryCompletionConsumedGetCurrentAuthority)$"
+      ],
+      "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server",
+      "environment": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+        "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178"
+      },
+      "permit": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/red-service-permit-r01.json",
+        "sha256": "a216cfe2d71c05b48fef67a98e92f052c0546a8613105a4d1e02c5631aca2941"
+      },
+      "ambient_environment_inherited": false
+    },
+    "permit_path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/red-service-permit-r01.json",
+    "permit_sha256": "a216cfe2d71c05b48fef67a98e92f052c0546a8613105a4d1e02c5631aca2941",
+    "maximum_commands": 1,
+    "retries": 0,
+    "permit_hash_inputs_compared": 5061,
+    "permit_hash_mismatches": [],
+    "source_root": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01",
+    "source_files": 5052,
+    "protected_original_files": 5051,
+    "all_current_source_bytes_modes_match_accepted_pre_run": true,
+    "source_drift": [],
+    "canonical_manifest_sha256": "8b75897917a1d02f04aad1cc881bb2dc06d5e41ca14c0982be11499f31285998",
+    "canonicalization": "sorted-key compact JSON rows ordered by path components, trailing newline",
+    "new_test": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+      "lines": 558,
+      "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "mode": "0o644"
+    },
+    "test_existing_helper_product_SQL_generated_default_dependency_changes": 0,
+    "ambient_environment_inherited": false,
+    "declared_package": "./internal/service",
+    "PAY_suite_max": 1,
+    "global_suite_max": 2
+  },
+  "GREEN_copy_preparation": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/real-red-witness-and-green-preparation-r01.json",
+    "sha256": "10fac670966442dc2699c5431efca5a45f7c61dfd0d93dadb84fcd4ffcdd7f95",
+    "recorded_at": "2026-11-17T18:03:23.662885+00:00",
+    "root": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01",
+    "files": 5052,
+    "complete_paths_bytes_modes_equal_RED": true,
+    "product_changes": 0,
+    "copy_is_not_GREEN": true,
+    "future_product_delta_unverified": true
+  },
+  "verification": {
+    "lint": "NOT_RUN_BY_REVIEWER_RETAINED_MAIN_GOFMT_PASS",
+    "typecheck": "PASS_RETAINED_MAIN_COMPILE_RED_R02_UNCHANGED_SOURCE",
+    "tests": "FAIL_EXPECTED_GENUINE_RED_EXIT1_13NAMED9PASS4FAIL",
+    "normal_race_GREEN": "NOT_ACCEPTED",
+    "old_compile_r01": "preserved_pre_Go_mode_representation_guard_failure_not_business_RED"
+  },
+  "next_required_cut": {
+    "service": {
+      "new_regression_named": 13,
+      "original_controls": {
+        "top_level": 4,
+        "named": 63,
+        "leaf": 44
+      },
+      "combined": {
+        "top_level": 7,
+        "named": 76,
+        "leaf": 54
+      },
+      "modes": [
+        "normal",
+        "race"
+      ],
+      "fresh_owning_service_databases": true,
+      "old_R28_58_is_not_substitute": true
+    },
+    "handler": {
+      "selector": "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$",
+      "top_level": 3,
+      "named": 6,
+      "leaf": 5,
+      "named_inventory": [
+        "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+        "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+        "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+        "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+        "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+        "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+      ],
+      "modes": [
+        "normal",
+        "race"
+      ],
+      "fresh_owning_handler_databases": true
+    },
+    "conditional_transport_retention": "requires final unaffected caller/default/auth/workspace_selector/finalization_wiring equivalence",
+    "spec_sync": "capture eventual GetByID-only pure_read entry and separate exact/read_mode contracts after real GREEN; no spec edits now"
+  },
+  "preserved_limits": {
+    "R28_historical_holder_and_SQLSTATE": "UNPROVED",
+    "R28_original_four": {
+      "PASS": 3,
+      "FAIL": 1,
+      "NOT_RUN": 0,
+      "retries": 0
+    },
+    "R28_original_completed_writes_replayed": false,
+    "parent24": {
+      "PASS": 0,
+      "PARTIAL": 9,
+      "NOT_RUN": 15
+    },
+    "full_S2_A01_A12_S3_S4_S5_open": true,
+    "no_full_database_or_archive_byte_claim": true
+  },
+  "evidence_bindings": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/result.json",
+      "sha256": "09765a6246c9a194219f4b91076ef6bc30661735fa6d64496337673f268a90f8",
+      "mode": "0o600",
+      "bytes": 2388
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/command.json",
+      "sha256": "46075518349ba63f079740e626f06538b8385e7fc429c312e3be9b608c185f4c",
+      "mode": "0o600",
+      "bytes": 974
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/stdout.jsonl",
+      "sha256": "a162109bf913c5864d6f826cb9bcfb08830858da7f145ef4872731a02e6d76fd",
+      "mode": "0o600",
+      "bytes": 97393
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "mode": "0o600",
+      "bytes": 0
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/database-before.json",
+      "sha256": "cf0b3b5e4c1917b5bbcfa9dd27616f3428a4cc32a516e298f4fd1f28c967037e",
+      "mode": "0o600",
+      "bytes": 219866
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/database-after.json",
+      "sha256": "14fcd78b703ac45e492cab4b193b037716a84824785ec76b10e3fa19a127c0aa",
+      "mode": "0o600",
+      "bytes": 219868
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/red-service-permit-r01.json",
+      "sha256": "a216cfe2d71c05b48fef67a98e92f052c0546a8613105a4d1e02c5631aca2941",
+      "mode": "0o600",
+      "bytes": 1322391
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+      "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178",
+      "mode": "0o600",
+      "bytes": 3023
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/real-red-witness-and-green-preparation-r01.json",
+      "sha256": "10fac670966442dc2699c5431efca5a45f7c61dfd0d93dadb84fcd4ffcdd7f95",
+      "mode": "0o600",
+      "bytes": 963926
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.md",
+      "sha256": "a6cfee9965549014fbb71156cb07b4c4b999eaec579389b760351a7c8db727a6",
+      "mode": "0o444",
+      "bytes": 8484
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-regression-boundary-independent-check-20261118.json",
+      "sha256": "76d49d4b56b3b725d79fdc7f4f8f028f127237b8b3ba1312cae0b6ffa48e89a2",
+      "mode": "0o444",
+      "bytes": 25112
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/compile-red-r02/result.json",
+      "sha256": "a449ce0a14dc59efcb19ca8b2ea0aef5acd2f014611d9b886e6e02c06ed75e47",
+      "mode": "0o600",
+      "bytes": 2562
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.md",
+      "sha256": "9f007c9806f824947accdf6fdcc8d8feee809cafae662b4edcc46826efabbd91",
+      "mode": "0o600",
+      "bytes": 16860
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.json",
+      "sha256": "f3ead924979f79b41addc81d729f384eaeb54b1567578fd8e49396013e143423",
+      "mode": "0o600",
+      "bytes": 116138
+    }
+  ],
+  "source_bindings": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_authorization.go",
+      "sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_collaboration.go",
+      "sha256": "20fc764b20edbfae356db7785f82ac17c0d12a71d23f9a0dcf318624a71e0084"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_evidence.go",
+      "sha256": "1a714f0e4a9d8d002c483c9cdd4f86172c66cca051233c9d3fc31a2f00a577df"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/collaboration_completion_candidates_read_concurrency_test.go",
+      "sha256": "086a559dcb420a41a88dcd5e499edae2f76325b49b4b0266bcf4704865a46ce9"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+      "sha256": "2053aa790974aea910a908634a18953748279f9028659c2dac4d1b28e74630f6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/collaboration_completion_preview_read_concurrency_test.go",
+      "sha256": "31885022def923d4d4d07a27855ab7d7e19f51776a69682ba61a2c1cc0993bf8"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+      "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5"
+    }
+  ],
+  "verified_reference_checks": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/database-before.json",
+      "sha256": "cf0b3b5e4c1917b5bbcfa9dd27616f3428a4cc32a516e298f4fd1f28c967037e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/database-after.json",
+      "sha256": "14fcd78b703ac45e492cab4b193b037716a84824785ec76b10e3fa19a127c0aa",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/stdout.jsonl",
+      "sha256": "a162109bf913c5864d6f826cb9bcfb08830858da7f145ef4872731a02e6d76fd",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-environment.json",
+      "sha256": "3428a23ea11257d7972547ad5989435208d313a6d42dbd562814686bb019a178",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/red-service-permit-r01.json",
+      "sha256": "a216cfe2d71c05b48fef67a98e92f052c0546a8613105a4d1e02c5631aca2941",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/result.json",
+      "sha256": "09765a6246c9a194219f4b91076ef6bc30661735fa6d64496337673f268a90f8",
+      "matches": true
+    }
+  ],
+  "execution_by_reviewer": {
+    "filesystem_read_hash_retained_parse": true,
+    "Go_test_list_TestMain_builds": 0,
+    "SQL_DB_API_browser": 0,
+    "process_signals_Git": 0,
+    "agents_spawned": 0,
+    "source_test_config_old_report_writes": 0,
+    "authorized_new_report_files": 2
+  },
+  "sealed_output_mode": "0444"
+}

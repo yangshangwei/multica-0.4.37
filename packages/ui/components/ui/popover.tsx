@@ -4,9 +4,11 @@ import * as React from "react"
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover"
 
 import { cn } from "@multica/ui/lib/utils"
+import { usePopupVisibility, useScopedPopup } from "./popup-visibility"
 
 function Popover({ ...props }: PopoverPrimitive.Root.Props) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />
+  const scope = useScopedPopup(props)
+  return <PopoverPrimitive.Root data-slot="popover" {...props} {...scope} />
 }
 
 function PopoverTrigger({ ...props }: PopoverPrimitive.Trigger.Props) {
@@ -31,6 +33,7 @@ function PopoverContent({
   // popup unmounts the moment focus leaves for the dialog, tearing the dialog
   // down with it.
   Pick<PopoverPrimitive.Portal.Props, "keepMounted">) {
+  const visible = usePopupVisibility()
   return (
     <PopoverPrimitive.Portal keepMounted={keepMounted}>
       <PopoverPrimitive.Positioner
@@ -47,6 +50,10 @@ function PopoverContent({
             className
           )}
           {...props}
+          hidden={!visible || props.hidden}
+          inert={!visible || props.inert}
+          aria-hidden={!visible || props["aria-hidden"]}
+          finalFocus={visible ? props.finalFocus : false}
         />
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>

@@ -1,0 +1,474 @@
+{
+  "at": "2026-11-18T13:14:01.995544+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "AUTHOR_STATIC_COMPLETE_RUNTIME_NOT_RUN",
+  "implementer": "/root/s3_runtime_extras_implement",
+  "coordinator_session": "01a1ee9f-bdfc-7f31-ac53-9d7e072a20d7",
+  "main_current_execution_scope": "Unique Extras-A R05 owner; no Extras-B build/provision/body in this turn",
+  "owner_source_seals": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-recovery-runtime.spec.ts",
+      "resolved_path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-recovery-runtime.spec.ts",
+      "sha256": "3ad9fe6cab428dd5043c34c30f7f07b79cc42d5efdff978343fc5ad2bbcd1ef8",
+      "bytes": 1655,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery-runtime.ts",
+      "resolved_path": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/fixtures/collaboration-recovery-runtime.ts",
+      "sha256": "81d9fd6ffff94deb5b400405080377eed4d5959e9d5bbe0defd4166b5219bf9d",
+      "bytes": 80674,
+      "mode": "0o644"
+    }
+  ],
+  "intake_json": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-intake-20261118.json",
+    "resolved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-intake-20261118.json",
+    "sha256": "c8ae658b4d3a3ffb01beb25628e2cfaa2e074b093288156e65484e61aaf1f5fa",
+    "bytes": 3782,
+    "mode": "0o600"
+  },
+  "markdown_report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-implementation-20261118.md",
+    "resolved_path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-runtime-implementation-20261118.md",
+    "sha256": "07370bc01439bb1eed7136a828ccf588d2dd2744f87dc8c0f352198d4138d9ad",
+    "bytes": 9987,
+    "mode": "0o644"
+  },
+  "planned_inventory": [
+    {
+      "name": "Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "platform": "Web",
+      "kind": "notifications",
+      "status": "NOT_RUN",
+      "subcases": [
+        {
+          "name": "proven_success_result",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "proven_failed_or_incomplete_result",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "proven_stopped_result",
+          "status": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "name": "Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "platform": "Web",
+      "kind": "withdrawal",
+      "status": "NOT_RUN",
+      "subcases": [
+        {
+          "name": "queued_input_author_withdrawal",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "live_resource_grant_withdrawal",
+          "status": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "name": "Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "platform": "Desktop",
+      "kind": "notifications",
+      "status": "NOT_RUN",
+      "subcases": [
+        {
+          "name": "proven_success_result",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "proven_failed_or_incomplete_result",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "proven_stopped_result",
+          "status": "NOT_RUN"
+        }
+      ]
+    },
+    {
+      "name": "Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "platform": "Desktop",
+      "kind": "withdrawal",
+      "status": "NOT_RUN",
+      "subcases": [
+        {
+          "name": "queued_input_author_withdrawal",
+          "status": "NOT_RUN"
+        },
+        {
+          "name": "live_resource_grant_withdrawal",
+          "status": "NOT_RUN"
+        }
+      ]
+    }
+  ],
+  "planned_denominator": {
+    "tops": 4,
+    "subcases": 10,
+    "managed_provider_launches": 10,
+    "human_inputs": 12,
+    "original_input_uploads": 6,
+    "recovery_launches": 0,
+    "retries": 0,
+    "workers": 1
+  },
+  "source_graph_files": 777,
+  "source_snapshot_files": 779,
+  "actual_author_product_graph": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01",
+  "coherent_harness": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/harness",
+  "stale_ROOT_product_edges": [],
+  "stale_ROOT_harness_edges": [],
+  "static_rounds": {
+    "R01": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01",
+      "checks": {
+        "typecheck": {
+          "at": "2026-11-18T12:50:09.112754+00:00",
+          "exit": 2,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/typecheck.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/typecheck.stdout.log",
+            "sha256": "455420a9011ebe84e1e51b1cef39104a533c56a7217841b7c71917cfda4e177a",
+            "bytes": 102615,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/typecheck.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/typecheck.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          }
+        },
+        "eslint": {
+          "at": "2026-11-18T12:50:04.454258+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/eslint.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/eslint.stdout.log",
+            "sha256": "b6057eb2a19346b1e1313d371b7bedff5a90932efab19eca4b06f3de51717f1b",
+            "bytes": 684,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/eslint.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          },
+          "actual_lint": [
+            {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/harness/e2e/collaboration-recovery-runtime.spec.ts",
+              "errors": 0,
+              "warnings": 0,
+              "messages": []
+            },
+            {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/harness/e2e/fixtures/collaboration-recovery-runtime.ts",
+              "errors": 0,
+              "warnings": 0,
+              "messages": []
+            }
+          ]
+        },
+        "list": {
+          "at": "2026-11-18T12:50:04.681487+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/list.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/list.stdout.log",
+            "sha256": "f212f251acbbf1af97d0ce96d45989f4a2e4a676d1b94a3e1e34b49f9c1df2b3",
+            "bytes": 820,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/list.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          },
+          "list_output": [
+            "Listing tests:",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "Total: 4 tests in 1 file"
+          ],
+          "listed_tops": 4
+        }
+      },
+      "summary": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/result.json",
+        "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r01/result.json",
+        "sha256": "9f31c70e141d32e349fd4d60bdd9bca4a8be676d2e9d73ca1c5c06d9e27ed972",
+        "bytes": 5379,
+        "mode": "0o600"
+      },
+      "original_harness_retained": true
+    },
+    "R02": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02",
+      "checks": {
+        "typecheck": {
+          "at": "2026-11-18T12:57:00.449796+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/typecheck.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/typecheck.stdout.log",
+            "sha256": "29bb3a2ae52d3f9e734189ad008f1c3142c3a26202dfcaeae53fb1eb58daf26d",
+            "bytes": 101986,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/typecheck.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/typecheck.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          }
+        },
+        "eslint": {
+          "at": "2026-11-18T12:56:45.166825+00:00",
+          "exit": 1,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/eslint.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/eslint.stdout.log",
+            "sha256": "0acdb180ef975ef699d6e452baec635761e91498cfaece4c9f8678221de87317",
+            "bytes": 80351,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/eslint.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          }
+        },
+        "list": {
+          "at": "2026-11-18T12:56:46.062968+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/list.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/list.stdout.log",
+            "sha256": "f212f251acbbf1af97d0ce96d45989f4a2e4a676d1b94a3e1e34b49f9c1df2b3",
+            "bytes": 820,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/list.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          },
+          "list_output": [
+            "Listing tests:",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "Total: 4 tests in 1 file"
+          ],
+          "listed_tops": 4
+        }
+      },
+      "summary": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/result.json",
+        "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r02/result.json",
+        "sha256": "193a134510e3232327541d67495daa2dad40c7bd5a960f6bf60b7eebb8cdeed3",
+        "bytes": 4790,
+        "mode": "0o600"
+      },
+      "original_harness_retained": true
+    },
+    "R03": {
+      "directory": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03",
+      "checks": {
+        "typecheck": {
+          "at": "2026-11-18T13:04:03.335732+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/typecheck.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/typecheck.stdout.log",
+            "sha256": "7f65601a6cbc74f982c2c700b9b4650f8e4cb3995ed6d0eea5d7d13956fb03d3",
+            "bytes": 101986,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/typecheck.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/typecheck.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          }
+        },
+        "eslint": {
+          "at": "2026-11-18T13:03:37.507866+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/eslint.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/eslint.stdout.log",
+            "sha256": "6f98e65b8065da38adce7440edd040264a4300997191d503d8f0d2204c8cbbc6",
+            "bytes": 684,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/eslint.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/eslint.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          },
+          "actual_lint": [
+            {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/harness/e2e/collaboration-recovery-runtime.spec.ts",
+              "errors": 0,
+              "warnings": 0,
+              "messages": []
+            },
+            {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/harness/e2e/fixtures/collaboration-recovery-runtime.ts",
+              "errors": 0,
+              "warnings": 0,
+              "messages": []
+            }
+          ]
+        },
+        "list": {
+          "at": "2026-11-18T13:03:38.804618+00:00",
+          "exit": 0,
+          "source_files": 779,
+          "source_drift": [],
+          "tool_drift": [],
+          "stdout": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/list.stdout.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/list.stdout.log",
+            "sha256": "f212f251acbbf1af97d0ce96d45989f4a2e4a676d1b94a3e1e34b49f9c1df2b3",
+            "bytes": 820,
+            "mode": "0o600"
+          },
+          "stderr": {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/list.stderr.log",
+            "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/list.stderr.log",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "bytes": 0,
+            "mode": "0o600"
+          },
+          "list_output": [
+            "Listing tests:",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+            "  [chromium] › collaboration-recovery-runtime.spec.ts:14:5 › Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+            "Total: 4 tests in 1 file"
+          ],
+          "listed_tops": 4
+        }
+      },
+      "summary": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/result.json",
+        "resolved_path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/runtime-extras-author-r03/result.json",
+        "sha256": "31bf2d2ada9b3490cd0a827fa09e543b685c6daa2230bb80213bb7b6c60dade0",
+        "bytes": 5379,
+        "mode": "0o600"
+      },
+      "original_harness_retained": true
+    }
+  },
+  "final_static_checks": {
+    "strict_typecheck": "exit0",
+    "targeted_eslint": "exit0,2 files,0 errors,0 warnings",
+    "playwright_list": "exit0,4 tops",
+    "source_and_tool_drift": 0
+  },
+  "retained_failures": {
+    "R01": [
+      "TS6133 unused Page",
+      "TS2345 Buffer ArrayBufferLike boundary",
+      "TS6133 unused fixture argument"
+    ],
+    "R02": [
+      "ESLint no-unsafe-finally ThrowStatement"
+    ]
+  },
+  "read_only_runtime_audit_relation_sets": [
+    "comments",
+    "commands",
+    "groups",
+    "runs",
+    "attempts",
+    "capabilities",
+    "reservations",
+    "grants",
+    "participants",
+    "source_memberships",
+    "inputs",
+    "run_events",
+    "events",
+    "operations",
+    "notifications",
+    "uploads",
+    "references",
+    "ordinary_dispatches",
+    "ordinary_attachments",
+    "source_inbox",
+    "source_subscribers"
+  ],
+  "runtime_bodies": "NOT_RUN",
+  "Go_tests": "NOT_RUN",
+  "database_execution": "NOT_RUN",
+  "API_execution": "NOT_RUN",
+  "Web_Desktop_execution": "NOT_RUN",
+  "Provider_execution": "NOT_RUN",
+  "builds": "NOT_RUN",
+  "product_mutations": 0,
+  "shared_helper_mutations": 0,
+  "Git_state_mutations": 0,
+  "parent_matrix_updates": 0,
+  "archive_updates": 0,
+  "pending_acceptance": [
+    "Freeze final serverR04/clientR03 and full client/native/binary/config origin manifests",
+    "Independent native code/environment check",
+    "Fresh explicitly owned full-migration/index database/API and matching production Web/native bindings",
+    "Main-owned live daemon/Provider PID and any additional private ledger audit before existing cleanup",
+    "Complete fresh4-top/10-subcase/retry0 runtime body and all persistent identities/counts",
+    "Current original-business-token before200/afterdenial and original proof/ACK replay",
+    "Original gates restored with monotonic epoch; all owned process/connection shutdown",
+    "Independent runtime acceptance before parent/S3 matrix/commit"
+  ]
+}

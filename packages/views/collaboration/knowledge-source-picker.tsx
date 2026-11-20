@@ -7,18 +7,18 @@ import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import { useT } from "../i18n";
 import { KnowledgeSelect, KnowledgeSourceLabel } from "./knowledge-controls";
 
-export function KnowledgeSourcePicker({ scope, issue, selected, onChange, disabled, deliveryCandidateId }: {
+export function KnowledgeSourcePicker({ scope, issue, active = true, selected, onChange, disabled, deliveryCandidateId }: {
   scope: CollaborationScope; issue: CollaborationIssue; selected: KnowledgeSourceSelection[];
-  onChange: (next: KnowledgeSourceSelection[]) => void; disabled: boolean; deliveryCandidateId?: string;
+  onChange: (next: KnowledgeSourceSelection[]) => void; disabled: boolean; active?: boolean; deliveryCandidateId?: string;
 }) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const [kind, setKind] = useState(deliveryCandidateId ? "delivery" : "memory"), [runId, setRunId] = useState("");
-  const delivery = useQuery({ ...collaborationKnowledgeCandidateOptions(client, scope, deliveryCandidateId ?? ""), enabled: kind === "delivery" && !!deliveryCandidateId });
-  const memory = useQuery({ ...collaborationMemoryOptions(client, scope, issue.id), enabled: kind === "memory" });
-  const versions = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: kind === "memory" });
-  const comments = useInfiniteQuery({ ...collaborationCommentsOptions(client, scope, issue.id), enabled: kind === "comment" });
-  const records = useInfiniteQuery({ ...collaborationRunRecordsOptions(client, scope, issue.id, runId), enabled: kind === "run_record" && !!runId });
+  const delivery = useQuery({ ...collaborationKnowledgeCandidateOptions(client, scope, deliveryCandidateId ?? ""), enabled: active && kind === "delivery" && !!deliveryCandidateId });
+  const memory = useQuery({ ...collaborationMemoryOptions(client, scope, issue.id), enabled: active && kind === "memory" });
+  const versions = useInfiniteQuery({ ...collaborationMemoryVersionsOptions(client, scope, issue.id), enabled: active && kind === "memory" });
+  const comments = useInfiniteQuery({ ...collaborationCommentsOptions(client, scope, issue.id), enabled: active && kind === "comment" });
+  const records = useInfiniteQuery({ ...collaborationRunRecordsOptions(client, scope, issue.id, runId), enabled: active && kind === "run_record" && !!runId });
   const rows: { source: KnowledgeSourceSelection; preview?: string; name?: string }[] = kind === "memory" ? [...new Set([
     ...(!memory.error && memory.data?.version !== "0" && memory.data ? [memory.data.version] : []),
     ...(!versions.error ? versions.data?.pages.flatMap((page) => page.items.filter((item) => !item.purged).map((item) => item.version)) ?? [] : []),

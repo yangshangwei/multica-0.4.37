@@ -1,0 +1,969 @@
+{
+  "at": "2026-11-20T05:05:20.151614+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "/root/manual_handoff_check",
+  "verdict": "ACCEPTED_ADMINISTRATIVE_HANDOFF_DOCUMENTATION_ONLY",
+  "blocking_findings": [],
+  "user_instruction": "归档吧，剩下的任务我手工核实",
+  "scope": "Pre-archive administrative handoff documentation and metadata; no new runtime or overall acceptance",
+  "overall_acceptance_passed": false,
+  "business_signoff_recorded": false,
+  "parent_counts": {
+    "PASS": 9,
+    "PARTIAL": 11,
+    "NOT_RUN": 4
+  },
+  "verification": {
+    "at": "2026-11-20T05:03:48.182638+00:00",
+    "baseline_count": 93,
+    "unchanged_original_count": 88,
+    "changed_originals": [
+      ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      ".trellis/tasks/11-13-pay-241-collaboration-acceptance/task.json",
+      ".trellis/tasks/11-13-pay-241-s4-external-integrations/task.json",
+      ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/task.json"
+    ],
+    "historical_acceptance_objects_preserved": [
+      "TC13_acceptance",
+      "TC02_acceptance",
+      "TC01_positive_acceptance",
+      "TC04_machine_authority_acceptance",
+      "TC12_code_revision_acceptance",
+      "TC06_concurrent_content_acceptance",
+      "S2_archived",
+      "S3_final_functional_acceptance"
+    ],
+    "original_history_entries_preserved": 19,
+    "new_history_records": 1,
+    "parent_children_unchanged": true,
+    "pending_metadata_consistent": true,
+    "CSV": {
+      "rows": 24,
+      "counts": {
+        "PARTIAL": 11,
+        "PASS": 9,
+        "NOT_RUN": 4
+      },
+      "sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb",
+      "byte_identical": true
+    },
+    "new_links_projected_valid": 28,
+    "existing_json_files_parsed": 33,
+    "scoped_diff_check_exit": 0,
+    "head_readonly": "cb1e0da2f6c9c9fb2f695ea0ed4509da06ed7b70",
+    "product_tests_run": 0,
+    "lint": "not_applicable_not_run_documentation_only",
+    "typecheck": "not_applicable_not_run_documentation_only"
+  },
+  "reviewed_record_snapshots": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "sha256": "648b9d87b54b69dfa1ce7348ac2329e25d7618bef1b8c3bdb644ca1f9abe0c4a",
+      "bytes": 10630,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "sha256": "266b8d164f75945baedf9e1485459f15d8255d738e4bd6b6f9f4b37a0025c67f",
+      "bytes": 7037,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "sha256": "a963454108419abfd4126a6015044c9b33795a005b6ebf5ab10e403b4493e201",
+      "bytes": 2142,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "sha256": "2d0f1bc428d377ef039d27e8c676ff426a9667f3490f875030da5061e09842e2",
+      "bytes": 95060,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/task.json",
+      "sha256": "409192f4f39aeab4114e5f21ba3ca910a9db846ad2625a61c8af6482cf549a43",
+      "bytes": 417920,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-collaboration-acceptance/task.json"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/report.md",
+      "sha256": "d5138884166b99e86f6e2d067f9cf7ccda8c2b9cb64021ab84fae6d92ba6fb4d",
+      "bytes": 2488,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-s4-external-integrations/report.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/task.json",
+      "sha256": "958a504c3163e8ae38ebbe9055aa68870306a1441bb03e3fd2875c5a9a0b01c2",
+      "bytes": 2677,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-s4-external-integrations/task.json"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "sha256": "e842b63bfc68180d1dadd458f6a6c6b28baa22c6f6508b91fdf3d716d83310d6",
+      "bytes": 2221,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/task.json",
+      "sha256": "5be43feb88947fa07c502c6daab5b9810aeeaa8fad16eb1b0bbfdf0bdb66cebf",
+      "bytes": 2735,
+      "snapshot": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/record-snapshot/.trellis/tasks/11-13-pay-241-s5-performance-acceptance/task.json"
+    }
+  ],
+  "original_file_checks": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/check.jsonl",
+      "baseline_sha256": "77f7bb90bf41131ea6f6b459fa3205802257a06fc452d611e4e0f62c3bbcb868",
+      "current_sha256": "77f7bb90bf41131ea6f6b459fa3205802257a06fc452d611e4e0f62c3bbcb868",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/design.md",
+      "baseline_sha256": "ad57e8e2e87c23975358279626365f797c5a8224de92b0a0d6b3a737b1e1e0b0",
+      "current_sha256": "ad57e8e2e87c23975358279626365f797c5a8224de92b0a0d6b3a737b1e1e0b0",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "baseline_sha256": "f0eadc4e71755498b78238b3fc401992dbfa86e135ae16bc8a3c83f1c05c1e61",
+      "current_sha256": "648b9d87b54b69dfa1ce7348ac2329e25d7618bef1b8c3bdb644ca1f9abe0c4a",
+      "same": false,
+      "allowed_change": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/implement.jsonl",
+      "baseline_sha256": "500013bc89495419c556664fe2d161b45ab2a3f18fd3ddd3fc8a31bf8d39ad94",
+      "current_sha256": "500013bc89495419c556664fe2d161b45ab2a3f18fd3ddd3fc8a31bf8d39ad94",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/implement.md",
+      "baseline_sha256": "09d79510df555b0612670a0cc5154da32087d52bbabd84f22aeb4f2f42565df9",
+      "current_sha256": "09d79510df555b0612670a0cc5154da32087d52bbabd84f22aeb4f2f42565df9",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+      "baseline_sha256": "140129e85468255674a7b9fe613c4c243feb618261a9ce6c8ddb95aff08f3ec5",
+      "current_sha256": "140129e85468255674a7b9fe613c4c243feb618261a9ce6c8ddb95aff08f3ec5",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-push-final-check-20261119.json",
+      "baseline_sha256": "fdeb4bcdfee8414b8f90e4eb2b2888d7a89cf2adf2ac55d380510d9cf0d418e0",
+      "current_sha256": "fdeb4bcdfee8414b8f90e4eb2b2888d7a89cf2adf2ac55d380510d9cf0d418e0",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-push-final-check-20261119.md",
+      "baseline_sha256": "ec3099e33bd22da6c7bee280a65d2e3fb61f89b15f2bfc53da895025dce4acc4",
+      "current_sha256": "ec3099e33bd22da6c7bee280a65d2e3fb61f89b15f2bfc53da895025dce4acc4",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-s2-20261119.json",
+      "baseline_sha256": "42f9154361f07fb65f0254e5261af1f1a29c6406c0325bbe6aeb08510946ed93",
+      "current_sha256": "42f9154361f07fb65f0254e5261af1f1a29c6406c0325bbe6aeb08510946ed93",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-s2-20261119.md",
+      "baseline_sha256": "44ca045e36f945b72f30f0845a0e724a8a1c2df4a581654a1d42e190ca426dec",
+      "current_sha256": "44ca045e36f945b72f30f0845a0e724a8a1c2df4a581654a1d42e190ca426dec",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-ui-20261119.json",
+      "baseline_sha256": "395fe7a04975724ca01309a95390a8b4e55bc7dc7aa7c13f7972bbaf3ffd2457",
+      "current_sha256": "395fe7a04975724ca01309a95390a8b4e55bc7dc7aa7c13f7972bbaf3ffd2457",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/commit-readiness-ui-20261119.md",
+      "baseline_sha256": "f78aee2d3656725673c2dfa0fa14d5feacbd0185ba722ae8bef7f537b868444e",
+      "current_sha256": "f78aee2d3656725673c2dfa0fa14d5feacbd0185ba722ae8bef7f537b868444e",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md",
+      "baseline_sha256": "6af194e529c0042e560cfe7e3dadab7ee2d55ff6aed8b401122025cdbd23eb27",
+      "current_sha256": "6af194e529c0042e560cfe7e3dadab7ee2d55ff6aed8b401122025cdbd23eb27",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
+      "baseline_sha256": "ddae00bde9867181058795411635503563129558430d06f37998e4dbc0df9408",
+      "current_sha256": "ddae00bde9867181058795411635503563129558430d06f37998e4dbc0df9408",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-independent-check-20261120.json",
+      "baseline_sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32",
+      "current_sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-independent-check-20261120.md",
+      "baseline_sha256": "3a51480871ae9a4685e2993dd479c8e39c286092bb02e3e9aabed0ce4bb0d4bf",
+      "current_sha256": "3a51480871ae9a4685e2993dd479c8e39c286092bb02e3e9aabed0ce4bb0d4bf",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/planning-check.md",
+      "baseline_sha256": "a3cc7f35f9d19112b98631010a6733774ffea09d1bd58aa1ccf879c2539d9cf6",
+      "current_sha256": "a3cc7f35f9d19112b98631010a6733774ffea09d1bd58aa1ccf879c2539d9cf6",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-internal-acceptance-20261119.json",
+      "baseline_sha256": "751d24332d6e1d557edbd4251780644dfff6d8ea5db8e91b516ed0b2ad29004d",
+      "current_sha256": "751d24332d6e1d557edbd4251780644dfff6d8ea5db8e91b516ed0b2ad29004d",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-internal-acceptance-20261119.md",
+      "baseline_sha256": "f9fd5c6f1f6f539859472509ae44afe1afe4bf829350cb461ac6c57c4568458a",
+      "current_sha256": "f9fd5c6f1f6f539859472509ae44afe1afe4bf829350cb461ac6c57c4568458a",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-semantics-20261120.json",
+      "baseline_sha256": "9f52174f6e8fff6376ce6009ebb398b158af381e678dfcf5a6a41508345c4649",
+      "current_sha256": "9f52174f6e8fff6376ce6009ebb398b158af381e678dfcf5a6a41508345c4649",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-semantics-20261120.md",
+      "baseline_sha256": "5b4e8ca6b6b4de4e80b8998b726cdd6e3d3094cff6488582d4b341e95cbff869",
+      "current_sha256": "5b4e8ca6b6b4de4e80b8998b726cdd6e3d3094cff6488582d4b341e95cbff869",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-source-stimuli-20261120.json",
+      "baseline_sha256": "d4b49826e9f822d5f091b5e7840b82b01063e270ef46b4e9f17e535db2b31f7d",
+      "current_sha256": "d4b49826e9f822d5f091b5e7840b82b01063e270ef46b4e9f17e535db2b31f7d",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-source-stimuli-20261120.md",
+      "baseline_sha256": "0ae6a77f6a7a28fc4d6fe3665587eb90d41b64e8a3db4583c29334f873c85de2",
+      "current_sha256": "0ae6a77f6a7a28fc4d6fe3665587eb90d41b64e8a3db4583c29334f873c85de2",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/s2-archive-check-20261119.json",
+      "baseline_sha256": "e4445ba72593caa3c6a0be2c1118e1c7cf080b1363229afb9cc36603c68f6746",
+      "current_sha256": "e4445ba72593caa3c6a0be2c1118e1c7cf080b1363229afb9cc36603c68f6746",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/s2-archive-check-20261119.md",
+      "baseline_sha256": "2601dc76d0f71e68edefb3eed9ccb3fd0d91cd6a6d3c79bd063f361aaa35dc80",
+      "current_sha256": "2601dc76d0f71e68edefb3eed9ccb3fd0d91cd6a6d3c79bd063f361aaa35dc80",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/s3-cas-intake-20261118.md",
+      "baseline_sha256": "bc508ebdabc407014c40d51a3a77954abec3320784e7aa0451abbed00f02754d",
+      "current_sha256": "bc508ebdabc407014c40d51a3a77954abec3320784e7aa0451abbed00f02754d",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-next-input-20261120.md",
+      "baseline_sha256": "484dcf850f50a359256709a8f5bc90b083dca28c72c154b177ffbadca737c15b",
+      "current_sha256": "484dcf850f50a359256709a8f5bc90b083dca28c72c154b177ffbadca737c15b",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-tc01-20261120.md",
+      "baseline_sha256": "1fa5d49c5f55927272836119407a5677287ed00574930a9e74a60ca10b9072a6",
+      "current_sha256": "1fa5d49c5f55927272836119407a5677287ed00574930a9e74a60ca10b9072a6",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-tc02-20261119.md",
+      "baseline_sha256": "34ad4e328854fb38e65b10fde79a8d2243059f48ce693ffe44e8b66a49f9a4f1",
+      "current_sha256": "34ad4e328854fb38e65b10fde79a8d2243059f48ce693ffe44e8b66a49f9a4f1",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-tc04-20261120.md",
+      "baseline_sha256": "92be3f1e03570b661b9c12b70c9defd5a400d806f937f75e383bc3cc239533ff",
+      "current_sha256": "92be3f1e03570b661b9c12b70c9defd5a400d806f937f75e383bc3cc239533ff",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-tc06-20261120.md",
+      "baseline_sha256": "f944ee13732517d3f4f048a47e4d057f134bf7bc9bb27dbe44b2c6a12436a945",
+      "current_sha256": "f944ee13732517d3f4f048a47e4d057f134bf7bc9bb27dbe44b2c6a12436a945",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-tc12-20261120.md",
+      "baseline_sha256": "33d08a4a8564c2f5637b02d722d24007d539180b76d50f859962d9741883e66f",
+      "current_sha256": "33d08a4a8564c2f5637b02d722d24007d539180b76d50f859962d9741883e66f",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/source-manifest.json",
+      "baseline_sha256": "91f890c5cf67dbb7c11802e34c3d038ff76e64f411d18004801e1e57af98a9d6",
+      "current_sha256": "91f890c5cf67dbb7c11802e34c3d038ff76e64f411d18004801e1e57af98a9d6",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.json",
+      "baseline_sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7",
+      "current_sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.md",
+      "baseline_sha256": "739529f40a04f076669b85c80f019c92bf72a836948d636f8b2862e577c00be1",
+      "current_sha256": "739529f40a04f076669b85c80f019c92bf72a836948d636f8b2862e577c00be1",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-preflight-check-20261120.json",
+      "baseline_sha256": "93cafb1edf064284a6e713f6e66b9d1e678760d237d729e247c1856a9e0ea8d9",
+      "current_sha256": "93cafb1edf064284a6e713f6e66b9d1e678760d237d729e247c1856a9e0ea8d9",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-preflight-check-20261120.md",
+      "baseline_sha256": "1004c59c9701a86e5f50c4a38555810daeb2d0ac82148a6121acb0b8c5a945ed",
+      "current_sha256": "1004c59c9701a86e5f50c4a38555810daeb2d0ac82148a6121acb0b8c5a945ed",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc02-independent-check-20261119.json",
+      "baseline_sha256": "98374f22ac428406cd8d8911fbee8c0a33e85e1c4dae65066714d7d77898dc8a",
+      "current_sha256": "98374f22ac428406cd8d8911fbee8c0a33e85e1c4dae65066714d7d77898dc8a",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc02-independent-check-20261119.md",
+      "baseline_sha256": "703b86de5c50472a9a7aa218c7c6395c4f4f9fec2468368514e2f1b156231dee",
+      "current_sha256": "703b86de5c50472a9a7aa218c7c6395c4f4f9fec2468368514e2f1b156231dee",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc02-preflight-check-20261119.json",
+      "baseline_sha256": "d04d61cbce5b1036ee527538a3b5c6324d7f75c0fd6a68aaa7ac30c589781ac8",
+      "current_sha256": "d04d61cbce5b1036ee527538a3b5c6324d7f75c0fd6a68aaa7ac30c589781ac8",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc02-preflight-check-20261119.md",
+      "baseline_sha256": "6b6f72c9611b6e6c6af278c06e5f9da8e5ddc91cc2675c49f12d58de5c0dad1d",
+      "current_sha256": "6b6f72c9611b6e6c6af278c06e5f9da8e5ddc91cc2675c49f12d58de5c0dad1d",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-close-approval-gap-20261120.json",
+      "baseline_sha256": "07684b042186bd2cca73a43a519c9ef450093c2733364e5b80a9f927bc09bf3c",
+      "current_sha256": "07684b042186bd2cca73a43a519c9ef450093c2733364e5b80a9f927bc09bf3c",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-close-approval-gap-20261120.md",
+      "baseline_sha256": "d8abff425dc825c05c72da5b76c3667f364c5cf8bf564d65d311160514880c3c",
+      "current_sha256": "d8abff425dc825c05c72da5b76c3667f364c5cf8bf564d65d311160514880c3c",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-independent-check-20261120.json",
+      "baseline_sha256": "4d7b2b7dd7deb36631744f716431661e973df3aebaa879ef41e2519dd3c5d8de",
+      "current_sha256": "4d7b2b7dd7deb36631744f716431661e973df3aebaa879ef41e2519dd3c5d8de",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-independent-check-20261120.md",
+      "baseline_sha256": "80633d100da5b76d19afead83dd99642269756daa3aeda45afc39d28b6051136",
+      "current_sha256": "80633d100da5b76d19afead83dd99642269756daa3aeda45afc39d28b6051136",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-content-stimulus-gap-20261120.json",
+      "baseline_sha256": "a8a3bd36f6b617dc3cc3ad5141cef3e619c21164d0c711e20c684902ba69a683",
+      "current_sha256": "a8a3bd36f6b617dc3cc3ad5141cef3e619c21164d0c711e20c684902ba69a683",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-content-stimulus-gap-20261120.md",
+      "baseline_sha256": "615395f82995aa184564a9a5d91ce0e07d2b91fa84d783c8761198b65f1df0dd",
+      "current_sha256": "615395f82995aa184564a9a5d91ce0e07d2b91fa84d783c8761198b65f1df0dd",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-independent-check-20261120.json",
+      "baseline_sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57",
+      "current_sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-independent-check-20261120.md",
+      "baseline_sha256": "70413fb9403414fc5143c16aa1129aab356258c03ad0cf38a208affd900171ca",
+      "current_sha256": "70413fb9403414fc5143c16aa1129aab356258c03ad0cf38a208affd900171ca",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-code-revision-gap-20261120.json",
+      "baseline_sha256": "cd94ea0bc91af60aca55f3168fd247ea51fa8c4721fd52f0d66bb46896b6dff8",
+      "current_sha256": "cd94ea0bc91af60aca55f3168fd247ea51fa8c4721fd52f0d66bb46896b6dff8",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-code-revision-gap-20261120.md",
+      "baseline_sha256": "0b215fb333781d7fb6ee5e62ca80e5f05da153de3514cbc237f2afac683caec6",
+      "current_sha256": "0b215fb333781d7fb6ee5e62ca80e5f05da153de3514cbc237f2afac683caec6",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.json",
+      "baseline_sha256": "f604778fc10045c2e6849f546638bf31e39a873e1339661638c34115f0ab1fae",
+      "current_sha256": "f604778fc10045c2e6849f546638bf31e39a873e1339661638c34115f0ab1fae",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.md",
+      "baseline_sha256": "56c83e2ca50bda78089c721e4e5465877f7c453390c7b76663550351c57ef385",
+      "current_sha256": "56c83e2ca50bda78089c721e4e5465877f7c453390c7b76663550351c57ef385",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc13-implementation-20261119.json",
+      "baseline_sha256": "5cfd688daab9e55bd14fae5cf3f696ed1fb2689a964a080706138364d61790f8",
+      "current_sha256": "5cfd688daab9e55bd14fae5cf3f696ed1fb2689a964a080706138364d61790f8",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc13-implementation-20261119.md",
+      "baseline_sha256": "35461970b0e9673f92de0f586df3410a2b54e3c0133eef7191ba45a5e2390aab",
+      "current_sha256": "35461970b0e9673f92de0f586df3410a2b54e3c0133eef7191ba45a5e2390aab",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc13-independent-check-20261119.json",
+      "baseline_sha256": "0e96f229edd542633b7aa8e6526f25da882816fdc4bd2e6ed82b32920dc1b7c2",
+      "current_sha256": "0e96f229edd542633b7aa8e6526f25da882816fdc4bd2e6ed82b32920dc1b7c2",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc13-independent-check-20261119.md",
+      "baseline_sha256": "1ac9c6572dc6e9b44f23ca96493633c02f2212835fd8ec0b5b7559a74d9d47d6",
+      "current_sha256": "1ac9c6572dc6e9b44f23ca96493633c02f2212835fd8ec0b5b7559a74d9d47d6",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
+      "baseline_sha256": "0257abd299d71605e28b620733b2624fea0712ea02411c285320a9e694a39ce9",
+      "current_sha256": "0257abd299d71605e28b620733b2624fea0712ea02411c285320a9e694a39ce9",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "baseline_sha256": "3a4b189543d3723710a48a3ad2addf21b025a8bffa5ee298a7e67c68e17d6747",
+      "current_sha256": "2d0f1bc428d377ef039d27e8c676ff426a9667f3490f875030da5061e09842e2",
+      "same": false,
+      "allowed_change": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/task.json",
+      "baseline_sha256": "fc656b94a0c41e0d42277850729d8bdd79150a42ce5dca3bdae09b20a70660dd",
+      "current_sha256": "409192f4f39aeab4114e5f21ba3ca910a9db846ad2625a61c8af6482cf549a43",
+      "same": false,
+      "allowed_change": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "baseline_sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb",
+      "current_sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/check.jsonl",
+      "baseline_sha256": "8d024f321e99f5f6dea5f714e827fc77ad63f783750ecd61e57b750f6e82037f",
+      "current_sha256": "8d024f321e99f5f6dea5f714e827fc77ad63f783750ecd61e57b750f6e82037f",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/design.md",
+      "baseline_sha256": "171ade89e57edb746958edf18dcf42cd4ab9735ac762054eb12b3888342706c1",
+      "current_sha256": "171ade89e57edb746958edf18dcf42cd4ab9735ac762054eb12b3888342706c1",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/implement.jsonl",
+      "baseline_sha256": "8d024f321e99f5f6dea5f714e827fc77ad63f783750ecd61e57b750f6e82037f",
+      "current_sha256": "8d024f321e99f5f6dea5f714e827fc77ad63f783750ecd61e57b750f6e82037f",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/implement.md",
+      "baseline_sha256": "59e2f641b7cfd979d33ff39a06ffb738c9db19033b4185e82b6524490699382c",
+      "current_sha256": "59e2f641b7cfd979d33ff39a06ffb738c9db19033b4185e82b6524490699382c",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/prd.md",
+      "baseline_sha256": "ca742f3cebda4901b6194f00b0c453d1ea0f5d428e8da67c969ebe45bc30572a",
+      "current_sha256": "ca742f3cebda4901b6194f00b0c453d1ea0f5d428e8da67c969ebe45bc30572a",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness-followup-20261114.json",
+      "baseline_sha256": "d87470d6d3e2b8e56ee33deae0a76aa7a158831aa7ba023d13f50a3fb4d48037",
+      "current_sha256": "d87470d6d3e2b8e56ee33deae0a76aa7a158831aa7ba023d13f50a3fb4d48037",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness-followup-20261114.md",
+      "baseline_sha256": "90400017ee1bea484ad1562085d4bb0e1256c85a7060f899c287a6bf2bdb02dc",
+      "current_sha256": "90400017ee1bea484ad1562085d4bb0e1256c85a7060f899c287a6bf2bdb02dc",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.json",
+      "baseline_sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613",
+      "current_sha256": "c68389515d4c61c2ee2e961ac7db240b130f81116ee28af36967c721b6ad3613",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/integration-readiness.md",
+      "baseline_sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+      "current_sha256": "6e67a6e8d107fb97de5a2723e9e4645f78440e3a5794b972b6943880c09e76b7",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/next-inputs-20261119.md",
+      "baseline_sha256": "2a19616e0fc775efb18989887b873e118cfdb9547c17ecffe66d60cf843a7418",
+      "current_sha256": "2a19616e0fc775efb18989887b873e118cfdb9547c17ecffe66d60cf843a7418",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/task.json",
+      "baseline_sha256": "2ffc42cc48ce897598129bc2667c278d78bcbca89de0bd1c1216b53a29c74b1a",
+      "current_sha256": "958a504c3163e8ae38ebbe9055aa68870306a1441bb03e3fd2875c5a9a0b01c2",
+      "same": false,
+      "allowed_change": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/check.jsonl",
+      "baseline_sha256": "a653dc9d06ffa996311d3ae468368df9e35002654ea73349eee5742f9054b8a2",
+      "current_sha256": "a653dc9d06ffa996311d3ae468368df9e35002654ea73349eee5742f9054b8a2",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/design.md",
+      "baseline_sha256": "725f6624c98b359cd83a9167da5b6afdbc0ab75a8409406c07997eea9fbff6eb",
+      "current_sha256": "725f6624c98b359cd83a9167da5b6afdbc0ab75a8409406c07997eea9fbff6eb",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/implement.jsonl",
+      "baseline_sha256": "942fde63ba43a78afb226f40a8c43294efaaa3a968e069fe0ad16aa7703e4eb1",
+      "current_sha256": "942fde63ba43a78afb226f40a8c43294efaaa3a968e069fe0ad16aa7703e4eb1",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/implement.md",
+      "baseline_sha256": "3c7d244276a5c9c9420d86a6f0bed5aef343bdd6897483688c235c1dd8c17ee3",
+      "current_sha256": "3c7d244276a5c9c9420d86a6f0bed5aef343bdd6897483688c235c1dd8c17ee3",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/prd.md",
+      "baseline_sha256": "f2d9e49da98f2019b55ae7f4fc3cc0df6739190ec8ed8fdf40b4c283666087ae",
+      "current_sha256": "f2d9e49da98f2019b55ae7f4fc3cc0df6739190ec8ed8fdf40b4c283666087ae",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-r01.json",
+      "baseline_sha256": "ccfc835c4ce1df30a93e6b5eb7ce83e54ae4cdc35aaae241a89dc0aa980722d9",
+      "current_sha256": "ccfc835c4ce1df30a93e6b5eb7ce83e54ae4cdc35aaae241a89dc0aa980722d9",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-r01.md",
+      "baseline_sha256": "8bdefe1ce7675a65a0b45785fc854f2d3b453b5ca83d595a98686d4b52fa474b",
+      "current_sha256": "8bdefe1ce7675a65a0b45785fc854f2d3b453b5ca83d595a98686d4b52fa474b",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-review.json",
+      "baseline_sha256": "a6d658bfb9b1883dfb707962fcce27c6d04fae30f699d8d89c56f100b1ab3292",
+      "current_sha256": "a6d658bfb9b1883dfb707962fcce27c6d04fae30f699d8d89c56f100b1ab3292",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-fix-review.md",
+      "baseline_sha256": "95ba80e9c9bfe94afb166d04a35c8908ba4498c59dab839b24b49f0092db70f8",
+      "current_sha256": "95ba80e9c9bfe94afb166d04a35c8908ba4498c59dab839b24b49f0092db70f8",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-implementation.json",
+      "baseline_sha256": "f7f4e279ab092ce705fec9108c31f8cf09c714712432e7899ae2c9bbb79763f2",
+      "current_sha256": "f7f4e279ab092ce705fec9108c31f8cf09c714712432e7899ae2c9bbb79763f2",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/harness-implementation.md",
+      "baseline_sha256": "e947e99e6493700e9c28bd6d775dd63f1578f03c0de1d0d920ecc5d565ad4bf7",
+      "current_sha256": "e947e99e6493700e9c28bd6d775dd63f1578f03c0de1d0d920ecc5d565ad4bf7",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/performance-harness.md",
+      "baseline_sha256": "01ebdb2f13f81f5812d5568d2700d4ef54ae54737ab3936fa58b47b3ad70c12f",
+      "current_sha256": "01ebdb2f13f81f5812d5568d2700d4ef54ae54737ab3936fa58b47b3ad70c12f",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/plan-review.json",
+      "baseline_sha256": "61b379151a3dd23b71ee733fce38d93b16886eff790cfd553a1086156d452931",
+      "current_sha256": "61b379151a3dd23b71ee733fce38d93b16886eff790cfd553a1086156d452931",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/plan-review.md",
+      "baseline_sha256": "6e41dab8ec9616013e9840a6c7dd7a79d373f205f934d24ddbf25838509380c8",
+      "current_sha256": "6e41dab8ec9616013e9840a6c7dd7a79d373f205f934d24ddbf25838509380c8",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r01.json",
+      "baseline_sha256": "0f7e0df8e7c9eac37ac2d9420b4257916de8054bfab189d50b3e876cce4a736b",
+      "current_sha256": "0f7e0df8e7c9eac37ac2d9420b4257916de8054bfab189d50b3e876cce4a736b",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r01.md",
+      "baseline_sha256": "8f60e230d3ef2f76c55f07b6ca8a687f45914fde59e61b72ba864149e8a50254",
+      "current_sha256": "8f60e230d3ef2f76c55f07b6ca8a687f45914fde59e61b72ba864149e8a50254",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02-review.json",
+      "baseline_sha256": "da161e1d1aa2a7ad204abd7436e59d6d58470c68010a6bb6cf19b71c73327753",
+      "current_sha256": "da161e1d1aa2a7ad204abd7436e59d6d58470c68010a6bb6cf19b71c73327753",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02-review.md",
+      "baseline_sha256": "7691eac69125638163c54a339ca414bbc78542a87458be0c7b1a0f7aa2c4685f",
+      "current_sha256": "7691eac69125638163c54a339ca414bbc78542a87458be0c7b1a0f7aa2c4685f",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.json",
+      "baseline_sha256": "9ecac1ccb1a504d571caedb2e503019f25c68c9ec065fbf96eebb4b1bd99fa49",
+      "current_sha256": "9ecac1ccb1a504d571caedb2e503019f25c68c9ec065fbf96eebb4b1bd99fa49",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.md",
+      "baseline_sha256": "77075d79fdeaccc4f575c7ea8c2e973d4fe5069accf5f59ce39c37f7abb11073",
+      "current_sha256": "77075d79fdeaccc4f575c7ea8c2e973d4fe5069accf5f59ce39c37f7abb11073",
+      "same": true,
+      "allowed_change": false
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/task.json",
+      "baseline_sha256": "4418123b90843c7fa2e2766415d2585a33871e69736f7587598a30ae7500c500",
+      "current_sha256": "5be43feb88947fa07c502c6daab5b9810aeeaa8fad16eb1b0bbfdf0bdb66cebf",
+      "same": false,
+      "allowed_change": true
+    }
+  ],
+  "projected_new_links": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "test-matrix.csv",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "../11-13-collaboration-agent-identity-baseline/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-collaboration-agent-identity-baseline/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "../11-13-pay-241-s2-stage-approvals/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "../11-13-pay-241-s3-recovery/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "research/tc06-independent-check-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/tc06-independent-check-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "research/tc12-independent-check-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "research/next-input-contract-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "gaps.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "../11-13-pay-241-s4-external-integrations/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "../11-13-pay-241-s5-performance-acceptance/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/report.md",
+      "target": "research/session-manual-handoff-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "target": "../report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "target": "../session-progress.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "target": "../gaps.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "target": "../../11-13-pay-241-s4-external-integrations/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "target": "../../11-13-pay-241-s5-performance-acceptance/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/report.md",
+      "target": "research/next-inputs-20261119.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations/research/next-inputs-20261119.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/report.md",
+      "target": "../11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/report.md",
+      "target": "prd.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations/prd.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/report.md",
+      "target": "../11-13-pay-241-collaboration-acceptance/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "target": "research/rehearsal-r02.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "target": "prd.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance/prd.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "target": "implement.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance/implement.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "target": "../11-13-pay-241-collaboration-acceptance/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/report.md",
+      "target": "../11-13-pay-241-s4-external-integrations/report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "target": "report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/report.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "target": "research/session-manual-handoff-20261120.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/session-manual-handoff-20261120.md",
+      "exists": true
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "target": "report.md",
+      "projected": ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/report.md",
+      "exists": true
+    }
+  ],
+  "allowed_post_review_finalization": [
+    "pending quality labels to accepted; add this sealed report/hash",
+    "archive S4 then S5 then parent; status completed/date and active task pointer removal",
+    "archive_state to archived with observed paths; keep manual owner and acceptance false",
+    "six context manifests path-only rebase with row order/reasons preserved; repair S4 existing stale S2 path",
+    "parent relatedFiles path-only rebase",
+    "session archive/Git outcome entries and exact private final receipts",
+    "independent post-move audit without editing this sealed report"
+  ],
+  "not_yet_verified": [
+    "actual directory moves",
+    "completed statuses and pointer cleanup",
+    "post-move context resolution",
+    "commit/push outcome"
+  ],
+  "reviewer_actions": {
+    "git_readonly": true,
+    "git_mutations": false,
+    "product_runtime": false,
+    "recursive_agents": false,
+    "services_started": 0
+  },
+  "audit": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-manual-handoff-_0xcv29e/review/independent-prearchive-audit-r01.json",
+    "sha256": "2d7b918397124e37082d90948a8254a905292a254fa502aa0b86f47e2d24c0cb"
+  },
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/manual-handoff-independent-check-20261120.md",
+    "sha256": "ac5c62512b8b78a4c32954f9a44be131b49e506a93f781b00e00678307d15e7f",
+    "bytes": 5956
+  }
+}

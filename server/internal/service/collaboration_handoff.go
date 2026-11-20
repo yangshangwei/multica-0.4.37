@@ -20,8 +20,10 @@ import (
 
 type CollaborationInformationRequestParams struct {
 	CollaborationTransferParams
-	ExpectedStatus       string
-	StatusOptionsVersion string
+	ExpectedStatus        string
+	StatusOptionsVersion  string
+	UnblockCondition      *string `json:",omitempty"`
+	EstimatedResolutionAt *string `json:",omitempty"`
 }
 
 type CollaborationInformationReturnParams struct {
@@ -67,6 +69,7 @@ type CollaborationInformationRequestView struct {
 	ReturnStatus         string
 	ReturnStatusFallback bool
 	CreatedAt            pgtype.Timestamptz
+	Block                *CollaborationInformationBlock
 }
 
 func collaborationCatalogEntry(catalog []db.IssueStatus, key string) (db.IssueStatus, bool) {
@@ -174,6 +177,21 @@ func (s *CollaborationService) RequestInformation(ctx context.Context, p Collabo
 			}
 			return CollaborationWorkflowReceipt{}, err
 		}
+		state, err := loadInformationState(ctx, t.q, t.access, t.catalog, true)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		metadata, code := informationMetadata(p.Note, p.UnblockCondition, p.EstimatedResolutionAt, state.Policy.Managed)
+		if code != "" {
+			return t.result(code, http.StatusBadRequest), nil
+		}
+		if state.Policy.Managed && t.access.StatusCategory == "blocked" &&
+			(state.Request == nil || state.Request.ToUserID != t.actor || t.handler() != t.actor || state.ChainCode != "") {
+			return t.result("information_repair_required", http.StatusConflict), nil
+		}
+		if metadata != nil {
+			t.informationEstimate = &metadata.Estimate
+		}
 		active, open, err := t.activeInformationRequest(ctx)
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
@@ -190,7 +208,7 @@ func (s *CollaborationService) RequestInformation(ctx context.Context, p Collabo
 			return CollaborationWorkflowReceipt{}, err
 		}
 		request, err := t.handoff(ctx, collaborationHandoff{target: p.TargetUserID, purpose: "information", note: p.Note,
-			status: p.ExpectedStatus, requester: t.actor, parent: parent})
+			status: p.ExpectedStatus, requester: t.actor, parent: parent, block: metadata})
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
 		}
@@ -268,7 +286,8 @@ func (s *CollaborationService) ReturnInformation(ctx context.Context, p Collabor
 		}
 		t.access.InformationRequestID = next
 		return t.finishWith(ctx, "information_returned", requester, nil, map[string]any{
-			"information_request_id": returned.ID, "active_information_request_id": next, "status": t.access.Issue.Status})
+			"information_request_id": returned.ID, "active_information_request_id": next, "status": t.access.Issue.Status,
+			"restored_status": p.ExpectedStatus, "return_status_fallback": p.ExpectedStatus != returned.PreviousStatus})
 	})
 }
 
@@ -443,7 +462,8 @@ func (s *CollaborationService) InformationRequestView(ctx context.Context, acces
 		return nil, err
 	}
 	status, fallback, _ := collaborationReturnStatus(catalog, request.PreviousStatus)
+	block := informationBlock(request)
 	return &CollaborationInformationRequestView{ID: request.ID, RequesterID: request.RequesterUserID, RecipientID: request.ToUserID,
 		ParentRequestID: request.ParentRequestID, Note: request.Note, PreviousStatus: request.PreviousStatus,
-		ReturnStatus: status, ReturnStatusFallback: fallback, CreatedAt: request.CreatedAt}, nil
+		ReturnStatus: status, ReturnStatusFallback: fallback, CreatedAt: request.CreatedAt, Block: &block}, nil
 }

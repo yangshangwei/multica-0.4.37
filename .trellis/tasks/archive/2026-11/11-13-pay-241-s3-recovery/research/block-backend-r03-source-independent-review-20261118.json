@@ -1,0 +1,129 @@
+{
+  "at": "2026-11-18T12:39:24.657477+00:00",
+  "reviewer": "/root/s3_check_batch_block",
+  "status": "CHANGES_REQUESTED_SOURCE_REVIEW",
+  "task": "11-13-pay-241-s3-recovery",
+  "findings_fixed": [],
+  "findings_not_fixed": [
+    {
+      "id": "BK-R03-01",
+      "severity": "P2",
+      "source": "collaboration_information_state.go",
+      "issue": "Normalized UTC estimate/retained projection can exceed supported year range.",
+      "why_not_fixed": "Latest user scope defers backend work; R04 has only an unexecuted test draft."
+    },
+    {
+      "id": "BK-R03-02",
+      "severity": "P2",
+      "source": "handler/collaboration_information.go",
+      "issue": "URL.Query silently discards malformed raw query pairs before closed validation.",
+      "why_not_fixed": "Outside exact R04 two-file admission; source-only evidence, no test or product mutation."
+    }
+  ],
+  "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03",
+  "manifest": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/block-server-candidate-manifest-r03.json",
+    "sha256": "538e4f92de2707285d285a98238260edf2acc3930512056b2f560ba01db6ad36",
+    "bytes": 913246
+  },
+  "source_file_checks": 5077,
+  "source_drift": [],
+  "source_proof": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_information_state.go",
+      "sha256": "af6368242f4fbb252548f2b9966a00c0efd2eaa3984ae539936e8c4360ff04ca",
+      "bytes": 19119
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_information_history.go",
+      "sha256": "05bc8676535546b871ef8dc982ffcdf656baa98add07f4d0d1e8e71b314587f8",
+      "bytes": 31079
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_information_repair.go",
+      "sha256": "35dcc025a6c876369d128c375ffb4b71d65ec460346c06d8c752294f6c1815ce",
+      "bytes": 11723
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration.go",
+      "sha256": "0ca75701bab3d2dc5051d6c4ca7de1a0e58b7bc010191fcb8f3b7f18b7c16ad4",
+      "bytes": 19961
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_workflow.go",
+      "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+      "bytes": 37070
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80",
+      "bytes": 19190
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/collaboration_handoff_snapshot.go",
+      "sha256": "3f8908055f5e7b5936925d2010df531e1802269bfade7dbf963f00e61d8062c2",
+      "bytes": 11059
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/service/issue.go",
+      "sha256": "94463ba45f7e49e1d35aa25426a561b5ca8deeb8a62c8ed9357e1c6e4f8cf445",
+      "bytes": 42945
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/internal/handler/collaboration_information.go",
+      "sha256": "276ec2aa84912df8d71457c75e9023fe6ee741f78db662858f2d86304d519ef1",
+      "bytes": 8794
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r03/server/pkg/db/queries/collaboration_information.sql",
+      "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+      "bytes": 5186
+    }
+  ],
+  "coordinator_functional_summary": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/block-server-current-functional-result-r03.json",
+    "sha256": "66c839404a93aaf42d09b77f9f204e9a8fc205d484a9ebb20c7c71363d6a96a7",
+    "bytes": 890
+  },
+  "coordinator_declared_mode_executions": 102,
+  "reviewer_server_static_test_DB_API_build_execution": 0,
+  "partial_R04": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-server-r04/handoff-partial-r04.json",
+    "sha256": "c8e5afc5992bb86ee024e389b008638591a8fc4d3c7430f873816b10e1b915a8",
+    "bytes": 2018
+  },
+  "new_coordinator_session": "01a1ee9f-bdfc-7f31-ac53-9d7e072a20d7",
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-backend-r03-source-independent-review-20261118.md",
+    "sha256": "fb7729c01088b76a496472344a6332936f5c5f3e36526818f84d418a45468742",
+    "bytes": 7442
+  },
+  "full_S3_accepted": false,
+  "archive_or_matrix_changes": 0,
+  "client_reports": [
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-client-code-r02-independent-check-20261118.json",
+      "sha256": "5761ee4db1da5de541b14050d72b51f35c69ea10266b212ff7138070d75c0913",
+      "bytes": 6879
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-client-projection-r03-independent-check-20261118.json",
+      "sha256": "77741c7f41cce6a3ab3648d881e660d5573209b6e6808a640e2e80f2e81e406d",
+      "bytes": 5199
+    }
+  ],
+  "read_errors_preserved": [
+    {
+      "missing": "internal/service/collaboration_creation.go",
+      "actual": "internal/service/collaboration.go Create/CreateInTx"
+    },
+    {
+      "missing": "pkg/db/query/*.sql",
+      "actual": "pkg/db/queries/collaboration_information.sql"
+    },
+    {
+      "missing": "source-block-work-r04 before initialization",
+      "actual": "now admitted partial exact-baseline copy"
+    }
+  ]
+}

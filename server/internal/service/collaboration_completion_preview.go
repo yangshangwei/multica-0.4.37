@@ -58,6 +58,8 @@ type collaborationCompletionCursor struct {
 	Cursor         string `json:"cursor"`
 }
 
+// Candidate and preview projections retain shared root/source fences while
+// rechecking current access. Actual completion writers own their original locks.
 func (s *CollaborationService) lockCompletionPreviewRoot(ctx context.Context, tx pgx.Tx, root, source, org pgtype.UUID, credential ArtifactCredentialSnapshot) (CollaborationIssueAccess, db.Issue, error) {
 	q := db.New(tx)
 	var access CollaborationIssueAccess
@@ -92,11 +94,11 @@ func (s *CollaborationService) lockCompletionPreviewRoot(ctx context.Context, tx
 	if err = q.LockIssueStatusCatalogShared(ctx, issue.WorkspaceID); err != nil {
 		return access, db.Issue{}, err
 	}
-	issue, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: root, WorkspaceID: issue.WorkspaceID})
+	issue, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: root, WorkspaceID: issue.WorkspaceID})
 	if err != nil {
 		return access, db.Issue{}, err
 	}
-	if _, err = q.LockIssueCollaboration(ctx, root); err != nil {
+	if _, err = q.TryLockCollaborationStageRootShared(ctx, root); err != nil {
 		return access, db.Issue{}, err
 	}
 	if org.Valid {
@@ -107,7 +109,7 @@ func (s *CollaborationService) lockCompletionPreviewRoot(ctx context.Context, tx
 	if err != nil {
 		return access, db.Issue{}, err
 	}
-	child, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: source, WorkspaceID: issue.WorkspaceID})
+	child, err := q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: source, WorkspaceID: issue.WorkspaceID})
 	if err != nil {
 		return access, child, err
 	}
@@ -186,6 +188,19 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 	if issue.Revision != request.Target.ExpectedIssueRevision || issue.Status != request.Target.ExpectedStatus {
 		return out, completionConflict()
 	}
+	projectIntent := completionCollaborationIntent
+	projectArtifact := lockDeliveryArtifactInTx
+	projectFacts := stageCompletionFacts
+	projectEvidence := EvaluateDeliveryEvidenceInTx
+	if request.Target.Kind == "collaboration_submission" {
+		// Preserve this exact value marker through the borrowed transaction's
+		// retained issuer, report, run and source-artifact read checks.
+		tx = collaborationStageEvidenceReadTx{Tx: tx}
+		projectIntent = readCompletionCollaborationIntent
+		projectArtifact = readDeliveryArtifactInTx
+		projectFacts = readStageCompletionFacts
+		projectEvidence = evaluateDeliveryEvidenceReadInTx
+	}
 	q := db.New(tx)
 	target, err := issuestatus.Resolve(ctx, q, issue.WorkspaceID, request.Target.TargetStatus)
 	if err != nil {
@@ -203,7 +218,7 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 	if org.Valid {
 		consumer = DeliveryCompletionConsumer{Kind: "admin", UserID: credential.Principal.UserID, OrganizationID: util.UUIDToString(org)}
 	}
-	if _, _, _, err = completionCollaborationIntent(ctx, tx, issue, request.Target, consumer, true); err != nil {
+	if _, _, _, err = projectIntent(ctx, tx, issue, request.Target, consumer, true); err != nil {
 		return out, err
 	}
 	out = CollaborationCompletionPreview{DeliveryCompletionPreview: DeliveryCompletionPreview{ProtocolVersion: 1, IssueID: util.UUIDToString(root), IssueRevision: issue.Revision, CurrentStatus: issue.Status, CurrentCategory: current, TargetStatus: target.Key, TargetCategory: target.Category, PolicyMode: policy.Mode, PolicyRevision: policy.Revision}, SourceIssueID: request.SourceIssueID, SourceIssueRevision: child.Revision, StageBlockers: []CollaborationStageBlocker{}}
@@ -223,10 +238,10 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 		return out, pgx.ErrNoRows
 	}
 	artifactAccess := ArtifactAccess{Credential: credential, RequestedWorkspaceID: util.UUIDToString(issue.WorkspaceID)}
-	if _, _, _, err = lockDeliveryArtifactInTx(ctx, tx, artifactAccess, child, execution); err != nil {
+	if _, _, _, err = projectArtifact(ctx, tx, artifactAccess, child, execution); err != nil {
 		return out, err
 	}
-	facts, err := stageCompletionFacts(ctx, tx, s.StageExecutionSources, access)
+	facts, err := projectFacts(ctx, tx, s.StageExecutionSources, access)
 	var blocked *StageCompletionError
 	if errors.As(err, &blocked) {
 		out.StageBlockers = blocked.Blockers
@@ -236,7 +251,7 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 		return out, err
 	}
 	if len(out.StageBlockers) == 0 && facts.state != nil && request.Target.SubmissionID != nil {
-		g := &stageMutationGuard{tx: tx, before: issue, access: access, evidence: facts}
+		g := &stageMutationGuard{tx: tx, before: issue, access: access, evidence: facts, boundSubmission: completionUUIDPG(*request.Target.SubmissionID)}
 		if e := g.checkSubmission(ctx, completionUUIDPG(*request.Target.SubmissionID)); errors.As(e, &blocked) {
 			out.StageBlockers = blocked.Blockers
 			out.Reason = "stage_incomplete"
@@ -260,7 +275,7 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 		if err = CheckDeliveryCompletionSchema(ctx, tx); err != nil {
 			return out, err
 		}
-		observation, e := EvaluateDeliveryEvidenceInTx(ctx, tx, artifactAccess, child, DeliveryEvidenceRequest{PolicyVersion: DeliveryEvidencePolicy, IssueRevision: child.Revision, ProjectID: out.ProjectID, ProjectRevision: out.ProjectRevision, ApprovalID: request.ApprovalID, SourceRevision: execution.SourceRevision, SpecDigest: execution.SpecDigest, ArtifactDigest: execution.OutputArtifactDigest})
+		observation, e := projectEvidence(ctx, tx, artifactAccess, child, DeliveryEvidenceRequest{PolicyVersion: DeliveryEvidencePolicy, IssueRevision: child.Revision, ProjectID: out.ProjectID, ProjectRevision: out.ProjectRevision, ApprovalID: request.ApprovalID, SourceRevision: execution.SourceRevision, SpecDigest: execution.SpecDigest, ArtifactDigest: execution.OutputArtifactDigest})
 		if e != nil {
 			return out, e
 		}
@@ -282,6 +297,7 @@ func (s *CollaborationService) GetCollaborationCompletionPreviewInTx(ctx context
 			if facts.state != nil {
 				expiry = stageEarlier(expiry, facts.expires)
 			}
+			expiry = expiry.UTC().Truncate(time.Microsecond)
 			evidence := DeliveryCompletionEvidence{IssueID: request.SourceIssueID, ExpectedIssueRevision: child.Revision, ApprovalID: request.ApprovalID, ExpectedSourceRevision: observation.SourceRevision, ExpectedSpecDigest: observation.SpecDigest, ExpectedArtifactDigest: observation.ArtifactDigest}
 			if facts.state != nil && !stageCompletionMatchesM1(facts, evidence) {
 				out.Reason = "stage_incomplete"

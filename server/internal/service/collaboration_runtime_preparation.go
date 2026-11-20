@@ -521,6 +521,22 @@ func (s *CollaborationService) RuntimeAttachment(ctx context.Context, runID, att
 		if err != nil {
 			return empty, err
 		}
+		row, err := r.q.GetCollaborationAttachment(ctx, attachmentID)
+		missing := errors.Is(err, pgx.ErrNoRows)
+		if err != nil && !missing {
+			return empty, err
+		}
+		if !missing && row.RunID == runID && row.UploaderAgentID == r.run.AgentID && row.AttemptSeq.Valid && row.AttemptSeq.Int64 == r.run.AuthorizedAttemptSeq {
+			if row.IssueID != r.access.Issue.ID || row.SourceWorkspaceID != r.access.Issue.WorkspaceID || !row.DeliveredAt.Valid || row.DiscardedAt.Valid || row.Version != version {
+				return empty, collaborationError(http.StatusNotFound, "attachment_not_found")
+			}
+			return row, validateCollaborationStoredAttachment(row)
+		}
+		// A run without preparation has no frozen input files. Missing and
+		// delivered-but-unfrozen IDs must have the same non-disclosing result.
+		if r.run.PreparationSnapshot == nil || r.run.PromptSnapshot == nil {
+			return empty, collaborationError(http.StatusNotFound, "attachment_not_found")
+		}
 		manifest, err := s.readRuntimePreparation(ctx, r)
 		if err != nil {
 			return empty, err
@@ -533,18 +549,10 @@ func (s *CollaborationService) RuntimeAttachment(ctx context.Context, runID, att
 				break
 			}
 		}
-		if expected == nil {
+		if expected == nil || missing {
 			return empty, collaborationError(http.StatusNotFound, "attachment_not_found")
 		}
-		row, err := r.q.GetCollaborationAttachment(ctx, attachmentID)
-		if errors.Is(err, pgx.ErrNoRows) {
-			return empty, collaborationError(http.StatusNotFound, "attachment_not_found")
-		}
-		if err != nil {
-			return empty, err
-		}
-		if row.IssueID != r.access.Issue.ID || row.SourceWorkspaceID != r.access.Issue.WorkspaceID || !row.DeliveredAt.Valid || row.DiscardedAt.Valid ||
-			row.Version != version || row.Name != expected.Name || row.ContentType != expected.ContentType || row.SizeBytes != expected.SizeBytes {
+		if row.IssueID != r.access.Issue.ID || row.SourceWorkspaceID != r.access.Issue.WorkspaceID || !row.DeliveredAt.Valid || row.DiscardedAt.Valid || row.Version != version || row.Name != expected.Name || row.ContentType != expected.ContentType || row.SizeBytes != expected.SizeBytes {
 			return empty, collaborationError(http.StatusNotFound, "attachment_not_found")
 		}
 		return row, validateCollaborationStoredAttachment(row)

@@ -209,6 +209,14 @@ func TestShouldEnqueueSquadLeaderOnComment_SkipsWhenMemberMentionsAnyone(t *test
 			want:        false,
 			description: "explicit @agent routes only to the mentioned target; the assigned squad-leader fallback must not also fire (no double-enqueue)",
 		},
+		{
+			name:        "agent comment mentioning only a member skips leader",
+			content:     "result is ready, [@Owner](mention://member/" + testUserID + ") please review",
+			authorType:  "agent",
+			authorID:    fx.OtherID,
+			want:        false,
+			description: "a worker result routed at a human does not hand back to the leader; only the mention-free form does (AgentAuthoredWorkerCommentsWakeLeader)",
+		},
 	}
 
 	for _, tc := range cases {

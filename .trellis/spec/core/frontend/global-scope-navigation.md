@@ -17,6 +17,9 @@ must remain available with zero, pending or unavailable workspaces.
   independently of `activeWorkspaceSlug`, which stays null in account scope.
 - `NavigationAdapter.isScopeResume?` suppresses a consumed URL anchor on resume;
   `navigationKey?` distinguishes repeated explicit opens of the same URL.
+- `NavigationAdapter.replace(path, { preserveView?: boolean })` allows a caller
+  to normalize an alias of the already-resolved resource without replacing its
+  mounted view. Only canonical issue URLs currently request this option.
 
 ## 3. Contracts
 
@@ -50,6 +53,15 @@ layout changes in this container no longer receive automatic anchor adjustment;
 explicit comment/run/description navigation still owns its deliberate scroll.
 Do not compensate with a timer or repeated writes of the saved position.
 
+An issue UUID and its human-readable identifier name the same resource. After
+resolving that identity and participation, canonicalization preserves the query
+and fragment and calls `replace(canonicalHref, { preserveView: true })`. The Web
+adapter uses Next's supported `history.replaceState` integration for same-origin
+aliases, keeping its route tree, open picker and pending editor mounted. The
+shared provider forwards the option; native SPA adapters keep their existing
+replacement behavior. Never request `preserveView` to open a different resource
+or workspace. Ordinary `replace` calls still use the platform router.
+
 The global row is 48px high and outside the content canvas and sidebar collapse.
 Viewport-fixed sidebar containers start below it. Desktop reserves 80px for
 native traffic lights in that row, with no-drag interactive controls; history
@@ -71,6 +83,8 @@ footer switch or a content-level workspace selector.
 | Explicit account target while already in account | Open target; never replace it with history |
 | Resume with old anchor after user scrolls | Restore latest offset without refocusing old anchor |
 | Explicit same-anchor link repeated | Refocus through a new navigation key |
+| Resolved UUID becomes its canonical issue identifier | Preserve mounted controls, query and fragment; replace history entry |
+| Navigation to another resource | Use ordinary routing; never retain the outgoing view with `preserveView` |
 
 ## 5. Good / Base / Bad Cases
 
@@ -112,6 +126,14 @@ the persisted account tab with `isScopeResume: true`, so it must not be required
 to refocus the old anchor. Keep explicit native deep-link focus assertions and
 all screenshot geometry checks separate from reload/memento restoration.
 
+`e2e/canonical-issue-interaction.spec.ts` holds the former canonical route
+request, opens the status picker before normalization completes, and verifies
+that the original trigger stays mounted and one write reaches the correct issue.
+Check Back/Forward and navigation to a second issue before reloading; reloading
+first replaces the retained UUID tree and misses that history boundary. Verify
+reload persistence separately. Do not hide this race with `networkidle` or a
+fixed delay before clicking a visible control.
+
 ## 7. Wrong vs Correct
 
 Wrong: `nav.push(accountPath())` for the global Collaboration button and
@@ -120,3 +142,7 @@ Wrong: `nav.push(accountPath())` for the global Collaboration button and
 Correct: use the platform resume operations; keep explicit `push(path)` for
 notification/task links. Reuse existing restoration adapters rather than keeping
 both application trees mounted or adding a second scroll state store.
+
+Wrong: canonical UUID-to-identifier normalization through Web `router.replace`,
+which changes Next's dynamic segment identity and closes an in-use picker.
+Correct: use the explicit same-resource `preserveView` option after resolution.

@@ -68,24 +68,26 @@ type CollaborationIssueResponse struct {
 		QueueState     string `json:"queue_state"`
 		ControlVersion string `json:"control_version"`
 	} `json:"session"`
-	Execution                 service.CollaborationExecutionView       `json:"execution"`
-	CurrentInformationRequest *CollaborationInformationRequestResponse `json:"current_information_request"`
-	AIPolicy                  string                                   `json:"ai_policy"`
-	Delivery                  *service.CollaborationDeliverySummary    `json:"delivery,omitempty"`
-	Capabilities              collaboration.Capabilities               `json:"capabilities"`
-	OrdinaryChildren          CollaborationOrdinaryChildren            `json:"ordinary_children"`
+	Execution                 service.CollaborationExecutionView        `json:"execution"`
+	CurrentInformationRequest *CollaborationInformationRequestResponse  `json:"current_information_request"`
+	InformationWorkflow       *service.CollaborationInformationWorkflow `json:"information_workflow,omitempty"`
+	AIPolicy                  string                                    `json:"ai_policy"`
+	Delivery                  *service.CollaborationDeliverySummary     `json:"delivery,omitempty"`
+	Capabilities              collaboration.Capabilities                `json:"capabilities"`
+	OrdinaryChildren          CollaborationOrdinaryChildren             `json:"ordinary_children"`
 }
 
 // CollaborationInformationRequestResponse names the open request and where a
 // return lands. Clients display ReturnStatus and send it back unchanged.
 type CollaborationInformationRequestResponse struct {
-	ID                   string                      `json:"id"`
-	Requester            CollaborationAccountSummary `json:"requester"`
-	Recipient            CollaborationAccountSummary `json:"recipient"`
-	Note                 string                      `json:"note"`
-	ReturnStatus         *string                     `json:"return_status"`
-	ReturnStatusFallback bool                        `json:"return_status_fallback"`
-	CreatedAt            string                      `json:"created_at"`
+	ID                   string                                 `json:"id"`
+	Requester            CollaborationAccountSummary            `json:"requester"`
+	Recipient            CollaborationAccountSummary            `json:"recipient"`
+	Note                 string                                 `json:"note"`
+	ReturnStatus         *string                                `json:"return_status"`
+	ReturnStatusFallback bool                                   `json:"return_status_fallback"`
+	CreatedAt            string                                 `json:"created_at"`
+	Block                *service.CollaborationInformationBlock `json:"block,omitempty"`
 }
 
 func writeCollaborationError(w http.ResponseWriter, err error) {
@@ -202,12 +204,23 @@ func (h *Handler) collaborationIssueResponseInSnapshot(ctx context.Context, acce
 		return out, err
 	}
 	out.Capabilities.ControlAI = access.Capabilities.ControlAI && out.WriteContext != nil && !out.Execution.RequiresUpgrade && (out.Execution.ProtocolVersion == 5 || out.Execution.ProtocolVersion == 6)
+	out.InformationWorkflow, err = svc.InformationWorkflowView(ctx, access)
+	if err != nil {
+		return out, err
+	}
+	if out.InformationWorkflow != nil {
+		out.Capabilities.RequestInformation = out.Capabilities.RequestInformation && out.InformationWorkflow.Actions.Request.Available
+		out.Capabilities.ReturnInformation = out.Capabilities.ReturnInformation && out.InformationWorkflow.Actions.Return.Available
+		if out.InformationWorkflow.Managed && access.StatusCategory == "blocked" {
+			out.Capabilities.Transfer, out.Capabilities.ChangeStatus = false, false
+		}
+	}
 	request, err := svc.InformationRequestView(ctx, access)
 	if err != nil || request == nil {
 		return out, err
 	}
 	view := &CollaborationInformationRequestResponse{ID: uuidToString(request.ID), Note: request.Note,
-		ReturnStatusFallback: request.ReturnStatusFallback, CreatedAt: timestampToString(request.CreatedAt)}
+		ReturnStatusFallback: request.ReturnStatusFallback, CreatedAt: timestampToString(request.CreatedAt), Block: request.Block}
 	if view.Requester, err = h.collaborationAccountSummary(ctx, request.RequesterID, i.WorkspaceID); err != nil {
 		return out, err
 	}

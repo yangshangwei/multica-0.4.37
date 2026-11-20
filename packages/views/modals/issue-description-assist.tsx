@@ -12,6 +12,12 @@ import type { ContentEditorRef } from "../editor/content-editor";
 import { ReadonlyContent } from "../editor/readonly-content";
 import { useT } from "../i18n";
 
+// Tone shared by the AI helper buttons in the create dialogs. A disabled helper
+// returns to the foreground colour so the Button's own disabled opacity lands
+// where every other disabled ghost button does, instead of dimming the muted
+// tone a second time. `--faint-foreground` is not valid for text.
+export const AI_ASSIST_BUTTON_TONE = "text-muted-foreground disabled:text-foreground";
+
 export type IssueDescriptionAssistEditor = Pick<ContentEditorRef, "getMarkdown" | "flushPendingUpdate" | "adoptContent" | "focus">;
 
 // Markdown matches ContentEditor persistence; plain textarea drafts retain exact whitespace.
@@ -247,7 +253,7 @@ export function IssueDescriptionAssist({
         {!suggestion && !error && (
           <Button
             type="button" variant="ghost" size="sm"
-            className="min-h-11 text-muted-foreground sm:min-h-7 pointer-coarse:min-h-11"
+            className={`min-h-11 sm:min-h-7 pointer-coarse:min-h-11 ${AI_ASSIST_BUTTON_TONE}`}
             ref={(button) => {
               if (!button || !returnFocusRef.current) return;
               returnFocusRef.current = false;

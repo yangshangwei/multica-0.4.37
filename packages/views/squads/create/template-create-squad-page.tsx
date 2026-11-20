@@ -4,7 +4,7 @@ import { ActorAvatar } from "@multica/ui/components/common/actor-avatar";
 
 import { SquadAvatar } from "../../common/squad-avatar";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { api } from "@multica/core/api";
@@ -31,6 +31,7 @@ import {
 } from "../../agents/create/use-role-templates";
 import { AutonomyBadge } from "../../agents/create/template-create-agent-page";
 import { useLocale } from "../../i18n";
+import { getSquadQueryState, SquadQueryFeedback } from "../components/squad-query-feedback";
 
 /**
  * Staffing a squad from a built-in template.
@@ -52,20 +53,19 @@ export function TemplateCreateSquadPage() {
   const queryClient = useQueryClient();
   const currentUserId = useAuthStore((state) => state.user?.id) ?? null;
 
-  const { data: templates, isLoading, isError } = useSquadTemplates();
-  const { data: runtimes = [], isLoading: runtimesLoading } = useQuery(
-    runtimeListOptions(wsId),
-  );
-  const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const templatesQuery = useSquadTemplates();
+  const { data: templates } = templatesQuery;
+  const templatesState = getSquadQueryState(templatesQuery);
+  const runtimesQuery = useQuery(runtimeListOptions(wsId));
+  const runtimesState = getSquadQueryState(runtimesQuery);
+  const runtimes = runtimesState.hasData ? runtimesQuery.data ?? [] : [];
+  const membersQuery = useQuery(memberListOptions(wsId));
+  const membersState = getSquadQueryState(membersQuery);
+  const members = membersState.hasData ? membersQuery.data ?? [] : [];
+  const runtimesLoading = !runtimesState.hasData && !runtimesState.failed;
 
-  const usableRuntimes = useMemo(
-    () =>
-      runtimes.filter(
-        (runtime) =>
-          runtime.status === "online" &&
-          isRuntimeUsableForUser(runtime, currentUserId),
-      ),
-    [currentUserId, runtimes],
+  const usableRuntimes = runtimes.filter((runtime) =>
+    runtime.status === "online" && isRuntimeUsableForUser(runtime, currentUserId),
   );
 
   const [templateKey, setTemplateKey] = useState<string | null>(null);
@@ -76,7 +76,10 @@ export function TemplateCreateSquadPage() {
   const [error, setError] = useState<string | null>(null);
 
   const template = templates?.find((entry) => entry.key === templateKey) ?? null;
-  const effectiveRuntimeId = runtimeId || usableRuntimes[0]?.id || "";
+  const effectiveRuntimeId = runtimeId
+    ? usableRuntimes.find((runtime) => runtime.id === runtimeId)?.id ?? ""
+    : usableRuntimes[0]?.id ?? "";
+  const canCreate = !!template && !!effectiveRuntimeId && templatesState.hasData && membersState.hasData && !creating;
 
   const pick = (next: SquadTemplate) => {
     setTemplateKey(next.key);
@@ -86,7 +89,7 @@ export function TemplateCreateSquadPage() {
   };
 
   const create = async () => {
-    if (!template || !effectiveRuntimeId || creating) return;
+    if (!canCreate || !template) return;
     setCreating(true);
     setError(null);
     try {
@@ -144,13 +147,8 @@ export function TemplateCreateSquadPage() {
           <p className="text-body text-muted-foreground">
             {t(($) => $.squad_templates.description)}
           </p>
-          {isError ? (
-            <p className="text-body text-muted-foreground">
-              {t(($) => $.squad_templates.load_failed)}
-            </p>
-          ) : isLoading ? (
-            <p className="text-body text-muted-foreground">…</p>
-          ) : (templates ?? []).length === 0 ? (
+          <SquadQueryFeedback query={templatesQuery} loadingMessage={tSquads(($) => $.catalog.loading)} errorMessage={tSquads(($) => $.catalog.error)} />
+          {!templatesState.hasData ? null : (templates ?? []).length === 0 ? (
             <p className="text-body text-muted-foreground">
               {t(($) => $.squad_templates.empty)}
             </p>
@@ -211,7 +209,9 @@ export function TemplateCreateSquadPage() {
 
               <div className="space-y-1.5">
                 <Label>{t(($) => $.squad_templates.runtime_label)}</Label>
-                {usableRuntimes.length === 0 && !runtimesLoading ? (
+                <SquadQueryFeedback query={runtimesQuery} loadingMessage={tSquads(($) => $.recovery.runtimes_loading)} errorMessage={tSquads(($) => $.recovery.runtimes_error)} />
+                <SquadQueryFeedback query={membersQuery} loadingMessage={tSquads(($) => $.recovery.workspace_members_loading)} errorMessage={tSquads(($) => $.recovery.workspace_members_error)} />
+                {!runtimesState.hasData ? null : usableRuntimes.length === 0 ? (
                   <p className="text-caption text-muted-foreground">
                     {t(($) => $.squad_templates.no_runtime)}
                   </p>
@@ -272,7 +272,7 @@ export function TemplateCreateSquadPage() {
         </Button>
         <Button
           onClick={() => void create()}
-          disabled={!template || !effectiveRuntimeId || creating}
+          disabled={!canCreate}
         >
           {creating
             ? t(($) => $.squad_templates.creating)

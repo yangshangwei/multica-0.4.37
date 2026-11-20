@@ -1,0 +1,633 @@
+{
+  "schema": "pay241-r29-consumed-read-green-implementation/v1",
+  "captured_at": "2026-11-17T18:20:12.606417+00:00",
+  "date_local": "2026-11-18",
+  "agent": "/root/r27_preview_implement",
+  "active_task": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "status": "PRODUCT_FROZEN_STATIC_READY_MAIN_EXECUTION_REQUIRED",
+  "source_red": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01",
+  "source_green": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01",
+  "writes": {
+    "products": [
+      "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/delivery_completion_authorization.go",
+      "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01/server/internal/service/delivery_completion_collaboration.go"
+    ],
+    "new_ROOT_reports": [
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-implementation-20261118.md",
+      "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-implementation-20261118.json"
+    ]
+  },
+  "retained_RED": {
+    "result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/result.json",
+      "sha256": "09765a6246c9a194219f4b91076ef6bc30661735fa6d64496337673f268a90f8"
+    },
+    "support": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/real-red-witness-and-green-preparation-r01.json",
+      "sha256": "10fac670966442dc2699c5431efca5a45f7c61dfd0d93dadb84fcd4ffcdd7f95"
+    },
+    "stdout": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/verification/consumed-read-red-r01/stdout.jsonl",
+      "sha256": "a162109bf913c5864d6f826cb9bcfb08830858da7f145ef4872731a02e6d76fd"
+    },
+    "top": 3,
+    "named": {
+      "PASS": 9,
+      "FAIL": 4,
+      "SKIP": 0
+    },
+    "leaves": {
+      "PASS": 7,
+      "FAIL": 3,
+      "SKIP": 0
+    },
+    "actual_failed_fences": [
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/r4_first",
+        "label": "R29_GET_terminal_before_R4_release",
+        "actor": "1847526f-5e6e-44e7-8883-1afdb4092322",
+        "backend_pid": 97046,
+        "error_type": "service.DeliveryCompletionError",
+        "status": 409,
+        "code": "delivery_completion_conflict",
+        "first_pg_error": {
+          "query": "LockLifecycleIssue",
+          "sql_sha256": "c895f24b83c5f5dcf48d463d8aa5703179d3c334d15ab42b99fe5cb2d867cf7e",
+          "uuid_args": [
+            "c0e93ca6-29f9-4c59-b6d0-69ee3343cd22",
+            "3db9f440-cd9a-4fa9-991b-9b837645351e"
+          ],
+          "phase": "row_scan",
+          "backend_pid": 97046,
+          "sqlstate": "55P03",
+          "outer_type": "*pgconn.PgError",
+          "message": "could not obtain lock on row in relation \"issue\"",
+          "detail": "",
+          "where": "",
+          "table": "",
+          "constraint": "",
+          "recorded_at": "2026-11-17T17:52:40.233784Z"
+        },
+        "receipt_root_issue_id": "01a1eaa3-ad62-7a41-846b-4cc1b293b3e9",
+        "baseline_grant_id": "01a1eaa3-b532-7052-8504-5a4b6bdccdd5",
+        "failed_row_role": "source_child"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/authorization_first",
+        "label": "R29_R4_terminal_before_GET_commit",
+        "actor": "51c209fb-62d2-44e0-a157-0f7ddbe34d7a",
+        "backend_pid": 97071,
+        "error_type": "*pgconn.PgError",
+        "status": 0,
+        "code": "",
+        "first_pg_error": {
+          "query": "LockDeliveryEvidenceIssueRead",
+          "sql_sha256": "a0960f3c146c3313edc3f6f049c26103c341d0c74974669574ad9019f0ed5adc",
+          "uuid_args": [
+            "ef023c7b-f8e3-4c96-af00-316c41435616",
+            "dcd85102-7b8c-4666-bab9-fb4256525c4a"
+          ],
+          "phase": "row_scan",
+          "backend_pid": 97071,
+          "sqlstate": "55P03",
+          "outer_type": "*pgconn.PgError",
+          "message": "could not obtain lock on row in relation \"issue\"",
+          "detail": "",
+          "where": "",
+          "table": "",
+          "constraint": "",
+          "recorded_at": "2026-11-17T17:52:42.807052Z"
+        },
+        "receipt_root_issue_id": "01a1eaa3-b7f3-70b7-9bb6-b88f4e7b76f1",
+        "baseline_grant_id": "01a1eaa3-bf4e-7e38-8c5f-fa3a96432ad6",
+        "failed_row_role": "source_child"
+      },
+      {
+        "test": "TestDeliveryCompletionConsumedGetReadCoexistence/same_grant_siblings",
+        "label": "R29_sibling_terminal_before_first_GET_commit",
+        "actor": "e8d2af03-cc62-4581-96e0-ac2e90b0fddc",
+        "backend_pid": 97097,
+        "error_type": "service.DeliveryCompletionError",
+        "status": 409,
+        "code": "delivery_completion_conflict",
+        "first_pg_error": {
+          "query": "LockDeliveryCompletionAuthorization",
+          "sql_sha256": "c87dc9863a37754d37c35bd241d4e5401b051a764b81bbf41d8e2eeb66e654d7",
+          "uuid_args": [
+            "01a1eaa3-c9cb-7301-a487-584453b39551"
+          ],
+          "phase": "row_scan",
+          "backend_pid": 97097,
+          "sqlstate": "55P03",
+          "outer_type": "*pgconn.PgError",
+          "message": "could not obtain lock on row in relation \"delivery_completion_authorization\"",
+          "detail": "",
+          "where": "",
+          "table": "",
+          "constraint": "",
+          "recorded_at": "2026-11-17T17:52:45.442994Z"
+        },
+        "receipt_root_issue_id": "01a1eaa3-c1eb-7cc9-9b10-999dc3048fe6",
+        "baseline_grant_id": "01a1eaa3-c9cb-7301-a487-584453b39551",
+        "failed_row_role": "grant"
+      }
+    ],
+    "failed_fence_identity_correction": "r4_first and authorization_first UUIDs are source children, not receipt roots; main relayed the independent checker correction, and this report compares the immutable baseline receipt with raw UUIDs.",
+    "R28_historical_holder": "UNPROVED",
+    "R28_original_completed_write_replayed": false
+  },
+  "source_audit": {
+    "check_kind": "filesystem SHA256/mode/path comparison; no Go AST execution",
+    "status": "PASS",
+    "source_files": 5052,
+    "same_path_set": true,
+    "same_modes": true,
+    "exact_product_deltas": [
+      "server/internal/service/delivery_completion_authorization.go",
+      "server/internal/service/delivery_completion_collaboration.go"
+    ],
+    "protected_files_unchanged": 5050,
+    "red_manifest_drift": [],
+    "green_mode_drift": [],
+    "manifest_reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/evidence/real-red-witness-and-green-preparation-r01.json",
+      "sha256": "10fac670966442dc2699c5431efca5a45f7c61dfd0d93dadb84fcd4ffcdd7f95"
+    },
+    "green_manifest_canonical_sha256": "a17a1d1fbfadfffaa6479c9ae52b7f34a4294ed738eed6f17cb93a6f00c9e8f7",
+    "canonical_manifest_encoding": "UTF-8 json.dumps(sorted records by path, sort_keys=True, separators=(comma,colon)); each record is path/sha256/mode",
+    "protected_test": {
+      "path": "server/internal/service/delivery_completion_consumed_read_concurrency_test.go",
+      "sha256": "7e927d2721c00d98fead050c2129a223aac887b7cac8ef058a4789fa640a17d5",
+      "lines": 558,
+      "mode": "0o644",
+      "unchanged": true
+    },
+    "changes": [
+      {
+        "path": "server/internal/service/delivery_completion_authorization.go",
+        "red_sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+        "green_sha256": "a8445340a055faa12fceaa04e70f62eb213e3aeac333b0bc5abff50520e4f0b0",
+        "mode": "0o644",
+        "red_lines": 779,
+        "green_lines": 815,
+        "added_lines": 45,
+        "removed_lines": 9,
+        "patch_sha256": "3b7ac5b4a3411b5f13ae73d535ab89dcdd79dfd73433a3df542018528f71f4ea",
+        "patch_reconstructs_exact_GREEN": true,
+        "unified_patch": "--- RED/server/internal/service/delivery_completion_authorization.go\n+++ GREEN/server/internal/service/delivery_completion_authorization.go\n@@ -212,11 +212,14 @@\n \tif err = completionReadSetup(ctx, tx, access); err != nil {\n \t\treturn out, err\n \t}\n-\trow, err := db.New(tx).LockDeliveryCompletionAuthorization(ctx, id)\n-\tif err != nil {\n-\t\treturn out, err\n-\t}\n-\tif err = completionReadAuthority(ctx, tx, access, row); err != nil {\n+\tif _, err = tx.Exec(ctx, `SELECT id FROM delivery_completion_authorization WHERE id=$1 FOR SHARE NOWAIT`, id); err != nil {\n+\t\treturn out, err\n+\t}\n+\trow, err := db.New(tx).GetDeliveryCompletionAuthorization(ctx, id)\n+\tif err != nil {\n+\t\treturn out, err\n+\t}\n+\tif err = readCompletionAuthority(ctx, tx, access, row); err != nil {\n \t\treturn out, err\n \t}\n \treturn completionView(ctx, tx, row)\n@@ -325,6 +328,14 @@\n \treturn CheckArtifactCredentialInTx(ctx, tx, access.Credential)\n }\n func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {\n+\treturn completionReadAuthorityInTx(ctx, tx, access, row, false)\n+}\n+\n+func readCompletionAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {\n+\treturn completionReadAuthorityInTx(ctx, tx, access, row, true)\n+}\n+\n+func completionReadAuthorityInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, readProjection bool) error {\n \tif _, err := completionStoredRequest(row); err != nil {\n \t\treturn err\n \t}\n@@ -335,7 +346,13 @@\n \tif err := LockArtifactWorkspace(ctx, q, row.WorkspaceID); err != nil {\n \t\treturn err\n \t}\n-\tissue, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})\n+\tvar issue db.Issue\n+\tvar err error\n+\tif readProjection {\n+\t\tissue, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})\n+\t} else {\n+\t\tissue, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: row.IssueID, WorkspaceID: row.WorkspaceID})\n+\t}\n \tif err != nil {\n \t\treturn err\n \t}\n@@ -344,6 +361,9 @@\n \t\treturn actorErr\n \t}\n \tif kind == \"human\" && access.Credential.Principal.UserID == util.UUIDToString(row.IssuerUserID) {\n+\t\tif readProjection {\n+\t\t\treturn readCompletionIssuer(ctx, tx, access, row, issue)\n+\t\t}\n \t\treturn completionIssuerRead(ctx, tx, access, row, issue)\n \t}\n \tif row.TargetKind == \"collaboration_admin\" && !access.CollaborationAdministrationEnabled {\n@@ -352,21 +372,37 @@\n \treturn completionConsumerAuthority(ctx, tx, row, access.Credential, issue, false)\n }\n func completionIssuerRead(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {\n+\treturn completionIssuerReadInTx(ctx, tx, access, row, issue, false)\n+}\n+\n+func readCompletionIssuer(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {\n+\treturn completionIssuerReadInTx(ctx, tx, access, row, issue, true)\n+}\n+\n+func completionIssuerReadInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue, readProjection bool) error {\n \tif kind, _, err := access.Credential.Actor(); err != nil || kind != \"human\" || access.Credential.Principal.UserID != util.UUIDToString(row.IssuerUserID) {\n \t\treturn completionDenied()\n+\t}\n+\tprojectAccess := completionCollaborationAccess\n+\tsourceIssue := completionSourceIssue\n+\tobserve := EvaluateDeliveryEvidenceInTx\n+\tif readProjection {\n+\t\tprojectAccess = readCompletionCollaborationAccess\n+\t\tsourceIssue = readCompletionSourceIssue\n+\t\tobserve = evaluateDeliveryEvidenceReadInTx\n \t}\n \tif row.TargetKind == \"ordinary\" {\n \t\tif err := completionOrdinary(ctx, db.New(tx), issue); err != nil {\n \t\t\treturn err\n \t\t}\n-\t} else if _, err := completionCollaborationAccess(ctx, tx, issue, row.IssuerUserID); err != nil {\n+\t} else if _, err := projectAccess(ctx, tx, issue, row.IssuerUserID); err != nil {\n \t\treturn err\n \t}\n \treq, err := completionStoredRequest(row)\n \tif err != nil {\n \t\treturn err\n \t}\n-\tevidenceIssue, err := completionSourceIssue(ctx, tx, req, issue, false)\n+\tevidenceIssue, err := sourceIssue(ctx, tx, req, issue, false)\n \tif err != nil {\n \t\treturn err\n \t}\n@@ -378,7 +414,7 @@\n \t\t\treturn err\n \t\t}\n \t}\n-\tobserved, err := EvaluateDeliveryEvidenceInTx(ctx, tx, access, evidenceIssue, completionEvidenceRequest(req, evidenceIssue, project))\n+\tobserved, err := observe(ctx, tx, access, evidenceIssue, completionEvidenceRequest(req, evidenceIssue, project))\n \tif err != nil {\n \t\treturn err\n \t}\n"
+      },
+      {
+        "path": "server/internal/service/delivery_completion_collaboration.go",
+        "red_sha256": "20fc764b20edbfae356db7785f82ac17c0d12a71d23f9a0dcf318624a71e0084",
+        "green_sha256": "50c048f059392bed2f1b5c99cedba605c6fade3facbc28b963fee2f0c586183b",
+        "mode": "0o644",
+        "red_lines": 565,
+        "green_lines": 579,
+        "added_lines": 15,
+        "removed_lines": 1,
+        "patch_sha256": "ecd5e396b46636d854086839aa89ec789067ce79f899ca60a3c0d8f815caea7e",
+        "patch_reconstructs_exact_GREEN": true,
+        "unified_patch": "--- RED/server/internal/service/delivery_completion_collaboration.go\n+++ GREEN/server/internal/service/delivery_completion_collaboration.go\n@@ -90,6 +90,14 @@\n }\n \n func completionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {\n+\treturn completionSourceIssueInTx(ctx, tx, req, target, exact, false)\n+}\n+\n+func readCompletionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {\n+\treturn completionSourceIssueInTx(ctx, tx, req, target, exact, true)\n+}\n+\n+func completionSourceIssueInTx(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact, readProjection bool) (db.Issue, error) {\n \tif req.Target.Kind == \"ordinary\" {\n \t\treturn target, nil\n \t}\n@@ -97,7 +105,13 @@\n \t\treturn db.Issue{}, completionUnsupported()\n \t}\n \tq := db.New(tx)\n-\tchild, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})\n+\tvar child db.Issue\n+\tvar err error\n+\tif readProjection {\n+\t\tchild, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})\n+\t} else {\n+\t\tchild, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})\n+\t}\n \tif err != nil {\n \t\treturn child, err\n \t}\n"
+      }
+    ]
+  },
+  "minimal_factoring": {
+    "check_kind": "exact textual function fragments and default-body reduction; not a Go AST/type proof",
+    "status": "PASS",
+    "original_function_signatures_preserved": [
+      "GetDeliveryCompletionAuthorizationInTx",
+      "completionIssuerRead",
+      "completionReadAuthority",
+      "completionSourceIssue"
+    ],
+    "unchanged_original_function_count": 34,
+    "unchanged_original_functions": [
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "CreateDeliveryCompletionAuthorizationInTx",
+        "unchanged_fragment_sha256": "0080af1b111e887d795822af0febe2028552fdf32343752fa0e6ebf62496857f"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "GetDeliveryCompletionByRequestInTx",
+        "unchanged_fragment_sha256": "00463bc28caf8cbae4e530da26829536256c8481adb5fe750680967db72a6f2f"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "RevokeDeliveryCompletionAuthorizationInTx",
+        "unchanged_fragment_sha256": "06d3add1efc8044bcb2f42772bcba06944e1518f6cb839aadf079f08a8325030"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionReadSetup",
+        "unchanged_fragment_sha256": "f09fd2c7a8e6e934754da188d16e9271a8681a9d9ee5d7f44b6f22bd43812f41"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionView",
+        "unchanged_fragment_sha256": "a30735232de2edb31c8c2678afd80b57dd44a8f5bad03202417f3da6efcbded9"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionReceipt",
+        "unchanged_fragment_sha256": "11792de68d4e95e0d0c86bc50899657d8fac0e0bc9ea5b80180ac5544c41f445"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionStoredRequest",
+        "unchanged_fragment_sha256": "3cc5712e0241f8a44a806ec8126a74122023023760cf040caa59558254ee852b"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionEvidenceRequest",
+        "unchanged_fragment_sha256": "25a76d51aa8e301f2d86c59cec6143dc9f3b327456a9190fb93bf7b8cdc54d7b"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionRevalidateEvidence",
+        "unchanged_fragment_sha256": "4fb810a614397b245c0136024099d047b4ecf3384c72bcf7686bf1360690a76a"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionFreezeIssuer",
+        "unchanged_fragment_sha256": "39da31596926615ce9061a6a16548ee0095c93a30a1dfee718f87b6ce030bac5"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionIssuerCredential",
+        "unchanged_fragment_sha256": "4289e552e54e9c9b27dc59a9d6014cd70bd142ed55516f2349246d3271ad4c7f"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionFreezeConsumer",
+        "unchanged_fragment_sha256": "198c1c0c124529cd73dee92eca266c5cb1d4ccca1c3893ec4b481f1b16fdcc97"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionConsumerAuthority",
+        "unchanged_fragment_sha256": "74d693058a7e058bdceec6c6334ca0cf1211f1380f886d7e863f85a974410884"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_authorization.go",
+        "function": "completionTaskBinding",
+        "unchanged_fragment_sha256": "761effc32a741601691ca1b67ed774c3e18c04851f4f84b62717e4e7dcece7e1"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionRequestCredential",
+        "unchanged_fragment_sha256": "ff4c18e0c29a00a56046a1069288290fbfb22da2c1c50ca692b3788d8f8d8da5"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionIsCollaboration",
+        "unchanged_fragment_sha256": "851bbba82450b6dc9f9cd3e293bc4ff452b3c9eba8aea3aead21039154b86e7b"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationAccess",
+        "unchanged_fragment_sha256": "02602b3ea4a90293b61254e05c5da797c11e95041d90c68664247dcb78e4ff8d"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "readCompletionCollaborationAccess",
+        "unchanged_fragment_sha256": "ba07e00ed45e48bdcc3c7cd7dcca0c9d692b9a4378c75309a417ff1fa879ce20"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationAccessInTx",
+        "unchanged_fragment_sha256": "e4e57966f9597baf327e23298ea1acb48ea4e38d56b010efa31a0818ab8890db"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionAdminNomination",
+        "unchanged_fragment_sha256": "86d9585bf0289c94f66a8e33884444eb7275fd1e611034e2462a2e5bdced1503"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationConsumer",
+        "unchanged_fragment_sha256": "b289b2590290abf6880a0cbb4c7218ed3e600238cb0a3ffe1c485400c5ae31cb"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationIntent",
+        "unchanged_fragment_sha256": "d6ce1992781f675866e806ce63c90bf2d0bd01d029e369bf80262254b3ba63f2"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "readCompletionCollaborationIntent",
+        "unchanged_fragment_sha256": "958d677ff99c024083a8579a87b215f1e2b77a19c687a6c23b841b58a6ed44e8"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationIntentInTx",
+        "unchanged_fragment_sha256": "f4a269bb0b58987a9eae65e8be6f3384d47cf8496aa33f80f92ce6f85befc081"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionSelfInput",
+        "unchanged_fragment_sha256": "eb0b6bd183cd22db676259d26f5a21c8b867f5478acd1b4e3fce4ddb13ada5cd"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionIntentDigest",
+        "unchanged_fragment_sha256": "81a9567dc2230d60dd995ad98d948a1f42baece12ba6909b0a353ede17a49756"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionFreezeCollaboration",
+        "unchanged_fragment_sha256": "b79e4f553711f3f3ecba675487e1859daf63aca02cc35eae9ab2066cf5bc0846"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionValidateStoredCollaboration",
+        "unchanged_fragment_sha256": "295c738cabc646afd4c9b1ae5e0b864e188735c364fee3cebdf94427f6c46212"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionRecheckCollaborationIntent",
+        "unchanged_fragment_sha256": "9335fe9d446e69fdd7ccb902827dfba2307c3100ef89c889f3dfcf2346627d94"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationFinished",
+        "unchanged_fragment_sha256": "4f50785d67096e7d96f8d7e2a83d5619c0b98cf7c68222670cc6fd067d5cb46f"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionCollaborationTargetFromWorkflow",
+        "unchanged_fragment_sha256": "fc83d3dfbafd935759a301c4fb2b38518f8ad29cb06b0e3c24f57829055ff3e6"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionTargetEqual",
+        "unchanged_fragment_sha256": "c9ba0de166a9c57d75fa638b785dde8915adac3e036bf8b6944392a86cf11a54"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionWorkflowRefusal",
+        "unchanged_fragment_sha256": "6be66e5a3869297a6318112bae8bade1708b246d7b1b15db2669418c9e2e1ea7"
+      },
+      {
+        "file": "server/internal/service/delivery_completion_collaboration.go",
+        "function": "completionAdminTarget",
+        "unchanged_fragment_sha256": "eade82f8eb2c9edef154de535895a5192a8cf601f893aebbbfce4e92711f6d48"
+      }
+    ],
+    "new_private_functions": [
+      "completionIssuerReadInTx",
+      "completionReadAuthorityInTx",
+      "completionSourceIssueInTx",
+      "readCompletionAuthority",
+      "readCompletionIssuer",
+      "readCompletionSourceIssue"
+    ],
+    "constant_mode_wrappers": {
+      "completionReadAuthority": "completionReadAuthorityInTx(ctx, tx, access, row, false)",
+      "readCompletionAuthority": "completionReadAuthorityInTx(ctx, tx, access, row, true)",
+      "completionIssuerRead": "completionIssuerReadInTx(ctx, tx, access, row, issue, false)",
+      "readCompletionIssuer": "completionIssuerReadInTx(ctx, tx, access, row, issue, true)",
+      "completionSourceIssue": "completionSourceIssueInTx(ctx, tx, req, target, exact, false)",
+      "readCompletionSourceIssue": "completionSourceIssueInTx(ctx, tx, req, target, exact, true)"
+    },
+    "default_common_bodies_match_original": {
+      "completionReadAuthority": {
+        "original_body_sha256": "86572e94359671be71863fb626f9e80bac32021d9ac704a57df6c257d50982f8",
+        "reduced_default_body_sha256": "86572e94359671be71863fb626f9e80bac32021d9ac704a57df6c257d50982f8",
+        "exact_equal": true
+      },
+      "completionIssuerRead": {
+        "original_body_sha256": "0d7189dc9dce46abefa0296ef3ad212f4aa3f079ec64a917ca26bd7bd238b9ee",
+        "reduced_default_body_sha256": "0d7189dc9dce46abefa0296ef3ad212f4aa3f079ec64a917ca26bd7bd238b9ee",
+        "exact_equal": true
+      },
+      "completionSourceIssue": {
+        "original_body_sha256": "21201a65652eb7d901d00fdd85233bc8a8f9179891c3d200233e5ce78f0f976e",
+        "reduced_default_body_sha256": "21201a65652eb7d901d00fdd85233bc8a8f9179891c3d200233e5ce78f0f976e",
+        "exact_equal": true
+      }
+    },
+    "GetByID_only_changes": "existing setup; actual grant SHARE NOWAIT fence + existing ID getter; private authority entry; existing error classification/view unchanged",
+    "source_exactness": "exact is passed unchanged; false structural exactness is separate from explicit readProjection=true; freeze/revalidate retain exact=true/default readProjection=false",
+    "consumer_branch": "completionConsumerAuthority(ctx, tx, row, access.Credential, issue, false) byte-identical; false is newAdmission semantics, not read mode",
+    "no_new_transaction_boundaries": true,
+    "caller_occurrences": {
+      "completionIssuerRead": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 87,
+          "text": "if err = completionIssuerRead(ctx, tx, issuer, row, issue); err != nil {"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 280,
+          "text": "if err = completionIssuerRead(ctx, tx, access, row, issue); err != nil {"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 367,
+          "text": "return completionIssuerRead(ctx, tx, access, row, issue)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 374,
+          "text": "func completionIssuerRead(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {"
+        }
+      ],
+      "completionIssuerReadInTx": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 375,
+          "text": "return completionIssuerReadInTx(ctx, tx, access, row, issue, false)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 379,
+          "text": "return completionIssuerReadInTx(ctx, tx, access, row, issue, true)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 382,
+          "text": "func completionIssuerReadInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue, readProjection bool) error {"
+        }
+      ],
+      "completionReadAuthority": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 239,
+          "text": "if err = completionReadAuthority(ctx, tx, access, row); err != nil {"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 330,
+          "text": "func completionReadAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {"
+        }
+      ],
+      "completionReadAuthorityInTx": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 331,
+          "text": "return completionReadAuthorityInTx(ctx, tx, access, row, false)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 335,
+          "text": "return completionReadAuthorityInTx(ctx, tx, access, row, true)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 338,
+          "text": "func completionReadAuthorityInTx(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, readProjection bool) error {"
+        }
+      ],
+      "completionSourceIssue": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 387,
+          "text": "sourceIssue := completionSourceIssue"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 566,
+          "text": "evidenceIssue, err := completionSourceIssue(ctx, tx, req, issue, true)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 92,
+          "text": "func completionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 388,
+          "text": "child, err := completionSourceIssue(ctx, tx, req, issue, true)"
+        }
+      ],
+      "completionSourceIssueInTx": [
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 93,
+          "text": "return completionSourceIssueInTx(ctx, tx, req, target, exact, false)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 97,
+          "text": "return completionSourceIssueInTx(ctx, tx, req, target, exact, true)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 100,
+          "text": "func completionSourceIssueInTx(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact, readProjection bool) (db.Issue, error) {"
+        }
+      ],
+      "readCompletionAuthority": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 222,
+          "text": "if err = readCompletionAuthority(ctx, tx, access, row); err != nil {"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 334,
+          "text": "func readCompletionAuthority(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization) error {"
+        }
+      ],
+      "readCompletionIssuer": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 365,
+          "text": "return readCompletionIssuer(ctx, tx, access, row, issue)"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 378,
+          "text": "func readCompletionIssuer(ctx context.Context, tx pgx.Tx, access ArtifactAccess, row db.DeliveryCompletionAuthorization, issue db.Issue) error {"
+        }
+      ],
+      "readCompletionSourceIssue": [
+        {
+          "file": "server/internal/service/delivery_completion_authorization.go",
+          "line": 391,
+          "text": "sourceIssue = readCompletionSourceIssue"
+        },
+        {
+          "file": "server/internal/service/delivery_completion_collaboration.go",
+          "line": 96,
+          "text": "func readCompletionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {"
+        }
+      ]
+    },
+    "R28_intent_access_other_bodies_unchanged": true
+  },
+  "performed_checks": [
+    {
+      "command": "gofmt -w server/internal/service/delivery_completion_authorization.go server/internal/service/delivery_completion_collaboration.go",
+      "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01",
+      "exit": 0,
+      "output": "empty"
+    },
+    {
+      "command": "gofmt -l server/internal/service/delivery_completion_authorization.go server/internal/service/delivery_completion_collaboration.go",
+      "cwd": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-green-r01",
+      "exit": 0,
+      "output": "empty"
+    },
+    {
+      "command": "Python filesystem/path/SHA256/mode, preserved-function/default-body and unified-patch reconstruction checks",
+      "exit": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "rg new/original helper names and existing read-helper signatures under GREEN server Go files",
+      "exit": 0,
+      "result": "only intended caller/default paths; function-value pairs have identical textual signatures"
+    }
+  ],
+  "main_verification_pending": [
+    {
+      "owner": "main",
+      "package": "./internal/service",
+      "top": 7,
+      "named": 76,
+      "leaves": 54,
+      "selector": "^(TestDeliveryCompletionConsumedGetReadCoexistence|TestDeliveryCompletionConsumedGetWriterFences|TestDeliveryCompletionConsumedGetCurrentAuthority|TestDeliveryCompletionReceiptRejectsMismatchedRetainedFacts|TestDeliveryCompletionReceiptValidatesClosedVariants|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt)$",
+      "normal_command": "go test -json ./internal/service -run '^(TestDeliveryCompletionConsumedGetReadCoexistence|TestDeliveryCompletionConsumedGetWriterFences|TestDeliveryCompletionConsumedGetCurrentAuthority|TestDeliveryCompletionReceiptRejectsMismatchedRetainedFacts|TestDeliveryCompletionReceiptValidatesClosedVariants|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt)$' -count=1",
+      "race_command": "go test -race -json ./internal/service -run '^(TestDeliveryCompletionConsumedGetReadCoexistence|TestDeliveryCompletionConsumedGetWriterFences|TestDeliveryCompletionConsumedGetCurrentAuthority|TestDeliveryCompletionReceiptRejectsMismatchedRetainedFacts|TestDeliveryCompletionReceiptValidatesClosedVariants|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt)$' -count=1",
+      "status": "NOT_EXECUTED_BY_THIS_AGENT"
+    },
+    {
+      "owner": "main",
+      "package": "./internal/handler",
+      "top": 3,
+      "named": 6,
+      "leaves": 5,
+      "selector": "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$",
+      "normal_command": "go test -json ./internal/handler -run '^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$' -count=1",
+      "race_command": "go test -race -json ./internal/handler -run '^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$' -count=1",
+      "status": "NOT_EXECUTED_BY_THIS_AGENT"
+    }
+  ],
+  "main_only_additional_checks": [
+    "real Go AST/caller proof",
+    "scoped isolated service/handler compilation",
+    "service go vet",
+    "explicit task-owned normal/race configurations, migration/DB identity, full named terminal inventories and final database connections",
+    "independent GREEN acceptance before ROOT integration or matching product/runtime work"
+  ],
+  "operations_not_performed_by_this_agent": [
+    "Go AST utility execution",
+    "go build",
+    "go test/list/TestMain/vet",
+    "DB/SQL execution",
+    "configuration/environment changes",
+    "API/browser/process/signal actions",
+    "ROOT server/source edits",
+    "SQL/generated/migration/DTO/marker/context-flag/dependency changes",
+    "Git changes",
+    "new agents"
+  ],
+  "remaining_limits": [
+    "No GREEN behavioral pass is claimed; main owns normal/race service76 and direct-Get handler6 plus compile/vet and independent acceptance.",
+    "Historical R28 physical holder remains UNPROVED.",
+    "The accepted R28 read/default controls and original completion remain preserved, not replayed or reclassified.",
+    "Complete S2/A01-A12, original four-scenario completion remainder, parent24 and S3-S5 retain their separate gates."
+  ]
+}

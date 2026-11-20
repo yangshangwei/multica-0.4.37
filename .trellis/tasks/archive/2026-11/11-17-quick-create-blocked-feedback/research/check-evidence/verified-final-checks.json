@@ -1,0 +1,66 @@
+[
+  {
+    "name": "views-final-regression",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "vitest",
+      "run",
+      "modals/quick-create-issue.test.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "modals/creator-recommendations-cache.test.tsx",
+      "modals/issue-description-assist.test.tsx",
+      "modals/issue-description-assist-editor.test.tsx",
+      "modals/create-issue.test.tsx",
+      "modals/create-issue-dialog.test.tsx",
+      "modals/quick-create-actor-picker.test.tsx",
+      "chat/components/chat-new-chat-button.test.tsx",
+      "collaboration/creation-description-assist.test.tsx",
+      "collaboration/creation-form.test.tsx",
+      "locales/parity.test.ts",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-17-quick-create-blocked-feedback/research/check-evidence/views-final-regression-results.json"
+    ],
+    "started_at": "2026-11-20T06:56:03.165690+00:00",
+    "exit_code": 0,
+    "duration_seconds": 40.5
+  },
+  {
+    "name": "views-final-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "started_at": "2026-11-20T06:56:43.664259+00:00",
+    "exit_code": 0,
+    "duration_seconds": 69.62
+  },
+  {
+    "name": "views-final-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "eslint",
+      "modals/quick-create-issue.tsx",
+      "modals/quick-create-issue.test.tsx",
+      "modals/quick-create-actor-picker.tsx",
+      "modals/quick-create-actor-picker.test.tsx",
+      "modals/creator-recommendations.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "modals/issue-description-assist.tsx",
+      "modals/issue-description-assist.test.tsx",
+      "chat/components/chat-new-chat-button.test.tsx"
+    ],
+    "started_at": "2026-11-20T06:57:53.286051+00:00",
+    "exit_code": 0,
+    "duration_seconds": 2.69
+  }
+]

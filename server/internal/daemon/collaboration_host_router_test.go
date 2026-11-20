@@ -24,12 +24,63 @@ import (
 // and its server-issued managed credential. Only the credential crosses stdin.
 const collaborationHostRouterHarnessArg = "__multica_collaboration_host_router_poller"
 
+// Retain only fixed lifecycle messages. Provider output, credentials, paths and
+// even otherwise harmless structured attributes are outside this diagnostic.
+type collaborationHostHarnessLog struct {
+	mu     sync.Mutex
+	writer io.Writer
+}
+
+func (h *collaborationHostHarnessLog) Enabled(_ context.Context, level slog.Level) bool {
+	return level >= slog.LevelWarn
+}
+
+func (h *collaborationHostHarnessLog) Handle(_ context.Context, record slog.Record) error {
+	switch record.Message {
+	case "collaboration ledger unavailable; refusing further machine claims",
+		"collaboration proof remains pending",
+		"collaboration run retains capacity until termination is proven",
+		"collaboration run ended with pending recording or proof":
+	default:
+		return nil
+	}
+	h.mu.Lock()
+	defer h.mu.Unlock()
+	return json.NewEncoder(h.writer).Encode(struct {
+		Time    string `json:"time"`
+		Level   string `json:"level"`
+		Message string `json:"message"`
+	}{record.Time.UTC().Format(time.RFC3339Nano), record.Level.String(), record.Message})
+}
+
+func (h *collaborationHostHarnessLog) WithAttrs([]slog.Attr) slog.Handler { return h }
+func (h *collaborationHostHarnessLog) WithGroup(string) slog.Handler      { return h }
+
+func collaborationHostHarnessContextState(ctx context.Context) string {
+	switch ctx.Err() {
+	case nil:
+		return "none"
+	case context.DeadlineExceeded:
+		return "deadline"
+	default:
+		return "canceled"
+	}
+}
+
 type collaborationHostRouterInput struct {
 	collaborationRouterHarnessInput
 	RuntimeConfigEpoch string
 	AgentTimeoutMS     json.RawMessage                 `json:"agent_timeout_ms,omitempty"`
 	HoldReceiptACKs    bool                            `json:"hold_receipt_acks,omitempty"`
+	Diagnostics        bool                            `json:"diagnostics,omitempty"`
 	Git                *collaborationrun.HostGitConfig `json:"git,omitempty"`
+}
+
+func (input collaborationHostRouterInput) logger(writer io.Writer) *slog.Logger {
+	if input.Diagnostics {
+		return slog.New(&collaborationHostHarnessLog{writer: writer})
+	}
+	return slog.New(slog.NewTextHandler(io.Discard, nil))
 }
 
 func (input collaborationHostRouterInput) hostConfiguration() (*collaborationrun.HostConfig, error) {
@@ -189,7 +240,7 @@ func runCollaborationHostRouterHarness() error {
 	}
 	d := New(Config{ServerBaseURL: input.ServerURL, DaemonID: input.DaemonID, CLIVersion: "0.4.40-test", WorkspacesRoot: filepath.Join(input.Directory, "ordinary-work"),
 		Agents: map[string]AgentEntry{"claude": {Path: input.Executable}}, MaxConcurrentTasks: 1, PollInterval: 50 * time.Millisecond,
-		AgentTimeout: agentTimeout, CollaborationRunner: config}, slog.New(slog.NewTextHandler(io.Discard, nil)))
+		AgentTimeout: agentTimeout, CollaborationRunner: config}, input.logger(os.Stderr))
 	d.setAgentVersion("claude", "fixture-1")
 	d.managed = &managedDaemonLifecycle{homeDirectory: input.Directory, store: &ManagedCredentialStore{DeploymentID: input.DeploymentID, InstallationID: input.InstallationID}}
 	sem := newTaskSlotSemaphore(d.cfg.MaxConcurrentTasks)
@@ -240,10 +291,20 @@ func runCollaborationHostRouterHarness() error {
 	go func() { _, _ = io.Copy(io.Discard, os.Stdin); cancel() }()
 	var work sync.WaitGroup
 	d.runBatchPoller(ctx, ctx, sem, make(chan struct{}, 1), &work)
+	var diagnostics map[string]any
+	if input.Diagnostics {
+		pollerContext := collaborationHostHarnessContextState(ctx)
+		_, ledgerErr := d.collaboration.ledger.Retained()
+		diagnostics = map[string]any{"poller_context": pollerContext, "ledger_readable": ledgerErr == nil}
+	}
 	work.Wait()
 	transport.mu.Lock()
 	facts := append([]collaborationHostHTTPFact(nil), transport.facts...)
 	transport.mu.Unlock()
-	return json.NewEncoder(os.Stdout).Encode(map[string]any{"claims": transport.capacity.claims.Load(), "invalid_capacity": transport.capacity.bad.Load(),
-		"available_slots": len(sem), "active_tasks": d.activeTasks.Load(), "http": facts})
+	summary := map[string]any{"claims": transport.capacity.claims.Load(), "invalid_capacity": transport.capacity.bad.Load(),
+		"available_slots": len(sem), "active_tasks": d.activeTasks.Load(), "http": facts}
+	if input.Diagnostics {
+		summary["diagnostics"] = diagnostics
+	}
+	return json.NewEncoder(os.Stdout).Encode(summary)
 }

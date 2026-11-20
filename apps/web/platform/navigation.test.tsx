@@ -120,6 +120,43 @@ describe("Web account fragment navigation", () => {
   });
 });
 
+describe("Web same-resource URL normalization", () => {
+  afterEach(() => { vi.restoreAllMocks(); window.history.replaceState(null, "", "/"); });
+
+  it("replaces the address without router navigation or a new history entry, retaining query and fragment", () => {
+    const original = "/acme/issues/00000000-0000-4000-8000-000000000001?from=inbox#comment-7";
+    const canonical = "/acme/issues/ACM-1?from=inbox#comment-7";
+    window.history.replaceState(null, "", original);
+    route.pathname = original.split("?")[0]!;
+    route.query = "from=inbox";
+    const adapter = renderAdapter();
+    const navigationKey = adapter().navigationKey;
+    const replace = vi.spyOn(window.history, "replaceState");
+    const historyLength = window.history.length;
+
+    act(() => adapter().replace(canonical, { preserveView: true }));
+
+    expect(replace).toHaveBeenCalledExactlyOnceWith(null, "", canonical);
+    expect(window.location.pathname + window.location.search + window.location.hash).toBe(canonical);
+    expect(window.history.length).toBe(historyLength);
+    expect(router.replace).not.toHaveBeenCalled();
+    expect(adapter().navigationKey).toBe(navigationKey);
+    expect(adapter().isScopeResume).toBe(false);
+  });
+
+  it("uses normal routing for ordinary replacements and another origin", () => {
+    window.history.replaceState(null, "", "/acme/issues/ACM-1");
+    route.pathname = "/acme/issues/ACM-1";
+    const adapter = renderAdapter();
+    const replace = vi.spyOn(window.history, "replaceState");
+    act(() => adapter().replace("/acme/issues/ACM-2"));
+    expect(router.replace).toHaveBeenLastCalledWith("/acme/issues/ACM-2");
+    act(() => adapter().replace("https://other.example/acme/issues/ACM-1", { preserveView: true }));
+    expect(router.replace).toHaveBeenLastCalledWith("https://other.example/acme/issues/ACM-1");
+    expect(replace).not.toHaveBeenCalled();
+  });
+});
+
 describe("Web scope resume intent", () => {
   it("retains the outgoing focus intent until the resumed destination renders", () => {
     route.pathname = "/account";

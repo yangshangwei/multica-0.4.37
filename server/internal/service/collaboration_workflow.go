@@ -41,19 +41,20 @@ type CollaborationTransferParams struct {
 // Receipts describe this operation only. Clients must reload current authority
 // and state; replaying a receipt never reconstructs an old private projection.
 type CollaborationWorkflowReceipt struct {
-	StageBlockers          []CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
-	StageBlockersTruncated *bool                              `json:"stage_blockers_truncated,omitempty"`
-	Status                 int                                `json:"status"`
-	Code                   string                             `json:"code"`
-	CollaborationRevision  int64                              `json:"collaboration_revision,string"`
-	QueueState             string                             `json:"queue_state"`
-	ControlVersion         int64                              `json:"control_version,string"`
-	RunID                  pgtype.UUID                        `json:"run_id"`
-	RunSettled             bool                               `json:"run_settled"`
-	Execution              *CollaborationQueueReceipt         `json:"execution,omitempty"`
-	StatusOptions          *CollaborationStatusOptions        `json:"status_options,omitempty"`
-	DeliveryConfirmation   *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
-	StageConfirmation      *CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
+	InformationRepairConfirmation *CollaborationInformationRepairConfirmation `json:"information_repair_confirmation,omitempty"`
+	StageBlockers                 []CollaborationStageBlocker                 `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated        *bool                                       `json:"stage_blockers_truncated,omitempty"`
+	Status                        int                                         `json:"status"`
+	Code                          string                                      `json:"code"`
+	CollaborationRevision         int64                                       `json:"collaboration_revision,string"`
+	QueueState                    string                                      `json:"queue_state"`
+	ControlVersion                int64                                       `json:"control_version,string"`
+	RunID                         pgtype.UUID                                 `json:"run_id"`
+	RunSettled                    bool                                        `json:"run_settled"`
+	Execution                     *CollaborationQueueReceipt                  `json:"execution,omitempty"`
+	StatusOptions                 *CollaborationStatusOptions                 `json:"status_options,omitempty"`
+	DeliveryConfirmation          *CollaborationDeliveryConfirmation          `json:"delivery_confirmation,omitempty"`
+	StageConfirmation             *CollaborationStageConfirmation             `json:"stage_confirmation,omitempty"`
 	// ParentWakeup is a best-effort effect of this committed invocation only.
 	// It never enters operation/history JSON, so replay cannot dispatch it again.
 	ParentWakeup *CollaborationParentWakeup `json:"-"`
@@ -70,38 +71,41 @@ type CollaborationParentWakeup struct {
 
 // This is the only recovery projection allowed after object access is lost.
 type CollaborationWorkflowOperationReceipt struct {
-	StageBlockers          []CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
-	StageBlockersTruncated *bool                              `json:"stage_blockers_truncated,omitempty"`
-	Status                 int                                `json:"status"`
-	Code                   string                             `json:"code"`
-	CollaborationRevision  int64                              `json:"collaboration_revision,string"`
-	DeliveryConfirmation   *CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
-	StageConfirmation      *CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
+	InformationRepairConfirmation *CollaborationInformationRepairConfirmation `json:"information_repair_confirmation,omitempty"`
+	StageBlockers                 []CollaborationStageBlocker                 `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated        *bool                                       `json:"stage_blockers_truncated,omitempty"`
+	Status                        int                                         `json:"status"`
+	Code                          string                                      `json:"code"`
+	CollaborationRevision         int64                                       `json:"collaboration_revision,string"`
+	DeliveryConfirmation          *CollaborationDeliveryConfirmation          `json:"delivery_confirmation,omitempty"`
+	StageConfirmation             *CollaborationStageConfirmation             `json:"stage_confirmation,omitempty"`
 }
 
 type collaborationWorkflowTx struct {
 	*collaborationQueueTx
-	tx                   pgx.Tx
-	iteration            db.Iteration
-	iterations           map[pgtype.UUID]db.Iteration
-	iterationsEnabled    bool
-	sourceMemberLocked   bool
-	sourceMember         db.Member
-	catalog              []db.IssueStatus
-	users                map[pgtype.UUID]db.User
-	operation            db.CollaborationOperation
-	handoffID            pgtype.UUID
-	deliveryConfirmation *CollaborationDeliveryConfirmation
-	deliveryDecision     *collaborationDeliveryDecisionPayload
-	stageConfirmation    *CollaborationStageConfirmation
-	stagePrepared        DeliveryPrepareResult
-	stageWriterResult    DeliveryWriterResult
+	tx                            pgx.Tx
+	iteration                     db.Iteration
+	iterations                    map[pgtype.UUID]db.Iteration
+	iterationsEnabled             bool
+	sourceMemberLocked            bool
+	sourceMember                  db.Member
+	catalog                       []db.IssueStatus
+	users                         map[pgtype.UUID]db.User
+	operation                     db.CollaborationOperation
+	handoffID                     pgtype.UUID
+	deliveryConfirmation          *CollaborationDeliveryConfirmation
+	deliveryDecision              *collaborationDeliveryDecisionPayload
+	stageConfirmation             *CollaborationStageConfirmation
+	stagePrepared                 DeliveryPrepareResult
+	stageWriterResult             DeliveryWriterResult
+	informationRepairConfirmation *CollaborationInformationRepairConfirmation
+	informationEstimate           *time.Time
 }
 
 func (t *collaborationWorkflowTx) result(code string, status int) CollaborationWorkflowReceipt {
 	return CollaborationWorkflowReceipt{Status: status, Code: code, CollaborationRevision: t.access.Revision,
 		QueueState: t.session.QueueState, ControlVersion: t.session.ControlVersion, DeliveryConfirmation: t.deliveryConfirmation,
-		StageConfirmation: t.stageConfirmation}
+		StageConfirmation: t.stageConfirmation, InformationRepairConfirmation: t.informationRepairConfirmation}
 }
 
 func (s *CollaborationService) InviteParticipant(ctx context.Context, p CollaborationParticipantParams) (CollaborationWorkflowReceipt, error) {
@@ -138,6 +142,13 @@ func (s *CollaborationService) Transfer(ctx context.Context, p CollaborationTran
 		}
 		if err != nil {
 			return CollaborationWorkflowReceipt{}, err
+		}
+		policy, err := informationPolicyFor(ctx, t.q, t.access.Issue, true)
+		if err != nil {
+			return CollaborationWorkflowReceipt{}, err
+		}
+		if policy.Managed && t.access.StatusCategory == "blocked" {
+			return t.result("information_repair_required", http.StatusConflict), nil
 		}
 		eligible, err := t.eligibleRecipient(ctx, p.TargetUserID)
 		if err != nil {
@@ -226,6 +237,8 @@ type collaborationHandoff struct {
 	purpose, note     string
 	status            string
 	requester, parent pgtype.UUID
+	block             *informationBlockValue
+	keepSameHandler   bool
 }
 
 // handoff writes handler, optional status, one iteration fact and the handoff
@@ -242,8 +255,10 @@ func (t *collaborationWorkflowTx) handoff(ctx context.Context, h collaborationHa
 			return db.IssueHandoff{}, err
 		}
 	}
-	if after, err = t.q.UpdateCollaborationHandler(ctx, db.UpdateCollaborationHandlerParams{IssueID: before.ID, HandlerID: h.target}); err != nil {
-		return db.IssueHandoff{}, err
+	if !h.keepSameHandler || after.AssigneeID != h.target || !after.AssigneeType.Valid || after.AssigneeType.String != "member" {
+		if after, err = t.q.UpdateCollaborationHandler(ctx, db.UpdateCollaborationHandlerParams{IssueID: before.ID, HandlerID: h.target}); err != nil {
+			return db.IssueHandoff{}, err
+		}
 	}
 	actor, err := json.Marshal(map[string]any{"type": "member", "id": t.actor, "user_id": t.actor})
 	if err != nil {
@@ -252,9 +267,14 @@ func (t *collaborationWorkflowTx) handoff(ctx context.Context, h collaborationHa
 	if err = iteration.RecordIssueChange(ctx, t.tx, record, after, actor, t.operation.ID); err != nil {
 		return db.IssueHandoff{}, err
 	}
-	created, err := t.q.CreateCollaborationHandoff(ctx, db.CreateCollaborationHandoffParams{IssueID: before.ID, ActorUserID: t.actor,
+	params := db.CreateCollaborationHandoffParams{IssueID: before.ID, ActorUserID: t.actor,
 		FromUserID: before.AssigneeID, ToUserID: h.target, Purpose: h.purpose, Note: h.note,
-		RequesterUserID: h.requester, ParentRequestID: h.parent, PreviousStatus: before.Status})
+		RequesterUserID: h.requester, ParentRequestID: h.parent, PreviousStatus: before.Status}
+	if h.block != nil {
+		params.UnblockCondition = pgtype.Text{String: h.block.Condition, Valid: true}
+		params.EstimatedResolutionAt = pgtype.Timestamptz{Time: h.block.Estimate, Valid: true}
+	}
+	created, err := t.q.CreateCollaborationHandoff(ctx, params)
 	if err != nil {
 		return db.IssueHandoff{}, err
 	}
@@ -391,7 +411,7 @@ func workflowRoleAllowed(t *collaborationWorkflowTx, kind string) bool {
 		return t.access.Capabilities.Edit
 	case "edit_source_structure", "change_iteration":
 		return t.sourceMemberLocked && t.access.Capabilities.EditSourceStructure
-	case "request_information", "return_information", "submit_acceptance":
+	case "request_information", "return_information", "submit_acceptance", "repair_information":
 		// Directed handoffs check current responsibility inside the action, so a
 		// successful key still replays after responsibility moves away.
 		return t.access.Capabilities.ControlAI
@@ -415,7 +435,7 @@ func (s *CollaborationService) mutateCollaborationWorkflow(ctx context.Context, 
 	actor, err := util.ParseUUID(principal.UserID)
 	if err != nil || !p.IssueID.Valid || p.RequestID == "" || len(p.RequestID) > 128 || p.ExpectedCollaborationRevision < 1 ||
 		p.ExpectedLifecycleEpoch < 1 || p.ExpectedParticipantEpoch < 1 || p.ExpectedAccountEpoch < 1 ||
-		((kind == "invite_participant" || kind == "transfer" || kind == "remove_participant" || kind == "request_information" || kind == "return_acceptance") && !target.Valid) {
+		((kind == "invite_participant" || kind == "transfer" || kind == "remove_participant" || kind == "request_information" || kind == "return_acceptance" || kind == "repair_information") && !target.Valid) {
 		return CollaborationWorkflowReceipt{}, collaborationError(http.StatusBadRequest, "invalid_workflow_request")
 	}
 	encoded, err := json.Marshal(payload)
@@ -586,6 +606,7 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 	}
 	stageSavepoint := false
 	stageBefore := t.access
+	informationSavepoint := false
 	receipt := t.result("forbidden", http.StatusForbidden)
 	if allowed {
 		t.participant, err = t.q.LockCollaborationParticipant(ctx, db.LockCollaborationParticipantParams{IssueID: p.IssueID, UserID: actor})
@@ -601,6 +622,12 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 		} else if t.access.Revision != p.ExpectedCollaborationRevision {
 			receipt = t.result("stale_revision", http.StatusConflict)
 		} else {
+			if kind == "request_information" {
+				if _, err = tx.Exec(ctx, "SAVEPOINT information_request_writer"); err != nil {
+					return CollaborationWorkflowReceipt{}, err
+				}
+				informationSavepoint = true
+			}
 			if kind == "submit_acceptance" || kind == "complete" {
 				if _, err = tx.Exec(ctx, "SAVEPOINT stage_completion_writer"); err != nil {
 					return CollaborationWorkflowReceipt{}, err
@@ -640,6 +667,27 @@ func (s *CollaborationService) workflowInTx(ctx context.Context, tx pgx.Tx, acto
 			return CollaborationWorkflowReceipt{}, err
 		}
 		_, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{ID: t.operation.ID, ResultCode: receipt.Code, Result: encoded, ResolvedIssueID: p.IssueID})
+	}
+	// Compare the exact persisted instant after every required writer effect.
+	// A late known refusal rolls effects back but seals this original key.
+	if err == nil && informationSavepoint && receipt.Status < http.StatusBadRequest && t.informationEstimate != nil {
+		now, clockErr := t.q.ArtifactExecutionDatabaseTime(ctx)
+		if clockErr != nil {
+			return CollaborationWorkflowReceipt{}, clockErr
+		}
+		if !now.Valid || !t.informationEstimate.After(now.Time) {
+			if _, err = tx.Exec(ctx, "ROLLBACK TO SAVEPOINT information_request_writer"); err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
+			t.access, t.handoffID, t.informationEstimate = stageBefore, pgtype.UUID{}, nil
+			receipt = t.result("information_metadata_invalid", http.StatusBadRequest)
+			encoded, err = json.Marshal(receipt)
+			if err != nil {
+				return CollaborationWorkflowReceipt{}, err
+			}
+			_, err = t.q.CompleteCollaborationOperation(ctx, db.CompleteCollaborationOperationParams{ID: t.operation.ID,
+				ResultCode: receipt.Code, Result: encoded, ResolvedIssueID: p.IssueID})
+		}
 	}
 	return receipt, err
 }
@@ -684,6 +732,13 @@ func decodeWorkflowReceipt(op db.CollaborationOperation) (CollaborationWorkflowR
 	if receipt.StageConfirmation == nil && collaborationStageKind(op.Kind) && receipt.Status < 400 {
 		return CollaborationWorkflowReceipt{}, errors.New("invalid collaboration stage confirmation")
 	}
+	if confirmation := receipt.InformationRepairConfirmation; confirmation != nil &&
+		(op.Kind != "repair_information" || receipt.Status >= 400 || !confirmation.valid()) {
+		return CollaborationWorkflowReceipt{}, errors.New("invalid information repair confirmation")
+	}
+	if op.Kind == "repair_information" && receipt.Status < 400 && receipt.InformationRepairConfirmation == nil {
+		return CollaborationWorkflowReceipt{}, errors.New("invalid information repair confirmation")
+	}
 	return receipt, nil
 }
 
@@ -705,7 +760,7 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	}
 	defer rollbackCollaborationQueue(ctx, tx)
 	q := s.Queries.WithTx(tx)
-	users, err := q.LockCollaborationUsers(ctx, []pgtype.UUID{actor})
+	users, err := q.LockArtifactUsers(ctx, []pgtype.UUID{actor})
 	if err != nil {
 		return CollaborationWorkflowOperationReceipt{}, err
 	}
@@ -724,7 +779,7 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 	}
 	switch op.Kind {
 	case "invite_participant", "transfer", "remove_participant", "leave", "complete", "cancel", "reopen", "change_status", "edit_issue", "edit_source_structure", "change_iteration",
-		"request_information", "return_information", "submit_acceptance", "return_acceptance", "change_ai_policy",
+		"request_information", "return_information", "submit_acceptance", "return_acceptance", "change_ai_policy", "repair_information",
 		stageKindConfigureRoles, stageKindCreateProposal, stageKindReviseProposal, stageKindDecideProposal, stageKindConfirmScope,
 		stageKindCreateCode, stageKindDecide, stageKindRevoke, stageKindAdvance:
 	default:
@@ -738,5 +793,6 @@ func (s *CollaborationService) GetWorkflowOperation(ctx context.Context, issueID
 		return CollaborationWorkflowOperationReceipt{}, err
 	}
 	return CollaborationWorkflowOperationReceipt{Status: r.Status, Code: r.Code, CollaborationRevision: r.CollaborationRevision,
-		DeliveryConfirmation: r.DeliveryConfirmation, StageConfirmation: r.StageConfirmation, StageBlockers: r.StageBlockers, StageBlockersTruncated: r.StageBlockersTruncated}, nil
+		InformationRepairConfirmation: r.InformationRepairConfirmation,
+		DeliveryConfirmation:          r.DeliveryConfirmation, StageConfirmation: r.StageConfirmation, StageBlockers: r.StageBlockers, StageBlockersTruncated: r.StageBlockersTruncated}, nil
 }

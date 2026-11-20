@@ -410,22 +410,12 @@ diagnose_database() {
 }
 
 ensure_database() {
-  local admin_url=""
-  if command -v psql >/dev/null 2>&1 && [ -n "${DATABASE_URL:-}" ]; then
-    admin_url="$(admin_database_url "$DATABASE_URL")"
-  fi
-
-  # Preferred path: create through the same connection string the application
-  # uses, so "created" and "reachable" cannot describe two different servers.
-  if [ -n "$admin_url" ] && PGCONNECT_TIMEOUT=3 psql "$admin_url" -tAc 'SELECT 1' >/dev/null 2>&1; then
-    if ! PGCONNECT_TIMEOUT=3 psql "$admin_url" -tAc "SELECT 1 FROM pg_database WHERE datname='${POSTGRES_DB}'" | grep -q 1; then
-      psql "$admin_url" -v ON_ERROR_STOP=1 -c "CREATE DATABASE \"${POSTGRES_DB}\"" >/dev/null
-      info "Created database ${POSTGRES_DB} through DATABASE_URL."
-    fi
-  else
-    info "Nothing is answering on ${POSTGRES_PORT:-5432} yet; starting the shared container."
-    bash "$REPO_ROOT/scripts/ensure-postgres.sh" "$ENV_FILE" | sed 's/^/    /'
-  fi
+  # The standalone and registry entry points must provision the same endpoint,
+  # including after a transient connection failure during database startup.
+  # cmd_up has already applied the manifest after loading its source env file.
+  # Sourcing that file again would replace the registered endpoint with stale
+  # development defaults before the first database write.
+  bash "$REPO_ROOT/scripts/ensure-postgres.sh" --current-environment --create-database | sed 's/^/    /'
 }
 
 migrate_database() {

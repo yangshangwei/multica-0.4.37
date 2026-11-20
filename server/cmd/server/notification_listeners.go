@@ -3,8 +3,11 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
 
+	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/handler"
@@ -374,6 +377,21 @@ func notifyIssueSubscribers(
 		return notified, tierSuppressed
 	}
 
+	// Only saved, nonzero comment identities have a durable replay key. Legacy
+	// synthetic events and other producers retain the ordinary random-v7 writer.
+	var originalComment pgtype.UUID
+	if notifType == "new_comment" {
+		var commentDetails struct {
+			CommentID string `json:"comment_id"`
+		}
+		if json.Unmarshal(details, &commentDetails) == nil {
+			id, parseErr := util.ParseUUID(commentDetails.CommentID)
+			if parseErr == nil && id.Bytes != [16]byte{} {
+				originalComment = id
+			}
+		}
+	}
+
 	// Batch-load notification preferences for all member subscribers.
 	var memberIDs []string
 	for _, sub := range subs {
@@ -413,20 +431,41 @@ func notifyIssueSubscribers(
 			continue
 		}
 
-		item, err := queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
-			ID:            dbid.NewV7(),
-			WorkspaceID:   parseUUID(workspaceID),
-			RecipientType: "member",
-			RecipientID:   sub.UserID,
-			Type:          notifType,
-			Severity:      severity,
-			IssueID:       parseUUID(targetIssueID),
-			Title:         title,
-			Body:          util.StrToText(body),
-			ActorType:     util.StrToText(e.ActorType),
-			ActorID:       optionalUUID(e.ActorID),
-			Details:       details,
-		})
+		var item db.InboxItem
+		if originalComment.Valid {
+			workspaceUUID, issueUUID := parseUUID(workspaceID), parseUUID(targetIssueID)
+			item, err = queries.CreateCommentInboxItem(ctx, db.CreateCommentInboxItemParams{
+				ID:          commentInboxDeliveryID(originalComment, workspaceUUID, issueUUID, sub.UserID),
+				WorkspaceID: workspaceUUID,
+				RecipientID: sub.UserID,
+				Severity:    severity,
+				IssueID:     issueUUID,
+				Title:       title,
+				Body:        util.StrToText(body),
+				ActorType:   util.StrToText(e.ActorType),
+				ActorID:     optionalUUID(e.ActorID),
+				Details:     details,
+				CommentID:   originalComment,
+			})
+			if errors.Is(err, pgx.ErrNoRows) {
+				continue
+			}
+		} else {
+			item, err = queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
+				ID:            dbid.NewV7(),
+				WorkspaceID:   parseUUID(workspaceID),
+				RecipientType: "member",
+				RecipientID:   sub.UserID,
+				Type:          notifType,
+				Severity:      severity,
+				IssueID:       parseUUID(targetIssueID),
+				Title:         title,
+				Body:          util.StrToText(body),
+				ActorType:     util.StrToText(e.ActorType),
+				ActorID:       optionalUUID(e.ActorID),
+				Details:       details,
+			})
+		}
 		if err != nil {
 			slog.Error("subscriber notification creation failed",
 				"subscriber_id", subID, "type", notifType, "error", err)
@@ -446,6 +485,17 @@ func notifyIssueSubscribers(
 	}
 
 	return notified, tierSuppressed
+}
+
+// The original comment UUID is the namespace; the domain and fixed-width UUID
+// tuple bind source workspace, issue, member recipient and new_comment type.
+// Keep this v1 identity stable so replay across buses/processes finds one ID.
+func commentInboxDeliveryID(commentID, workspaceID, issueID, recipientID pgtype.UUID) pgtype.UUID {
+	identity := []byte("multica:ordinary-comment-inbox:v1:member:new_comment:")
+	identity = append(identity, workspaceID.Bytes[:]...)
+	identity = append(identity, issueID.Bytes[:]...)
+	identity = append(identity, recipientID.Bytes[:]...)
+	return pgtype.UUID{Bytes: uuid.NewSHA1(uuid.UUID(commentID.Bytes), identity), Valid: true}
 }
 
 // notifyDirect creates an inbox item for a specific recipient. Skips if the

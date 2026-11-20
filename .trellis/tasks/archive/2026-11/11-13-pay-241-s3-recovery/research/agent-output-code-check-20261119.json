@@ -1,0 +1,3042 @@
+{
+  "at": "2026-11-19T06:42:55.940539+00:00",
+  "status": "PASS_CODE_FUNCTIONAL_AND_FINITE_HARNESS_PREREQUISITES",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "reviewer": "/root/output_contract_check",
+  "server_work": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+  "client_work": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+  "server_files": [
+    {
+      "path": "cmd/migrate/migrate_collaboration_runtime_output_test.go",
+      "sha256": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+      "report_sha256": "e561fdf021ba43e3cb533d2d122cdaf2eb4cd51d384441e1a40a7c09ed9a20b5",
+      "matches_report": true
+    },
+    {
+      "path": "cmd/multica/cmd_collaboration.go",
+      "sha256": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+      "report_sha256": "0c8445cb40666ebe05c6f42f3456dae3c45888ca1363038c8466b35cc76c7e84",
+      "matches_report": true
+    },
+    {
+      "path": "cmd/multica/cmd_collaboration_output_test.go",
+      "sha256": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+      "report_sha256": "05827404783f90350b6264296dc1d7e6c6efc2b5850222367eda3adc20fc4ef9",
+      "matches_report": true
+    },
+    {
+      "path": "cmd/multica/cmd_issue.go",
+      "sha256": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+      "report_sha256": "4c86034aa059265fac39cd216befc02e971bd4fa06ebf47e6a5c09114390cb50",
+      "matches_report": true
+    },
+    {
+      "path": "cmd/server/router.go",
+      "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "report_sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "matches_report": true
+    },
+    {
+      "path": "internal/cli/collaboration_output.go",
+      "sha256": "bcb9f3f392e752519e39a4612cb9c372f63cba16ea7790b8d2259d26ede14ecf",
+      "report_sha256": "993f5b4e4badb464fd76e461ec3c6b4e98e3b752660a04a973ffd444ca98a51d",
+      "matches_report": false
+    },
+    {
+      "path": "internal/cli/collaboration_output_test.go",
+      "sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+      "report_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+      "matches_report": true
+    },
+    {
+      "path": "internal/handler/collaboration_runtime_output.go",
+      "sha256": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+      "report_sha256": "3b71de14bb1edee24720a81cc96e1dd0bdd625f8af78978a04ebae685091a559",
+      "matches_report": true
+    },
+    {
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "sha256": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+      "report_sha256": "e36d8fcbaa405831bf0f90f3e2b1a6d0ce13b68fa73fe5509d25aca92e80f91a",
+      "matches_report": false,
+      "review_fix_supersedes_report": true
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/SKILL.md",
+      "sha256": "d22ef6807c97eaafb720cdab0c7533db6f59d1507eafed2b982679d6ea4b4877",
+      "report_sha256": "d22ef6807c97eaafb720cdab0c7533db6f59d1507eafed2b982679d6ea4b4877",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/references/collaboration-workflow.md",
+      "sha256": "7fc3420311688274e10e856667cace77a2429dc8afe4cdb34e3817af0d7cb2fe",
+      "report_sha256": "7fc3420311688274e10e856667cace77a2429dc8afe4cdb34e3817af0d7cb2fe",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/builtin_skills/multica-working-on-issues/references/working-on-issues-source-map.md",
+      "sha256": "bb263bf6c799f81362e7ae309ddcd6e5a30102f988a2040193f0b9d59d6d57e8",
+      "report_sha256": "bb263bf6c799f81362e7ae309ddcd6e5a30102f988a2040193f0b9d59d6d57e8",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_attachments.go",
+      "sha256": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+      "report_sha256": "7c77e7441e8e2399df226acbd393680a4dbb27fac1c5c29e54112661b462b249",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_checkpoints.go",
+      "sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+      "report_sha256": "990bafbc733695d5d3b4c8284c5d1464476025a5accbd6ab35857c58746ff490",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_records.go",
+      "sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+      "report_sha256": "219b643ed0059687ae42afd76c07e8ed9231f8577f41687a46872964fa9d92bb",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+      "report_sha256": "77091d2fb8c21c859c38af744e47a9f3c5495e1f9cd7a0ea08a5c1a6540ad2e0",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_runtime_handoff.go",
+      "sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+      "report_sha256": "9f35e0b964c6822d888258510add34e0d02ebf7db67cd64aea8807c6625ed191",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output.go",
+      "sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+      "report_sha256": "35dee95a84e2de69672988ae4d8d3da764e3c245e404754cc89ac3966b5c05a2",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_concurrency_test.go",
+      "sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+      "report_sha256": "be2035ce483ccd226d5f75706950aa6d51c574f5421f0139cfa13d0b099c8f6c",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_host_test.go",
+      "sha256": "4d5b82859dfde15030701860688976c09c8b5e0f09cdd537815ab401db17822c",
+      "report_sha256": "0b9de9f15255b66df037c58a47d17d5b47fff479d629bd7e09006e61509a6ceb",
+      "matches_report": false
+    },
+    {
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "sha256": "6e30ac720ee65cbf9eaba7650c1463d30b7a9a79006dc15f96504ebfe949ae19",
+      "report_sha256": "a803675ae2d7e8353a9f41d15a8af72e20047885af44f2a83cc328abe80406f6",
+      "matches_report": false
+    },
+    {
+      "path": "internal/service/collaboration_runtime_preparation.go",
+      "sha256": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+      "report_sha256": "e897f3805cd9ab53879a33624aa08d88210ed6ec8308b56f78100c189f975694",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_squad.go",
+      "sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+      "report_sha256": "51a9f9685d349ee7ab57878baca51c2d94806055bffb66fcb1aa840d533b4a72",
+      "matches_report": true
+    },
+    {
+      "path": "internal/service/collaboration_test_report.go",
+      "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+      "report_sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44",
+      "matches_report": true
+    },
+    {
+      "path": "migrations/868_collaboration_runtime_output.down.sql",
+      "sha256": "1476b6b0b73c26a7348e69460441b379e4c04154efa27e5f8547b0f5fbb63981",
+      "report_sha256": "1476b6b0b73c26a7348e69460441b379e4c04154efa27e5f8547b0f5fbb63981",
+      "matches_report": true
+    },
+    {
+      "path": "migrations/868_collaboration_runtime_output.up.sql",
+      "sha256": "22eddb7c43a91ee5d653c77074f3cedebc6526d04245900ee7730c6ff093c727",
+      "report_sha256": "22eddb7c43a91ee5d653c77074f3cedebc6526d04245900ee7730c6ff093c727",
+      "matches_report": true
+    },
+    {
+      "path": "pkg/db/generated/collaboration_attachments.sql.go",
+      "sha256": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+      "report_sha256": "038e2df0b7a42b60d7baa3a4250fd8d735bc8a13fc7eb5eb6bc4972b9b371c59",
+      "matches_report": true
+    },
+    {
+      "path": "pkg/db/generated/collaboration_delivery.sql.go",
+      "sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+      "report_sha256": "df3f14e1550c8c49434fc34e66ae40b0f4a5bc5572298871c6fde13af59aeb25",
+      "matches_report": true
+    },
+    {
+      "path": "pkg/db/generated/collaboration_preparation.sql.go",
+      "sha256": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+      "report_sha256": "2ea63ec5bf803cbc873b8121c5eb1cd71ea0245bb7eff554a5cf44cb3b71baa0",
+      "matches_report": true
+    },
+    {
+      "path": "pkg/db/generated/models.go",
+      "sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+      "report_sha256": "481c4d456dba4a89e06d789fade4c8d6da21c3fc1f740310af6ba1ea7c901cf4",
+      "matches_report": true
+    },
+    {
+      "path": "pkg/db/queries/collaboration_attachments.sql",
+      "sha256": "3df4eb5d265a2db3d750a41df73a64a828be09c29ba2b4ea53e55025bbe0a58b",
+      "report_sha256": "3df4eb5d265a2db3d750a41df73a64a828be09c29ba2b4ea53e55025bbe0a58b",
+      "matches_report": true
+    }
+  ],
+  "client_files": [
+    {
+      "path": "packages/core/api/client.ts",
+      "sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+      "report_sha256": "284a12fa28dfebdfee58098d3570327c19a59cd99f3b5b65b470ac8f94199695",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.test.ts",
+      "sha256": "9e1ff6d1571d9a47cc6042128a7b97d2e33ba2721753a5fffe148504daaf96c7",
+      "report_sha256": "9e1ff6d1571d9a47cc6042128a7b97d2e33ba2721753a5fffe148504daaf96c7",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.ts",
+      "sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+      "report_sha256": "15358b441161ee340e1a8ca4c8b3ccec2b5ea4c01b55668c335ac460ed105ed9",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.test.ts",
+      "sha256": "81c99a488e9f7e3630f1d4879fb5e34fd020a357a430bc8a2e2856c5a3b52896",
+      "report_sha256": "81c99a488e9f7e3630f1d4879fb5e34fd020a357a430bc8a2e2856c5a3b52896",
+      "matches_report": true
+    },
+    {
+      "path": "packages/core/collaboration/run-records-schema.ts",
+      "sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+      "report_sha256": "1d01c9f04a6bdb8ca18ef83360e6f5d184879e10b81e03c358784aa85b10a82e",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/run-records.test.tsx",
+      "sha256": "b6603e212563cb7f046a34191380d5c39cad2775aa8f2d07485f4e167039a095",
+      "report_sha256": "b6603e212563cb7f046a34191380d5c39cad2775aa8f2d07485f4e167039a095",
+      "matches_report": true
+    },
+    {
+      "path": "packages/views/collaboration/run-records.tsx",
+      "sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+      "report_sha256": "7e64fc4423e92500a01b5001bf68c15280d22858c559faef7fb07fc55f807cfc",
+      "matches_report": true
+    }
+  ],
+  "code_fixes": [
+    {
+      "id": "K01",
+      "status": "FIXED_MECHANICAL_ASSERTION",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "lines": [
+        61,
+        63
+      ],
+      "issue": "Direct handler401 assertions were corrected. The earlier attribution of original Main router403 to separate middleware was incorrect: actual direct business route also returns401, as retained final route failure K04 proves.",
+      "fix": "Change only the two direct handler expected status constants from StatusForbidden to StatusUnauthorized.",
+      "before_sha256": "e36d8fcbaa405831bf0f90f3e2b1a6d0ce13b68fa73fe5509d25aca92e80f91a",
+      "after_sha256": "d559c24776cc62f58c221ed580e49b905d5e62a6d433a4e7486eecf839fc161d",
+      "functional_verification": "PENDING_MAIN_SOURCE_QUALIFIED_HANDLER_PERMIT"
+    },
+    {
+      "id": "K02",
+      "status": "FIXED_MECHANICAL_ASSERTION",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "lines": [
+        125,
+        129
+      ],
+      "issue": "Slow-storage grant revocation returns existing409 grant_required, but direct handler test asserts403. Original retained raw profile proves failure at125; later assertion129 is not reached.",
+      "suggested_fix": "Use StatusConflict for the two existing grant-withdrawal assertions and pin grant_required; no production authorization change.",
+      "evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-handler-n-r01/result.json",
+      "fix": "Expect409 grant_required for both direct-SQL grant-revocation byte/replay assertions; preserve no-plaintext and no-attachment-header checks.",
+      "before_sha256": "d559c24776cc62f58c221ed580e49b905d5e62a6d433a4e7486eecf839fc161d",
+      "after_sha256": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+      "authority_boundary": "Direct SQL grant change; not public RevokeGrant/capability withdrawal403.",
+      "functional_verification": "PENDING_MAIN_COMBINED_SOURCE_HANDLER_RUN"
+    },
+    {
+      "id": "K03",
+      "status": "ADDED_ACCEPTED_FINITE_PROOF",
+      "path": "internal/service/collaboration_runtime_output_test.go",
+      "before_sha256": "a803675ae2d7e8353a9f41d15a8af72e20047885af44f2a83cc328abe80406f6",
+      "after_sha256": "6e30ac720ee65cbf9eaba7650c1463d30b7a9a79006dc15f96504ebfe949ae19",
+      "top_names_unchanged": true,
+      "added_subcases": [
+        "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites/full-bound-original-replay",
+        "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords/prepared-output-loses-to-outcome"
+      ],
+      "verification": "COMPILE_VET_PENDING_MAIN_DB_BODY_NOT_EXECUTED"
+    }
+  ],
+  "findings": [
+    {
+      "id": "K01",
+      "status": "FIXED_MECHANICAL_ASSERTION",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "lines": [
+        61,
+        63
+      ],
+      "issue": "Direct handler401 assertions were corrected. The original Main router403 expectation was later disproven by actual direct route401; see K04.",
+      "fix": "Change only the two direct handler expected status constants from StatusForbidden to StatusUnauthorized.",
+      "before_sha256": "e36d8fcbaa405831bf0f90f3e2b1a6d0ce13b68fa73fe5509d25aca92e80f91a",
+      "after_sha256": "d559c24776cc62f58c221ed580e49b905d5e62a6d433a4e7486eecf839fc161d",
+      "functional_verification": "PENDING_MAIN_SOURCE_QUALIFIED_HANDLER_PERMIT"
+    },
+    {
+      "id": "K02",
+      "status": "FIXED_MECHANICAL_ASSERTION",
+      "path": "internal/handler/collaboration_runtime_output_test.go",
+      "lines": [
+        125,
+        129
+      ],
+      "issue": "Slow-storage grant revocation returns existing409 grant_required, but direct handler test asserts403. Original retained raw profile proves failure at125; later assertion129 is not reached.",
+      "suggested_fix": "Use StatusConflict for the two existing grant-withdrawal assertions and pin grant_required; no production authorization change.",
+      "evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-handler-n-r01/result.json",
+      "fix": "Expect409 grant_required for both direct-SQL grant-revocation byte/replay assertions; preserve no-plaintext and no-attachment-header checks.",
+      "before_sha256": "d559c24776cc62f58c221ed580e49b905d5e62a6d433a4e7486eecf839fc161d",
+      "after_sha256": "e0d9566bf2b7d50400eb25e7809a7749c6633fa4f7a72acf030aa588d7613150",
+      "authority_boundary": "Direct SQL grant change; not public RevokeGrant/capability withdrawal403.",
+      "functional_verification": "PENDING_MAIN_COMBINED_SOURCE_HANDLER_RUN"
+    },
+    {
+      "id": "K04",
+      "status": "FIXED_BY_MAIN_ROUTE_OWNER_RED_AND_NORMAL_RACE_VERIFIED",
+      "path": "cmd/server/collaboration_runtime_output_test.go",
+      "line": 52,
+      "issue": "Actual final router401 invalid_collaboration_capability differs from original403 business_capability_required fixture assumption. Business routes register directly, not in managed claim/permit middleware.",
+      "correction": "Main should correct its owned expectation to actual401/code and preserve original missing-route RED/final failed round; E2E human credential control must use the same actual contract. No product ACL change.",
+      "evidence": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-router-n-r02/result.json",
+      "corrected_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r04",
+      "corrected_RED": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-router-red-r02/result.json"
+    }
+  ],
+  "note": "Source review in progress; no code/functional/current-client/full-S3 acceptance. Main owns all database tests and integration. Prior contract and original implementation reports preserved.",
+  "reviewer_client_checks": [
+    {
+      "label": "output-review-core-typecheck-r01",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-core-typecheck-r01/result.json",
+      "result_sha256": "ab4615c592cae64aaa82dc08814c0e0f1e5f6009f97e46b3265bfdc2e20efa43",
+      "command": {
+        "started_at": "2026-11-19T06:48:31.080404+00:00",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core/node_modules/typescript/lib/tsc.js",
+          "--noEmit",
+          "--incremental",
+          "false"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+        "pid": 3854,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/client-tests-r01.json",
+        "config_sha256": "45f06dee4a69dc1014b0d0fd2a64a5f6540fe6eae3798b2bc439d444b63ea25a",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core/node_modules/typescript/lib/tsc.js": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result_data": {
+        "started_at": "2026-11-19T06:48:31.080404+00:00",
+        "ended_at": "2026-11-19T06:48:45.263090+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-views-typecheck-r01",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-views-typecheck-r01/result.json",
+      "result_sha256": "bba23e334bcbe0a01d81cc9495fb0143ae7266e17fb96c0648ff72c2800933e7",
+      "command": {
+        "started_at": "2026-11-19T06:48:31.080405+00:00",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core/node_modules/typescript/lib/tsc.js",
+          "--noEmit",
+          "--incremental",
+          "false"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+        "pid": 3855,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/client-tests-r01.json",
+        "config_sha256": "45f06dee4a69dc1014b0d0fd2a64a5f6540fe6eae3798b2bc439d444b63ea25a",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core/node_modules/typescript/lib/tsc.js": "2cffde0b8c6760dfb0b5b0382bbb7e00ba6a8b2d981b9205b256a700a481d983"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result_data": {
+        "started_at": "2026-11-19T06:48:31.080405+00:00",
+        "ended_at": "2026-11-19T06:49:24.384148+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-core-lint-r01",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-core-lint-r01/result.json",
+      "result_sha256": "ded0b93f709df2014f9dcdf71a88007457f739ca7dae28c179e90edcd230163c",
+      "command": {
+        "started_at": "2026-11-19T06:48:31.080784+00:00",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views/node_modules/eslint/bin/eslint.js",
+          "api/client.ts",
+          "collaboration/attachment-schema.ts",
+          "collaboration/attachment-schema.test.ts",
+          "collaboration/run-records-schema.ts",
+          "collaboration/run-records-schema.test.ts",
+          "--max-warnings",
+          "0"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/core",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+        "pid": 3857,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/client-tests-r01.json",
+        "config_sha256": "45f06dee4a69dc1014b0d0fd2a64a5f6540fe6eae3798b2bc439d444b63ea25a",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views/node_modules/eslint/bin/eslint.js": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result_data": {
+        "started_at": "2026-11-19T06:48:31.080784+00:00",
+        "ended_at": "2026-11-19T06:48:34.310565+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-views-lint-r01",
+      "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-views-lint-r01/result.json",
+      "result_sha256": "c089acc9fd0263a109b17905ef3cba8faf5ae88e674819ea542b79a6e1b1f676",
+      "command": {
+        "started_at": "2026-11-19T06:48:31.080777+00:00",
+        "argv": [
+          "/opt/homebrew/opt/node@22/bin/node",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views/node_modules/eslint/bin/eslint.js",
+          "collaboration/run-records.tsx",
+          "collaboration/run-records.test.tsx",
+          "--max-warnings",
+          "0"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01",
+        "pid": 3856,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/client-tests-r01.json",
+        "config_sha256": "45f06dee4a69dc1014b0d0fd2a64a5f6540fe6eae3798b2bc439d444b63ea25a",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/opt/node@22/bin/node": "59776c1735b2c28a28b0ae00b58bd9cbe524572e0caf62e043d5e44a62d98cce",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-work-r01/packages/views/node_modules/eslint/bin/eslint.js": "6280b95e2a6ab3b04be45cbd3b1627654be518e6a4da163ec0adcbba9cd5fcd8"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result_data": {
+        "started_at": "2026-11-19T06:48:31.080777+00:00",
+        "ended_at": "2026-11-19T06:48:33.763126+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "functional_evidence_pending": false,
+  "added_finite_proof_subcases": [
+    "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites/full-bound-original-replay",
+    "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords/prepared-output-loses-to-outcome"
+  ],
+  "expected_service_named_count": 39,
+  "old_service_controls_map": {
+    "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 39
+    },
+    "TestCollaborationAttachmentScopeCiphertextAndLiveAccess": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 78
+    },
+    "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 141
+    },
+    "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 187
+    },
+    "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 220
+    },
+    "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 238
+    },
+    "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity": {
+      "path": "internal/service/collaboration_attachments_test.go",
+      "line": 293
+    },
+    "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory": {
+      "path": "internal/service/collaboration_checkpoints_test.go",
+      "line": 19
+    },
+    "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK": {
+      "path": "internal/service/collaboration_checkpoints_test.go",
+      "line": 72
+    },
+    "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable": {
+      "path": "internal/service/collaboration_checkpoints_test.go",
+      "line": 142
+    },
+    "TestCollaborationRunRecordsPagingFrozenInputsAndRetention": {
+      "path": "internal/service/collaboration_records_test.go",
+      "line": 31
+    },
+    "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence": {
+      "path": "internal/service/collaboration_records_test.go",
+      "line": 134
+    },
+    "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected": {
+      "path": "internal/service/collaboration_records_test.go",
+      "line": 226
+    },
+    "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented": {
+      "path": "internal/service/collaboration_records_test.go",
+      "line": 243
+    },
+    "TestCollaborationHandoffFrozenAssignmentAndSnapshot": {
+      "path": "internal/service/collaboration_runtime_handoff_test.go",
+      "line": 16
+    },
+    "TestCollaborationHandoffPreservesEveryMergedWakeCause": {
+      "path": "internal/service/collaboration_runtime_handoff_test.go",
+      "line": 100
+    },
+    "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory": {
+      "path": "internal/service/collaboration_runtime_handoff_test.go",
+      "line": 176
+    },
+    "TestCollaborationLiveHandoffNamesTheRunsLaunchBase": {
+      "path": "internal/service/collaboration_runtime_handoff_test.go",
+      "line": 209
+    },
+    "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 85
+    },
+    "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 108
+    },
+    "TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 126
+    },
+    "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 145
+    },
+    "TestCollaborationRuntimePreparationScopeAndRevocation": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 203
+    },
+    "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 252
+    },
+    "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 308
+    },
+    "TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 350
+    },
+    "TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 372
+    },
+    "TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 423
+    },
+    "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 439
+    },
+    "TestCollaborationRuntimePreparationFreezesAdmittedCommit": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 467
+    },
+    "TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 490
+    },
+    "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 527
+    },
+    "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 562
+    },
+    "TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 594
+    },
+    "TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles": {
+      "path": "internal/service/collaboration_runtime_preparation_test.go",
+      "line": 623
+    },
+    "TestCollaborationManagedRuntimeBatchProofAndExactReplay": {
+      "path": "internal/service/collaboration_runtime_test.go",
+      "line": 160
+    },
+    "TestCollaborationManagedStopProofPreservesFreshResumeIntent": {
+      "path": "internal/service/collaboration_runtime_test.go",
+      "line": 212
+    },
+    "TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval": {
+      "path": "internal/service/collaboration_runtime_test.go",
+      "line": 255
+    },
+    "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun": {
+      "path": "internal/service/collaboration_runtime_test.go",
+      "line": 290
+    },
+    "TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 91
+    },
+    "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 136
+    },
+    "TestCollaborationSquadHumanJoinClaimAndUnreadCancellation": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 158
+    },
+    "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 260
+    },
+    "TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 318
+    },
+    "TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 349
+    },
+    "TestCollaborationSquadActivityAndProofRemainSeparate": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 371
+    },
+    "TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 397
+    },
+    "TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 415
+    },
+    "TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput": {
+      "path": "internal/service/collaboration_squad_test.go",
+      "line": 447
+    },
+    "TestStageTestReportActualInputClaimAndReceipt": {
+      "path": "internal/service/collaboration_test_report_test.go",
+      "line": 94
+    },
+    "TestStageTestSubjectRequiresTypedTarget": {
+      "path": "internal/service/collaboration_test_report_test.go",
+      "line": 170
+    },
+    "TestStageQAPassedReportNeedsSuccessfulSettledExecution": {
+      "path": "internal/service/collaboration_test_report_test.go",
+      "line": 182
+    },
+    "TestStageTestSubjectMemberFenceAtActualCommentWrite": {
+      "path": "internal/service/collaboration_test_report_test.go",
+      "line": 256
+    }
+  },
+  "old_service_controls_files": {
+    "internal/service/collaboration_attachments_test.go": {
+      "top_names": [
+        "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites",
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity"
+      ],
+      "top_count": 7,
+      "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_checkpoints_test.go": {
+      "top_names": [
+        "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory",
+        "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+        "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable"
+      ],
+      "top_count": 3,
+      "sha256": "b43ed1879c6c73e5d25b0702228aa75303fa3569a433067e78b19493d1050822",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_records_test.go": {
+      "top_names": [
+        "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+        "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented"
+      ],
+      "top_count": 4,
+      "sha256": "df2b8cc44105a963c73c34f32ef2b8ef1d4d6b54eee79aea9d0c4c403b7eb713",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_runtime_handoff_test.go": {
+      "top_names": [
+        "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+        "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory",
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase"
+      ],
+      "top_count": 4,
+      "sha256": "5a1d2f88938c78a2020048e618c239338172b8369d051eb615f865f0e360ea89",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_runtime_preparation_test.go": {
+      "top_names": [
+        "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming",
+        "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged",
+        "TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve",
+        "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "TestCollaborationRuntimePreparationScopeAndRevocation",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness",
+        "TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun",
+        "TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable",
+        "TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable",
+        "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+        "TestCollaborationRuntimePreparationFreezesAdmittedCommit",
+        "TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary",
+        "TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns",
+        "TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles"
+      ],
+      "top_count": 17,
+      "sha256": "e534573da1f334ed4d1d1977c394bbbaf3ee44f32f46d20662f63211e40b923b",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_runtime_test.go": {
+      "top_names": [
+        "TestCollaborationManagedRuntimeBatchProofAndExactReplay",
+        "TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval",
+        "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun"
+      ],
+      "top_count": 4,
+      "sha256": "80ad993fdecbd5c1788079e1a315f57979c8ff5d5b362e0f0986d423301e962a",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_squad_test.go": {
+      "top_names": [
+        "TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation",
+        "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "TestCollaborationSquadHumanJoinClaimAndUnreadCancellation",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork",
+        "TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias",
+        "TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt",
+        "TestCollaborationSquadActivityAndProofRemainSeparate",
+        "TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete",
+        "TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt",
+        "TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput"
+      ],
+      "top_count": 10,
+      "sha256": "9846be39515723e29e6d2a3f5f97ad3f2bfb12d3fdd9ef7d7ca2f6e57f573326",
+      "unchanged_from_base": true
+    },
+    "internal/service/collaboration_test_report_test.go": {
+      "top_names": [
+        "TestStageTestReportActualInputClaimAndReceipt",
+        "TestStageTestSubjectRequiresTypedTarget",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+        "TestStageTestSubjectMemberFenceAtActualCommentWrite"
+      ],
+      "top_count": 4,
+      "sha256": "2e44ca4836a60fc21f3344adf2807691ec3c85dcbdfc35980bafab3d46f33696",
+      "unchanged_from_base": true
+    }
+  },
+  "frozen_source_binding": {
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+    "freeze_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/server-green-freeze-r03.json",
+    "freeze_record_sha256": "5fe5c1ed7a4a856e0214c3fd7e65d4004a7ac0072d8b276797471a5c0749f361",
+    "source_manifest_sha256": "32c998c8f19a00953bd9d75e976f3e49ccf720a0b0662b24f7ecb34a96fbcdde",
+    "source_count": 5089,
+    "named_work_frozen_file_matches": 32,
+    "old_service_tops": 53,
+    "new_service_tops": 17,
+    "expected_combined_service_tops": 70,
+    "expected_new_service_names": 39
+  },
+  "reviewer_server_checks": [
+    {
+      "label": "output-review-gofmt-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-gofmt-r01/result.json",
+      "sha256": "4a1d30db7c64443d123477db79706dd43f3542f0c6f326f323b2cdb9a11885c9",
+      "command": {
+        "started_at": "2026-11-19T07:04:59.719827+00:00",
+        "argv": [
+          "/opt/homebrew/bin/gofmt",
+          "-w",
+          "internal/service/collaboration_runtime_output_test.go",
+          "internal/handler/collaboration_runtime_output_test.go"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 11554,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/gofmt": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:04:59.719827+00:00",
+        "ended_at": "2026-11-19T07:04:59.959484+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-format-check-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-format-check-r01/result.json",
+      "sha256": "aea54f68df2a0f2b4eff2df872d2465e479b515e76e8e7f783b4f36f342273d4",
+      "command": {
+        "started_at": "2026-11-19T07:11:17.776498+00:00",
+        "argv": [
+          "/opt/homebrew/bin/gofmt",
+          "-l",
+          "cmd/migrate/migrate_collaboration_runtime_output_test.go",
+          "cmd/multica/cmd_collaboration.go",
+          "cmd/multica/cmd_collaboration_output_test.go",
+          "cmd/multica/cmd_issue.go",
+          "cmd/server/router.go",
+          "internal/cli/collaboration_output.go",
+          "internal/cli/collaboration_output_test.go",
+          "internal/handler/collaboration_runtime_output.go",
+          "internal/handler/collaboration_runtime_output_test.go",
+          "internal/service/collaboration_attachments.go",
+          "internal/service/collaboration_checkpoints.go",
+          "internal/service/collaboration_records.go",
+          "internal/service/collaboration_runtime_capabilities.go",
+          "internal/service/collaboration_runtime_handoff.go",
+          "internal/service/collaboration_runtime_output.go",
+          "internal/service/collaboration_runtime_output_concurrency_test.go",
+          "internal/service/collaboration_runtime_output_host_test.go",
+          "internal/service/collaboration_runtime_output_test.go",
+          "internal/service/collaboration_runtime_preparation.go",
+          "internal/service/collaboration_squad.go",
+          "internal/service/collaboration_test_report.go",
+          "pkg/db/generated/collaboration_attachments.sql.go",
+          "pkg/db/generated/collaboration_delivery.sql.go",
+          "pkg/db/generated/collaboration_preparation.sql.go",
+          "pkg/db/generated/models.go"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 14763,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/gofmt": "0bcfa961e5c2a8ef2cac1e8a03e3267d615196ee59248eab3ab152495a397185"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:11:17.776498+00:00",
+        "ended_at": "2026-11-19T07:11:18.394727+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-compile-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-compile-r01/result.json",
+      "sha256": "15c1a73dc6a36830cfcde014f40a33efe1f9981fc7b1b0fb1a7cdaaed3623bce",
+      "command": {
+        "started_at": "2026-11-19T07:08:15.234381+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-c",
+          "-o",
+          "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-compile-r01/",
+          "./internal/service",
+          "./internal/handler",
+          "./internal/cli",
+          "./cmd/multica",
+          "./cmd/migrate",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 12814,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:08:15.234381+00:00",
+        "ended_at": "2026-11-19T07:09:17.600524+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-vet-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-vet-r01/result.json",
+      "sha256": "640fd367c9f212ccd0ea0a6b50392dfe30aa952afda2ae943ef251c7501d6a47",
+      "command": {
+        "started_at": "2026-11-19T07:08:15.230465+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "vet",
+          "./internal/service",
+          "./internal/handler",
+          "./internal/cli",
+          "./cmd/multica",
+          "./cmd/migrate",
+          "./cmd/server"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 12813,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:08:15.230465+00:00",
+        "ended_at": "2026-11-19T07:09:10.293801+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "output-review-internal-cli-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-internal-cli-r01/result.json",
+      "sha256": "fe7da82c2cd9ec6aa89c35ba5fb97f95295851f4b533f4b6aacc1e2eae0cc9c1",
+      "command": {
+        "started_at": "2026-11-19T07:08:15.242646+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestCollaborationOutputO09",
+          "./internal/cli"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 12816,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:08:15.242646+00:00",
+        "ended_at": "2026-11-19T07:08:21.919086+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "9191c06b6518fb7179e5d45b660bdba81c3316dc0f499f363f4ef2fafaebaf62",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "go_inventory": {
+          "named_counts": {
+            "PASS": 41,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "top_counts": {
+            "PASS": 4,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "names": [
+            "TestCollaborationOutputO09FileReadUsesProcessCWD",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD2652399387/002/external.txt",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+            "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+            "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+            "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+            "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+            "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+            "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+            "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+            "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+          ],
+          "invalid_lines": [],
+          "unfinished": [],
+          "duplicate_names": [],
+          "build_events": 0,
+          "build_failures": 0
+        }
+      }
+    },
+    {
+      "label": "output-review-cmd-cli-r01",
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-review-cmd-cli-r01/result.json",
+      "sha256": "085a3fae80dd773c288ecd34c2572b6ab7091ef3bad3dac63d17b6741e8590c5",
+      "command": {
+        "started_at": "2026-11-19T07:08:15.237414+00:00",
+        "argv": [
+          "/opt/homebrew/bin/go",
+          "test",
+          "-json",
+          "-count=1",
+          "-run",
+          "^TestCollaborationCLIOutputO09",
+          "./cmd/multica"
+        ],
+        "cwd": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-work-r01",
+        "pid": 12815,
+        "config": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/nodb-r01.json",
+        "config_sha256": "0fe70fb29757eab6736ca6f2b41b38ebb8dd5841cf399e7e9fd7dcbc80d19ac5",
+        "config_keys": [
+          "ANTHROPIC_API_KEY",
+          "ENV_FILE",
+          "GITHUB_APP_ID",
+          "GITHUB_APP_PRIVATE_KEY",
+          "GITHUB_WEBHOOK_SECRET",
+          "GOCACHE",
+          "GOMODCACHE",
+          "GOPATH",
+          "GOPROXY",
+          "GOSUMDB",
+          "GOTMPDIR",
+          "GOTOOLCHAIN",
+          "GOWORK",
+          "HOME",
+          "JWT_SECRET",
+          "MULTICA_CLOUD_URL",
+          "MULTICA_LLM_API_KEY",
+          "MULTICA_LLM_BASE_URL",
+          "MULTICA_LLM_DEFAULT_MODEL",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "OPENAI_API_KEY",
+          "OPENAI_BASE_URL",
+          "OPENAI_CUSTOM_HEADERS",
+          "OPENAI_ORG_ID",
+          "OPENAI_PROJECT_ID",
+          "PATH",
+          "PLAYWRIGHT_BROWSERS_PATH",
+          "REDIS_URL",
+          "RESEND_API_KEY",
+          "SMTP_HOST",
+          "SMTP_PASSWORD",
+          "SMTP_USERNAME",
+          "TEMP",
+          "TMP",
+          "TMPDIR"
+        ],
+        "tools": {
+          "/opt/homebrew/bin/go": "71c4991041d8e44975c882e4f72005719c958013d3340dc665a3808b72ddf702"
+        },
+        "recorder_sha256": "581c58f8191a1788b2d7c19c52c98c6c7b4871f26a6b96c3d4ac03116e6b7a94",
+        "ambient_environment_inherited": false
+      },
+      "result": {
+        "started_at": "2026-11-19T07:08:15.237414+00:00",
+        "ended_at": "2026-11-19T07:08:23.040318+00:00",
+        "exit": 0,
+        "source_drift": [],
+        "config_drift": false,
+        "tool_drift": [],
+        "stdout_sha256": "54d2c1e0d079c6e79c7d214adf9fc0694904315af25f4e63c53a8d0702ece0a1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "go_inventory": {
+          "named_counts": {
+            "PASS": 10,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "top_counts": {
+            "PASS": 3,
+            "FAIL": 0,
+            "SKIP": 0
+          },
+          "names": [
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/empty",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/external_override",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/missing_request",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/multiple",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/other_issue",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/profile",
+            "TestCollaborationCLIOutputO09RegistrationAndFileGuards/url",
+            "TestCollaborationCLIOutputO09UsesBoundAgentCommentEndpoint",
+            "TestCollaborationCLIOutputO09WholeCommandGuardAllowsOnlyOneFile"
+          ],
+          "invalid_lines": [],
+          "unfinished": [],
+          "duplicate_names": [],
+          "build_events": 0,
+          "build_failures": 0
+        }
+      }
+    }
+  ],
+  "main_functional_profiles": [
+    {
+      "package": "service",
+      "label": "output-service-n-r02",
+      "tops": 70,
+      "names": 119,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "f8085340436971ee59b3980691a5baa19e5b7a0bf1569ee7e9949c4da4584b05",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^(TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion|TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner|TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites|TestCollaborationAttachmentScopeCiphertextAndLiveAccess|TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity|TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes|TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage|TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable|TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK|TestCollaborationHandoffFrozenAssignmentAndSnapshot|TestCollaborationHandoffPreservesEveryMergedWakeCause|TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory|TestCollaborationLiveHandoffNamesTheRunsLaunchBase|TestCollaborationManagedRuntimeBatchProofAndExactReplay|TestCollaborationManagedStopProofPreservesFreshResumeIntent|TestCollaborationRecordingSealRetainsMaximumCheckpointHistory|TestCollaborationRemovalOfNonRootBatchAuthorStopsRun|TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence|TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected|TestCollaborationRunRecordsPagingFrozenInputsAndRetention|TestCollaborationRunRecordsUnclaimedInputsAreNotInvented|TestCollaborationRuntimeOutputO01AgentIdentityCiphertextAndReferences|TestCollaborationRuntimeOutputO01SquadFilePreservesOriginalDelegation|TestCollaborationRuntimeOutputO02UnknownCommitOriginalRecovery|TestCollaborationRuntimeOutputO03SameIdentityConcurrentConvergence|TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict|TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner|TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup|TestCollaborationRuntimeOutputO05RolledBackCallbackNeverOwnsReplayedObject|TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads|TestCollaborationRuntimeOutputO06UnfrozenAndMissingFilesHaveSameRefusal|TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites|TestCollaborationRuntimeOutputO07ConcurrentThirtySecondOutputBound|TestCollaborationRuntimeOutputO07ExplicitNewRunKeepsOriginalFailure|TestCollaborationRuntimeOutputO07HostAttemptOwnershipAndFrozenCurrentFiles|TestCollaborationRuntimeOutputO08HostCheckpointSealReportAndOriginalACK|TestCollaborationRuntimeOutputO08OldNoFileEventBytesRemainStable|TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords|TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness|TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun|TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions|TestCollaborationRuntimePreparationFreezesAdmittedCommit|TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns|TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim|TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput|TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary|TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged|TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming|TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable|TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof|TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles|TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile|TestCollaborationRuntimePreparationScopeAndRevocation|TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve|TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable|TestCollaborationSquadActivityAndProofRemainSeparate|TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation|TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput|TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt|TestCollaborationSquadHumanJoinClaimAndUnreadCancellation|TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete|TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary|TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt|TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork|TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias|TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval|TestStageQAPassedReportNeedsSuccessfulSettledExecution|TestStageTestReportActualInputClaimAndReceipt|TestStageTestSubjectMemberFenceAtActualCommentWrite|TestStageTestSubjectRequiresTypedTarget)$",
+        "./internal/service"
+      ],
+      "result_sha256": "7c59438fc3a0a7a028224b2e10ec9591402ed3ad4584ac2e671c7fa1c9c0f6e8",
+      "stdout_sha256": "f1c8059ab4773d9575646a3c2b2e06276f26dc37474009e0377a542743356a1b",
+      "raw_named_inventory": [
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+        "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites",
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+        "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable",
+        "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+        "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+        "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory",
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase",
+        "TestCollaborationManagedRuntimeBatchProofAndExactReplay",
+        "TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory",
+        "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun",
+        "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/comment",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/outcome",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/record_checkpoint",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/squad_activity",
+        "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented",
+        "TestCollaborationRuntimeOutputO01AgentIdentityCiphertextAndReferences",
+        "TestCollaborationRuntimeOutputO01SquadFilePreservesOriginalDelegation",
+        "TestCollaborationRuntimeOutputO02UnknownCommitOriginalRecovery",
+        "TestCollaborationRuntimeOutputO03SameIdentityConcurrentConvergence",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/bytes",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/content",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/json-first",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/multipart-first",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/name",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/parent",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/bytes",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/content",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/name",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/parent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationAttachmentReference",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationBusinessEvent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationContentNotification",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationEvent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationRuntimeComment",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationRuntimeOutputAttachment",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/retry-after-insert",
+        "TestCollaborationRuntimeOutputO05RolledBackCallbackNeverOwnsReplayedObject",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/grant",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/participant",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/source",
+        "TestCollaborationRuntimeOutputO06UnfrozenAndMissingFilesHaveSameRefusal",
+        "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites",
+        "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites/full-bound-original-replay",
+        "TestCollaborationRuntimeOutputO07ConcurrentThirtySecondOutputBound",
+        "TestCollaborationRuntimeOutputO07ExplicitNewRunKeepsOriginalFailure",
+        "TestCollaborationRuntimeOutputO07HostAttemptOwnershipAndFrozenCurrentFiles",
+        "TestCollaborationRuntimeOutputO08HostCheckpointSealReportAndOriginalACK",
+        "TestCollaborationRuntimeOutputO08OldNoFileEventBytesRemainStable",
+        "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords",
+        "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords/prepared-output-loses-to-outcome",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/bytes",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/claim",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/manifest",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/permit",
+        "TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun",
+        "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "TestCollaborationRuntimePreparationFreezesAdmittedCommit",
+        "TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/false",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/true",
+        "TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/false",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/true",
+        "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged",
+        "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming",
+        "TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/changed_same_event",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_attempt",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_issue",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_manifest",
+        "TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles",
+        "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+        "TestCollaborationRuntimePreparationScopeAndRevocation",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/anonymous",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/human",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/other_business",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/task",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/termination",
+        "TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve",
+        "TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable",
+        "TestCollaborationSquadActivityAndProofRemainSeparate",
+        "TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation",
+        "TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput",
+        "TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt",
+        "TestCollaborationSquadHumanJoinClaimAndUnreadCancellation",
+        "TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete",
+        "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/consumed",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/unread",
+        "TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias",
+        "TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+        "TestStageTestReportActualInputClaimAndReceipt",
+        "TestStageTestSubjectMemberFenceAtActualCommentWrite",
+        "TestStageTestSubjectRequiresTypedTarget"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-service-n-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "service",
+      "label": "output-service-r-r02",
+      "tops": 70,
+      "names": 119,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "c8ae08d8b0d86c5c09b174241b4773a1f4e5dce928f4eca55626b51eac168688",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^(TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion|TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner|TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites|TestCollaborationAttachmentScopeCiphertextAndLiveAccess|TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity|TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes|TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage|TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable|TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK|TestCollaborationHandoffFrozenAssignmentAndSnapshot|TestCollaborationHandoffPreservesEveryMergedWakeCause|TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory|TestCollaborationLiveHandoffNamesTheRunsLaunchBase|TestCollaborationManagedRuntimeBatchProofAndExactReplay|TestCollaborationManagedStopProofPreservesFreshResumeIntent|TestCollaborationRecordingSealRetainsMaximumCheckpointHistory|TestCollaborationRemovalOfNonRootBatchAuthorStopsRun|TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence|TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected|TestCollaborationRunRecordsPagingFrozenInputsAndRetention|TestCollaborationRunRecordsUnclaimedInputsAreNotInvented|TestCollaborationRuntimeOutputO01AgentIdentityCiphertextAndReferences|TestCollaborationRuntimeOutputO01SquadFilePreservesOriginalDelegation|TestCollaborationRuntimeOutputO02UnknownCommitOriginalRecovery|TestCollaborationRuntimeOutputO03SameIdentityConcurrentConvergence|TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict|TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner|TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup|TestCollaborationRuntimeOutputO05RolledBackCallbackNeverOwnsReplayedObject|TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads|TestCollaborationRuntimeOutputO06UnfrozenAndMissingFilesHaveSameRefusal|TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites|TestCollaborationRuntimeOutputO07ConcurrentThirtySecondOutputBound|TestCollaborationRuntimeOutputO07ExplicitNewRunKeepsOriginalFailure|TestCollaborationRuntimeOutputO07HostAttemptOwnershipAndFrozenCurrentFiles|TestCollaborationRuntimeOutputO08HostCheckpointSealReportAndOriginalACK|TestCollaborationRuntimeOutputO08OldNoFileEventBytesRemainStable|TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords|TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness|TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun|TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions|TestCollaborationRuntimePreparationFreezesAdmittedCommit|TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns|TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim|TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput|TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary|TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged|TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming|TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable|TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof|TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles|TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile|TestCollaborationRuntimePreparationScopeAndRevocation|TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve|TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable|TestCollaborationSquadActivityAndProofRemainSeparate|TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation|TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput|TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt|TestCollaborationSquadHumanJoinClaimAndUnreadCancellation|TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete|TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary|TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt|TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork|TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias|TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval|TestStageQAPassedReportNeedsSuccessfulSettledExecution|TestStageTestReportActualInputClaimAndReceipt|TestStageTestSubjectMemberFenceAtActualCommentWrite|TestStageTestSubjectRequiresTypedTarget)$",
+        "./internal/service"
+      ],
+      "result_sha256": "52219694c8694beb94477542177d2377585baeb3cd029f0676cd1347ea5c3e49",
+      "stdout_sha256": "a8595feccddce09974e52580094daffe094f2a224f6a3cdaa59408751b2f7787",
+      "raw_named_inventory": [
+        "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+        "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+        "TestCollaborationAttachmentCreationBindingRollsBackWithRequiredWrites",
+        "TestCollaborationAttachmentScopeCiphertextAndLiveAccess",
+        "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+        "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+        "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+        "TestCollaborationCheckpointOutcomeOverlapAndInternalEventsStayReadable",
+        "TestCollaborationCheckpointStopKeepsOriginalPrefixAndContentFreeACK",
+        "TestCollaborationHandoffFrozenAssignmentAndSnapshot",
+        "TestCollaborationHandoffPreservesEveryMergedWakeCause",
+        "TestCollaborationHandoffSnapshotCannotResurrectPurgedMemory",
+        "TestCollaborationLiveHandoffNamesTheRunsLaunchBase",
+        "TestCollaborationManagedRuntimeBatchProofAndExactReplay",
+        "TestCollaborationManagedStopProofPreservesFreshResumeIntent",
+        "TestCollaborationRecordingSealRetainsMaximumCheckpointHistory",
+        "TestCollaborationRemovalOfNonRootBatchAuthorStopsRun",
+        "TestCollaborationRunRecordsCurrentAuthorityAndLegacyAbsence",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/comment",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/outcome",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/record_checkpoint",
+        "TestCollaborationRunRecordsMalformedDisplayPayloadRemainsRejected/squad_activity",
+        "TestCollaborationRunRecordsPagingFrozenInputsAndRetention",
+        "TestCollaborationRunRecordsUnclaimedInputsAreNotInvented",
+        "TestCollaborationRuntimeOutputO01AgentIdentityCiphertextAndReferences",
+        "TestCollaborationRuntimeOutputO01SquadFilePreservesOriginalDelegation",
+        "TestCollaborationRuntimeOutputO02UnknownCommitOriginalRecovery",
+        "TestCollaborationRuntimeOutputO03SameIdentityConcurrentConvergence",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/bytes",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/content",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/json-first",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/multipart-first",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/name",
+        "TestCollaborationRuntimeOutputO04ChangedInputAndJSONAliasConflict/parent",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/bytes",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/content",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/name",
+        "TestCollaborationRuntimeOutputO04ConcurrentChangedFingerprintPreservesWinner/parent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationAttachmentReference",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationBusinessEvent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationContentNotification",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationEvent",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationRuntimeComment",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/CreateCollaborationRuntimeOutputAttachment",
+        "TestCollaborationRuntimeOutputO05RequiredWritesRollbackAndOwnObjectCleanup/retry-after-insert",
+        "TestCollaborationRuntimeOutputO05RolledBackCallbackNeverOwnsReplayedObject",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/grant",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/participant",
+        "TestCollaborationRuntimeOutputO06SlowStorageRevocationAndCurrentReads/source",
+        "TestCollaborationRuntimeOutputO06UnfrozenAndMissingFilesHaveSameRefusal",
+        "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites",
+        "TestCollaborationRuntimeOutputO07BoundOutcomeAndLateWrites/full-bound-original-replay",
+        "TestCollaborationRuntimeOutputO07ConcurrentThirtySecondOutputBound",
+        "TestCollaborationRuntimeOutputO07ExplicitNewRunKeepsOriginalFailure",
+        "TestCollaborationRuntimeOutputO07HostAttemptOwnershipAndFrozenCurrentFiles",
+        "TestCollaborationRuntimeOutputO08HostCheckpointSealReportAndOriginalACK",
+        "TestCollaborationRuntimeOutputO08OldNoFileEventBytesRemainStable",
+        "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords",
+        "TestCollaborationRuntimeOutputO08StoredOutcomeDecoderAndRecords/prepared-output-loses-to-outcome",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/bytes",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/claim",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/manifest",
+        "TestCollaborationRuntimePreparationBundleChangeFencesClaimPermitAndBusiness/permit",
+        "TestCollaborationRuntimePreparationCannotUpgradePreviouslyClaimedRun",
+        "TestCollaborationRuntimePreparationFreezesActualInputsAndDeliveredVersions",
+        "TestCollaborationRuntimePreparationFreezesAdmittedCommit",
+        "TestCollaborationRuntimePreparationIssueFileHistoryBeyondManifestLimitStillRuns",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/false",
+        "TestCollaborationRuntimePreparationLateDeliveryPreservesIssuedClaim/true",
+        "TestCollaborationRuntimePreparationLateDeliveryReturnsNeverClaimedInput",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/false",
+        "TestCollaborationRuntimePreparationLateDeliverySettlementCommitBoundary/true",
+        "TestCollaborationRuntimePreparationLegacyNoFileWireStaysUnchanged",
+        "TestCollaborationRuntimePreparationLegacyRejectsFilesWithoutClaiming",
+        "TestCollaborationRuntimePreparationObservationKeepsInstalledRecordsReadable",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/changed_same_event",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_attempt",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_issue",
+        "TestCollaborationRuntimePreparationObservationsReplayWithoutOutcomeOrProof/different_manifest",
+        "TestCollaborationRuntimePreparationReferencedFileOutranksNewerIssueFiles",
+        "TestCollaborationRuntimePreparationRejectsAnotherLiveRunAndIssueFile",
+        "TestCollaborationRuntimePreparationScopeAndRevocation",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/anonymous",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/human",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/other_business",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/task",
+        "TestCollaborationRuntimePreparationScopeAndRevocation/termination",
+        "TestCollaborationRuntimePreparationUnsupportedFilesDoNotReserve",
+        "TestCollaborationRuntimePreparationUnsupportedFilesLeaveHealthyNamespaceAvailable",
+        "TestCollaborationSquadActivityAndProofRemainSeparate",
+        "TestCollaborationSquadCommentCapacityOneLeaderMemberContinuation",
+        "TestCollaborationSquadContinuationNonlaunchReturnsOnlyItsInput",
+        "TestCollaborationSquadHumanCommentQueuesAndJoinsWithTypedReceipt",
+        "TestCollaborationSquadHumanJoinClaimAndUnreadCancellation",
+        "TestCollaborationSquadMissingOutcomeProofSettlesAsIncomplete",
+        "TestCollaborationSquadRuntimeCommentAuthorityAndMentionBoundary",
+        "TestCollaborationSquadStopReturnsUnreadJoinWithoutRestartingIt",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/consumed",
+        "TestCollaborationSquadUnreadAuthorDepartureDoesNotStopOtherWork/unread",
+        "TestCollaborationSquadUnreadGrantRevocationDetachesOnlyAlias",
+        "TestCollaborationTerminationSurvivesOwnerAndRuntimeRemoval",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_case",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/failed_execution",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/success",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution/unsettled",
+        "TestStageTestReportActualInputClaimAndReceipt",
+        "TestStageTestSubjectMemberFenceAtActualCommentWrite",
+        "TestStageTestSubjectRequiresTypedTarget"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-service-r-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "handler",
+      "label": "output-handler-n-r02",
+      "tops": 2,
+      "names": 15,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "c071d9cf97488c9a06ddf6f6ca121bbc7b484391d4f76731fe6cce0499537cf1",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationRuntimeOutputHTTP",
+        "./internal/handler"
+      ],
+      "result_sha256": "823ab950afd5027e9e03cf133b5c21391e68f1b8d7caa5f745d9d527b7643af2",
+      "stdout_sha256": "7bd392df0f1c148b519f1a591f08e521269b59deca87c8a156b092e0edfb274e",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputHTTPOriginalReceiptAndFinalByteRevocation",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/attempt_seq",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/draft_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/duplicate_comment",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/duplicate_content",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/human",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/invalid_parent",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/no_file",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/oversized_content",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/run_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/termination",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/two_files",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/uploader_agent_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/zero_parent"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-handler-n-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "handler",
+      "label": "output-handler-r-r02",
+      "tops": 2,
+      "names": 15,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "350aea5460e22560f42302afdae5ef543b48da3df6d6e5db8d7b1207821fe536",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationRuntimeOutputHTTP",
+        "./internal/handler"
+      ],
+      "result_sha256": "aaf22c0d171f799b5d16c01585faf39c8d40e3867d28e6905c4344a33e83bfda",
+      "stdout_sha256": "103d94d36e019bee1a10ac81378902f217c1526aec306bd3a57438bccfc1be32",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputHTTPOriginalReceiptAndFinalByteRevocation",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/attempt_seq",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/draft_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/duplicate_comment",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/duplicate_content",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/human",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/invalid_parent",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/no_file",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/oversized_content",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/run_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/termination",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/two_files",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/uploader_agent_id",
+        "TestCollaborationRuntimeOutputHTTPRejectsAuthorityAndMalformedMultipart/zero_parent"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-handler-r-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "router",
+      "label": "output-router-n-r03",
+      "tops": 1,
+      "names": 3,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r04",
+      "config_sha256": "9c8b3b69b4ac5ec0d059b1f0eefa255d9c6e36a458d963623111e624918632e2",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationRuntimeOutputRouteRequiresBusinessCapability$",
+        "./cmd/server"
+      ],
+      "result_sha256": "39a4eb7eab0f5dc9ec2af730059eb094c90cfc6af900b15236e5fa9ad0a89dd0",
+      "stdout_sha256": "30291c89a1a036be4ff2e00abe32e544bb55a1338b4d8adcf9479de61afad6a3",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability",
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability/anonymous",
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability/human_profile"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-router-n-r03/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "router",
+      "label": "output-router-r-r03",
+      "tops": 1,
+      "names": 3,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r04",
+      "config_sha256": "2c89f4da4af8dfa3d1f13f18580fec77d48a63941ece9a8a36866d5eafab2316",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationRuntimeOutputRouteRequiresBusinessCapability$",
+        "./cmd/server"
+      ],
+      "result_sha256": "62ae086ae05bdafc12aa595f08ee45d23e1140116213c1ac9bbcdffb94ef368b",
+      "stdout_sha256": "267c0d0794b8e4e187cf4198c1f45c3e4c7aaf7046c8bee2185d47f9df025420",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability",
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability/anonymous",
+        "TestCollaborationRuntimeOutputRouteRequiresBusinessCapability/human_profile"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-router-r-r03/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "migration",
+      "label": "output-migration-n-r02",
+      "tops": 2,
+      "names": 15,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "6be3db12a42fd8b48af2168f0a78eb3dae0022b9083a021bcf7469c4845d3b70",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationRuntimeOutputMigration",
+        "./cmd/migrate"
+      ],
+      "result_sha256": "99be74da521eb35cad1e92dffdc18a2bc984537f62eae6bf8b9f3dceaeb919ea",
+      "stdout_sha256": "de9ba0219aa7e4b82ab463e4628658cf9e9219585532bcce720b4e7633e394bc",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/attempt_seq=0",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/attempt_seq=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/delivered_at=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/discarded_at=now()",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/draft_id=gen_random_uuid()",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/encryption_key=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/issue_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/run_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/source_workspace_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/storage_key='public/escaped'",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/upload_request_id='fake-human-upload'",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/uploader_agent_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/uploader_user_id=gen_random_uuid()",
+        "TestCollaborationRuntimeOutputMigrationRefusesUncommittedWriter"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-migration-n-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "migration",
+      "label": "output-migration-r-r02",
+      "tops": 2,
+      "names": 15,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "4556a4a6dc4284e0be5dc32ae1ce429c0db9f89ae549a22bcd64eabc39a2888c",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationRuntimeOutputMigration",
+        "./cmd/migrate"
+      ],
+      "result_sha256": "28f89a180d9b25148519d9b34861506e6b1f20046fcb7ae2803ee4f8c61359d3",
+      "stdout_sha256": "ec785ea6eae7d3a664a770321a9f3d3c69cec19dbccd88770dd108a8ba748ed5",
+      "raw_named_inventory": [
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/attempt_seq=0",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/attempt_seq=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/delivered_at=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/discarded_at=now()",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/draft_id=gen_random_uuid()",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/encryption_key=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/issue_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/run_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/source_workspace_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/storage_key='public/escaped'",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/upload_request_id='fake-human-upload'",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/uploader_agent_id=NULL",
+        "TestCollaborationRuntimeOutputMigrationPreservesHumanAndAgentIdentity/uploader_user_id=gen_random_uuid()",
+        "TestCollaborationRuntimeOutputMigrationRefusesUncommittedWriter"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-migration-r-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "internal_cli",
+      "label": "output-internal-cli-n-r02",
+      "tops": 4,
+      "names": 41,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "70ea1195b037bbf59ec6c8e3be3f9388872ad7a21c0a374accbc3949e3013da6",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationOutputO09",
+        "./internal/cli"
+      ],
+      "result_sha256": "12d9472ee9021164b2aca0486e7b4eec8c0dd5742aef26d874a0f615446a6433",
+      "stdout_sha256": "0c563a88edd96c213b5214f290c870f41bcc5a93f42a494b399c5a6d0672103b",
+      "raw_named_inventory": [
+        "TestCollaborationOutputO09FileReadUsesProcessCWD",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_n_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD2720539857/002/external.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+        "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+      ],
+      "allocation_specific_name_mapping": [
+        {
+          "raw": "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_n_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD2720539857/002/external.txt",
+          "mapped_case": "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+          "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03/internal/cli/collaboration_output_test.go",
+          "source_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+          "creation_line": 41,
+          "t_Run_line": 66
+        }
+      ],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-internal-cli-n-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "internal_cli",
+      "label": "output-internal-cli-r-r02",
+      "tops": 4,
+      "names": 41,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "fdeca4199819ebf3e3ad5b9b08ac20ca73ee39b4c5c394852513ee8828ee4f75",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationOutputO09",
+        "./internal/cli"
+      ],
+      "result_sha256": "6f93153be834c5a6bae72fbf45aa6d4e031d7e8adab453201073c40e9ed2c524",
+      "stdout_sha256": "f32b19c85c932c0efec9275ada0e20dc625576651a9dfe6caca4a51cff2411f5",
+      "raw_named_inventory": [
+        "TestCollaborationOutputO09FileReadUsesProcessCWD",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_r_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD1462299458/002/external.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+        "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+        "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+        "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+        "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+      ],
+      "allocation_specific_name_mapping": [
+        {
+          "raw": "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_r_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD1462299458/002/external.txt",
+          "mapped_case": "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+          "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03/internal/cli/collaboration_output_test.go",
+          "source_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+          "creation_line": 41,
+          "t_Run_line": 66
+        }
+      ],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-internal-cli-r-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "cmd_cli",
+      "label": "output-cmd-cli-n-r02",
+      "tops": 3,
+      "names": 10,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "5564c913415621bae0882dfe6bf387b019fa15b2b40e8249c439565c771c2756",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-run",
+        "^TestCollaborationCLIOutputO09",
+        "./cmd/multica"
+      ],
+      "result_sha256": "429bdc47a903d0833dfcd74f36dd09f04c96cbda3078c9a13cabe7cf6a503d6e",
+      "stdout_sha256": "f8360b235ba809a19c77d181bd350ed06f573fa632633a1483d9cf9716fcf8d6",
+      "raw_named_inventory": [
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/empty",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/external_override",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/missing_request",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/multiple",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/other_issue",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/profile",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/url",
+        "TestCollaborationCLIOutputO09UsesBoundAgentCommentEndpoint",
+        "TestCollaborationCLIOutputO09WholeCommandGuardAllowsOnlyOneFile"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-cmd-cli-n-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    },
+    {
+      "package": "cmd_cli",
+      "label": "output-cmd-cli-r-r02",
+      "tops": 3,
+      "names": 10,
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03",
+      "config_sha256": "895ac87224e9d3e135e2dd970f9c9846f6077174fbfde40ceb09d8a2dfab3cd7",
+      "argv": [
+        "/opt/homebrew/bin/go",
+        "test",
+        "-json",
+        "-count=1",
+        "-race",
+        "-run",
+        "^TestCollaborationCLIOutputO09",
+        "./cmd/multica"
+      ],
+      "result_sha256": "83ef49d4279433b4c442ec2a4260ff79477cc761a53987eb2884287b885b092a",
+      "stdout_sha256": "c4bf30f494460462f317fe22dd2b420331b2c37170b19dc289293a51282b2998",
+      "raw_named_inventory": [
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/empty",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/external_override",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/missing_request",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/multiple",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/other_issue",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/profile",
+        "TestCollaborationCLIOutputO09RegistrationAndFileGuards/url",
+        "TestCollaborationCLIOutputO09UsesBoundAgentCommentEndpoint",
+        "TestCollaborationCLIOutputO09WholeCommandGuardAllowsOnlyOneFile"
+      ],
+      "allocation_specific_name_mapping": [],
+      "record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-cmd-cli-r-r02/result.json",
+      "status": "PASS_INDEPENDENT_SOURCE_CONFIG_COMMAND_RAW_RESOURCE_VERIFIED"
+    }
+  ],
+  "e2e_readonly_review": {
+    "initial_frozen_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-run-r01",
+    "initial_manifest_sha256": "7beb353303d71d6e3faa5e958ccae4387c3549e4f4b3cb8b36a405a7e7933eae",
+    "source_count": 4136,
+    "four_owned_hashes": {
+      "e2e/collaboration-runtime-output.spec.ts": "a0df987a7ad31270b452f93e405115971dda23f6866016cb2b47d2ed5a1aa071",
+      "e2e/fixtures/collaboration-runtime-output.ts": "7ee4be223ca02b9f4f79c733080bb72796c5212b53279f01ae8b969dfd1046c5",
+      "e2e/fixtures/collaboration-host-provider.go": "99b0bb3c7ad66bff462c3fb6269beeb3370d3f9a4e1470dc6af1adf312439d7f",
+      "e2e/fixtures/collaboration-recovery-runtime.ts": "d63c4a7a75f7227bf5b7de82b9422f5e3c6add78767399ed3f9890feb452c678"
+    },
+    "source_writes_by_reviewer": false,
+    "runtime_execution_by_reviewer": false,
+    "planned_per_platform": {
+      "cases": 8,
+      "physical_provider_runs": 5,
+      "actual_cli_invocations": 6,
+      "agent_output_rows": 5,
+      "issue_comment_refs": 10,
+      "human_input_files": 3,
+      "recorded_outcomes": 2,
+      "nonrecorded_stop_author_grant_runs": 3
+    },
+    "planned_total": {
+      "tops": 2,
+      "cases": 16,
+      "physical_provider_runs": 10,
+      "actual_cli_invocations": 12,
+      "agent_output_rows": 10,
+      "issue_comment_refs": 20,
+      "human_input_files": 6,
+      "recorded_outcomes": 4,
+      "nonrecorded_stop_author_grant_runs": 6
+    },
+    "positive_contracts_reviewed": [
+      "actual file/CLI PID parent and executable hashes",
+      "original multipart requests and explicit same-Provider CLI retry",
+      "replay races honestly labelled SAME_AGENT_TRANSPORT_REPLAY",
+      "metadata attachment key and comment_revision/author_agent",
+      "frozen prior output files on continuation",
+      "actual DESC3-command history within main issue",
+      "current original mcb403 and human404 after public withdrawal",
+      "explicit server outcome absence on stop/withdrawal",
+      "storage keys stripped, key length/ciphertext/file/token/program digests only",
+      "original runtime helpers export-only and separate output transport ACK errors"
+    ],
+    "findings": [
+      {
+        "id": "H01",
+        "status": "FIXED_BY_ORIGINAL_OWNER_SOURCE_VERIFIED",
+        "path": "e2e/fixtures/collaboration-runtime-output.ts",
+        "lines": [
+          222,
+          223,
+          917,
+          937,
+          950,
+          951
+        ],
+        "issue": "Multipart output201 treated as200; ACK is not dropped and winner is not retained.",
+        "correction": "Use201 for successful multipart output writes only.",
+        "verified_fixture_sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15",
+        "verified_round": "R05/R07"
+      },
+      {
+        "id": "H02",
+        "status": "FIXED_BY_ORIGINAL_OWNER_SOURCE_VERIFIED",
+        "path": "e2e/fixtures/collaboration-runtime-output.ts",
+        "lines": [
+          261,
+          632
+        ],
+        "issue": "Wire identity reports original UUID when actual rewritten comment_id is fresh late UUID.",
+        "correction": "identity.request_id = change.requestId ?? requestId; actual rewrite is already correct.",
+        "verified_fixture_sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15",
+        "verified_round": "R06/R07"
+      },
+      {
+        "id": "H03",
+        "status": "FIXED_BY_ORIGINAL_OWNER_SOURCE_VERIFIED",
+        "path": "e2e/fixtures/collaboration-runtime-output.ts",
+        "lines": [
+          844,
+          849
+        ],
+        "issue": "Before-expiry check only precedes fetch, so a delayed expired404 could pass.",
+        "correction": "Assert actual response observation precedes original capability expiry; no new case.",
+        "verified_fixture_sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15",
+        "verified_round": "R06/R07"
+      },
+      {
+        "id": "H04",
+        "status": "FIXED_BY_ORIGINAL_OWNER_SOURCE_VERIFIED",
+        "path": "e2e/fixtures/collaboration-runtime-output.ts",
+        "line": 970,
+        "issue": "Human writer control expects403 business_capability_required despite actual router401 invalid_collaboration_capability.",
+        "correction": "Correct human wrong-prefix401/code only; revoked valid mcb403 remains unchanged.",
+        "verified_fixture_sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15",
+        "verified_round": "R07"
+      }
+    ],
+    "admission": "PASS_FINITE_PREREQUISITES_FROZEN_R04",
+    "actual_acceptance": false,
+    "current_work_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+    "current_fixture_sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15",
+    "current_static_checks": [
+      {
+        "label": "output-static-ts-r06",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-ts-r06/result.json",
+        "sha256": "b8106a73169ea021640d1ffb9c3950607cf0b396882813757adab0a55b8da5cd",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      },
+      {
+        "label": "output-static-lint-r06",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-lint-r06/result.json",
+        "sha256": "6f7c621aac7a77efde3a3d39827c885a015ece9b45c6972f64be13071c144fe6",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      },
+      {
+        "label": "output-static-list-r06",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-list-r06/result.json",
+        "sha256": "e4e8b0c9b7d30eedce635afa82b3a3f65ec7f91bef51b7dc2d3e7e4ad08bb623",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      },
+      {
+        "label": "output-static-ts-r07",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-ts-r07/result.json",
+        "sha256": "77dd2cfadc0adf26d0f4227ae05b14f03d65af78f98d71657a6e140f79b7de57",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      },
+      {
+        "label": "output-static-lint-r07",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-lint-r07/result.json",
+        "sha256": "c5cfb5433f8a0c5d1902cee1a2b7ea486a416da1733f727a9c712e66f4ecb7c6",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      },
+      {
+        "label": "output-static-list-r07",
+        "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/verification/output-static-list-r07/result.json",
+        "sha256": "c016eee4b6478f01afb456e7500acc1d75302b2353b26b17920753cf82274077",
+        "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-work-r01",
+        "config_sha256": "ade9435234cbcbe9a79953422edfeb6cf8890330d0b02e61f76d7eb0da5647b0",
+        "exit": 0
+      }
+    ],
+    "final_frozen_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/client-output-run-r04",
+    "final_freeze_record": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/client-output-run-freeze-r04.json",
+    "final_manifest_sha256": "4de74f70a2a67c5f0ce34d1b86c7fcb213cddb91514935cf5cb361eda3af734e",
+    "final_source_count": 4136,
+    "final_owned_hashes": [
+      {
+        "path": "e2e/collaboration-runtime-output.spec.ts",
+        "sha256": "a0df987a7ad31270b452f93e405115971dda23f6866016cb2b47d2ed5a1aa071"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-runtime-output.ts",
+        "sha256": "f75c2f9ec631f311ef205d64efbc714751198264d8ee80b0b63ce067c0ff8e15"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-host-provider.go",
+        "sha256": "dd97c9266823a1fe6617e760306d18e17165f67fd2f981ae8a93f7fa4aca2f89"
+      },
+      {
+        "path": "e2e/fixtures/collaboration-recovery-runtime.ts",
+        "sha256": "d63c4a7a75f7227bf5b7de82b9422f5e3c6add78767399ed3f9890feb452c678"
+      }
+    ],
+    "live_suite_status_at_prerequisite_handoff": "NOT_RUN_NO_RUNTIME_RECEIPTS_REVIEWED"
+  },
+  "source_audit": {
+    "C01": "PASS",
+    "C02": "PASS",
+    "C03": "PASS",
+    "C04": "PASS",
+    "C05": "PASS",
+    "all_stored_consumers_decoder": true,
+    "incoming_protocol_unchanged": true,
+    "current_attempt_authority_and_reader_preserved": true,
+    "output_count_freeze_and_callback_ownership_correct": true,
+    "human_legacy_and_client_intent_preserved": true,
+    "original_parent_resource_and_stage_signature_authority_unchanged": true,
+    "new_product_code_findings_remaining": 0
+  },
+  "updated_at": "2026-11-19T08:23:42.281435+00:00",
+  "markdown_sha256": "52434cf5ff3f9245c888b775fe2edbd740354b1b156e94f50b35c98ca671f009",
+  "service_after_audits_verified": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-service-n-r02-complete-r01.json",
+      "sha256": "b6c043a481f564a898ee3ee21a3a2770887a6a079e3d1fb241b67decc55c7eda",
+      "before_gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "actual_end_gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": false,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "restored_gate": {
+        "id": 1,
+        "epoch": 3,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "valid_ready_indexes": 663,
+      "retained_fixture_history": {
+        "organization": {
+          "before": 0,
+          "after": 1
+        },
+        "issue_handoff": {
+          "before": 0,
+          "after": 3
+        },
+        "collaboration_operation": {
+          "before": 0,
+          "after": 4
+        },
+        "collaboration_group_input": {
+          "before": 0,
+          "after": 1
+        },
+        "collaboration_group_dependency": {
+          "before": 0,
+          "after": 1
+        },
+        "collaboration_config_invalidation": {
+          "before": 0,
+          "after": 270
+        },
+        "collaboration_knowledge_invalidation": {
+          "before": 0,
+          "after": 26
+        }
+      },
+      "classification": "EXPECTED_SYNTHETIC_CONTROL_HISTORY_RETAINED_NO_UNEXPECTED_OUTPUT_EFFECTS"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-service-r-r02-complete-r01.json",
+      "sha256": "1046fbe3775812f23040117b8b9866b8af2e39ec8388427bc364fd39de3c585c",
+      "before_gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "actual_end_gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": false,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "restored_gate": {
+        "id": 1,
+        "epoch": 3,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "valid_ready_indexes": 663,
+      "retained_fixture_history": {
+        "organization": {
+          "before": 0,
+          "after": 1
+        },
+        "issue_handoff": {
+          "before": 0,
+          "after": 3
+        },
+        "collaboration_operation": {
+          "before": 0,
+          "after": 4
+        },
+        "collaboration_group_input": {
+          "before": 0,
+          "after": 1
+        },
+        "collaboration_group_dependency": {
+          "before": 0,
+          "after": 1
+        },
+        "collaboration_config_invalidation": {
+          "before": 0,
+          "after": 270
+        },
+        "collaboration_knowledge_invalidation": {
+          "before": 0,
+          "after": 26
+        }
+      },
+      "classification": "EXPECTED_SYNTHETIC_CONTROL_HISTORY_RETAINED_NO_UNEXPECTED_OUTPUT_EFFECTS"
+    }
+  ],
+  "main_route_corrected_source": {
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r04",
+    "path": "cmd/server/collaboration_runtime_output_test.go",
+    "sha256": "23535a40f490f4b4427cb946454de35616bcd63eb457f2b6d73b94d86fa3f9e7",
+    "only_delta": "StatusUnauthorized and invalid_collaboration_capability expectations",
+    "fresh_red_and_normal_race": "PENDING_MAIN_FINAL_RECORDS"
+  },
+  "code_acceptance": true,
+  "functional_acceptance": true,
+  "harness_prerequisite_acceptance": true,
+  "native_current_client_acceptance": false,
+  "full_s3_acceptance": false,
+  "final_mode_counts": {
+    "normal": {
+      "tops": 82,
+      "names": 203
+    },
+    "race": {
+      "tops": 82,
+      "names": 203
+    },
+    "total": {
+      "tops": 164,
+      "names": 406
+    },
+    "client_named_PASS": 222
+  },
+  "mode_name_comparison": {
+    "literal_equal_packages": [
+      "service",
+      "handler",
+      "router",
+      "migration",
+      "cmd_cli"
+    ],
+    "internal_cli_exact_source_pinned_raw_to_semantic_mapping": [
+      {
+        "label": "output-internal-cli-n-r02",
+        "raw": [
+          "TestCollaborationOutputO09FileReadUsesProcessCWD",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_n_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD2720539857/002/external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+          "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+        ],
+        "semantic": [
+          "TestCollaborationOutputO09FileReadUsesProcessCWD",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+          "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+        ],
+        "mappings": [
+          {
+            "raw": "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_n_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD2720539857/002/external.txt",
+            "mapped_case": "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+            "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03/internal/cli/collaboration_output_test.go",
+            "source_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+            "creation_line": 41,
+            "t_Run_line": 66
+          }
+        ],
+        "tops": 4,
+        "names": 41
+      },
+      {
+        "label": "output-internal-cli-r-r02",
+        "raw": [
+          "TestCollaborationOutputO09FileReadUsesProcessCWD",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_r_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD1462299458/002/external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+          "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+        ],
+        "semantic": [
+          "TestCollaborationOutputO09FileReadUsesProcessCWD",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/#00",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/.",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/../external.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/escape.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/file:///etc/passwd",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/https://example.test/file.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/missing.txt",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/oversized.bin",
+          "TestCollaborationOutputO09FileReadUsesProcessCWD/~/.secret",
+          "TestCollaborationOutputO09MultipartPreservesOriginalIntentAcrossUnknownACK",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/forbidden",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/redirect",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/truncated",
+          "TestCollaborationOutputO09RejectsRedirectAndMalformedSuccess/wrong-file",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/attempt_seq",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/comment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/content_type",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/continuation",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/created_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/delivered_at",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/draft_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/duplicate_field",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/intended_issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/issue_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_nullable",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/missing_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/name",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/no_attachment",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/null_size",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/run_ids",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/size_bytes",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/trailing_json",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_agent_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/uploader_user_id",
+          "TestCollaborationOutputO09TypedReceiptRequiresCompleteFileIdentity/version"
+        ],
+        "mappings": [
+          {
+            "raw": "TestCollaborationOutputO09FileReadUsesProcessCWD//Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy/internal_cli_r_r02/tmp/TestCollaborationOutputO09FileReadUsesProcessCWD1462299458/002/external.txt",
+            "mapped_case": "TestCollaborationOutputO09FileReadUsesProcessCWD/absolute-external-file-from-TestTempDir",
+            "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/source/server-green-r03/internal/cli/collaboration_output_test.go",
+            "source_sha256": "39bbc02ee135e1f25fd041779eba8db60637e24380fac4376347fe68ddff8160",
+            "creation_line": 41,
+            "t_Run_line": 66
+          }
+        ],
+        "tops": 4,
+        "names": 41
+      }
+    ],
+    "broad_normalization_applied": false,
+    "raw_lists_preserved": true
+  },
+  "final_package_reconciliation": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-final-package-reconciliation-r01.json",
+    "sha256": "093f64dd6fbef1b7d4d1375341b2f8f39bfdbd7fa5915c714a04f1f2340680f9"
+  },
+  "additional_final_resource_audits": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-handler-n-r02-complete-r01.json",
+      "sha256": "4b464396f5ba918868af07aa1da36d0f2ddc052c905273a454bcf13125afdfc8",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "table_counts_nonzero": {
+        "organization": 1,
+        "schema_migrations": 856,
+        "collaboration_group_input": 1,
+        "collaboration_execution_gate": 1,
+        "collaboration_group_dependency": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 4
+      },
+      "classification": "MAIN_APPROVED_SYNTHETIC_CONTROL_HISTORY_PRESERVED"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-handler-r-r02-complete-r01.json",
+      "sha256": "33337b15815c7fe49c9bead1330d9636fc667895cd0f3df29afe5c9ec6e6ddf2",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "table_counts_nonzero": {
+        "organization": 1,
+        "schema_migrations": 856,
+        "collaboration_group_input": 1,
+        "collaboration_execution_gate": 1,
+        "collaboration_group_dependency": 1,
+        "task_usage_hourly_rollup_state": 1,
+        "collaboration_config_invalidation": 4
+      },
+      "classification": "MAIN_APPROVED_SYNTHETIC_CONTROL_HISTORY_PRESERVED"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-migration-n-r02-complete-r01.json",
+      "sha256": "dfdba9e39bc15165e720fce17fb100ae419571e690ba361dad9d959983b462d6",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "table_counts_nonzero": {
+        "schema_migrations": 856,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1
+      },
+      "classification": "PUBLIC_TABLE_COUNTS_UNCHANGED"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-migration-r-r02-complete-r01.json",
+      "sha256": "c425cba46388e2506f021f77cd427be767143e084d793ea9481b0b2e6ba6f4f0",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "table_counts_nonzero": {
+        "schema_migrations": 856,
+        "collaboration_execution_gate": 1,
+        "task_usage_hourly_rollup_state": 1
+      },
+      "classification": "PUBLIC_TABLE_COUNTS_UNCHANGED"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-router-n-r03-coordinator-restored.json",
+      "sha256": "8d9ef01ea4eb0124a83d3a00b741e3f186c7ba8a6fda8e495a36eb94f50379a0",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "classification": "CORRECTED_ROUTE_SOURCE_UNCHANGED_GATE_AND_CATALOG"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/audit/output-router-r-r03-coordinator-restored.json",
+      "sha256": "4710ed539ab96b12cb072e279c1c024a70758d07b21d7480036fc76855c06cb5",
+      "gate": {
+        "id": 1,
+        "epoch": 2,
+        "enabled": false,
+        "freeze_progress": null,
+        "creation_enabled": true,
+        "freeze_operation_id": null,
+        "host_execution_enabled": false
+      },
+      "connections": 0,
+      "ledger_count": 856,
+      "ready_valid_indexes": 663,
+      "classification": "CORRECTED_ROUTE_SOURCE_UNCHANGED_GATE_AND_CATALOG"
+    }
+  ],
+  "finite_live_permit_checked": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/intake/output-runtime-execution-permit-r01.json",
+    "sha256": "6ec7a31e38c9cead836989301ad67aac9a43b86e8c76f76944dd77773c4b4a6d",
+    "planned": {
+      "tops": 2,
+      "subcases": 16,
+      "actual_providers": 10,
+      "actual_output_CLIs": 12,
+      "Agent_outputs": 10,
+      "Agent_issue_comment_refs": 20,
+      "human_input_files": 6,
+      "recorded_outcomes": 4,
+      "recovery_launches": 0
+    },
+    "configs": [
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/output-api-r01.json",
+        "sha256": "2c1ba5f9f2c658b51e95a8c674e6bc34cfcf26093c653197b16713a79245b7e9",
+        "signing_material_present_only_in_API": true,
+        "model_credential_values_empty": true
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/output-browser-r01.json",
+        "sha256": "ca8fd79bda3c641de65b665a02ac04391da5fc0555abf73146f9aa00b2e87b07",
+        "signing_material_present_only_in_API": true,
+        "model_credential_values_empty": true
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/output-web-r01.json",
+        "sha256": "3bdb42405e322ee62628ba900f0feaf5fd662324c3ac53f5e4ad5e6ea55535dd",
+        "signing_material_present_only_in_API": true,
+        "model_credential_values_empty": true
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/configs/output-renderer-r01.json",
+        "sha256": "ee9e520c46d4b3e3b5173699aebef7079e8da6e127b87511082484a1b22fc794",
+        "signing_material_present_only_in_API": true,
+        "model_credential_values_empty": true
+      }
+    ],
+    "programs": [
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/api-output-r03",
+        "sha256": "5c1fceb5391c13ae67e043ea371c61a8fbe36777a5c7972b449eaa6e013c52fa",
+        "mode": "0o755",
+        "bytes": 109274690
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/s3-host-daemon-output-r03.test",
+        "sha256": "081f2722094b90b0b642df63842f7290d5b7936bffb2b55a2d32c7f44cb37555",
+        "mode": "0o755",
+        "bytes": 44053538
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/s3-host-cli-output-r03",
+        "sha256": "438b64ac1137bb3a6dd87dcef12be1aaf1fb1d3713a16f213e1364bca461e70c",
+        "mode": "0o755",
+        "bytes": 36977138
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-output-20261119-tm89sjgy/build/s3-host-provider-output-r01",
+        "sha256": "aa7b599288195ccc6dce344bb68c279075ca29afe28f7118baaa50c0ecb9f9f3",
+        "mode": "0o755",
+        "bytes": 5547906
+      }
+    ],
+    "production_artifacts_manifest_sha256": "3b391875fa339923979ad71af674e3df70c8d1b59e05e46aefef88422cf995ce",
+    "production_artifacts_count": 1686,
+    "admission_audit_sha256": "d255af6500da0b5a888b76d6d0228f197ab4ffe50df8748398047eda9bc9850f",
+    "readiness_started_by_main_after_admission": true,
+    "runtime_test_body_executed_by_reviewer": false
+  },
+  "remaining_scope": [
+    "Actual whole2top16 controlled Provider/production Web/Desktop output acceptance",
+    "Original S3 R02/R04/R08/R09/full-S3 remaining requirements as owned by Main",
+    "Main integration and authoritative spec sync; ROOT product/task/git remain untouched by reviewer"
+  ]
+}

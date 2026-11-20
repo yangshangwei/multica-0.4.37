@@ -1,0 +1,269 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-20",
+  "observed_at": "2026-11-20T03:35:35.801137+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "role": "trellis-research",
+  "disposition": "NO_NEW_TEST_ONLY_STIMULUS_JUSTIFIED_FOR_THESE_FOUR_CASES",
+  "cases": [
+    "TC-01",
+    "TC-03",
+    "TC-04",
+    "TC-14"
+  ],
+  "parent_counts": {
+    "PASS": 9,
+    "PARTIAL": 11,
+    "NOT_RUN": 4
+  },
+  "case_status_changes": {},
+  "source": {
+    "initial_head_supplied_by_main": "fc51c498c9270758974c5bafd0cbca6c391a9891",
+    "observed_head": "624eb71b96de1f1945d269c47378d6a31005ccd9",
+    "ref": "refs/heads/codex/cross-workspace-collaboration",
+    "method": "read .git/HEAD and loose ref; no Git command",
+    "runtime_claim": "none; historical accepted tests keep their original source"
+  },
+  "minimum_inputs": {
+    "TC-01": [
+      "meaning of mandatory completeness",
+      "exact fields",
+      "PAY template/project or global scope",
+      "creation or later-stage enforcement point",
+      "existing-incomplete-issue handling if enforced"
+    ],
+    "TC-03": [
+      "PAY P1 enum mapping",
+      "triage trigger",
+      "notification recipient rule",
+      "required content/destination",
+      "delivery/replay expectation"
+    ],
+    "TC-04": [
+      "separately authorized actual Provider/model/configuration and finite budget",
+      "PAY source/input evidence",
+      "analysis basis/risk/confidence rubric and reviewer"
+    ],
+    "TC-14": [
+      "separately authorized actual Provider scope and finite budget",
+      "permitted timeout/failure injection",
+      "expected actual failure/recovery identities",
+      "if packaged-client scope selected: OS and pinned executable/ASAR/CLI plus matched source/API and exact client assertion"
+    ]
+  },
+  "existing_notification_contracts": {
+    "create": "assigned to different handler only",
+    "transfer": "transferred to current valid participants excluding actor",
+    "metadata": "silent except added human body mentions",
+    "read": "existing account notification list/read/archive"
+  },
+  "installed_main": {
+    "existing_entrypoint": "e2e/collaboration-host-installed.spec.ts",
+    "platforms": "explicit local Linux image or native Windows/macOS executable",
+    "stimulus": "controlled host Stop, restart while paused, explicit Resume of mixed-author inputs",
+    "not_proved": "PAY real-model timeout or analysis quality",
+    "selected_for_execution": false
+  },
+  "actions": {
+    "new_tests": 0,
+    "runtime_tests": 0,
+    "builds": 0,
+    "database_api_browser_provider_operations": 0,
+    "services_started": 0,
+    "git_commands": 0,
+    "credential_inspection": false,
+    "scope": "research pair only"
+  },
+  "references": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb",
+      "bytes": 25118
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+      "sha256": "2bf85b61aaf95be480dc43168480944d3c9d6202c63679c02da70ddb0f04b140",
+      "bytes": 9395
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
+      "sha256": "0257abd299d71605e28b620733b2624fea0712ea02411c285320a9e694a39ce9",
+      "bytes": 5875
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.md",
+      "sha256": "739529f40a04f076669b85c80f019c92bf72a836948d636f8b2862e577c00be1",
+      "bytes": 8299
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-independent-check-20261120.md",
+      "sha256": "80633d100da5b76d19afead83dd99642269756daa3aeda45afc39d28b6051136",
+      "bytes": 8572
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/report.md",
+      "sha256": "7d8c5d884b8023e8c2123954a4d9362607a0bba6ee25705fa39c1e2dc8ca8da2",
+      "bytes": 2807
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-timeout-proof/report.md",
+      "sha256": "ffb0264996dbf7700cb934fe66e0a54989928147d6d778e78bcb582590503a60",
+      "bytes": 3638
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/research/s3-final-acceptance-preparation-20261119.md",
+      "sha256": "06465203aac11eb1fbd375e43d6052d09d8581faecf3760cb1c8173fe12ef58d",
+      "bytes": 17257
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.md",
+      "sha256": "d609ee11bd1e4e6a212270e3c6129c1cdcb9d88bb78813e910a7e5c6641e4baa",
+      "bytes": 21127
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-foundation.md",
+      "sha256": "f867b6f7cb6ce34c013a3bc1c5266381d2602d756c82aa9bc25a332952f6f099",
+      "bytes": 41981
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-source-editing.md",
+      "sha256": "94a728667fc9776889fb556c313a3c39a5aaad40d739861fba61c7887610d95c",
+      "bytes": 20327
+    },
+    {
+      "path": ".trellis/spec/core/frontend/collaboration-workbench.md",
+      "sha256": "3d66d364690f24790bda36678e42615331b560e66af5d79186b80908c3c2ca5c",
+      "bytes": 24201
+    },
+    {
+      "path": ".trellis/spec/web/frontend/collaboration-closure-qa.md",
+      "sha256": "f8d0a8ab8e38c558f067b392323ed4ef146dfdff2643566a5b066ec5e3f2f3ce",
+      "bytes": 10003
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-host-execution.md",
+      "sha256": "fe0bec2151adfd3f4093af5e971ae8e63709c00c78da220ed4c082d7818244a5",
+      "bytes": 42698
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-context-experiments.md",
+      "sha256": "d5787194053ad8269075d6c9222d367d2221500168dcd540a199b58e6ad8027e",
+      "bytes": 21897
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "bytes": 151979
+    },
+    {
+      "path": "server/internal/handler/collaboration_creation.go",
+      "sha256": "53813f983658ba3826639627fd12ff4fbe33159b766b7020622c4ab9109934ab",
+      "bytes": 6658
+    },
+    {
+      "path": "server/internal/service/collaboration.go",
+      "sha256": "0ca75701bab3d2dc5051d6c4ca7de1a0e58b7bc010191fcb8f3b7f18b7c16ad4",
+      "bytes": 19961
+    },
+    {
+      "path": "server/internal/service/collaboration_creation_fields.go",
+      "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+      "bytes": 7356
+    },
+    {
+      "path": "packages/core/collaboration/creation-schema.ts",
+      "sha256": "bf3ae63f755ac053e64a4b2cb05eb3b3022665436ccfc6fa99f84b93834e664c",
+      "bytes": 5886
+    },
+    {
+      "path": "server/internal/service/collaboration_source_fields_test.go",
+      "sha256": "ac335a446057ea2dcc62590a6cefcc22140efa08e773260a5fcceb84d7115825",
+      "bytes": 17320
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+      "bytes": 37070
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_workflow.sql",
+      "sha256": "cddcaa14a65a97cd8bae6de882b96e17876fd75ec723dc6f3189182ecb34c1a4",
+      "bytes": 5067
+    },
+    {
+      "path": "server/internal/service/collaboration_edit.go",
+      "sha256": "e4080186fb568572382f0a6b723ae50bd1904ae7e34f63f1af49645bee1f1783",
+      "bytes": 7404
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications.go",
+      "sha256": "99c7a0f1a52c347062432fac16890daa5e1395b41b37bcec5f4eb8d47c605ed4",
+      "bytes": 9163
+    },
+    {
+      "path": "server/internal/handler/collaboration_notifications.go",
+      "sha256": "54fdbde5ad586469492113a1060ae3a06ff52d8cb7bf55046379713da4fc8f29",
+      "bytes": 2413
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow_test.go",
+      "sha256": "a12592caa0d2ac967b6262637a7bb6534f59db2af2f42695a367ed66e9d84253",
+      "bytes": 38372
+    },
+    {
+      "path": "server/internal/service/collaboration_edit_test.go",
+      "sha256": "c25852e3946bdfe561b33422ca562ae5c692aca7a05fd8bedaf1486f686b5c30",
+      "bytes": 28109
+    },
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "sha256": "8feb6edab5fd20766794210edd9c8e479eb428a6c99cb67feb4799ed1aa4e9c2",
+      "bytes": 50227
+    },
+    {
+      "path": "packages/core/issues/config/priority.ts",
+      "sha256": "642078f04c1822be48ce999f1bf85d07c887269eee2c1aae55272a5e1fe78f5f",
+      "bytes": 1652
+    },
+    {
+      "path": "server/cmd/server/collaboration_machine_completion_refusal_test.go",
+      "sha256": "d09149e01bcd2ef1aecf2a9754c91ab220b70753bbc2e6d32bbd408ee6a5964d",
+      "bytes": 18163
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_timeout_recovery_test.go",
+      "sha256": "2e3ebf0c906058855cb399ce717051b20a4443ee90778c36823b74c8ab0bb5f6",
+      "bytes": 7535
+    },
+    {
+      "path": "e2e/collaboration-timeout-recovery.spec.ts",
+      "sha256": "0e1da7d2273050be7aceb105d468785a613dbb4a17cc1c8f70cad9d29fb37ce8",
+      "bytes": 16757
+    },
+    {
+      "path": "e2e/collaboration-runtime-output.spec.ts",
+      "sha256": "a0df987a7ad31270b452f93e405115971dda23f6866016cb2b47d2ed5a1aa071",
+      "bytes": 1252
+    },
+    {
+      "path": "server/internal/daemon/collaborationrun/host_agentintegration_test.go",
+      "sha256": "851fbd36c86b56ae1217444cbd43b0a46b5a5e0a59586adef02655ad857c69cf",
+      "bytes": 10709
+    },
+    {
+      "path": "server/cmd/server/ac43_real_provider_test.go",
+      "sha256": "ae4acc02dae8a01a99a26349d3dfa394087b55e61dafcd76dac091f2834db00e",
+      "bytes": 21296
+    },
+    {
+      "path": "e2e/collaboration-host-installed.spec.ts",
+      "sha256": "4f58f7b8dc04e50a17bfdffaf15dad571f7b6013333cdc1c893ccdab08426157",
+      "bytes": 18239
+    }
+  ],
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-semantics-20261120.md",
+    "sha256": "5b4e8ca6b6b4de4e80b8998b726cdd6e3d3094cff6488582d4b341e95cbff869",
+    "bytes": 13935
+  }
+}

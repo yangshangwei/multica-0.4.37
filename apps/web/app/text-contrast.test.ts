@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve, join, relative } from "node:path";
 import { describe, expect, it } from "vitest";
+import { buttonVariants } from "@multica/ui/components/ui/button";
 
 /**
  * Is every tone the product paints text and marks with actually legible, and is
@@ -391,6 +392,31 @@ function findTransparencyAsHierarchy(source: string): { line: number; found: str
 // ── the contract ───────────────────────────────────────────────────────────
 
 describe("text contrast", () => {
+  describe("filled brand controls", () => {
+    it.each(["light", "dark"])("keeps normal-size text readable in every enabled %s state", (theme) => {
+      const declarations = readBlock(tokensCss(), theme === "dark" ? ".dark" : ":root");
+      const foreground = oklchToRgb(resolveToken(declarations, "--brand-foreground"));
+      const classes = buttonVariants({ variant: "brand" }).split(/\s+/);
+      for (const prefix of ["", "hover:", "active:", "aria-expanded:"]) {
+        const utility = classes.find((value) => value.startsWith(`${prefix}bg-brand`));
+        expect(utility, `background for ${prefix || "default"}`).toBeDefined();
+        const [token, alphaText] = utility!.slice(prefix.length + 3).split("/");
+        const fill = oklchToRgb(resolveToken(declarations, `--${token}`));
+        const alpha = alphaText === undefined ? 1 : Number(alphaText) / 100;
+        for (const surface of backgroundTokens) {
+          const behind = oklchToRgb(resolveToken(declarations, surface));
+          const background: Rgb = [
+            Math.round(fill[0] * alpha + behind[0] * (1 - alpha)),
+            Math.round(fill[1] * alpha + behind[1] * (1 - alpha)),
+            Math.round(fill[2] * alpha + behind[2] * (1 - alpha)),
+          ];
+          expect(contrastRatio(foreground, background), `${theme} ${utility} on ${surface}`)
+            .toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+        }
+      }
+    });
+  });
+
   describe("--muted-foreground, the floor for text", () => {
     it("clears WCAG AA on every light surface", () => {
       expectTonePasses(readBlock(tokensCss(), ":root"), "--muted-foreground", WCAG_AA_NORMAL_TEXT);
@@ -431,7 +457,7 @@ describe("text contrast", () => {
   // correct while it matches the source, so drift here is a bug in itself — a
   // tone missing from the copy silently inherits its `.dark` value on a white
   // surface.
-  it.each(["--muted-foreground", "--faint-foreground"])(
+  it.each(["--muted-foreground", "--faint-foreground", "--brand", "--brand-hover", "--brand-active", "--brand-foreground"])(
     "keeps the landing-light copy of %s in sync with the light token",
     (tone) => {
       expect(resolveToken(readBlock(landingCss(), ".landing-light"), tone)).toBe(

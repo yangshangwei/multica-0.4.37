@@ -113,6 +113,177 @@ rewritten="$(bash -c 'source "$1"; database_url_with_name "$2" "$3"' _ \
 [ "$rewritten" = 'postgres://dev:p%40ss@127.0.0.1:55432/new_db?sslmode=require&application_name=dev' ] \
   || fail "database URL rewrite changed more than the database name: $rewritten"
 
+# A cold explicit endpoint must never fall back to creating its database in
+# the shared Compose server. Exercise both public entry points with fake
+# transports; no service or developer database is touched by these probes.
+database_probe="$tmp_dir/database-probe"
+mkdir -p "$database_probe/bin"
+cat > "$database_probe/bin/psql" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\n' "$*" >> "$DATABASE_PROBE/psql.log"
+count=0
+[ ! -f "$DATABASE_PROBE/attempts" ] || count="$(cat "$DATABASE_PROBE/attempts")"
+count=$((count + 1))
+printf '%s\n' "$count" > "$DATABASE_PROBE/attempts"
+case "${DATABASE_PROBE_MODE:-ready}" in
+  delayed) [ "$count" -gt 1 ] || exit 2 ;;
+  unavailable|bad-auth) exit 2 ;;
+  shared) [ -f "$DATABASE_PROBE/shared-started" ] || exit 2 ;;
+esac
+if [[ " $* " == *' -c '* || " $* " == *' -tAc '* || " $* " == *' -Atqc '* ]]; then
+  case "$*" in
+    *pg_database*) ;;
+    *'CREATE DATABASE'*) printf '%s\n' "$*" >> "$DATABASE_PROBE/created.log" ;;
+    *) printf '1\n' ;;
+  esac
+else
+  cat >> "$DATABASE_PROBE/sql.log"
+  printf '%s\n' "$*" >> "$DATABASE_PROBE/created.log"
+fi
+EOF
+cat > "$database_probe/bin/pg_isready" <<'EOF'
+#!/usr/bin/env bash
+printf '%s\n' "$*" >> "$DATABASE_PROBE/readiness.log"
+[ "${DATABASE_PROBE_MODE:-ready}" != bad-auth ] || exit 0
+exit 2
+EOF
+cat > "$database_probe/bin/docker" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\n' "$*" >> "$DATABASE_PROBE/docker.log"
+if [ "$*" = 'compose up -d postgres' ]; then
+  touch "$DATABASE_PROBE/shared-started"
+elif [[ "$*" == *pg_isready* ]]; then
+  exit 0
+elif [[ "$*" == *'CREATE DATABASE'* ]]; then
+  touch "$DATABASE_PROBE/wrong-server-create"
+fi
+EOF
+cat > "$database_probe/bin/sleep" <<'EOF'
+#!/usr/bin/env bash
+exit 0
+EOF
+chmod +x "$database_probe/bin/"*
+
+probe_database() {
+  local entry=$1 label=$2 mode=$3 url=$4
+  local probe="$database_probe/$label"
+  mkdir -p "$probe"
+  {
+    printf 'DATABASE_URL=%q\n' "$url"
+    printf 'POSTGRES_DB=stale_env_database\nPOSTGRES_PORT=5432\n'
+    printf 'POSTGRES_USER=stale_user\nPOSTGRES_PASSWORD=stale_password\n'
+  } > "$probe/config.env"
+  if [ "$entry" = registry ]; then
+    DATABASE_PROBE="$probe" DATABASE_PROBE_MODE="$mode" PATH="$database_probe/bin:$PATH" \
+      bash -c 'source "$1"; ENV_FILE=$2; load_env_file "$ENV_FILE"; ensure_database' \
+      _ "$root_dir/scripts/dev-env.sh" "$probe/config.env" > "$probe/output.log" 2>&1
+  else
+    DATABASE_PROBE="$probe" DATABASE_PROBE_MODE="$mode" PATH="$database_probe/bin:$PATH" \
+      bash "$root_dir/scripts/ensure-postgres.sh" "$probe/config.env" > "$probe/output.log" 2>&1
+  fi
+}
+
+for database_entry in registry standalone; do
+  label="$database_entry-delayed"
+  probe_database "$database_entry" "$label" delayed \
+    'postgres://actual:p%40ss@127.0.0.1:55432/actual_db?sslmode=disable' \
+    || fail "$database_entry did not wait for its explicit database endpoint"
+  [ ! -s "$database_probe/$label/docker.log" ] \
+    || fail "$database_entry started shared Docker for a nondefault endpoint"
+  require_contains "$database_probe/$label/psql.log" 'postgres://actual:p%40ss@127.0.0.1:55432/postgres?sslmode=disable'
+  require_contains "$database_probe/$label/created.log" 'actual_db'
+  if grep -Fq 'stale_env_database' "$database_probe/$label/created.log"; then
+    fail "$database_entry created POSTGRES_DB instead of the DATABASE_URL database"
+  fi
+done
+
+for mode in unavailable bad-auth; do
+  label="standalone-$mode"
+  status=0
+  probe_database standalone "$label" "$mode" \
+    'postgres://actual:private_password@127.0.0.1:55432/actual_db' || status=$?
+  [ "$status" -ne 0 ] || fail "$mode explicit endpoint was reported ready"
+  [ ! -s "$database_probe/$label/docker.log" ] || fail "$mode endpoint started shared Docker"
+  [ ! -s "$database_probe/$label/created.log" ] || fail "$mode endpoint created a database"
+  [ "$(cat "$database_probe/$label/attempts")" -le 30 ] || fail "$mode endpoint retry was unbounded"
+  if grep -Fq private_password "$database_probe/$label/output.log"; then
+    fail "$mode endpoint exposed URL credentials"
+  fi
+done
+
+probe_database standalone native-ready ready 'postgres://actual:p%40ss@localhost:5432/actual_db' \
+  || fail 'ready default endpoint was rejected'
+[ ! -s "$database_probe/native-ready/docker.log" ] || fail 'ready native endpoint started shared Docker'
+probe_database standalone shared-start shared 'postgres://actual:p%40ss@localhost:5432/actual_db' \
+  || fail 'default shared startup was lost'
+require_contains "$database_probe/shared-start/docker.log" 'compose up -d postgres'
+[ ! -e "$database_probe/shared-start/wrong-server-create" ] || fail 'shared startup provisioned through docker exec'
+require_contains "$database_probe/shared-start/created.log" actual_db
+
+status=0
+probe_database standalone native-auth bad-auth 'postgres://actual:private_password@localhost:5432/actual_db' || status=$?
+[ "$status" -ne 0 ] || fail 'default endpoint authentication failure was reported ready'
+[ ! -s "$database_probe/native-auth/docker.log" ] || fail 'authentication failure started a different server'
+
+for query in 'host=elsewhere' 'hostaddr=192.0.2.1' 'port=55432' 'dbname=other' 'service=other'; do
+  label="override-${query%%=*}"
+  status=0
+  probe_database standalone "$label" ready "postgres://actual:private_password@localhost:5432/actual_db?$query" || status=$?
+  [ "$status" -ne 0 ] || fail "ambiguous database routing override was accepted: ${query%%=*}"
+  [ ! -s "$database_probe/$label/docker.log" ] || fail 'routing override started shared Docker'
+  [ ! -s "$database_probe/$label/psql.log" ] || fail 'routing override connected before validation'
+done
+
+probe_database standalone ipv6 delayed 'postgresql://actual:p%40ss@[::1]:5432/actual_db' \
+  || fail 'explicit IPv6 endpoint was rejected'
+[ ! -s "$database_probe/ipv6/docker.log" ] || fail 'IPv6 endpoint started IPv4-only shared Docker'
+require_contains "$database_probe/ipv6/created.log" 'postgresql://actual:p%40ss@[::1]:5432/postgres'
+
+probe_database standalone remote ready 'postgres://actual:p%40ss@db.example.test:55432/actual_db' \
+  || fail 'configured remote database was not checked'
+[ ! -s "$database_probe/remote/docker.log" ] || fail 'remote endpoint started shared Docker'
+[ ! -s "$database_probe/remote/created.log" ] || fail 'remote verification created a database'
+require_contains "$database_probe/remote/psql.log" 'postgres://actual:p%40ss@db.example.test:55432/actual_db'
+
+probe_database registry remote-registry ready 'postgres://actual:p%40ss@db.example.test:55432/actual_db' \
+  || fail 'registry could not provision its explicitly selected remote database'
+[ ! -s "$database_probe/remote-registry/docker.log" ] || fail 'remote registry endpoint started Docker'
+require_contains "$database_probe/remote-registry/created.log" 'actual_db'
+require_contains "$database_probe/remote-registry/created.log" 'postgres://actual:p%40ss@db.example.test:55432/postgres'
+
+# cmd_up loads the registry after the source env. Provisioning must retain
+# that effective endpoint rather than source the older development URL again.
+registry_override="$database_probe/registry-override"
+mkdir -p "$registry_override"
+printf 'DATABASE_URL=postgres://stale:stale@localhost:5432/unowned_database\nPOSTGRES_DB=unowned_database\n' \
+  > "$registry_override/config.env"
+DATABASE_PROBE="$registry_override" DATABASE_PROBE_MODE=ready PATH="$database_probe/bin:$PATH" \
+  bash -c 'source "$1"; ENV_FILE=$2; load_env_file "$ENV_FILE"; export DATABASE_URL="postgres://actual:p%40ss@127.0.0.1:55432/registry_owned" POSTGRES_DB=registry_owned; ensure_database' \
+  _ "$root_dir/scripts/dev-env.sh" "$registry_override/config.env" > "$registry_override/output.log" 2>&1 \
+  || fail 'effective registry database could not be provisioned'
+require_contains "$registry_override/created.log" 'postgres://actual:p%40ss@127.0.0.1:55432/postgres'
+require_contains "$registry_override/created.log" registry_owned
+if grep -Fq unowned_database "$registry_override/psql.log"; then
+  fail 'provisioning reloaded the source env over the effective registry database'
+fi
+
+probe_database standalone bounded ready 'postgres://actual:p%40ss@127.0.0.1:55432/actual_db?connect_timeout=0' \
+  || fail 'explicit connect timeout could not be bounded'
+require_contains "$database_probe/bounded/psql.log" 'connect_timeout=3'
+if grep -Fq connect_timeout=0 "$database_probe/bounded/psql.log"; then
+  fail 'an unbounded URL timeout overrode the connection probe budget'
+fi
+
+probe_database standalone query-encoding ready 'postgres://actual:p%40ss@127.0.0.1:55432/actual_db?application_name=probe%20name&options=-c%20statement_timeout%3D1000&connect_timeout=0' \
+  || fail 'encoded non-routing connection options were rejected'
+require_contains "$database_probe/query-encoding/psql.log" 'application_name=probe%20name&options=-c%20statement_timeout%3D1000&connect_timeout=3'
+
+probe_database standalone legacy ready '' || fail 'legacy no-URL setup was rejected'
+require_contains "$database_probe/legacy/docker.log" 'compose up -d postgres'
+require_contains "$database_probe/legacy/docker.log" 'CREATE DATABASE "stale_env_database"'
+
 # ---------------------------------------------------------------------------
 # A registered environment is visible to both renderings, and the JSON one
 # parses — agents read it, so a stray log line in it is a broken contract.

@@ -16,3 +16,9 @@
   pointer-events: none;
   height: 0;
 }
+
+/* Opt-in: a creation prompt should read as a hint, not as a title already typed. */
+.title-editor.title-editor-quiet-placeholder .is-editor-empty:first-child::before {
+  font-size: var(--text-body);
+  font-weight: 400;
+}

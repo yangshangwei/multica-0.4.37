@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
-import { collaborationActivityOptions, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationActivityOptions, type CollaborationIssue, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath, type AccountDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { AppLink } from "../navigation";
@@ -9,14 +9,18 @@ import { useLocale, useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import type { CollaborationPanelStatusChange } from "./panel-status";
 import { useCollaborationStageLabels } from "./stage-labels";
+import { CollaborationInformationHistory } from "./information-history";
+import { useCollaborationLabels } from "./labels";
 
-export function CollaborationActivity({ scope, destination, onStatusChange }: { scope: CollaborationScope; destination: AccountDestination; onStatusChange?: CollaborationPanelStatusChange }) {
+export function CollaborationActivity({ scope, destination, issue, active = true, onStatusChange }: { scope: CollaborationScope; destination: AccountDestination; issue?: CollaborationIssue; active?: boolean; onStatusChange?: CollaborationPanelStatusChange }) {
   const { t } = useT("collaboration");
   const locale = useLocale();
   const stageLabels = useCollaborationStageLabels();
+  const labels = useCollaborationLabels();
+  const [historyAttention, setHistoryAttention] = useState(false);
   const client = useQueryClient();
   const query = useInfiniteQuery(collaborationActivityOptions(client, scope, destination.issueId!));
-  useEffect(() => { onStatusChange?.({ attention: query.isError }); }, [onStatusChange, query.isError]);
+  useEffect(() => { onStatusChange?.({ attention: query.isError || historyAttention }); }, [onStatusChange, query.isError, historyAttention]);
   const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
   return <section aria-label={t(($) => $.activity.title)} className="min-w-0 space-y-4">
     <h3 className="text-body font-semibold">{t(($) => $.activity.title)}</h3>
@@ -35,6 +39,14 @@ export function CollaborationActivity({ scope, destination, onStatusChange }: { 
         <dd>{field === "current" ? stageLabels.stage(value) : field === "step" ? stageLabels.codeStep(value) : value}</dd>
       </div>)}</dl>}
       {item.details_available && item.kind === "iteration_changed" && item.note && <p className="text-body whitespace-pre-wrap [overflow-wrap:anywhere]">{item.note}</p>}
+      {item.details_available && item.information_repair && <dl className="space-y-2 text-body [overflow-wrap:anywhere]">
+        <div><dt className="text-caption text-muted-foreground">{t(($) => $.information.history.previousStatus)}</dt><dd>{labels.status(item.information_repair.previous_status)}</dd></div>
+        <div><dt className="text-caption text-muted-foreground">{t(($) => $.information.history.restoredStatus)}</dt><dd>{labels.status(item.information_repair.restored_status)}</dd></div>
+        <div><dt className="text-caption text-muted-foreground">{t(($) => $.information.history.to)}</dt><dd className="select-text">{item.information_repair.target_user_id}</dd></div>
+        <div><dt className="text-caption text-muted-foreground">{t(($) => $.information.history.recordId)}</dt><dd className="select-text">{item.information_repair.handoff_id}</dd></div>
+        <div><dt className="text-caption text-muted-foreground">{t(($) => $.information.repair.basis)}</dt><dd>{item.information_repair.basis.kind === "human_selected" ? t(($) => $.information.repair.humanBasis)
+          : item.information_repair.basis.kind === "historical_information" ? t(($) => $.information.repair.historicalBasis, { status: labels.status(item.information_repair.restored_status) }) : t(($) => $.information.repair.pendingBasis)}</dd></div>
+      </dl>}
       {item.handoff ? <div className="space-y-2 text-body">
         <p>{t(($) => $.activity.handoff, { from: item.handoff.from?.name ?? t(($) => $.detail.unknownAuthor), to: item.handoff.to?.name ?? t(($) => $.detail.unknownAuthor) })}</p>
         {item.handoff.note && <RichContent resourcePolicy="restricted" content={item.handoff.note} />}
@@ -52,5 +64,6 @@ export function CollaborationActivity({ scope, destination, onStatusChange }: { 
       </div>)}</dl>
     </li>)}</ol>
     {query.hasNextPage && <Button variant="outline" className="pointer-coarse:min-h-11" disabled={query.isFetchingNextPage} onClick={() => void query.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
+    <CollaborationInformationHistory scope={scope} issueId={destination.issueId!} issue={issue} active={active} onAttentionChange={setHistoryAttention} />
   </section>;
 }

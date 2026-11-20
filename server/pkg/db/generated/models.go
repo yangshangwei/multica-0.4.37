@@ -761,6 +761,9 @@ type CollaborationAttachment struct {
 	ContentSha256     pgtype.Text        `json:"content_sha256"`
 	EncryptionKey     []byte             `json:"encryption_key"`
 	DiscardedAt       pgtype.Timestamptz `json:"discarded_at"`
+	UploaderAgentID   pgtype.UUID        `json:"uploader_agent_id"`
+	RunID             pgtype.UUID        `json:"run_id"`
+	AttemptSeq        pgtype.Int8        `json:"attempt_seq"`
 }
 
 type CollaborationAttachmentReference struct {
@@ -2184,18 +2187,21 @@ type IssueDependency struct {
 }
 
 type IssueHandoff struct {
-	ID              pgtype.UUID        `json:"id"`
-	IssueID         pgtype.UUID        `json:"issue_id"`
-	ActorUserID     pgtype.UUID        `json:"actor_user_id"`
-	FromUserID      pgtype.UUID        `json:"from_user_id"`
-	ToUserID        pgtype.UUID        `json:"to_user_id"`
-	Purpose         string             `json:"purpose"`
-	Note            string             `json:"note"`
-	RequesterUserID pgtype.UUID        `json:"requester_user_id"`
-	ParentRequestID pgtype.UUID        `json:"parent_request_id"`
-	PreviousStatus  string             `json:"previous_status"`
-	Resolution      string             `json:"resolution"`
-	CreatedAt       pgtype.Timestamptz `json:"created_at"`
+	ID                          pgtype.UUID        `json:"id"`
+	IssueID                     pgtype.UUID        `json:"issue_id"`
+	ActorUserID                 pgtype.UUID        `json:"actor_user_id"`
+	FromUserID                  pgtype.UUID        `json:"from_user_id"`
+	ToUserID                    pgtype.UUID        `json:"to_user_id"`
+	Purpose                     string             `json:"purpose"`
+	Note                        string             `json:"note"`
+	RequesterUserID             pgtype.UUID        `json:"requester_user_id"`
+	ParentRequestID             pgtype.UUID        `json:"parent_request_id"`
+	PreviousStatus              string             `json:"previous_status"`
+	Resolution                  string             `json:"resolution"`
+	CreatedAt                   pgtype.Timestamptz `json:"created_at"`
+	UnblockCondition            pgtype.Text        `json:"unblock_condition"`
+	EstimatedResolutionAt       pgtype.Timestamptz `json:"estimated_resolution_at"`
+	SupersededByRepairHandoffID pgtype.UUID        `json:"superseded_by_repair_handoff_id"`
 }
 
 type IssueLabel struct {

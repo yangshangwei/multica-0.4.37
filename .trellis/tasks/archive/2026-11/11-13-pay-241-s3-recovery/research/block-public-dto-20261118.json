@@ -1,0 +1,461 @@
+{
+  "at": "2026-11-18T08:36:45.532289+00:00",
+  "owner": "/root/s3_block_implement",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "PUBLIC_WIRE_FROZEN_FROM_AUTHORED_SOURCE_STATIC_RUNTIME_PENDING",
+  "work_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01",
+  "source_refs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_state.go",
+      "sha256": "61f9aae420f26457068e1be1a90ca32a054072bad766ce6464e16eb154222228",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "sha256": "72d5877a0095c877300bfc19eeadbf62738d4beadf38a78102efb5c1587b7579",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "sha256": "849ad575348a8e9a1096e9652f6638ba12dd3ca529b0d161ade95a3c00d3c2a4",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_handoff.go",
+      "sha256": "771011a05b678e861236cea5ca19d88297931538ff949a72057fc3d3de872c9a",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_lifecycle.go",
+      "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_creation_options.go",
+      "sha256": "92b07882d78146fa9d063710e12cd4b959904b210dd67915a8730485f5dff0e7",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/handler/collaboration_information.go",
+      "sha256": "89e5da90aefc99735860ec344b559bf6e720e0154416d0b2c283a5052ad0d863",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/handler/collaboration_workflow.go",
+      "sha256": "c1e61b32fae7005cb19527b1cd442d8a31568dd5e72ef9af7456870eb2690f2e",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/handler/collaboration.go",
+      "sha256": "6e27121de2763be0b9f033e8e7ad28e5c5ce4bf8370a1c0a3e0ab16d43a7fe3a",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/handler/collaboration_creation.go",
+      "sha256": "53813f983658ba3826639627fd12ff4fbe33159b766b7020622c4ab9109934ab",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/cmd/server/router.go",
+      "sha256": "f35ca9f952d9d75619316db05f7a98522e36d5a2576612ade2e9f31ff44a1b8c",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/pkg/db/queries/collaboration_information.sql",
+      "sha256": "791e2fd02326940f028d3274822a436498439d4a4f2edbc721fd1bb4c4c3a57a",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/pkg/db/queries/collaboration_workflow.sql",
+      "sha256": "cddcaa14a65a97cd8bae6de882b96e17876fd75ec723dc6f3189182ecb34c1a4",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "3a5f0168d469627b7d4b61358203b0a97b7858406dd471ad157bcdc6d4ecdf80",
+      "mode": "0o644"
+    }
+  ],
+  "actual_public_struct_declarations": [
+    {
+      "name": "CollaborationInformationBlock",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_state.go",
+      "declaration": "type CollaborationInformationBlock struct {\n\tProtocolVersion       int     `json:\"protocol_version\"`\n\tState                 string  `json:\"state\"`\n\tUnblockCondition      *string `json:\"unblock_condition,omitempty\"`\n\tEstimatedResolutionAt *string `json:\"estimated_resolution_at,omitempty\"`\n\tReasonCode            *string `json:\"reason_code,omitempty\"`\n}",
+      "declaration_sha256": "5a9cea592634fc8e6d56dfe2bbaf59528dcd75fe26381d1be083b53cd627da34"
+    },
+    {
+      "name": "CollaborationInformationAction",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_state.go",
+      "declaration": "type CollaborationInformationAction struct {\n\tAvailable bool    `json:\"available\"`\n\tCode      *string `json:\"code\"`\n}",
+      "declaration_sha256": "f70767f5cc608ac32289684ba9aade14380c5f7ef3e750f9d0160bc69370831b"
+    },
+    {
+      "name": "CollaborationInformationActions",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_state.go",
+      "declaration": "type CollaborationInformationActions struct {\n\tRequest CollaborationInformationAction `json:\"request\"`\n\tReturn  CollaborationInformationAction `json:\"return\"`\n\tRepair  CollaborationInformationAction `json:\"repair\"`\n}",
+      "declaration_sha256": "6ec25d852ec7c2f4c1e4b90fadb73f0d9f2603386130535e3bff1a8bf7f731c3"
+    },
+    {
+      "name": "CollaborationInformationWorkflow",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_state.go",
+      "declaration": "type CollaborationInformationWorkflow struct {\n\tProtocolVersion int                             `json:\"protocol_version\"`\n\tManaged         bool                            `json:\"managed\"`\n\tContextVersion  string                          `json:\"context_version\"`\n\tActiveRequestID pgtype.UUID                     `json:\"active_request_id\"`\n\tRecordState     string                          `json:\"record_state\"`\n\tActions         CollaborationInformationActions `json:\"actions\"`\n}",
+      "declaration_sha256": "6d156571af524ab5a767a300284b936415bfc34fbeec9a28517d1e74b9e29ba5"
+    },
+    {
+      "name": "CollaborationInformationOrigin",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationOrigin struct {\n\tOriginRequestID pgtype.UUID `json:\"origin_request_id\"`\n\tOriginEventID   pgtype.UUID `json:\"origin_event_id\"`\n\tStatus          string      `json:\"status\"`\n}",
+      "declaration_sha256": "bf64d0ecde6a6fcc9316d5466e6418f55836ca69c09bb48780781a19df18e8a2"
+    },
+    {
+      "name": "CollaborationInformationPending",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationPending struct {\n\tSubmissionID      pgtype.UUID `json:\"submission_id\"`\n\tSubmissionEventID pgtype.UUID `json:\"submission_event_id\"`\n\tCreatorUserID     pgtype.UUID `json:\"creator_user_id\"`\n}",
+      "declaration_sha256": "178d416d2f4d908334ba83cb607f84cd113d60e88142ad48aae2690a54bce8ce"
+    },
+    {
+      "name": "CollaborationInformationRepairContext",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationRepairContext struct {\n\tProtocolVersion       int                              `json:\"protocol_version\"`\n\tContextVersion        string                           `json:\"context_version\"`\n\tActiveRequestID       pgtype.UUID                      `json:\"active_request_id\"`\n\tHistoricalOrigin      *CollaborationInformationOrigin  `json:\"historical_origin\"`\n\tPendingSubmission     *CollaborationInformationPending `json:\"pending_submission\"`\n\tHumanSelectionAllowed bool                             `json:\"human_selection_allowed\"`\n}",
+      "declaration_sha256": "6249d6bf1f9bd6290a08e89a4fd1348f7e5bac5ef093a85fc0a5808364ad063c"
+    },
+    {
+      "name": "CollaborationInformationRepairBasis",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationRepairBasis struct {\n\tKind              string       `json:\"kind\"`\n\tOriginRequestID   *pgtype.UUID `json:\"origin_request_id,omitempty\"`\n\tOriginEventID     *pgtype.UUID `json:\"origin_event_id,omitempty\"`\n\tSubmissionID      *pgtype.UUID `json:\"submission_id,omitempty\"`\n\tSubmissionEventID *pgtype.UUID `json:\"submission_event_id,omitempty\"`\n}",
+      "declaration_sha256": "6d423ae093bfc273675e4a3094444b5b7d62fc0838b914aa87355e6710a9dcac"
+    },
+    {
+      "name": "CollaborationInformationRepairSelection",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationRepairSelection struct {\n\tContextVersion  string                              `json:\"context_version\"`\n\tActiveRequestID pgtype.UUID                         `json:\"active_request_id\"`\n\tBasis           CollaborationInformationRepairBasis `json:\"basis\"`\n}",
+      "declaration_sha256": "c77f372e52957960469bb0186d9e3b4255d42d23131fbd0da61408cdf1e301a2"
+    },
+    {
+      "name": "CollaborationInformationRepairParams",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationRepairParams struct {\n\tCollaborationTransferParams\n\tExpectedStatus       string\n\tStatusOptionsVersion string\n\tInformationRepair    CollaborationInformationRepairSelection\n}",
+      "declaration_sha256": "33123b3918bb583e1bb91a236a907ba268c3cb36653f67b804a644a14c776ef6"
+    },
+    {
+      "name": "CollaborationInformationRepairConfirmation",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_repair.go",
+      "declaration": "type CollaborationInformationRepairConfirmation struct {\n\tRepairHandoffID      pgtype.UUID `json:\"repair_handoff_id\"`\n\tPriorActiveRequestID pgtype.UUID `json:\"prior_active_request_id\"`\n\tStatus               string      `json:\"status\"`\n\tHandlerUserID        pgtype.UUID `json:\"handler_user_id\"`\n\tSupersededCount      string      `json:\"superseded_count\"`\n}",
+      "declaration_sha256": "82331b24838054193f8699f99bf3aced3b75ce76f909f30214142dfc6359dc0f"
+    },
+    {
+      "name": "CollaborationInformationProvenance",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationProvenance struct {\n\tState         string      `json:\"state\"`\n\tEventID       pgtype.UUID `json:\"event_id\"`\n\tEventSequence *string     `json:\"event_sequence\"`\n\tReasonCode    *string     `json:\"reason_code,omitempty\"`\n}",
+      "declaration_sha256": "77d63c3ea56511303e552263c0a329fdabf036cfac6e98a63250ae6d185a5f25"
+    },
+    {
+      "name": "CollaborationInformationTuple",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationTuple struct {\n\tCreatedAt string      `json:\"created_at\"`\n\tHandoffID pgtype.UUID `json:\"handoff_id\"`\n}",
+      "declaration_sha256": "8e8a8855223fa13f36edfb41ab879199c0f7f6f87f3e4aa73d1edcfab8161949"
+    },
+    {
+      "name": "CollaborationInformationHistoryItem",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationHistoryItem struct {\n\tKind       string\n\tHandoffID  pgtype.UUID\n\tCreatedAt  string\n\tProvenance CollaborationInformationProvenance\n\trow        db.IssueHandoff\n\trestored   *string\n\tfallback   *bool\n\trepair     *informationRepairHistoryFacts\n}",
+      "declaration_sha256": "d1530666036dea675f53ef6ef1f2208b62bb820d9eb3557a6bfa7e4a16c8fd2b"
+    },
+    {
+      "name": "CollaborationInformationAffectedItem",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationAffectedItem struct {\n\tRequestID                   pgtype.UUID                        `json:\"request_id\"`\n\tRequestEventID              pgtype.UUID                        `json:\"request_event_id\"`\n\tProvenance                  CollaborationInformationProvenance `json:\"provenance\"`\n\tResolution                  string                             `json:\"resolution\"`\n\tSupersededByRepairHandoffID pgtype.UUID                        `json:\"superseded_by_repair_handoff_id\"`\n}",
+      "declaration_sha256": "f33c49b2f1ca53ec900fcecf071bdd510e9226c6e7d2bf804962d75ad5602f50"
+    },
+    {
+      "name": "CollaborationInformationHistoryPage",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationHistoryPage struct {\n\tProtocolVersion       int                                   `json:\"protocol_version\"`\n\tIssueID               pgtype.UUID                           `json:\"issue_id\"`\n\tCollaborationRevision string                                `json:\"collaboration_revision\"`\n\tLifecycleEpoch        string                                `json:\"lifecycle_epoch\"`\n\tUpperHandoff          *CollaborationInformationTuple        `json:\"upper_handoff\"`\n\tItems                 []CollaborationInformationHistoryItem `json:\"items\"`\n\tNextCursor            *string                               `json:\"next_cursor\"`\n}",
+      "declaration_sha256": "87419a1d07ac1923e4c67f2ecd01fa071678cfd5056c3cc693b41170eeed0e1a"
+    },
+    {
+      "name": "CollaborationInformationAffectedPage",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationAffectedPage struct {\n\tProtocolVersion        int                                    `json:\"protocol_version\"`\n\tIssueID                pgtype.UUID                            `json:\"issue_id\"`\n\tCollaborationRevision  string                                 `json:\"collaboration_revision\"`\n\tLifecycleEpoch         string                                 `json:\"lifecycle_epoch\"`\n\tUpperHandoff           *CollaborationInformationTuple         `json:\"upper_handoff\"`\n\tRepairHandoffID        pgtype.UUID                            `json:\"repair_handoff_id\"`\n\tSupersededRequestCount string                                 `json:\"superseded_request_count\"`\n\tItems                  []CollaborationInformationAffectedItem `json:\"items\"`\n\tNextCursor             *string                                `json:\"next_cursor\"`\n}",
+      "declaration_sha256": "f6d4b349f56b96d29cf94737b9fea9afa536b03f8b5bcfc2877f775a88453ac8"
+    },
+    {
+      "name": "CollaborationInformationDetail",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationDetail struct {\n\tProtocolVersion int                                 `json:\"protocol_version\"`\n\tIssueID         pgtype.UUID                         `json:\"issue_id\"`\n\tItem            CollaborationInformationHistoryItem `json:\"item\"`\n}",
+      "declaration_sha256": "876a3c31116012b06858b14a1bc86738e161f6cd4026e37dd676fea7d941c93d"
+    },
+    {
+      "name": "CollaborationInformationHistoryQuery",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_information_history.go",
+      "declaration": "type CollaborationInformationHistoryQuery struct {\n\tLimit  int\n\tCursor string\n}",
+      "declaration_sha256": "e6ac78ea5e02d5408f81fb5097cb7a06fef091e34fe16fc4691ab8e0adc8e63d"
+    },
+    {
+      "name": "CollaborationInformationRequestParams",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_handoff.go",
+      "declaration": "type CollaborationInformationRequestParams struct {\n\tCollaborationTransferParams\n\tExpectedStatus        string\n\tStatusOptionsVersion  string\n\tUnblockCondition      *string `json:\",omitempty\"`\n\tEstimatedResolutionAt *string `json:\",omitempty\"`\n}",
+      "declaration_sha256": "64f1223606cf6458712335167f03fa2630c6cbd6f359f3072d2b209763d02f09"
+    },
+    {
+      "name": "CollaborationInformationReturnParams",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_handoff.go",
+      "declaration": "type CollaborationInformationReturnParams struct {\n\tCollaborationWorkflowRequest\n\tInformationRequestID pgtype.UUID\n\t// ExpectedStatus is the restore target the client displayed. A different\n\t// server result is refused instead of silently applied.\n\tExpectedStatus       string\n\tStatusOptionsVersion string\n\tNote                 string\n}",
+      "declaration_sha256": "16b9b1ccd580e65a1de1cf4bd5223caf97a4da918f183f9546bc6a39d0ae7a4a"
+    },
+    {
+      "name": "CollaborationInformationRequestView",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_handoff.go",
+      "declaration": "type CollaborationInformationRequestView struct {\n\tID                   pgtype.UUID\n\tRequesterID          pgtype.UUID\n\tRecipientID          pgtype.UUID\n\tParentRequestID      pgtype.UUID\n\tNote                 string\n\tPreviousStatus       string\n\tReturnStatus         string\n\tReturnStatusFallback bool\n\tCreatedAt            pgtype.Timestamptz\n\tBlock                *CollaborationInformationBlock\n}",
+      "declaration_sha256": "2b342cc1a13ffb255072acc291d9ec251b8805cf4d514395d1d4a8599481a1e9"
+    },
+    {
+      "name": "CollaborationCreationStagePolicyObservation",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/service/collaboration_creation_options.go",
+      "declaration": "type CollaborationCreationStagePolicyObservation struct {\n\tProtocolVersion   int         `json:\"protocol_version\"`\n\tState             string      `json:\"state\"`\n\tSourceWorkspaceID pgtype.UUID `json:\"source_workspace_id\"`\n\tProjectID         pgtype.UUID `json:\"project_id\"`\n\tPolicyRevision    *string     `json:\"policy_revision\"`\n\tManaged           *bool       `json:\"managed\"`\n}",
+      "declaration_sha256": "88f0dda594f3739e7a3a51dd4123f9e495b279d933879e0a128c2d54dc45af69"
+    },
+    {
+      "name": "CollaborationInformationRequestResponse",
+      "source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01/server/internal/handler/collaboration.go",
+      "declaration": "type CollaborationInformationRequestResponse struct {\n\tID                   string                                 `json:\"id\"`\n\tRequester            CollaborationAccountSummary            `json:\"requester\"`\n\tRecipient            CollaborationAccountSummary            `json:\"recipient\"`\n\tNote                 string                                 `json:\"note\"`\n\tReturnStatus         *string                                `json:\"return_status\"`\n\tReturnStatusFallback bool                                   `json:\"return_status_fallback\"`\n\tCreatedAt            string                                 `json:\"created_at\"`\n\tBlock                *service.CollaborationInformationBlock `json:\"block,omitempty\"`\n}",
+      "declaration_sha256": "6b95c54286b7a3fd3fa6ba763c94babc814e2df7acc7346df6962962fdd799c2"
+    }
+  ],
+  "wire_shapes": {
+    "root_optional_information_workflow": {
+      "protocol_version": 1,
+      "managed": "boolean",
+      "context_version": "hex64",
+      "active_request_id": "required UUID or explicit null",
+      "record_state": [
+        "none",
+        "complete",
+        "legacy",
+        "unavailable"
+      ],
+      "actions": {
+        "request": {
+          "available": "boolean",
+          "code": "required string or null"
+        },
+        "return": {
+          "available": "boolean",
+          "code": "required string or null"
+        },
+        "repair": {
+          "available": "boolean",
+          "code": "required string or null"
+        }
+      }
+    },
+    "optional_current_request_block_variants": [
+      {
+        "protocol_version": 1,
+        "state": "complete",
+        "unblock_condition": "nonblank UTF8/NUL-free<=4096decodedbytes",
+        "estimated_resolution_at": "UTC RFC3339 exactly6 fractional digits"
+      },
+      {
+        "protocol_version": 1,
+        "state": "legacy"
+      },
+      {
+        "protocol_version": 1,
+        "state": "unavailable",
+        "reason_code": "information_metadata_invalid"
+      }
+    ],
+    "repair_post_closed_fields": {
+      "purpose": "information_repair",
+      "target_user_id": "canonical nonzero UUID",
+      "note": "nonblank UTF8/NUL-free<=4096bytes",
+      "expected_collaboration_revision": "positive signed-int64 decimal string",
+      "expected_lifecycle_epoch": "positive signed-int64 decimal string",
+      "expected_participant_epoch": "positive signed-int64 decimal string",
+      "expected_account_epoch": "positive signed-int64 decimal string",
+      "expected_status": "explicit admissible nonblocked source key",
+      "status_options_version": "hex64",
+      "information_repair": {
+        "context_version": "hex64",
+        "active_request_id": "required UUID or explicit null",
+        "basis": "closed union below"
+      }
+    },
+    "repair_basis_variants": [
+      {
+        "kind": "human_selected"
+      },
+      {
+        "kind": "historical_information",
+        "origin_request_id": "canonical nonzero UUID",
+        "origin_event_id": "canonical nonzero UUID"
+      },
+      {
+        "kind": "pending_submission",
+        "submission_id": "canonical nonzero UUID",
+        "submission_event_id": "canonical nonzero UUID"
+      }
+    ],
+    "repair_options": {
+      "action": "repair_information",
+      "status_options_version": "hex64",
+      "default_status": "exact empty string only this action",
+      "options": "existing key/name/category list",
+      "information_repair_context": {
+        "protocol_version": 1,
+        "context_version": "hex64",
+        "active_request_id": "required UUID or explicit null",
+        "historical_origin": "required null or {origin_request_id UUID,origin_event_id UUID,status string}",
+        "pending_submission": "required null or {submission_id UUID,submission_event_id UUID,creator_user_id UUID}",
+        "human_selection_allowed": "boolean"
+      }
+    },
+    "repair_confirmation": {
+      "repair_handoff_id": "canonical nonzero UUID",
+      "prior_active_request_id": "required UUID or explicit null",
+      "status": "actual restored string",
+      "handler_user_id": "canonical nonzero UUID",
+      "superseded_count": "nonnegative signed-int64 decimal string, including0"
+    },
+    "creation_observation_variants": [
+      {
+        "protocol_version": 1,
+        "state": "not_selected",
+        "source_workspace_id": "required UUID or explicit null",
+        "project_id": null,
+        "policy_revision": null,
+        "managed": null
+      },
+      {
+        "protocol_version": 1,
+        "state": "known",
+        "source_workspace_id": "canonical nonzero UUID",
+        "project_id": "canonical nonzero UUID",
+        "policy_revision": "nonnegative signed-int64 decimal string, including0",
+        "managed": "boolean"
+      }
+    ],
+    "history_page": {
+      "protocol_version": 1,
+      "issue_id": "canonical nonzero UUID",
+      "collaboration_revision": "positive signed-int64 decimal string",
+      "lifecycle_epoch": "positive signed-int64 decimal string",
+      "upper_handoff": "required null or {created_at UTCmicroseconds,handoff_id UUID}",
+      "items": "required array",
+      "next_cursor": "required opaque string or null"
+    },
+    "affected_page_additions": {
+      "repair_handoff_id": "canonical nonzero UUID",
+      "superseded_request_count": "nonnegative signed-int64 decimal string, including0"
+    },
+    "detail": {
+      "protocol_version": 1,
+      "issue_id": "canonical nonzero UUID",
+      "item": "closed information history item"
+    },
+    "history_item_identity": {
+      "kind": [
+        "information_request",
+        "information_return",
+        "information_repair"
+      ],
+      "handoff_id": "canonical nonzero UUID",
+      "created_at": "UTC RFC3339 exactly6 fractional digits",
+      "provenance": "closed union below"
+    },
+    "history_full_item_common": {
+      "actor_user_id": "canonical nonzero UUID",
+      "note": "original string, including legacy blank/large values",
+      "from_user_id": "required UUID or explicit null",
+      "to_user_id": "required UUID or explicit null",
+      "previous_status": "actual saved key",
+      "resolution": [
+        "open",
+        "returned",
+        "superseded"
+      ]
+    },
+    "history_item_additions": {
+      "information_request": {
+        "requester_user_id": "required UUID or explicit null",
+        "parent_request_id": "required UUID or explicit null",
+        "block": "required complete/legacy/unavailable union",
+        "superseded_by_repair_handoff_id": "required UUID or explicit null"
+      },
+      "information_return": {
+        "consumed_request_id": "required UUID or explicit null",
+        "restored_status": "required string or null",
+        "return_status_fallback": "required boolean or null"
+      },
+      "information_repair": {
+        "prior_active_request_id": "required UUID or explicit null",
+        "restored_status": "string",
+        "target_user_id": "canonical nonzero UUID",
+        "basis": "closed repair union",
+        "superseded_request_count": "nonnegative signed-int64 decimal string, including0"
+      }
+    },
+    "unavailable_history_item_fields": [
+      "kind",
+      "handoff_id",
+      "created_at",
+      "provenance"
+    ],
+    "provenance_variants": [
+      {
+        "state": "linked",
+        "event_id": "canonical nonzero UUID",
+        "event_sequence": "positive signed-int64 decimal string"
+      },
+      {
+        "state": "legacy_unlinked",
+        "event_id": null,
+        "event_sequence": null
+      },
+      {
+        "state": "unavailable",
+        "event_id": null,
+        "event_sequence": null,
+        "reason_code": "information_context_unavailable"
+      }
+    ],
+    "affected_item": {
+      "request_id": "information handoff UUID, not operation key",
+      "request_event_id": "required UUID or explicit null",
+      "provenance": "same closed union",
+      "resolution": "superseded",
+      "superseded_by_repair_handoff_id": "canonical nonzero UUID"
+    },
+    "optional_activity_information_repair_fields": [
+      "handoff_id",
+      "previous_status",
+      "restored_status",
+      "target_user_id",
+      "basis"
+    ],
+    "identity_terms": {
+      "wire_purpose": "information_repair",
+      "service_operation_kind": "repair_information",
+      "stored_handoff_purpose": "transfer",
+      "committed_event_code": "information_repaired"
+    },
+    "runtime_v1_missing_marker": "information_block_metadata_unavailable_v1"
+  },
+  "wire_contract_sha256": "d91b502add1df6c59bef69320ef348d7adb97133c25bd5f93b1e92e7614124d0",
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-public-dto-20261118.md",
+    "sha256": "c0071c9327170d9980057ead10962a88eda2f582ec6e098ae7ed36dbf2d8de46"
+  },
+  "public_wire_corrections_require_main_notification": true,
+  "internal_source_hash_changes_do_not_amend_wire": true,
+  "verification": {
+    "gofmt": "PASS23files_exit0",
+    "sqlc_r01": "FAIL_retained_schema_migrations_reference",
+    "sqlc_r02": "PASS",
+    "compile": "NOT_RUN",
+    "tests": "NOT_RUN",
+    "DB_API_browser": "NOT_RUN"
+  },
+  "root_runtime_historical_source_mutations": 0
+}

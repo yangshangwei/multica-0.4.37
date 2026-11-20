@@ -1,0 +1,42 @@
+{
+  "evidence_type": "scripted-production-router-daemon-native-adapter",
+  "real_model_turns": 0,
+  "database": "secrem_v2_real_20261120_fake_o1",
+  "entry": "TestSecurityRemediationO1Fake",
+  "binary_sha256": "be410d2ece56e26a2d1e6fde670afb9594f9edac8a2d55d928b1eeeabeaf7eb7",
+  "sources": {
+    "real_followup_harness_test.go": "f068afd7a553f87719a8cbd694ae08cf159516a0ae0ae9279e7667e7f8028d4c",
+    "fake_o1_provider.py": "59603374e0b6bb5b0510849fb0ba7895df6dbe8e3b24332b1b35876ab2f2c05d",
+    "real_platform_harness_test.go": "03f58c4f5539e307e75cc7892520907823b89b8700e523536e27c290d03b2811"
+  },
+  "log_sha256": "7048c98112ce1c3a755e8e21ad49371415da2464c815ee4132775154a581da11",
+  "result": {
+    "criteria": {
+      "all_four_runs_complete": true,
+      "comment_identity_and_scope": true,
+      "exact_role_task_counts": true,
+      "issue_in_review": true,
+      "no_extra_workspace_issue": true,
+      "owner_releases_new_and_unchanged": true,
+      "restricted_reviewer_result_dispatch_inert": true,
+      "roster_and_config_unchanged": true
+    },
+    "evidence_type": "fake",
+    "manual_review_required": [
+      "G1 type other, hold/unknown, evidence owner and missing materials",
+      "reviewer result grounded in synthetic source",
+      "plain leader only explains valid release, no false approval",
+      "human hold conclusion covers each G1 decision with reason/date",
+      "final summary cites original reviewer/owner and preserves unresolved risk",
+      "broker and filesystem evidence contain no forbidden attempts"
+    ],
+    "scenario": "O1",
+    "task_counts": {
+      "security-remediation-lead/false": 1,
+      "security-remediation-lead/true": 2,
+      "security-reviewer/false": 1
+    },
+    "verdict": "platform-checks-passed-semantic-review-pending"
+  },
+  "prior_failure": "fake-o1-01 expected comment envelope but actual thread route returns array; fixed harness decode; retained original failure"
+}

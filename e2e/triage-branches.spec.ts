@@ -176,7 +176,7 @@ test.describe("Triage browser + real API branch coverage", () => {
     expect(await detail(api, item)).toEqual(item);
     expect(await history(api, item)).toEqual([]);
     await dialog.locator("#triage-priority-field").getByRole("button").click();
-    await page.getByRole("button", { name: "High", exact: true }).click();
+    await page.getByRole("listbox", { name: "Priority", exact: true }).getByRole("option", { name: "High", exact: true }).click();
     await expect(dialog.getByRole("textbox", { name: "Reason", exact: true })).toHaveValue("Approved after selecting a priority");
     await dialog.getByRole("button", { name: "Accept", exact: true }).click();
     await expect(dialog).toHaveCount(0);

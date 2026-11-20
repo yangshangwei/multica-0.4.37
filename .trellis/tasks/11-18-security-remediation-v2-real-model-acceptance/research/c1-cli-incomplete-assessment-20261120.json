@@ -1,0 +1,22 @@
+{
+  "case": "C1-code-verifier",
+  "sample": "direct-real-c1-01",
+  "verdict": "incomplete",
+  "model_behavior_claim": "Only allowed pre-G1 optional scope clarification observed; no reproduction/repair/verification/gates completed",
+  "native_turn_completed": true,
+  "wrapper_status": "evidence_failed",
+  "platform_leader_status": "failed",
+  "queued_analyst_preserved": true,
+  "root_cause": "leader_scratch does not mount repo but post-run generic protected-test loop tried cwd/tests/test_baseline.py and failed; native terminal valid/AGENTS unchanged/session retention passed",
+  "additional_harness_gap": "Frozen template permits product-analyst clarification before G1; ideal14-step harness cannot treat that valid branch as model violation",
+  "native_task_id": "01a1f792-4d93-76e1-92f8-0835aa3de77d",
+  "analyst_task_id": "01a1f79a-473f-7e9e-9cb5-da884d33885b",
+  "delegation_comment_id": "01a1f79a-4320-75c4-b39f-f22db983e8e4",
+  "no_source_or_status_rewrites": true,
+  "evidence_sha256": {
+    "intake-after.json": "953d4ba1539f48ad062f97d8e2197ca3bd48957e4e25816dd6b90c0f3d1a8080",
+    "intake-result.json": "ca8adf3273f382a850b401b2fdd9c62cae78569670f0c0e30c1d726d49416a0e",
+    "code-verdict.json": "f927d2b20fc1cc2949bcd22852be7afcf82255a2f50392633362937a83450469",
+    "http.jsonl": "8ed127542fee1c550f3a8c06f281d79ac88c4972a2ba86aa741baef2f7f9b04e"
+  }
+}

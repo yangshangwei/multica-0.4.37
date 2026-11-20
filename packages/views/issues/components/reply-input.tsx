@@ -244,6 +244,7 @@ function ReplyInput({
             defaultValue={initialDraft}
             onReady={lazy.onReady}
             placeholder={placeholderText}
+            aria-label={placeholder ?? t(($) => $.reply.field_label)}
             onUpdate={(md) => {
               setContent(md);
               setIsEmpty(!md.trim());

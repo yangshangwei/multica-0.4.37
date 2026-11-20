@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-18T05:01:22.708850+08:00",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "researcher": "/root/r27_preview_research",
+  "query": "Supported nil-cache idle claim versus harness/product; conservative preflight and exact fresh RED-only idle/read plus real reclaim authority controls",
+  "status": "R31_RED_ONLY_SCOPE_INVENTORY_READY_PRODUCT_FROZEN",
+  "scope": "internal/filesystem-only",
+  "write_ownership": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.json"
+  ],
+  "sealed_output_mode": "0444",
+  "canonical_source": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01",
+  "consumed_R30_source_files": 5053,
+  "ROOT_reported_R31_fresh_source_files": 5053,
+  "ROOT_reported_fresh_service_profiles": 3,
+  "cache_initialization": {
+    "router_always_constructs_both": true,
+    "source": "server/cmd/server/router.go:1316,1320",
+    "only_main_constructs_cache_claim": false,
+    "production_passes_conditional_storeRedis": "main.go:663",
+    "actual_harness_passes_nil_redis": "collaboration_stage_execution_control_test.go:331",
+    "both_factories_nil_safe_return_nil": true,
+    "nil_ReclaimCheck_due_all_valid_runtimes": true,
+    "nil_MarkChecked_noop": true,
+    "nil_EmptyClaim_always_miss": true,
+    "supported_product_noRedis_fallback_not_missing_init": true,
+    "cache_not_authority": true
+  },
+  "idle_behavior": {
+    "qualifier": "Initial managed/current-auth/runtime validation and due-deferred work succeeded; valid nonblank selected runtime set; maxTasks>0; nil/error reclaim schedule fallback",
+    "every_due_positive_capacity_idle_poll_enters_account_exclusive_reclaim_transaction": true,
+    "reclaim_account_lock_precedes_zero_row_UPDATE_result": "task.go:3989-3999",
+    "queued_empty_cache_checked_only_after_reclaim": "task.go:4041",
+    "same_behavior_in_supported_production_nilRedis": true,
+    "harness_cadence_can_amplify": true,
+    "no_old_physical_holder_attribution": true
+  },
+  "captured_failure": {
+    "summary": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/runtime/original-e03-qa-read-capture-summary-r01.json",
+      "description": "Retained E03 singleton current-Q first-fence failure correlation",
+      "sha256": "b2c396b674d5d94f61f6c929b7c6734f0e1eedd92582ba2ceafe083a6d8e41a5",
+      "bytes": 41555,
+      "mode": "0o600"
+    },
+    "records": 3193,
+    "cap_hit": false,
+    "Q": "8aa26ea6-e1a9-4607-8b20-dcc4834731b8",
+    "root": "01a1eb40-a908-7ce0-a472-b9d3d743a85b",
+    "candidate": "01a1eb40-aba3-7995-b2e8-e1971ff79660",
+    "peer_verified_frames": [
+      {
+        "trace": 1055,
+        "request_id": "7057cde6",
+        "at": "20:44:20.339/340",
+        "pid": 96015,
+        "query": "LockArtifactUsers",
+        "SQLSTATE": "55P03",
+        "HTTP": 503,
+        "code": "collaboration_unavailable"
+      },
+      {
+        "trace": 1061,
+        "request_id": "b0ee8d1e",
+        "at": "20:44:35.351888",
+        "pid": 96066,
+        "query": "LockArtifactUsers",
+        "SQLSTATE": "55P03",
+        "HTTP": 503,
+        "code": "collaboration_unavailable"
+      }
+    ],
+    "failure_is_initial_current_Q_singleton_before_producer_issuer": true,
+    "prior_success_trace1051_QA_allowed_no_blockers": true,
+    "physical_holder_proven": false,
+    "later_idle_zeroLocks_witness_is_not_historical_holder_proof": true
+  },
+  "existing_query_reuse": {
+    "authoritative_reclaim": "server/pkg/db/queries/agent.sql:1037-1110",
+    "reclaim_is_UPDATE_not_readonly_probe": true,
+    "queued_list": "agent.sql:2415-2449",
+    "queued_list_has_lock_issue_execution": true,
+    "queued_only_cannot_prove_no_dispatched_recovery": true,
+    "moving_locking_list_before_original_account_prefix_not_recommended": true,
+    "bounded_search_no_exact_pure_due_dispatched_existence_query_found": true
+  },
+  "primary_proposed_product_after_RED": {
+    "status": "PROPOSAL_ONLY_NO_PRODUCT_ADMISSION_OR_EDIT",
+    "new_query_name": "HasPotentialDispatchedReclaimForRuntimes",
+    "new_query_shape": "SELECT EXISTS (\n    SELECT 1\n    FROM agent_task_queue t\n    WHERE t.runtime_id = ANY(sqlc.arg(runtime_ids)::uuid[])\n      AND t.status = 'dispatched'\n      AND t.started_at IS NULL\n      AND t.dispatched_at < now() - make_interval(secs => sqlc.arg(claim_recovery_secs)::double precision)\n      AND (t.prepare_lease_expires_at IS NULL OR t.prepare_lease_expires_at < now())\n);",
+    "probe_kind": "Lock-free necessary-condition superset/negative-only optimization, no authority or business data; DB-clock timing/lease conditions match canonical reclaim necessary predicates",
+    "placement": "After existing initial runtime/current-auth validation and due-deferred handling; only when Step2 dueKeys exists, before runInTx/LockManagedRuntimes.",
+    "reliable_negative": "Skip only reclaim Tx; continue original queued-empty/list/actual claim/finalize. Never early-return whole claim and hide queued work.",
+    "positive": "Preserve original exclusive current account/binding/task/managed-admission locks and full original UPDATE recheck.",
+    "error_unknown": "Not empty; explicitly preserve admitted original error/fallback policy, no false successful empty reply.",
+    "new_work_clock_race": "May be deferred only to next normal poll within established negative-cache/schedule/backstop rules; never suppress known due tasks indefinitely.",
+    "cache_marking": "Reliable negative or canonical successful pass only; retain due-hint defer/boundedretry/backstop; nil remains no-op.",
+    "possible_product_scope": [
+      "server/internal/service/task.go",
+      "server/pkg/db/queries/agent.sql",
+      "server/pkg/db/generated/agent.sql.go"
+    ],
+    "no_new_dependency_schema_migration_index": true,
+    "batch_initial_scope_only_singular_sibling_requires_explicit_applicability_decision": true,
+    "original_LockManagedRuntime_false_and_realwork_writer_query_unchanged": true
+  },
+  "harness_cache_alternative": {
+    "primary_recommendation": false,
+    "redis_new_input_dependency_authorized_by_research": false,
+    "only_if": "ROOT explicitly declares already-authorized owned Redis test configuration; keep supported noRedis fallback tested; no miniredis or public memory backend introduced solely for hypothesis",
+    "cannot_prove_product_nilfallback_coexistence": true
+  },
+  "RED_only_test": {
+    "new_file": "server/internal/service/task_idle_claim_read_concurrency_test.go",
+    "package": "./internal/service",
+    "selector": "^(TestOrdinaryIdleClaimAndR4Coexistence|TestOrdinaryReclaimPreservesAuthorityFences)$",
+    "counts_proposed_not_executed": {
+      "top_level": 2,
+      "named": 6,
+      "leaf": 4
+    },
+    "named_inventory_proposed": [
+      "TestOrdinaryIdleClaimAndR4Coexistence",
+      "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+      "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences",
+      "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+    ],
+    "leaf_inventory_proposed": [
+      "TestOrdinaryIdleClaimAndR4Coexistence/idle_first",
+      "TestOrdinaryIdleClaimAndR4Coexistence/r4_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/reclaim_first",
+      "TestOrdinaryReclaimPreservesAuthorityFences/r4_first"
+    ],
+    "product_remains_frozen": true,
+    "no_existing_test_or_fixture_edits_by_researcher": true,
+    "idle_fixture": "Genuine current same-Q artifact R4/valid managed Q runtime, maxTasks>0, actual selected runtime queued and necessary dispatched-reclaim rows absent; existing artifact producer task on another runtime is not claim work.",
+    "idle_first": "Actual no-work operation/borrowedTx held before return/commit, not after locks released; second genuine R4 must finish while held; current unnecessaryuserUPDATE can produce genuine R4 55P03.",
+    "r4_first": "Hold actual Q SHARE; valid no-work claim must finish empty before release. Observe real blocking canonical user FOR UPDATE and test-only bounded explicit cancellation if needed for RED; do not invent55P03 for blocking writer or change product timeouts.",
+    "real_reclaim_controls": "Fresh real eligible stale-dispatched task only in control leaves; original real exclusive writer/current binding/admission/generation/lease and no effects before release; allowed once-only reclaim after release. Preserve original wait/refusal semantics, no new NOWAIT.",
+    "no_effect_baseline": "Register after real fixture/control setup; idle snapshots task/issue/user/credential/binding/lease/revision/handoff/artifact/operation/adapters unchanged; real writer allowed effects separately checked.",
+    "false_RED_exclusions": [
+      "queued or eligibledispatchedtask present in idle case",
+      "maxTasks0",
+      "invalidruntime",
+      "revokedauth",
+      "stubbedemptyresponse",
+      "fakecachedauthority",
+      "resetrolesepochs",
+      "setupfailurebeforetarget",
+      "completedmethodnoactivefencepresentedasholder"
+    ],
+    "authority": "Initial ValidateManagedRuntime/currentcredential/binding before no-work; keep source/token/PAT/otherowner/revokedbinding and cache-noRedis controls."
+  },
+  "existing_controls": [
+    {
+      "package": "./internal/service",
+      "source": "server/internal/service/reclaim_check_cache_test.go",
+      "names": [
+        "TestReclaimCheckCache_NilFallsBackToEveryRuntime",
+        "TestNewReclaimCheckCache_NilRedisReturnsNil",
+        "TestReclaimCheckCache_RedisFailureFallsBackToEveryRuntime",
+        "TestReclaimCheckCache_CheckedHintIsDeferredAndRetriggers",
+        "TestReclaimCheckCache_CollectionCheckAlignsBackstops"
+      ],
+      "scope": "Nil fallback plus configured-cache schedule/backstop/retry safety; Redis tests need a separately owned Redis permit, not ambient execution."
+    },
+    {
+      "package": "./internal/service",
+      "source": "server/internal/service/empty_claim_cache_test.go",
+      "names": [
+        "TestEmptyClaimCache_NilSafe",
+        "TestNewEmptyClaimCache_NilRedisReturnsNil",
+        "TestEmptyClaimCache_BumpInvalidatesPriorMark",
+        "TestEmptyClaimCache_StaleMarkRejected"
+      ],
+      "scope": "Queued-only negative cache must not suppress dispatched recovery; no new dependency or external Redis input authorized."
+    },
+    {
+      "package": "./internal/service",
+      "source": "server/internal/service/managed_runtime_test.go",
+      "names": [
+        "TestManagedClaimCapturesBindingAndDoesNotBackfillReclaimedHistory",
+        "TestManagedRuntimeRejectsPATForgedNamespaceAndOtherOwner",
+        "TestManagedRuntimeRevokedNamespaceCannotDowngradeToLegacy"
+      ],
+      "scope": "Real work/current identity and immutable historical managed binding remain unchanged."
+    },
+    {
+      "package": "./internal/service",
+      "source": "server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go",
+      "names": [
+        "TestCollaborationRuntimeCapabilitiesReadThenStageEvidence",
+        "TestCollaborationRuntimeCapabilitiesStageEvidenceThenRead",
+        "TestCollaborationRuntimeCapabilitiesReadOriginalWriterFence",
+        "TestCollaborationRuntimeCapabilitiesReadCurrentAuthority"
+      ],
+      "counts_source_derived": {
+        "top_level": 4,
+        "named": 8,
+        "leaf": 7
+      },
+      "scope": "Existing genuine same-Q artifact R4 fixture, compatible capability GET/current authority and actual writer fence."
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/router.go",
+      "description": "Both cache factories are wired unconditionally at1316/1320; RouterOptions not missing cache init",
+      "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+      "bytes": 151540,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/main.go",
+      "description": "Production passes conditional storeRedis through same router at663; nil is supported",
+      "sha256": "9b8c77da2b470832f827cf2ce9038312fc5b4d6d12510054a82e72c8673b78d4",
+      "bytes": 39351,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/collaboration_stage_execution_control_test.go",
+      "description": "Actual harness constructs router with nil Redis at331; harness test373",
+      "sha256": "5a8dceb725802a80d61438e0f6b1f2055eefffa88b964ab203f6b8a05fca579e",
+      "bytes": 17212,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/integration_test.go",
+      "description": "Mandatory TestMain uses explicit URL and diagnostic pool; no Redis creation",
+      "sha256": "41f902f7c1194190d27fb293e06e68633149f4ce5dafaf2e2bf9a7bcbb62619d",
+      "bytes": 52642,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/cmd/server/pay241_read_diagnostics_test.go",
+      "description": "Trace-enabled pool construction; not an authority/cache replacement",
+      "sha256": "326e53f91153e08762929c85f1b83246f35c5f6b649a0279e527402ef48a1dd6",
+      "bytes": 7911,
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/reclaim_check_cache.go",
+      "description": "Nil cache always due; MarkChecked no-op; Redis only optimization/fallback-safe scheduling",
+      "sha256": "7fa0f3a8ec6568e4d6bf3abcdc2088ac131f79656715f19fead5ea78b0c8dfe3",
+      "bytes": 10998,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/empty_claim_cache.go",
+      "description": "Nil cache always miss; negative queued-only/version/TTL semantics",
+      "sha256": "71d40bbf6d1b936532868c6562ad3b3147170f6552f16fdfaf5e408652841430",
+      "bytes": 7739,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/reclaim_check_cache_test.go",
+      "description": "Existing nil/failure/schedule/retry/backstop cache controls",
+      "sha256": "4fb2b4965d108d499ed2a826f498ffaeff8988bb6a5714ad65e393a50b5d5f12",
+      "bytes": 9786,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/empty_claim_cache_test.go",
+      "description": "Existing nil and queue version/TTL cache controls",
+      "sha256": "d7671491440c8e37bc9943b17656ba82858161670df6e93205a7752d9d5d43dd",
+      "bytes": 4495,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/task.go",
+      "description": "Canonical claim initial validation/promote/reclaim/queued/actual claim ordering",
+      "sha256": "28c28dfe8bc3a75bb6e38d9727ed8632d7d52ac120d3d61cb06422021625fd50",
+      "bytes": 346632,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/managed_runtime.go",
+      "description": "Original real claim/reclaim account false-default/current binding/namespace fences",
+      "sha256": "325251ecb8a8adeaf3c8c3a97ef53302750fce9a8c163d579087e25f12288e96",
+      "bytes": 10289,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/auth/password_session.go",
+      "description": "Original LockPasswordSession->LockPasswordUser and current credential checks",
+      "sha256": "69530f6da81e79658f47e28f4db801d651a6603b9fd7bea621aaecf8e393d33c",
+      "bytes": 5943,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/password.sql",
+      "description": "Canonical user FOR UPDATE fence remains for real work",
+      "sha256": "6dee450352ed9d26f193b94d64fd6e6716722a994cde4570982697c1f0a5ba38",
+      "bytes": 734,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/pkg/db/queries/agent.sql",
+      "description": "Actual reclaim UPDATE and queued SELECT eligibility; locking function cannot be a pure probe",
+      "sha256": "4d900ec193fb94e9b3c8f4835224ab64035872a85788bb2b42526cd0ea3999a1",
+      "bytes": 138366,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/managed_runtime_test.go",
+      "description": "Current real claim/reclaimed history/credential provenance controls",
+      "sha256": "ade350bbe3d64aa3021d920b7e32d06959982269adcf1b7dbc8b63b8fdf27da0",
+      "bytes": 14312,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/internal/service/collaboration_runtime_capabilities_read_concurrency_test.go",
+      "description": "Existing genuine same-Q R4 fixture/read-read and real writer/current authority controls",
+      "sha256": "d9535bfa9f9965517391fc3ba1255ed54970b6b249b049f5d0f79f67a4cc37ea",
+      "bytes": 11434,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/source-green-r01/server/go.mod",
+      "description": "Dependency declarations; no dependency added or package tools executed",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/workflow.md",
+      "description": "Research persistence / role ownership / final scoped verification",
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/CLAUDE.md",
+      "description": "Authoritative no-new-dependency and package/test contracts",
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/collaboration-stage-approvals.md",
+      "description": "Read coexistence, real writer refusal, retained defaults/authority",
+      "sha256": "e574bd544c0503f3ea6c97f678c3578913cb287d572f2e33e14cc4375af054e3",
+      "bytes": 39166,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/security-boundaries.md",
+      "description": "Current identity and credential minting/revocation fences",
+      "sha256": "eafe18806e77423c13062317ab9168019f0148131107179bfdd162876957e2cf",
+      "bytes": 19809,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/spec/server/database-test-isolation.md",
+      "description": "Fresh exact per-package database and no hidden TestMain/Redis execution",
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8",
+      "bytes": 28546,
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.md",
+      "description": "Previously completed writer chain/cancellation; not repeated",
+      "sha256": "376c2f4b9d18801a29be0064b23daf9026e934798e7a61cff0f355def1ae96e8",
+      "bytes": 17857,
+      "mode": "0o444"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-qa-read-contenders-20261118.json",
+      "description": "Prior exact writer/query/current-actor inventory",
+      "sha256": "165b80955c009cd4b389f865fb8b7f59989846a0b07e70f7529a444392a43867",
+      "bytes": 76742,
+      "mode": "0o444"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r30-read-diagnostics-independent-check-20261118.md",
+      "description": "Accepted diagnostics/current source and writer/default preservation",
+      "sha256": "fd8ed4b1b403794e41522e36c7f703898976ba93474eaef2eb9404fd5cf851c5",
+      "bytes": 9295,
+      "mode": "0o444"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r30-qa-read-20261118-pohc3l9t/runtime/original-e03-qa-read-capture-summary-r01.json",
+      "description": "Exact retained E03 Q first-user-fence errors; holder unproved",
+      "sha256": "b2c396b674d5d94f61f6c929b7c6734f0e1eedd92582ba2ceafe083a6d8e41a5",
+      "bytes": 41555,
+      "mode": "0o600"
+    }
+  ],
+  "preserved_original_results": {
+    "R30_original_four": {
+      "PASS": 2,
+      "FAIL": 1,
+      "NOT_RUN": 1,
+      "retry_each": 0
+    },
+    "R30_ROOT_reported_stopped": {
+      "other_connections": 0,
+      "epoch": 66,
+      "settled_runs": 58,
+      "complete_artifacts": 41,
+      "leases_unreleased": 0
+    },
+    "R28_successful_completion_replayed": false,
+    "S2_A12_parent24_S3_S4_S5_closed_by_research": false
+  },
+  "execution_by_researcher": {
+    "Go": false,
+    "test": false,
+    "test_list": false,
+    "TestMain": false,
+    "SQL": false,
+    "DB": false,
+    "API": false,
+    "runtime": false,
+    "browser": false,
+    "process": false,
+    "signal": false,
+    "Git": false,
+    "recursive_agent": false,
+    "product_edit": false,
+    "test_edit": false,
+    "config_edit": false,
+    "dependency_edit": false,
+    "spec_edit": false,
+    "peer_edit": false,
+    "old_report_edit": false
+  },
+  "caveats": [
+    "Desired idle/read coexistence is explicit proposed contract, not passing implementation",
+    "Supported nilcachefallback not missingrouterinit",
+    "Current-Q55P03→target503 is correlated, physicalholder unknown",
+    "No reusable exact pure dueprobe located; one newSQL+generated query scope is honest",
+    "Real queued/reclaim/mint authority/locks never weakened",
+    "REDsetupmust trulyhave no selectedruntime work",
+    "Configured cache optional, no ambientRedis/FlushDB or new dependency permitted by research"
+  ],
+  "report_markdown": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-authority-scope-20261118.md",
+    "sha256": "184deb5b49ea76d3ca75e882792c05b9023c8ae6590bda017d02150cc9c24875",
+    "bytes": 18720,
+    "lines": 124
+  }
+}

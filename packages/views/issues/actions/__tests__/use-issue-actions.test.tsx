@@ -2,7 +2,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
-import type { Issue, IssueStatusEntry } from "@multica/core/types";
+import type { Issue, IssueStatusEntry, UpdateIssueRequest } from "@multica/core/types";
+import { issueKeys } from "@multica/core/issues/queries";
+import { IssueSurfaceActionsProvider, type IssueSurfaceActions } from "../../surface/actions-context";
 
 const { mockCompletionHint } = vi.hoisted(() => ({ mockCompletionHint: vi.fn() }));
 vi.mock("@multica/core/api", async (importOriginal) => {
@@ -50,7 +52,8 @@ vi.mock("@multica/core/pins", () => ({
 }));
 
 const mockUpdateMutate = vi.fn();
-vi.mock("@multica/core/issues/mutations", () => ({
+vi.mock("@multica/core/issues/mutations", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@multica/core/issues/mutations")>(),
   useUpdateIssue: () => ({ mutate: mockUpdateMutate }),
 }));
 
@@ -167,8 +170,61 @@ beforeEach(() => {
 });
 
 describe("useIssueActions", () => {
+  // The full observation/compatibility matrix belongs to Core field-revision.test.ts.
+  it.each<{ name: string; updates: Partial<UpdateIssueRequest> }>([
+    { name: "priority", updates: { priority: "high" } },
+    { name: "member assignment", updates: { assignee_type: "member", assignee_id: "user-2" } },
+    { name: "clearing the assignee", updates: { assignee_type: null, assignee_id: null } },
+  ])("passes the rendered revision through a direct $name action", ({ updates }) => {
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
+    act(() => result.current.updateField(updates));
+    expect(mockUpdateMutate).toHaveBeenCalledWith(
+      { id: mockIssue.id, ...updates, expected_revision: 11 },
+      expect.any(Object),
+    );
+  });
+
+  it("retains the supplied menu observation when the surface cache already has a newer revision", () => {
+    const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+    qc.setQueryData(issueKeys.detail("ws-1", mockIssue.id), { ...mockIssue, revision: 12 });
+    const updateIssue = vi.fn();
+    const actions: IssueSurfaceActions = {
+      isPending: false,
+      createIssue: vi.fn(),
+      updateIssue,
+      moveIssue: vi.fn(),
+      batchUpdate: vi.fn().mockResolvedValue({ updated: 0 }),
+      batchDelete: vi.fn().mockResolvedValue(undefined),
+    };
+    const { result, unmount } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), {
+      wrapper: ({ children }) => (
+        <QueryClientProvider client={qc}>
+          <IssueSurfaceActionsProvider actions={actions}>{children}</IssueSurfaceActionsProvider>
+        </QueryClientProvider>
+      ),
+    });
+    act(() => result.current.updateField({ priority: "high" }));
+    expect(updateIssue).toHaveBeenCalledWith(mockIssue.id, { priority: "high", expected_revision: 11 }, expect.any(Object));
+    expect(mockUpdateMutate).not.toHaveBeenCalled();
+    unmount();
+    qc.clear();
+  });
+
+  it.each(["agent", "squad"] as const)("pins the rendered revision before %s confirmation", (assigneeType) => {
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
+    act(() => result.current.updateField({ assignee_type: assigneeType, assignee_id: `${assigneeType}-1` }));
+    expect(mockOpenModal).toHaveBeenCalledWith("issue-run-confirm", {
+      issueIds: [mockIssue.id],
+      mode: "assign",
+      assigneeType,
+      assigneeId: `${assigneeType}-1`,
+      issueRevision: 11,
+    });
+    expect(mockUpdateMutate).not.toHaveBeenCalled();
+  });
+
   it("updateField dispatches useUpdateIssue.mutate with the correct payload", () => {
-    const { result } = renderHook(() => useIssueActions(mockIssue), { wrapper });
+    const { result } = renderHook(() => useIssueActions({ ...mockIssue, revision: 11 }), { wrapper });
 
     act(() => {
       result.current.updateField({ status: "done" });

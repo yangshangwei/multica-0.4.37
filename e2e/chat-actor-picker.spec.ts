@@ -132,7 +132,7 @@ async function expectChatCategories(page: Page, zh = false) {
     await expect(popup(page).getByRole("button", { name, exact: true })).toBeVisible();
   }
   await expect(popup(page).getByRole("button", { name: zh ? "AI小队" : "AI squads", exact: true })).toHaveCount(0);
-  await expect(popup(page).getByRole("button", { name: zh ? "将当前助手设为默认" : "Set current as default", exact: true })).toHaveCount(0);
+  await expect(popup(page).getByRole("button", { name: zh ? "将当前选择设为默认" : "Set current as default", exact: true })).toHaveCount(0);
 }
 
 for (const locale of ["en", "zh-Hans"] as const) {

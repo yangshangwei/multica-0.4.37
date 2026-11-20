@@ -34,8 +34,11 @@ type collaborationHandoffBody struct {
 	Purpose string `json:"purpose"`
 	Note    string `json:"note"`
 	// Raw fields distinguish absent values from explicit null on transfers.
-	ExpectedStatus       json.RawMessage `json:"expected_status"`
-	StatusOptionsVersion json.RawMessage `json:"status_options_version"`
+	ExpectedStatus        json.RawMessage `json:"expected_status"`
+	StatusOptionsVersion  json.RawMessage `json:"status_options_version"`
+	UnblockCondition      json.RawMessage `json:"unblock_condition"`
+	EstimatedResolutionAt json.RawMessage `json:"estimated_resolution_at"`
+	InformationRepair     json.RawMessage `json:"information_repair"`
 }
 
 type collaborationInformationReturnBody struct {
@@ -70,14 +73,15 @@ type collaborationAcceptanceReturnBody struct {
 }
 
 type collaborationOperationResponse struct {
-	StageBlockers          []service.CollaborationStageBlocker        `json:"stage_blockers,omitempty"`
-	StageBlockersTruncated *bool                                      `json:"stage_blockers_truncated,omitempty"`
-	Code                   string                                     `json:"code"`
-	CollaborationRevision  string                                     `json:"collaboration_revision"`
-	StatusOptions          *service.CollaborationStatusOptions        `json:"status_options,omitempty"`
-	DeliveryConfirmation   *service.CollaborationDeliveryConfirmation `json:"delivery_confirmation,omitempty"`
-	StageConfirmation      *service.CollaborationStageConfirmation    `json:"stage_confirmation,omitempty"`
-	Status                 int                                        `json:"status,omitempty"`
+	InformationRepairConfirmation *service.CollaborationInformationRepairConfirmation `json:"information_repair_confirmation,omitempty"`
+	StageBlockers                 []service.CollaborationStageBlocker                 `json:"stage_blockers,omitempty"`
+	StageBlockersTruncated        *bool                                               `json:"stage_blockers_truncated,omitempty"`
+	Code                          string                                              `json:"code"`
+	CollaborationRevision         string                                              `json:"collaboration_revision"`
+	StatusOptions                 *service.CollaborationStatusOptions                 `json:"status_options,omitempty"`
+	DeliveryConfirmation          *service.CollaborationDeliveryConfirmation          `json:"delivery_confirmation,omitempty"`
+	StageConfirmation             *service.CollaborationStageConfirmation             `json:"stage_confirmation,omitempty"`
+	Status                        int                                                 `json:"status,omitempty"`
 }
 
 func collaborationResultSelection(w http.ResponseWriter, body collaborationResultBody) (*pgtype.UUID, []pgtype.UUID, *pgtype.UUID, bool) {
@@ -141,6 +145,10 @@ func decodeCollaborationWorkflowBodyLimit(w http.ResponseWriter, r *http.Request
 		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Invalid request"})
 		return false
 	}
+	if handoff, ok := target.(*collaborationHandoffBody); ok && !validInformationHandoffRaw(raw, handoff) {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Invalid request"})
+		return false
+	}
 	return true
 }
 
@@ -197,6 +205,8 @@ func (h *Handler) mutateCollaborationParticipants(w http.ResponseWriter, r *http
 	r.Header.Del("X-Workspace-Slug")
 	var base collaborationWorkflowBody
 	var target, note, purpose, expectedStatus, statusOptionsVersion string
+	var condition, estimate *string
+	var repair service.CollaborationInformationRepairSelection
 	switch action {
 	case "invite":
 		var body collaborationParticipantBody
@@ -209,13 +219,33 @@ func (h *Handler) mutateCollaborationParticipants(w http.ResponseWriter, r *http
 		if !decodeCollaborationWorkflowBody(w, r, &body) {
 			return
 		}
-		if body.Purpose != "transfer" && body.Purpose != "information" {
+		if body.Purpose != "transfer" && body.Purpose != "information" && body.Purpose != "information_repair" {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_handoff_purpose", "error": "Invalid handoff purpose"})
 			return
 		}
-		if body.Purpose == "transfer" && (len(body.ExpectedStatus) > 0 || len(body.StatusOptionsVersion) > 0) {
+		if body.Purpose == "transfer" && (len(body.ExpectedStatus) > 0 || len(body.StatusOptionsVersion) > 0 ||
+			len(body.UnblockCondition) > 0 || len(body.EstimatedResolutionAt) > 0 || len(body.InformationRepair) > 0) {
 			writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Transfer does not accept status fields"})
 			return
+		}
+		if body.Purpose == "information" {
+			if len(body.InformationRepair) > 0 {
+				writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_request", "error": "Invalid request"})
+				return
+			}
+			var valid bool
+			condition, estimate, valid = informationMetadataSelection(w, body)
+			if !valid {
+				return
+			}
+		}
+		if body.Purpose == "information_repair" {
+			var valid bool
+			repair, valid = decodeInformationRepairSelection(body.InformationRepair)
+			if !valid {
+				writeJSON(w, http.StatusBadRequest, map[string]string{"code": "information_metadata_invalid", "error": "Invalid information repair"})
+				return
+			}
 		}
 		if (len(body.ExpectedStatus) > 0 && json.Unmarshal(body.ExpectedStatus, &expectedStatus) != nil) ||
 			(len(body.StatusOptionsVersion) > 0 && json.Unmarshal(body.StatusOptionsVersion, &statusOptionsVersion) != nil) {
@@ -253,7 +283,11 @@ func (h *Handler) mutateCollaborationParticipants(w http.ResponseWriter, r *http
 			handoff := service.CollaborationTransferParams{CollaborationParticipantParams: params, Note: note}
 			if purpose == "information" {
 				receipt, err = svc.RequestInformation(r.Context(), service.CollaborationInformationRequestParams{
-					CollaborationTransferParams: handoff, ExpectedStatus: expectedStatus, StatusOptionsVersion: statusOptionsVersion})
+					CollaborationTransferParams: handoff, ExpectedStatus: expectedStatus, StatusOptionsVersion: statusOptionsVersion,
+					UnblockCondition: condition, EstimatedResolutionAt: estimate})
+			} else if purpose == "information_repair" {
+				receipt, err = svc.RepairInformation(r.Context(), service.CollaborationInformationRepairParams{CollaborationTransferParams: handoff,
+					ExpectedStatus: expectedStatus, StatusOptionsVersion: statusOptionsVersion, InformationRepair: repair})
 			} else {
 				receipt, err = svc.Transfer(r.Context(), handoff)
 			}
@@ -388,7 +422,8 @@ func writeCollaborationWorkflowResponse(w http.ResponseWriter, receipt service.C
 		return
 	}
 	writeJSON(w, receipt.Status, collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), StatusOptions: receipt.StatusOptions,
-		DeliveryConfirmation: receipt.DeliveryConfirmation, StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated})
+		DeliveryConfirmation: receipt.DeliveryConfirmation, StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated,
+		InformationRepairConfirmation: receipt.InformationRepairConfirmation})
 }
 
 func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Request) {
@@ -406,7 +441,8 @@ func (h *Handler) GetCollaborationOperation(w http.ResponseWriter, r *http.Reque
 		return
 	}
 	out := collaborationOperationResponse{Code: receipt.Code, CollaborationRevision: strconv.FormatInt(receipt.CollaborationRevision, 10), DeliveryConfirmation: receipt.DeliveryConfirmation,
-		StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated}
+		StageConfirmation: receipt.StageConfirmation, StageBlockers: receipt.StageBlockers, StageBlockersTruncated: receipt.StageBlockersTruncated,
+		InformationRepairConfirmation: receipt.InformationRepairConfirmation}
 	if receipt.Status >= 400 {
 		out.Status = receipt.Status
 	}

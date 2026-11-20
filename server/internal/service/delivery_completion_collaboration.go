@@ -38,6 +38,14 @@ func completionIsCollaboration(kind string) bool {
 // This explicit-user projection borrows the writer transaction. It does not use
 // an ambient principal or grant source membership to an outside participant.
 func completionCollaborationAccess(ctx context.Context, tx pgx.Tx, issue db.Issue, viewer pgtype.UUID) (CollaborationIssueAccess, error) {
+	return completionCollaborationAccessInTx(ctx, tx, issue, viewer, false)
+}
+
+func readCompletionCollaborationAccess(ctx context.Context, tx pgx.Tx, issue db.Issue, viewer pgtype.UUID) (CollaborationIssueAccess, error) {
+	return completionCollaborationAccessInTx(ctx, tx, issue, viewer, true)
+}
+
+func completionCollaborationAccessInTx(ctx context.Context, tx pgx.Tx, issue db.Issue, viewer pgtype.UUID, readProjection bool) (CollaborationIssueAccess, error) {
 	q := db.New(tx)
 	users, err := q.LockArtifactUsers(ctx, []pgtype.UUID{viewer})
 	if err != nil {
@@ -46,10 +54,17 @@ func completionCollaborationAccess(ctx context.Context, tx pgx.Tx, issue db.Issu
 	if len(users) != 1 || users[0].DisabledAt.Valid || auth.IsTemporarilyDisabledUser(util.UUIDToString(viewer), users[0].Email.String) {
 		return CollaborationIssueAccess{}, completionDenied()
 	}
-	for _, statement := range []string{
+	statements := []string{
 		`SELECT issue_id FROM issue_collaboration WHERE issue_id=$1 FOR UPDATE NOWAIT`,
 		`SELECT id FROM collaboration_session WHERE issue_id=$1 FOR UPDATE NOWAIT`,
-	} {
+	}
+	if readProjection {
+		statements = []string{
+			`SELECT issue_id FROM issue_collaboration WHERE issue_id=$1 FOR SHARE NOWAIT`,
+			`SELECT id FROM collaboration_session WHERE issue_id=$1 FOR SHARE NOWAIT`,
+		}
+	}
+	for _, statement := range statements {
 		if _, err = tx.Exec(ctx, statement, issue.ID); err != nil {
 			return CollaborationIssueAccess{}, err
 		}
@@ -75,6 +90,14 @@ func completionCollaborationAccess(ctx context.Context, tx pgx.Tx, issue db.Issu
 }
 
 func completionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {
+	return completionSourceIssueInTx(ctx, tx, req, target, exact, false)
+}
+
+func readCompletionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact bool) (db.Issue, error) {
+	return completionSourceIssueInTx(ctx, tx, req, target, exact, true)
+}
+
+func completionSourceIssueInTx(ctx context.Context, tx pgx.Tx, req DeliveryCompletionAuthorizationRequest, target db.Issue, exact, readProjection bool) (db.Issue, error) {
 	if req.Target.Kind == "ordinary" {
 		return target, nil
 	}
@@ -82,7 +105,13 @@ func completionSourceIssue(ctx context.Context, tx pgx.Tx, req DeliveryCompletio
 		return db.Issue{}, completionUnsupported()
 	}
 	q := db.New(tx)
-	child, err := q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})
+	var child db.Issue
+	var err error
+	if readProjection {
+		child, err = q.LockDeliveryEvidenceIssueRead(ctx, db.LockDeliveryEvidenceIssueReadParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})
+	} else {
+		child, err = q.LockLifecycleIssue(ctx, db.LockLifecycleIssueParams{ID: completionUUIDPG(req.Evidence.IssueID), WorkspaceID: target.WorkspaceID})
+	}
 	if err != nil {
 		return child, err
 	}
@@ -181,13 +210,28 @@ func completionCollaborationConsumer(ctx context.Context, tx pgx.Tx, row db.Deli
 }
 
 func completionCollaborationIntent(ctx context.Context, tx pgx.Tx, issue db.Issue, target DeliveryCompletionTarget, consumer DeliveryCompletionConsumer, checkVersions bool) (CollaborationIssueAccess, *CollaborationSubmission, string, error) {
+	return completionCollaborationIntentInTx(ctx, tx, issue, target, consumer, checkVersions, false)
+}
+
+func readCompletionCollaborationIntent(ctx context.Context, tx pgx.Tx, issue db.Issue, target DeliveryCompletionTarget, consumer DeliveryCompletionConsumer, checkVersions bool) (CollaborationIssueAccess, *CollaborationSubmission, string, error) {
+	if target.Kind != "collaboration_submission" {
+		return CollaborationIssueAccess{}, nil, "", completionInvalid()
+	}
+	return completionCollaborationIntentInTx(ctx, tx, issue, target, consumer, checkVersions, true)
+}
+
+func completionCollaborationIntentInTx(ctx context.Context, tx pgx.Tx, issue db.Issue, target DeliveryCompletionTarget, consumer DeliveryCompletionConsumer, checkVersions, readProjection bool) (CollaborationIssueAccess, *CollaborationSubmission, string, error) {
 	var a CollaborationIssueAccess
 	var err error
 	actor := completionUUIDPG(consumer.UserID)
 	if target.Kind == "collaboration_admin" {
 		a, err = completionAdminNomination(ctx, tx, issue, actor, completionUUIDPG(consumer.OrganizationID), true)
 	} else {
-		a, err = completionCollaborationAccess(ctx, tx, issue, actor)
+		projectAccess := completionCollaborationAccess
+		if readProjection {
+			projectAccess = readCompletionCollaborationAccess
+		}
+		a, err = projectAccess(ctx, tx, issue, actor)
 	}
 	if err != nil {
 		return a, nil, "", err

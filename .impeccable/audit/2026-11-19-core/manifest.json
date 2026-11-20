@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-19",
+  "scope": "Shared Web/Electron core UI; current working tree, not just HEAD",
+  "branch": "codex/cross-workspace-collaboration",
+  "head": "89740ed14d1abf1bdc7ba7da26144984884c7cb5",
+  "mode": "Impeccable audit / Operate; read-only product inspection",
+  "native": {
+    "app": "Multica Canary work-management-local",
+    "renderer": "http://localhost:5666/",
+    "renderer_process_cwd": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop",
+    "method": "cua_repl macOS accessibility tree, keyboard and screenshots",
+    "screenshots": "Visible in tool transcript; no standalone screenshot files retained",
+    "exact_build_source_binding": "Renderer process working directory verified; compiled artifact hash not captured",
+    "visited": [
+      "inbox",
+      "issues board",
+      "issue detail",
+      "agents",
+      "quick create dialog",
+      "squads",
+      "squad detail"
+    ],
+    "restored_page": "inbox",
+    "mutations": "No task, comment, status, membership, or instruction submitted; navigation and view toggles only"
+  },
+  "environment_limits": [
+    "make status: Web stopped on 13492",
+    "make status: API on 18572 did not prove checkout/process ownership",
+    "No production Web run, touch gesture synthesis, phone, dark-theme screenshot, narrow viewport, 200% zoom or performance profile"
+  ],
+  "verification": [
+    {
+      "command": "pnpm -C apps/web exec vitest run app/text-contrast.test.ts app/type-scale.test.ts app/brand-variant-cascade.test.ts --reporter=dot",
+      "files": 3,
+      "passed": 50,
+      "failed": 0,
+      "exit": 0
+    },
+    {
+      "command": "pnpm -C packages/views exec vitest run layout/animated-right-sidebar.test.tsx issues/components/pickers/property-picker.test.tsx issues/components/pickers/status-picker.test.tsx issues/components/comment-composers.test.tsx --reporter=dot",
+      "files": 4,
+      "passed": 63,
+      "failed": 0,
+      "exit": 0,
+      "warnings": [
+        "React act/suspended-act warnings",
+        "Query mock returned undefined for workspaces/list"
+      ]
+    }
+  ],
+  "tooling_warning": "Installed pnpm warned that package.json pnpm.onlyBuiltDependencies and pnpm.overrides are ignored. Dependencies/config were not changed.",
+  "detector": {
+    "command": "impeccable detect --json packages/views packages/ui apps/web apps/desktop/src/renderer",
+    "exit": 2,
+    "findings": 9,
+    "primary": 8,
+    "advisory": 1,
+    "verified_product_defects_from_detector": 0
+  },
+  "source_sha256": {
+    "packages/views/layout/animated-right-sidebar.tsx": "c78202df28008400c2e912ce5f4d8aeb6020fb8d0fb35f5e59761ce94f95defb",
+    "packages/views/squads/components/squad-detail-page.tsx": "a2117ad551c971c644a4f02e675ea952de2b474053294872d3cd08bfae9a94a6",
+    "packages/views/issues/components/pickers/property-picker.tsx": "864a760f112472ad614fee8a5d6b89c3803ebc0ade08a08a1d39dbff3055b1e2",
+    "packages/views/issues/components/pickers/assignee-picker.tsx": "b718c0dad940ab3981f7cb20a86a69c580a20fad906d0b34cffb1a5495670201",
+    "packages/views/issues/components/issue-detail.tsx": "04c2420bdacbfe43640317699aeb78c24cfcfed21bfc4cfd2f2cd152cd1facd1",
+    "packages/views/issues/components/comment-input.tsx": "2413ad5734e324d8c8d3d6e2446c54b5a4f4fb416e7ea66629ae4bdd17456764",
+    "packages/views/issues/components/reply-input.tsx": "a9efab812b9ccf1b91689bae11d19ccb9e7398a740cf26f791496e4b203b5bf5",
+    "packages/views/editor/content-editor.tsx": "7ff1c5cbee6eaa787f7cb69cb65492032327de7aaa4fcc74f590d123d21f155c",
+    "packages/views/squads/create/manual-create-squad-page.tsx": "d24d985a418e29f3c150e07fb537b394b74c2634677fa260fdeb4f77de8a1f7b",
+    "packages/views/squads/create/template-create-squad-page.tsx": "2b788923e8131a87841f7c632c572772ef1f54bb6571a193ad1c6bb42e96684a",
+    "packages/ui/styles/tokens.css": "18b70609b67a446cc76d251bef9ea689d7e046a0bdd3c5ab2e26c66edfb03b81",
+    "packages/ui/components/ui/button.tsx": "a440a1db53ad25cb9ebda46b182e43f329e4b32f668c76bf9512724fe5bbcaf5",
+    "packages/views/layout/collection-page.tsx": "46b1e82893512f7f994e1993654ce4c3d67c2eba0818356b07bceadc65404e6c",
+    "packages/views/agents/create/builder-workspace.tsx": "4b336cb87cd6d37a30a118529321bb4883f556478784794cfae0573ececa66f5",
+    "packages/views/issues/components/batch-action-toolbar.tsx": "d8ae26c591674a8d999d4747492aba9a7a0d84f82616f6cad05138bb136963c9"
+  },
+  "changes": "Audit artifacts only; no business/source/test changes; no Trellis task created"
+}

@@ -1,0 +1,66 @@
+{
+  "at": "2026-11-18T08:05:25.840109+00:00",
+  "status": "NOT_ACCEPTED_R01_CURRENT_CLIENT_FIELD_COMPOSITION",
+  "planned_tops": 4,
+  "passed_tops": 2,
+  "failed_tops": 1,
+  "not_run_tops": 1,
+  "planned_orderings": 8,
+  "passed_orderings": 4,
+  "failed_orderings": 1,
+  "not_run_orderings": 3,
+  "retries": 0,
+  "source_drift": 0,
+  "report": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/playwright-report.json",
+  "report_sha256": "279e507376409e920ac2f7a7e75caed71d82b2692194e32964e37f9684dd440e",
+  "cases": [
+    {
+      "title": "Web recovery priority and handler contention preserve original receipts in both submission orders",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 10948,
+          "primary_reported_error": null
+        }
+      ]
+    },
+    {
+      "title": "Web recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "retry": 0,
+          "duration": 11606,
+          "primary_reported_error": null
+        }
+      ]
+    },
+    {
+      "title": "Desktop recovery priority and handler contention preserve original receipts in both submission orders",
+      "status": "unexpected",
+      "results": [
+        {
+          "status": "failed",
+          "retry": 0,
+          "duration": 11154,
+          "primary_reported_error": "Error: page.unroute: Target page, context or browser has been closed"
+        }
+      ]
+    },
+    {
+      "title": "Desktop recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "status": "skipped",
+      "results": []
+    }
+  ],
+  "failed_source_manifest": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/client-candidate-manifest-r01.json",
+  "original_native_primary_failure": "not retained; outer unroute closure masked primary, no crash/product attribution",
+  "failure_and_all_DB_history_retained": true,
+  "runtime_cleanup": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/stop-owned-api-r02.json",
+  "current_parent_TC16": "PARTIAL",
+  "full_S3_accepted": false,
+  "next": "fix new harness, independent review, fresh R02 DB complete four-case replay"
+}

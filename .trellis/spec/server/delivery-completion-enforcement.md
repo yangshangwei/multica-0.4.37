@@ -57,6 +57,94 @@ authorization/operation/before/after, actual actor and variant-specific original
 workflow/admin/submission facts. After must advance before. Current issue state
 may differ after reopen; a historical receipt is never projected as current done.
 
+## Minimal authorization receipt reads
+
+### 1. Scope / trigger
+
+An authorized issuer reads a consumed grant while Web/Desktop refresh the same
+artifact-bound R4 or another GET reads that grant. The GET must retain the exact
+terminal receipt and current source authority throughout one borrowed transaction.
+
+### 2. Signatures
+
+`GetDeliveryCompletionAuthorizationInTx(ctx, tx, access, id)` holds the actual
+id-only fence before the existing generated getter:
+
+```sql
+SELECT id FROM delivery_completion_authorization WHERE id=$1 FOR SHARE NOWAIT
+```
+
+Only GetByID selects `readCompletionAuthority`. Its issuer branch selects
+`readCompletionIssuer` and `readCompletionSourceIssue`, using the existing shared
+issue/access/observer helpers. All calls keep the caller's actual `pgx.Tx`.
+
+### 3. Contracts
+
+Keep one authority, issuer and source validator body. Their original entry points
+select constant `false`; their private read entries select `true`. The original
+by-request getter retains its UPDATE fence and default authority; Create-key
+replay and Revoke retain the original issuer path. Prepare/Finish, current
+consumer authority and R38 configuration/advisory checks retain their existing
+logic and locks. No request field, context flag or marker chooses the mode.
+
+The source helper's `exact` argument controls structural/version exactness.
+`exact=false` still needs a physical source-child fence. Its separate private
+read mode chooses `LockDeliveryEvidenceIssueRead`; the original source entry
+continues to choose `LockLifecycleIssue`. Preserve the ordinary-target return,
+supported-kind check, ordinary child check and exact parent/project/revision
+predicates. The first R4/GET conflict can name the source child even though the
+receipt names the completed root; compare the actual UUID arguments.
+
+Schema, current credentials/workspace/source, retained producer/execution and
+immutable request/terminal consistency remain checked. Terminal reads preserve
+original before/after and minimal privacy after reopen; they do not repeat target
+admission, renew a grant or perform completion. The handler retains no-store,
+final credential checks and commit/outcome-unknown handling.
+
+### 4. Validation / error matrix
+
+| Condition | Required result |
+| --- | --- |
+| Same authorized issuer, R4 or same-grant GET held | Second read succeeds before first release, exact original receipt |
+| Real Revoke holds authorization UPDATE | GET returns409 `delivery_completion_conflict` with actual55P03/grant/PID, zero partial view |
+| GET holds authorization SHARE | Revoke fails at its original UPDATE before terminal/effects; after release the original consumed refusal remains |
+| Different collaboration actor |404 `delivery_completion_not_found`, zero private view |
+| Original password revoked or source member removed |403 `delivery_completion_denied`, zero private view |
+
+### 5. Good / base / bad cases
+
+Good: explicit GetByID read dispatches preserve every validator and compatible
+grant/root/source-child/observer fences. Base: original writer and by-request
+defaults keep their reached SQL and behavior. Bad: remove a fence, confuse
+`exact` or consumer `newAdmission` with a read switch, infer mode from a marked
+transaction, or duplicate validators to avoid the owning helper.
+
+### 6. Required tests
+
+`delivery_completion_consumed_read_concurrency_test.go` builds one genuine
+same-issuer/consumer submission, grant and completion per leaf before registering
+its no-effect baseline. Its3top/10leaf/13named cover both R4 orders, grant siblings,
+both operation-read controls, actual Revoke orders and three current-authority
+denials. Retain distinct backend PIDs, canonical SQL/hash/UUID/55P03, final
+credential/commit and unchanged five-second reads/250ms lock bounds. Pin Revoke's
+original UPDATE; a GET fence witness must permit its actual shared SQL name.
+
+Require fresh normal/race with the four original service receipt/M1/consumer
+tops (combined7top/54leaf/76named). When GetByID's outer fences cover all variants,
+also run `TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay`,
+`TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery` and
+`TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration`
+(3top/5leaf/6named per mode).
+Per-leaf72-relation equality proves read effects. Real fixture completion creates
+retained handoff/job/invalidation history, so whole-suite DB counts can increase.
+
+### 7. Wrong vs correct
+
+Wrong: a generic HTTP409 or nearby R4 response identifies its physical holder.
+Correct: retain that original failure, then bind a new deterministic two-backend
+regression to actual source-child/grant SQL and IDs. PAY-241 S2 R29 records real
+read RED and normal/race GREEN; the historical R28 holder remains unproved.
+
 ## Borrowed transaction contract
 
 Complete service validators accept the actual `pgx.Tx` and derive queries from
@@ -128,6 +216,45 @@ an initiator accepted decision. Current retained submission identity uses the
 locked session event sequence. Off/observe administrative closure keeps its old
 behavior even with legacy or malformed delivery history. Original administrator
 receipt recovery remains separate from permission for a new exception write.
+
+## Claimed-machine refusal proof
+
+`cmd/server/collaboration_machine_completion_refusal_test.go` proves two
+different human boundaries through actual `NewRouter` authentication. Mint
+generic and restricted `mat_` credentials through owned daemon claims, bind
+their persisted owner/Agent/task/workspace identities, and first require a
+successful supported ordinary-issue GET using each same credential. The task
+owner must be the otherwise authorized human signer or collaboration initiator.
+The artifact producer's directly seeded token is setup, not the claimed identity
+used for this proof. A JWT with `X-Agent-ID` is a separate deny-only control;
+`mcb_` is not an authentication credential for these routes.
+
+| Request and identity | Exact boundary |
+| --- | --- |
+| M1 create/revoke, generic claimed task | `RequireHumanActor`:403 with `error="this endpoint is only available to human actors"` |
+| M1 create/revoke, human JWT with Agent hint | M1 human backstop:403 `delivery_completion_denied` |
+| Collaboration lifecycle complete, generic task or hinted JWT | Collaboration human workflow:403 `forbidden` |
+| Any of these writes, restricted claimed task | Capability route guard:403 `error="task capability does not authorize this action or resource"` |
+
+Do not expect a downstream error from a request stopped at an earlier guard or
+accept several unrelated errors as interchangeable. Use current exact artifact,
+submission, policy, observation, operation and grant identities; after all
+refusals the same body and original key must succeed as the actual human.
+This distinguishes human authority from missing evidence, expiry or stale input.
+
+Each refused write compares thirty full business collections, original public
+authorization/submission receipts, immutable delivery history and physical
+archive bytes. Capture setup before the baseline; successful human controls
+follow it. Keep safe public identities/receipts in raw evidence while private
+credential metadata stays out of logs. Existing fixture cleanup may remove
+transient rows; retained grants/terminals/policy/evaluation/knowledge history
+must not be deleted to manufacture an empty database.
+
+The finite regression is two tops and nine refusal leaves, eleven named results
+per mode. Ordinary task consumers explicitly designated by a current human
+grant remain supported under their existing contract. This proof does not
+establish a blanket Agent status-write prohibition, stage/QA reacceptance,
+real-model quality, fresh browser execution or remote PR/CI/payment validity.
 
 ## GitHub and VCS
 
@@ -230,6 +357,48 @@ statuses use server category resolution; archived/unknown status is refused.
 Both responses are `Cache-Control: no-store` and have zero business writes.
 The routes keep the existing minimum task-capability guard; do not widen
 Reporter/Reviewer credentials to use them.
+
+Candidate preparation uses `LockDeliveryEvidenceIssueRead` and
+`readDeliveryArtifactInTx` to retain compatible shared issue/principal/approval/
+execution fences. The collaboration candidate path also shares its root
+collaboration row and rechecks current source access. Actual authorization and
+completion writers retain their existing exclusive entry points. Candidate
+read/read proof does not cover preview's additional observer or stage checks;
+see [Completion candidate preparation reads](./collaboration-stage-approvals.md#completion-candidate-preparation-reads).
+
+### Managed submission preview binding and expiry
+
+`GetCollaborationCompletionPreviewInTx` validates the exact current submission
+without preparing a new completion operation or grant. Initialize its temporary
+`stageMutationGuard.boundSubmission` from the already validated nonnil target ID
+before calling the unchanged `checkSubmission`. That checker must still read the
+immutable binding and original operation/receipt/handoff; do not remove it or
+call the mutation binder to make a preview pass. The same predicate covers a
+real R38 administrator's current submission, with unchanged nomination,
+organization/password and source-artifact checks.
+
+After taking the minimum of the24-hour, evidence, issuer-credential and stage
+horizons, apply `expiry.UTC().Truncate(time.Microsecond)` before comparing it
+with the database clock. This is the existing ordinary-preview rule. Returning
+an offset timestamp violates the UTC wire contract; normalizing only after the
+future-expiry comparison can return an expiry rounded down to the checked instant.
+Keep `enforced`, `usable_for_completion` and `skip_supported` false; preview
+availability is not completion authority.
+
+The canonical regressions are
+`collaboration_completion_preview_managed_submission_test.go` (enforce/off,
+stale target, external participant and expired credential) and
+`collaboration_completion_preview_admin_submission_test.go` (actual password
+administrator, independent signers and disabled creator with a genuine pending
+submission). They verify exact bindings/horizons and no grant, terminal,
+evaluation, status, queue, notification or adapter effects. Preserve the original
+submission RED and the separate UTC failure. Their normal/race acceptance is
+scoped to binding/expiry; full preview/R4, sibling reads, missing bindings and
+revocation require their separate owning-layer proof.
+
+Evidence: PAY-241 S2
+`research/r27-preview-binding-utc-followup-independent-check-20261117.md/json`
+accepts each mode's2top/6leaf/8named and the two local product edits.
 
 ### 4. Validation / error matrix
 

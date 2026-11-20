@@ -1,0 +1,118 @@
+{
+  "at": "2026-11-18T10:21:09.968767+00:00",
+  "owner": "/root/s3_block_fix_r02",
+  "status": "THREE_NEW_TEST_FIXTURE_BASELINES_REPAIRED_DB_GREEN_PENDING",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "original": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-service-normal-r01/stdout.log",
+    "sha256": "5fb8f80c7e1c8d23bb27766a7da18bee6e0477f0147b766b92cdc8f2775c07a6",
+    "expected_named": 43,
+    "actual_named": 43,
+    "named_pass": 39,
+    "named_fail": 4,
+    "failed_names": [
+      "TestCollaborationInformationCreationEffectiveProjectAndOriginalKeys",
+      "TestCollaborationInformationRepairRestoresReturnableContext",
+      "TestCollaborationInformationRepairRestoresReturnableContext/creator_replacement",
+      "TestCollaborationInformationRuntimeV1SourcesAndRepairPreserveExecution"
+    ],
+    "skips": 0,
+    "disposition": "NOT_ACCEPTED",
+    "database": "multica_pay241_s3b_20261118_x4c5mjep_service_normal_r01"
+  },
+  "source_r01": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r01",
+  "source_r02": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-block-work-r02",
+  "initial_source_reconciliation": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/block-fix-r02-intake/initial-source-reconciliation-r02.json",
+  "changes": [
+    {
+      "kind": "changed",
+      "before": {
+        "path": "server/internal/service/collaboration_information_creation_test.go",
+        "sha256": "315a29c78574082e6325aaf72cbbf76087d1cf3574f40d8272687a23d6db68eb",
+        "mode": "0o644"
+      },
+      "after": {
+        "path": "server/internal/service/collaboration_information_creation_test.go",
+        "sha256": "d57e09c388718ed2830ea02fd96935ee1ecf2921398331394b47fde087d6977e",
+        "mode": "0o644"
+      }
+    },
+    {
+      "kind": "changed",
+      "before": {
+        "path": "server/internal/service/collaboration_information_runtime_test.go",
+        "sha256": "d6e5e78e3f6ac56eb96309d5c49d44e3a4b16a4b04865f2943b3692167e0e199",
+        "mode": "0o644"
+      },
+      "after": {
+        "path": "server/internal/service/collaboration_information_runtime_test.go",
+        "sha256": "39e6fa7f3f30cec26f54c9eda013b17978edf41cf6142652340c622faecb919a",
+        "mode": "0o644"
+      }
+    },
+    {
+      "kind": "changed",
+      "before": {
+        "path": "server/internal/service/collaboration_information_test.go",
+        "sha256": "9db12d0d7515838c12c68b82d5e42ae9ad582f2b7b5ef4d81f2eceb5788509ed",
+        "mode": "0o644"
+      },
+      "after": {
+        "path": "server/internal/service/collaboration_information_test.go",
+        "sha256": "1133b662793894950ec2e3ec98453741cdc8d3cfc665e550c943cd11a5ab8aa5",
+        "mode": "0o644"
+      }
+    }
+  ],
+  "causes": [
+    {
+      "test": "TestCollaborationInformationCreationEffectiveProjectAndOriginalKeys",
+      "original_error": "uq_issue_workspace_number SQLSTATE23505",
+      "cause": "Fixture.Issue allocates max(number)+1 without workspace counter; later real Create increment collides",
+      "repair": "existing IssueService.Create builds ordinary parent, generated GetWorkspace checks counter, independent fresh inherits actual parent/project/status with one next number"
+    },
+    {
+      "test": "TestCollaborationInformationRuntimeV1SourcesAndRepairPreserveExecution",
+      "original_error": "byte comparison against pre-insert JSON after payload::jsonb",
+      "cause": "JSONB canonicalization changes encoding, not the original stored snapshot",
+      "repair": "semantic input equality first, freeze actual returned DB payload/ID/sequence/hash before repair, require exact original persisted bytes and rehydrated source/envelope afterwards"
+    },
+    {
+      "test": "TestCollaborationInformationRepairRestoresReturnableContext/creator_replacement",
+      "original_error": "information_requested200 from a legitimate complete normal nested request",
+      "cause": "B1 H->creator makes creator current recipient+handler; this is not parentless replacement",
+      "repair": "B1 H->QA already eligibleparticipant, assert distinct creator/currenthandler, require directcreator blockedreplacement refusal and record truthfulQA->creator repair"
+    }
+  ],
+  "production_files_changed": 0,
+  "SQL_scanner_migration_changes": 0,
+  "public_wire_sha256": "d91b502add1df6c59bef69320ef348d7adb97133c25bd5f93b1e92e7614124d0",
+  "public_reference_sha256": "88f0d43a6add03296d9a0accdc282db157417f7e3ef79273210fc47e964813e1",
+  "runtime_protected_files_unchanged": [
+    "server/internal/service/collaboration_handoff_snapshot.go",
+    "server/pkg/protocol/collaboration_handoff.go",
+    "server/internal/handler/collaboration_runtime_handoff.go",
+    "server/internal/handler/collaboration_runtime_handoff_source_test.go",
+    "server/internal/service/collaboration_runtime_handoff_budget_test.go",
+    "server/internal/service/collaboration_runtime_handoff_source_test.go",
+    "server/internal/service/collaboration_runtime_handoff_test.go"
+  ],
+  "checks": {
+    "result": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/block-test-repair-r02-checks/result.json",
+    "sha256": "48342bc023f4015aa25319c8512b68a724818687cd164661e14b689435169ec3",
+    "profiles": 5,
+    "compile": "PASS_NO_TESTMAIN",
+    "vet": "PASS_SERVICE",
+    "gofmt": "PASS_THREE_CHANGED_TESTS",
+    "pure_tops": 3,
+    "pure_named": 8,
+    "database_test_bodies": 0
+  },
+  "named_inventory_unchanged": true,
+  "R02_DBnormal_race_result": "NOT_RUN_OWNER_MAIN_PENDING",
+  "full_S3_accepted": false,
+  "report": {
+    "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s3-recovery/research/block-service-r01-diagnosis-20261118.md",
+    "sha256": "bb462dce0fa85367312afba7f280e85684946a4002a443e8cb438a41c7be0260"
+  }
+}

@@ -54,11 +54,15 @@ func collaborationInstallationMatchesOS(installationOS, capabilityOS string) boo
 }
 
 func (s *CollaborationService) lockPreparationRuntime(ctx context.Context, q *db.Queries, runtimeID pgtype.UUID) (db.AgentRuntime, db.InstallationDaemonBinding, error) {
+	return s.lockPreparationRuntimeAccount(ctx, q, runtimeID, false)
+}
+
+func (s *CollaborationService) lockPreparationRuntimeAccount(ctx context.Context, q *db.Queries, runtimeID pgtype.UUID, readAccount bool) (db.AgentRuntime, db.InstallationDaemonBinding, error) {
 	runtime, binding, err := s.authorizeCollaborationDaemon(ctx, q, runtimeID)
 	if err != nil {
 		return runtime, binding, err
 	}
-	if _, err = LockManagedRuntime(ctx, s.collaborationRuntimeLookup(q), runtime); err != nil {
+	if _, err = lockManagedRuntime(ctx, s.collaborationRuntimeLookup(q), runtime, readAccount); err != nil {
 		return runtime, binding, err
 	}
 	locked, err := q.LockAgentRuntime(ctx, runtimeID)
@@ -144,7 +148,7 @@ func (s *CollaborationService) RegisterRuntimeCapabilities(ctx context.Context, 
 
 func (s *CollaborationService) RuntimeCapabilities(ctx context.Context, runtimeID pgtype.UUID) (protocol.CollaborationRuntimeCapabilitiesResponse, error) {
 	return collaborationRuntimeMutation(ctx, s, func(tx pgx.Tx) (protocol.CollaborationRuntimeCapabilitiesResponse, error) {
-		runtime, _, err := s.lockPreparationRuntime(ctx, s.Queries.WithTx(tx), runtimeID)
+		runtime, _, err := s.lockPreparationRuntimeAccount(ctx, s.Queries.WithTx(tx), runtimeID, true)
 		if err != nil {
 			return protocol.CollaborationRuntimeCapabilitiesResponse{}, err
 		}

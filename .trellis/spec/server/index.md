@@ -20,9 +20,11 @@
 | [Database test isolation](./database-test-isolation.md) | Explicit test databases, TestMain guards, compile-only commands and bounded audit | Active |
 | [Joint verification environment](./verification-environment.md) | API/test environment separation, Make-safe configuration, exact Go package permits, mixed build/test JSON inventories and reviewed run identity | Active |
 | [Collaboration foundation](./collaboration-foundation.md) | Authority, creation, human workflow and pre-v2 execution history | Foundation |
+| [Human information recovery](./collaboration-information-recovery.md) | Structured block metadata, atomic repair, retained history and bounded authority cursors | Controlled Web/Desktop and owning-layer acceptance |
 | [Collaboration stage authority](./collaboration-stage-approvals.md) | Source-member fences, original signer expiry, protected evidence and migration retry contracts | Scope/code-review boundaries checked; full stage activation separate |
 | [Collaboration results and manual policy](./collaboration-delivery.md) | Immutable delivery, exact initiator decisions, self-completion, bounded history and task-owned AI admission | Human Web/Electron journey verified; provider/installed Main evidence separate |
 | [Collaboration content](./collaboration-content.md) | Gated atomic creation, encrypted drafts, retained references and current-authority native downloads | Public API implemented; full product gate retained |
+| [Run-bound Agent outputs](./collaboration-runtime-output.md) | Original comment/file identity, encrypted Agent provenance, current attempt fences and frozen outcome references | Owning-layer and controlled Web/Desktop R03 accepted; full S3 separate |
 | [Collaboration realtime](./collaboration-realtime.md) | Account/issue scopes, final-send authority, retained outbox and Query recovery | Account transport implemented; full product pending |
 | [Collaboration records and children](./collaboration-records.md) | Ordinary-child references, retained run telemetry, proven group notifications and shared run links | R51/R52 increment verified; full product pending |
 | [Collaboration preview and parent wakeup](./collaboration-preview-wakeup.md) | Read-only eligible batch/continuation facts and committed child-to-ordinary-parent stage wake | Focused increment; full product pending |
@@ -49,6 +51,7 @@
 | [Resource publishing](./resource-publishing.md) | Managed uploads, atomic catalog revisions, authorization and replay | Active |
 | [Squad delegation receipts](./squad-delegation-receipts.md) | Immediate CLI/leader receipt consumption, uncertainty and partial admission | Implemented; durable receipts separate |
 | [Durable delegation receipts](./durable-delegation-receipts.md) | Opt-in idempotent comment creation, original identity and retained uncertainty | Verified opt-in explicit-target increment |
+| [Ordinary comment notification replay](./ordinary-notification-replay.md) | Persisted comment/member delivery IDs, legacy row/state preservation and scoped bus replay | Listener normal/race verified; client/runtime acceptance separate |
 | [Built-in Template Registries](./builtin-templates.md) | Role/squad/autopilot provenance, security routing, status ownership and server-decided content | Active |
 | [Project execution squads](./project-execution-squad.md) | Project setup, authority, atomic materialization and UI recovery contracts | Active |
 | [Local directory snapshots](./local-directory-snapshots.md) | Git index timestamps, private-index fallback and user-work preservation | Active |

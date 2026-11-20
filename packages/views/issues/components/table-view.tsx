@@ -76,6 +76,7 @@ import { ApiError } from "@multica/core/api";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useIssueStatuses } from "@multica/core/issue-statuses/hooks";
 import { useModalStore } from "@multica/core/modals";
+import { withObservedIssueFieldRevision } from "@multica/core/issues/mutations";
 import {
   issueKeys,
   issueTableGroupsOptions,
@@ -2153,6 +2154,7 @@ export function TableView({
   // starts a run, and must confirm rather than fire from one click (MUL-6463).
   const updateIssue = useCallback(
     (issue: Issue, updates: Partial<UpdateIssueRequest>) => {
+      updates = withObservedIssueFieldRevision(issue, updates);
       const intent = runConfirmIntent(issue, updates, { entryOf });
       if (intent) {
         openModal("issue-run-confirm", intent);

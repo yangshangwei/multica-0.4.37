@@ -1,0 +1,26 @@
+{
+  "evidence_type": "offline-native-nonroot-sandbox-probe",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--security-opt=seccomp=unconfined",
+    "--user=1000:1000",
+    "--tmpfs=/tmp:rw,nosuid,size=32m",
+    "-e",
+    "CODEX_HOME=/tmp/codex-home",
+    "--entrypoint",
+    "sh",
+    "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "-c",
+    "mkdir /tmp/codex-home; codex sandbox -c sandbox_mode=\"workspace-write\" -c approval_policy=\"never\" -c sandbox_workspace_write.network_access=false -C /tmp -- sh -c \"cat /proc/net/route; echo sandbox-child-ran\""
+  ],
+  "exit": 2,
+  "stdout": "",
+  "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"/tmp\" (codex_home: AbsolutePathBuf(\"/tmp/codex-home\"))\nerror: the following required arguments were not provided:\n  --permission-profile <NAME>\n\nUsage: codex sandbox --permission-profile <NAME> --config <key=value> --cd <DIR> <COMMAND>...\n\nFor more information, try '--help'.\n"
+}

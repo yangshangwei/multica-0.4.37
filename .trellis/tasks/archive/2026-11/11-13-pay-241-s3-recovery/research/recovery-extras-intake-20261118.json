@@ -1,0 +1,566 @@
+{
+  "at": "2026-11-18T08:47:51.256197+00:00",
+  "owner": "/root/s3_clients_implement",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "BOUNDED_AUTHORING_PLAN_READY_NOT_IMPLEMENTED_OR_EXECUTED",
+  "markdown_sha256": "ed6bef20564e3b8901a0e69bbf2ab95386f8b4931ca950cc2cb315caec882852",
+  "write_scope": [
+    "research/recovery-extras-intake-20261118.md",
+    "research/recovery-extras-intake-20261118.json"
+  ],
+  "future_owner_files": [
+    "e2e/collaboration-recovery-extras.spec.ts",
+    "e2e/fixtures/collaboration-recovery-extras.ts"
+  ],
+  "requires_main_authoring_handoff": true,
+  "main_environment_owner": "/root",
+  "actual_actions": {
+    "DB_API_browser_test_bodies": 0,
+    "builds": 0,
+    "Provider_or_real_model": 0,
+    "process_control": 0,
+    "Git_operations": 0,
+    "product_or_shared_fixture_changes": 0
+  },
+  "inventory": [
+    {
+      "increment": "Extras-A",
+      "case_id": "E-N1-web",
+      "platform": "Web",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "mixed_repeat_replay_reconnect",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "late_join_and_edit_delta",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "target_withdrawal_after_preview",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-A",
+      "case_id": "E-U1-web",
+      "platform": "Web",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "committed_upload_GET_reload",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "same_bytes_unknown_retry",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "changed_reselection_matching_retry",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-A",
+      "case_id": "E-R1-web",
+      "platform": "Web",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "participant_last_basis_offline_and_delayed_read",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "source_only_membership_loss",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "source_loss_participation_survives",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-A",
+      "case_id": "E-N1-desktop",
+      "platform": "Desktop",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "mixed_repeat_replay_reconnect",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "late_join_and_edit_delta",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "target_withdrawal_after_preview",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-A",
+      "case_id": "E-U1-desktop",
+      "platform": "Desktop",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "committed_upload_GET_reload",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "same_bytes_unknown_retry",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "changed_reselection_matching_retry",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-A",
+      "case_id": "E-R1-desktop",
+      "platform": "Desktop",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "participant_last_basis_offline_and_delayed_read",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "source_only_membership_loss",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "source_loss_participation_survives",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-B",
+      "case_id": "E-N2-web",
+      "platform": "Web",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "proven_success_result",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "proven_failed_or_incomplete_result",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "proven_stopped_result",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-B",
+      "case_id": "E-R2-web",
+      "platform": "Web",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "queued_input_author_withdrawal",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "live_resource_grant_withdrawal",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-B",
+      "case_id": "E-N2-desktop",
+      "platform": "Desktop",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "proven_success_result",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "proven_failed_or_incomplete_result",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "proven_stopped_result",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    },
+    {
+      "increment": "Extras-B",
+      "case_id": "E-R2-desktop",
+      "platform": "Desktop",
+      "status": "PROPOSED_NOT_RUN",
+      "subcases": [
+        {
+          "id": "queued_input_author_withdrawal",
+          "status": "PROPOSED_NOT_RUN"
+        },
+        {
+          "id": "live_resource_grant_withdrawal",
+          "status": "PROPOSED_NOT_RUN"
+        }
+      ]
+    }
+  ],
+  "denominators": {
+    "Extras-A": {
+      "tops": 6,
+      "named_subcases": 18,
+      "runtime_scope": "Public password/offline managed enrollment and durable waiting input only; no real run"
+    },
+    "Extras-B": {
+      "tops": 4,
+      "named_subcases": 10,
+      "runtime_scope": "Actual explicitly permitted controlled run/proof/business capability and notifications"
+    },
+    "total_proposed_tops": 10,
+    "total_proposed_subcases": 28,
+    "parent_business_cases": 24,
+    "original_upload_tuples_per_platform": 3,
+    "objects_per_original_upload_tuple": 1,
+    "initial_P_H_D_comment_notification_count": 2,
+    "recovery_extra_inputs_notifications_or_dispatches": 0
+  },
+  "reuse_findings": [
+    {
+      "source": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "limitation": "Legacy login via resource-offer seed plus direct DB enrollment; cannot run unchanged in password profile",
+      "selected_reuse": "Existing password/public seedCollaborationControlJourney and public typed actions in new owner file only"
+    },
+    {
+      "source": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "limitation": "Current password retained bytes/capability revocation path exists; ACK-loss/same-key/reselect composition missing",
+      "selected_reuse": "Actual picker + original upload GET + retained comment/command references"
+    },
+    {
+      "source": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "limitation": "Explicit ELF/Docker helper needed; secondary ensureWorkspace can choose existing source workspace; callbacks do not expose business token",
+      "selected_reuse": "Main-granted controlled namespace execution and explicitly created independent workspace if claimed; real permit token observed privately through unchanged transport"
+    },
+    {
+      "source": "e2e/fixtures/collaboration-host-runtime.ts",
+      "limitation": "seedHostRuntime opens all three gates itself; cannot invoke without recorded main permit",
+      "selected_reuse": "Explicit host daemon/provider/CLI with natural exit/proof and allocation-baseline restoration"
+    }
+  ],
+  "gate_contract": {
+    "waiting_inputs": "appendInput/AuthorizeTargetInput allow consented paused/offline input, gate.enabled is not the waiting-append permission; actual returned command/IDs still mandatory",
+    "positive_Resume_and_runtime": "Require enabled execution/current epoch, active group and original attempt/capability/reservation/admission; simulated permit or closed gate is not runtime proof",
+    "human_upload": "Creation/source or intended issue current-comment authority; no Provider or host execution required",
+    "host_execution": "Separate explicit grant; not inferred from namespace or UI integration"
+  },
+  "privacy_contract": {
+    "no_public_auth_capability_multipart_or_private_bytes": true,
+    "capability_binding": "Viewer/account + actual source member and participant stamp + issue/file/version/intent; before-expiry old-link rejection after remove/rejoin",
+    "own_receipts": "Active authenticated original actor may receive only defined content-free original result; upload metadata remains content-bearing current authority",
+    "runtime_token": "Actual original business token required; user/daemon/termination token substitutes are not valid revocation evidence",
+    "human_output_vs_Agent_output": "Human uploads covered; run-local Agent output upload remains unsupported"
+  },
+  "canonical_complementary_tests": {
+    "service_tops": [
+      "TestCollaborationCommentCommitPreservesValidTargetAndHumanWhenAnotherTargetWasRevoked",
+      "TestCollaborationCommentInputsShareOneWaitingBatchAndSurviveEditing",
+      "TestCollaborationCommentEditMentionDeltaUsesCurrentParticipants",
+      "TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions",
+      "TestCollaborationNotificationsLoseContentAndAnchorsWithAccess",
+      "TestCollaborationAttachmentUnknownCommitPreservesOriginalBytes",
+      "TestCollaborationAttachmentConcurrentUploadKeepsOnlyWinner",
+      "TestCollaborationAttachmentUploadRechecksAuthorityAfterStorage",
+      "TestCollaborationAttachmentCommandSnapshotOutlivesCommentDeletion",
+      "TestCollaborationAttachmentSourceOnlyCapabilityTracksMembershipIdentity",
+      "TestCollaborationResultNotificationsRequireProvenTerminalGroup",
+      "TestCollaborationResultNotificationRollbackAndConcurrentReplay"
+    ],
+    "handler_tops": [
+      "TestCollaborationAttachmentHTTPUsesScopedUploadAndRevocableNativeBytes",
+      "TestCollaborationAttachmentSlowReadRechecksRevocationBeforeBytes",
+      "TestCollaborationAttachmentForeignDraftDoesNotRevealExistence"
+    ],
+    "normal_race_separate_fresh_DB_required": true,
+    "leaf_actual_inventory": "Resolve from raw selected run; this source-name check is not a test pass"
+  },
+  "source_manifest": [
+    {
+      "path": "e2e/fixtures/collaboration-mention-journeys.ts",
+      "sha256": "23415c528748e70b75798c38b893185fd8f172cb5e1712f626410441d0ee6623",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-resource-offers.ts",
+      "sha256": "ad329102566e08d5a85c4bcb63138f8a660318432bc659c8d9f05cabb88ddb4a",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-control-journey.ts",
+      "sha256": "cb548cb272dbf66486a57b2b8ed42ebc93963dbe8043aab652dd00d64f7f115b",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-retained-attachments.ts",
+      "sha256": "35ba55faf9f962c9e81de9d48ef54e9b12d04ce2705f6c60ef1336a7c3bc2fc9",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/collaboration-retained-attachment.spec.ts",
+      "sha256": "ad691690e092dec6ba07a1df38a0cc4106477b0d84ac7f62ef9b70da30766f23",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-handoff.ts",
+      "sha256": "fa19a851184f7781be0b4609a9eb09b52264083b5124adea2d9f0e3f08483956",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-native.ts",
+      "sha256": "b4038d1ba4eeb3e47c3d9730326d2dcb7f41af07e929bd84013712a5775373f1",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-account-electron.mjs",
+      "sha256": "f9021ab07635f2f48d0f90613fcd3c8558cb7262b3bdd2aca98edb31654475d2",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-execution.ts",
+      "sha256": "0a36d23b755dcaef67df3765fb6829f1eaab208f8cd8f17d5f9df74748af7f7d",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-cross-client-provider.go",
+      "sha256": "356dfab491c55e0647e1523e30334c8043c597c2426e045ca22dd25545f17c88",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-host-runtime.ts",
+      "sha256": "3ea2e6a51cd782f55d2268427739e6749f93c8bf23069f817147f2cff603fc92",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-offline-result-notifications.ts",
+      "sha256": "36d93b95972d3c647bf11d8b89b27d03c166bd41dfaaede365ebbe025cc75b04",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-disclosures.ts",
+      "sha256": "d08b379a6ed288829f5b16a49c37533ec580a96db50fba08e2358b0ca7b403bb",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-comment-menu.ts",
+      "sha256": "55c12ad6d2ca73fda134d2f1e0879769560dd0b55e8516724847376b3898e7ca",
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures.ts",
+      "sha256": "ec055f2f87f06bc18dbf0c5234a1ef5d4aefaba19f12395b48c97c19616506f2",
+      "mode": "0o755"
+    },
+    {
+      "path": "packages/core/collaboration/attachment.ts",
+      "sha256": "2a248157d134b718d057e1896718e88a8a9e6d2bab2fc71704a8a23b33c450d4",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/attachment-schema.ts",
+      "sha256": "5bf13062dcc770dda0cc8691f3e8728802968b8c714c206df4b4bd6ca451db64",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-access.ts",
+      "sha256": "a5658205a2dadd1ce3c4b8d2498564729bdc5d1df63ff9ea5ac3133f3759f060",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/delivery-draft.ts",
+      "sha256": "392256627466acb18df55b03b82ad248696993499bc8a643d0746e8e5ab0aab2",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/content-schema.ts",
+      "sha256": "7f83b682b18066c66171aa188b4d1590d66894d2a4a213d8adc0590e7fc04dcb",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/operation.ts",
+      "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/core/collaboration/access.ts",
+      "sha256": "17e87d13d8eafb9329113fe0105b7c67e801e34f6a38491f3d067a7ea9309fe9",
+      "mode": "0o644"
+    },
+    {
+      "path": "packages/views/collaboration/attachment-picker.tsx",
+      "sha256": "d909037eb0910954168c7ef7710e0ca6466f5fa5ab7cbe0138bb2f43c56c70c8",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_create.go",
+      "sha256": "92830ce01ba00b3ae3bc2d2614e86f58ddaced2c474d1c31fcc05c5edb5219e2",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments.go",
+      "sha256": "4fb2e4668e5288c068e4f4365a68b1a552233f08725611e2080402a3726e5d79",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_mentions.go",
+      "sha256": "a20b671c1541c93f808881950e387302c5af1e33269c7f98b034fb5d93c2add1",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications.go",
+      "sha256": "99c7a0f1a52c347062432fac16890daa5e1395b41b37bcec5f4eb8d47c605ed4",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments.go",
+      "sha256": "8d1f4eadb2a3aba14476b6d93e05c4855dd664bda449995bbd0004ee5d520b22",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachment_access.go",
+      "sha256": "ac216b941ebfe58972730dac5801b4d8b8c32c97c44c6cd5e358d8c6d85d416a",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_batches.go",
+      "sha256": "098ee6f0a6ff05dd778ead3e3545077133c0e184503943b6f35448339aacdfd7",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_authority.go",
+      "sha256": "e067d0f593f6a9482423c641413b08f6eed66bb552dc94020d94800f1f89c52e",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_control.go",
+      "sha256": "b2006df16d203429136e74a8f024feb5fcd489fe438f37d8affcd5528c698e2a",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime.go",
+      "sha256": "3db09f2e93be3c22215da1c87130b9306b484c57a8eb1fc0c26a1c8cbb2ca47b",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_capabilities.go",
+      "sha256": "cac2866b400b27010cddc3f48b4a1a3b9d7cab7ec5c40a66d729478183a07614",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_squad.go",
+      "sha256": "a2f790d7afcf6c678292832ebe9ff15d8db2a5759455c1fedc2288a31b880c71",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_runtime_handoff.go",
+      "sha256": "ee5c0569a6a3b531c41086e0ca5b45b8154e8e0623b7872276da50f781c73ef9",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_handoff_snapshot.go",
+      "sha256": "3f8908055f5e7b5936925d2010df531e1802269bfade7dbf963f00e61d8062c2",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_realtime.go",
+      "sha256": "4d786ad98c389670ee206b1303d2efd5bbef1412e9b4c8252424d9853ddf2e01",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_edit.go",
+      "sha256": "7cd5dfabb33d6a384ba337f0182609ba368907c3e800312dae75962f1d671063",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments.go",
+      "sha256": "02a5bbbaa005a7690ef84d3ac76f76be923380f12ad172b39c9646b3cf79a1a3",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/pkg/db/queries/collaboration_notifications.sql",
+      "sha256": "d964a2bcc3139a4d36f47ba8bec23b3aa97d32ed2691285a3629120282254b31",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+      "mode": "0o755"
+    },
+    {
+      "path": "server/internal/service/collaboration_comments_test.go",
+      "sha256": "70ded69047bf09ffc6d4b5f0fa4f9c235ccc5d8dfcbc97aa29d4c4d63c1540d0",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_notifications_test.go",
+      "sha256": "48a03c00442e08b65402e852781616f5d00b4492c9e109df02bec4b5b23524ec",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_attachments_test.go",
+      "sha256": "6231ea4376e93e0efd6e05672a2ab02816755e008b107f9a7020b97da1fe021f",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_result_notifications_test.go",
+      "sha256": "0738215c6b3b7c9440749dd7f4b5fd67da69210078e5ff6a648261f5b07f133e",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/handler/collaboration_attachments_test.go",
+      "sha256": "63922cf6442ad54ed794492ea0450c58b5e9d95f5502d0c4d2b473d377d0119e",
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_realtime_test.go",
+      "sha256": "9609106d2d5728e3fefaea00a93f5ad77b964789480cdee6803016841b1d2439",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-content.md",
+      "sha256": "637c2911ceb9d3713ee79e3c2b3ff92227dbbeae6ebc51a37cebcb803bf9416e",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-realtime.md",
+      "sha256": "321cc698a38a5629b9ddd1477fd1caa86288df708e1891201c5c6e5d4417d64b",
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-preparation-20261114.md",
+      "sha256": "58ec01d7ead8eb3cca7f5d261e71abde62a2190c116b1dcda67355a72582186e",
+      "mode": "0o644"
+    }
+  ],
+  "source_capture_kind": "Read-only live-source SHA/mode inventory; not a frozen coherent candidate or acceptance",
+  "remaining_boundaries": [
+    "Main authorizes new owner files and exact environment/gates/executables",
+    "Actual complete Extras-A and Extras-B execution + independent check",
+    "Full S3 R01-R09 and structured block/repair evidence",
+    "Unsupported standalone subscription/Agent output-upload is not invented",
+    "Real S4/final S5 and business signatures remain separate"
+  ]
+}

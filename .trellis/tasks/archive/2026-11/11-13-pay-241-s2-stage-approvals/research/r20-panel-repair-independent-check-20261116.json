@@ -1,0 +1,158 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "review_date": "2026-11-16",
+  "status": "R20_PANEL_SPEC_QUALITY_SOURCE_AND_COMPILED_OUTPUT_INPUTS_ACCEPTED_CODE_ONLY",
+  "review_order": [
+    "spec_compliance",
+    "code_quality_and_retained_command_evidence",
+    "frozen_frontend_input",
+    "available_candidate_build_evidence"
+  ],
+  "spec_compliance": {
+    "verdict": "PASS",
+    "requirements": ["S2-R08", "A10", "shared_Web_Desktop_contract"],
+    "blocking_findings": [],
+    "existing_Core_source_denial_helper_reused": true,
+    "localized_source_denial_once_outside_record_fragment": true,
+    "private_R4_scrub_and_SQL_fences_preserved": true,
+    "new_dependency_store_protocol_or_locale_change": false
+  },
+  "code_quality": {
+    "verdict": "PASS",
+    "blocking_findings": [],
+    "checker_code_fixes": [],
+    "regression_starts_with_readable_private_R4_then_real_R1_refetch": true,
+    "replacement_R4_states": ["pending", "unavailable", "error"],
+    "readable_R1_pending_and_error_controls": true,
+    "anonymous_R4_denial_control_retained": true,
+    "private_content_and_approval_controls_checked": true,
+    "RED_three_missing_banner_failures_retained": true,
+    "RED_name_filtered_cases": 19,
+    "full_Views_tests": {"PASS": 22, "FAIL": 0, "SKIP": 0, "files": 1},
+    "Core_control_tests": {"PASS": 44, "FAIL": 0, "SKIP": 0, "files": 5},
+    "Views_typecheck_exit": 0,
+    "two_owned_file_ESLint_exit": 0,
+    "all_five_argv_cwd_exit_and_source_before_after_bindings_match": true,
+    "implementation_report_distinct_file_hash_references": 21,
+    "reference_mismatches": [],
+    "complete_RED_test_source_reconstruction_claimed": false,
+    "original_RED_test_hash": "9ea22efbd56d097145c8f3aa4c1d3991d3ac7ef3fbdf7c88d3b15a78b1388c5b",
+    "RED_GREEN_test_file_difference_recorded": "Unused readable-loading control corrected to existing locale; original RED retained and same missing-banner assertion on line80 independently matched."
+  },
+  "owned_source": [
+    {
+      "path": "packages/views/collaboration/stage-code-panel.tsx",
+      "before_sha256": "843062b1ef7f474c45da2ac0bb774527fa75882e7dd0664b7dfd4028ce6dbebb",
+      "accepted_sha256": "58009dc5a0ab43ffbce010b83195054488001d8454347941ef856ab99a91dc93",
+      "ROOT_mode": "0644",
+      "private_mode": "0600"
+    },
+    {
+      "path": "packages/views/collaboration/stage-code-panel.test.tsx",
+      "before_sha256": "fb3b8b41eff016da043cf8efd2fc95d5f707755d0a26fb6452e053b7439c3858",
+      "accepted_sha256": "97500d4429a41b9d78e0dc26797120002e8681fb8d036f35cb7b8bf28b081b79",
+      "ROOT_mode": "0644",
+      "private_mode": "0600"
+    }
+  ],
+  "frozen_frontend_input": {
+    "verdict": "ACCEPTED",
+    "source": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01",
+    "files": 3359,
+    "unchanged_R19_byte_size_mode_identities": 3357,
+    "only_two_owned_paths_changed": true,
+    "ROOT_owned_byte_hashes_match": true,
+    "links": 1961,
+    "workspace_absolute_links_relocated_by_exact_prefix": 26,
+    "other_link_targets_unchanged": 1935,
+    "exact_file_and_link_path_sets_match": true,
+    "mismatches": [],
+    "full_live_ROOT_equivalence_claimed": false
+  },
+  "available_candidate_builds": {
+    "production_Web_build_exit": 0,
+    "Desktop_web_typecheck_exit": 0,
+    "Desktop_production_build_exit": 0,
+    "bound_input_before_after_file_link_drift": [],
+    "stdout_stderr_manifest_environment_references_match": true,
+    "compiled_output_paths": 1676,
+    "compiled_output_hash_size_mode_and_actual_path_set_match": true,
+    "next_cache_included": false,
+    "output_mismatches": [],
+    "web_BUILD_ID": "PpNZY2bAtTOUVfi6UgJKT",
+    "renderer_index_sha256": "0be2384231a80a945c1de883e8f9c1971b0c5d5831f1d005c4a531870cb8a91f",
+    "source_and_compiled_output_input_admission": "ACCEPTED_FOR_NEW_RUNTIME_ENTRY_PREPARATION",
+    "live_runtime_identity_and_launch_configuration_admission": "SEPARATE_LATER_GATE",
+    "fresh_runtime_or_four_scenario_acceptance": "NOT_CLAIMED"
+  },
+  "prepared_reused_Go_artifacts": [
+    {
+      "role": "API_harness",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r18-stage-execution-read-lock-fix-r01/runtime/build-r01/stage-router.test",
+      "sha256": "a2208e6b3e994cb845aa25810539ee3464c332448cbaa172ea101f959091d31c",
+      "mode": "0755",
+      "R19_reference_matches": true
+    },
+    {
+      "role": "CLI",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r18-stage-execution-read-lock-fix-r01/runtime/build-r01/multica",
+      "sha256": "c089ace5853d7614c0db8fd01b88d937f0927d24a653a30ad456238b4202fae2",
+      "mode": "0755",
+      "R19_reference_matches": true
+    },
+    {
+      "role": "Host_daemon",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r18-stage-execution-read-lock-fix-r01/runtime/build-r01/host-daemon.test",
+      "sha256": "090a1d6057184cfb6da90e2878a97da140b993cdaf5f63488d243d143791eec1",
+      "mode": "0755",
+      "R19_reference_matches": true
+    },
+    {
+      "role": "Host_provider",
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-provider",
+      "sha256": "65ec5fc984ae15f002ee3c5c537eaa22a45cfcfad2d85197fdc1805423402acb",
+      "mode": "0755",
+      "R19_reference_matches": true
+    }
+  ],
+  "evidence": {
+    "implementation_report": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-20261116.json",
+      "sha256": "47b0b5d64dfabe42dc05a383705899ed75813f826504b905ff5883be25edaf41"
+    },
+    "frozen_frontend_input": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/input-binding-green-r01.json",
+      "sha256": "0e67ada056c5adf29c4410dc97b7ff5ccfce932ec6c9c0f369f7dc5de96dbabc"
+    },
+    "original_R19_frontend_test_manifest": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r19-metric-freshness-fixture-r01/implement/frontend-final-manifest-r01.json",
+      "sha256": "964390ebc619d3c666da4c952b6388a55472e2049106151729475b60ac370b43"
+    },
+    "production_Web_build": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/logs/web-build-r01.result.json",
+      "sha256": "f3bb0f3dddb46996ddd720b2ba8f83964cf14e63b81cdd94ce426753464c5d5c"
+    },
+    "Desktop_web_typecheck": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/logs/desktop-web-typecheck-r01.result.json",
+      "sha256": "ad24a4ef61d3f4b3cc54c1a62b06a626e86b37ab0fed32967662f174d2566a06"
+    },
+    "Desktop_production_build": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/logs/desktop-build-r01.result.json",
+      "sha256": "770840d360bb9a05c985db40b473902bb5fb2dbff5171501f01cda5e6f1a14dc"
+    },
+    "compiled_frontend_products": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/frontend-products-r01.json",
+      "sha256": "2b182dc5deab6180eab175011f3731326d99ad9e93084c60ec25d37ce12a88d8"
+    }
+  },
+  "checker_commands": {
+    "lint_typecheck_tests_rerun": false,
+    "DB_API_browser_build_signals_installs_Git": 0,
+    "only_file_reads_hashes_and_retained_record_parsing": true
+  },
+  "full_S2_A01_A12_or_parent_acceptance": false,
+  "changed_files": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json"
+  ]
+}

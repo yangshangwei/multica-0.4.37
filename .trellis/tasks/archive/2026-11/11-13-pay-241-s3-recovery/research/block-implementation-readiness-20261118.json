@@ -1,0 +1,498 @@
+{
+  "at": "2026-11-18T07:44:52.920935+00:00",
+  "owner": "/root/s3_block_implement",
+  "main_owner": "/root",
+  "task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "READINESS_COMPLETE_IMPLEMENTATION_NOT_STARTED",
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-implementation-readiness-20261118.md",
+    "sha256": "39907188b7acc58c5eab49b3b8f0f18ac41fed969f1ca39b43c5c6707deacb42"
+  },
+  "scope": "Approved v2/r05 server block metadata, atomic repair, current workflow, project-aware creation and human history readiness only",
+  "native_context": {
+    "saved_hook_read": "/var/folders/3n/gbt3p39s5pdc4l55js62gxnm0000gn/T/hook_outputs/01a1ed92-35e9-7e53-974e-db48d4a0fc26/f59e1314-b523-45cb-aa7e-6a5cf6100853.txt",
+    "recursive_delegation": false,
+    "missing_not_inlined_contracts_loaded_directly": true
+  },
+  "references": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/prd.md",
+      "sha256": "481c2f7cd895eadfa934e044ad6a10650bf0def477d110127c1e0bef7cdb34b4"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/design.md",
+      "sha256": "6a796f9f5d22c60e53fe51b687af668dec54e6c5551891c3379b5c53b1882bfd"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.md",
+      "sha256": "c4c0163110a5b03361e3caa8a3901c74ef2ff8cbf43034601c74242b34b03da7"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/implement.jsonl",
+      "sha256": "15406e42a2ef35a765e2f2683e798c3f4579afc1c8ef5e8213991eb0aa5a3cc9"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-block-contract-v2-20261114.md",
+      "sha256": "650ecd16f2bcf912b8b14e8403783fac514e8b744b28498570c028a0d6fdd1e5"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-wire-supplement-r05.md",
+      "sha256": "d9934020f24751ee722bb0bf115a0e587a37a4ee6bb0465cf12e26fee90e76c5"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/recovery-followup-v2-wire-review-r05.md",
+      "sha256": "2af4befee18f5d8837943f6c8a6a8d11e664e952c2da099ca2d233f7682e9196"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-source-binding-20261118.md",
+      "sha256": "e44307a7e236f57ffa5aed9afb9752f00dddbe44682ac7b414efda99efd06be5"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/current-clients-plan-20261118.md",
+      "sha256": "926b3552c451afa960c9d4d142ec6048474b1b474f2df6065e63a95315219369"
+    }
+  ],
+  "source": {
+    "accepted_manifest": "/Volumes/artisan/.multica-acceptance/pay241-s3-cas-20261118-hxjmd77_/source-verification-r04-manifest.json",
+    "accepted_manifest_sha256": "1275d9709b94d55586d155cfec42886d14663ed9090d0da34cb7388d49e62dd3",
+    "manifest_entries": 5058,
+    "selected_production_paths_verified": [
+      {
+        "path": "server/internal/service/collaboration_workflow.go",
+        "sha256": "51e7eb2b52462fa5e771014b2000173752f30eaa07997f5c66d170054d5f5d09",
+        "mode": "0o644",
+        "accepted_R04_sha256": "51e7eb2b52462fa5e771014b2000173752f30eaa07997f5c66d170054d5f5d09",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_handoff.go",
+        "sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d",
+        "mode": "0o644",
+        "accepted_R04_sha256": "dd4bdccb6c613e3309f32ec5e756e70b9909e7b4cedf292a3faa3ad98f17836d",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_lifecycle.go",
+        "sha256": "faf6200d7a9a3eda633ca4e7f0e6499083a1e5eed2ae5e5f5a714cf09f6d97d7",
+        "mode": "0o644",
+        "accepted_R04_sha256": "faf6200d7a9a3eda633ca4e7f0e6499083a1e5eed2ae5e5f5a714cf09f6d97d7",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration.go",
+        "sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "mode": "0o644",
+        "accepted_R04_sha256": "277dc7c15951e90c00aaaf4acd469107dd5e676a79423ee8ad5e7ab7c12bfef7",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/issue.go",
+        "sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "mode": "0o755",
+        "accepted_R04_sha256": "0696dfbc0acb4221be78b8f63bb0d58f5546f744292e3d52c4aec243da4a3223",
+        "accepted_R04_mode": "0o755",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_creation_options.go",
+        "sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "mode": "0o644",
+        "accepted_R04_sha256": "a03ed96db8b005c72c3eb2129f14ce70e04aca7773286909231893e7f2fc3b57",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_creation_fields.go",
+        "sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+        "mode": "0o644",
+        "accepted_R04_sha256": "d79029f5833abc1d6f856f5eb6042cebbe9387adfc5f417b085fbdfe17d42420",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_activity.go",
+        "sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "mode": "0o644",
+        "accepted_R04_sha256": "576d591b9eda7148a034ecf69c020e64653919ec8da12029a568eca7a4a890fa",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage.go",
+        "sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+        "mode": "0o644",
+        "accepted_R04_sha256": "613dc67d0ed18995645df1ae9ab297c21c23ac2027d3491d3647c85fa3e06156",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_policy.go",
+        "sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+        "mode": "0o644",
+        "accepted_R04_sha256": "a892c72b67010b78a7d1383406ba11412efc2a9ecc3acd1e3df36295265cf9d6",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/service/collaboration_stage_completion.go",
+        "sha256": "cce754252303652d27a10c335e1e1279906a6b20a543d61b4822baf3a31ce7cb",
+        "mode": "0o644",
+        "accepted_R04_sha256": "cce754252303652d27a10c335e1e1279906a6b20a543d61b4822baf3a31ce7cb",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_workflow.go",
+        "sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "mode": "0o644",
+        "accepted_R04_sha256": "2633c9b19f43ac914286b11f03390d251de39e35d45c8632f20f4514b136dc68",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/handler/collaboration.go",
+        "sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "mode": "0o644",
+        "accepted_R04_sha256": "d0a141a653cafb514074c0deebcdb0ce2723a65b8b7448d7bea77c80fb311889",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/handler/collaboration_creation.go",
+        "sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "mode": "0o644",
+        "accepted_R04_sha256": "251d122737d23c2e310ddbdce52f0ed5ca0ca253fca5c85b6cc94475266a1f52",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/cmd/server/router.go",
+        "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+        "mode": "0o755",
+        "accepted_R04_sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+        "accepted_R04_mode": "0o755",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/pkg/db/generated/models.go",
+        "sha256": "92b072f44bf38889fccef8bf2bc1fd3b77fb8a6abccb365ca080403c01e66b04",
+        "mode": "0o755",
+        "accepted_R04_sha256": "92b072f44bf38889fccef8bf2bc1fd3b77fb8a6abccb365ca080403c01e66b04",
+        "accepted_R04_mode": "0o755",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_workflow.sql",
+        "sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "mode": "0o644",
+        "accepted_R04_sha256": "1b9b415c960211011342056575ccef263223e1b078507d91c28af1c19f95c330",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/pkg/db/queries/collaboration_handoff.sql",
+        "sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+        "mode": "0o644",
+        "accepted_R04_sha256": "05d738cdabae133f5c21cf6c894d6db6d2b07f4bf1f6432b34e3bb2dab61f9db",
+        "accepted_R04_mode": "0o644",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/sqlc.yaml",
+        "sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4",
+        "mode": "0o755",
+        "accepted_R04_sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4",
+        "accepted_R04_mode": "0o755",
+        "matches_accepted_R04": true
+      },
+      {
+        "path": "server/internal/auth/jwt.go",
+        "sha256": "f907ca9f8927f70804601c4e627187873370fde8392c27327727529921d867df",
+        "mode": "0o755",
+        "accepted_R04_sha256": "f907ca9f8927f70804601c4e627187873370fde8392c27327727529921d867df",
+        "accepted_R04_mode": "0o755",
+        "matches_accepted_R04": true
+      }
+    ],
+    "all_selected_match": true,
+    "whole_root_acceptance_claimed": false
+  },
+  "preexisting_S2_hunk": {
+    "file": "server/internal/service/collaboration_workflow.go",
+    "current_line": "users, err := q.LockArtifactUsers(ctx, []pgtype.UUID{actor})",
+    "HEAD_previous_line": "users, err := q.LockCollaborationUsers(ctx, []pgtype.UUID{actor})",
+    "diff_sha256": "d04cd78b54569015adcfb395df8a1e6c375afa476dbdb73679e88b84913ef350",
+    "must_preserve": true
+  },
+  "raw_pointer_finding": {
+    "source": "server/pkg/db/queries/collaboration.sql:1",
+    "current_projected_field": "information.id AS information_request_id",
+    "actual_pointer": "issue_collaboration.active_information_request_id",
+    "new_context_must_read_raw_pointer": true,
+    "preserve_existing_joined_capability_and_runtime_semantics": true
+  },
+  "write_scope_next_requires_main_allocation": {
+    "existing_production": [
+      "server/internal/service/collaboration_handoff.go",
+      "server/internal/service/collaboration_workflow.go",
+      "server/internal/service/collaboration_lifecycle.go",
+      "server/internal/service/collaboration.go",
+      "server/internal/service/issue.go",
+      "server/internal/service/collaboration_creation_options.go",
+      "server/internal/service/collaboration_activity.go",
+      "server/internal/service/collaboration_runtime_handoff.go",
+      "server/internal/handler/collaboration_workflow.go",
+      "server/internal/handler/collaboration.go",
+      "server/internal/handler/collaboration_creation.go",
+      "server/cmd/server/router.go",
+      "server/pkg/db/queries/collaboration_workflow.sql"
+    ],
+    "new_production": [
+      "server/internal/service/collaboration_information.go",
+      "server/internal/service/collaboration_information_repair.go",
+      "server/internal/service/collaboration_information_history.go",
+      "server/internal/handler/collaboration_information.go",
+      "server/pkg/db/queries/collaboration_information.sql"
+    ],
+    "generated_actual_deltas_only": [
+      "models.go",
+      "collaboration.sql.go",
+      "collaboration_activity.sql.go",
+      "collaboration_delivery.sql.go",
+      "collaboration_handoff.sql.go",
+      "collaboration_knowledge_delivery.sql.go",
+      "collaboration_stage_submission.sql.go",
+      "collaboration_workflow.sql.go",
+      "new collaboration_information.sql.go"
+    ],
+    "read_only": [
+      "server/internal/service/collaboration_handoff_snapshot.go",
+      "server/pkg/protocol/collaboration_handoff.go",
+      "S2 completion/signature helpers",
+      "R38 implementation",
+      "other tasks WIP",
+      "current runtime source"
+    ]
+  },
+  "migration_readiness": {
+    "source_up_count": 853,
+    "highest_prefix": 865,
+    "highest_version": "865_knowledge_automation_origin",
+    "provisional_unused_prefixes": [
+      866,
+      867
+    ],
+    "reserved_by_this_agent": false,
+    "proposed_new_migrations": 2,
+    "proposed_new_files": 4,
+    "proposals": [
+      {
+        "prefix": 866,
+        "purpose": "collaboration_information_metadata",
+        "columns": [
+          {
+            "name": "unblock_condition",
+            "type": "text",
+            "nullable": true
+          },
+          {
+            "name": "estimated_resolution_at",
+            "type": "timestamptz",
+            "nullable": true
+          },
+          {
+            "name": "superseded_by_repair_handoff_id",
+            "type": "uuid",
+            "nullable": true
+          }
+        ],
+        "backfill": false,
+        "foreign_keys": false,
+        "indexes": []
+      },
+      {
+        "prefix": 867,
+        "purpose": "collaboration_information_ready",
+        "up": "actual nullable metadata schema readiness",
+        "down": "highest retained metadata/relation/information_repaired event guard before supporting column drops"
+      }
+    ],
+    "reuse_index": "issue_handoff_history_idx(issue_id,created_at,id)",
+    "new_index_required_for_correctness": false,
+    "additional_index_only_with_actual_query_volume_evidence": true,
+    "any_new_index_single_statement_concurrently": true
+  },
+  "sqlc_readiness": {
+    "ambient_PATH_found": false,
+    "pinned_version": "v1.31.1",
+    "pin": "Makefile:406",
+    "configuration": "server/sqlc.yaml",
+    "configuration_sha256": "ade6bdf31030c0a8c366e6a981c97efacd3faab408a8e504d6f4530e11e057e4",
+    "retained_executable": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-tool-r02/sqlc",
+    "mode": "0o755",
+    "actual_sha256": "a3da067519c3fbe11be1c96ac019d7f44527fb1e3aaa26c2644c66433e28a8a6",
+    "build_result": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r31-idle-claim-20261118-bz7ym_r1/generation-tool-r02/result.json",
+      "sha256": "931aa57644418387d78a3a94928c76cff313325b0705859990d98b75d0daf625",
+      "exit": 0
+    },
+    "accepted_generator_receipt": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/generation-workspace-r01/command.json",
+      "sha256": "13fdca5de4a98d8a8620e17bf5e121ed49f39212e06c103ec2c7ba24eaee705f"
+    },
+    "invoked_this_turn": false,
+    "installed_this_turn": false,
+    "fallback_invoked": false
+  },
+  "lock_reuses": [
+    "workflowInTx current sorted user set/account/source/catalog/I1/issue/collaboration/session/channels/targets",
+    "LockProjectForAssociationNowait+currentStagePolicy for managed applicability",
+    "plain supported project/policy reads in RR READ ONLY",
+    "original directed workflow replay before new managed/ETA checks",
+    "actual member ID/created_at + nullable participant/account epoch fingerprint"
+  ],
+  "prohibited_helper_reuse": {
+    "prepareStageMutation": "completion approval/submission owner; do not use it for information applicability/repair"
+  },
+  "tests_proposed": [
+    {
+      "file": "server/internal/service/collaboration_information_test.go",
+      "names": [
+        "TestCollaborationInformationManagedMetadataAndLegacyRecovery",
+        "TestCollaborationInformationCompleteNestedReturns",
+        "TestCollaborationInformationCurrentActionabilityAndRawPointer"
+      ],
+      "V2": [
+        "V2-06",
+        "V2-13",
+        "V2-14"
+      ]
+    },
+    {
+      "file": "server/internal/service/collaboration_information_repair_test.go",
+      "names": [
+        "TestCollaborationInformationRepairRestoresReturnableContext",
+        "TestCollaborationInformationRepairPreservesPendingSubmission",
+        "TestCollaborationInformationRepairOriginalKeysAndUnknownCommit",
+        "TestCollaborationInformationRepairRequiredWritesRollback",
+        "TestCollaborationInformationRepairAuthorityCommitOrders",
+        "TestCollaborationInformationRepairPreservesExecution"
+      ],
+      "V2": [
+        "V2-01",
+        "V2-02",
+        "V2-03",
+        "V2-04",
+        "V2-05",
+        "V2-07",
+        "V2-08",
+        "V2-09",
+        "V2-10",
+        "V2-11",
+        "V2-12",
+        "V2-18"
+      ]
+    },
+    {
+      "file": "server/internal/service/collaboration_information_history_test.go",
+      "names": [
+        "TestCollaborationInformationHistoryExactProvenanceAndAffectedPaging",
+        "TestCollaborationInformationHistoryCursorBindingAndBudget"
+      ],
+      "V2": [
+        "V2-13",
+        "V2-15"
+      ]
+    },
+    {
+      "file": "server/internal/service/collaboration_information_creation_test.go",
+      "names": [
+        "TestCollaborationInformationCreationEffectiveProjectAndOriginalKeys"
+      ],
+      "V2": [
+        "V2-17"
+      ]
+    },
+    {
+      "file": "server/internal/service/collaboration_information_runtime_test.go",
+      "names": [
+        "TestCollaborationInformationRuntimeV1SourcesAndSavedSnapshots"
+      ],
+      "V2": [
+        "V2-16"
+      ]
+    },
+    {
+      "file": "server/internal/handler/collaboration_information_test.go",
+      "names": [
+        "TestCollaborationInformationMetadataWirePresence",
+        "TestCollaborationInformationRepairWireClosedBasis",
+        "TestCollaborationInformationHistoryWireAuthorityAndQueries",
+        "TestCollaborationInformationCreationWireProjectObservation"
+      ],
+      "V2": [
+        "V2-13",
+        "V2-14",
+        "V2-17"
+      ]
+    },
+    {
+      "file": "server/cmd/server/collaboration_information_routes_test.go",
+      "names": [
+        "TestCollaborationInformationRoutesUseCurrentPasswordPrincipal"
+      ],
+      "V2": [
+        "V2-13",
+        "V2-14"
+      ]
+    },
+    {
+      "file": "server/cmd/migrate/collaboration_information_recovery_test.go",
+      "names": [
+        "TestCollaborationInformationMetadataMigrationAndRetention"
+      ],
+      "V2": [
+        "V2-15"
+      ]
+    }
+  ],
+  "proposed_top_count": 19,
+  "test_identities_actual_run": 0,
+  "all_V2_planning_ids_mapped": true,
+  "checks": {
+    "read_only_contract_source_tool_binding": "PASS",
+    "product_lint": "NOT_RUN",
+    "product_typecheck": "NOT_RUN",
+    "product_tests": "NOT_RUN",
+    "generator": "NOT_RUN",
+    "database_API_browser_Provider_execution": 0,
+    "migration_write": 0,
+    "product_source_write": 0,
+    "runtime_source_write": 0,
+    "git_mutation": 0,
+    "matrix_status_change": 0
+  },
+  "written_files": [
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-implementation-readiness-20261118.md",
+    ".trellis/tasks/11-13-pay-241-s3-recovery/research/block-implementation-readiness-20261118.json"
+  ],
+  "required_main_handoff": [
+    "actual866+ reservation/recheck",
+    "separate server-work source and exact write-list",
+    "no-DB static/compile permit",
+    "fresh package/mode database/runner allocation",
+    "freeze DTO/query for shared client owner",
+    "current API/Web/Desktop A/B/C/E/G and partial progress acceptance",
+    "independent check and own-hunk commit"
+  ],
+  "remaining_boundaries": [
+    "Full S3 not accepted",
+    "No new runtime structured-v2 metadata",
+    "No installed production Desktop Main or real Provider/payment/deployment claim",
+    "Real S4/final S5/business signatures remain separate"
+  ]
+}

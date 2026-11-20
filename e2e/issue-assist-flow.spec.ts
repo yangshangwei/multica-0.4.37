@@ -61,7 +61,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await page.setViewportSize({ width: 1280, height: 900 });
       const { dialog, editor } = await open(page, workspace.slug);
       const title = "Weekly report " + suffix;
-      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
       await refine(page, dialog, editor, "E2E_ASSIST_TWO");
       await expect(dialog.getByRole("button", { name: "Key details · 2", exact: true })).toHaveAttribute("aria-expanded", "true");
       await dialog.getByLabel(questions[0], { exact: true }).fill("Team members write it; their team lead reads it.");
@@ -122,7 +122,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       await editor.fill("Keep my later edit about monthly reports.");
       await done;
-      await expect(dialog.getByRole("status")).toHaveText("Content changed. Optimize again to use your latest edits.");
+      await expect(dialog.getByRole("status")).toHaveText("Content changed. Refine again to use your latest edits.");
       await expect(editor).toHaveText("Keep my later edit about monthly reports.");
       await dialog.getByRole("button", { name: "Discard", exact: true }).click();
       await editor.fill("Cancel this E2E_ASSIST_DELAY");
@@ -132,7 +132,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await expect(editor).toHaveText("Cancel this E2E_ASSIST_DELAY");
       await editor.fill("Preserve this draft E2E_ASSIST_FAIL");
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
-      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
+      await expect(dialog.getByRole("alert")).toContainText("Refinement failed.");
       await expect(editor).toHaveText("Preserve this draft E2E_ASSIST_FAIL");
       await editor.fill("Retry with complete requirements E2E_ASSIST_ZERO");
       await dialog.getByRole("button", { name: "Try again", exact: true }).click();
@@ -146,13 +146,13 @@ test.describe("AI refinement through real server and task creation", () => {
       const { dialog, editor } = await open(page, workspace.slug);
       const title = `Preserved report ${suffix}`;
       const failedDraft = "Preserve my original report requirements E2E_ASSIST_FAIL";
-      await dialog.getByRole("textbox", { name: "Title (required)", exact: true }).fill(title);
+      await dialog.getByRole("textbox", { name: "Title", exact: true }).fill(title);
       await editor.fill(failedDraft);
       const optimized = page.waitForResponse((res) => responseFor(res, optimizePath));
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       const draftMarkdown: string = (await optimized).request().postDataJSON().text;
       expect(draftMarkdown.replaceAll("\\_", "_")).toBe(failedDraft);
-      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
+      await expect(dialog.getByRole("alert")).toContainText("Refinement failed.");
       await expect(editor).toHaveText(failedDraft);
       const submit = dialog.getByRole("button", { name: "Create Issue", exact: true });
       await expect(submit).toBeEnabled();
@@ -180,15 +180,22 @@ test.describe("AI refinement through real server and task creation", () => {
         await editor.fill("Weekly reporting requirements.\n".repeat(80));
         for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }, { width: 667, height: 375 }]) {
           await page.setViewportSize(viewport);
-          const submit = dialog.getByRole("button", { name: mode === "manual" ? "Create Issue" : "Create", exact: true });
-          await expect(submit).toBeInViewport();
+          const submit = dialog.getByRole("button", { name: mode === "manual" ? "Create Issue" : "Send to agent", exact: true });
+          await expect(submit).toBeInViewport({ ratio: 1 });
           await dialog.getByLabel(questions[0], { exact: true }).fill("Team leads");
           await expect(dialog.getByRole("button", { name: "Add answers to draft", exact: true })).toBeEnabled();
-          await expect(submit).toBeInViewport();
+          await expect(submit).toBeInViewport({ ratio: 1 });
           const box = await dialog.boundingBox();
           expect(box).not.toBeNull();
           expect(box!.width).toBeLessThanOrEqual(viewport.width);
           await expect.poll(async () => (await dialog.boundingBox())?.height ?? Infinity).toBeLessThanOrEqual(viewport.height * 0.85 + 1);
+          const footer = await submit.evaluate(button => {
+            const footerBox = button.parentElement!.getBoundingClientRect();
+            const dialogBox = button.closest('[role="dialog"]')!.getBoundingClientRect();
+            return { top: footerBox.top, bottom: footerBox.bottom, dialogTop: dialogBox.top, dialogBottom: dialogBox.bottom };
+          });
+          expect(footer.top).toBeGreaterThanOrEqual(footer.dialogTop);
+          expect(footer.bottom).toBeLessThanOrEqual(footer.dialogBottom + 1);
           await page.screenshot({ path: info.outputPath(`${mode}-${viewport.width}.png`) });
         }
       } finally { await api.deleteFeatureWorkspace(workspace.id); }
@@ -203,12 +210,12 @@ test.describe("AI refinement through real server and task creation", () => {
         method: "POST", body: { name: "Weekly reporter " + suffix, runtime_id: runtime.id, visibility: "workspace" },
       });
       const { dialog, editor } = await open(page, workspace.slug, "agent");
-      await dialog.getByRole("button", { name: /Send to/ }).click();
+      await dialog.getByRole("button", { name: /^Send to (?!agent$)/ }).click();
       await page.locator("button[data-picker-item]").filter({ hasText: agent.name }).click();
       await refine(page, dialog, editor, "E2E_ASSIST_ONE");
       // Unanswered clarifications must never block task creation.
       const accepted = page.waitForResponse((res) => responseFor(res, "/api/issues/quick-create"));
-      await dialog.getByRole("button", { name: "Create", exact: true }).click();
+      await dialog.getByRole("button", { name: "Send to agent", exact: true }).click();
       const response = await accepted;
       expect(response.status()).toBe(202);
       const task: { task_id: string } = await response.json();

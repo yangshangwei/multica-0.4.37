@@ -40,6 +40,16 @@ windows and full width below the small breakpoint. Empty properties belong in
 editing; no secondary disclosure stack remains below discussion. Long titles,
 names, result/basis and translated controls wrap without horizontal overflow.
 
+The top-aligned resource popup must declare `WebkitAppRegion: "no-drag"` on its
+`DialogContent`, matching the collaboration creation popup. Its close control
+overlaps the Electron account shell's 48px native drag bar; a portal or higher
+z-index does not exclude it from native window drag hit-testing. Preserve the
+real `DialogClose` wiring and retained lifetime. The component test pins the
+no-drag boundary, but native acceptance must click the visible X with OS screen
+coordinates and verify the full popup and backdrop disappear. Accessibility
+activation, DOM `.click()`, Playwright clicks and renderer input injection do
+not prove OS pointer delivery; Escape/backdrop success alone is insufficient.
+
 Preparing a result from a comment copies its current text/file identity into a
 separate editable result draft only on an explicit user action. Require basis and
 an explicit formal submit; no ordinary comment or preparation performs a handoff.
@@ -133,6 +143,16 @@ changes; hide/inert inactive content so uploads, pending operations and unsaved
 memory/knowledge input survive without entering the keyboard/accessibility tree.
 Key the entire drawer by Server/viewer/issue identity and unmount on denied access.
 
+Pass the category's `active` state through memory history/version reads,
+selected knowledge review and retained proposal source discovery. Inactive
+optional observers are disabled, so interval/refocus/deadline/realtime cannot
+keep rereading hidden history or candidate bodies. Keep required current-context
+and source/target list root status reads for toolbar facts/recovery, and retain
+all knowledge projection expiry/erasure. Reopen through current protected reads
+without resetting drafts, reopening a dismissed version or refocusing a consumed
+selection. Hiding one observer must not cancel another visible consumer's shared
+Query.
+
 `CollaborationPanelStatus` reports only ephemeral `{attention, count?}` to stable
 callbacks. Errors and retained recovery requests appear in an actionable toolbar
 status without opening a modal or taking focus. Attachment count requires a
@@ -204,6 +224,16 @@ basis field; an unrelated field must not become invalid.
 Workbench search/sort apply to loaded rows. Show loaded/total and match context,
 retain explicit pagination, and let Clear search restore the list without
 changing the selected issue. History/comment timestamps use `useLocale()`.
+
+Workflow status-option failures offer `options.refetch()` through the existing
+error component in the same form; show loading while the retry is pending and
+keep submission gated by successful current status options. Read retry cannot
+discard a typed reason/result or send an action POST. Context restore/purge
+confirmation is locally bounded to the viewport, with a nonshrinking title and
+footer and a scrolling description/reason/error area. Bound the growing reason
+Textarea; even a legal 1,000-byte multiline reason must leave both cancel and
+confirm reachable at narrow/short/enlarged-text sizes. Keep the original
+snapshot/revision and permission guards when resizing the form.
 
 ## 4. Validation & Error Matrix
 

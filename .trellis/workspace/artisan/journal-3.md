@@ -1370,3 +1370,267 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 ### Next Steps
 
 - 真实模型语义质量、安装版 Main/installer/updater 和其他平台保留独立验收；未创建PR、推送或部署。
+
+
+## Session 160: 协作空间 Impeccable 审计修复与回归
+<!-- trellis-session: v=2 fp=7ed4a57efe7e57f2 -->
+
+**Date**: 2026-11-18
+**Task**: 协作空间 Impeccable 审计修复与回归
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+修复 C01–C09，完成 590 项 Views、56 项 Core、17 个 Chromium 场景及全仓类型/lint 检查；独立检查通过，任务已归档。
+
+### Main Changes
+
+- 共享选择器过滤与 toggle/真实标签，阶段校验保留 schema 路径
+- 知识续期保留客户端输入与光标，隐藏可选读取停止而租约擦除继续
+- 上下文确认弹窗适应窄屏/长理由，工作流候选可原地重试
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a8232f9bb` | fix(collaboration): keep audited task interactions reliable |
+
+### Testing
+
+- [OK] 51 Views 文件/590 tests 与 7 Core 文件/56 tests 通过
+- [OK] 17 Chromium 原始组件/CSS 场景通过，含触摸、明暗、中英、200%字号
+- [OK] pnpm typecheck 9/9、pnpm lint 6/6、独立 Trellis 检查与 detector 通过
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 无本任务待办；生产 Web/API、安装版 Electron Main 与物理设备属于后续独立验收
+
+
+## Session 161: PAY-241 S3 字段并发首增量与 TestMain 清理闭环
+<!-- trellis-session: v=2 fp=b8c0b53197c62d41 -->
+
+**Date**: 2026-11-18
+**Task**: PAY-241 S3 字段并发首增量与 TestMain 清理闭环
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+接续已接受S2，激活现有S3并完成service/HTTP字段并发与原回执首增量；独立检查接受、阻挡项0。TC16更新PARTIAL，父24=2PASS/12PARTIAL/10NOT_RUN，完整S3与S4/S5保持开放。用户后续授权提交后，S3代码与规范已提交96a2bffe3；完整S3未归档。
+
+### Main Changes
+
+- 补齐两个字段并发回归文件，复用真实PostgreSQL提交/PID屏障和现有fixture；原GET回执与fresh continuation不重复副作用。
+- 共享handler TestMain增加五行参数化checked调用目标清理，删除不可达提示结构断言，保留旧失败与RED/GREEN。
+- 更新父矩阵/任务进度、推进计划及两个服务端spec；三个Go路径已精确ROOT整合，保留其他工作。
+
+### Git Commits
+
+- `96a2bffe3` — test(collaboration): keep field conflict recovery verifiable
+
+### Testing
+
+- [OK] service normal/race各7named，handler修正后各3named；名称集合一致、零失败/跳过/缺失/重复/未终结，30关联计数和连接0。
+- [OK] ROOT双包go test-c、go vet、三文件gofmt通过；独立报告cas-independent-check-20261118.md/json接受，未重复已完成DB测试。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 现有S3：当前API/Web/Desktop并发与原回执组合、55评论跨页补读和WS重认证，随后混合通知/上传/撤权/阻塞四项。
+- 真实S4输入齐备后执行沙箱/CI/非生产部署回滚，最终S5正式采样与业务签字；当前第一增量不关闭整个S3。
+
+新会话按 `.trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md` 接续，保留S2/父历史及其他任务WIP。
+
+
+## Session 162: 验收 E2E #37/#38 并保留隔离证据
+<!-- trellis-session: v=2 fp=c741eca68f5ce00c -->
+
+**Date**: 2026-11-19
+**Task**: 验收 E2E #37/#38 并保留隔离证据
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+#37/#38 原样回归与稳定 RED/GREEN、Web14/14、Electron renderer6/6；只归档两子任务，父任务与其余编号保留。
+
+### Main Changes
+
+- 保护普通状态的 UUID 详情读取与 late initialData。
+- 保留当前路由事项的历史展开意图并限定清理生命周期。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22e0b202f60255f5dc9030139454ec87e4606270` | fix(issues): keep ordinary status visible while a write is pending |
+| `da19f01ddc722396327cda94227cb9a6d7036cc7` | fix(iterations): preserve expansion while an issue address becomes readable |
+
+### Testing
+
+- [OK] Web 四完整文件14/14；Electron真实渲染器6/6；单worker、零自动重试。
+- [OK] Core/Views相关文件与两端导航、lint/typecheck及生产构建通过；既有警告保留。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 父任务继续跟踪其余原编号；PAY-241 S3 与既有创建弹窗任务保持原归属。
+
+
+## Session 165: Core UI audit remediation committed
+<!-- trellis-session: v=2 fp=02a7d4f0265f1246 -->
+
+**Date**: 2026-11-19
+**Task**: Core UI audit remediation committed
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Committed verified F01-F11 core UI fixes and archived their evidence; unrelated shared-tree work preserved.
+
+### Main Changes
+
+- Preserve squad drafts and denied-query boundaries; repair retained sidebar portals, picker/editor semantics, brand contrast and touch targets.
+- Independent review resolved six integration edge cases; native Electron confirmed the key interaction repairs.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b6b07c3067bccaf3a76de960872a41e0f687d276` | fix(ui): preserve drafts and accessible state across core workflows |
+
+### Testing
+
+- [OK] 533 targeted tests passed; Core/UI/Views/Web/Desktop typechecks passed; scoped lint0 errors and detector0 findings.
+- [OK] Commit preparation rechecked51 source hashes against the verified manifest; all matched.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Physical phone touch, spoken screen-reader validation and the two unconfirmed narrow-layout candidates remain outside this task.
+
+
+## Session 170: Complete agent-create blocked feedback and consistency
+<!-- trellis-session: v=2 fp=0d0ee81db2a260ad -->
+
+**Date**: 2026-11-20
+**Task**: Complete agent-create blocked feedback and consistency
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Completed and archived blocked-feedback task after fixing live-content, empty-source, stale-adoption and hint-grouping gaps; independent review and all scoped acceptance passed.
+
+### Main Changes
+
+- Unified blocker reasons/focus, draft-preserving recovery, helper conventions, recipient grouping and bilingual handoff wording.
+- Archived 30 accepted criteria with production-source bindings, compact credential-free evidence and independent design review (25/40 to 33/40).
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `307f404fee685094ecc49569b4c0beb0f7127b42` | fix(issues): make blocked agent handoffs explain how to recover |
+| `d6be5c012724c1582ee8150676d54e175cfd76f5` | docs(issues): preserve proof that blocked handoffs recover safely |
+
+### Testing
+
+- [OK] Core8 with3072 combinations; relatedViews330 plus finalgrouping87; root15 static tasks; 18new+15existing Web/Electron cases; 32independentvisual samples.
+- [OK] Disabled helper contrast3.737:1light/4.952:1dark; hintgap4px; final cleanup5portsclosed and owned DBcontainerremoved.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining approved work. P3polish, real spoken screen-reader/physical-touch and packagedinstaller checks remain explicitly out of scope.
+
+
+## Session 171: Archive full regression after current verification and cleanup
+<!-- trellis-session: v=2 fp=7425be90d98c1b1b -->
+
+**Date**: 2026-11-20
+**Task**: Archive full regression after current verification and cleanup
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Archived the completed R3 regression with 514 canonical E2E passes, verified repairs, explicit coverage limits and complete owned-resource cleanup.
+
+### Main Changes
+
+- Fixed allocation admission so this exact task can move to its explicit archive path; preserved and repaired all task records and links.
+- Independently reviewed database provisioning, runtime diagnostics and ledger retry safety, including red-green counterexamples.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `963461f67` | fix(e2e): allow completed acceptance tasks to leave the active directory |
+| `cbcb86b94` | fix(dev): keep database startup on the allocated endpoint |
+| `37e2faa0f` | fix(issues): keep creation actions reachable in short windows |
+| `6f51d385f` | fix(daemon): preserve ledger barriers during atomic publication |
+| `ddc80d5af` | test(qa): bind collaboration acceptance to its actual state |
+| `fa1867259` | docs(qa): preserve complete collaboration regression evidence |
+
+### Testing
+
+- [OK] 514 E2E latest passes; 14718 TS passes; 24155 Go named passes with 9 explicit skips; final output and packaged Main 2/2 each.
+- [OK] 28 allocation tests, actual archived-directory admission, task context/link validation, and independent runtime/container cleanup.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No task work remains. Historical failures, pre-ledger performance scope, platform and real-model limits remain documented.
+
+
+## Session 172: Archive November 18 E2E follow-up at user request
+<!-- trellis-session: v=2 fp=27c8bcf7072505da -->
+
+**Date**: 2026-11-20
+**Task**: Archive November 18 E2E follow-up at user request
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Archived the parent tracker at the user's explicit request; retained #37/#38 acceptance, original case ownership and historical evidence.
+
+### Main Changes
+
+- Moved the parent into archive/2026-11 and repaired parent/child document links. Archive commit: 01c4cba0a.
+- Closed this tracker without adding acceptance claims for other original cases; preserved all parallel work.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22e0b202f60255f5dc9030139454ec87e4606270` | fix(issues): keep ordinary status visible while a write is pending |
+| `da19f01ddc722396327cda94227cb9a6d7036cc7` | fix(iterations): preserve expansion while an issue address becomes readable |
+
+### Testing
+
+- [OK] Verified completed parent and child records, 21 local links, task context manifests and git diff --check.
+- [OK] No product tests rerun: task metadata and documentation only; historical Web14/14 and Electron6/6 evidence retained.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No further work remains for this requested archive; other active tasks keep their existing scope.

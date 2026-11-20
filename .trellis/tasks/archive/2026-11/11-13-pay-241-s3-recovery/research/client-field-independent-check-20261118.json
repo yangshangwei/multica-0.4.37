@@ -1,0 +1,291 @@
+{
+  "at": "2026-11-18T08:33:06.231859+00:00",
+  "reviewer": "/root/s3_clients_check",
+  "active_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+  "status": "NOT_ACCEPTED_R02_CURRENT_CLIENT_FIELD_RUN",
+  "full_run_accepted": false,
+  "actual_R02": {
+    "tops": {
+      "denominator": 4,
+      "PASS": 2,
+      "FAIL": 1,
+      "NOT_RUN": 1
+    },
+    "ordering_subcases": {
+      "denominator": 8,
+      "PASS": 4,
+      "FAIL": 1,
+      "NOT_RUN": 3
+    },
+    "retries": 0,
+    "runner_exit": 1,
+    "max_failures": 1,
+    "Web_passes": "Retainedpartialwithinfailedrun",
+    "Desktop_unexecuted": "transfer-first+bothordinaryorderings",
+    "no_cross_R01_R02_PASS_sum": true
+  },
+  "finding": {
+    "id": "S3C-R02-01",
+    "classification": "Harnessjourneygap_notdemonstratedproductpermissionfailure",
+    "status": "NOT_FIXED_IN_REVIEWED_R02_SOURCE",
+    "source_reason": "DirectoriginalGETprovesreceiptbutdoesnotretireactualUIownpersistedrequest",
+    "issue_id": "01a1edba-a93c-75cc-9d86-8b201016772c",
+    "actor_id": "edb48e37-b63a-4d4c-8d56-620a33571da7",
+    "original_losing_request_id": "64908876-b0ee-44cb-81b8-70ca3a93d706",
+    "original_losing_GET": {
+      "at": "2026-11-18T08:16:42.203Z",
+      "status": 200,
+      "body": {
+        "code": "stale_revision",
+        "collaboration_revision": "5",
+        "status": 409
+      }
+    },
+    "actual_primary_error": {
+      "type": "TimeoutError",
+      "message": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('button', { name: 'More actions', exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <button disabled tabindex=\"0\" type=\"button\" data-disabled=\"\" id=\"base-ui-_r_i_\" aria-haspopup=\"menu\" aria-expanded=\"false\" data-slot=\"dropdown-menu-trigger\" class=\"group/button inline-flex shrink-0 items-center justify-center rounded-lg border border-transparent bg-clip-padding text-body font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] outline-none select-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:not-aria-[h…>More actions</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not enabled\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    58 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is not enabled\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    "actual_phase": "fresh_intent_open_form",
+    "direct_screenshot": "Readabletask/currenthandler+pendingoriginalmessage+Checkoriginalresultenabled+Moreactionsdisabled",
+    "required_human_gesture": [
+      "Actual original-loser Check original result with matching GET identity/result and no business POST",
+      "Retire that original pending request via application owner",
+      "Close restored original Transfer form with real Close button",
+      "Read current observations, submit distinct fresh authorized intent with new key",
+      "Retain both old receipts and failures"
+    ],
+    "no_forceclick_deadlineincrease_storageclear_or_productchange": true
+  },
+  "R01": {
+    "status": "NOT_ACCEPTED",
+    "tops": {
+      "PASS": 2,
+      "FAIL": 1,
+      "NOT_RUN": 1
+    },
+    "orderings": {
+      "PASS": 4,
+      "FAIL": 1,
+      "NOT_RUN": 3
+    },
+    "original_primary_cause": "UNKNOWN_DONOTRETROATTRIBUTE_R02",
+    "original_error_evidence": "Preserved"
+  },
+  "source_binding": {
+    "harness_manifest_sha256": "91ba4843b1aaa88d4d71be93b22a2dc50d1736c5d6a0daa16c799a38966b0019",
+    "harness_declared_files": 241,
+    "harness_drift": [],
+    "spec_sha256": "10cac566342deb24c68e90fd15cdcfd1c8a6aec50c9572116dfbb683c77b67ca",
+    "fixture_sha256": "0188d92a565ae9c63e7d08b30b1cd87cfe0444b8701a6cf0211fab10dcc32614",
+    "product_source": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/source-r01",
+    "browser_config_sha256": "d0fc8424bfe477b402114269dde0a0dbac890b8bcb2b6a0cbce5819b1a346fc2",
+    "source_before_after_equal": true,
+    "raw_stdout_stderr_hashes_match": true
+  },
+  "saved_shutdown": {
+    "database": "multica_pay241_s3c_20261118_x4c5mjep_r02",
+    "pid": 9667,
+    "ledger_count": 853,
+    "table_count_entries": 211,
+    "shutdown_interval_counts_ledger_index_gate_equal": true,
+    "original_gate": {
+      "id": 1,
+      "epoch": 2,
+      "enabled": false,
+      "freeze_progress": null,
+      "creation_enabled": true,
+      "freeze_operation_id": null,
+      "host_execution_enabled": false
+    },
+    "epoch": 2,
+    "connections": 0,
+    "ownedAPI_port_empty": true,
+    "whole_test_DB_rows_unchanged_claim": false,
+    "scope": "Samesavedbeforestop/afterstopcountsandmetadata;notfreshSQL"
+  },
+  "batch_scope_intake": {
+    "literal_scope": "issue",
+    "source_backed": true,
+    "hub_ack_payload": "{scope,id}",
+    "Core_literal": "issue",
+    "no_normalization_needed": true,
+    "executed_batch": "NOT_RUN_BY_REVIEW"
+  },
+  "verification": {
+    "retained_R05_code_static": "PASS_BOUNDED",
+    "source_config_raw": "PASS_IDENTITY",
+    "R02_runtime": "NOT_ACCEPTED",
+    "shutdown": "PASS_RETAINED_INTERVAL",
+    "TC16": "NO_CHANGE_PARTIAL",
+    "fullS3": "NOT_ACCEPTED",
+    "parent24": "NO_CHANGE"
+  },
+  "reviewer_executions": {
+    "testbodies": 0,
+    "DB": 0,
+    "API": 0,
+    "browser": 0,
+    "TestMain": 0,
+    "build": 0,
+    "lint": 0,
+    "typecheck": 0,
+    "process_control": 0,
+    "Git_mutations": 0
+  },
+  "references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/playwright-report.json",
+      "sha256": "414cb3be2f7f315f3765cb09a43eb01c73d72daed4f16b7e44a9c26e16f410cf",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-field-r02/command.json",
+      "sha256": "0de41b0aa1440fe804a66faf5cbcc75901b20af922f856386673253075533a89",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-field-r02/result.json",
+      "sha256": "d5630a1f140d06276568b71185edd37958c58d54565033c71293b3092d2faa3d",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-field-r02/source-before.json",
+      "sha256": "05a717901c53a43f65319c536b35868de47759781b8fd9dfab3b52cb68d2cb80",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/verification/client-field-r02/source-after.json",
+      "sha256": "05a717901c53a43f65319c536b35868de47759781b8fd9dfab3b52cb68d2cb80",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/database-before-stop-r02.json",
+      "sha256": "cfdd8ffc53f7b5a0083ff9f967bb7eaf06f40c018b139ddadf0e458b440d40a7",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/database-after-stop-r02.json",
+      "sha256": "fc79ae45888cf1fa76277c73915814a59b523ce8c14e7595a774c5fc95ff5cb1",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/stop-owned-api-r02.json",
+      "sha256": "eacc96006062c0e5f19025139d420b4a0fa44c16a6c66d44715d515899c73d5e",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/api-r02/fresh-allocation-binding.json",
+      "sha256": "1a2cc4e8f332851d2688c85453e764b4406bf6b5f58ba25ac0983bcd55e63141",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/api-r02/launch.json",
+      "sha256": "5d7278004a7f68a5bbf090bce8cbac30615970f3390d90ab27eda6a64e225717",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/api-r02/ready.json",
+      "sha256": "47453023fd15d6b11cb13557f1597b86b84e4ed2df354b08fcd73f071016324a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/configs/browser-r02.json",
+      "sha256": "d0fc8424bfe477b402114269dde0a0dbac890b8bcb2b6a0cbce5819b1a346fc2",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/intake/harness-manifest-r02.json",
+      "sha256": "91ba4843b1aaa88d4d71be93b22a2dc50d1736c5d6a0daa16c799a38966b0019",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/client-runtime-r02/raw-run-reconciliation.json",
+      "sha256": "824e454d9ef164a99844f6b839a389bbe4b88e34153aa12222a165192d907a09",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/client-runtime-r02/shutdown-reconciliation.json",
+      "sha256": "ea276c9bb2b1a51f2553ffc25d4970dd2cd2bb50ae669971a37e27a0dd91e84a",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/independent-check/client-runtime-r02/pending-original-intent-diagnosis.json",
+      "sha256": "62dad9cf70fb7f1350922380b3a150b692b971ddc6fb44c34f1ac2c7d643f73d",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r01/playwright-report.json",
+      "sha256": "279e507376409e920ac2f7a7e75caed71d82b2692194e32964e37f9684dd440e",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/views/collaboration/workflow.tsx",
+      "sha256": "cbd6085bef297f95be2935a641b54985f428cb563fc77f9278e77bd7c7e2d706",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/operation.ts",
+      "sha256": "b9cd10c98e42be139046d8c672643e3d969df2694965dc66206947555a05b79c",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/action.ts",
+      "sha256": "f63420449b456b0d9eb89c25aa9ce874f771658f1b84e2ac0e295df10a33de65",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/draft.ts",
+      "sha256": "591036cf1a5a28d87560d4c8b0fc691ab713dc86d6340b67654ed4e20139eb99",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/collaboration/pending.ts",
+      "sha256": "5644f58186272c6ad4a5932cbcdcb71327fc90f7a2eb31aa73db75ff38096bb0",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/api/ws-client.ts",
+      "sha256": "93004628a0444e721fbea3ea0fd40f988b1075381b065a703b5d41373d538f88",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/realtime/collaboration.ts",
+      "sha256": "5787f6335af600bf186228e4f27ad166bc76051f1368086452508cbbe148c2f8",
+      "mode": "0o644"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/packages/core/realtime/provider.tsx",
+      "sha256": "044a9d9331c98542af98798059955fc7978d61f8f45a5608ebc1cb5e36b24731",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/realtime/broadcaster.go",
+      "sha256": "6aa9b432e6847c1bbb1962f5e691d8525d7e094eb098f525be1ce1b2b3776cd5",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/server/internal/realtime/hub.go",
+      "sha256": "0dc30f465fd4a3a83e8dc230bfd2230c6538a2b96843ea6250a8e06372cb72dc",
+      "mode": "0o755"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/test-results/collaboration-recovery-Des-8c1ba-s-in-both-submission-orders-chromium/desktop-priority-transfer-priority.json",
+      "sha256": "f6052d817d7a61cdedcf871f5df9c0b868f460fc2287b15ba7efc8352bcb2c47",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/test-results/collaboration-recovery-Des-8c1ba-s-in-both-submission-orders-chromium/desktop-priority-transfer.json",
+      "sha256": "19b3734de076cc76fef1e19b32ac7d2163613fba2ccd4016b26cf04b1b5b778f",
+      "mode": "0o600"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/field-r02/test-results/collaboration-recovery-Des-8c1ba-s-in-both-submission-orders-chromium/desktop-priority-transfer-priority-failure-1.png",
+      "sha256": "b970fc8f653a854d8b8caf54dcacd513aeafa930b613e5d454ebad05198fc3c0",
+      "mode": "0o644"
+    }
+  ],
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/client-field-independent-check-20261118.md",
+    "sha256": "f5414ce7178c7390ca5b8f22a668784dc84801cf4a380bcaf6e9a31f2125a271"
+  }
+}

@@ -1,0 +1,265 @@
+{
+  "task": ".trellis/tasks/11-20-full-e2e-regression-20261120",
+  "at": "2026-11-20T01:46:22.544523+00:00",
+  "status": "PASS",
+  "unique_browser_cases": 2,
+  "browser": {
+    "pass": 2,
+    "fail": 0,
+    "skip": 0,
+    "not_run": 0,
+    "flaky": 0,
+    "retries": 0,
+    "exit": 0,
+    "stats": {
+      "startTime": "2026-11-20T01:41:37.374Z",
+      "duration": 76956.518,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "file": "collaboration-runtime-output.spec.ts",
+        "line": 8,
+        "title": "Web controlled Agent output preserves original files, receipts, results and current authority",
+        "project": "chromium",
+        "status": "passed",
+        "retry": 0,
+        "duration_ms": 35071
+      },
+      {
+        "file": "collaboration-runtime-output.spec.ts",
+        "line": 8,
+        "title": "Desktop controlled Agent output preserves original files, receipts, results and current authority",
+        "project": "chromium",
+        "status": "passed",
+        "retry": 0,
+        "duration_ms": 39625
+      }
+    ],
+    "metrics": [
+      {
+        "platform": "Desktop",
+        "status": "PASSED",
+        "evidence_path": "artifacts/qa/full-e2e-20261120/output/browser-final-results/collaboration-runtime-outp-6986f-sults-and-current-authority-chromium/desktop-runtime-output.json",
+        "evidence_sha256": "3bd8db338be2af7f23a4a5074fc8d39350d8cbf609f3acfc4cb9be301103cf32",
+        "checkpoints": 175,
+        "intentional_runs": 5,
+        "physical_provider_launches": 5,
+        "output_cli_invocations": 6,
+        "recovery_launches": 0,
+        "permit_http_calls": 10,
+        "original_permit_identities": 5,
+        "output_attachments": 5,
+        "recorded_result_runs": 2,
+        "nonrecorded_stop_or_withdrawal_runs": 3,
+        "daemon_exit": 0,
+        "daemon_errors": [],
+        "runtime_cleanup": [
+          {
+            "owner": "controlled_daemon",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "output_loopback_transport",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "original_runtime_transport",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "output_process_observer",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "execution_gate",
+            "status": "fulfilled"
+          }
+        ],
+        "native_or_web_sessions_cleanup": [
+          {
+            "status": "fulfilled"
+          }
+        ],
+        "business_subcases": [
+          {
+            "name": "agent_file_unknown_response_original_cli_retry",
+            "status": "PASSED"
+          },
+          {
+            "name": "same_key_same_bytes_concurrent_replay",
+            "status": "PASSED"
+          },
+          {
+            "name": "changed_bytes_metadata_retry_and_mixed_race",
+            "status": "PASSED"
+          },
+          {
+            "name": "failed_result_frozen_files_and_both_shared_renderers",
+            "status": "PASSED"
+          },
+          {
+            "name": "explicit_new_success_preserves_old_failure",
+            "status": "PASSED"
+          },
+          {
+            "name": "explicit_stop_preserves_output_and_denies_late_token",
+            "status": "PASSED"
+          },
+          {
+            "name": "author_withdrawal_denies_original_output_token",
+            "status": "PASSED"
+          },
+          {
+            "name": "grant_withdrawal_denies_original_output_token",
+            "status": "PASSED"
+          }
+        ]
+      },
+      {
+        "platform": "Web",
+        "status": "PASSED",
+        "evidence_path": "artifacts/qa/full-e2e-20261120/output/browser-final-results/collaboration-runtime-outp-e40a9-sults-and-current-authority-chromium/web-runtime-output.json",
+        "evidence_sha256": "a70e093196bdff817907bac23d5882f63677a755ff58ded27621bff4dfa168d8",
+        "checkpoints": 175,
+        "intentional_runs": 5,
+        "physical_provider_launches": 5,
+        "output_cli_invocations": 6,
+        "recovery_launches": 0,
+        "permit_http_calls": 10,
+        "original_permit_identities": 5,
+        "output_attachments": 5,
+        "recorded_result_runs": 2,
+        "nonrecorded_stop_or_withdrawal_runs": 3,
+        "daemon_exit": 0,
+        "daemon_errors": [],
+        "runtime_cleanup": [
+          {
+            "owner": "controlled_daemon",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "output_loopback_transport",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "original_runtime_transport",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "output_process_observer",
+            "status": "fulfilled"
+          },
+          {
+            "owner": "execution_gate",
+            "status": "fulfilled"
+          }
+        ],
+        "native_or_web_sessions_cleanup": [
+          {
+            "status": "fulfilled"
+          }
+        ],
+        "business_subcases": [
+          {
+            "name": "agent_file_unknown_response_original_cli_retry",
+            "status": "PASSED"
+          },
+          {
+            "name": "same_key_same_bytes_concurrent_replay",
+            "status": "PASSED"
+          },
+          {
+            "name": "changed_bytes_metadata_retry_and_mixed_race",
+            "status": "PASSED"
+          },
+          {
+            "name": "failed_result_frozen_files_and_both_shared_renderers",
+            "status": "PASSED"
+          },
+          {
+            "name": "explicit_new_success_preserves_old_failure",
+            "status": "PASSED"
+          },
+          {
+            "name": "explicit_stop_preserves_output_and_denies_late_token",
+            "status": "PASSED"
+          },
+          {
+            "name": "author_withdrawal_denies_original_output_token",
+            "status": "PASSED"
+          },
+          {
+            "name": "grant_withdrawal_denies_original_output_token",
+            "status": "PASSED"
+          }
+        ]
+      }
+    ]
+  },
+  "guards": {
+    "pass": 20,
+    "fail": 0,
+    "skip": 0,
+    "exit": 0,
+    "log": "artifacts/qa/full-e2e-20261120/output/guard-final.log"
+  },
+  "lint": {
+    "exit": 0,
+    "scope": "3 output fixture files, repository base rules plus explicit E2E package resolution/test devDependencies",
+    "log": "artifacts/qa/full-e2e-20261120/output/lint-final.log"
+  },
+  "typecheck": {
+    "exit": 0,
+    "scope": "New JS guard checkJs strict, JS implicit parameters permitted; broad workspace checks in independent reviewer report",
+    "log": "artifacts/qa/full-e2e-20261120/output/typecheck-guard.log"
+  },
+  "independent_review": "artifacts/qa/full-e2e-20261120/stage/output-guard-independent-review.md",
+  "bindings_before": "artifacts/qa/full-e2e-20261120/output/source-artifact-bindings-final-before.json",
+  "bindings_after": "artifacts/qa/full-e2e-20261120/output/source-artifact-bindings-final-after.json",
+  "allocation": "artifacts/qa/full-e2e-20261120/output/allocation-final.json",
+  "cleanup": {
+    "exit": 0,
+    "ports_free": [
+      18581,
+      13501,
+      5675
+    ],
+    "postgres_stopped": true,
+    "remaining_owned_processes": [],
+    "gate_before": {
+      "database": "multica_qa_20261120_output_18581",
+      "creation_enabled": true,
+      "enabled": false,
+      "host_execution_enabled": false,
+      "epoch": 2
+    },
+    "gate_after": {
+      "database": "multica_qa_20261120_output_18581",
+      "creation_enabled": true,
+      "enabled": false,
+      "host_execution_enabled": false,
+      "epoch": 10
+    }
+  },
+  "retained_earlier_runs": {
+    "guard_red": "artifacts/qa/full-e2e-20261120/output/guard-red.log",
+    "initial_browser": "artifacts/qa/full-e2e-20261120/output/browser.json",
+    "initial_browser_pass": 2,
+    "initial_browser_counted_as_unique": false
+  },
+  "limits": [
+    "Deterministic test provider and real local daemon/CLI; no commercial model/account acceptance",
+    "Desktop renderer through test native harness; no packaged Main/installer/updater acceptance",
+    "Shared Web ppJO9I3pKqFza7qn0WOdt/renderer prior to unrelated concurrent security locale changes; root owns subsequent rebuild verification"
+  ],
+  "changed_source_files": [
+    "e2e/fixtures/collaboration-runtime-output.ts",
+    "e2e/fixtures/collaboration-runtime-output-allocation.mjs",
+    "e2e/fixtures/collaboration-runtime-output-allocation.node-test.mjs",
+    ".trellis/spec/web/frontend/e2e-run-environment.md"
+  ]
+}

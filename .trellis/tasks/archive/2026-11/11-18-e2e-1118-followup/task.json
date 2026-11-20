@@ -1,0 +1,58 @@
+{
+  "id": "e2e-1118-followup",
+  "name": "e2e-1118-followup",
+  "title": "跟进 2026-11-18 E2E 失败，按原编号验收",
+  "description": "关联原 52 条失败与独立的 2 条收集错误；首批只规划 #37、#38，不重复认领在办问题。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-18",
+  "completedAt": "2026-11-20",
+  "branch": null,
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "11-18-e2e-37-issue-optimistic-status",
+    "11-18-e2e-38-iteration-history"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "首批 #37 → #38 已完成稳定 RED、最小修复、原整文件回归及最终 Web14/14、Electron6/6验收。2026-11-20 按用户“11 月 18 日 E2E 失败跟进 把这个任务归档吧”的明确要求归档父任务，结束本任务的后续跟踪。仅 #37、#38 计入本任务验收；其余原编号及另计的 S3 收集错误保留原归属与历史证据，不因本次归档追认为通过。",
+  "meta": {
+    "first_batch": {
+      "scope": [
+        "#37",
+        "#38"
+      ],
+      "accepted": [
+        "#37",
+        "#38"
+      ],
+      "pending": [],
+      "report_root": ".artifacts/e2e-fix-20261119-002358-fc3f5ec4",
+      "acceptance_status": "passed",
+      "verified_at": "2026-11-18T19:01:18.137236+00:00",
+      "summary": ".trellis/tasks/archive/2026-11/11-18-e2e-1118-followup/research/first-batch-20261119.md"
+    },
+    "archive_request": {
+      "date": "2026-11-20",
+      "user_instruction": "11 月 18 日 E2E 失败跟进 把这个任务归档吧",
+      "disposition": "parent_tracker_closed_by_user",
+      "accepted_original_cases": [
+        "#37",
+        "#38"
+      ],
+      "other_original_cases": "Existing ownership and historical evidence retained; no additional acceptance claimed by this archive.",
+      "later_regression_task": ".trellis/tasks/archive/2026-11/11-20-full-e2e-regression-20261120",
+      "archive_note": ".trellis/tasks/archive/2026-11/11-18-e2e-1118-followup/research/archive-20261120.md",
+      "product_tests_run_this_turn": false
+    }
+  }
+}

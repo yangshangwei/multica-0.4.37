@@ -1,0 +1,134 @@
+{
+  "at": "2026-11-19T16:07:47.724159+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "/root/tc02_review",
+  "verdict": "TC02_HARNESS_AND_PREPARATION_ACCEPTED_PENDING_RUNTIME",
+  "blocking_findings": 0,
+  "runtime_ACCEPTED": false,
+  "TC02_PASS_authorized_by_review": false,
+  "denominator": {
+    "tops": 2,
+    "platforms": [
+      "Web",
+      "Desktop"
+    ],
+    "sessions": 6,
+    "ui_edits": 4,
+    "current_version_observations": 18,
+    "activity_sessions": 6,
+    "retries": 0
+  },
+  "source": {
+    "server_head": "e9e97785286f881abc9cb54e2092f5a0f53ec2e8",
+    "client_head": "5eff9b013c135be79afd7bf84cdb5d9605c5b38f",
+    "harness": {
+      "e2e/collaboration-requirements-history.spec.ts": "9c44c63e5cfbe22fd255ea54e4e5a9c95d7a6d57923582e921a41a739de1cb4f",
+      "e2e/fixtures/collaboration-requirements-history.ts": "db0194bcbff882e906f4e603ed63a990855a69fd5302096beaf3c3e26c48e39b"
+    },
+    "links_checked": 2062,
+    "workspace_links": 32,
+    "browser_native_resources_checked": 1107,
+    "r02_existing_source_records": 31199,
+    "allowed_generated_change": "apps/web/next-env.d.ts exactly .next/dev/types/routes.d.ts -> .next/types/routes.d.ts",
+    "tools_checked": 7,
+    "dependency_packages_checked": 13
+  },
+  "checks": {
+    "strict_types": "PASS_0_diagnostics",
+    "actual_ESLint": "PASS_0_errors_0_warnings_2_files_not_ignored",
+    "playwright_list": "PASS_exact_2_named_tops_0_errors",
+    "database_requests_by_reviewer": 0,
+    "api_requests_by_reviewer": 0,
+    "runtime_processes_by_reviewer": 0
+  },
+  "findings_fixed": [
+    {
+      "file": "e2e/fixtures/collaboration-requirements-history.ts",
+      "issue": "Historical Activity response union preserves prior first-insertion order and can reject correct current UI history",
+      "resolution": "Implementer changed assertion to latest complete actual UI response; retains historical raw pages; no product/assertion-timeout relaxation"
+    }
+  ],
+  "pending": [
+    "Final r02 Web build, complete product artifact seal and owned runtime readiness",
+    "Complete single-round two-journey browser execution with all original evidence",
+    "Owned resource closure and independent final source/config/build/catalog/gate/connection audit"
+  ],
+  "qualifications": [
+    "V1 creation and participant invitations are public setup APIs, not creation UI coverage",
+    "Revision is bound to actual UI GET response and exact displayed description, not a visible revision label",
+    "Activity complete limit=1 pagination uses each real session authenticated fetch; actual drawer displays all five registered events on default page",
+    "Three occupational labels represent synthetic actor roles; no new occupational policy or real business signatures",
+    "Desktop coverage is actual Electron renderer/preload, not installed production Main",
+    "Retained initial reviewer binding parser mishandled relative native symlinks; corrected raw readlink comparison matches all1107 resources; original parser output preserved"
+  ],
+  "evidence_refs": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/allocation-r01.json",
+      "sha256": "722b2e89c7c24899d6072cb893f4cd7bcf9762f6bb6a173e68dd7c29e41d2353"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/initial.json",
+      "sha256": "6fb60d07f52e1061b76e436c32c6ebd74b525651d975331341513adba8232e95"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/database-before-create.json",
+      "sha256": "5c9dafb4d80871e9e8a9bc15744d8aa1f6fb10cafbd84f8c86396c5e5052f5d4"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/audit/template-before.json",
+      "sha256": "9a062a9bca77b2ff59b417ae61247a80091690426fdfb022a19e8378a59c65b7"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/audit/r01-before.json",
+      "sha256": "d5b6236d978ac6a526aa00797aeae65be1d46be4187c1a9b2a6cdbdfdc45a6a2"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/audit/r01-connections-before-service.json",
+      "sha256": "fdc22511ae2c7dad79db6ef0e6aa3fbc767f30d29515ef64e1156ae8262e3a06"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/client-r02-adoption.json",
+      "sha256": "ff5a041c65d5d7bf3aa2e353bfadfc1b0e2b4b1709871957c9f72e0bd045f9b3"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/r02-copy-recovery.json",
+      "sha256": "4d30f4b3ac31431e6f9357312530310efee2538367889ea2d3c338cb7019fea6"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/tools-and-dependencies.json",
+      "sha256": "b49be96c4ce70c63c8990eaec1223b3f576f7959decdff98ea5e2baf58b13181"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/browser-native-resources-before.json",
+      "sha256": "91f9171f4ac35dc47a1df34de713004606849d36d26bb8bf127d98cf54ab1c1a"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/workspace-dependency-links-before.json",
+      "sha256": "470edc5962b7c93c873f31a48f318d8c77809e42317d8b0300b308f22f58d5a0"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/intake/harness-frozen-r01.json",
+      "sha256": "bdd301d75748bfdaa132977bf1aaf8e7526bd2cad23778212f9fbd0b870a4186"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/tc02-review-static/result-r01.json",
+      "sha256": "787d60981a244e8a4a65d03c186057fc41fdf0f7bf0a2a019503086a12dc2263"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/tc02-review-static/list-r01.json",
+      "sha256": "1cc2fa3728a79c5ec590517e8e2cdaf3c47ef8d257811e5c913111110a322f12"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/tc02-review-static/list-r01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/tc02-review-static/bindings-r01.json",
+      "sha256": "fc216114e55ab9543a4b59730c786a8dbde79379da880073fd3b3e283ce25043"
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-tc02-20261119-8splmgva/tc02-review-static/bindings-r02.json",
+      "sha256": "55d31a03d0b21d08d34e40ab7ca16679715daaa331f8169f78c1e4d7f8bc5598"
+    }
+  ]
+}

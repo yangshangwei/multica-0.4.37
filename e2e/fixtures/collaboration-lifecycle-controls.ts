@@ -2,7 +2,7 @@ import { revealCollaborationMentions } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
 import { createServer, request as httpRequest, type IncomingHttpHeaders } from "node:http";
 import { isIPv4, type Socket } from "node:net";
-import { expect, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page } from "@playwright/test";
 import type {
   CollaborationCommandHistory, CollaborationCommentInput, CollaborationCommentReceipt, CollaborationControlInput,
   CollaborationControlReceipt, CollaborationIssue, CollaborationMentionTargets, CollaborationOperation,
@@ -224,6 +224,17 @@ export async function lifecycleComment(page: Page, fixture: LifecycleFixture, ta
   const sent = page.waitForResponse((response) => new URL(response.url()).pathname === `${lifecycleIssuePath(fixture.issueId)}/comments` && response.request().method() === "POST");
   await form.getByRole("button", { name: "Send comment", exact: true }).click();
   const response = await sent;
+  if (response.status() !== 201) {
+    const body: unknown = await response.json().catch(() => null);
+    const refusal = body !== null && typeof body === "object" ? body as Record<string, unknown> : {};
+    await test.info().attach("lifecycle-comment-refusal", { contentType: "application/json", body: JSON.stringify({
+      path: new URL(response.url()).pathname,
+      status: response.status(),
+      request_id: response.request().headers()["idempotency-key"] ?? null,
+      code: typeof refusal.code === "string" ? refusal.code.slice(0, 256) : null,
+      error: typeof refusal.error === "string" ? refusal.error.slice(0, 512) : null,
+    }, null, 2) });
+  }
   expect(response.status()).toBe(201);
   const receipt: CollaborationCommentReceipt = await response.json();
   const input: CollaborationCommentInput = response.request().postDataJSON();

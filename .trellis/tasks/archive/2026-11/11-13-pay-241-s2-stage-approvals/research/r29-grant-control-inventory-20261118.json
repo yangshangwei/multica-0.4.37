@@ -1,0 +1,2553 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-18T01:47:46.774480+08:00",
+  "date": "2026-11-18",
+  "timezone": "Asia/Shanghai",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "researcher": "/root/r27_preview_research",
+  "query": "Complete frozen-source handler5/router3 named and leaf inventories; bound GetByID-only re-execution/retention and donor-schema TestMain prerequisites",
+  "scope": "internal; filesystem-only static analysis",
+  "status": "PREPARATION_COMPLETE_NO_EXECUTION_AUTHORIZATION",
+  "canonical_source": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01",
+  "comparison_source_R28_accepted": "/Volumes/artisan/.multica-acceptance/pay241-r28-preview-read-20261117-sz4vj59y/source-green-r01",
+  "write_ownership": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.json"
+  ],
+  "inventory_method": {
+    "method": "Source function/Go string-literal loop expansion in filesystem-only Python; no Go compiler, test-list, TestMain or runtime event execution.",
+    "named_definition": "Every selected top plus each reached static t.Run parent/child name. No intermediate parent is omitted; these selected tops have only depth-one children.",
+    "leaf_definition": "Names without any child t.Run, including a top that contains only ordinary loops/assertions.",
+    "excluded_assertion_loops": [
+      "handler private-field checks:153",
+      "router workspace-header assertions:224",
+      "router minimal-response private-field checks:430",
+      "router restart request-method/path assertions:115"
+    ],
+    "runtime_counts_not_claimed": true
+  },
+  "original_handler_five": {
+    "package": "./internal/handler",
+    "selector": "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant|TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity|TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation|TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks)$",
+    "top_level_names": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "counts_source_derived": {
+      "top_level": 5,
+      "named": 12,
+      "leaf": 11
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 91,
+        "function_end_line": 158,
+        "function_sha256": "136e3ee19974ea0f8180cd1d5c77d8d3b85e8c7b119d51c895e5d0489b88195f",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 159,
+        "function_end_line": 214,
+        "function_sha256": "122fb4af242ba130a4d24f9e8c6e5bd79d28d85b25136f5666d5a752f86e8630",
+        "direct_t_run_expressions": [
+          "mutation"
+        ],
+        "loop_variable": "mutation",
+        "loop_values_source_order": [
+          "policy",
+          "head",
+          "issuer_revoked",
+          "expired",
+          "content",
+          "wrong_consumer",
+          "wrong_operation"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "counts": {
+          "named": 8,
+          "leaf": 7
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 215,
+        "function_end_line": 267,
+        "function_sha256": "741f1490563dff0a132bcfac6e9173417c73e42f74ce1e5b895ee0958e9264ec",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 316,
+        "function_end_line": 359,
+        "function_sha256": "3d93e77ce969073db7e985f43b6b466cee2bb156be804d427b03436a4271c924",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 360,
+        "function_end_line": 400,
+        "function_sha256": "c3a984583b95a1c26d3b0e925fd4b21ff941e398368f3faf4954d1e6db7f7413",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "conditional_router_three": {
+    "package": "./cmd/server",
+    "selector": "^(TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck|TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors|TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery)$",
+    "top_level_names": [
+      "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck",
+      "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery"
+    ],
+    "counts_source_derived": {
+      "top_level": 3,
+      "named": 6,
+      "leaf": 5
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck",
+      "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck",
+      "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+      "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go",
+        "function_line": 240,
+        "function_end_line": 262,
+        "function_sha256": "04e5031d0829fead17e24c2e00af8b52b9dbe22816db5097a0415b438e694205",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go",
+        "function_line": 220,
+        "function_end_line": 238,
+        "function_sha256": "6013db016eb24dd683bc6edc89a11f56b778039ad16caa31e717ef65db29099c",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+        "source": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+        "function_line": 377,
+        "function_end_line": 440,
+        "function_sha256": "551a1302d2743c528255334239b44bd051b03c7c97bf1578048ddeceab610ac5",
+        "direct_t_run_expressions": [
+          "kind"
+        ],
+        "loop_variable": "kind",
+        "loop_values_source_order": [
+          "self",
+          "submission",
+          "admin"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/self",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/submission",
+          "TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery/admin"
+        ],
+        "counts": {
+          "named": 4,
+          "leaf": 3
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "supplemental_direct_GetByID_handler_tops": {
+    "package": "./internal/handler",
+    "selector": "^(TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$",
+    "top_level_names": [
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "counts_source_derived": {
+      "top_level": 2,
+      "named": 5,
+      "leaf": 4
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 273,
+        "function_end_line": 323,
+        "function_sha256": "e4fe634877f18b4cefec4d8a65b3d94efac5a48e40b1b2ac40bfa70d1e92ee8a",
+        "direct_t_run_expressions": [
+          "kind"
+        ],
+        "loop_variable": "kind",
+        "loop_values_source_order": [
+          "self",
+          "submission",
+          "admin"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "counts": {
+          "named": 4,
+          "leaf": 3
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 493,
+        "function_end_line": 509,
+        "function_sha256": "b5a0f0ba3c9705c096b7b776470cfc069fa66f26b509ba136c997b12da5d8132",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "minimal_direct_GetByID_handler_cut": {
+    "package": "./internal/handler",
+    "selector": "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$",
+    "top_level_names": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "counts_source_derived": {
+      "top_level": 3,
+      "named": 6,
+      "leaf": 5
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 91,
+        "function_end_line": 158,
+        "function_sha256": "136e3ee19974ea0f8180cd1d5c77d8d3b85e8c7b119d51c895e5d0489b88195f",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 273,
+        "function_end_line": 323,
+        "function_sha256": "e4fe634877f18b4cefec4d8a65b3d94efac5a48e40b1b2ac40bfa70d1e92ee8a",
+        "direct_t_run_expressions": [
+          "kind"
+        ],
+        "loop_variable": "kind",
+        "loop_values_source_order": [
+          "self",
+          "submission",
+          "admin"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "counts": {
+          "named": 4,
+          "leaf": 3
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 493,
+        "function_end_line": 509,
+        "function_sha256": "b5a0f0ba3c9705c096b7b776470cfc069fa66f26b509ba136c997b12da5d8132",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "optional_combined_handler_baseline_cut": {
+    "package": "./internal/handler",
+    "selector": "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant|TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity|TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation|TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$",
+    "top_level_names": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "counts_source_derived": {
+      "top_level": 7,
+      "named": 17,
+      "leaf": 15
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+      "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin",
+      "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 91,
+        "function_end_line": 158,
+        "function_sha256": "136e3ee19974ea0f8180cd1d5c77d8d3b85e8c7b119d51c895e5d0489b88195f",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 159,
+        "function_end_line": 214,
+        "function_sha256": "122fb4af242ba130a4d24f9e8c6e5bd79d28d85b25136f5666d5a752f86e8630",
+        "direct_t_run_expressions": [
+          "mutation"
+        ],
+        "loop_variable": "mutation",
+        "loop_values_source_order": [
+          "policy",
+          "head",
+          "issuer_revoked",
+          "expired",
+          "content",
+          "wrong_consumer",
+          "wrong_operation"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "counts": {
+          "named": 8,
+          "leaf": 7
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 215,
+        "function_end_line": 267,
+        "function_sha256": "741f1490563dff0a132bcfac6e9173417c73e42f74ce1e5b895ee0958e9264ec",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 316,
+        "function_end_line": 359,
+        "function_sha256": "3d93e77ce969073db7e985f43b6b466cee2bb156be804d427b03436a4271c924",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 360,
+        "function_end_line": 400,
+        "function_sha256": "c3a984583b95a1c26d3b0e925fd4b21ff941e398368f3faf4954d1e6db7f7413",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 273,
+        "function_end_line": 323,
+        "function_sha256": "e4fe634877f18b4cefec4d8a65b3d94efac5a48e40b1b2ac40bfa70d1e92ee8a",
+        "direct_t_run_expressions": [
+          "kind"
+        ],
+        "loop_variable": "kind",
+        "loop_values_source_order": [
+          "self",
+          "submission",
+          "admin"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/self",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/submission",
+          "TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery/admin"
+        ],
+        "counts": {
+          "named": 4,
+          "leaf": 3
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration",
+        "source": "server/internal/handler/delivery_completion_collaboration_test.go",
+        "function_line": 493,
+        "function_end_line": 509,
+        "function_sha256": "b5a0f0ba3c9705c096b7b776470cfc069fa66f26b509ba136c997b12da5d8132",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "original_handler_writer_controls_eligible_for_retention": {
+    "package": "./internal/handler",
+    "selector": "^(TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant|TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity|TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation|TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks)$",
+    "top_level_names": [
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "counts_source_derived": {
+      "top_level": 4,
+      "named": 11,
+      "leaf": 10
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+      "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation",
+      "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+      "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+      "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+    ],
+    "tops": [
+      {
+        "name": "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 159,
+        "function_end_line": 214,
+        "function_sha256": "122fb4af242ba130a4d24f9e8c6e5bd79d28d85b25136f5666d5a752f86e8630",
+        "direct_t_run_expressions": [
+          "mutation"
+        ],
+        "loop_variable": "mutation",
+        "loop_values_source_order": [
+          "policy",
+          "head",
+          "issuer_revoked",
+          "expired",
+          "content",
+          "wrong_consumer",
+          "wrong_operation"
+        ],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/policy",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/head",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/issuer_revoked",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/expired",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/content",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_consumer",
+          "TestDeliveryCompletionAuthorizationRefusalsPreserveStatusAndGrant/wrong_operation"
+        ],
+        "counts": {
+          "named": 8,
+          "leaf": 7
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 215,
+        "function_end_line": 267,
+        "function_sha256": "741f1490563dff0a132bcfac6e9173417c73e42f74ce1e5b895ee0958e9264ec",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationRollbackRevokeAndTransactionIdentity"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 316,
+        "function_end_line": 359,
+        "function_sha256": "3d93e77ce969073db7e985f43b6b466cee2bb156be804d427b03436a4271c924",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationTaskAndConsumerIsolation"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "name": "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks",
+        "source": "server/internal/handler/delivery_completion_authorization_test.go",
+        "function_line": 360,
+        "function_end_line": 400,
+        "function_sha256": "c3a984583b95a1c26d3b0e925fd4b21ff941e398368f3faf4954d1e6db7f7413",
+        "direct_t_run_expressions": [],
+        "loop_variable": null,
+        "loop_values_source_order": [],
+        "named_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "leaf_inventory": [
+          "TestDeliveryCompletionAuthorizationConsumeRevokeAndEvidenceLocks"
+        ],
+        "counts": {
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "execution_status": "NOT_EXECUTED_BY_RESEARCHER"
+  },
+  "original_explicit_issuer_credential_control": {
+    "package": "./internal/handler",
+    "top_level_name": "TestDeliveryCompletionExplicitIssuerCredentialIsolation",
+    "source": "server/internal/handler/delivery_completion_issuer_credential_test.go",
+    "function_line": 49,
+    "function_end_line": 130,
+    "counts_source_derived": {
+      "top_level": 1,
+      "named": 8,
+      "leaf": 7
+    },
+    "named_inventory": [
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/current_issuer_under_different_managed_consumer",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_password_version_changed",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_password_change_required",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_account_disabled",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_credential_deleted",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/legacy_context_cannot_authorize_another_user",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/legacy_context_rechecks_its_own_managed_binding"
+    ],
+    "leaf_inventory": [
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/current_issuer_under_different_managed_consumer",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_password_version_changed",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_password_change_required",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_account_disabled",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/issuer_credential_deleted",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/legacy_context_cannot_authorize_another_user",
+      "TestDeliveryCompletionExplicitIssuerCredentialIsolation/legacy_context_rechecks_its_own_managed_binding"
+    ],
+    "scope": "Explicit CheckArtifactCredentialInTx helper with real middleware issuer and distinct managed consumer; not a GetByID endpoint test.",
+    "reuse_condition": "Keep helper/caller/current snapshot predicates byte-equivalent; otherwise rebind owning tests and allocate a separate admitted run."
+  },
+  "service63": {
+    "source": "research/r29-completion-receipt-diagnosis-20261118.json#original_affected_controls.service",
+    "counts_already_accepted_source_inventory": {
+      "top_level": 4,
+      "named": 63,
+      "leaf": 44
+    },
+    "not_rescanned_or_relisted": true,
+    "combined_with_dispatched_R29_new3_if_main_admits": {
+      "top_level": 7,
+      "named": 76,
+      "leaf": 54
+    }
+  },
+  "required_execution_after_main_bounded_GREEN": {
+    "basis": "Initial product boundary remains GetByID in delivery_completion_authorization.go, after genuine RED. This is a conditional recommendation, not a repair design approval or suite permit.",
+    "service": "Fresh matched GREEN/race of dispatched new3 plus already-inventoried original4/63 as main admits; existing service allocation scope remains ./internal/service only.",
+    "handler": "When changed GetByID grant/root fencing applies to all existing target/consumer variants, allocate one fresh ./internal/handler database for normal and another for race, selecting minimal_direct_GetByID_handler_cut (3/6/5). These cover actual ordinary consumed-after-reopen/no rewrite plus distinct self/submission/admin consumed readers and disabled-R38 consumer vs issuer recovery.",
+    "handler_original_five_role": "ActualArtifactAtomicConsumeAndReplay is directly affected and must execute. Other4 writer-only tops may retain exact unchanged source/caller/default evidence. A single combined original5+direct2 (7/17/15) is an optional finite stronger package run, not a required wholesale suite.",
+    "narrower_delta": "If main proves unchanged variants still call the untouched original GetByID path and only one guarded same-issuer variant opts in, narrow the actual handler cut to the reached branches; do not silently assert consumer coverage from the original five.",
+    "router": "Only if actual HTTP/current selector/consumer wiring or handler finalization changes: two separately fresh ./cmd/server normal/race databases with conditional_router_three (3/6/5). No router tests are authorized by the service profiles."
+  },
+  "command_shapes_recommendation_only": {
+    "executed": false,
+    "handler_normal_argv": [
+      "go",
+      "test",
+      "-count=1",
+      "-p=1",
+      "-json",
+      "./internal/handler",
+      "-run",
+      "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$"
+    ],
+    "handler_race_argv": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-p=1",
+      "-json",
+      "./internal/handler",
+      "-run",
+      "^(TestDeliveryCompletionAuthorizationActualArtifactAtomicConsumeAndReplay|TestDeliveryCompletionCollaborationActualSourceAndOriginalRecovery|TestDeliveryCompletionR38AuthorizationHonorsCurrentConfiguration)$"
+    ],
+    "router_conditional_normal_argv": [
+      "go",
+      "test",
+      "-count=1",
+      "-p=1",
+      "-json",
+      "./cmd/server",
+      "-run",
+      "^(TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck|TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors|TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery)$"
+    ],
+    "router_conditional_race_argv": [
+      "go",
+      "test",
+      "-race",
+      "-count=1",
+      "-p=1",
+      "-json",
+      "./cmd/server",
+      "-run",
+      "^(TestDeliveryCompletionAuthorizationRouterCurrentCredentialRecheck|TestDeliveryCompletionAuthorizationRouterConflictingWorkspaceSelectors|TestDeliveryCompletionCollaborationRouterActualSourceAndRecovery)$"
+    ],
+    "cwd": "Main-admitted matching final GREEN source/server; use reviewed task runner and its unchanged approved deadline/toolchain/environment.",
+    "no_raw_DATABASE_URL_or_actual_profile_created": true,
+    "inventory_evidence": "Require selected package/top/named/leaf exact-set match, one terminal per name, no unfinished/fail/skip, command success, matching normal/race sources and final fixture/resource receipts."
+  },
+  "retention_bindings": [
+    {
+      "path": "GetDeliveryCompletionByRequestInTx",
+      "source": "server/internal/service/delivery_completion_authorization.go:224",
+      "binding": "Original human-only guard, setup, scoped GetDeliveryCompletionByRequest UPDATE NOWAIT (SQL:30), original completionReadAuthority call at236 and completionView. New GetByID-compatible authority helper must not be called here.",
+      "retained_evidence": "Eligible only with actual prior passing named terminals and exact final source/default/caller binding. No handler unit invokes GetDeliveryCompletionAuthorizationByRequestKey in this frozen source."
+    },
+    {
+      "path": "Create-key replay / revoke / Prepare / Finish",
+      "source": "server/internal/service/delivery_completion_authorization.go:79",
+      "binding": "Create replay calls original completionIssuerRead at87; revoke keeps original authorization UPDATE at254 and issuer helper at277. Prepare keeps root at196 and grant UPDATE at214. Completion evidence validation keeps source exact=true and EvaluateDeliveryEvidenceInTx exclusive.",
+      "retained_evidence": "The other four original handler tops (4/11/10) remain writer controls; reuse is conditional on their entire reached path remaining equivalent."
+    },
+    {
+      "path": "Original public writer defaults",
+      "source": "server/internal/service/delivery_evidence.go:79",
+      "binding": "EvaluateDeliveryEvidenceInTx -> false:80; lockDeliveryArtifactInTx -> false:235; completionCollaborationAccess -> false:41. Their true read counterparts already exist; no global/context marker is needed.",
+      "retained_evidence": "Do not change those defaults or upstream writer locks. The new service two writer fences must still execute on fresh data."
+    },
+    {
+      "path": "Nonissuer/current consumer",
+      "source": "server/internal/service/delivery_completion_authorization.go:349",
+      "binding": "Keep the admin-enabled refusal and completionConsumerAuthority(...false) at352. Here false is newAdmission=false; it is not a shared-lock selector. Human/task/managed generation/binding/invocation predicates and actual admin/password credential remain mandatory.",
+      "retained_evidence": "Retain original helper evidence by source; direct GetByID supplemental handler tests still re-exercise the changed outer grant/root path when that path is global."
+    },
+    {
+      "path": "Current credentials / minimal receipt",
+      "source": "server/internal/service/delivery_completion_authorization.go:312",
+      "binding": "Keep setup credential checks, immutable stored request, completionView/receipt and handler final CheckArtifactCredentialInTx:225/commit. GetByID does not gain new-admission target/epoch revalidation.",
+      "retained_evidence": "New service current-authority leaves are fresh execution; original explicit issuer helper is8named/7leaf and can be retained only with exact CheckArtifactCredentialInTx/caller equivalence."
+    },
+    {
+      "path": "HTTP routing and selector dispatch",
+      "source": "server/internal/handler/delivery_completion_authorization.go:145",
+      "binding": "GetByID=(false,false), by-key=(true,false), revoke=(false,true); account-scoped router remains unchanged with human guards only on create/by-key/revoke.",
+      "retained_evidence": "The requested router3-top selector is mandatory only if actual HTTP authentication/selector/consumer routing, handler finalization or the account-scoped route wiring changes."
+    }
+  ],
+  "by_key_and_consumer_GET_coverage_limits": {
+    "handler_five_no_direct_by_request_key": true,
+    "handler_five_no_direct_GetByID_password_recheck_negative": true,
+    "handler_five_TaskAndConsumerIsolation_is_actual_mutation_not_consumer_GET": true,
+    "retained_router_sources": [
+      {
+        "top": "TestDeliveryCompletionAuthorizationRouterRealArtifactAndRestart",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go:84",
+        "counts_source_derived": {
+          "top_level": 1,
+          "named": 3,
+          "leaf": 2
+        },
+        "scope": "legacy/password parents; issued GetByID, own by-key GET, identical POST create-key recovery after actual router reconstruction/current token; request loops are assertions, not named children."
+      },
+      {
+        "top": "TestDeliveryCompletionAuthorizationRouterDesignatedHumanKeepsEvaluationPrivate",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go:161",
+        "counts_source_derived": {
+          "top_level": 1,
+          "named": 1,
+          "leaf": 1
+        },
+        "scope": "Designated human GetByID200; consumer own-key/private evaluation404; other member GetByID404; minimal source privacy."
+      },
+      {
+        "top": "TestDeliveryCompletionAuthorizationRouterDesignatedTaskReadsOriginalGrant",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go:200",
+        "counts_source_derived": {
+          "top_level": 1,
+          "named": 1,
+          "leaf": 1
+        },
+        "scope": "Same-owner actual task uses designated task GET; cannot revoke as human owner; grant rows unchanged."
+      },
+      {
+        "top": "TestDeliveryCompletionAuthorizationRouterRevocationRecovery",
+        "source": "server/cmd/server/delivery_completion_authorization_integration_test.go:307",
+        "counts_source_derived": {
+          "top_level": 1,
+          "named": 1,
+          "leaf": 1
+        },
+        "scope": "Actual original revocation key/reason identity and current designated consumer revoked GetByID; terminal count and tar unchanged."
+      }
+    ],
+    "prior_PASS_provenance": "These are exact source coverage pointers. This research does not establish prior run success: main must attach retained passing named terminals/config/source identities before relying on source equivalence.",
+    "no_silent_expansion": "If any old by-key/consumer/current-credential path actually changes or no retained passing evidence exists, main must explicitly rebind a bounded owning/transport control run; this report grants no such execution."
+  },
+  "allocation_clone_schema": {
+    "allocation_path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/three-profile-allocation-r01.json",
+    "allocation_sha256": "0805d51e38e0a81a6966c5e9f84ab2a4e949d05dab60d1979581f90e8c100274",
+    "allocation_recorded_at": "2026-11-17T17:07:29.854911+00:00",
+    "allocation_recorded_status": "R29_FRESH_ISOLATED_EMPTY_CLONES_PREPARED_NO_GO_SUITE",
+    "allocations": [
+      {
+        "purpose": "red",
+        "database": "multica_pay241_20261117_s2_receiptread_red_r29",
+        "package": "./internal/service",
+        "donor": "multica_pay241_20261116_s2_readlock_red_r17",
+        "before_any_R29_Go_suite": true,
+        "test_commands_started": 0
+      },
+      {
+        "purpose": "green",
+        "database": "multica_pay241_20261117_s2_receiptread_green_r29",
+        "package": "./internal/service",
+        "donor": "multica_pay241_20261116_s2_readlock_red_r17",
+        "before_any_R29_Go_suite": true,
+        "test_commands_started": 0
+      },
+      {
+        "purpose": "race",
+        "database": "multica_pay241_20261117_s2_receiptread_race_r29",
+        "package": "./internal/service",
+        "donor": "multica_pay241_20261116_s2_readlock_red_r17",
+        "before_any_R29_Go_suite": true,
+        "test_commands_started": 0
+      }
+    ],
+    "service_only_allocation_no_handler_router_admission": true,
+    "recorded_PAY_suite_max": 1,
+    "recorded_global_suite_max": 2,
+    "recorded_API_suites": 0,
+    "recorded_Go_suites_started": 0,
+    "counts_are_at_allocation_not_current_state": true,
+    "source_migration_file_count": 853,
+    "recorded_ledger_exact_ordered_source_match": true,
+    "ledger_last_stem": "865_knowledge_automation_origin",
+    "audits": [
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/donor-before-r01.json",
+        "sha256": "e17d02dfd197555d84e527124ca18f4deb9489c0c47ba222969bb980490f3b34",
+        "at": "2026-11-17T17:07:24.560553+00:00",
+        "database": "multica_pay241_20261116_s2_readlock_red_r17",
+        "ledger_entries": 853,
+        "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "indexes": 663,
+        "indexes_not_all_live_ready_valid": [],
+        "tables": 211,
+        "equals_donor_recorded_fields": {
+          "ledger": true,
+          "ledger_sha256": true,
+          "indexes": true,
+          "table_counts": true
+        },
+        "recorded_connection_counts": {
+          "max_connections": 100,
+          "other_connections": 0,
+          "cluster_connections": 25
+        },
+        "table_counts_ref": "allocation_clone_schema.canonical_donor_table_counts"
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/donor-after-clones-r01.json",
+        "sha256": "eaed17e64fd387b07676d6fdc8e91a99fd21c45fb0344e95e9a8d068ad617fb7",
+        "at": "2026-11-17T17:07:29.848357+00:00",
+        "database": "multica_pay241_20261116_s2_readlock_red_r17",
+        "ledger_entries": 853,
+        "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "indexes": 663,
+        "indexes_not_all_live_ready_valid": [],
+        "tables": 211,
+        "equals_donor_recorded_fields": {
+          "ledger": true,
+          "ledger_sha256": true,
+          "indexes": true,
+          "table_counts": true
+        },
+        "recorded_connection_counts": {
+          "max_connections": 100,
+          "other_connections": 0,
+          "cluster_connections": 25
+        },
+        "table_counts_ref": "allocation_clone_schema.canonical_donor_table_counts"
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/red-clone-before-r01.json",
+        "sha256": "fb9617d6556b3cf48953ec0dd17753b3f6c4e064b388136e8e8f2094153cd4b1",
+        "at": "2026-11-17T17:07:25.172270+00:00",
+        "database": "multica_pay241_20261117_s2_receiptread_red_r29",
+        "ledger_entries": 853,
+        "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "indexes": 663,
+        "indexes_not_all_live_ready_valid": [],
+        "tables": 211,
+        "equals_donor_recorded_fields": {
+          "ledger": true,
+          "ledger_sha256": true,
+          "indexes": true,
+          "table_counts": true
+        },
+        "recorded_connection_counts": {
+          "max_connections": 100,
+          "other_connections": 0,
+          "cluster_connections": 25
+        },
+        "table_counts_ref": "allocation_clone_schema.canonical_donor_table_counts"
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/green-clone-before-r01.json",
+        "sha256": "0a12074dc9d7f6f4f8f1490b595f82439d7af26a8e115224b701bf13bd4f293f",
+        "at": "2026-11-17T17:07:27.785435+00:00",
+        "database": "multica_pay241_20261117_s2_receiptread_green_r29",
+        "ledger_entries": 853,
+        "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "indexes": 663,
+        "indexes_not_all_live_ready_valid": [],
+        "tables": 211,
+        "equals_donor_recorded_fields": {
+          "ledger": true,
+          "ledger_sha256": true,
+          "indexes": true,
+          "table_counts": true
+        },
+        "recorded_connection_counts": {
+          "max_connections": 100,
+          "other_connections": 0,
+          "cluster_connections": 25
+        },
+        "table_counts_ref": "allocation_clone_schema.canonical_donor_table_counts"
+      },
+      {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/database/profiles-r01/race-clone-before-r01.json",
+        "sha256": "f7d382ee7e74e8aaf5c3224d279095db703fba4c365f855adbf066b061c5ce59",
+        "at": "2026-11-17T17:07:29.584308+00:00",
+        "database": "multica_pay241_20261117_s2_receiptread_race_r29",
+        "ledger_entries": 853,
+        "ledger_sha256": "d648c6e258f50d6abbeb3f025475ea6b3bb6ff02501c57713897fc1be606ec3e",
+        "indexes": 663,
+        "indexes_not_all_live_ready_valid": [],
+        "tables": 211,
+        "equals_donor_recorded_fields": {
+          "ledger": true,
+          "ledger_sha256": true,
+          "indexes": true,
+          "table_counts": true
+        },
+        "recorded_connection_counts": {
+          "max_connections": 100,
+          "other_connections": 0,
+          "cluster_connections": 25
+        },
+        "table_counts_ref": "allocation_clone_schema.canonical_donor_table_counts"
+      }
+    ],
+    "required_fixture_tables_recorded_counts": {
+      "user": 0,
+      "workspace": 0,
+      "member": 0,
+      "agent_runtime": 0,
+      "agent": 0,
+      "agent_invocation_target": 0,
+      "client_usage_daily": 0,
+      "issue": 0,
+      "issue_status": 0,
+      "project": 0,
+      "user_password_credential": 0,
+      "task_token": 0,
+      "agent_approval_request": 0,
+      "agent_artifact_execution": 0,
+      "issue_collaboration": 0,
+      "collaboration_session": 0,
+      "collaboration_account_fence": 0,
+      "collaboration_operation": 0,
+      "project_delivery_policy": 0,
+      "delivery_completion_authorization": 0,
+      "delivery_completion_terminal": 0
+    },
+    "relevant_recorded_indexes": {
+      "user": [
+        {
+          "live": true,
+          "name": "idx_user_created_at",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_user_created_at ON public.\"user\" USING btree (created_at)"
+        },
+        {
+          "live": true,
+          "name": "user_email_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX user_email_key ON public.\"user\" USING btree (email)"
+        },
+        {
+          "live": true,
+          "name": "user_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX user_pkey ON public.\"user\" USING btree (id)"
+        }
+      ],
+      "workspace": [
+        {
+          "live": true,
+          "name": "workspace_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX workspace_pkey ON public.workspace USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "workspace_slug_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX workspace_slug_key ON public.workspace USING btree (slug)"
+        }
+      ],
+      "member": [
+        {
+          "live": true,
+          "name": "idx_member_user_workspace",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_member_user_workspace ON public.member USING btree (user_id, workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_member_workspace",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_member_workspace ON public.member USING btree (workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "member_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX member_pkey ON public.member USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "member_workspace_id_user_id_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX member_workspace_id_user_id_key ON public.member USING btree (workspace_id, user_id)"
+        }
+      ],
+      "agent_runtime": [
+        {
+          "live": true,
+          "name": "agent_runtime_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_runtime_pkey ON public.agent_runtime USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "agent_runtime_workspace_daemon_profile_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_runtime_workspace_daemon_profile_key ON public.agent_runtime USING btree (workspace_id, daemon_id, profile_id) WHERE (profile_id IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "agent_runtime_workspace_daemon_provider_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_runtime_workspace_daemon_provider_key ON public.agent_runtime USING btree (workspace_id, daemon_id, provider) WHERE (profile_id IS NULL)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_offline_last_seen",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_offline_last_seen ON public.agent_runtime USING btree (last_seen_at, id) WHERE (status = 'offline'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_online_last_seen",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_online_last_seen ON public.agent_runtime USING btree (last_seen_at) WHERE (status = 'online'::text)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_status",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_status ON public.agent_runtime USING btree (workspace_id, status)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_workspace",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_workspace ON public.agent_runtime USING btree (workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_workspace_id_keyset",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_workspace_id_keyset ON public.agent_runtime USING btree (workspace_id, id)"
+        }
+      ],
+      "agent": [
+        {
+          "live": true,
+          "name": "agent_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_pkey ON public.agent USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "agent_system_identity_unique",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_system_identity_unique ON public.agent USING btree (workspace_id, owner_id, runtime_id, system_key) WHERE (system_key IS NOT NULL)"
+        },
+        {
+          "live": true,
+          "name": "agent_workspace_name_unique",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_workspace_name_unique ON public.agent USING btree (workspace_id, name)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_runtime_id",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_runtime_id ON public.agent USING btree (runtime_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_workspace",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_workspace ON public.agent USING btree (workspace_id)"
+        },
+        {
+          "live": true,
+          "name": "idx_agent_workspace_id_keyset",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX idx_agent_workspace_id_keyset ON public.agent USING btree (workspace_id, id)"
+        }
+      ],
+      "agent_invocation_target": [
+        {
+          "live": true,
+          "name": "agent_invocation_target_agent_id_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX agent_invocation_target_agent_id_idx ON public.agent_invocation_target USING btree (agent_id)"
+        },
+        {
+          "live": true,
+          "name": "agent_invocation_target_agent_id_target_type_target_id_key",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_invocation_target_agent_id_target_type_target_id_key ON public.agent_invocation_target USING btree (agent_id, target_type, target_id)"
+        },
+        {
+          "live": true,
+          "name": "agent_invocation_target_pkey",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX agent_invocation_target_pkey ON public.agent_invocation_target USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "agent_invocation_target_target_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX agent_invocation_target_target_idx ON public.agent_invocation_target USING btree (target_type, target_id)"
+        }
+      ],
+      "project_delivery_policy": [
+        {
+          "live": true,
+          "name": "project_delivery_policy_revision_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX project_delivery_policy_revision_idx ON public.project_delivery_policy USING btree (workspace_id, project_id, revision)"
+        }
+      ],
+      "delivery_completion_authorization": [
+        {
+          "live": true,
+          "name": "delivery_completion_candidate_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE INDEX delivery_completion_candidate_idx ON public.delivery_completion_authorization USING btree (workspace_id, issue_id, issue_revision, policy_revision, consumer_kind, integration_id, pull_request_id)"
+        },
+        {
+          "live": true,
+          "name": "delivery_completion_id_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX delivery_completion_id_idx ON public.delivery_completion_authorization USING btree (id)"
+        },
+        {
+          "live": true,
+          "name": "delivery_completion_operation_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX delivery_completion_operation_idx ON public.delivery_completion_authorization USING btree (workspace_id, operation_id)"
+        },
+        {
+          "live": true,
+          "name": "delivery_completion_request_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX delivery_completion_request_idx ON public.delivery_completion_authorization USING btree (workspace_id, issuer_user_id, request_key)"
+        }
+      ],
+      "delivery_completion_terminal": [
+        {
+          "live": true,
+          "name": "delivery_completion_terminal_id_idx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX delivery_completion_terminal_id_idx ON public.delivery_completion_terminal USING btree (authorization_id)"
+        }
+      ],
+      "user_password_credential": [
+        {
+          "live": true,
+          "name": "user_password_credential_user_uidx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX user_password_credential_user_uidx ON public.user_password_credential USING btree (user_id)"
+        },
+        {
+          "live": true,
+          "name": "user_password_credential_username_uidx",
+          "ready": true,
+          "valid": true,
+          "definition": "CREATE UNIQUE INDEX user_password_credential_username_uidx ON public.user_password_credential USING btree (username)"
+        }
+      ]
+    },
+    "recorded_secure_fixture_chains": [
+      {
+        "purpose": "red",
+        "package": "./internal/service",
+        "chains": [
+          {
+            "label": "HOME",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/red-home",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          },
+          {
+            "label": "TEMP",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/red-temp",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          }
+        ],
+        "recorded_fixture_free_bytes": 38811377664,
+        "not_current_filesystem_or_new_handler_router_environment_proof": true
+      },
+      {
+        "purpose": "green",
+        "package": "./internal/service",
+        "chains": [
+          {
+            "label": "HOME",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/green-home",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          },
+          {
+            "label": "TEMP",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/green-temp",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          }
+        ],
+        "recorded_fixture_free_bytes": 38811222016,
+        "not_current_filesystem_or_new_handler_router_environment_proof": true
+      },
+      {
+        "purpose": "race",
+        "package": "./internal/service",
+        "chains": [
+          {
+            "label": "HOME",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/race-home",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          },
+          {
+            "label": "TEMP",
+            "leaf": "/Users/artisan/.multica/pay241-r29-receipt-read-20261118-6dhi01s2/profiles-r01/race-temp",
+            "recorded_leaf_mode": "0o700",
+            "recorded_leaf_uid": 501,
+            "recorded_ancestor_mode_rule_satisfied": true
+          }
+        ],
+        "recorded_fixture_free_bytes": 38811111424,
+        "not_current_filesystem_or_new_handler_router_environment_proof": true
+      }
+    ],
+    "nonempty_donor_table_counts": {
+      "organization": 1,
+      "schema_migrations": 853,
+      "collaboration_execution_gate": 1,
+      "task_usage_hourly_rollup_state": 1,
+      "collaboration_config_invalidation": 21,
+      "collaboration_knowledge_invalidation": 18
+    },
+    "physical_schema_not_captured": [
+      "column types/nullability",
+      "column defaults and UUID functions/extensions",
+      "CHECK and foreign-key constraint state",
+      "triggers/functions used by cleanup/setup/readiness",
+      "singleton gate row values/epochs"
+    ],
+    "conclusion": "No missing migration stem or named fixture table is visible in the recorded audit. Recorded ledger/index/table-count equality is sufficient to nominate the same donor for new package clones, not to claim live startup or complete physical schema equivalence.",
+    "canonical_donor_table_counts": {
+      "user": 0,
+      "agent": 0,
+      "issue": 0,
+      "skill": 0,
+      "squad": 0,
+      "member": 0,
+      "comment": 0,
+      "project": 0,
+      "feedback": 0,
+      "autopilot": 0,
+      "iteration": 0,
+      "workspace": 0,
+      "attachment": 0,
+      "inbox_item": 0,
+      "issue_view": 0,
+      "skill_file": 0,
+      "task_token": 0,
+      "task_usage": 0,
+      "admin_alert": 0,
+      "agent_skill": 0,
+      "issue_label": 0,
+      "pinned_item": 0,
+      "activity_log": 0,
+      "chat_message": 0,
+      "chat_session": 0,
+      "daemon_token": 0,
+      "issue_status": 0,
+      "issue_triage": 0,
+      "organization": 1,
+      "quick_action": 0,
+      "squad_member": 0,
+      "task_message": 0,
+      "agent_runtime": 0,
+      "autopilot_run": 0,
+      "issue_handoff": 0,
+      "plugin_secret": 0,
+      "triage_action": 0,
+      "agent_to_label": 0,
+      "issue_property": 0,
+      "issue_reaction": 0,
+      "issue_to_label": 0,
+      "plugin_package": 0,
+      "plugin_storage": 0,
+      "project_update": 0,
+      "skill_to_label": 0,
+      "vcs_connection": 0,
+      "admin_operation": 0,
+      "iteration_event": 0,
+      "report_snapshot": 0,
+      "runtime_profile": 0,
+      "agent_mcp_server": 0,
+      "agent_task_queue": 0,
+      "comment_reaction": 0,
+      "issue_dependency": 0,
+      "issue_subscriber": 0,
+      "project_resource": 0,
+      "vcs_pull_request": 0,
+      "webhook_delivery": 0,
+      "admin_audit_event": 0,
+      "autopilot_trigger": 0,
+      "chat_pinned_agent": 0,
+      "collaboration_run": 0,
+      "daemon_connection": 0,
+      "installation_user": 0,
+      "issue_participant": 0,
+      "lark_installation": 0,
+      "lark_user_binding": 0,
+      "plugin_invocation": 0,
+      "schema_migrations": 853,
+      "task_usage_hourly": 0,
+      "triage_import_row": 0,
+      "vcs_commit_status": 0,
+      "verification_code": 0,
+      "chat_draft_restore": 0,
+      "client_usage_daily": 0,
+      "issue_pull_request": 0,
+      "iteration_snapshot": 0,
+      "lark_binding_token": 0,
+      "lark_inbound_audit": 0,
+      "agent_builder_draft": 0,
+      "collaboration_batch": 0,
+      "collaboration_event": 0,
+      "collaboration_grant": 0,
+      "github_installation": 0,
+      "github_pull_request": 0,
+      "issue_collaboration": 0,
+      "iteration_operation": 0,
+      "plugin_installation": 0,
+      "plugin_package_file": 0,
+      "sys_cron_executions": 0,
+      "triage_import_batch": 0,
+      "triage_notification": 0,
+      "autopilot_subscriber": 0,
+      "channel_installation": 0,
+      "channel_user_binding": 0,
+      "collaboration_target": 0,
+      "dingtalk_group_route": 0,
+      "issue_source_context": 0,
+      "managed_installation": 0,
+      "plugin_hook_schedule": 0,
+      "project_stage_policy": 0,
+      "project_state_change": 0,
+      "seat_capacity_outbox": 0,
+      "workspace_invitation": 0,
+      "workspace_mcp_server": 0,
+      "workspace_share_link": 0,
+      "channel_binding_token": 0,
+      "channel_inbound_audit": 0,
+      "channel_task_delivery": 0,
+      "collaboration_attempt": 0,
+      "collaboration_channel": 0,
+      "collaboration_command": 0,
+      "collaboration_session": 0,
+      "contact_sales_inquiry": 0,
+      "dingtalk_bot_identity": 0,
+      "issue_view_preference": 0,
+      "personal_access_token": 0,
+      "platform_role_binding": 0,
+      "triage_intake_request": 0,
+      "agent_approval_request": 0,
+      "autopilot_collaborator": 0,
+      "autopilot_quota_period": 0,
+      "autopilot_rule_version": 0,
+      "installation_challenge": 0,
+      "issue_vcs_pull_request": 0,
+      "iteration_notification": 0,
+      "organization_workspace": 0,
+      "plugin_package_version": 0,
+      "project_update_request": 0,
+      "agent_invocation_target": 0,
+      "collaboration_operation": 0,
+      "collaboration_run_event": 0,
+      "delivery_project_change": 0,
+      "dingtalk_group_presence": 0,
+      "iteration_participation": 0,
+      "notification_preference": 0,
+      "project_delivery_policy": 0,
+      "project_update_revision": 0,
+      "report_snapshot_control": 0,
+      "task_usage_hourly_dirty": 0,
+      "agent_artifact_execution": 0,
+      "channel_outbound_message": 0,
+      "collaboration_attachment": 0,
+      "collaboration_delegation": 0,
+      "collaboration_stage_role": 0,
+      "collaboration_stage_task": 0,
+      "project_knowledge_policy": 0,
+      "user_composio_connection": 0,
+      "user_password_credential": 0,
+      "collaboration_group_input": 0,
+      "collaboration_stage_child": 0,
+      "collaboration_termination": 0,
+      "lark_chat_session_binding": 0,
+      "workspace_triage_settings": 0,
+      "admin_alert_detector_state": 0,
+      "collaboration_notification": 0,
+      "collaboration_test_subject": 0,
+      "comment_delegation_receipt": 0,
+      "github_pending_check_suite": 0,
+      "installation_report_cursor": 0,
+      "lark_inbound_message_dedup": 0,
+      "lark_outbound_card_message": 0,
+      "autopilot_quota_reservation": 0,
+      "collaboration_account_fence": 0,
+      "collaboration_knowledge_job": 0,
+      "github_pending_installation": 0,
+      "installation_daemon_binding": 0,
+      "project_update_notification": 0,
+      "channel_chat_session_binding": 0,
+      "channel_media_pending_object": 0,
+      "collaboration_execution_gate": 1,
+      "collaboration_memory_version": 0,
+      "collaboration_resource_offer": 0,
+      "collaboration_stage_decision": 0,
+      "collaboration_switch_consent": 0,
+      "delivery_completion_terminal": 0,
+      "delivery_evidence_evaluation": 0,
+      "workspace_iteration_settings": 0,
+      "channel_inbound_message_dedup": 0,
+      "channel_outbound_card_message": 0,
+      "collaboration_execution_group": 0,
+      "collaboration_knowledge_batch": 0,
+      "collaboration_stage_candidate": 0,
+      "collaboration_switch_proposal": 0,
+      "github_pull_request_check_run": 0,
+      "platform_admin_initialization": 0,
+      "collaboration_group_dependency": 0,
+      "collaboration_knowledge_target": 0,
+      "collaboration_stage_revocation": 0,
+      "collaboration_stage_submission": 0,
+      "task_usage_hourly_rollup_state": 1,
+      "channel_chat_context_generation": 0,
+      "collaboration_knowledge_attempt": 0,
+      "collaboration_runtime_challenge": 0,
+      "github_pull_request_check_suite": 0,
+      "collaboration_knowledge_validity": 0,
+      "collaboration_runtime_enrollment": 0,
+      "collaboration_business_capability": 0,
+      "collaboration_config_invalidation": 21,
+      "collaboration_knowledge_candidate": 0,
+      "collaboration_runtime_reservation": 0,
+      "collaboration_runtime_scan_cursor": 0,
+      "delivery_completion_authorization": 0,
+      "collaboration_account_invalidation": 0,
+      "collaboration_attachment_reference": 0,
+      "collaboration_knowledge_evaluation": 0,
+      "issue_source_context_object_intent": 0,
+      "collaboration_knowledge_invalidation": 18,
+      "collaboration_stage_execution_intent": 0,
+      "collaboration_stage_rollback_observation": 0,
+      "collaboration_stage_execution_observation": 0
+    },
+    "source_migration_stems_sha256_newline_joined": "3572f1780199bed3826a92f88f0dc910f1919462d4eabf6fdeec9a0b5d5f7307",
+    "source_only_migration_stems": [],
+    "ledger_only_migration_stems": []
+  },
+  "TestMain_startup_prerequisites": {
+    "handler": {
+      "source": "server/internal/handler/handler_test.go:44",
+      "environment": "Explicit nonblank DATABASE_URL, valid writable admitted migrated clone; 5-second pool Ping.",
+      "ordering": "Pool/handler creation then cleanup-first setup: user, workspace with issue_prefix, owner member, online owner runtime, workspace/public_to agent and unique workspace invocation target; m.Run then cleanup and pool close.",
+      "fixture_tables": [
+        "user",
+        "workspace",
+        "member",
+        "agent_runtime",
+        "agent",
+        "agent_invocation_target",
+        "client_usage_daily(optional cleanup)"
+      ],
+      "additional_schema_points": "Actual id/default/timestamp functions, legal cloud/online/public_to values, invocation-target unique conflict inference and every NOT NULL omitted-column default must work; audits do not capture those columns/constraints/functions."
+    },
+    "router": {
+      "source": "server/cmd/server/integration_test.go:43",
+      "environment": "Explicit nonblank DATABASE_URL; optional diagnostic pool configuration must be valid or empty; 5-second Ping; actual NewRouter/JWT construction occurs before m.Run.",
+      "ordering": "cleanup-first setup: user, workspace without issue_prefix, owner member, online owner runtime, workspace agent omitting permission_mode; actual NewRouter/httptest server/current test JWT; m.Run then cleanup/server/pool close.",
+      "fixture_tables": [
+        "user",
+        "workspace",
+        "member",
+        "agent_runtime",
+        "agent"
+      ],
+      "additional_schema_points": "Workspace issue_prefix omission and agent permission_mode omission need final defaults; router initial agent stays private by130 default rather than the handler public_to+target seed. Do not change either fixture to mask a setup issue."
+    },
+    "both": [
+      "Neither TestMain applies migrations; filtering names does not suppress fixture writes. No go test -list or -run empty compile shortcut.",
+      "Allocate separate normal/race databases and fresh package HOME/TEMP/GOTMPDIR on trusted secure chains; current R29 allocation paths belong to service only.",
+      "Do not inherit API DATABASE_MAX_CONNS/MIN_CONNS or MULTICA_RESOURCE_PUBLISH_DIR into ordinary tests. Do not force global task-root variables that defeat t.Setenv HOME.",
+      "Real fixture packaging uses t.TempDir and current credentials/task tokens. Failed setup/ErrDisabled before target assertions is NOT_RUN, not a product counterexample.",
+      "Retained audit connection/capacity counts are historical; main must verify actual new package profiles and current budget before startup. No credential environment files were read here."
+    ]
+  },
+  "function_source_bindings": [
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "CreateDeliveryCompletionAuthorizationInTx",
+      "first_line": 40,
+      "last_line": 208,
+      "sha256": "0080af1b111e887d795822af0febe2028552fdf32343752fa0e6ebf62496857f",
+      "bytes": 6749,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "GetDeliveryCompletionAuthorizationInTx",
+      "first_line": 210,
+      "last_line": 223,
+      "sha256": "420a2ccaf60f0f7585d1a45cbf808b466c5083937c99fbe86d980d8d57ccafd1",
+      "bytes": 543,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "GetDeliveryCompletionByRequestInTx",
+      "first_line": 224,
+      "last_line": 240,
+      "sha256": "00463bc28caf8cbae4e530da26829536256c8481adb5fe750680967db72a6f2f",
+      "bytes": 803,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "RevokeDeliveryCompletionAuthorizationInTx",
+      "first_line": 241,
+      "last_line": 311,
+      "sha256": "06d3add1efc8044bcb2f42772bcba06944e1518f6cb839aadf079f08a8325030",
+      "bytes": 2838,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionReadSetup",
+      "first_line": 312,
+      "last_line": 326,
+      "sha256": "f09fd2c7a8e6e934754da188d16e9271a8681a9d9ee5d7f44b6f22bd43812f41",
+      "bytes": 475,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionReadAuthority",
+      "first_line": 327,
+      "last_line": 353,
+      "sha256": "daa68f7c60ba3f6cd769baf4a431fb86eae4f0e38a15cb53283f90ca8d5980ee",
+      "bytes": 1054,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionIssuerRead",
+      "first_line": 354,
+      "last_line": 389,
+      "sha256": "ef831ba47db078f90782175f1588593ced8804e53dcf23b05aee669a635201e8",
+      "bytes": 1282,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionView",
+      "first_line": 390,
+      "last_line": 416,
+      "sha256": "a30735232de2edb31c8c2678afd80b57dd44a8f5bad03202417f3da6efcbded9",
+      "bytes": 1139,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionReceipt",
+      "first_line": 417,
+      "last_line": 476,
+      "sha256": "11792de68d4e95e0d0c86bc50899657d8fac0e0bc9ea5b80180ac5544c41f445",
+      "bytes": 4237,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionStoredRequest",
+      "first_line": 478,
+      "last_line": 518,
+      "sha256": "3cc5712e0241f8a44a806ec8126a74122023023760cf040caa59558254ee852b",
+      "bytes": 3723,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionRevalidateEvidence",
+      "first_line": 529,
+      "last_line": 555,
+      "sha256": "4fb810a614397b245c0136024099d047b4ecf3384c72bcf7686bf1360690a76a",
+      "bytes": 1595,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_authorization.go",
+      "name": "completionConsumerAuthority",
+      "first_line": 653,
+      "last_line": 723,
+      "sha256": "74d693058a7e058bdceec6c6334ca0cf1211f1380f886d7e863f85a974410884",
+      "bytes": 2970,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion.go",
+      "name": "PrepareDeliveryMutationInTx",
+      "first_line": 187,
+      "last_line": 328,
+      "sha256": "ece27408ed10c2a8b2bd5de19200c22787871d03a74790cc131dfa4f59c9af4a",
+      "bytes": 5496,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion.go",
+      "name": "FinishDeliveryMutationInTx",
+      "first_line": 329,
+      "last_line": 431,
+      "sha256": "4e068402dccfa3e376d536c32cecffdb5164f65e23a38464679a14aedc566acf",
+      "bytes": 4574,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion.go",
+      "name": "completionOrdinary",
+      "first_line": 481,
+      "last_line": 493,
+      "sha256": "ff37c6f9e30c52e4cb1545202d186458a1ab19ada2ac2a2c9117e14ea95fc46c",
+      "bytes": 311,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion.go",
+      "name": "completionActualConsumer",
+      "first_line": 495,
+      "last_line": 506,
+      "sha256": "6514c001c82880358427f61e67f010e380a91c21bc04ac5f507daf2657662dad",
+      "bytes": 553,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionCollaborationAccess",
+      "first_line": 40,
+      "last_line": 42,
+      "sha256": "02602b3ea4a90293b61254e05c5da797c11e95041d90c68664247dcb78e4ff8d",
+      "bytes": 213,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "readCompletionCollaborationAccess",
+      "first_line": 44,
+      "last_line": 46,
+      "sha256": "ba07e00ed45e48bdcc3c7cd7dcca0c9d692b9a4378c75309a417ff1fa879ce20",
+      "bytes": 216,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionCollaborationAccessInTx",
+      "first_line": 48,
+      "last_line": 90,
+      "sha256": "e4e57966f9597baf327e23298ea1acb48ea4e38d56b010efa31a0818ab8890db",
+      "bytes": 2870,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionSourceIssue",
+      "first_line": 92,
+      "last_line": 111,
+      "sha256": "e722e1233a682dfd420178a83d05b80e129ffb9bd4cf5046543466c4d495e467",
+      "bytes": 825,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionCollaborationConsumer",
+      "first_line": 173,
+      "last_line": 196,
+      "sha256": "b289b2590290abf6880a0cbb4c7218ed3e600238cb0a3ffe1c485400c5ae31cb",
+      "bytes": 1013,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionCollaborationIntent",
+      "first_line": 198,
+      "last_line": 200,
+      "sha256": "d6ce1992781f675866e806ce63c90bf2d0bd01d029e369bf80262254b3ba63f2",
+      "bytes": 342,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "readCompletionCollaborationIntent",
+      "first_line": 202,
+      "last_line": 207,
+      "sha256": "958d677ff99c024083a8579a87b215f1e2b77a19c687a6c23b841b58a6ed44e8",
+      "bytes": 462,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionFreezeCollaboration",
+      "first_line": 363,
+      "last_line": 395,
+      "sha256": "b79e4f553711f3f3ecba675487e1859daf63aca02cc35eae9ab2066cf5bc0846",
+      "bytes": 1403,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_completion_collaboration.go",
+      "name": "completionRecheckCollaborationIntent",
+      "first_line": 415,
+      "last_line": 424,
+      "sha256": "9335fe9d446e69fdd7ccb902827dfba2307c3100ef89c889f3dfcf2346627d94",
+      "bytes": 409,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_evidence.go",
+      "name": "EvaluateDeliveryEvidenceInTx",
+      "first_line": 79,
+      "last_line": 81,
+      "sha256": "796a4914b1095e1aabeb4810e402325a611b7a20a90b0f0c44d2a71d4a236e00",
+      "bytes": 243,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_evidence.go",
+      "name": "evaluateDeliveryEvidenceReadInTx",
+      "first_line": 83,
+      "last_line": 85,
+      "sha256": "f1874d01d4ec5d3a2fc34191568103190ede92c5ade544b94e377aa208641166",
+      "bytes": 246,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_evidence.go",
+      "name": "lockDeliveryArtifactInTx",
+      "first_line": 234,
+      "last_line": 236,
+      "sha256": "0ba77e9ac8f1d9acce5791172bf3e904ba08ed4d041414842084ba40c5f53830",
+      "bytes": 323,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/delivery_evidence.go",
+      "name": "readDeliveryArtifactInTx",
+      "first_line": 238,
+      "last_line": 240,
+      "sha256": "a69c9d7a83996f47409daca8a5bb4c5b5db99f6c67e6f3b85c2ed3eb35a26f5e",
+      "bytes": 322,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/artifact_authority.go",
+      "name": "PrepareArtifactTransaction",
+      "first_line": 72,
+      "last_line": 85,
+      "sha256": "30f6d291f191f0fd2344e44d9c153b75d8d8ae1f1498428de76bcac5ed917ec0",
+      "bytes": 335,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/artifact_authority.go",
+      "name": "CheckArtifactCredentialInTx",
+      "first_line": 101,
+      "last_line": 188,
+      "sha256": "cbd09979650c50a9776865742e870fc8031d1ac2ef721f0dc8e45c713f465079",
+      "bytes": 2854,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/service/artifact_authority.go",
+      "name": "LockArtifactUsers",
+      "first_line": 191,
+      "last_line": 236,
+      "sha256": "ffc603e018aaf0cbb7eb780e48f6ec7e262a849290c9633a810a432b233d8ec6",
+      "bytes": 1215,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "completionAccess",
+      "first_line": 44,
+      "last_line": 55,
+      "sha256": "a42ff07ed47be439672e97a00917db542a4f411d1bab17b912e0a7135c01fc48",
+      "bytes": 614,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "completionWorkspaceSelection",
+      "first_line": 70,
+      "last_line": 88,
+      "sha256": "fb4922d7d9cd60e9645e1d5ca19f5228ec0dfef0b5acff2c97d909a1e448a9d0",
+      "bytes": 749,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "CreateDeliveryCompletionAuthorization",
+      "first_line": 89,
+      "last_line": 144,
+      "sha256": "7e845a688db87c772458963d3e0e4dfb5c718d5931da7ae97ab9f14e51132058",
+      "bytes": 1755,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "GetDeliveryCompletionAuthorization",
+      "first_line": 145,
+      "last_line": 147,
+      "sha256": "7d9b950f9a6bea3a6d005b011bf3e37c9c5ee779a7f128db8e0c76eed5eea2b7",
+      "bytes": 150,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "GetDeliveryCompletionAuthorizationByRequestKey",
+      "first_line": 148,
+      "last_line": 150,
+      "sha256": "8492c01b83f06ac47802f10308a6face66c497bb6bdbb01b118122df1db8b99a",
+      "bytes": 161,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "RevokeDeliveryCompletionAuthorization",
+      "first_line": 151,
+      "last_line": 153,
+      "sha256": "d8317acefd3dd1b0ed9e6619d84e40bb8b7daac9263337393ccd2c091f452edd",
+      "bytes": 152,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/delivery_completion_authorization.go",
+      "name": "deliveryCompletionReadOrRevoke",
+      "first_line": 154,
+      "last_line": 236,
+      "sha256": "066e3ed7b5fbb9e99a479ee0828caa90e72a210347398048fe85d5c2654f6d68",
+      "bytes": 2706,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/handler_test.go",
+      "name": "TestMain",
+      "first_line": 44,
+      "last_line": 106,
+      "sha256": "6dd69dcec28ddad24b58f1e1f6e499ab6ccf484f21b7571e45887dd19109d09d",
+      "bytes": 2681,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/handler_test.go",
+      "name": "setupHandlerTestFixture",
+      "first_line": 108,
+      "last_line": 172,
+      "sha256": "8cc404fb1c5ac46bb4afaea2af5b1254ac0780a13216fb1e3e44d6f24c7e9cbd",
+      "bytes": 2235,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/internal/handler/handler_test.go",
+      "name": "cleanupHandlerTestFixture",
+      "first_line": 174,
+      "last_line": 191,
+      "sha256": "87e73fe641a4a225739b3b90dda96e5383dc051908746777460702df3c089ae4",
+      "bytes": 709,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/cmd/server/integration_test.go",
+      "name": "TestMain",
+      "first_line": 43,
+      "last_line": 101,
+      "sha256": "b447d7f96674dd9cab7df91e7cdb6fcc27e8855a3c96d2a241a5af57aaf3cd29",
+      "bytes": 1753,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/cmd/server/integration_test.go",
+      "name": "setupIntegrationTestFixture",
+      "first_line": 103,
+      "last_line": 159,
+      "sha256": "f236da466d0fa9b39a5d3768ce1605f7cc13e6691ed84d024ce24068c6dafc56",
+      "bytes": 1973,
+      "equals_R28_accepted_function": true
+    },
+    {
+      "source": "server/cmd/server/integration_test.go",
+      "name": "cleanupIntegrationTestFixture",
+      "first_line": 161,
+      "last_line": 169,
+      "sha256": "d77ee7e012f2fbfb52edace46664f669df211cab1d826d7896e51e2218717dd5",
+      "bytes": 347,
+      "equals_R28_accepted_function": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_authorization.go",
+      "relative_path": "server/internal/service/delivery_completion_authorization.go",
+      "description": "GetByID owning path, distinct by-key/revoke/create-key replay and immutable receipt/consumer authority",
+      "sha256": "e3eb54ca4deffe5ad6f7199b139008cfd0bae4c7af3cdd0957d3c333e454c789",
+      "bytes": 36706,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion.go",
+      "relative_path": "server/internal/service/delivery_completion.go",
+      "description": "Actual Prepare/Finish exclusive writer and original receipt replay",
+      "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "bytes": 20379,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_completion_collaboration.go",
+      "relative_path": "server/internal/service/delivery_completion_collaboration.go",
+      "description": "Explicit read/writer access switches, source exactness and current collaboration/R38 consumer",
+      "sha256": "20fc764b20edbfae356db7785f82ac17c0d12a71d23f9a0dcf318624a71e0084",
+      "bytes": 24845,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/delivery_evidence.go",
+      "relative_path": "server/internal/service/delivery_evidence.go",
+      "description": "Existing observer/artifact read helpers and false writer defaults",
+      "sha256": "1a714f0e4a9d8d002c483c9cdd4f86172c66cca051233c9d3fc31a2f00a577df",
+      "bytes": 16974,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/service/artifact_authority.go",
+      "relative_path": "server/internal/service/artifact_authority.go",
+      "description": "Current verified credential/member locks and 250ms preparation",
+      "sha256": "61e457c83e94f46e8ace6dd58d772fa20c9334dc217421f874b4037f9af7aab8",
+      "bytes": 14745,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/delivery_completion_authorization.go",
+      "relative_path": "server/internal/handler/delivery_completion_authorization.go",
+      "description": "Actual false/true transport dispatch, source selector, final credential check and commit",
+      "sha256": "b75b119b9f7c9f7a772b233dd81538ad4ed29ef5f51b85cef1473a71cff32161",
+      "bytes": 8294,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/delivery_completion_authorization_test.go",
+      "relative_path": "server/internal/handler/delivery_completion_authorization_test.go",
+      "description": "Five originally dispatched handler control tops and source-derived loop names",
+      "sha256": "60b185b7daed4343b1dbee77743bf55f30c7b0f31a8a4333c2d9c362b0347132",
+      "bytes": 21328,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/delivery_completion_collaboration_test.go",
+      "relative_path": "server/internal/handler/delivery_completion_collaboration_test.go",
+      "description": "Additional direct GetByID separate consumer and administration configuration controls",
+      "sha256": "787173a5173a0afb6e19e6980e43540efb1b16ea04f469cca780abe48650e750",
+      "bytes": 28473,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/delivery_completion_issuer_credential_test.go",
+      "relative_path": "server/internal/handler/delivery_completion_issuer_credential_test.go",
+      "description": "Independent original issuer credential helper/current managed binding controls",
+      "sha256": "9758018037f36255281dd6e141aee5ce182a428f10841ed98b6dcf6a3f7afc66",
+      "bytes": 5738,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/handler_test.go",
+      "relative_path": "server/internal/handler/handler_test.go",
+      "description": "Mandatory handler TestMain cleanup, setup and pool startup",
+      "sha256": "e925f073ec818d34c65c3706005223c2114e02ed633fe6a1350590cd386daa52",
+      "bytes": 136820,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/delivery_completion_authorization_integration_test.go",
+      "relative_path": "server/cmd/server/delivery_completion_authorization_integration_test.go",
+      "description": "Conditional HTTP credential/source tests and retained by-key/revocation/designated-reader controls",
+      "sha256": "ab3c5cd7eedc49b9ac2cfcec8e4bfa21aa6a65356ccf23046da9131228a2a3c9",
+      "bytes": 21816,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/delivery_completion_collaboration_integration_test.go",
+      "relative_path": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+      "description": "Conditional authenticated original self/submission/admin consumed recovery",
+      "sha256": "1b37f836ac441fb1c81a3d535810a7dc866d9dd555795cf254d1efc745ddc6ad",
+      "bytes": 31387,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/integration_test.go",
+      "relative_path": "server/cmd/server/integration_test.go",
+      "description": "Mandatory router TestMain fixture setup and actual NewRouter server",
+      "sha256": "41f902f7c1194190d27fb293e06e68633149f4ce5dafaf2e2bf9a7bcbb62619d",
+      "bytes": 52642,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/router.go",
+      "relative_path": "server/cmd/server/router.go",
+      "description": "Account-scoped receipt routes with human guards only on create/by-key/revoke",
+      "sha256": "99b8add17fa3251ec830a0069e8477c67c74a83626a62a829228685142bf4b11",
+      "bytes": 151540,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/pkg/db/queries/delivery_completion.sql",
+      "relative_path": "server/pkg/db/queries/delivery_completion.sql",
+      "description": "Original id-only SELECT, original UPDATE NOWAIT grant/by-key getters and append-only terminal",
+      "sha256": "6df56dafde98cee949715d09c810cc845ca72a7c35a9c28fac67aa99fd13771b",
+      "bytes": 10773,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/pkg/db/generated/delivery_completion.sql.go",
+      "relative_path": "server/pkg/db/generated/delivery_completion.sql.go",
+      "description": "Frozen corresponding generated query implementations",
+      "sha256": "32017cb452003be943c01cea0ac7d702f6b3127f6996f0dc4940105a5ea95b17",
+      "bytes": 33225,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/agent_artifact_test.go",
+      "relative_path": "server/internal/handler/agent_artifact_test.go",
+      "description": "Real packager fixture with secure t.TempDir roots and known verified principal context",
+      "sha256": "5560d7c46b1590fb1bea243b5c91983450156ae71d1dcb53d33044582d6e2bb6",
+      "bytes": 42836,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/internal/handler/delivery_policy_test.go",
+      "relative_path": "server/internal/handler/delivery_policy_test.go",
+      "description": "Handler newDeliveryPolicyFixture through real deliverySuccess packaging chain",
+      "sha256": "9f6a3b45e67c146f7f8a0ac0005aa2f2a17608e995f56b48547cbdd93c68b12d",
+      "bytes": 29610,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/agent_artifact_integration_test.go",
+      "relative_path": "server/cmd/server/agent_artifact_integration_test.go",
+      "description": "Router artifact fixture/current JWT/task token, secure temp roots and actual router construction",
+      "sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+      "bytes": 24392,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/delivery_policy_integration_test.go",
+      "relative_path": "server/cmd/server/delivery_policy_integration_test.go",
+      "description": "Router policy fixture through actual artifact/evidence chain",
+      "sha256": "112cf386b8ddd534547fbfbf3f02465abea5c46c3accc099c9b38c25b442103c",
+      "bytes": 37754,
+      "mode": "0o644",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/cmd/server/pay241_read_diagnostics_test.go",
+      "relative_path": "server/cmd/server/pay241_read_diagnostics_test.go",
+      "description": "Optional diagnostic pool startup precondition; ordinary pool with empty diagnostic env",
+      "sha256": "1a7589295c2960b8c66246cd2249e511fdc50bfa3c74880d162a388e32b2f92b",
+      "bytes": 7729,
+      "mode": "0o600",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/migrations/001_init.up.sql",
+      "relative_path": "server/migrations/001_init.up.sql",
+      "description": "Historical initial user/workspace/member/agent definitions; not a final physical schema assertion",
+      "sha256": "88bbaf79a586d195cc5d9c770f6b0aaa53cbc5a663672b594c759ede3d38784e",
+      "bytes": 6883,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/migrations/004_agent_runtime_loop.up.sql",
+      "relative_path": "server/migrations/004_agent_runtime_loop.up.sql",
+      "description": "Runtime table introduction and defaults expected by fixture inserts",
+      "sha256": "2c6145a6c7fc5e85223b76b86b8cdd9deb26b69f8cfb8063265dae2da2008117",
+      "bytes": 2693,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/migrations/130_agent_invocation_permission.up.sql",
+      "relative_path": "server/migrations/130_agent_invocation_permission.up.sql",
+      "description": "Private agent permission default and actual invocation target unique shape",
+      "sha256": "f4f603ed4f988868b628a26fc7f656fdd304658ddf58ed0a7841855b26652403",
+      "bytes": 7101,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-r29-receipt-read-20261118-6dhi01s2/source-red-r01/server/go.mod",
+      "relative_path": "server/go.mod",
+      "description": "Declared Go/Chi/pgx versions; no installed toolchain was executed",
+      "sha256": "c09c290d68ca3a6e4a6aad430fbdeb35a18020ba2d767da156f249093d3180b5",
+      "bytes": 3586,
+      "mode": "0o755",
+      "equals_R28_accepted_bytes": true,
+      "equals_R28_accepted_mode": true
+    }
+  ],
+  "prior_R29_diagnosis_sha256_untouched": {
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.md": "780cb85add6cbf815f58f7906fedd0066b78a50c0419cf0a902ebf16c1325479",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-completion-receipt-diagnosis-20261118.json": "43d62d177883296f701c475ebe042ea233d84c07507f1f79db5adbbb24779ab9"
+  },
+  "related_specs": [
+    "CLAUDE.md",
+    ".trellis/workflow.md",
+    ".trellis/spec/server/index.md",
+    ".trellis/spec/server/delivery-completion-enforcement.md",
+    ".trellis/spec/server/collaboration-stage-approvals.md",
+    ".trellis/spec/server/database-test-isolation.md",
+    ".trellis/spec/server/verification-environment.md"
+  ],
+  "external_references": [
+    {
+      "kind": "declared_dependency_versions_only",
+      "source": "server/go.mod",
+      "Go": "1.26.6",
+      "Chi": "v5.3.0",
+      "pgx/v5": "v5.9.2",
+      "external_network_lookup": false,
+      "installed_toolchain_verified": false
+    }
+  ],
+  "execution_by_researcher": {
+    "SQL": false,
+    "Go": false,
+    "tests": false,
+    "test_list": false,
+    "TestMain": false,
+    "DB_connection": false,
+    "migration": false,
+    "API": false,
+    "browser": false,
+    "build": false,
+    "process_signal": false,
+    "Git": false,
+    "subagent_spawn": false,
+    "product_edit": false,
+    "test_edit": false,
+    "old_report_edit": false,
+    "spec_edit": false,
+    "credential_environment_scan": false
+  },
+  "caveats": [
+    "No R29 RED outcome or final product delta is inferred from this inventory. Main owns genuine RED and GetByID-only repair scope.",
+    "All named/leaf counts are source-derived; no passing runtime named terminals are claimed.",
+    "The original handler5 do not independently cover by-key GET or a direct GetByID current-password negative; source pointers and owning fresh authority tests are kept explicit.",
+    "Schema ledger and table/index summaries do not prove column/default/trigger/function readiness or a live writable/owned connection.",
+    "Original R28 completed writes and3PASS/1FAIL result remain immutable; historical failing grant query/SQLSTATE/physical holder remain unproved.",
+    "Full S2/A01-A12, parent24 and S3-S5 stay open; local synthetic controls do not establish real S4 integration or business acceptance."
+  ],
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-grant-control-inventory-20261118.md",
+    "sha256": "9f007c9806f824947accdf6fdcc8d8feee809cafae662b4edcc46826efabbd91",
+    "bytes": 16860,
+    "lines": 133
+  }
+}

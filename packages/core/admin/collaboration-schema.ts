@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { parseWithFallback } from "../api/schema";
-import { CollaborationAccountSummarySchema, CollaborationStatusOptionsSchema } from "../collaboration/schema";
+import { CollaborationAccountSummarySchema, LegacyCollaborationStatusOptionsSchema } from "../collaboration/schema";
 import { nonnegativeVersion, positiveVersion } from "../collaboration/version";
 import { collaborationTextByteLength } from "../collaboration/text-limits";
 import { CollaborationMemoryVersionMetaSchema, compareCollaborationMemoryVersions } from "../collaboration/memory-schema";
@@ -35,7 +35,7 @@ export const AdminCollaborationIssueListSchema = z.object({ scope: uuid, items: 
   .transform((value) => ({ scope: value.scope, items: value.items, nextCursor: value.next_cursor }));
 export type AdminCollaborationIssueList = z.output<typeof AdminCollaborationIssueListSchema>;
 
-const statusOptions = CollaborationStatusOptionsSchema.safeExtend({ action: lifecycleAction });
+const statusOptions = LegacyCollaborationStatusOptionsSchema.safeExtend({ action: lifecycleAction });
 export const AdminCollaborationDetailSchema = issueWire.safeExtend({
   scope: uuid, actions: z.array(statusOptions).max(2), successor_required: z.boolean(),
 }).refine((value) => {

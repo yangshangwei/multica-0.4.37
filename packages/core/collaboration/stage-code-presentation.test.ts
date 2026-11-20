@@ -10,6 +10,67 @@ const view = parseCollaborationStageView({ ...stageViewManagedFixture, code_cand
 const code = parseCollaborationStageCodeCandidate(stageCodeViewFixture)!;
 const now = Date.parse("2026-11-14T03:05:00Z");
 
+// Retained r03 HTTP shape: current source/CI with no bound build and four
+// blocked future signatures. These blockers must remain known without granting
+// release, rollback, or the business owner's code-review signature.
+const developmentWithFutureBlockers = () => ({
+  ...stageCodeViewFixture,
+  execution_targets: [], execution_operations: [], rollback_observations: [],
+  signable: [
+    { step: "code_review", allowed: false, max_expires_at: null, blockers: [
+      { code: "stage_evidence_unavailable", stage: "code_review" }, { code: "stage_not_reached", stage: "development" },
+    ] },
+    { step: "qa", allowed: false, max_expires_at: null, blockers: [
+      { code: "stage_evidence_unavailable", stage: "qa" }, { code: "stage_not_reached", stage: "development" },
+      { code: "stage_code_review_missing", stage: "qa" }, { code: "stage_test_report_unusable", stage: "qa" },
+    ] },
+    { step: "release", allowed: false, max_expires_at: null, blockers: [
+      { code: "stage_evidence_unavailable", stage: "release" }, { code: "stage_not_reached", stage: "development" },
+      { code: "stage_evidence_unavailable", stage: "release" }, { code: "stage_execution_unavailable", stage: "release" },
+      { code: "stage_qa_missing", stage: "release" },
+    ] },
+    { step: "rollback", allowed: false, max_expires_at: null, blockers: [
+      { code: "stage_evidence_unavailable", stage: "verification" }, { code: "stage_not_reached", stage: "development" },
+      { code: "stage_evidence_unavailable", stage: "verification" }, { code: "stage_execution_unavailable", stage: "verification" },
+      { code: "stage_release_approval_missing", stage: "verification" }, { code: "stage_rollback_observation_unavailable", stage: "verification" },
+    ] },
+  ],
+});
+
+describe("current development movement with blocked future execution", () => {
+  const development = { ...view, stage: { current: "development" as const, stage_revision: "1" } };
+  it("keeps the source-authorized business owner's code-review movement available", () => {
+    const record = parseCollaborationStageCodeCandidate(developmentWithFutureBlockers())!;
+    expect(record.candidate.baseline?.artifact).toBeNull();
+    expect(record.observed.ci.state).toBe("passed");
+    expect(record.signable.every((entry) => !entry.allowed)).toBe(true);
+    const state = deriveCollaborationStageCodeState(issue, development, record, stageIds.owner, now);
+    expect(state.advances).toEqual([{ stage: "code_review", decisionIds: [] }]);
+    expect(state.approve).toEqual([]);
+    expect(state.returns).toEqual([]);
+    expect(deriveCollaborationStageCodeState(issue, development, record, stageIds.qa, now).advances).toEqual([]);
+    expect(deriveCollaborationStageCodeState({ ...issue, write_context: null }, development, record, stageIds.owner, now).advances).toEqual([]);
+  });
+  it("does not grant release or rollback because their refusal codes are recognized", () => {
+    const record = parseCollaborationStageCodeCandidate(developmentWithFutureBlockers())!;
+    for (const current of ["release", "verification"] as const) {
+      const state = deriveCollaborationStageCodeState(issue, { ...view, stage: { current, stage_revision: "4" } }, record, stageIds.release, now);
+      expect(state.approve).toEqual([]);
+      expect(state.advances).toEqual([]);
+    }
+  });
+  it("still withholds all actions for a genuinely unknown future blocker", () => {
+    const raw = developmentWithFutureBlockers();
+    raw.signable[2]!.blockers[3]!.code = "stage_future_execution_gate";
+    const record = parseCollaborationStageCodeCandidate(raw)!;
+    expect(record.signable[2]!.blockers[3]!.code).toBe("unknown");
+    const state = deriveCollaborationStageCodeState(issue, development, record, stageIds.owner, now);
+    expect(state.advances).toEqual([]);
+    expect(state.approve).toEqual([]);
+    expect(state.returns).toEqual([]);
+  });
+});
+
 describe("stage code action authority", () => {
   it("requires the current designated reviewer and a current unexpired signable observation", () => {
     expect(deriveCollaborationStageCodeState(issue, view, code, stageIds.reviewer, now).approve).toEqual(["code_review"]);

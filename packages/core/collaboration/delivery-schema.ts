@@ -61,10 +61,13 @@ export function matchesCollaborationDeliveryConfirmation(confirmation: Collabora
 }
 
 /** Only explicitly recognized, validated final business refusals settle intent. */
-export function collaborationDeliveryRefusalStatus(code: string): number | null {
+export function collaborationDeliveryRefusalStatus(code: string, originalReceiptStatus?: number): number | null {
+  // An original repair GET may confirm the server's sealed semantic refusal.
+  if (code === "information_context_unavailable" && originalReceiptStatus === 503) return 503;
   switch (code) {
     case "result_required": case "basis_required": case "result_too_large": case "basis_too_large":
     case "revision_reason_required": case "revision_reason_too_large": case "invalid_ai_policy":
+    case "information_metadata_required": case "information_metadata_invalid":
     case "invalid_workflow_request": case "invalid_status_request": case "invalid_attachment_selection": case "invalid_comment_request": case "invalid_delivery_completion_request": return 400;
     case "forbidden": case "delivery_completion_denied": return 403;
     case "attachment_not_found": case "comment_not_found": case "delivery_completion_not_found": return 404;
@@ -75,6 +78,8 @@ export function collaborationDeliveryRefusalStatus(code: string): number | null 
     case "acceptance_pending": case "task_manual": case "stale_revision": case "stale_authority":
     case "status_options_changed": case "status_unavailable": case "target_unavailable": case "return_target_unavailable":
     case "information_request_not_active": case "already_creator": case "issue_closed": case "attachment_scope_mismatch":
+    case "information_repair_required": case "information_context_changed": case "information_context_unavailable":
+    case "information_repair_not_applicable": case "information_repair_basis_unavailable":
     case "attachment_draft_consumed": case "stage_incomplete": case "stage_policy_exit_required": return 409;
     default: return null;
   }

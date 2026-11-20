@@ -1,0 +1,1448 @@
+{
+  "schema_version": 1,
+  "at": "2026-11-17T15:44:39.430042+00:00",
+  "date": "2026-11-17",
+  "timezone": "Asia/Shanghai",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "researcher": "/root/r27_preview_research",
+  "query": "Bounded final A/W/Q readiness checklist and exact planned seven-top affected-control inventory after acceptedR28 and matching original-four PASS",
+  "scope": "internal",
+  "verdict": "READINESS_CHECKLIST_FINAL_ACCEPTANCE_PENDING",
+  "write_ownership": [
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-final-a01-a12-readiness-20261117.md",
+    ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-final-a01-a12-readiness-20261117.json"
+  ],
+  "report": {
+    "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-final-a01-a12-readiness-20261117.md",
+    "sha256": "219754c7e08dc07e63cd8ea8578409c06a6f10f66ff6b68698cff0ca98d06ff6",
+    "bytes": 14927,
+    "lines": 104
+  },
+  "snapshot_status": {
+    "r28_red_main_reported": {
+      "named": 18,
+      "PASS": 13,
+      "FAIL": 5,
+      "read_leaf_failures_55P03": 3,
+      "writer_authority_binding_leaf_pass": 10
+    },
+    "r28_green_union_main_reported": {
+      "state": "STARTED_NOT_ACCEPTED",
+      "named_expected": 26,
+      "components": {
+        "R28": 18,
+        "R27": 8
+      },
+      "expected_top_level": 7,
+      "expected_leaf": 19,
+      "three_source_sha_prefixes": [
+        "b7ea",
+        "20fc",
+        "cce7"
+      ]
+    },
+    "original_control_databases_main_reported": "two fresh owned allocations prepared; normal/race may run after union passes",
+    "r27_binding_utc": "ACCEPTED_NORMAL_RACE_EACH8; selectedROOT3paths/format-vet-compile accepted",
+    "r28_runtime_eight_slots": "ACCEPTED_PREPARATION_ONLY; final API/Green/live binding WAIT",
+    "current_api_or_original_four_execution": "NOT_YET_RUN",
+    "s2_archive_ready": false,
+    "parent24_main_reported": {
+      "PASS": 0,
+      "PARTIAL": 9,
+      "NOT_RUN": 15
+    }
+  },
+  "canonical_maps": {
+    "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+    "sections": {
+      "A01_A12": 21,
+      "E04_exact_composition": 40,
+      "W01_W18": 54,
+      "Q01_Q12": 79,
+      "main_final_bundle": 98
+    },
+    "counts": {
+      "A": 12,
+      "W": 18,
+      "Q": 12
+    },
+    "A": [
+      {
+        "id": "A01",
+        "requirement_or_actual_entry": "Roles, stable business owner/current handler and authority<br>`TestStageRolesRequireSourceAdminParticipantsAndSeparation`<br>`TestStagePolicyRevisionCASAuthorityAndOriginalKey`<br>`TestStageHTTPActionsConfirmationsRefusalsAndRecovery`",
+        "retained_and_final_evidence": "Fresh E01 role configuration, stable owner and handler identity; source-admin/current participant/account checks and retained role history.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 27,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A02",
+        "requirement_or_actual_entry": "Immutable proposals, decisions, single materialization/no dispatch<br>`TestStageProposalVersionsDecisionsAndSingleMaterialization`<br>`TestStageProposalConcurrentAcceptCreatesOneChildSet`<br>`TestStageProposalAcceptRollsBackEveryChildOnRefusal`<br>`TestStageChildCreationRequiresApprovedProposalForMachines`",
+        "retained_and_final_evidence": "Fresh E01 propose/edit/accept/reject exact version, original-key recovery, one child set and zero unsolicited dispatch.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 28,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A03",
+        "requirement_or_actual_entry": "Exact PR/head/trust/strict CI refusal<br>`TestStageCodeReviewStrictCIRefusals`<br>`TestStageCodeReviewDigestAndSourceDrift`<br>`TestStageCodeVCSWithoutRepositoryCheckIdentityIsUnsupported`",
+        "retained_and_final_evidence": "Fresh E01 missing/failed/mismatched CI/head/trust refusal with unchanged stage; synthetic PR/CI provenance retained.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 29,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A04",
+        "requirement_or_actual_entry": "Human reviewer, self/machine/revocation exclusion<br>`TestStageCodeCandidateVersionsAndReviewerIsolation`<br>`TestStageCodeReviewSourceMembershipRejoinDoesNotReviveApproval`<br>`TestStageCodeReviewSignerRevocationAndExpiryBounds`<br>`TestStageAdvanceRechecksOriginalApprovalAtFinalClock`",
+        "retained_and_final_evidence": "Fresh E01 review requirement, self/machine rejection, revocation/rejoin rejection, fresh reviewer approval; exact signed evidence.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 30,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A05",
+        "requirement_or_actual_entry": "Immutable actual run/case/log, QA return/retest history<br>`TestStageTestReportActualInputClaimAndReceipt`<br>`TestStageQAPassedReportNeedsSuccessfulSettledExecution`<br>`TestStageTestReportHostCheckpointExactLogAndRedaction`<br>`TestStageTestReportLostCommitRecoversOneOriginalEvent`",
+        "retained_and_final_evidence": "Fresh E01 failed actual prepared run/cases/logs, QA return, separate retry/run/new human QA; fresh E02 complete QA dependency. Same-code retry is not business-code repair.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 31,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A06",
+        "requirement_or_actual_entry": "QA/build/release authority and transitive issuer validity<br>`TestStageExecutionReleaseRollbackAndOriginalReceipt`<br>`TestStageExecutionSigningStateDriftPreventsDispatch`<br>`TestStageExecutionR4ReflectsTransitiveArtifactAuthority`",
+        "retained_and_final_evidence": "Fresh E02 exact build/QA/release-authority and controlled deployment; QA does not receive release rights and original approvals remain bounded.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 32,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A07",
+        "requirement_or_actual_entry": "Target/physical conflict, rollback observation and single execution<br>`TestStageExecutionTargetAndPhysicalIdentity`<br>`TestStageExecutionUnknownBlocksRebindingAndCrossWorkspace`<br>`TestStageExecutionMetricAmbiguityInvalidatesExistingRollback`<br>`TestStageExecutionMetricReverseOrderAndOlderArrivalCannotResolveAmbiguity`",
+        "retained_and_final_evidence": "Fresh E02 rollback proposal vs approval vs executed result, original deployment/target/build/metric identity, conditional conflict and exactly-once receipts.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 33,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A08",
+        "requirement_or_actual_entry": "Versions, authority/expiry, original keys and late history<br>`TestStageCompletionFinalCurrentCredentialHorizons`<br>`TestStageCompletionFinalClockRunsAfterWriterReceipts`<br>`TestStageScopeRoleRestorationDoesNotReviveApproval`<br>`TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval`",
+        "retained_and_final_evidence": "Fresh E01/E02 original-key/version/revocation boundaries; fresh E03 late authenticated fact retained without approval renewal/redispatch; fresh E04 original grant/key/body and current receipt authorization.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 34,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A09",
+        "requirement_or_actual_entry": "Stage plus M1 all writers/three modes/R38 and outside consumer<br>`TestStageCompletionAllM1ModesAndActualWriters`<br>`TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt`<br>`TestStageCompletionPrivateGuardTransactionAndSingleUse`<br>`TestStageCompletionGuardRequiresM1Finalization`",
+        "retained_and_final_evidence": "Fresh E04 exact submission and Web M1 enforce grant; interrupted original POST before API then actual original GET404 and zero new authorization/writes; fresh Desktop uses original issued grant/key/body; Web GET recovers the same completion; real R38 refusal and restoration; project exit refusal/control. Retained backend12 positives and W10 remain separate evidence.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 35,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A10",
+        "requirement_or_actual_entry": "Current source privacy and mid-revocation reads/cache<br>`TestStageArtifactReportReadAuthorityMatchesR4`<br>`TestStageArtifactReportAuthorityLocksAcrossReadAndQA`<br>`TestCollaborationStageCompletionPreviewRouterReadRevocationOrders`<br>`TestStageSourceDeniedDigestAndCachedScopeSelection`",
+        "retained_and_final_evidence": "Fresh current source-denial/R4/T4/preview privacy across relevant E01/E02/E04 responses and current authorization; no private cached-source resurrection.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 36,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A11",
+        "requirement_or_actual_entry": "Matching production Web/Desktop real four-case verification<br>Accepted product/source/entry binding; no unit test substitutes for actual acceptance.",
+        "retained_and_final_evidence": "All four complete original fresh journeys from matching production Web/native renderer+preload/API/CLI/harness/source/config with no retries/skips; synthetic actors explicitly identified.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 37,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "A12",
+        "requirement_or_actual_entry": "Independent complete evidence, scoped diff/after and parent ledger<br>Accepted product/source/entry binding; no unit test substitutes for actual acceptance.",
+        "retained_and_final_evidence": "Independently verify full fresh raw/result/report/HTTP/UI+source/output/DB/FS/process/normal-stop/gate evidence, then main updates parent matrix/gaps and task state. No inferred wholeROOT or realS4 acceptance.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 38,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      }
+    ],
+    "W": [
+      {
+        "id": "W01",
+        "requirement_or_actual_entry": "协作正式交付submit",
+        "retained_and_final_evidence": "Fresh E04 six stage_incomplete refusals (submit/self × threeM1modes) with snapshots unchanged; later exact positive submission200 and candidate binding.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 60,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W02",
+        "requirement_or_actual_entry": "协作精确submission完成",
+        "retained_and_final_evidence": "Fresh E04 enforce Web201 authorization→pre-forward interruption→GET404→Desktop samegrant/key/body POST200 and consumed grant→Web double GET200; one actual final API write.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 61,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W03",
+        "requirement_or_actual_entry": "协作self-result完成",
+        "retained_and_final_evidence": "Retained backend stage-enabled self positives in three modes; fresh E04 valid-grant self negatives with no effects. E04 is not a self-positive browser proof.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 62,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W04",
+        "requirement_or_actual_entry": "R38失能发起人管理完成",
+        "retained_and_final_evidence": "Retained backend three-mode R38 positives/current organization/disabled creator/original grant; fresh E04 actual admin409 plus stage_blockers and creator restore. E04 is not an admin-positive browser proof.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 63,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W05",
+        "requirement_or_actual_entry": "普通PUT/旧client/Agent的完成请求",
+        "retained_and_final_evidence": "Retained current handler/router ordinary/legacy/Agent gates and ordinary-child controls; W10 actual ordinary PUT refusal supplement. Installedoldclient matrix remains separate.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 64,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W06",
+        "requirement_or_actual_entry": "普通Move",
+        "retained_and_final_evidence": "Retained actual Move/ordinary atomic writer controls and child semantic invalidation; no new redundant browser matrix.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 65,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W07",
+        "requirement_or_actual_entry": "普通批量更新",
+        "retained_and_final_evidence": "Retained handler/router sequential committed-prefix, mixed-root preeffects and duplicategrant/key controls; report is not fullbatch replay guarantee.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 66,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W08",
+        "requirement_or_actual_entry": "Create/快速创建/comment-to-child/create-as-done",
+        "retained_and_final_evidence": "Retained CreateInTx/humanchild/machineproposal/customdone controls plus freshE01 approved materialization; no realmodel decomposition proof.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 67,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W09",
+        "requirement_or_actual_entry": "GitHub/VCS/system状态writer",
+        "retained_and_final_evidence": "Retained signed GitHub/VCS/system root refusal and ordinaryM1 consumers; real remoteCI/PR integration remainsS4.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 68,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W10",
+        "requirement_or_actual_entry": "完成CLI及run-local machine边界",
+        "retained_and_final_evidence": "Standalone current matchedCLI GET409 and PUT409 with full snapshots/eight counts unchanged already accepted; freshE01/E02 run-local CLI report positives. Neither provesmanagedstageCLI or realmodel.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 69,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W11",
+        "requirement_or_actual_entry": "协作root project move/clear",
+        "retained_and_final_evidence": "FreshE04 rootproject null/otherproject PATCH409 with stage_policy_exit_required and effects unchanged; real transactional order/off controls retained.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 70,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W12",
+        "requirement_or_actual_entry": "项目delete-impact和实际delete",
+        "retained_and_final_evidence": "FreshE04 delete-impact200 with blocker, managedprojectDELETE409, unrelatedemptyprojectDELETE204; transaction/policy race controls retained.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 71,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W13",
+        "requirement_or_actual_entry": "managed root普通delete与batch-delete",
+        "retained_and_final_evidence": "Retained current handler root/mixed/ordinaryparent delete before cancellation effects, lateattach/faultrollback; do not inventdestructiveproductiontest.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 72,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W14",
+        "requirement_or_actual_entry": "普通child语义编辑/换parent/project/删除",
+        "retained_and_final_evidence": "Retained child persistent mapping+semantic/status distinction; later completion source stillbound exact child. Ordinarychild notforcedthroughrootstages.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 73,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W15",
+        "requirement_or_actual_entry": "真正enqueue与queued→started",
+        "retained_and_final_evidence": "Retained realenqueue/start bothorders/unapprovedstale rejection; freshE01 materialization zerodispatch and preparedCLI used only under genuine admittedcontrolledrun.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 74,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W16",
+        "requirement_or_actual_entry": "cancel与reopen",
+        "retained_and_final_evidence": "Retained cancel/reopen/newscope and consumedoriginalkey history; freshE03/E04 originalhistoricalreceipt neverrenewsapproval or implicitResume.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 75,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W17",
+        "requirement_or_actual_entry": "root/R38 completion candidates与preview",
+        "retained_and_final_evidence": "Retained fourF06 root/admin adapters strictACL/cursor/empty/donechild/no-write; freshE04 sharedpreview reads exact ordinarychild/source and emittedrealauthorization onlyexplicitly.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 76,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "W18",
+        "requirement_or_actual_entry": "活动与原操作回执投影",
+        "retained_and_final_evidence": "Retained safeactivity schema/canonical metadata and frozenblockers; freshE01/E03/E04 timeline/originalreceipt safe projections with no recoveredPOST/write/duplicateconsumption.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 77,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      }
+    ],
+    "Q": [
+      {
+        "id": "Q01",
+        "requirement_or_actual_entry": "Three modes × submit/submission/self/R38 verified and incomplete; enforce missing grant remains refused",
+        "retained_and_final_evidence": "Existing 12verifiedmode/writer leaves PASS in normal andrace; freshE04 completes representative negative+enforceUI composition without replacingbackend matrix.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 85,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q02",
+        "requirement_or_actual_entry": "Owning Tx/before/allowed after, wrong Tx, missing/unfinalized/reuse, NA finalization, original actor/header/result",
+        "retained_and_final_evidence": "Actual boundbackend guardidentity/singleuse/NotApplicable/replayed contracts alreadyaccepted; freshE04 originalpayload/operation checks support runtimecomposition.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 86,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q03",
+        "requirement_or_actual_entry": "Last DB clock after receipts/audit, issuer/caller/PAT/source/CI/artifact/target/metrics; real orders distinct from same-Tx seams",
+        "retained_and_final_evidence": "Final-clock andallcurrentissuer/caller/source/trust/metric writercontrols retained; freshcurrentruntime approval/content/timestamp identity andE03deadline preserved.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 87,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q04",
+        "requirement_or_actual_entry": "Exact immutable submission/candidate/lifecycle/scope/operation/handoff locks and legacy/corrupt refusal",
+        "retained_and_final_evidence": "Exactsubmission/candidate/lifecycle/operation binding retained; freshE04 positiveformal submission andlaterreceipt sameimmutableID.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 88,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q05",
+        "requirement_or_actual_entry": "P ≠ E without source membership, real issuer authorization, minimal grant, revoked/expired roles and frozen refusal recovery",
+        "retained_and_final_evidence": "Backend P≠E/outside membership/separateissuer positives alreadyactual; freshE04 two-platform sameaccount is not that distinct-consumer matrix. Current read/credential checks stillrequired.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 89,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q06",
+        "requirement_or_actual_entry": "Read-only source/root preview and self attachment inspection, zero business-write witnesses",
+        "retained_and_final_evidence": "Retained preview/selfattachment no-write matrix; freshE04 POSTcompletion-preview is aread, counts exclude it but mustnotinventauthority untilexplicitgrantPOST.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 90,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q07",
+        "requirement_or_actual_entry": "Strict objects/aliases/limits, root/source/viewer/revision cursor, empty/cached/mid-revoke orders",
+        "retained_and_final_evidence": "Current99handler/54router strictACL/cursor/budget matrix alreadyaccepted; current R1→R4/T4 privacy/cache/source identity innewruntime required.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 91,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q08",
+        "requirement_or_actual_entry": "Lost/unknown commit, original refused/consumed key and current read authority; late external fact history",
+        "retained_and_final_evidence": "FreshE03latefact andE04interruptedoriginalGET404/samegrantDesktop/WebGET recovery mandatory; no automaticPOST or replacementID.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 92,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q09",
+        "requirement_or_actual_entry": "Exact864 ledger and readiness dependencies; missing state is unavailable, P2 remains false",
+        "retained_and_final_evidence": "R06 P2false washistorical. ActualP2R09 accepted all18profiles withreadinessnegative/disable/history/re-enable controls. FreshE01enabledpolicy andboundschema/API completeactualuse; defaultprojectpolicyremainsclosed.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 93,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q10",
+        "requirement_or_actual_entry": "Policy/project/submit/complete ordering, physical-target uncertainty, human-child independence",
+        "retained_and_final_evidence": "Policy/project/complete ordering andphysicaltarget conflict retained; freshE02/E04 current target/exit blockers andhumanchild contractrequired.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 94,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q11",
+        "requirement_or_actual_entry": "Four exact835/864 schemas plus source shapes/cleanup map; root-owned six raw controls + one immutable supplement,39 assertions",
+        "retained_and_final_evidence": "Retained sixoldDDLrawcontrols +oneseparateimmutable supplement39assertions, S2concurrentindex/noFK/readiness/cleanup; current853ledger/source binding. HistoricaleightF2omissions andGo1.26/LinuxCI limit notsilentlypassed.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 95,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      },
+      {
+        "id": "Q12",
+        "requirement_or_actual_entry": "Immutable inputs/configs/owned cleanup collected",
+        "retained_and_final_evidence": "Freshsource/config/product/generationsbefore→allfour→after→normalownedAPIstop→DBconnections0/restoredbooleans/monotonic epoch/settledruns/history/artifacts/oldunknownpreservation; mainparentledger update andfinalindependentreview.",
+        "source": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+        "line": 96,
+        "current_final_acceptance": "PENDING_CURRENT_EVIDENCE_AND_INDEPENDENT_A12"
+      }
+    ],
+    "historical_runtime_labels": "R20/R23 preflight labels do not override current R25 main status; no merged best fragments",
+    "historical_w10_missing_note": "Superseded by accepted r22-w10-cli-check-20261117"
+  },
+  "retained_code_inventories_per_mode": {
+    "service": {
+      "top_level": 116,
+      "named": 321,
+      "leaf": 263
+    },
+    "handler": {
+      "top_level": 99,
+      "named": 326,
+      "leaf": 275
+    },
+    "router": {
+      "top_level": 54,
+      "named": 208,
+      "leaf": 174
+    },
+    "fresh_current_r28_pass_claim": false
+  },
+  "planned_affected_controls": {
+    "status": "SOURCE_DERIVED_NOT_EXECUTED_BY_RESEARCHER",
+    "derivation": "Existing literal t.Run names and3x4x2 mode/variant/outcome loops; no Go test/list/TestMain or synthetic result execution",
+    "selector": "^(TestStageExecutionReadWriterAccessFences|TestStageExecutionRunReadFences|TestStageArtifactReadProjectionWriterFences|TestStageExecutionReadRetainedIssuerFences|TestStageCompletionAllM1ModesAndActualWriters|TestStageCompletionSubmissionRequiresItsOriginalOperation|TestStageCompletionImmutableSubmissionLocksInOwningTransaction)$",
+    "counts_per_mode": {
+      "top_level": 7,
+      "named": 58,
+      "leaf": 38
+    },
+    "controls": [
+      {
+        "top_level": "TestStageExecutionReadWriterAccessFences",
+        "source": "server/internal/service/collaboration_stage_execution_read_concurrency_test.go",
+        "line": 139,
+        "named": [
+          "TestStageExecutionReadWriterAccessFences",
+          "TestStageExecutionReadWriterAccessFences/issue_collaboration/plain",
+          "TestStageExecutionReadWriterAccessFences/issue_collaboration/read_marker",
+          "TestStageExecutionReadWriterAccessFences/collaboration_session/plain",
+          "TestStageExecutionReadWriterAccessFences/collaboration_session/read_marker"
+        ],
+        "leaves": [
+          "TestStageExecutionReadWriterAccessFences/issue_collaboration/plain",
+          "TestStageExecutionReadWriterAccessFences/issue_collaboration/read_marker",
+          "TestStageExecutionReadWriterAccessFences/collaboration_session/plain",
+          "TestStageExecutionReadWriterAccessFences/collaboration_session/read_marker"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 5,
+          "leaf": 4
+        }
+      },
+      {
+        "top_level": "TestStageExecutionRunReadFences",
+        "source": "server/internal/service/collaboration_stage_execution_run_read_fences_test.go",
+        "line": 22,
+        "named": [
+          "TestStageExecutionRunReadFences",
+          "TestStageExecutionRunReadFences/plain",
+          "TestStageExecutionRunReadFences/read_marker",
+          "TestStageExecutionRunReadFences/writer_first",
+          "TestStageExecutionRunReadFences/reader_first"
+        ],
+        "leaves": [
+          "TestStageExecutionRunReadFences/plain",
+          "TestStageExecutionRunReadFences/read_marker",
+          "TestStageExecutionRunReadFences/writer_first",
+          "TestStageExecutionRunReadFences/reader_first"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 5,
+          "leaf": 4
+        }
+      },
+      {
+        "top_level": "TestStageArtifactReadProjectionWriterFences",
+        "source": "server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+        "line": 180,
+        "named": [
+          "TestStageArtifactReadProjectionWriterFences",
+          "TestStageArtifactReadProjectionWriterFences/writer_first",
+          "TestStageArtifactReadProjectionWriterFences/reader_first"
+        ],
+        "leaves": [
+          "TestStageArtifactReadProjectionWriterFences/writer_first",
+          "TestStageArtifactReadProjectionWriterFences/reader_first"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 3,
+          "leaf": 2
+        }
+      },
+      {
+        "top_level": "TestStageExecutionReadRetainedIssuerFences",
+        "source": "server/internal/service/collaboration_stage_execution_read_concurrency_test.go",
+        "line": 179,
+        "named": [
+          "TestStageExecutionReadRetainedIssuerFences",
+          "TestStageExecutionReadRetainedIssuerFences/reader_first",
+          "TestStageExecutionReadRetainedIssuerFences/revocation_before_authority_lock"
+        ],
+        "leaves": [
+          "TestStageExecutionReadRetainedIssuerFences/reader_first",
+          "TestStageExecutionReadRetainedIssuerFences/revocation_before_authority_lock"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 3,
+          "leaf": 2
+        }
+      },
+      {
+        "top_level": "TestStageCompletionAllM1ModesAndActualWriters",
+        "source": "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "line": 744,
+        "named": [
+          "TestStageCompletionAllM1ModesAndActualWriters",
+          "TestStageCompletionAllM1ModesAndActualWriters/off",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified"
+        ],
+        "leaves": [
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified"
+        ],
+        "actual_middle_parents": [
+          "TestStageCompletionAllM1ModesAndActualWriters/off",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/off/admin",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/observe/admin",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/self",
+          "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin"
+        ],
+        "counts": {
+          "top_level": 1,
+          "named": 40,
+          "leaf": 24
+        },
+        "verified_leaf_count": 12,
+        "incomplete_leaf_count": 12
+      },
+      {
+        "top_level": "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+        "source": "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "line": 152,
+        "named": [
+          "TestStageCompletionSubmissionRequiresItsOriginalOperation"
+        ],
+        "leaves": [
+          "TestStageCompletionSubmissionRequiresItsOriginalOperation"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 1,
+          "leaf": 1
+        }
+      },
+      {
+        "top_level": "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+        "source": "server/internal/service/collaboration_stage_completion_tx_test.go",
+        "line": 232,
+        "named": [
+          "TestStageCompletionImmutableSubmissionLocksInOwningTransaction"
+        ],
+        "leaves": [
+          "TestStageCompletionImmutableSubmissionLocksInOwningTransaction"
+        ],
+        "actual_middle_parents": [],
+        "counts": {
+          "top_level": 1,
+          "named": 1,
+          "leaf": 1
+        }
+      }
+    ],
+    "named_inventory": [
+      "TestStageArtifactReadProjectionWriterFences",
+      "TestStageArtifactReadProjectionWriterFences/reader_first",
+      "TestStageArtifactReadProjectionWriterFences/writer_first",
+      "TestStageCompletionAllM1ModesAndActualWriters",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/self",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/admin",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/self",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submission",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submit",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/admin",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/self",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submission",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submit",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+      "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+      "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+      "TestStageExecutionReadRetainedIssuerFences",
+      "TestStageExecutionReadRetainedIssuerFences/reader_first",
+      "TestStageExecutionReadRetainedIssuerFences/revocation_before_authority_lock",
+      "TestStageExecutionReadWriterAccessFences",
+      "TestStageExecutionReadWriterAccessFences/collaboration_session/plain",
+      "TestStageExecutionReadWriterAccessFences/collaboration_session/read_marker",
+      "TestStageExecutionReadWriterAccessFences/issue_collaboration/plain",
+      "TestStageExecutionReadWriterAccessFences/issue_collaboration/read_marker",
+      "TestStageExecutionRunReadFences",
+      "TestStageExecutionRunReadFences/plain",
+      "TestStageExecutionRunReadFences/read_marker",
+      "TestStageExecutionRunReadFences/reader_first",
+      "TestStageExecutionRunReadFences/writer_first"
+    ],
+    "leaf_inventory": [
+      "TestStageArtifactReadProjectionWriterFences/reader_first",
+      "TestStageArtifactReadProjectionWriterFences/writer_first",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/enforce/submit/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/observe/submit/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/admin/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/admin/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/self/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/self/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submission/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submission/verified",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submit/incomplete",
+      "TestStageCompletionAllM1ModesAndActualWriters/off/submit/verified",
+      "TestStageCompletionImmutableSubmissionLocksInOwningTransaction",
+      "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+      "TestStageExecutionReadRetainedIssuerFences/reader_first",
+      "TestStageExecutionReadRetainedIssuerFences/revocation_before_authority_lock",
+      "TestStageExecutionReadWriterAccessFences/collaboration_session/plain",
+      "TestStageExecutionReadWriterAccessFences/collaboration_session/read_marker",
+      "TestStageExecutionReadWriterAccessFences/issue_collaboration/plain",
+      "TestStageExecutionReadWriterAccessFences/issue_collaboration/read_marker",
+      "TestStageExecutionRunReadFences/plain",
+      "TestStageExecutionRunReadFences/read_marker",
+      "TestStageExecutionRunReadFences/reader_first",
+      "TestStageExecutionRunReadFences/writer_first"
+    ],
+    "slash_name_contract": "Access relation/plain or relation/read_marker is one t.Run, no intermediate relation event",
+    "mode_matrix_middle_parents": {
+      "mode": 3,
+      "variant": 12
+    },
+    "childless_tops_also_leaves": [
+      "TestStageCompletionSubmissionRequiresItsOriginalOperation",
+      "TestStageCompletionImmutableSubmissionLocksInOwningTransaction"
+    ],
+    "normal_race_gate": "same acceptedGREEN source, unchanged tests, two fresh exact package/command permits, all58 terminals eachmode PASS and no skips/missing/extra/pending"
+  },
+  "full116_decision": {
+    "automatic_rerun_required": false,
+    "reason": "R28 is a bounded submission read dispatch and helper factoring delta; full-scope review can compose exact retained unchanged evidence with current affected caller/default matrix",
+    "current_changed_body_obligations": [
+      "completionCollaborationIntent false wrapper and body/caller mapping",
+      "stageCompletionState false default and absent/read fence separation",
+      "stageCompletionFacts/WithFinalCheck false path, original Prepare/Finish/callback timing",
+      "exact concrete read marker remains private to validated submission; public/direct observer/access/QA defaults false"
+    ],
+    "current_run_proof": "planned seven-top58 named/38 leaf normal and race after current union26 passes, plus current3file/source/AST/default/caller preservation and independent acceptance",
+    "retained_reuse": [
+      "unchanged tests/current dependency source and demonstrated unchanged false-path semantics",
+      "retained guard/clock/independent consumer/project/schema cases remain source-bound, not new totals"
+    ],
+    "broaden_if": [
+      "false-path equivalence fails",
+      "writer authority/predicates/sideeffects change",
+      "schema or public interface changes",
+      "caller graph cannot be isolated from unrelated tests"
+    ],
+    "full_scope_trellis_last_check": ".trellis/workflow.md:568 still covers every affected S2 package/contract, not only latest3files; this is not an unconditional116 rerun"
+  },
+  "original_four": {
+    "cases": [
+      {
+        "id": "E01",
+        "title": "stage decisions and prepared test reports retain human and runtime history across Web and Desktop",
+        "source": "e2e/collaboration-stage-approvals.spec.ts",
+        "line": 27,
+        "artifact": "stage-approvals-evidence.json",
+        "scope": "role/proposal/source privacy/strict CI/human review/actual failed report and QA return/retest/original keys"
+      },
+      {
+        "id": "E02",
+        "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+        "source": "e2e/collaboration-stage-execution.spec.ts",
+        "line": 232,
+        "artifact": "stage-execution-evidence.json",
+        "scope": "current QA/release and controlled exact deployment/rollback/metric/receipt"
+      },
+      {
+        "id": "E03",
+        "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+        "source": "e2e/collaboration-stage-execution.spec.ts",
+        "line": 348,
+        "artifact": "stage-execution-evidence.json",
+        "scope": "expiry/original late fact/no renewal/redispatch/old approval advance"
+      },
+      {
+        "id": "E04",
+        "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+        "source": "e2e/collaboration-stage-execution.spec.ts",
+        "line": 397,
+        "artifact": "stage-execution-evidence.json",
+        "scope": "three-mode submit/self negatives, project exits, genuine submission/preview/grant, pre-forward interruption/GET404, same original Desktop consume/WebGET, real R38 denial/restore"
+      }
+    ],
+    "counts_required": {
+      "PASS": 4,
+      "FAIL": 0,
+      "SKIP": 0,
+      "retries": 0,
+      "missing": 0
+    },
+    "workers": 1,
+    "max_failures": 1,
+    "action_timeout_seconds": 20,
+    "case_timeout_seconds": 480,
+    "source_and_permit": "one fresh frozen complete four-case run, exact original identities and all original assertions",
+    "no_fragment_union": true,
+    "e04_required_assertions": [
+      {
+        "source_line": 419,
+        "assertion": "three M1 modes x submit/self refuse incomplete stage; equal effects; issued enforce grant unconsumed"
+      },
+      {
+        "source_line": 441,
+        "assertion": "root clear/move409; managed delete impact200/blocker and delete409; unrelated empty delete204"
+      },
+      {
+        "source_line": 458,
+        "assertion": "real current release/controlled verification and200 immutable formal submission"
+      },
+      {
+        "source_line": 475,
+        "assertion": "actual Web shared preview/exact child-artifact-submission, one authorization201, original final attempt aborted before API forwarding"
+      },
+      {
+        "source_line": 510,
+        "assertion": "real original operation GET404 and unchanged effects; no replacement grant/write"
+      },
+      {
+        "source_line": 521,
+        "assertion": "fresh native profile uses actual same account/noWebStorageCopy and original grant/key/body/hash; zero Desktop authorizationPOST"
+      },
+      {
+        "source_line": 549,
+        "assertion": "one actual lifecycle200 + consumed original receipt/submission/collaborationrevision+1; Web doubleGET same response/receipt no second write"
+      },
+      {
+        "source_line": 585,
+        "assertion": "actual synthetic admin disable, R38 incomplete409+blockers/no effects and creator restore finally"
+      }
+    ],
+    "browser_backend_scope_distinction": "E04 same-account Web/Desktop is not backend P!=E/outside-source/separateissuer matrix; R38/self browser negatives do not replace backend positives; POSTpreview is read"
+  },
+  "w10_reuse": {
+    "accepted_report": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-check-20261117.md",
+    "cli_sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+    "mode": "0755",
+    "commands": [
+      {
+        "command": "issue completion prepare <root> --status done",
+        "actual_http": "GET /api/issues/<root>/delivery-evidence/candidates?limit=20",
+        "status": 409,
+        "code": "delivery_completion_consumer_unsupported",
+        "cli_exit": 1
+      },
+      {
+        "command": "issue update <root> --status done --priority none",
+        "actual_http": "PUT /api/issues/<root>",
+        "status": 409,
+        "code": "unsupported_collaboration_action",
+        "cli_exit": 1
+      }
+    ],
+    "scoped_effects": "byte-identical before/after full root/source state and8 counts",
+    "conditions": [
+      "actual recordedCLI0755/hash or explicit unchanged-source/binary relation",
+      "unchanged relevant ordinary unsupported guard/refusal/source authority path",
+      "retain actual original command/actor/config/snapshot references; no unlogged token"
+    ],
+    "r28_scope_reason": "New mode creation only validated collaboration_submission preview; ordinary CLI target check in cmd_issue_completion.go:880 and ordinary service unsupported path remain outside it",
+    "repeat_required_solely_because_api_binary_changed": false,
+    "if_bindings_differ": "Do not label old receipt a current matched proof; narrowly resolve affectedW10 boundary",
+    "does_not_close": [
+      "managed-stageCLI positive",
+      "fullA09",
+      "realmodel/account"
+    ]
+  },
+  "final_bundle_checklist": [
+    {
+      "gate": "current code closure",
+      "required": "current union26 normal/race and seven-top58 normal/race complete; exact source/config/raw/AST/caller/default evidence and independent scoped acceptance; finalROOT integration/static checks/specsync",
+      "state": "PENDING"
+    },
+    {
+      "gate": "consumed products/live identity",
+      "required": "impacted API/harness built from acceptedGREEN; every actually consumedCLI/Host/Provider/bridge/productionWeb/native renderer+preload tied by matching source/dependency/hash; actualPID/parent/listener/cwd/argv/version/API-WS/admin/runtime/config/permit before and afterfour",
+      "state": "PENDING"
+    },
+    {
+      "gate": "four-case evidence",
+      "required": "four actual originalPASS with original source/per-caseJSON/log/reporter/HTTP/request-bodySHA/native/PNG and actualactor/source/candidate/run/build/deployment/metric identities; no retry/skip",
+      "state": "PENDING"
+    },
+    {
+      "gate": "original intent/consumer/writer composition",
+      "required": "E04 same original grant/key/body/GET404/Desktopconsume/WebGEToneactualAPIwrite + current seven-top modes/defaults + source-bound P!=E/currentfinal-clock/unknown-receipt/project/R38 scopes",
+      "state": "PENDING"
+    },
+    {
+      "gate": "normal owned cleanup",
+      "required": "liveafter separate from stoppedafter; gracefulownedAPI/bridge terminal/receipt, listener/socketabsent, otherDBconnections0, original creation/execution/hostbooleans restored, epochmonotonic, newrunssettled/noactivelease/unreleasedreservation; preserve old legitimate runningstatus/unknownhistory",
+      "state": "PENDING"
+    },
+    {
+      "gate": "artifact/history",
+      "required": "retained completepath/inode/type/UID/mode/size/hash set and declarednewadditions; actual consumed freshslots/input/spec/receipt/source/tarSHA/memberbytes; unusedslots empty0700, outputs underexecutionID; preserve all28old completeartifact/history facts and unknowns",
+      "state": "PENDING"
+    },
+    {
+      "gate": "independent A12/bookkeeping",
+      "required": "all12A/18W/12Q current evidence independently accepted, no unresolvedscope; mainupdates parentmatrix/gaps/roles/progress/task and authorizedspec/commit/archive/journal workflow",
+      "state": "PENDING"
+    }
+  ],
+  "preparation_limits": {
+    "current_paths_reported": 257,
+    "old_paths_reported": 249,
+    "new_slots": 8,
+    "reported_baseline_epoch": 48,
+    "reported_settled_host_runs": 43,
+    "reported_complete_artifacts": 28,
+    "proof": "recorded acceptedpreparation; no new live probe here",
+    "all_eight_slots_must_be_consumed": false,
+    "tar_bytes_audited_by_preparation": false
+  },
+  "separate_gates": [
+    "parent24 per-rowcomplete proof and formalbusinesssignatures",
+    "S3 remainingrecovery afterfinalS2",
+    "realS4 repository/CI/payment/fulfillment/callback/nonproductiondeploy-rollback/metrics/realbusinessinputs",
+    "S5 finalcandidate100participants/performance/completepropagation/cleanup",
+    "fullinstalledDesktopMain/otherplatform-toolchain/realmodel evidence"
+  ],
+  "external_references": {
+    "fetched": [],
+    "source_basis": "repositoryspecs and retainedactual task reports; no externalaccount/runtime access"
+  },
+  "execution_by_researcher": {
+    "go_test": 0,
+    "go_list": 0,
+    "testmain": 0,
+    "sql": 0,
+    "api": 0,
+    "browser": 0,
+    "build": 0,
+    "signal": 0,
+    "git": 0,
+    "subagents": 0,
+    "code_or_test_edits": 0
+  },
+  "caveats": [
+    "Planned58-name control set is not actualPASS",
+    "R28 currentGREEN/race/control/runtime/A12 pending at snapshot",
+    "Old116/99/54 remain retained observations, not freshR28 totals",
+    "OldW10-missing note is superseded by acceptedR22 proof",
+    "Four4PASS alone does not replace A/W/Q/source/live/stop/archive evidence",
+    "HistoricalR24/R25 holder remainsunproved",
+    "No originalfailure/history/matrix was edited"
+  ],
+  "sources": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.md",
+      "description": "Latest complete A/W/Q preflight and exact final runtime/stop composition",
+      "lines": [
+        21,
+        40,
+        54,
+        79,
+        98
+      ],
+      "sha256": "a27dcc808d214f2a24e98eb1809c1aa6de5f2719ed14748ea8f8f02e3bae7edb",
+      "bytes": 21966,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.json",
+      "description": "Retained exact final maps/reference and raw/source audit",
+      "lines": [],
+      "sha256": "8cc9195cd50d415b51ff3552f6dd01abd10f00a370988a17371a6fc94600cacb",
+      "bytes": 80439,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.md",
+      "description": "Retained116 service baseline and genuine mode/writer positives; old runtime/W10 labels historical",
+      "lines": [
+        14,
+        33,
+        39
+      ],
+      "sha256": "c0d38c1b929a4c9de88c19591455a67203b62e60e8636f17b97b81a74d483559",
+      "bytes": 12093,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-final-a01-a12-evidence-map-20261116.json",
+      "description": "Retained actual baseline terminal/source map",
+      "lines": [],
+      "sha256": "01162af46f6d74d5e3a145a7283e891bd9279cce4005c9193afb5b8ad45f2153",
+      "bytes": 44467,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-check-20261117.md",
+      "description": "Accepted standalone actual CLI two409/eight-count no-effect receipt",
+      "lines": [
+        1
+      ],
+      "sha256": "211f0df3fab5c7f842c1f2c635d86305befb340b351ae193e9d04e877f7d7e66",
+      "bytes": 3534,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-w10-cli-check-20261117.json",
+      "description": "W10 exact binary/source/command/current actor/snapshot references",
+      "lines": [],
+      "sha256": "46735b34d4bdb5e952b597de6661585e5aa4eae4b9d402603457fba528643bc0",
+      "bytes": 18911,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-r27-root-runtime-preparation-check-20261117.md",
+      "description": "Accepted R27 integration and current eight-slot preparation only; final API/Green wait",
+      "lines": [
+        1
+      ],
+      "sha256": "96d58edb04b8fc01eb07f12983e9acd853925012c38b9cf8dfb9aa6f959e8fc9",
+      "bytes": 4133,
+      "mode": "0o444"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-r27-root-runtime-preparation-check-20261117.json",
+      "description": "Selected input/profile/staging/runtime preparation descriptors",
+      "lines": [],
+      "sha256": "4ad0fab9a049e87101846fe6eace0d03fb05f6d3d973c21eb45b9aba1e471407",
+      "bytes": 26460,
+      "mode": "0o444"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r27-preview-binding-utc-followup-independent-check-20261117.md",
+      "description": "Accepted R27 two-path binding/UTC behavior normal/race eight each",
+      "lines": [
+        1
+      ],
+      "sha256": "c4f2fccd42d35a14670d8bcf4354caed7043753c3247f95bc2883fab829f9c46",
+      "bytes": 6602,
+      "mode": "0o444"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-red-implementation-20261117.md",
+      "description": "Frozen602-line R28 source/compile handoff and13-leaf contracts; main owns actual RED",
+      "lines": [
+        1
+      ],
+      "sha256": "4cdc27fc6493f7fd075fb4976e1fd849e868fd7f4cb0f38771672b10bb2fee3a",
+      "bytes": 9715,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r28-preview-read-repair-design-20261117.md",
+      "description": "Bounded three-file read/factoring design and current writer default obligations",
+      "lines": [
+        1
+      ],
+      "sha256": "b0b4d7e525ed8a1ae5f6f6e67d503f78805cdd75a0a96c1841aa1c55e2c75696",
+      "bytes": 14130,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-final-restoration-audit-plan-20261117.md",
+      "description": "Retained normal stop/history/unused-slot/tar audit methodology, not current execution",
+      "lines": [
+        1
+      ],
+      "sha256": "d4f9dc7d0539b9090c7820e26d8b62e98593794e8141a8460383133da100aa4e",
+      "bytes": 13708,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/progress-20261117.md",
+      "description": "Main current progress and retained runtime boundaries",
+      "lines": [
+        1
+      ],
+      "sha256": "33345f1d9bd653b4d03ae23b44645d324f016696551850e900ef4c3fa8de5505",
+      "bytes": 17168,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/prd.md",
+      "description": "Authoritative12 local S2 acceptance gates",
+      "lines": [
+        29
+      ],
+      "sha256": "e836dc740301f60cef006ae094e05bdb57686eee1fe199d30d94bc65b8df7c10",
+      "bytes": 6210,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/design.md",
+      "description": "Stage/M1 exact writer/current authority/local-vs-real scope",
+      "lines": [
+        7,
+        58,
+        82
+      ],
+      "sha256": "a377e9011ef7d3f4dc2e77a4dbc10d331bdf32247761782d8ee233c7b131493a",
+      "bytes": 24227,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/implement.md",
+      "description": "Current R28 scoped actualRED/Green/controls and final4/A12 continuation",
+      "lines": [
+        3
+      ],
+      "sha256": "7f97deb50f4de40ef9a08ccbfc2d309ae793451a112d1bf2a5639bf962f495eb",
+      "bytes": 48664,
+      "mode": "0o644"
+    },
+    {
+      "path": "docs/plans/2026-11-17-pay-241-continuation.md",
+      "description": "Current original-four and S2 final stop/archive ordering",
+      "lines": [
+        104,
+        114
+      ],
+      "sha256": "a63424aa05d8a1d19d4da71bbe5a639d01b2e425f6e13522f5af40c46aa5a025",
+      "bytes": 16161,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/collaboration-stage-approvals.spec.ts",
+      "description": "Frozen original E01 and per-case source/report evidence",
+      "lines": [
+        27,
+        52,
+        595
+      ],
+      "sha256": "f8f0c32f7622ef4cb521bdfd6aec423906d7f955e3b9be7aea940f73d8883e73",
+      "bytes": 49079,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/collaboration-stage-execution.spec.ts",
+      "description": "Frozen E02/E03/E04 bodies, exact original transport/receipt/exit/admin assertions",
+      "lines": [
+        44,
+        47,
+        232,
+        348,
+        397,
+        419,
+        441,
+        458,
+        475,
+        521,
+        549,
+        585,
+        617
+      ],
+      "sha256": "6d08bb644417d3c23b579564b7110a6d234773df7e68e187bfa03ab1175573f4",
+      "bytes": 59025,
+      "mode": "0o644"
+    },
+    {
+      "path": "e2e/fixtures/collaboration-stage-execution.ts",
+      "description": "Original HTTP hashing, pre-forward interruption, shared preview and eight-slot contract",
+      "lines": [
+        26,
+        43,
+        65,
+        95,
+        105
+      ],
+      "sha256": "9454aba098a9210dd9c6eae54cf0be4e1f33d3d4bedd245c882e8fd65c2088a3",
+      "bytes": 33005,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_read_concurrency_test.go",
+      "description": "Current unaffected access/retained issuer controls and exact names",
+      "lines": [
+        139,
+        179
+      ],
+      "sha256": "16f61b61fff07fb4cf609bf27a141093d67d46afe96f2448a9605a7c7709a75c",
+      "bytes": 8448,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_run_read_fences_test.go",
+      "description": "Current unaffected run writer controls and exact names",
+      "lines": [
+        22
+      ],
+      "sha256": "6d6b93bcc98e042508b45c7f01ff9a5dbbd74fc447a2202e809419def2f32eaa",
+      "bytes": 4553,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence_read_concurrency_test.go",
+      "description": "Current unaffected artifact writer controls and exact names",
+      "lines": [
+        180
+      ],
+      "sha256": "2053aa790974aea910a908634a18953748279f9028659c2dac4d1b28e74630f6",
+      "bytes": 11499,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_completion_tx_test.go",
+      "description": "Current unaffected seven-control writer/binding tests and retained final-clock/guard/consumer scopes",
+      "lines": [
+        152,
+        232,
+        744,
+        919,
+        1040,
+        1250
+      ],
+      "sha256": "2936724908351a44447f8e44f3d1be6bccaace255a6c11cecf1292b17b08083f",
+      "bytes": 73422,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_exit_continuation_test.go",
+      "description": "Retained exact policy/project/complete ordering and source-authority gates",
+      "lines": [
+        46,
+        89,
+        213,
+        264
+      ],
+      "sha256": "d0321fd11ba88c42cc9eb373b015c0c5682dc4f82262a18692821c4688088deb",
+      "bytes": 13778,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/cmd/multica/cmd_issue_completion.go",
+      "description": "Ordinary-only CLI binding check; no R28 service import in this file",
+      "lines": [
+        1,
+        479,
+        880
+      ],
+      "sha256": "d65357fa081e47674f1227b4326bf5b4683c24d806f86572d17428841ddbccaa",
+      "bytes": 55533,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/delivery_completion_preview.go",
+      "description": "Ordinary preparation dispatch/refusal path remains outside new submission mode",
+      "lines": [
+        131,
+        158,
+        160
+      ],
+      "sha256": "2f9103c1bc3e4018cd6ec351b040085b7d76593faca25427e8a8774918353a75",
+      "bytes": 16586,
+      "mode": "0o644"
+    },
+    {
+      "path": "server/internal/service/delivery_completion.go",
+      "description": "Existing ordinary/collaboration unsupported refusal",
+      "lines": [
+        481
+      ],
+      "sha256": "2ba7220b5e95d73db6bdff2f2c012905e4e3f4928e573a7e8413332f91b53a5e",
+      "bytes": 20379,
+      "mode": "0o644"
+    },
+    {
+      "path": "CLAUDE.md",
+      "description": "Authoritative test/verification sizing",
+      "lines": [
+        193,
+        235
+      ],
+      "sha256": "ba958587589c26338bfb9547d745653a34239ee0524b8cb10a89c49056b382ed",
+      "bytes": 21075,
+      "mode": "0o755"
+    },
+    {
+      "path": ".trellis/workflow.md",
+      "description": "Full-scope last check, spec/commit/archive lifecycle",
+      "lines": [
+        568,
+        591,
+        600
+      ],
+      "sha256": "eb4508a4f6792f3d53705c1f9e7d21807dabd774543bd7b01f56372a704f6ad0",
+      "bytes": 39348,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "description": "Current read/writer/default/source/clock constraints",
+      "lines": [
+        60,
+        83,
+        122
+      ],
+      "sha256": "30129f9d2bd9c0b1112960b53668cd52ed32fe3bce0e56b148c43060037e11f1",
+      "bytes": 38426,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "description": "Actual borrowed writers, nonauthorizing reads, binding and scope",
+      "lines": [
+        61,
+        177,
+        237,
+        244
+      ],
+      "sha256": "683227f7d251c3604aed9f908e3fd2d67d72089021918f8de5436980e5f6753c",
+      "bytes": 18757,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/database-test-isolation.md",
+      "description": "Owned package/current environment/normal-race execution boundaries",
+      "lines": [
+        1
+      ],
+      "sha256": "01d7ce97fb11bd9da1605e93f4f3d855f796e244142198f9de4a0641e7da2ae8",
+      "bytes": 28546,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/server/verification-environment.md",
+      "description": "Actual final source/product/live/binary inventory is distinct from initial preparation",
+      "lines": [
+        71,
+        93
+      ],
+      "sha256": "32f3f59d93b4679ae4078f908f7605699ddea8c490e12543cf360aa64726dc3f",
+      "bytes": 17493,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/core/frontend/index.md",
+      "description": "Full S2 scope pointer to active Core contracts",
+      "lines": [
+        1
+      ],
+      "sha256": "9847e8646955a178d16c4df628da51143494e1d7c1f040069f3e5b747543543c",
+      "bytes": 4110,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/views/frontend/index.md",
+      "description": "Full S2 scope pointer to active Views contracts",
+      "lines": [
+        1
+      ],
+      "sha256": "0f38d782c44b0e71bae8792dd9ff533b2a2313760720557fa553515724b33c88",
+      "bytes": 6228,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/index.md",
+      "description": "Full S2 scope pointer to run environment contracts",
+      "lines": [
+        1
+      ],
+      "sha256": "1ffb7447bec59b3b959ccbddb11106385c837a7203e3518cfb9d5d6055550c6f",
+      "bytes": 2169,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/e2e-run-environment.md",
+      "description": "Protected original runtime identity, source/owned gate/geometry/fixture scopes",
+      "lines": [
+        715
+      ],
+      "sha256": "19c77e3e102099e149b212f84d795f74cc4398eabac1c3ce15d8cf6a58e2fb96",
+      "bytes": 52576,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "description": "Separate24-row parent ledger",
+      "lines": [
+        1
+      ],
+      "sha256": "e82cf713c5633ccb029db9ef799737d5d866d8642ebc141cecc40abb5b574113",
+      "bytes": 12684,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/gaps.md",
+      "description": "Separate current parent gaps and external scope",
+      "lines": [
+        1
+      ],
+      "sha256": "c5a59288a7ceeae988b7f236a0a1a7e3397b207c49539d18098b752163c7f52a",
+      "bytes": 5036,
+      "mode": "0o644"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
+      "description": "Separate actual role/state and formal business ownership record",
+      "lines": [
+        1
+      ],
+      "sha256": "0257abd299d71605e28b620733b2624fea0712ea02411c285320a9e694a39ce9",
+      "bytes": 5875,
+      "mode": "0o644"
+    }
+  ]
+}

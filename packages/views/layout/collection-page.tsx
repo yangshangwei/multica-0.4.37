@@ -140,7 +140,7 @@ export function CollectionPageHeaderAction({
       type={type}
       size={size}
       variant={variant}
-      className={cn("h-8 w-8 gap-1 px-0 md:w-auto md:px-2.5", className)}
+      className={cn("h-8 w-8 gap-1 px-0 max-md:min-h-11 max-md:min-w-11 md:w-auto md:px-2.5 pointer-coarse:min-h-11 pointer-coarse:min-w-11", className)}
       aria-label={accessibleLabel}
       {...props}
     >

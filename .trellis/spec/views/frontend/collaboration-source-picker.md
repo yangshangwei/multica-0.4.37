@@ -6,7 +6,7 @@ Apply to the optional parent field in shared collaboration creation and source-f
 
 ## 2. Signatures
 
-- `CollaborationSourceInputs` accepts the existing `options`, `value`, `current`, `parentSearch`, `onParentSearch` and `disabled`, plus optional `parentsPending`, `parentsError` and `onRetryParents`.
+- `CollaborationSourceInputs` accepts the existing `options`, `value`, `current`, `parentSearch`, `onParentSearch` and `disabled`, plus optional `parentsPending`, `parentsError`, `onRetryParents` and presentation-only `stageError`.
 - `CollaborationSourceSelection.parentIssueId` remains a nullable UUID; search text is not a selected parent.
 - `PropertyPicker.searchMaxLength?: number` forwards an optional HTML input bound. This selector passes 200; other callers keep their existing default.
 - Creation and field-option endpoints accept `parent_search`; an empty query returns recent candidates, while `parents_truncated` identifies the bounded 200-row result.
@@ -21,6 +21,13 @@ After a transient creation search failure, retain only existing Query data under
 
 ## 4. Validation / error matrix
 
+The creation caller derives `stageError` from the existing schema's `stage`
+issue path. Link the inline localized correction to the number input and keep
+its optional-stage hint. Normal parentless forms omit the stage input; a restored
+invalid stage remains directly editable/clearable while `stageError` exists,
+even without a parent. Do not tighten the mutable draft schema, silently erase
+the number, or reimplement the immutable schema range in the view.
+
 | Condition | Required behavior |
 | --- | --- |
 | Open with empty search | Visible recent source task identifiers/titles |
@@ -32,6 +39,8 @@ After a transient creation search failure, retain only existing Query data under
 | Authoritative source denial | No retained source catalogs or creation draft |
 | Old search settles after a newer one | Its rows cannot replace the current query's results |
 | Candidate selection / clear / picker Escape | UUID/null or dismissal only; no creation/update POST |
+| Stage schema error | Specific associated field error; retain input and block submit until correction |
+| Invalid restored stage without a parent | Show the existing stage editor so the draft can be corrected or cleared |
 
 ## 5. Good / base / bad cases
 

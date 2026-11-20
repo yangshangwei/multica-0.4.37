@@ -1,0 +1,1225 @@
+{
+  "schema": "pay241-r33-full-s2-a01-a12-independent-check-v1",
+  "at": "2026-11-18T01:34:58.228393+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewer": "/root/s2_full_scope_final",
+  "status": "ACCEPTED_FULL_S2_CODE_AND_SYNTHETIC_A01_A12_READY_ROOT_BOOKKEEPING_PENDING_COMMIT",
+  "blocking_S2_product_findings": [],
+  "findings_fixed": [],
+  "all42_verified_in_S2_scope": true,
+  "full_S2_code_and_synthetic_acceptance": true,
+  "full_S2_accepted": true,
+  "denominators": {
+    "A": 12,
+    "W": 18,
+    "Q": 12,
+    "total_review_rows": 42,
+    "current_original_business_cases": 4,
+    "parent_business_cases": 24,
+    "test_inventory_counts_added_to_business_denominator": 0
+  },
+  "A": [
+    {
+      "id": "A01",
+      "requirement": "Roles, stable business owner/current handler and authority",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 roles/owner/handler/separation and retained authority/CAS/history",
+      "retained_actual_test_names": [
+        "TestStageRolesRequireSourceAdminParticipantsAndSeparation",
+        "TestStagePolicyRevisionCASAuthorityAndOriginalKey",
+        "TestStageHTTPActionsConfirmationsRefusalsAndRecovery"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/0"
+    },
+    {
+      "id": "A02",
+      "requirement": "Immutable proposals, decisions, single materialization/no dispatch",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 exact version2 modify/accept, reject, original GET/POST, one child and no dispatch; concurrent/atomic controls",
+      "retained_actual_test_names": [
+        "TestStageProposalVersionsDecisionsAndSingleMaterialization",
+        "TestStageProposalConcurrentAcceptCreatesOneChildSet",
+        "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+        "TestStageChildCreationRequiresApprovedProposalForMachines"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/1"
+    },
+    {
+      "id": "A03",
+      "requirement": "Exact PR/head/trust/strict CI refusal",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 missing/failed strict CI refusals and current-head positive; retained head/trust/VCS matrices",
+      "retained_actual_test_names": [
+        "TestStageCodeReviewStrictCIRefusals",
+        "TestStageCodeReviewDigestAndSourceDrift",
+        "TestStageCodeVCSWithoutRepositoryCheckIdentityIsUnsupported"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/2"
+    },
+    {
+      "id": "A04",
+      "requirement": "Human reviewer, self/machine/revocation exclusion",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 missing signature/self/AgentActor/revoke/head/rejoin and fresh approval; retained final expiry/credentials",
+      "retained_actual_test_names": [
+        "TestStageCodeCandidateVersionsAndReviewerIsolation",
+        "TestStageCodeReviewSourceMembershipRejoinDoesNotReviveApproval",
+        "TestStageCodeReviewSignerRevocationAndExpiryBounds",
+        "TestStageAdvanceRechecksOriginalApprovalAtFinalClock"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/3"
+    },
+    {
+      "id": "A05",
+      "requirement": "Immutable actual run/case/log, QA return/retest history",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "Actual prepared run/cases/logs/failed and distinct retry, explicit QA return/approval, preserved history; common machine stage guard",
+      "retained_actual_test_names": [
+        "TestStageTestReportActualInputClaimAndReceipt",
+        "TestStageQAPassedReportNeedsSuccessfulSettledExecution",
+        "TestStageTestReportHostCheckpointExactLogAndRedaction",
+        "TestStageTestReportLostCommitRecoversOneOriginalEvent"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/4"
+    },
+    {
+      "id": "A06",
+      "requirement": "QA/build/release authority and transitive issuer validity",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E02 exact QA/build/release chain, QA release-approval403 and separate controlled execution",
+      "retained_actual_test_names": [
+        "TestStageExecutionReleaseRollbackAndOriginalReceipt",
+        "TestStageExecutionSigningStateDriftPreventsDispatch",
+        "TestStageExecutionR4ReflectsTransitiveArtifactAuthority"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/5"
+    },
+    {
+      "id": "A07",
+      "requirement": "Target/physical conflict, rollback observation and single execution",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E02 original deployment/previous artifact/metric/target ambiguity/refusal/fresh single rollback/receipt",
+      "retained_actual_test_names": [
+        "TestStageExecutionTargetAndPhysicalIdentity",
+        "TestStageExecutionUnknownBlocksRebindingAndCrossWorkspace",
+        "TestStageExecutionMetricAmbiguityInvalidatesExistingRollback",
+        "TestStageExecutionMetricReverseOrderAndOlderArrivalCannotResolveAmbiguity"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/6"
+    },
+    {
+      "id": "A08",
+      "requirement": "Versions, authority/expiry, original keys and late history",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 exact key/version/revocation; E03 historical late fact and expired/fresh endorsement denial; E04 same-key/body/grant/consumed recovery",
+      "retained_actual_test_names": [
+        "TestStageCompletionFinalCurrentCredentialHorizons",
+        "TestStageCompletionFinalClockRunsAfterWriterReceipts",
+        "TestStageScopeRoleRestorationDoesNotReviveApproval",
+        "TestStageExecutionLateAuthenticatedFactDoesNotRenewApproval"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/7"
+    },
+    {
+      "id": "A09",
+      "requirement": "Stage plus M1 all writers/three modes/R38 and outside consumer",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "Retained116/99/54 all writers and12 verified mode leaves; R29_82/R31_37/R33_40 affected/default proof; E04 composed M1/admin/project and W10",
+      "retained_actual_test_names": [
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt",
+        "TestStageCompletionPrivateGuardTransactionAndSingleUse",
+        "TestStageCompletionGuardRequiresM1Finalization"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/8"
+    },
+    {
+      "id": "A10",
+      "requirement": "Current source privacy and mid-revocation reads/cache",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "E01 current external/unrelated/revoked source privacy; retained R4/T4/preview empty/cursor/two-order revoke and Core late-response/cache",
+      "retained_actual_test_names": [
+        "TestStageArtifactReportReadAuthorityMatchesR4",
+        "TestStageArtifactReportAuthorityLocksAcrossReadAndQA",
+        "TestCollaborationStageCompletionPreviewRouterReadRevocationOrders",
+        "TestStageSourceDeniedDigestAndCachedScopeSelection"
+      ],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/9"
+    },
+    {
+      "id": "A11",
+      "requirement": "Matching production Web/Desktop real four-case verification",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "proof": "Single current four PASS with matched production Web/Electron renderer/preload independent profile/source/products/origins and readable Completed/Done",
+      "retained_actual_test_names": [],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/10"
+    },
+    {
+      "id": "A12",
+      "requirement": "Independent complete evidence, scoped diff/after and parent ledger",
+      "status": "PASS_REVIEW_ROOT_BOOKKEEPING_PENDING",
+      "accepted_in_scope": true,
+      "proof": "Independent all42/source/default/client/raw/runtime-after reconciliation; concrete parent recommendations; ROOT bookkeeping next",
+      "retained_actual_test_names": [],
+      "representative_names_present_in_both_actual_modes": true,
+      "current_run_only": "R33 original four; historical failures not unioned",
+      "canonical_ref": "r24-final-acceptance-preflight-20261117.json#/criteria/11"
+    }
+  ],
+  "W": [
+    {
+      "id": "W01",
+      "entry": "协作正式交付submit",
+      "actual_path": "server/internal/handler/collaboration_workflow.go:SubmitCollaborationAcceptance → server/internal/service/collaboration_handoff.go:SubmitAcceptance → mutateCollaborationWorkflow",
+      "requirement": "M1三模式下stage不完整都409，附件/新submission/handler/status零效果；合法submission持久绑定唯一精确candidate并在最终提交时钟再核查。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionFinalSubmitAccountCannotChange",
+        "TestStageCompletionFinalSubmitAuthorityCannotChange",
+        "TestStageCompletionRefusesUnverifiedSubmission",
+        "TestStageCompletionVerifiedSubmissionAndSelf"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retain three-mode submit matrix; current E04 negatives and exact positive immutable submission.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W02",
+      "entry": "协作精确submission完成",
+      "actual_path": "ChangeCollaborationLifecycle → CollaborationService.ChangeLifecycle → PrepareDeliveryMutationInTx → prepareCompletion → changeLifecycle → 最终stage guard → outer commit",
+      "requirement": "同精确submission，stage有效才允许；enforce原grant一次消费；Web失败前转发→GET404→Desktop同key/body完成→Web双回执。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+        "TestStageCompletionGuardRequiresM1Finalization",
+        "TestStageCompletionSubmissionRequiresItsOriginalOperation"
+      ],
+      "current_applicability": "Exact submission completion/consumed recovery code remains retained; reconcile current Web/Desktop original key/body/receipts, not earlier-run IDs.",
+      "current_evidence": "Current E04 exact original authorization, Desktop lifecycle200 and consumedGET200, Web operationGET200/consumedGET200/equality and one actual completion; no replay.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W03",
+      "entry": "协作self-result完成",
+      "actual_path": "ChangeLifecycle/prepareCompletionMode(false) → PrepareDeliveryMutationInTx → prepareCompletion",
+      "requirement": "结果/附件先只读验证，拒绝零绑定；合法路径真实生成自己的submission；阶段三模式都生效，enforce原M1仍独立。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionFinalOperationHeaderAndResultCannotChange",
+        "TestStageCompletionFinalResultContentCannotChange",
+        "TestStageCompletionRefusesUnverifiedSelfCompletion"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retain backend three-mode self positives and current E04 self negatives.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W04",
+      "entry": "R38失能发起人管理完成",
+      "actual_path": "server/internal/service/admin_collaboration.go:ChangeLifecycle → PrepareDeliveryMutationInTx → recordAdminCollaborationHistory/CompleteCollaborationOperation → commit",
+      "requirement": "当前真实password admin/organization且creator disabled；无stage豁免；合法三模式/admin grant正例，不造initiator accepted；最终guard在admin历史和原回执写完后。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionAllM1ModesAndActualWriters",
+        "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt"
+      ],
+      "current_applicability": "R38 defaults/issuer/disabled-creator scope remain retained; actual current policyoff200 precedes disable, R38 completion and restore evidence.",
+      "current_evidence": "Current E04 explicit policyoff200 followed by actual admin disable/R38 outcome/restore; retain backend R38 mode/issuer/default positives.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W05",
+      "entry": "普通PUT/旧client/Agent的完成请求",
+      "actual_path": "server/internal/handler/issue.go:UpdateIssue → updateIssueAtomicallyOnce",
+      "requirement": "协作root保留既有不支持普通mutation边界；普通task与普通child不被强加整个root阶段流程；M1/custom-done、事务guard及Agent真实身份不退化。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageWriterContinuationManualAndMachineCreateM1Modes",
+        "TestStageWriterContinuationSystemRootRefusalM1Modes"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained handler/router matrix plus exact current R31 W10 ordinary refusal; old installed-client limits separate.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W06",
+      "entry": "普通Move",
+      "actual_path": "server/internal/handler/issue_move.go:MoveIssue → UpdateIssue → updateIssueAtomicallyOnce",
+      "requirement": "同W05完成器；真实Move不能绕开root限制或M1，合法child move使旧语义candidate stale；并发后再读。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained actual Move/child semantic atomic proofs.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W07",
+      "entry": "普通批量更新",
+      "actual_path": "server/internal/handler/issue.go:BatchUpdateIssues → updateIssueAtomicallyOnce per item",
+      "requirement": "root批次在副作用前拒绝；普通逐项committed/rejected/not_attempted/unknown前缀保留；重复authorization/key在写前拒绝；合法child不全禁。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained original99/54 batch completion/refusal/unknown controls; no new full batch suite.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W08",
+      "entry": "Create/快速创建/comment-to-child/create-as-done",
+      "actual_path": "server/internal/service/issue.go:IssueService.CreateInTx → checkStageChildCreate → CheckDeliveryCreateInTx",
+      "requirement": "先解析继承project；机器拆解需要内部proposal许可；人类手建不造批准。协作root本来不能初始done；普通child由既有M1 create-as-done规则管，不强加root verification。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageProposalAcceptRollsBackEveryChildOnRefusal",
+        "TestStageWriterContinuationApprovedMaterializationM1Modes",
+        "TestStageWriterContinuationManualAndMachineCreateM1Modes"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained creation/no-unapproved-dispatch plus current queued/deferred/capacity controls and E01 materialization.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W09",
+      "entry": "GitHub/VCS/system状态writer",
+      "actual_path": "server/internal/handler/github.go:advanceIssueToDone; vcs_webhook.go → server/internal/service/issue_status_write.go:WriteIssueStatus",
+      "requirement": "IsCollaborationIssue稳定拒绝system完成root；普通child GitHub/VCS保持exact trust/signature/唯一grant与M1；所有新写的最终guard同tx，不把202当done。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageWriterContinuationSystemRootRefusalM1Modes"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained signed writer/default proof; real external integration remains S4.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W10",
+      "entry": "完成CLI及run-local machine边界",
+      "actual_path": "server/cmd/multica/cmd_issue_completion.go:runIssueCompletionSubmit → ordinary issue PUT；cmd_collaboration.go运行能力allowlist",
+      "requirement": "已有ordinary CLI不得把collaboration variant强转/创建第二完成器；mcb命令allowlist不能签真人或完成root。实际匹配CLI报告可用，越权completion拒绝且零副作用。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [],
+      "current_applicability": "CLI behavior remains retained; current binary is R33 CLI02df61... from adad... build record. Current exact ordinary/run-local receipts still require binding.",
+      "current_evidence": "Current R33 CLI02df61bb3e9382af2b17fd7156b1d73617c53f2bfbc203074e972e1eccb1a17e with exact actor/env/refusal/no-effects and run-local scope receipts.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W11",
+      "entry": "协作root project move/clear",
+      "actual_path": "server/internal/service/collaboration_edit.go:EditIssue → CheckDeliveryProjectChangeInTx → workflow commit",
+      "requirement": "stage启用时M1 off/observe/enforce均stage_policy_exit_required；版本CAS+理由显式关政策后才按原权限移动；root状态/回执不伪成功。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageExitContinuationRootMoveClearM1Modes",
+        "TestStageExitContinuationRootMoveCompletionCommitOrders"
+      ],
+      "current_applicability": "Move/clear writer semantics remain retained; policy PUT ordering is the explicit M1 wait exception, covered by current40 and current E04 project probes.",
+      "current_evidence": "Retained project move/clear transaction proofs, current E04 early project probes, accepted R33 policy wait/CAS controls and actual later policyoff200.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W12",
+      "entry": "项目delete-impact和实际delete",
+      "actual_path": "server/internal/handler/project.go:GetProjectDeleteImpact / DeleteProject → CheckDeliveryProjectDeleteInTx",
+      "requirement": "启用stage的项目即使M1 off也报告阻挡并零删除/清空；显式关闭仍受project_has_collaboration_issues等原限制；policy竞争锁至commit。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageExitContinuationPolicyCompletionCommitOrders"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retain managed refusal/unrelated empty project delete and prior races; no destructive replay.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W13",
+      "entry": "managed root普通delete与batch-delete",
+      "actual_path": "server/internal/handler/issue.go:DeleteIssue/loadIssueForUser；BatchDeleteIssues/rejectLegacyCollaborationBatch",
+      "requirement": "root仍unsupported_collaboration_action；批次/普通父含collaboration child在CancelTasks/FailAutopilot前拒绝，事务内复检，不能先产生取消效果。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retained original delete/raw controls; no new matrix solely for R31.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W14",
+      "entry": "普通child语义编辑/换parent/project/删除",
+      "actual_path": "CheckStageChildUpdateInTx/updateIssueAtomicallyOnce；deleteIssueAndCollectAttachmentURLs/deleteIssuesAndCollectAttachmentURLs",
+      "requirement": "普通child按原权限可操作；内容/project/parent变化使semantic_version或缺失观察失效，不能靠拆parent抹映射。仅状态更新不使已审代码自身失效。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageChildUpdateKeepsMappingAndRefusesMachineAttach",
+        "TestStageWriterContinuationOrdinaryChildStatusKeepsCandidate"
+      ],
+      "current_applicability": "Child semantic/parent/project/delete contracts remain retained; child detail access must match actual source/account authority, with no assumed blanket access after done.",
+      "current_evidence": "Retained child semantic/default proofs; classify actual child/detail reads by source membership/account phase, including any expected denial and restored access.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W15",
+      "entry": "真正enqueue与queued→started",
+      "actual_path": "TaskService.checkIssueExecution；EnqueuePreparedIssueTaskInTx；startTaskAtomically",
+      "requirement": "未批准机器child、已过期root lifecycle映射拒绝；接受proposal零自动enqueue；合法已确认普通child仍能按原invoke规则启动；两种并发顺序。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageChildStartSerializesWithRootLifecycle",
+        "TestStageDescendantEnqueueEntryPoints",
+        "TestStagePreparedEnqueueAdmitsExactlyConfirmedDescendant"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Accepted34 service+1 temporal+2 cache names/mode plus retained enqueue/start orders. Bind actual current source/router/client/harness; singular idle sibling remains unchanged.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W16",
+      "entry": "cancel与reopen",
+      "actual_path": "CollaborationService.ChangeLifecycle / admin原允许动作 → changeLifecycle",
+      "requirement": "cancel独立不被stage阻止；reopen回development、stage_revision递增、新lifecycle需新A5；旧批准不复活但已消费原key历史仍恢复。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageScopeConfirmationFirstEnableAndReopen"
+      ],
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "current_evidence": "Retain cancelled/reopened/newscope/current GET history; no original successful completion replay.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W17",
+      "entry": "root/R38 completion candidates与preview",
+      "actual_path": "冻结F06四路由 → root/source同事务当前权限+M1 observer+stage blocker",
+      "requirement": "numeric root/child revision，直接普通child同workspace/project；done child可提供artifact；preview无授权/写入；stage不完整三模式200非授权；源拒绝无泄漏，root不存在/旧route区分。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionIndependentConsumerAuthorityAndMinimalReceipt"
+      ],
+      "current_applicability": "Preview/candidate/bound-submission/read defaults retain R26-R29 proofs; current preview/detail access is checked separately from policy-wait success.",
+      "current_evidence": "Current E04 exact source child/build/submission/preview/reference and source-authorized UI; retain R26-R29 bound read/preview controls.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    },
+    {
+      "id": "W18",
+      "entry": "活动与原操作回执投影",
+      "actual_path": "collaboration workflow event/finishWith、activity allowlist、GetWorkflowOperation/O1、原M1 GET",
+      "requirement": "closed stage metadata不带私有hash/prose/report，execution仅hint；stored stage_blockers按wire保留且O1不能掉字段；原key恢复不写事件/重复消费。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "canonical_actual_service_names": [
+        "TestStageCompletionActivityUsesOnlyClosedSafeMetadata",
+        "TestStageCompletionStoredBlockersRecoverWithoutFreshEffects"
+      ],
+      "current_applicability": "Activity/original-operation/minimal grant schemas remain retained; current completed receipt equality and pending retirement require current evidence.",
+      "current_evidence": "Current E04 operation/consumed receipt equality and pending retirement plus current event/audit/minimal projection; preserve every older failed/unknown intent.",
+      "proof_chain": "Original raw/default contracts plus accepted read/default/affected supplements, final source bridge and R33 runtime after",
+      "external_scope_not_inferred": true
+    }
+  ],
+  "Q": [
+    {
+      "id": "Q01",
+      "requirement": "stage enabled × M1 off/observe/enforce：submit/submission/self/admin每个适用writer分别验证stage不完整拒绝与合法正例，enforce缺grant仍拒绝；不把重复fixture次数当新业务分母。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "All three-mode completion guards remain retained; explicit policy-setter wait is bridged by R33 forty controls, not a replacement completion matrix.",
+      "proof": "Retained full M1 mode/writer positives/negatives plus current R33 policy controls and current E04 representative composition, including R38 after off.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q02",
+      "requirement": "私有stage guard绑定原pgx.Tx与before及该writer允许after；错误tx/复用guard/未finalize/无guard不得放行。M1 NotApplicable仍跑stage最终检查，Replayed不做新消费。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "proof": "Accepted R29Tx/default and R31real-writer/idle/error controls; final actual actor/header/body/source identity.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q03",
+      "requirement": "最终database clock在全部状态、handoff/submission、attachment、iteration、Stop/queue、event/outbox、原operation/admin审计写完后、commit前；原审批/issuer/caller expiry、role/credential/source/trust更换两种顺序都覆盖。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Final completion/signer/credential clocks remain unchanged. New policy wait stays250ms per lock and retains its final credential recheck; no new expiry matrix claimed.",
+      "proof": "Retained final DB-clock/issuer/caller orders and R31 temporal controls; accepted R33 finite wait/current schema/unchanged final credential call; no inferred new credential-expiry result.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q04",
+      "requirement": "submit持久绑定candidate/lifecycle/语义证据；legacy或未绑定submission在启用stage后stage_submission_unbound，不能根据当前候选事后补绑。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "proof": "Retained immutable/refusal/mismatch controls; current actual E04 exact submission/grant/operation receipt.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q05",
+      "requirement": "consumer E与source issuer P分离：E无source membership且仍当前initiator；P当前可读artifact通过既有授权API签给E；E仅读最小grant并实际完成。错consumer、P撤权/过期、E撤权、错误组织admin均拒绝，零隐私/副作用。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Distinct source/issuer/consumer privacy contracts remain retained; current same-P journey alone proves neither P!=E nor all UI access states.",
+      "proof": "Retained P!=E/current-source/minimal/private-denial controls plus current actor/issue/phase-specific detail-access review.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q06",
+      "requirement": "preview只读及附件只读：0 authorization/evaluation/submission/status/attachment-link/queue writes；done child不能早退root preview；绑定root/child数字revision和精确source。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Existing read/claim zero-effect proofs remain retained; R33 short reader/writer each permit one append, long reader/member refusal zero append. No whole-DB-zero claim.",
+      "proof": "Actual current four/after classify allowed writes and artifacts; rely on per-call protected snapshots for R29/R31/R33, not a whole database equality claim.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q07",
+      "requirement": "HTTP strict unknown/duplicate/case alias/trailing JSON、64KiB及分页1..50、cursor root/source/viewer/revision绑定；list/detail/empty/cursor mid-revoke竞争均保留。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "proof": "Old99/54 remains source/raw-bound; new source/caller/default delta alone discharges with R31current controls,not full rerun.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q08",
+      "requirement": "late error或commit unknown不自动重试；已提交refusal原status/code/blockers冻结；原GET404无POST；已consumed key在reopen/当前stage变化后仍历史回执且当前权限重检。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "proof": "Accepted one sentinel control/temporal2mode and current completed Desktop/Web original receipt chain; late policy failure cause remains separate.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q09",
+      "requirement": "stage schema readiness与所有实际writer依赖一致；缺表/索引/trigger/partial migration为不可用不是off。全部writer齐备验证后才stagePolicyActivationAvailable=true，再真实P2启用，不能测试开关绕过。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "R31 EXISTS/getter plus R33 separate exclusive Wait query/generated adapter are SQL changes. DDL/index/readiness/schema are unchanged; canonical generation143 outputs with142 unchanged.",
+      "proof": "R33 accepted canonical generation/source hashes with old SQL/stage NOWAIT unchanged; retain original exact864/readiness/physical-DDL proofs; no new migration execution required solely for Wait.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q10",
+      "requirement": "项目policy change/root move/clear/delete与完成/提交锁争用；同target物理冲突不能经localbinding/workspace/trust改键绕过；普通child独立生命周期/手建控制组保持。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Exact R32 project55P03/busy branch is known. Accepted R33 short-read/long-read/competing-CAS/member controls bridge M1 policy timing; current E04 policyoff/R38 ordering remains final.",
+      "proof": "Accepted R33 actual two-PID short-read200, long-reader55P03/busy409 and competing writer staleCAS409; current policyoff/R38/project ordering content required.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q11",
+      "requirement": "2d新DDL单条CONCURRENTLY索引全部注册cleanup、真实shape/noFK、empty down/up及各直接table-drop保留历史拒绝；不得执行并行knowledge844–860+迁移。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Original row source/default proof remains applicable; R33 changes no writer, authority, schema or transport in this entry.",
+      "proof": "Final current schema/history identity; keep old cleanup/Go1.26/Linux/true external limits declared.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    },
+    {
+      "id": "Q12",
+      "requirement": "配置/源码/数据冻结后才执行四场景；进程只关自有，gate恢复allocation原booleans且epoch单调；原始fail/skip/NOT_RUN、源版本、完整分母不覆盖。",
+      "status": "PASS_S2_SCOPE",
+      "accepted_in_scope": true,
+      "current_applicability": "Current R33 source/build/CLI/runtime/owned stop and all historical resource descriptors require final reconciliation; no current after snapshot is read here.",
+      "proof": "Current exact program/CLI/actor/profile/source/before/after plus normal owned stop, zero live connections/leases/work, restored gate booleans/monotonic epochs and immutable historical resources.",
+      "current_update": "Historical pending/P2false labels are superseded only by accepted exact P2/runtime evidence; no whole-current-suite replay claim"
+    }
+  ],
+  "all_affected_packages": [
+    {
+      "module": "server",
+      "scope": "All stage authorities/proposals/CI/QA/execution/final guard and actual service/handler/router paths",
+      "proof": "original116/99/54 + R17/R18/R21/R22/R26/R27/R28/R29/R31/R33 accepted deltas + current E01–E04",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "packages/core",
+      "scope": "Closed schemas, malformed/legacy/unavailable responses, source cache, original-key recovery, completion union",
+      "proof": "accepted3d550/112 and R11/R12 Core496/Views143 lineage, unchanged shared Core/API in final bridge, R20 Core44",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "packages/views",
+      "scope": "Shared stage/forms/report/activity/completion/detail wiring and privacy",
+      "proof": "accepted Views143 lineage + R20 Views22/current panel bytes + single current four",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "packages/ui",
+      "scope": "Existing semantic primitives/tokens, no S2 business/Core import or dependency delta",
+      "proof": "unchanged current frontend common bytes and matched production outputs",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "apps/web",
+      "scope": "Production Web/platform source/wiring/origins",
+      "proof": "accepted five frontend typechecks/builds and R33 live/runtime immutable binding",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "apps/desktop",
+      "scope": "Matched renderer/preload/private profile and shared navigation",
+      "proof": "accepted frontend type/builds and current native original four; installed Main excluded",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "server CLI/protocol",
+      "scope": "Human versus run-local machine capabilities, exact report subjects/receipts",
+      "proof": "retained pure protocol/CLI controls + current matched W10 zero effects + E01/E02 actual prepared report",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "e2e/fixtures",
+      "scope": "Source/current real handlers, bounded controls, strict codec and repaired selector",
+      "proof": "accepted R11/R12/R23/R24 fixture chain; source9 declared changes and original current four deadlines/retry0",
+      "status": "PASS_S2_SCOPE"
+    },
+    {
+      "module": "migrations/sqlc",
+      "scope": "S2 no-FK/concurrent/readiness/cleanup, R31 EXISTS and R33 sole M1 Wait",
+      "proof": "all80 own migration bytes retained, accepted18 P2 profiles/six rawDDL+separate39-assertion supplement/canonical143outputs",
+      "status": "PASS_S2_SCOPE"
+    }
+  ],
+  "source_bridge": {
+    "path": "/Volumes/artisan/.multica-acceptance/pay241-r33-policy-wait-20261118-hc2gedj3/final-s2-check-r01/source-bridge-audit.json",
+    "sha256": "e07cc1174fc652191c1ec68e8e5290755099147aa66344ed4c64b040b1c34485",
+    "selected_current_frozen_paths": 27,
+    "R09_unchanged_writer_paths": 17,
+    "S2_up_down_files_unchanged": 80,
+    "R11_front_common_files": 3358,
+    "unchanged_common_front_bytes": 3349,
+    "known_changed_front_paths": [
+      "e2e/collaboration-stage-execution.spec.ts",
+      "e2e/fixtures/collaboration-host-runtime.node-test.mjs",
+      "e2e/fixtures/collaboration-host-runtime.ts",
+      "e2e/fixtures/collaboration-runtime-handoff.ts",
+      "e2e/fixtures/collaboration-stage-control.node-test.mjs",
+      "e2e/fixtures/collaboration-stage-control.ts",
+      "e2e/fixtures/collaboration-stage-execution.ts",
+      "packages/views/collaboration/stage-code-panel.test.tsx",
+      "packages/views/collaboration/stage-code-panel.tsx"
+    ],
+    "current_FRONT": {
+      "files": 3359,
+      "links": 1961,
+      "outputs": 1676,
+      "build_id": "PpNZY2bAtTOUVfi6UgJKT"
+    },
+    "new_full_input_hashing_not_repeated": true,
+    "whole_shared_HEAD_ROOT_equivalence_claimed": false
+  },
+  "retained_raw_inventories": [
+    {
+      "label": "joint_completion_normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_normal/raw.jsonl",
+        "sha256": "ef5e36156a08902dd2444843a00f6bacfb0e4aac7e3625beb4c533ce38e2a8bc",
+        "bytes": 133577,
+        "mode": "0600"
+      },
+      "top": 37,
+      "named": 128,
+      "leaf": 95,
+      "actual_events_independently_parsed": 519,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "joint_completion_race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_completion_race/raw.jsonl",
+        "sha256": "4995cddde933d06351e06170464c8da9a302abfde2b44c5596637537eb00c200",
+        "bytes": 133586,
+        "mode": "0600"
+      },
+      "top": 37,
+      "named": 128,
+      "leaf": 95,
+      "actual_events_independently_parsed": 519,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "joint_foundation_normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_normal/raw.jsonl",
+        "sha256": "fae06e8613411b8d2caa4fbffc6949f273aaa7bd8fb64c7c79496e3c84cc3f7d",
+        "bytes": 196428,
+        "mode": "0600"
+      },
+      "top": 79,
+      "named": 193,
+      "leaf": 168,
+      "actual_events_independently_parsed": 783,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "joint_foundation_race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/p2-verification-r07-r01/current-joint-service-check-r09/execution-r02/joint_foundation_race/raw.jsonl",
+        "sha256": "b1b56515a18a88203673959c96e9ce95ede910e53b7bda2a3c9225333b56eb78",
+        "bytes": 196418,
+        "mode": "0600"
+      },
+      "top": 79,
+      "named": 193,
+      "leaf": 168,
+      "actual_events_independently_parsed": 783,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "handler_normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_normal/raw-go-events.stdout",
+        "sha256": "7f5db5ed2a3cf2bbf849aff446c5c3bcd900226b4cf33f4cb68686345e970e45",
+        "bytes": 397557,
+        "mode": "0644"
+      },
+      "top": 99,
+      "named": 326,
+      "leaf": 275,
+      "actual_events_independently_parsed": 1434,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "handler_race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/handler_race/raw-go-events.stdout",
+        "sha256": "a7a5663bcebf9dcd3417b8a4d1c50c7be32f00de04a12c5a29a11a4b9ef38daa",
+        "bytes": 397552,
+        "mode": "0644"
+      },
+      "top": 99,
+      "named": 326,
+      "leaf": 275,
+      "actual_events_independently_parsed": 1434,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "router_normal",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_normal/raw-go-events.stdout",
+        "sha256": "53268fc1374c67301644935466ec556ee799c26f95a10cd01198313d15cbdb32",
+        "bytes": 1632073,
+        "mode": "0644"
+      },
+      "top": 54,
+      "named": 208,
+      "leaf": 174,
+      "actual_events_independently_parsed": 4550,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    },
+    {
+      "label": "router_race",
+      "raw": {
+        "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/final-entry-r09-r01/independent-check-r01/router_race/raw-go-events.stdout",
+        "sha256": "33050e9b7e52dd1cc00c74ae6b60f4a637613f1b98c8939352975e64bc1a1f2d",
+        "bytes": 1632163,
+        "mode": "0644"
+      },
+      "top": 54,
+      "named": 208,
+      "leaf": 174,
+      "actual_events_independently_parsed": 4550,
+      "rehashed_and_reparsed_by_this_reviewer": true,
+      "all_named_starts_terminals_once_PASS": true,
+      "fail_skip_missing_duplicate_unfinished": 0,
+      "tests_reexecuted": false
+    }
+  ],
+  "normal_race_named_sets_exact": true,
+  "representative_A_names": {
+    "count": 37,
+    "missing": []
+  },
+  "representative_W_service_names": {
+    "count": 35,
+    "missing": []
+  },
+  "accepted_current_groups_each_mode": {
+    "R29_service": {
+      "top": 7,
+      "named": 76,
+      "leaf": 54
+    },
+    "R29_handler": {
+      "top": 3,
+      "named": 6,
+      "leaf": 5
+    },
+    "R31_service": {
+      "top": 19,
+      "named": 34,
+      "leaf": 29
+    },
+    "R31_temporal_handler": {
+      "top": 1,
+      "named": 1,
+      "leaf": 1
+    },
+    "R31_cache": {
+      "top": 2,
+      "named": 2,
+      "leaf": 2
+    },
+    "R33_handler": {
+      "top": 10,
+      "named": 40,
+      "leaf": 33
+    }
+  },
+  "runtime_after_reused": {
+    "report": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json",
+    "sha256": "c65b98d2dd58b440468c79bbfe5644735c2f18459c4cbdf5e8445216c102fc36",
+    "accepted_status": "ACCEPTED_R33_ORIGINAL_FOUR_AND_RUNTIME_AFTER_PENDING_FULL_S2",
+    "original_four": {
+      "PASS": 4,
+      "FAIL": 0,
+      "NOT_RUN": 0,
+      "SKIP": 0,
+      "retry": 0,
+      "exit": 0,
+      "duration_ms": 204066.519
+    },
+    "current_refs": 10127,
+    "backend_modes": 5056,
+    "links": 1961,
+    "descriptors": 467,
+    "old_paths_preserved": 424,
+    "old_tars_preserved": 55,
+    "new_tars": 7,
+    "afterstop_connections": 0,
+    "gate": {
+      "enabled": false,
+      "creation_enabled": true,
+      "host_execution_enabled": false,
+      "epoch": 90
+    },
+    "settled_runs": 76,
+    "complete_artifacts": 62,
+    "no_unreleased_or_lease_installation_binding": true,
+    "whole_artifact_tree_parser_repeated_by_this_reviewer": false
+  },
+  "parent24": {
+    "before": {
+      "PASS": 0,
+      "PARTIAL": 9,
+      "NOT_RUN": 15
+    },
+    "recommended": {
+      "NOT_RUN": 11,
+      "PARTIAL": 11,
+      "PASS": 2
+    },
+    "rows": [
+      {
+        "case_id": "TC-01",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-02",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-03",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-04",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-05",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PASS",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-06",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-07",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-08",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PASS",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-09",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-10",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-11",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-12",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-13",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-14",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-15",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-16",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-17",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-18",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-19",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-20",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-21",
+        "old_current_result": "PARTIAL",
+        "recommended_result": "PARTIAL",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-22",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-23",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      },
+      {
+        "case_id": "TC-24",
+        "old_current_result": "NOT_RUN",
+        "recommended_result": "NOT_RUN",
+        "historical_fields_unchanged": true
+      }
+    ],
+    "matrix_before": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "e82cf713c5633ccb029db9ef799737d5d866d8642ebc141cecc40abb5b574113"
+    },
+    "written_by_reviewer": false,
+    "ROOT_record_application_required": true,
+    "TC13_exact_post_QA_override_request_claimed": false,
+    "TC17_real_external_publish_request_claimed": false
+  },
+  "references": {
+    "r33-s2-final-scope-applicability-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-s2-final-scope-applicability-20261118.json",
+      "sha256": "9f92e96dd67b850f1033f648987745f2fd540be7dc41306df85e702e6c26b7bc",
+      "mode": "0o444",
+      "status": "APPLICABILITY_READY_CURRENT_FOUR_RUNNING_FINAL_A12_NOT_ACCEPTED"
+    },
+    "r31-s2-final-scope-applicability-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-s2-final-scope-applicability-20261118.json",
+      "sha256": "1ad8e057b8f0018f3a8457a21eef42e2d8b0e21966d52427f3f46e8b8b6b940d",
+      "mode": "0o444",
+      "status": "R31_FINAL_SCOPE_APPLICABILITY_READY_NOT_S2_ACCEPTED_CURRENT_POLICY_FAILURE_UNRESOLVED"
+    },
+    "r24-final-acceptance-preflight-20261117.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-final-acceptance-preflight-20261117.json",
+      "sha256": "8cc9195cd50d415b51ff3552f6dd01abd10f00a370988a17371a6fc94600cacb",
+      "mode": "0o644",
+      "status": "R24_FINAL_ACCEPTANCE_MAP_READY_CURRENT_RUNTIME_GATE_OPEN"
+    },
+    "r29-consumed-read-green-independent-check-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r29-consumed-read-green-independent-check-20261118.json",
+      "sha256": "662d3113fd5820f3d6771cdbb521ef3be8d5bcdadb62d63d6bdf5bb3e02e7031",
+      "mode": "0o444",
+      "status": "ACCEPTED_R29_CONSUMED_READ_GREEN_NORMAL_RACE_PRIVATE_SCOPE"
+    },
+    "r31-idle-claim-green-independent-check-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r31-idle-claim-green-independent-check-20261118.json",
+      "sha256": "d63f8ed8db89091cb52be9f6cfd957ebaf5b3e3758054207e76f656990d46283",
+      "mode": "0o444",
+      "status": "ACCEPTED_R31_BATCH_IDLE_PREFLIGHT_PRIVATE_GREEN_NORMAL_RACE"
+    },
+    "r33-policy-wait-green-independent-check-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-policy-wait-green-independent-check-20261118.json",
+      "sha256": "439e5179a82715f2c62c750c339ae88a225723e6bcdb7b953dc79d5ea299befe",
+      "mode": "0o444",
+      "status": "ACCEPTED_R33_M1_POLICY_PROJECT_WAIT_PRIVATE_GREEN_NORMAL_RACE"
+    },
+    "r33-root-runtime-preparation-independent-check-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-root-runtime-preparation-independent-check-20261118.json",
+      "sha256": "7a96fa83b219d466543485586ab402061cd09221fb3e7648b0d908c962b968b9",
+      "mode": "0o444",
+      "status": "ACCEPTED_R33_ROOT_FOUR_FIVE_BUILDS_RUNTIME_PREPARATION_ONLY_READY"
+    },
+    "r33-runtime-after-independent-check-20261118.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-runtime-after-independent-check-20261118.json",
+      "sha256": "c65b98d2dd58b440468c79bbfe5644735c2f18459c4cbdf5e8445216c102fc36",
+      "mode": "0o444",
+      "status": "ACCEPTED_R33_ORIGINAL_FOUR_AND_RUNTIME_AFTER_PENDING_FULL_S2"
+    },
+    "frontend-r11-r12-repair-accepted-r01.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/frontend-r11-r12-repair-accepted-r01.json",
+      "sha256": "1a02d64560dd452e4d2f927dd74bfb9ff2ee0bb24e78a1eaa1a15f9a5a6abaae",
+      "mode": "0o644",
+      "status": "CLIENT_SIX_CODE_REPAIR_ACCEPTED_R11_PRODUCTS_R12_TEST_SOURCE_READY_FOR_BOUND_RUNTIME"
+    },
+    "r20-panel-repair-independent-check-20261116.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json",
+      "sha256": "2d3751e4ca6e4c23ecf80b34879a242554ee19dc17984818a507407708039190",
+      "mode": "0o644",
+      "status": "R20_PANEL_SPEC_QUALITY_SOURCE_AND_COMPILED_OUTPUT_INPUTS_ACCEPTED_CODE_ONLY"
+    },
+    "r23-integrated-codec-check-20261117.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r23-integrated-codec-check-20261117.json",
+      "sha256": "21eb5d978f19302be3d1ca7cefb17eaebdf2accdc94eb292345f01431ae43990",
+      "mode": "0o644",
+      "status": "INTEGRATED_CODEC_CHECK_ACCEPTED"
+    },
+    "r24-submit-selector-independent-check-20261117.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r24-submit-selector-independent-check-20261117.json",
+      "sha256": "24205dd7ca9979eae7cb42d9604b48f376883c86f67ef7e3d567c24b4a8f5885",
+      "mode": "0o644",
+      "status": "ACCEPTED_R24_SUBMIT_SELECTOR_SCOPED"
+    },
+    "joint-service-r09-independent-check-20261115.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-service-r09-independent-check-20261115.json",
+      "sha256": "e7cc66b4873570eca40922665401a7c68702c428a2075feec33bc8303d567226",
+      "mode": "0o644",
+      "status": "JOINT_SERVICE_ACCEPTED_R09_SCOPED"
+    },
+    "final-entry-verdict-r09-r01.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/final-entry-verdict-r09-r01.json",
+      "sha256": "9fd71e644d34bd0c4f5aa2faf0c49e0f57bffa3fa771d05471d6e12e9479c968",
+      "mode": "0o644",
+      "status": "CURRENT_E4_HANDLER_ROUTER_ENTRY_SCOPE_ACCEPTED_NORMAL_AND_RACE"
+    },
+    "server-increment-2d-final-code-check-r06.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/server-increment-2d-final-code-check-r06.json",
+      "sha256": "06cb58ddf6bbc1ff1f069144f2756b48c0b2801d1396cc2affe48eb1c59d23a7",
+      "mode": "0o600",
+      "status": "CODE_ACCEPTED_R06"
+    },
+    "p2-r09-independent-check-20261115.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/p2-r09-independent-check-20261115.json",
+      "sha256": "29d30b7bcace65efde08a700ec14e40503b5dc0297f4d71dfd6350b91b1eb704",
+      "mode": "0o600",
+      "status": "P2_CODE_ACCEPTED_R09_SCOPED"
+    },
+    "client-increment-3d-check.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/client-increment-3d-check.json",
+      "sha256": "cf1edd88845096883fdab04848451d73155f6488ed1589100aef01c17c72dece",
+      "mode": "0o644",
+      "status": "approved_after_c3d_c01_c02_transport_fixes"
+    },
+    "joint-e2e-increment-4-check.json": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/joint-e2e-increment-4-check.json",
+      "sha256": "c7ed6adaf4d6a5bfd56b9a21d6a7170443ce21afe871b292af70e513d7a43297",
+      "mode": "0o644",
+      "status": "authoring_approved_no_source_changes"
+    }
+  },
+  "retained_frontend_checks": {
+    "R11_R12_Core_parameter_records": 496,
+    "R11_R12_Views_parameter_records": 143,
+    "typechecks": 5,
+    "lints": 2,
+    "builds": 2,
+    "R20_separate_Core": 44,
+    "R20_separate_Views": 22,
+    "earlier1850_404_and3d550_112_not_added": true
+  },
+  "verification": {
+    "Lint": "PASS retained scoped actual lint/gofmt/vet evidence; not rerun",
+    "TypeCheck": "PASS retained actual frontend typechecks/scoped compile/current five builds; not rerun",
+    "Tests": "PASS retained exact mode inventories and current original four; no new execution",
+    "Static_source_evidence": "PASS scoped source/default/caller/client/DDL/current runtime audit",
+    "Spec_alignment": "PASS current behavioral contracts; ROOT acceptance wording/bookkeeping follows"
+  },
+  "findings_not_fixed": [
+    {
+      "kind": "ROOT_bookkeeping",
+      "owner": "ROOT",
+      "issue": "Apply this seal, A12 independent-review result and concrete parent2/11/11 recommendations; commit/archive pending standing noGit constraint",
+      "blocks_S2_feature_acceptance": false
+    },
+    {
+      "kind": "parent_verification_limit",
+      "issue": "TC13 no exact post-QA override attempt; TC17 only release-approval403 not real deployment request; TC12 same-code fault switch; full external/model/business signatures unverified",
+      "blocks_S2_feature_acceptance": false
+    },
+    {
+      "kind": "remaining_stages",
+      "issue": "S3 remaining recovery/block fields; S4 real repositoryCI/payment/deployment/metrics and identities; S5 final-candidate performance",
+      "blocks_S2_feature_acceptance": false
+    },
+    {
+      "kind": "toolchain_product_scope",
+      "issue": "No installed Desktop Main/every UI/OS/Go1.26LinuxCI/wholemakecheck/current sharedHEAD equivalence; historical F2 and original failures preserved",
+      "blocks_S2_feature_acceptance": false
+    }
+  ],
+  "execution_by_reviewer": {
+    "Go": false,
+    "tests": false,
+    "lint_typecheck_build": false,
+    "DB_API_browser_Redis": false,
+    "process_control": false,
+    "Git": false,
+    "agents": false,
+    "product_config_spec_task_matrix_edits": false,
+    "artifact_file_reads_hashing_and_parsing": true
+  },
+  "git_commit_stage_or_merge_claimed": false,
+  "S2_archive_claimed": false,
+  "S3_S4_S5_or_parent_complete_claimed": false,
+  "pending_technical_review_work": false,
+  "markdown": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.md",
+  "markdown_sha256": "d609ee11bd1e4e6a212270e3c6129c1cdcb9d88bb78813e910a7e5c6641e4baa",
+  "seal_mode": "0444"
+}

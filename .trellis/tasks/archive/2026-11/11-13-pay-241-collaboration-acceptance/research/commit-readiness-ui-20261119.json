@@ -1,0 +1,934 @@
+{
+  "at": "2026-11-19T14:15:42.263148+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "reviewer": "/root/ui_cas_readiness",
+  "scope": "Ready-only commit inventory outsideS2; noimplementation/testing/staging",
+  "verdict": "EXCLUDE_QUICKCREATE_AND_LIVE_CORE_UI_AUDIT_FROM_THIS_READY_ONLY_BATCH",
+  "new_ready_uncommitted_UI_groups": [],
+  "already_ready_committed_E2E1118": {
+    "cases": [
+      "37",
+      "38"
+    ],
+    "work_commits": {
+      "37": "22e0b202f60255f5dc9030139454ec87e4606270",
+      "38": "da19f01ddc722396327cda94227cb9a6d7036cc7"
+    },
+    "web_cases": 14,
+    "native_cases": 6,
+    "archived_tasks": {
+      "11-18-e2e-37-issue-optimistic-status": ".trellis/tasks/archive/2026-11/11-18-e2e-37-issue-optimistic-status",
+      "11-18-e2e-38-iteration-history": ".trellis/tasks/archive/2026-11/11-18-e2e-38-iteration-history"
+    },
+    "new_commit_needed": false,
+    "current_issue_detail_diffs_are_new_coreUIaudit": true
+  },
+  "quickcreate": {
+    "task_status": "in_progress",
+    "count": 23,
+    "files": [
+      {
+        "path": "packages/core/package.json",
+        "sha256": "6b4ad2cee02429a5bc7df0da0924f679dfe185a252797a99ed7e83e8b302ab23",
+        "mode": "0o755",
+        "HEAD_sha256": "fb33e7358a74013bd1f795250c1af691cb40f9f0a0345a25bd786804b814082b",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/core/package.json",
+        "snapshot_1118_sha256": "6b4ad2cee02429a5bc7df0da0924f679dfe185a252797a99ed7e83e8b302ab23",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/core/issues/quick-create-submit-state.ts",
+        "sha256": "1729ff0fd0573babf5fde416bb12b9c6106427657e738f9d4ddf94e2b28d41bf",
+        "mode": "0o644",
+        "HEAD_sha256": null,
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/core/issues/quick-create-submit-state.ts",
+        "snapshot_1118_sha256": "1729ff0fd0573babf5fde416bb12b9c6106427657e738f9d4ddf94e2b28d41bf",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/core/issues/quick-create-submit-state.test.ts",
+        "sha256": "52dc69d8cf802fb07a9a38d072685280b0e1aae63e2ed2155fe0944c29a326b4",
+        "mode": "0o644",
+        "HEAD_sha256": null,
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/core/issues/quick-create-submit-state.test.ts",
+        "snapshot_1118_sha256": "52dc69d8cf802fb07a9a38d072685280b0e1aae63e2ed2155fe0944c29a326b4",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/creator-recommendations.tsx",
+        "sha256": "0f4cac1473b0bb8985331ec9f3342c052626bbdaa8a6d14215319101ac5f3a02",
+        "mode": "0o644",
+        "HEAD_sha256": "641ef37a22afbb8a8767586f8965bb76e9bb359f5fe9d84ab3932d6ee7e6135a",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/creator-recommendations.tsx",
+        "snapshot_1118_sha256": "0f4cac1473b0bb8985331ec9f3342c052626bbdaa8a6d14215319101ac5f3a02",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/creator-recommendations.test.tsx",
+        "sha256": "4ba46c08a41e6f30df36f0f71fda25cee285d4d76b0a11b74c52dd78b37cd083",
+        "mode": "0o644",
+        "HEAD_sha256": "721f41312618e82355d63a05d04d059e6b00298ec96109ad8d6f6d904e468d4b",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/creator-recommendations.test.tsx",
+        "snapshot_1118_sha256": "4ba46c08a41e6f30df36f0f71fda25cee285d4d76b0a11b74c52dd78b37cd083",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/issue-description-assist.tsx",
+        "sha256": "21375986807eac91a02ff8c60bc3739997f21dcd3f1dd0811fb45c9b3e4096ff",
+        "mode": "0o644",
+        "HEAD_sha256": "c27764b9d0bd8288e790fcabd2717e4b9003c29c43d8ea085938a221cc4b6552",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/issue-description-assist.tsx",
+        "snapshot_1118_sha256": "21375986807eac91a02ff8c60bc3739997f21dcd3f1dd0811fb45c9b3e4096ff",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/issue-description-assist.test.tsx",
+        "sha256": "2c0ff2a55f5f1c9ca7082b4c3c0e91c54e16d910b52c9828b3185c69bdc02341",
+        "mode": "0o644",
+        "HEAD_sha256": "3bdd8c69ff8b9ffaeff628a6261239f562ce8fd5076de51b06e34096fc1d64ac",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/issue-description-assist.test.tsx",
+        "snapshot_1118_sha256": "2c0ff2a55f5f1c9ca7082b4c3c0e91c54e16d910b52c9828b3185c69bdc02341",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/quick-create-actor-picker.tsx",
+        "sha256": "879d5d7ee557e17e82088ebb35a35e16f05929986a0d825bf9307ffddcab4079",
+        "mode": "0o644",
+        "HEAD_sha256": "b710fd3127642b59b77089aa5fe7b6e6e170737c43714e7f9df76a58da871ec9",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/quick-create-actor-picker.tsx",
+        "snapshot_1118_sha256": "879d5d7ee557e17e82088ebb35a35e16f05929986a0d825bf9307ffddcab4079",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/quick-create-actor-picker.test.tsx",
+        "sha256": "5f36423d065c61236097f03685a04821916701a41aa85e7a2378c4c400812059",
+        "mode": "0o644",
+        "HEAD_sha256": "7fbb41f874f4af23817ef827cc517b190e7a2b00373d2e3c5a03de03bfce1c03",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/quick-create-actor-picker.test.tsx",
+        "snapshot_1118_sha256": "5f36423d065c61236097f03685a04821916701a41aa85e7a2378c4c400812059",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/quick-create-issue.tsx",
+        "sha256": "1803c30af1b7aa3c7252cd689f6b0eff6969d846b1afa7e5274a7ddff9417ac0",
+        "mode": "0o755",
+        "HEAD_sha256": "66684c1c87245a89b7b0eedf4efa606f5afeae0fb4d08c02f7b08efdaf7b4624",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/quick-create-issue.tsx",
+        "snapshot_1118_sha256": "1803c30af1b7aa3c7252cd689f6b0eff6969d846b1afa7e5274a7ddff9417ac0",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/modals/quick-create-issue.test.tsx",
+        "sha256": "85a48f67e1b332872041d054ee75ad011e9eaa2e37c8aa95f76953357c6fa22f",
+        "mode": "0o755",
+        "HEAD_sha256": "889ed962ce09a8044ca6a13fd6897772beba8b8a4e230771cc6c6d7392e4f571",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/modals/quick-create-issue.test.tsx",
+        "snapshot_1118_sha256": "85a48f67e1b332872041d054ee75ad011e9eaa2e37c8aa95f76953357c6fa22f",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/chat/components/chat-new-chat-button.test.tsx",
+        "sha256": "915ff52427a2a281f19bccd05369397a0bc8a8c7b90b3658f74bea41aaff93b8",
+        "mode": "0o755",
+        "HEAD_sha256": "fcaef84a4c33d39c0feebc6b890bfc6105d38958dc97299501a7be46862dfa7f",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/chat/components/chat-new-chat-button.test.tsx",
+        "snapshot_1118_sha256": "915ff52427a2a281f19bccd05369397a0bc8a8c7b90b3658f74bea41aaff93b8",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/locales/en/modals.json",
+        "sha256": "607d9a3418b39d5d7fea96fcb92d39baa196960cb7b18c6b294a36dbaed6afe5",
+        "mode": "0o755",
+        "HEAD_sha256": "c2a879ec6f89410b598a935bcd61b8d9e537bab9ef23f63799b5438cbd307efc",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/locales/en/modals.json",
+        "snapshot_1118_sha256": "607d9a3418b39d5d7fea96fcb92d39baa196960cb7b18c6b294a36dbaed6afe5",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/modals.json",
+        "sha256": "aa136303e2a9ab52f59a6e7a750504f62f96c9206a5380e658541c6e64a27804",
+        "mode": "0o755",
+        "HEAD_sha256": "518aca0f438bb0083f979efcbb88034976b942d9ec1711e6c62ac809f616bc9c",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/packages/views/locales/zh-Hans/modals.json",
+        "snapshot_1118_sha256": "aa136303e2a9ab52f59a6e7a750504f62f96c9206a5380e658541c6e64a27804",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/chat-actor-picker.spec.ts",
+        "sha256": "7a902015c63e0d9684c4f85f5c18949f7beb5b97b93519b8afa72ffe01ef1bf2",
+        "mode": "0o644",
+        "HEAD_sha256": "d718f6776469c591418fd88cb34946370869977794b209d1150f4a6ae3d73374",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/chat-actor-picker.spec.ts",
+        "snapshot_1118_sha256": "7a902015c63e0d9684c4f85f5c18949f7beb5b97b93519b8afa72ffe01ef1bf2",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/core-business-agent-loops.spec.ts",
+        "sha256": "08d4cffcfb2015861dc7ffffe512dd223cb60ae6506fcf8d2c2e6f592352e5d1",
+        "mode": "0o644",
+        "HEAD_sha256": "ccbfd3d89a6ad732b4404f435b56bcb3785d5100b517ff47c1dad0851e2eaa44",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/core-business-agent-loops.spec.ts",
+        "snapshot_1118_sha256": "08d4cffcfb2015861dc7ffffe512dd223cb60ae6506fcf8d2c2e6f592352e5d1",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/issue-assist-flow.spec.ts",
+        "sha256": "2a28d07fd3c43e0f76fcf04bab8c8143b727d8702056f8607bdd61071e20fd12",
+        "mode": "0o644",
+        "HEAD_sha256": "b14b5a8de4bc1ae2b78d6d6cdff2699363ab0ee47df18820f5f415c048126f36",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/issue-assist-flow.spec.ts",
+        "snapshot_1118_sha256": "2a28d07fd3c43e0f76fcf04bab8c8143b727d8702056f8607bdd61071e20fd12",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/quick-create-actor-picker-phase2.spec.ts",
+        "sha256": "d18ebae97affebf6b352577a5cb9f8927e9beb74346281b8eb9e51ff28e0b995",
+        "mode": "0o644",
+        "HEAD_sha256": "d95d2b030877eeab2309f6dacce4f12600caed15bada6cd39b16b9ace168a12a",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/quick-create-actor-picker-phase2.spec.ts",
+        "snapshot_1118_sha256": "d18ebae97affebf6b352577a5cb9f8927e9beb74346281b8eb9e51ff28e0b995",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/quick-create-actor-picker.spec.ts",
+        "sha256": "e12cd6f68a8370014593a18de734df9a698add3f8c5c8bffba53399a06ae1518",
+        "mode": "0o644",
+        "HEAD_sha256": "9f526de6af5df496a7c12eb2a5597548dc04fa69f2cf726b345110f9de067db5",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/quick-create-actor-picker.spec.ts",
+        "snapshot_1118_sha256": "e12cd6f68a8370014593a18de734df9a698add3f8c5c8bffba53399a06ae1518",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/quick-create-autonomy.spec.ts",
+        "sha256": "f9cbb770e70aaa451630ed5f1bb06eb98ad6edc509bb71ee70af63be95831837",
+        "mode": "0o644",
+        "HEAD_sha256": "3dae1669c807eb301663ee4f0b43ea746e8d1bdbc598538a4c1417ce91f37316",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/quick-create-autonomy.spec.ts",
+        "snapshot_1118_sha256": "f9cbb770e70aaa451630ed5f1bb06eb98ad6edc509bb71ee70af63be95831837",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": "e2e/upstream-selected-fixes.spec.ts",
+        "sha256": "384f4045dba0d195fb4df4aec6626a94a70ef459e03915264b6635ac966923f0",
+        "mode": "0o644",
+        "HEAD_sha256": "75ac4bd2f06e7be0a7b66e9b9ce2ace1896364c7c9feeb071b770f031c930b25",
+        "snapshot_1118": ".artifacts/e2e-20261118-203130/source/e2e/upstream-selected-fixes.spec.ts",
+        "snapshot_1118_sha256": "384f4045dba0d195fb4df4aec6626a94a70ef459e03915264b6635ac966923f0",
+        "matches_1118_source": true,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": ".trellis/spec/views/frontend/issue-description-assist.md",
+        "sha256": "d30d683877a8f83ec427939abde6534c8fa8f0fc3719452a92c599d266bc6918",
+        "mode": "0o644",
+        "HEAD_sha256": "1c28a9d50f586e00e8c6782a68e96f377f462d4830c7a1e0941abad77fbd96ff",
+        "snapshot_1118": null,
+        "snapshot_1118_sha256": null,
+        "matches_1118_source": false,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      },
+      {
+        "path": ".trellis/spec/views/frontend/quick-create-actor-picker.md",
+        "sha256": "df03dd2884e00015fbf1aa0b33e1fa5338f44a14aa1513eca0580f4adc8ba1ab",
+        "mode": "0o644",
+        "HEAD_sha256": "ab024369f1523d681267013342f2c47d9db969de79fcbf56efe3c777a6fe7979",
+        "snapshot_1118": null,
+        "snapshot_1118_sha256": null,
+        "matches_1118_source": false,
+        "disposition": "EXCLUDE_THIS_READY_ONLY_COMMIT_PENDING_QUICKCREATE_ACCEPTANCE"
+      }
+    ],
+    "stable_1118_code_test_locale_matches": 21,
+    "specs_without_1118_snapshot": 2,
+    "task_owning_functional_receipt_found_in_bounded_scope": false,
+    "task_final_independent_acceptance_found": false,
+    "all_AC_checkbox_currently_open": true,
+    "partial_actual_1118_evidence": [
+      {
+        "file": "chat-actor-picker.spec.ts",
+        "counts": {
+          "passed": 3
+        },
+        "nonpass": []
+      },
+      {
+        "file": "core-business-agent-loops.spec.ts",
+        "counts": {
+          "passed": 3,
+          "failed": 1
+        },
+        "nonpass": [
+          {
+            "line": 174,
+            "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+            "status": "failed",
+            "observations": [
+              {
+                "status": "failed",
+                "acceptance": true,
+                "invalid_run_id": false,
+                "playwright_status": "failed",
+                "expected": "passed",
+                "reason": "Error: expect(received).toEqual(expected) // deep equality - Expected - 0 + Received + 2 Array [ Object { + \"executing_agent_id\": \"4887a284-1b16-4b0f-a763-610088926d26\", \"reason_code\": \"queued\", \"status\": \"queued\", \"target_id\": \"4887a284-1b16-4b0f-a763-610088926d26\", \"target_type\": \"agent\", + \"task_id\": \"01a1ef12-f533-",
+                "evidence": [
+                  "v2_business/runs/acceptance/results/core-business-agent-loops--09589-agent-and-note-engages-none-chromium/test-failed-1.png",
+                  "v2_business/runs/acceptance/results/core-business-agent-loops--09589-agent-and-note-engages-none-chromium/error-context.md",
+                  "v2_business/runs/acceptance/results/core-business-agent-loops--09589-agent-and-note-engages-none-chromium/trace.zip"
+                ],
+                "report": "v2_business/runs/acceptance/report.json"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "issue-assist-flow.spec.ts",
+        "counts": {
+          "passed": 7,
+          "failed": 1
+        },
+        "nonpass": [
+          {
+            "line": 143,
+            "title": "AI refinement through real server and task creation › creates the unchanged manual draft after a refinement failure",
+            "status": "failed",
+            "observations": [
+              {
+                "status": "failed",
+                "acceptance": true,
+                "invalid_run_id": false,
+                "playwright_status": "timedOut",
+                "expected": "passed",
+                "reason": "Test timeout of 120000ms exceeded.",
+                "evidence": [
+                  "v2_legacy/runs/acceptance/results/issue-assist-flow-AI-refin-7fbe3--after-a-refinement-failure-chromium/test-failed-1.png",
+                  "v2_legacy/runs/acceptance/results/issue-assist-flow-AI-refin-7fbe3--after-a-refinement-failure-chromium/trace.zip"
+                ],
+                "report": "v2_legacy/runs/acceptance/report.json"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "quick-create-actor-picker-phase2.spec.ts",
+        "counts": {
+          "passed": 4
+        },
+        "nonpass": []
+      },
+      {
+        "file": "quick-create-actor-picker.spec.ts",
+        "counts": {
+          "passed": 7,
+          "failed": 1
+        },
+        "nonpass": [
+          {
+            "line": 218,
+            "title": "real API actors keep favorites and accepted recents local to their workspace",
+            "status": "failed",
+            "observations": [
+              {
+                "status": "failed",
+                "acceptance": true,
+                "invalid_run_id": false,
+                "playwright_status": "failed",
+                "expected": "passed",
+                "reason": "Error: expect(locator).toHaveText(expected) failed Locator: getByRole('button', { name: /^Send to (?!agent$)/ }) Expected: \"Send to Pick an agent…\" Received: \"Send to Amber analyst\" Timeout: 5000ms Call log: - Expect \"toHaveText\" with timeout 5000ms - waiting for getByRole('button', { name: /^Send to (?!agent$)/ }) 9 ×",
+                "evidence": [
+                  "v2_business/runs/acceptance/results/quick-create-actor-picker--411a4-ts-local-to-their-workspace-chromium/error-context.md",
+                  "v2_business/runs/acceptance/results/quick-create-actor-picker--411a4-ts-local-to-their-workspace-chromium/trace.zip"
+                ],
+                "report": "v2_business/runs/acceptance/report.json"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "quick-create-autonomy.spec.ts",
+        "counts": {
+          "passed": 3
+        },
+        "nonpass": []
+      },
+      {
+        "file": "settings-preferences.spec.ts",
+        "counts": {
+          "passed": 1,
+          "failed": 1
+        },
+        "nonpass": [
+          {
+            "line": 107,
+            "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+            "status": "failed",
+            "observations": [
+              {
+                "status": "failed",
+                "acceptance": true,
+                "invalid_run_id": false,
+                "playwright_status": "failed",
+                "expected": "passed",
+                "reason": "Error: locator.click: Error: strict mode violation: getByRole('button', { name: 'Switch to Manual', exact: true }) resolved to 2 elements: 1) <button tabindex=\"0\" type=\"button\" data-slot=\"button\" class=\"group/button inline-flex shrink-0 items-center justify-center border bg-clip-padding font-medium whitespace-nowrap tr",
+                "evidence": [
+                  "v2_collab/runs/acceptance/results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/error-context.md",
+                  "v2_collab/runs/acceptance/results/settings-preferences-hidde-af0f8-e-through-the-overflow-menu-chromium/trace.zip"
+                ],
+                "report": "v2_collab/runs/acceptance/report.json"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "file": "upstream-selected-fixes.spec.ts",
+        "counts": {
+          "passed": 5
+        },
+        "nonpass": []
+      }
+    ],
+    "shared_locale_ownership": [
+      {
+        "path": "packages/views/locales/en/modals.json",
+        "sha256": "607d9a3418b39d5d7fea96fcb92d39baa196960cb7b18c6b294a36dbaed6afe5",
+        "changed_leaf_keys": [
+          "create_issue.actor_picker.default_unavailable",
+          "create_issue.actor_picker.loading",
+          "create_issue.actor_picker.no_matches",
+          "create_issue.actor_picker.no_shortcuts",
+          "create_issue.agent.description_required",
+          "create_issue.agent.no_recipients_action",
+          "create_issue.agent.no_recipients_next",
+          "create_issue.agent.no_recipients_reason",
+          "create_issue.agent.no_recipients_title",
+          "create_issue.agent.recipient_required",
+          "create_issue.agent.recipients_failed",
+          "create_issue.agent.recipients_loading",
+          "create_issue.agent.source_not_ready",
+          "create_issue.agent.submit",
+          "create_issue.ai_optimize.failed",
+          "create_issue.ai_optimize.stale",
+          "create_issue.ai_optimize.unavailable",
+          "create_issue.creator_recommendations.failed",
+          "create_issue.creator_recommendations.loading",
+          "create_issue.creator_recommendations.no_candidates",
+          "create_issue.creator_recommendations.retry",
+          "create_issue.creator_recommendations.stale",
+          "create_issue.creator_recommendations.unavailable",
+          "create_issue.creator_recommendations.use"
+        ],
+        "only_quickcreate_branches": true,
+        "other_locale_branches_unchanged": true
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/modals.json",
+        "sha256": "aa136303e2a9ab52f59a6e7a750504f62f96c9206a5380e658541c6e64a27804",
+        "changed_leaf_keys": [
+          "create_issue.actor_picker.clear_default",
+          "create_issue.actor_picker.creator_hint",
+          "create_issue.actor_picker.default_unavailable",
+          "create_issue.actor_picker.loading",
+          "create_issue.actor_picker.no_matches",
+          "create_issue.actor_picker.set_default",
+          "create_issue.agent.autonomy_blocked_tooltip",
+          "create_issue.agent.description_required",
+          "create_issue.agent.error_autonomy",
+          "create_issue.agent.no_recipients_action",
+          "create_issue.agent.no_recipients_next",
+          "create_issue.agent.no_recipients_reason",
+          "create_issue.agent.no_recipients_title",
+          "create_issue.agent.recipient_required",
+          "create_issue.agent.recipients_failed",
+          "create_issue.agent.recipients_loading",
+          "create_issue.agent.sending",
+          "create_issue.agent.sent_count",
+          "create_issue.agent.sent_label",
+          "create_issue.agent.source_not_ready",
+          "create_issue.agent.submit",
+          "create_issue.ai_optimize.failed",
+          "create_issue.ai_optimize.stale",
+          "create_issue.ai_optimize.suggestion",
+          "create_issue.ai_optimize.unavailable",
+          "create_issue.creator_recommendations.empty",
+          "create_issue.creator_recommendations.failed",
+          "create_issue.creator_recommendations.loading",
+          "create_issue.creator_recommendations.no_candidates",
+          "create_issue.creator_recommendations.retry",
+          "create_issue.creator_recommendations.stale",
+          "create_issue.creator_recommendations.unavailable",
+          "create_issue.creator_recommendations.use"
+        ],
+        "only_quickcreate_branches": true,
+        "other_locale_branches_unchanged": true
+      }
+    ],
+    "package_export_contract": {
+      "path": "packages/core/package.json",
+      "sole_change": "./issues/quick-create-submit-state -> ./issues/quick-create-submit-state.ts",
+      "commit_together_with": [
+        "packages/core/issues/quick-create-submit-state.ts",
+        "packages/core/issues/quick-create-submit-state.test.ts",
+        "packages/views/modals/quick-create-issue.tsx"
+      ],
+      "no_new_dependency": true
+    },
+    "known_unresolved_tests": [
+      {
+        "id": "51",
+        "path": "e2e/quick-create-actor-picker.spec.ts",
+        "cause": "earlyinitialtextContentbeforeagentdirectory/automaticfallbacksettles; currentline237unchanged",
+        "proof": "failurebeforefirstfavoriteandsecondworkspace; notcrossworkspacestrawproof"
+      },
+      {
+        "id": "52",
+        "path": "e2e/settings-preferences.spec.ts",
+        "cause": "currentfullpageSwitchtoManuallocatorstillmatchestwolegitimatecontrols; filecleanbutneedsfuturetargetedfix"
+      },
+      {
+        "id": "36",
+        "path": "e2e/issue-assist-flow.spec.ts",
+        "cause": "retained120ssetup-timeoutnotwithinnewUIreadinessproof"
+      }
+    ],
+    "future_minimum_checks": [
+      "Corequick-create-submit-state8testswith3072combinationequivalence; owningViewsquickcreate/recommendations/cache/assist/manual/collaboration/chat/dialogandlocaleparity.",
+      "Realblockedfocus/tooltip/description/no-recipientexits,draftpreservation,modifiedshortcut/noninput/portal/IME/bareEntercontrolsandnarrowthemes/contrast atfrozenproduct.",
+      "Fixandrerunoriginal#51/#52wholefilewithunchangedassertions; distinguishotheroriginalsetup/runtimefailures.",
+      "Freeze/excludeongoingsharedUIauditdependenciesbeforestaging;donotclaimnewcommitfromdirtytestedgraphisstandalone."
+    ],
+    "execute_these_checks_now": false,
+    "reason": "Main/user scopeisreadychanges; donotexpandintoongoingquickcreatetask."
+  },
+  "core_UI_audit": {
+    "task_status": "in_progress",
+    "active_changes_observed": "check.jsonlandevidencefilesupdatedduring14:11–14:13Zreview; nofinalindependentverdict;verificationcheckboxesopen",
+    "native_F02_F04_F05_F07_partial": true,
+    "owned_manifest_paths": 49,
+    "additional_current_sheet_path": true,
+    "excluded_paths": [
+      {
+        "path": "apps/web/app/brand-variant-cascade.test.ts",
+        "sha256": "27ef4fb3117780651b0292d18f1ffd7c956da26377d7de396ea2e3b098129fde",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "apps/web/app/custom.css",
+        "sha256": "f87683ce3c70d8b326f3fea79489f45da5f4938aac991deaa3efdf0b40709dce",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "apps/web/app/text-contrast.test.ts",
+        "sha256": "1f3237d2e72754ce9676450f99ea318da6a34dea3035b0f6a5d0dc961131cc5e",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/core/workspace/queries.ts",
+        "sha256": "d9482b3ea38e6b6785d03e5ca2e94bd62b4bd2a76a0320359d515849710ccddd",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/core/workspace/squad-queries.test.ts",
+        "sha256": "5380a45d7776ff8da7a9409a7bd9a1d73a978ec63688913e0da4d11d1b9f2304",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/alert-dialog.tsx",
+        "sha256": "3a7e0cf7f7722be85d31abff6c70255172294d0156fb68d0ffcbfc2eeaed8192",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/button.tsx",
+        "sha256": "1e4a2fd59e2548555a68247490ffa963044019fb3bbadf025cdb68b3d8096f4e",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/dialog.tsx",
+        "sha256": "d2ce21fe68fbb62edf601e2d539cdf0de3624245b783bb1690f58d8ad32a035b",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/dropdown-menu.tsx",
+        "sha256": "b95f6d9972088e616a8147ea362d8f4431b003dca4b4274357b78ea22ea1b2cc",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/hover-card.tsx",
+        "sha256": "7ef7e8881bb061a8e21a5a1eeefd96353de88d38bec1edd79d732b1c57933d7b",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/popover.tsx",
+        "sha256": "51283208fbd423cb80e0fd7ea115fbd3a0eba1a19baf434e599a34b408f0f45d",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/popup-visibility.tsx",
+        "sha256": "d853916b350f583572fffd39e462c08fbb3559e14b95a6989268a346b0ad22b5",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/sheet.tsx",
+        "sha256": "9a623935b2c44037486e2e182512748f0dd0a195ae51e10d1bcbe5014febb930",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/components/ui/tooltip.tsx",
+        "sha256": "aeaefbfede5dc64834d8b614f6284693c99a874d440ba09614f1192e3a495890",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/ui/styles/tokens.css",
+        "sha256": "c0c5365f288b36a2139e3906a0b502e8a5234e48c89120cad12798e617e12b54",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/autopilots/components/autopilot-list-toolbar.tsx",
+        "sha256": "00542df29be1bb82f70608c0e0b00aa22c7dad8b36bb8978b36983fd4b69e7d2",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/inbox/components/inbox-filter-menu.tsx",
+        "sha256": "e605e17b4e0843a7403e4698176d8a573e6cf732e3ac75daa9a473efc9b444a4",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/board-card-assignee-picker.test.tsx",
+        "sha256": "b2c6232f8112038d432645477cda3b242a380d83dfc814e693f4369554407372",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/comment-composers.test.tsx",
+        "sha256": "3e3c7707cff8e2f1897448d55cb3e85d539b98f452af45823108f751935dd0cc",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/comment-input.tsx",
+        "sha256": "c6eb03aa057168133adc16b3be1077813a21aeb3a7cf81ac9d72a362a31dd519",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/issue-detail.test.tsx",
+        "sha256": "ab9af47879d2a68f3c7b2aebbc1be06eb39fc9197bd09164d1ec58ad7a98e277",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/issue-detail.tsx",
+        "sha256": "a3bc89198fb078df1772b39da0377a940928a3b43f40cd6cceae5a5f99da2fbe",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/issues-header.tsx",
+        "sha256": "89a480b1962137dfc12e1c7464be7abdedd5c71c262a94e00fda63623b8a3e15",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/assignee-picker.recovery.test.tsx",
+        "sha256": "e37d92583d934bd87b4e89eadd557a00dbeedde9ef7edaf26538d012abf4e13b",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/assignee-picker.tsx",
+        "sha256": "5ffda609a103655c8d72c927a04cfc0779a979e80f5dcdce78ec4570e1a52fc1",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/label-picker.tsx",
+        "sha256": "ae8243b5d327ec0283eb517d244be955a91236c9c5efbe7623d549c82700c81e",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/priority-picker.tsx",
+        "sha256": "97406265d3544efe4f34606995c982656b077022e90f5d77bdf3e92655f1353b",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.test.tsx",
+        "sha256": "085431be971f30f6fc3935079639ba01e619338265ec78e44fabb2359e5d1cec",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/property-picker.tsx",
+        "sha256": "a6cdfba459e157211f64ca29dd8439825fd5a3aa3e2da595320995f6183ddf91",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/status-picker.test.tsx",
+        "sha256": "eafbb9b0f733c4b8d5ed1c9f31c3cc7f719e35e2f79d37e498f00f79188277be",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/pickers/status-picker.tsx",
+        "sha256": "dcb2abcf4b2d38e08736e69f495d8f7cf53a54c81f1001eb26317266bc7cb4cd",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/reply-input.tsx",
+        "sha256": "7302870303465d2d8d747080bfe6e3bc0976e3eb9b2c185628ebae52d144665f",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/issues/components/table-view-editing.test.tsx",
+        "sha256": "17b18056615d1859f9eb41e7f3b4e4107eaeb4ddc8c689508e615fc4073f5dd3",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/layout/animated-right-sidebar.test.tsx",
+        "sha256": "d70e3514c3ccee7d8de2dbf12e2b0c224d9ce073327bf280848e527c284c20b6",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/layout/animated-right-sidebar.tsx",
+        "sha256": "ea42b40ccb97801e64231be188e3b6d49d2a6eb44fda4e03bbe49e0a0e517e60",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/layout/collection-page.tsx",
+        "sha256": "ae14dfcc86ea75de924fd90e68942ac4a8a4340a77532210c7c46f50d1e275c1",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/locales/en/issues.json",
+        "sha256": "c58caed05aa2eeccd2d6711bdaa2e0cad2bd3922fd4e1048c5a8c041c6d77310",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/locales/en/squads.json",
+        "sha256": "2e4b78e2b8cc56806c8f88d2aa5099b347e0399efb25f7d6285f775ffaa44529",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/issues.json",
+        "sha256": "c92212bc5c66955aa0ee8163c595763bdbfc99d6131227b2e8f47e82baaffd41",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/squads.json",
+        "sha256": "58ca6bb5c89e7b3c9bd82e79341bf81ab76e69cf7ff7f327b0d28cf4067f4b21",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/projects/components/project-detail.tsx",
+        "sha256": "ab0e3579d44f19e56e778b81ecf717b23b92e371fd9e4a5bb1cd1de5e85a1b20",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/projects/components/projects-page.tsx",
+        "sha256": "5080afdde399f8ec250f8806d73be9ba21eecc26decb38c82df43f5998f5d3fd",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/components/squad-detail-page.test.tsx",
+        "sha256": "8f61e02a8db9c1179632deacf999637409b254cff739bb161f831f2fa9a7bd68",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/components/squad-detail-page.tsx",
+        "sha256": "cce95973995e09dbbef8c7fd4723ca422295fe2aef5bbb46cd8b1b55f47169c8",
+        "mode": "0o755",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/components/squad-query-feedback.tsx",
+        "sha256": "9ce33f73614e5fb4478126f11ea42d91945618ba0a6ce0107423d3e8b27af800",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/create/manual-create-squad-page.keyboard.test.tsx",
+        "sha256": "440e8f1acb91359b864736c94e7ad2cc23ceab916d3175d15499411251e8b88f",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/create/manual-create-squad-page.test.tsx",
+        "sha256": "9a1e79d4ef3b62b25bc5319c8bbce3bdc520bf13f575f5bcc283638371a1963d",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/create/manual-create-squad-page.tsx",
+        "sha256": "bcf44cf73b46397dbaa6d6925f17e0c95e309574fb607dcbd260ee495c52f955",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/create/template-create-squad-page.test.tsx",
+        "sha256": "8aee049ef05792ba2b9f4826a2b70da962aa7bb2b37f0518b2b438c1fd7d9bb5",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      },
+      {
+        "path": "packages/views/squads/create/template-create-squad-page.tsx",
+        "sha256": "3705a02d8037234d72552b2aa75ffa44ecf18d627e75e7482432897067e777aa",
+        "mode": "0o644",
+        "disposition": "EXCLUDE_ONGOING_CORE_UI_AUDIT"
+      }
+    ],
+    "quickcreate_path_overlap": [],
+    "shared_dependency_overlap": [
+      "packages/ui/components/ui/button.tsx",
+      "packages/ui/components/ui/tooltip.tsx",
+      "packages/ui/components/ui/popover.tsx",
+      "packages/ui/components/ui/dialog.tsx",
+      "packages/views/issues/components/pickers/property-picker.tsx",
+      "packages/ui/styles/tokens.css"
+    ],
+    "not_a_request_to_stop_or_modify_other_session": true
+  },
+  "S2_clean_candidate_guidance": [
+    "UseHEADplusonlyacceptedS2delta; do not copy23quickcreatepathsorthe50liveauditpaths.",
+    "Corepackage.jsonshouldkeepHEADexportset; ifS2privatecandidateincludedquickcreatebaselineexport/helper,removeallwithcoherentHEADgraph ratherthanaddinguncommittedhelperdependency.",
+    "SharedS2localechangesbelongcollaboration.jsonstage.refusals; do not stage modals.jsonquickcreatebranches orcurrentissues/squadslocalesaudit.",
+    "RunMainselectedS2staticchecksagainstexactHEAD+S2isolatedcandidate; 11/18partialpasses and latestdirtyROOTstatic do notvalidatecleancommitgraph."
+  ],
+  "reviewer_actions": {
+    "tests": 0,
+    "DB_API": 0,
+    "source_edits": 0,
+    "stage_commit_push": 0,
+    "writes": [
+      "research/commit-readiness-ui-20261119.md",
+      "research/commit-readiness-ui-20261119.json"
+    ]
+  },
+  "evidence_refs": {
+    ".trellis/tasks/11-17-quick-create-blocked-feedback/task.json": {
+      "sha256": "36596a3d1922bd58e2aec430214751496d0d3a9a097789dae67816fabe443a14",
+      "bytes": 824
+    },
+    ".trellis/tasks/11-17-quick-create-blocked-feedback/prd.md": {
+      "sha256": "9bf20119cc8d151ff63d25a33d45661af78b6dc24c03c1b20d1c656292dda88f",
+      "bytes": 21814
+    },
+    ".trellis/tasks/11-17-quick-create-blocked-feedback/design.md": {
+      "sha256": "e84cb736e98277cc847dc4b3d313d1fbbc53dc767af4be094c6514b3d09ad67e",
+      "bytes": 17397
+    },
+    ".trellis/tasks/11-17-quick-create-blocked-feedback/implement.md": {
+      "sha256": "2ce2c9198d54e14a8359c685ec3bfbe99ae13314ca926b12a952079d30ed3cd0",
+      "bytes": 8306
+    },
+    ".trellis/tasks/11-19-core-ui-audit-remediation/task.json": {
+      "sha256": "b1abd9b10747010bf3c1131781ceec49d293b87baf98407fdbf1dd505663df16",
+      "bytes": 777
+    },
+    ".trellis/tasks/11-19-core-ui-audit-remediation/changed-files.json": {
+      "sha256": "9f1f74970375943accc3bbd98bfceeede0eb3153164f0f649cd3dd34fe443c0f",
+      "bytes": 2760
+    },
+    ".trellis/tasks/11-19-core-ui-audit-remediation/verification.md": {
+      "sha256": "c60faf3411ce9e5c67ed9bc6dcf133a785742fdca5b2f369f38dd194ca1ab4b5",
+      "bytes": 2039
+    },
+    ".trellis/tasks/11-19-core-ui-audit-remediation/native-remediation.json": {
+      "sha256": "9cc1cb2e3507fcb1c5d00c18dc8cb7fde81c20c81e2016d50844b58e9b854819",
+      "bytes": 1487
+    },
+    ".trellis/tasks/11-19-core-ui-audit-remediation/check.jsonl": {
+      "sha256": "41fcbfb48bc471590ecb81731882346074204a9b3a250e658d884201ea1e0cf2",
+      "bytes": 538
+    },
+    ".trellis/tasks/11-18-e2e-1118-followup/task.json": {
+      "sha256": "4cc7b0c8db4c201d77f70a31fd408844cc835fbb70ca72b2baf7fa143f090ff7",
+      "bytes": 1417
+    },
+    ".trellis/tasks/11-18-e2e-1118-followup/research/first-batch-20261119.md": {
+      "sha256": "cd6aa0c1c86b02b36b140e9a4093d686a75e02e52e3dba6ffec36cdefeaf4b86",
+      "bytes": 3782
+    },
+    ".artifacts/e2e-20261118-203130/coverage.json": {
+      "sha256": "002dfe934da699d11d02bf17d3a72c126c6fbc31c130afc079f185786b0156a5",
+      "bytes": 701955
+    },
+    ".artifacts/e2e-20261118-203130-triage/CASES.md": {
+      "sha256": "e288114ab1a92dfd2f8c55df4244dc918d1e8b5bb00950cc4d2f7985c590a431",
+      "bytes": 13015
+    },
+    ".artifacts/e2e-20261118-203130-triage/DIAGNOSIS.md": {
+      "sha256": "efb20a9da8fbef694e2bb5752c0424bcd4b3083c5bf48a06549a5ae54d435570",
+      "bytes": 9698
+    },
+    ".artifacts/e2e-fix-20261119-002358-fc3f5ec4/joint/verification-summary.json": {
+      "sha256": "1a967dda9eea882fd525caa88401ca91b8c7ff6cea2bd7b5e903e3e6f1fc3511",
+      "bytes": 14331
+    },
+    ".artifacts/e2e-20261118-203130/v2_business/runs/acceptance/report.json": {
+      "sha256": "c6dd3073f82bd520ba9767d6997ba0fd87aa076e5198ae889e511ea502e4326a",
+      "bytes": 440499
+    },
+    ".artifacts/e2e-20261118-203130/v2_collab/runs/acceptance/report.json": {
+      "sha256": "2ea4d41d92ce7e2a20be4ee404de5dfa9ecf181fe059d8ea959dbbe7ca26a7f7",
+      "bytes": 798220
+    },
+    ".artifacts/e2e-20261118-203130/v2_legacy/runs/acceptance/report.json": {
+      "sha256": "80192e27854ca5d02b746bd9f3ddec4bf8c3ca65943b221bc45833cab00eaab6",
+      "bytes": 346220
+    }
+  }
+}

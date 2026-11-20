@@ -35,10 +35,11 @@ WHERE id = sqlc.arg(issue_id)::uuid RETURNING *;
 -- request it consumed.
 -- name: CreateCollaborationHandoff :one
 INSERT INTO issue_handoff (issue_id, actor_user_id, from_user_id, to_user_id, purpose, note,
-    requester_user_id, parent_request_id, previous_status)
+    requester_user_id, parent_request_id, previous_status, unblock_condition, estimated_resolution_at)
 VALUES (sqlc.arg(issue_id)::uuid, sqlc.arg(actor_user_id)::uuid, sqlc.arg(from_user_id)::uuid,
     sqlc.arg(to_user_id)::uuid, sqlc.arg(purpose)::text, sqlc.arg(note)::text,
-    sqlc.narg(requester_user_id)::uuid, sqlc.narg(parent_request_id)::uuid, sqlc.arg(previous_status)::text)
+    sqlc.narg(requester_user_id)::uuid, sqlc.narg(parent_request_id)::uuid, sqlc.arg(previous_status)::text,
+    sqlc.narg(unblock_condition)::text, sqlc.narg(estimated_resolution_at)::timestamptz)
 RETURNING *;
 
 -- name: SupersedeCollaborationInformationRequests :exec

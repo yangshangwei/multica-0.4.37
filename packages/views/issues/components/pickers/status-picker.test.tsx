@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { cleanup } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { buildIssueStatusCatalog } from "@multica/core/issue-statuses";
 import type { IssueStatusEntry } from "@multica/core/types";
@@ -74,6 +74,13 @@ afterEach(() => {
 });
 
 describe("StatusPicker trigger color", () => {
+  it("names its options and exposes the selected status", () => {
+    catalogEntries = [IN_REVIEW, QA];
+    renderWithI18n(<StatusPicker status="qa" onUpdate={() => {}} open onOpenChange={() => {}} />);
+    expect(screen.getByRole("listbox", { name: "Status" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "QA", selected: true })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "In Review", selected: false })).toBeInTheDocument();
+  });
   // The bug: the trigger read the catalog entry's raw color while the list read
   // the resolved one, so a built-in rendered as the server's seeded #22c55e in
   // one and as the `text-success` token in the other — the same status in two

@@ -145,7 +145,7 @@ export function parseStageControlReply(raw: string, expectedRequest: string): St
   if (last !== null) {
     object(last); keys(last, ["intent_id", "kind", "target_digest", "artifact_digest", "external_request_key", "conditional_version"]);
     uuid(last.intent_id); choice(last.kind, ["deployment", "rollback"]); digest(last.target_digest); digest(last.artifact_digest);
-    text(last.external_request_key); version(last.conditional_version);
+    text(last.external_request_key); text(last.conditional_version, 256);
   }
   // The closed envelope and every invocation field have been checked above.
   return value as StageControlReply;

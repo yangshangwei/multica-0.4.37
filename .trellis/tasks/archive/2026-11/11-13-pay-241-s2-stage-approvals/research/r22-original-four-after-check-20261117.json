@@ -1,0 +1,799 @@
+{
+  "active_task": ".trellis/tasks/11-13-pay-241-s2-stage-approvals",
+  "reviewed_at": "2026-11-16T18:00:28.439081+00:00",
+  "status": "R22_ORIGINAL_FOUR_1PASS_1FAIL_2NOTRUN_RESULT_AND_SOURCE_DB_AFTER_RECONCILED_OWNED_STOP_PENDING",
+  "scope_evidence_mismatches": [],
+  "original_result": {
+    "reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/result.json",
+      "sha256": "a6a9b58fe105b95a5497ac014cb598d43efb1457a96dcd338eb4058a8941f968",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "reporter": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/playwright-report.json",
+      "sha256": "5ed4accdcec6207542909d572519e201d68435cb103a17a52852e745396eeda7",
+      "parse_failure": null
+    },
+    "stdout": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/runner.stdout.log",
+      "sha256": "7eb276b1f9e900643b45232b7925fd8bc48d83a7151463c57e92b6baf591de72",
+      "bytes": 4781
+    },
+    "stderr": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/runner.stderr.log",
+      "sha256": "e99a649bfe1915472ac9a709fd7020fe92048e64600c6c44c54e890924dd3920",
+      "bytes": 192
+    },
+    "started_at": "2026-11-16T17:41:48.712Z",
+    "ended_at": "2026-11-16T17:43:57.777Z",
+    "exit": {
+      "code": 1,
+      "signal": null
+    },
+    "planned_case_count": 4,
+    "actual_reported_cases": 4,
+    "cases": [
+      {
+        "file": "collaboration-stage-approvals.spec.ts",
+        "line": 27,
+        "title": "stage decisions and prepared test reports retain human and runtime history across Web and Desktop",
+        "outcome": "PASS",
+        "attempts": 1,
+        "duration_ms": 76407,
+        "retry": 0
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 233,
+        "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+        "outcome": "FAIL",
+        "attempts": 1,
+        "duration_ms": 49857,
+        "retry": 0
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 349,
+        "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+        "outcome": "NOT_RUN",
+        "attempts": 0,
+        "duration_ms": null,
+        "retry": null
+      },
+      {
+        "file": "collaboration-stage-execution.spec.ts",
+        "line": 398,
+        "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+        "outcome": "NOT_RUN",
+        "attempts": 0,
+        "duration_ms": null,
+        "retry": null
+      }
+    ],
+    "counts": {
+      "PASS": 1,
+      "FAIL": 1,
+      "NOT_RUN": 2
+    },
+    "automatic_retries": 0,
+    "reporter_raw_and_result_case_mapping_match": true,
+    "last_two_no_execution_results_due_first_failure_stop": true
+  },
+  "actual_command_provenance": {
+    "command": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/command.json",
+      "sha256": "886d7bd8e8a45afc07f9d9a5d7955675b68e9931e8556e085b400d7488c98146",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "started_once": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/started-once.json",
+      "sha256": "3c7701859ce41a32a0585ac2f5511213d31bf66366c571dd00c1ffe5edcfff96",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "permit": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-execution-permit.json",
+      "sha256": "46c4751c51cc7ff39a075d92070911c99587bfe096979d99912554d46ada086b"
+    },
+    "live_binding": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/live-binding-r02.json",
+      "sha256": "b8aada3d95a7661020ad727f137ff1a4f0e106b3d9de1487badfec920c83c60b"
+    },
+    "required_bound_refs": 26,
+    "input_mismatches": [],
+    "argv": [
+      "/opt/homebrew/opt/node@22/bin/node",
+      "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/playwright-four-scenarios-r02.config.mjs",
+      "--workers=1",
+      "--retries=0",
+      "--max-failures=1"
+    ],
+    "cwd": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-source-r01",
+    "environment": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/browser-env-current-products.json",
+      "sha256": "7bb45deb3e78b166604448df2d45e9a20c4c1d7a9aeb0b4351942ae4cd43aaf7"
+    },
+    "ambient_env_inherited": false,
+    "code72_and_r02_entry120_unchanged": true
+  },
+  "first_case_QA_scope": {
+    "evidence": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+      "sha256": "425b79d0643e20e660ae21ec8ac8a50862e21ef90960f5f8b7d54aebcf3dd352",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "duration_seconds": 76.407,
+    "outcome": "original_first_composed_Web_Electron_journey_PASS",
+    "signatures": "synthetic test accounts; not business-person sign-off",
+    "scope": "A01/A02/A03/A04/A05/A08/A10 composed subset; shared Web and isolated Electron renderer",
+    "steps": 56,
+    "HTTP_records": 55,
+    "actual_stable_owner_and_separate_roles": {
+      "roles": {
+        "business_owner_user_id": "da5dec73-9a94-4e2f-a90b-731f8c5ebf80",
+        "implementer_user_id": "1f9c78be-5bc2-4248-896c-0acaa305d029",
+        "product_approver_user_id": "da5dec73-9a94-4e2f-a90b-731f8c5ebf80",
+        "code_reviewer_user_id": "c4fb4c54-f1a3-49cb-8be8-37b6a8df7624",
+        "qa_approver_user_id": "d20b9a82-4584-4d6e-a7d5-6aab1984fbf8",
+        "release_approver_user_id": "8333724e-7e5e-4a71-bd6a-821b39267942"
+      },
+      "handler_id": "1f9c78be-5bc2-4248-896c-0acaa305d029",
+      "rejected": [
+        {
+          "code": "stage_self_review_forbidden",
+          "collaboration_revision": "5",
+          "error": "stage_self_review_forbidden",
+          "status": 409
+        },
+        {
+          "code": "stage_qa_release_conflict",
+          "collaboration_revision": "5",
+          "error": "stage_qa_release_conflict",
+          "status": 409
+        }
+      ]
+    },
+    "proposal_effects_one_child_zero_runs": {
+      "proposal_id": "01a1e573-8d77-7660-8b79-525e73965f97",
+      "created_child_ids": [
+        "01a1e573-91d4-7236-a2f7-b72b7eb49734"
+      ],
+      "rejected_proposal_id": "01a1e573-964e-7537-9afc-e5ab59d0b698",
+      "effects": {
+        "children": 1,
+        "mapped_children": 1,
+        "commands": 0,
+        "runs": 0
+      }
+    },
+    "current_source_denial_and_unrelated404_verified": true,
+    "original_key_Desktop_reply_recovery_GET_only": true,
+    "failed_report_id": "01303c63-762f-415b-958e-a79c62477640",
+    "failed_run": "d23c7234-07cc-43b0-a3fd-b18242d6e66b",
+    "passed_report_id": "dcf6f1f2-93d5-4bab-be72-4062b64901fa",
+    "passed_run": "e6b8c4e0-7640-4597-b7a2-a0ab45ffed0c",
+    "different_actual_runs_same_candidate_and_source_revision": true,
+    "business_code_fix_after_failure_regression_claimed": false,
+    "QA_returns_failed_then_approves_new_run": true,
+    "not_covered": [
+      "A06 release approval",
+      "A07 rollback",
+      "A09 complete writer inventory",
+      "complete A11 platform acceptance",
+      "A12 independent phase acceptance",
+      "real payment/fulfillment",
+      "commercial models",
+      "installed Desktop Main"
+    ]
+  },
+  "second_case_partial_progress": {
+    "evidence": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "sha256": "b1bc224f6e92de157121f10f97977eba9d5632d6eab78755d0e42e99fceb0d83",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "duration_seconds": 49.857,
+    "outcome": "FAIL_original_control_result_unconfirmed",
+    "scope": "A06/A07/A08/A10 and shared A11 release/rollback journey; all-writer/A12 evidence remains separately required",
+    "signatures": "synthetic test accounts, not business-person sign-off",
+    "execution_source": "controlled test-only adapter; no real deployment, metrics, payment or model account",
+    "artifact_source": "actual local packager HTTP and tar bytes; ordinary producer setup is synthetic",
+    "local_old_and_current_artifacts": [
+      {
+        "approval_id": "64dbb47d-38e5-45db-9b46-ac1a4ce26e78",
+        "execution_id": "01a1e574-a443-7937-9e8c-52d3be761978",
+        "artifact_digest": "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f"
+      },
+      {
+        "approval_id": "dbc85f1c-fb28-404b-8910-b16f99e383c6",
+        "execution_id": "01a1e574-a49c-7743-a731-042f9cee38c3",
+        "artifact_digest": "60943f59f79eb25da63cdb407dd224b0e2b1eef5fa8c5d55b8b958b21ef9dae0"
+      }
+    ],
+    "QA_approved_real_build_bound_report_and_QA_release_refused403": true,
+    "designated_release_approval_and_controlled_deployment_observed": true,
+    "equal_native_version1_conflict_invalidated_signed_rollback_and_original_execution_refused": true,
+    "three_metric_observations_native_versions": [
+      "1",
+      "1",
+      "2"
+    ],
+    "newer_metric_and_fresh_rollback_human_approval_recorded": true,
+    "original_control_failure": {
+      "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+      "source_file": "e2e/fixtures/collaboration-stage-control.ts",
+      "source_line": 189,
+      "error": "Stage control result unconfirmed; retain original request",
+      "cause_research_delegated_elsewhere_no_attribution": true
+    },
+    "retained_backend_rollback_intent": {
+      "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+      "workspace_id": "f1c26344-0053-4b7b-a2a1-94ddba33af95",
+      "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "candidate_version": "1",
+      "approval_decision_id": "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab",
+      "request_id": "61b4733a-f70e-424c-8f4b-c337ea9c3f52",
+      "target_digest": "69f136894a3bb3a99dbbba3f55a2644c13f8eff1a73b580fea107e66f229b5f3",
+      "artifact_digest": "ee8e03a8180cc18648b74891cf7ebab384debe3e542b2f9b89d54928cdf0ea4f",
+      "kind": "rollback",
+      "admitted_at": "2026-11-16T17:43:57.162Z",
+      "dispatch_expires_at": "2026-11-16T17:44:27.162Z"
+    },
+    "retained_backend_callback": {
+      "observation_id": "01a1e575-600d-7ccd-800c-cd8ec86aa8ef",
+      "intent_id": "01a1e575-5feb-7382-a862-81b0f0793478",
+      "issue_id": "01a1e574-a1ac-74de-89bd-9a58186b56ad",
+      "origin": "integration",
+      "native_id": "callback:01a1e575-5feb-7382-a862-81b0f0793478",
+      "native_version": "1",
+      "observation_digest": "cccb10d74a46f02816d6bab19b697b76e2bdcac31b9f301bc8e5e94bee3a51f3",
+      "result": "succeeded",
+      "external_operation_id": "rollback/provider:95b2633a3e",
+      "created_at": "2026-11-16T17:43:57.198Z"
+    },
+    "backend_succeeded_observation_does_not_reclassify_client_unconfirmed_or_whole_case_FAIL": true,
+    "rollback_UI_end_to_end_acceptance_claimed": false,
+    "not_covered": [
+      "real S4 integrations",
+      "installed Desktop Main",
+      "all actual backend writer paths",
+      "complete A12 independent phase acceptance"
+    ]
+  },
+  "original_authority_HTTP_subset": [
+    {
+      "case": "first",
+      "actor_id": "d20b9a82-4584-4d6e-a7d5-6aab1984fbf8",
+      "request_id": "e601dc43-0216-484e-93fa-a86cbfdfe736",
+      "step": "qa",
+      "decision": "approve",
+      "status": 409,
+      "code": "stage_test_report_unusable",
+      "decision_id": null,
+      "candidate_id": "01a1e573-cdde-73cc-9a4b-3ef1ff20bd1f",
+      "report_id": "01303c63-762f-415b-958e-a79c62477640"
+    },
+    {
+      "case": "first",
+      "actor_id": "d20b9a82-4584-4d6e-a7d5-6aab1984fbf8",
+      "request_id": "c9349b1c-e5d6-4bd0-9a08-5040937485eb",
+      "step": "qa",
+      "decision": "return",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e574-493f-70d6-91a9-ee39ab705831",
+      "candidate_id": "01a1e573-cdde-73cc-9a4b-3ef1ff20bd1f",
+      "report_id": "01303c63-762f-415b-958e-a79c62477640"
+    },
+    {
+      "case": "first",
+      "actor_id": "d20b9a82-4584-4d6e-a7d5-6aab1984fbf8",
+      "request_id": "fc8ebeb8-e55d-48db-a08a-31c75ec43350",
+      "step": "qa",
+      "decision": "approve",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e574-90c1-7b10-972d-050a50abe1ed",
+      "candidate_id": "01a1e573-cdde-73cc-9a4b-3ef1ff20bd1f",
+      "report_id": "dcf6f1f2-93d5-4bab-be72-4062b64901fa"
+    },
+    {
+      "case": "second",
+      "actor_id": "0e0a9504-85ec-4541-a0f4-476784bb17be",
+      "request_id": "023e48ad-36f7-44fc-afa7-25208074315b",
+      "step": "qa",
+      "decision": "approve",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e574-de1a-77d3-bc2d-38d6e6e3ac14",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "report_id": "f9a736ed-9907-41f7-9883-445e2a24731a"
+    },
+    {
+      "case": "second",
+      "actor_id": "0e0a9504-85ec-4541-a0f4-476784bb17be",
+      "request_id": "c2e37f1d-3c2a-45a3-b1d2-142d745082a4",
+      "step": "release",
+      "decision": "approve",
+      "status": 403,
+      "code": "stage_role_required",
+      "decision_id": null,
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "report_id": null
+    },
+    {
+      "case": "second",
+      "actor_id": "354eb8f4-bb9e-47c3-a5f1-e930eb0fcb33",
+      "request_id": "f9e9c73f-1916-497f-a89d-ae34cf5b8ae7",
+      "step": "release",
+      "decision": "approve",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e575-2b53-7dd3-beff-af55796f247f",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "report_id": null
+    },
+    {
+      "case": "second",
+      "actor_id": "354eb8f4-bb9e-47c3-a5f1-e930eb0fcb33",
+      "request_id": "a576f8a3-76d1-4247-810f-017f89307377",
+      "step": "rollback",
+      "decision": "approve",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e575-49ee-79e7-a0fb-a981ec0c8681",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "report_id": null
+    },
+    {
+      "case": "second",
+      "actor_id": "354eb8f4-bb9e-47c3-a5f1-e930eb0fcb33",
+      "request_id": "0bf3057f-a453-47a0-981b-c974a3da8159",
+      "step": "rollback",
+      "decision": "approve",
+      "status": 200,
+      "code": "stage_decision_recorded",
+      "decision_id": "01a1e575-5cf4-71a5-9607-64b9d8f0b9ab",
+      "candidate_id": "01a1e574-a533-7480-9c02-54a3f79dd6a7",
+      "report_id": null
+    }
+  ],
+  "database_after": {
+    "reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-after-four-r03.json",
+      "sha256": "e6fd17ce87aea0b97021b5299d321201c9ca5fe2dd5a0f7a8435e0ac6f142ff3",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "recorded_at": "2026-11-16T17:47:59.753Z",
+    "summary": {
+      "database": "multica_pay241_20261116_s2_runtime_r11",
+      "other_connections": 5,
+      "gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "28"
+      },
+      "queue_rows": 15,
+      "queue_status_counts": {
+        "failed": 13,
+        "deferred": 1,
+        "running": 1
+      },
+      "leased_or_bound": 0,
+      "host_runs": 27,
+      "unsettled": 0,
+      "unreleased": 0,
+      "artifacts": 12,
+      "incomplete_artifacts": 0,
+      "stage_intents": 4,
+      "stage_observations": 6,
+      "unresolved_stage_intents": 1,
+      "rollback_metrics": 3
+    },
+    "gate_booleans_restored_epoch24_to28": true,
+    "old_row_sets_unchanged": {
+      "runs": 23,
+      "artifact_records": 10,
+      "stage_intents": 2,
+      "stage_observations": 3
+    },
+    "new_settled_runs": [
+      {
+        "id": "27b1d19c-9bca-44d5-a0cf-d14a7bd80189",
+        "target_id": "dbecbb98-728d-467d-a494-f045ef37f909",
+        "agent_id": "dddc740d-3a0b-473c-b2c9-e952ab043d20",
+        "progress_state": "settled",
+        "proof_state": "host_exit_observed",
+        "business_outcome": "success",
+        "recording_incomplete": false,
+        "settled_at": "2026-11-16T17:42:30.803Z"
+      },
+      {
+        "id": "4bce001a-74a3-45c6-a16e-852f59a1da4e",
+        "target_id": "1b9ba58f-0088-41b3-bdf0-834fb7cc4d31",
+        "agent_id": "7bdc9046-a695-497a-8d30-e76788ffe5a1",
+        "progress_state": "settled",
+        "proof_state": "host_exit_observed",
+        "business_outcome": "success",
+        "recording_incomplete": false,
+        "settled_at": "2026-11-16T17:43:22.073Z"
+      },
+      {
+        "id": "d23c7234-07cc-43b0-a3fd-b18242d6e66b",
+        "target_id": "180756b2-399a-419a-afbe-40d3756cd3ca",
+        "agent_id": "a226f664-711c-427b-9c46-27f4221b50a9",
+        "progress_state": "settled",
+        "proof_state": "host_exit_observed",
+        "business_outcome": "failure",
+        "recording_incomplete": false,
+        "settled_at": "2026-11-16T17:42:43.503Z"
+      },
+      {
+        "id": "e6b8c4e0-7640-4597-b7a2-a0ab45ffed0c",
+        "target_id": "180756b2-399a-419a-afbe-40d3756cd3ca",
+        "agent_id": "a226f664-711c-427b-9c46-27f4221b50a9",
+        "progress_state": "settled",
+        "proof_state": "host_exit_observed",
+        "business_outcome": "success",
+        "recording_incomplete": false,
+        "settled_at": "2026-11-16T17:43:00.016Z"
+      }
+    ],
+    "new_artifact_records": 2,
+    "old_unknown_intent_retained": true,
+    "new_ordinary_synthetic_queue": [
+      {
+        "id": "abe879c4-0183-4c99-a1a8-4aaf90686e23",
+        "issue_id": "01a1e574-a2bc-7897-968e-420abf816d19",
+        "agent_id": "6e8427b0-8b1c-47c9-a31a-2e74638f8f9a",
+        "runtime_id": "4d9aee4f-15f1-436d-aaeb-6e42d294f30e",
+        "status": "running",
+        "provider": "stage_artifact_fixture",
+        "agent_name": "Synthetic artifact producer 95b2633a3e",
+        "collaboration_run_id": null
+      }
+    ],
+    "queue_rows14_to15_not_unchanged": true,
+    "ordinary_producer_is_not_Host_run_leak": true,
+    "all_retained_states_preserved_no_delete_or_cancel_by_reviewer": true,
+    "current_DB_query_by_reviewer": false
+  },
+  "consuming_files_after": {
+    "reference": {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/consuming-files-after-four-r01.json",
+      "sha256": "0af196a0489e610470092795c0665b03731aad2f7f7254c63243e92f674c7d55",
+      "expected_sha256": null,
+      "matches": true
+    },
+    "counts": {
+      "frontend_inputs": 3359,
+      "dependency_links": 1961,
+      "frontend_outputs": 1676,
+      "Go_inputs": 5047,
+      "Go_products": 4
+    },
+    "recorded_drift": 0,
+    "reference_hashes_verified": true,
+    "full_graph_reaudit_by_reviewer": false
+  },
+  "cleanup_checkpoint": {
+    "case_cleanup_errors": [],
+    "page_errors": [],
+    "owned_API_bridge_stop_receipts": "PENDING_MAIN_RECEIPTS",
+    "API_pid_last_owned": 32107,
+    "bridge_pid_last_owned": 32101,
+    "recorded_DB_other_connections": 5,
+    "owned_services_stopped_or_all_resources_zero_claimed": false,
+    "artifact_generations_and_tar_files_final_history_audit": "PENDING_MAIN_FINAL_RESOURCE_RECEIPTS"
+  },
+  "remaining": [
+    "Independent61bcontrol-receipt cause analysis using original preserved request; no automatic retry",
+    "Owned API/bridge stop and final database/process/resource receipts",
+    "Complete original four cases and A01-A12/parent acceptance",
+    "S3 recovery/S4 real inputs/S5 final acceptance remain separate"
+  ],
+  "scope_limits": {
+    "fullS2_A01_A12_or_parent_or_actualR20holder_or_realS4_accepted": false,
+    "reviewer_code_DB_API_network_Go_process_or_source_actions": false,
+    "only_written_files": [
+      ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-original-four-after-check-20261117.md",
+      ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-original-four-after-check-20261117.json"
+    ]
+  },
+  "references": [
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/result.json",
+      "sha256": "a6a9b58fe105b95a5497ac014cb598d43efb1457a96dcd338eb4058a8941f968",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/runner.stdout.log",
+      "sha256": "7eb276b1f9e900643b45232b7925fd8bc48d83a7151463c57e92b6baf591de72",
+      "expected_sha256": "7eb276b1f9e900643b45232b7925fd8bc48d83a7151463c57e92b6baf591de72",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/runner.stderr.log",
+      "sha256": "e99a649bfe1915472ac9a709fd7020fe92048e64600c6c44c54e890924dd3920",
+      "expected_sha256": "e99a649bfe1915472ac9a709fd7020fe92048e64600c6c44c54e890924dd3920",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/playwright-report.json",
+      "sha256": "5ed4accdcec6207542909d572519e201d68435cb103a17a52852e745396eeda7",
+      "expected_sha256": "5ed4accdcec6207542909d572519e201d68435cb103a17a52852e745396eeda7",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/attachments/stage-approvals-evidence-bd9af8e784ffed4e674092947c10569880071dc3.json",
+      "sha256": "425b79d0643e20e660ae21ec8ac8a50862e21ef90960f5f8b7d54aebcf3dd352",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-2.png",
+      "sha256": "4c99bfd7d650c3b10847aa1e90302c1d28de9ede7f6774c3b20f31b4ed7fafe3",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-4.png",
+      "sha256": "3d78947c0c7bff0a74dbc0a6026890c49e9f39f05a5b0edd4d0e716a81d26809",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-3.png",
+      "sha256": "9b296136ab766b1131ab7d3b503b6296e37e70c31e1137853257d32247e01007",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/test-failed-1.png",
+      "sha256": "084ec160ac23b07051311a6c3b64228a5699c99d5e81781f83ed9acc2a596857",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/command.json",
+      "sha256": "886d7bd8e8a45afc07f9d9a5d7955675b68e9931e8556e085b400d7488c98146",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/started-once.json",
+      "sha256": "3c7701859ce41a32a0585ac2f5511213d31bf66366c571dd00c1ffe5edcfff96",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/exit.json",
+      "sha256": "36b892ba7da5401738e6cb1ca1e51a22805fae4aec526cfbfa473ccd53fc21e8",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-execution-permit.json",
+      "sha256": "46c4751c51cc7ff39a075d92070911c99587bfe096979d99912554d46ada086b",
+      "expected_sha256": "46c4751c51cc7ff39a075d92070911c99587bfe096979d99912554d46ada086b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/live-binding-r02.json",
+      "sha256": "b8aada3d95a7661020ad727f137ff1a4f0e106b3d9de1487badfec920c83c60b",
+      "expected_sha256": "b8aada3d95a7661020ad727f137ff1a4f0e106b3d9de1487badfec920c83c60b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/browser-env-current-products.json",
+      "sha256": "7bb45deb3e78b166604448df2d45e9a20c4c1d7a9aeb0b4351942ae4cd43aaf7",
+      "expected_sha256": "7bb45deb3e78b166604448df2d45e9a20c4c1d7a9aeb0b4351942ae4cd43aaf7",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/bridge-config.json",
+      "sha256": "5a2d06025a32420e353d4c2c85e6a3d6a8bdfbe35e6f90e1e2878c2e318be8dc",
+      "expected_sha256": "5a2d06025a32420e353d4c2c85e6a3d6a8bdfbe35e6f90e1e2878c2e318be8dc",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/api-start-plan.json",
+      "sha256": "3ea2a684cace9102c2a745f3f3edff9a0850893abe56a5fb8f59f07cea53c238",
+      "expected_sha256": "3ea2a684cace9102c2a745f3f3edff9a0850893abe56a5fb8f59f07cea53c238",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/products.json",
+      "sha256": "b2d1179108dbf50311cb1f367dd1011649d2a7fdedc9f6307e2163816d01f79b",
+      "expected_sha256": "b2d1179108dbf50311cb1f367dd1011649d2a7fdedc9f6307e2163816d01f79b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/green-source-manifest-r01.json",
+      "sha256": "97d31ea4942956cc3f1189788bb136af45012b40678ef94131e51d999bf64479",
+      "expected_sha256": "97d31ea4942956cc3f1189788bb136af45012b40678ef94131e51d999bf64479",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/evidence/final-code-review-r01.json",
+      "sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "expected_sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/root-integration-integrate-r01.json",
+      "sha256": "8c7cd92355450f836874aa156434a2dcb629b2eea7eb8f5d0a6af4d915c6d71b",
+      "expected_sha256": "8c7cd92355450f836874aa156434a2dcb629b2eea7eb8f5d0a6af4d915c6d71b",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/frontend-products-r01.json",
+      "sha256": "2b182dc5deab6180eab175011f3731326d99ad9e93084c60ec25d37ce12a88d8",
+      "expected_sha256": "2b182dc5deab6180eab175011f3731326d99ad9e93084c60ec25d37ce12a88d8",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/live-surfaces-and-existing-admin-r01.json",
+      "sha256": "2ecb538dcff35773bd1b29e8557b2984a6ff8642f7a9dc8a9541f5258578a591",
+      "expected_sha256": "2ecb538dcff35773bd1b29e8557b2984a6ff8642f7a9dc8a9541f5258578a591",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/bridge-ready.json",
+      "sha256": "f2364d189d58c9f22a863defa1fec32934e3c18d1afa3dbd84136ddba1883ef9",
+      "expected_sha256": "f2364d189d58c9f22a863defa1fec32934e3c18d1afa3dbd84136ddba1883ef9",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/bridge-started.json",
+      "sha256": "4f25cfbfbe7742211aac13c452df86fb095771ad108decf8bd5fd3a51ffdaf05",
+      "expected_sha256": "4f25cfbfbe7742211aac13c452df86fb095771ad108decf8bd5fd3a51ffdaf05",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-before-api-r03.json",
+      "sha256": "4b0992cfe53b2fca20cd8912e65df9b6da063099e18657f2723724016c9a262a",
+      "expected_sha256": "4b0992cfe53b2fca20cd8912e65df9b6da063099e18657f2723724016c9a262a",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-live-before-four-r03.json",
+      "sha256": "78b425f11d803775fc3da0c56575a831c83bb1369ac4ad58d125d1b778c0dd9e",
+      "expected_sha256": "78b425f11d803775fc3da0c56575a831c83bb1369ac4ad58d125d1b778c0dd9e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/runtime-input-preparation-r01.json",
+      "sha256": "c8df379b6121ba2a8a7c6e3334ab0cd62ff0c24cb856a2e10d8846e32edff525",
+      "expected_sha256": "c8df379b6121ba2a8a7c6e3334ab0cd62ff0c24cb856a2e10d8846e32edff525",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/consuming-files-before-four-r01.json",
+      "sha256": "b3db3dd17866e0065b23d83ac0951bfc9d2a552cdcbfd1114a9228414b0f4911",
+      "expected_sha256": "b3db3dd17866e0065b23d83ac0951bfc9d2a552cdcbfd1114a9228414b0f4911",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/playwright-four-scenarios-r02.config.mjs",
+      "sha256": "f1e4af55a6763be4ca878ad26906e5f59ff4914c1e7a139ebe183e01acd7b995",
+      "expected_sha256": "f1e4af55a6763be4ca878ad26906e5f59ff4914c1e7a139ebe183e01acd7b995",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/run-original-four-scenarios-r02.mjs",
+      "sha256": "7004aa948222e67d14ab218afad451bbf1902b8222cda17206f23bf1b922ee10",
+      "expected_sha256": "7004aa948222e67d14ab218afad451bbf1902b8222cda17206f23bf1b922ee10",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-config-provenance-correction-r02.json",
+      "sha256": "9991835777a96cdd0b6980c3dd2edbc634f3108af702dc1faebd8b1f13e4c585",
+      "expected_sha256": "9991835777a96cdd0b6980c3dd2edbc634f3108af702dc1faebd8b1f13e4c585",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/runtime-current-r11-c54-r01/build-r01/host-provider",
+      "sha256": "65ec5fc984ae15f002ee3c5c537eaa22a45cfcfad2d85197fdc1805423402acb",
+      "expected_sha256": "65ec5fc984ae15f002ee3c5c537eaa22a45cfcfad2d85197fdc1805423402acb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/server",
+      "sha256": "9c950c93b534339c0f3fe67f46b5abaf8fb9f55918288bd2ad4df59b497774c4",
+      "expected_sha256": "9c950c93b534339c0f3fe67f46b5abaf8fb9f55918288bd2ad4df59b497774c4",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/multica",
+      "sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+      "expected_sha256": "817360414a24d19ed760633c8080fe1bfd8201b7dc47f4e214e205cfe5218abb",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/stage-router.test",
+      "sha256": "535e6d7b258f88c0cb8e75e00e0436c60dd4058153c033344656cf979c0c683e",
+      "expected_sha256": "535e6d7b258f88c0cb8e75e00e0436c60dd4058153c033344656cf979c0c683e",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/build-r01/host-daemon.test",
+      "sha256": "035d6df4fa0ebe7960d9eb4f18ccae957818fc26d40910095538c6a222dd8188",
+      "expected_sha256": "035d6df4fa0ebe7960d9eb4f18ccae957818fc26d40910095538c6a222dd8188",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/live-process-provenance-r01.json",
+      "sha256": "75adfe7f3587528aa74ea12ac065cb6383d1434ca213029ea508f3679b5c6009",
+      "expected_sha256": "75adfe7f3587528aa74ea12ac065cb6383d1434ca213029ea508f3679b5c6009",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/runtime/playwright-four-scenarios.config.mjs",
+      "sha256": "c4cf2d92126482452b673ebca5bc04072b56cf3be131e34f450a6ff1e4a697fa",
+      "expected_sha256": "c4cf2d92126482452b673ebca5bc04072b56cf3be131e34f450a6ff1e4a697fa",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-live-four-entry-check-r02-20261117.json",
+      "sha256": "120e8485e9a3382e7e88382dadd0f22ad944a7882df93904dce3c25f5aea246a",
+      "expected_sha256": "120e8485e9a3382e7e88382dadd0f22ad944a7882df93904dce3c25f5aea246a",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-approv-895aa-tory-across-Web-and-Desktop-chromium/stage-approvals-evidence.json",
+      "sha256": "425b79d0643e20e660ae21ec8ac8a50862e21ef90960f5f8b7d54aebcf3dd352",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/four-scenarios-r01/test-results/collaboration-stage-execut-4904f-separate-on-Web-and-Desktop-chromium/stage-execution-evidence.json",
+      "sha256": "b1bc224f6e92de157121f10f97977eba9d5632d6eab78755d0e42e99fceb0d83",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/database-after-four-r03.json",
+      "sha256": "e6fd17ce87aea0b97021b5299d321201c9ca5fe2dd5a0f7a8435e0ac6f142ff3",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r22-runtime-capabilities-read-r01/runtime/consuming-files-after-four-r01.json",
+      "sha256": "0af196a0489e610470092795c0665b03731aad2f7f7254c63243e92f674c7d55",
+      "expected_sha256": null,
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/.multica-acceptance/pay241-20261115-continuation/resume-r05/r20-source-denial-panel-r01/frontend-verification/input-binding-green-r01.json",
+      "sha256": "0e67ada056c5adf29c4410dc97b7ff5ccfce932ec6c9c0f369f7dc5de96dbabc",
+      "expected_sha256": "0e67ada056c5adf29c4410dc97b7ff5ccfce932ec6c9c0f369f7dc5de96dbabc",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-capabilities-read-red-green-check-20261116.json",
+      "sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "expected_sha256": "72de7a9a42ca0e1577ad21eb36232acb8278acfcc3af6f59bcffb43db60d8b5f",
+      "matches": true
+    },
+    {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-runtime-entry-check-20261117.json",
+      "sha256": "bf7d264d81ad8488de78e704b41c3eab6bba18d0936facc4a22e4cd9d2876097",
+      "expected_sha256": "bf7d264d81ad8488de78e704b41c3eab6bba18d0936facc4a22e4cd9d2876097",
+      "matches": true
+    }
+  ],
+  "reference_count": 47,
+  "reference_mismatches": []
+}

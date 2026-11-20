@@ -1,0 +1,185 @@
+{
+  "at": "2026-11-19T22:26:43.546910+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "researcher": "tc04_research",
+  "scope": "internal code/spec research only",
+  "execution": {
+    "tests": false,
+    "db": false,
+    "api": false,
+    "services": false,
+    "git_operations": false,
+    "product_edits": false
+  },
+  "head_from_main_message": "ad5affc9a (not independently verified by research; Main owns candidate binding)",
+  "proposed_code_paths": [
+    "server/cmd/server/collaboration_machine_completion_refusal_test.go"
+  ],
+  "proposed_denominator": {
+    "tops": 2,
+    "refusal_leaves": 9,
+    "named_per_mode": 11,
+    "modes": [
+      "normal",
+      "race"
+    ],
+    "executions": 22,
+    "note": "Avoid nested actor t.Run container names or update inventory before execution."
+  },
+  "proposed_leaf_suffixes": {
+    "human_authorization": [
+      "generic_claimed_task/create_authorization",
+      "generic_claimed_task/revoke_original_authorization",
+      "restricted_claimed_task/create_authorization",
+      "restricted_claimed_task/revoke_original_authorization",
+      "human_with_agent_hint/create_authorization",
+      "human_with_agent_hint/revoke_original_authorization"
+    ],
+    "human_collaboration_completion": [
+      "generic_claimed_task/complete",
+      "restricted_claimed_task/complete",
+      "human_with_agent_hint/complete"
+    ]
+  },
+  "maximum_post_acceptance_disposition": {
+    "TC-04": "PARTIAL",
+    "parent_counts": {
+      "PASS": 9,
+      "PARTIAL": 11,
+      "NOT_RUN": 4
+    },
+    "parent_status": "in_progress"
+  },
+  "facts": [
+    {
+      "path": "server/internal/middleware/auth.go",
+      "sha256": "18392905c77f59897c63b4bc2490b20c95389bf49c88748e934643ca9b6e5dfe",
+      "bytes": 13398
+    },
+    {
+      "path": "server/internal/handler/task_capability.go",
+      "sha256": "5b72e4f688ae834c846c2f55f00d726a977f51c7812219ca9b6f9b9f0f350c42",
+      "bytes": 10471
+    },
+    {
+      "path": "server/internal/collaboration/access.go",
+      "sha256": "e353d02c8b1dfb793492f5551420cd9c1fb2722e90bc41d200898ccb647a6c64",
+      "bytes": 4085
+    },
+    {
+      "path": "server/internal/service/collaboration_workflow.go",
+      "sha256": "3334108715206626af359b70f3cdf1f22b4bc92879bbf3bbaccc4a55c70b237d",
+      "bytes": 37070
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle.go",
+      "sha256": "901a32dbdf0b68a24dc13dabda1dc0bc3121c72c041c4f3548dbbfffcc2e5845",
+      "bytes": 28690
+    },
+    {
+      "path": "server/internal/service/delivery_completion_authorization.go",
+      "sha256": "a8445340a055faa12fceaa04e70f62eb213e3aeac333b0bc5abff50520e4f0b0",
+      "bytes": 38270
+    },
+    {
+      "path": "server/internal/handler/delivery_completion_authorization.go",
+      "sha256": "b75b119b9f7c9f7a772b233dd81538ad4ed29ef5f51b85cef1473a71cff32161",
+      "bytes": 8294
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35",
+      "bytes": 151979
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_qa_protection_test.go",
+      "sha256": "985acd0d76b54d3a487db5e6ff5ad30e2181354893edaec52ce12e46659e0e90",
+      "bytes": 18573
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_qa_protection_test.go",
+      "sha256": "090e46545b770b5bae4d958a8060a306f59821321f29c16cc47db16296bb8d3a",
+      "bytes": 9616
+    },
+    {
+      "path": "server/cmd/server/delivery_completion_authorization_integration_test.go",
+      "sha256": "ab3c5cd7eedc49b9ac2cfcec8e4bfa21aa6a65356ccf23046da9131228a2a3c9",
+      "bytes": 21816
+    },
+    {
+      "path": "server/cmd/server/delivery_completion_collaboration_integration_test.go",
+      "sha256": "1b37f836ac441fb1c81a3d535810a7dc866d9dd555795cf254d1efc745ddc6ad",
+      "bytes": 31387
+    },
+    {
+      "path": "server/cmd/server/delivery_completion_enforcement_integration_test.go",
+      "sha256": "52e38dc789f7dc419629a478aa92a66a698b684ca0c8b6272f9097a9dfc654db",
+      "bytes": 13382
+    },
+    {
+      "path": "server/cmd/server/delivery_completion_managed_integration_test.go",
+      "sha256": "00b6822e08777201fae0ba17e9b7ad554bcb4100652f2c47c0cbdde18d1b8e60",
+      "bytes": 10158
+    },
+    {
+      "path": "server/cmd/server/delivery_policy_integration_test.go",
+      "sha256": "112cf386b8ddd534547fbfbf3f02465abea5c46c3accc099c9b38c25b442103c",
+      "bytes": 37754
+    },
+    {
+      "path": "server/cmd/server/delivery_evidence_integration_test.go",
+      "sha256": "d50b65b821711bf424898f9f9bb52d9d5c4799a5cec8e26f5a5d99198db18032",
+      "bytes": 16118
+    },
+    {
+      "path": "server/cmd/server/agent_artifact_integration_test.go",
+      "sha256": "0b26d4afc5a3e44ecb8004572d0fd89a208271719c0b7b90072239e967af0085",
+      "bytes": 24392
+    },
+    {
+      "path": "server/internal/service/collaboration_lifecycle_test.go",
+      "sha256": "a892d2c1d464b76920359594c8195c7403fee360454e801dca6d28bd6586b92a",
+      "bytes": 36797
+    },
+    {
+      "path": ".trellis/spec/server/delivery-completion-enforcement.md",
+      "sha256": "0ffa7cea0570f89f4c6067d637bf4fa746540738fd1cd0c1cd310844f891a289",
+      "bytes": 23543
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-delivery.md",
+      "sha256": "85a8b1556675114aeef2f2b5f8ed2ae22f546ff40e4e64c6afc772dbf1aa4351",
+      "bytes": 14373
+    },
+    {
+      "path": ".trellis/spec/server/task-api-capabilities.md",
+      "sha256": "7daa1ea5610b6d3917b8e4816d2f89d09f4dae97b166bdd8e0f273ef5b9f4a07",
+      "bytes": 9838
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "sha256": "ac849f56b40ff8afcdc7760354b1beb6d9828b49a72519aa171f36e207eead5e",
+      "bytes": 22921
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "sha256": "f1c6c351c9ae344f42d950432858a42cc9da81c3981f3293bc27a21f8b69451c",
+      "bytes": 83212
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc13-independent-check-20261119.md",
+      "sha256": "1ac9c6572dc6e9b44f23ca96493633c02f2212835fd8ec0b5b7559a74d9d47d6",
+      "bytes": 6460
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md",
+      "sha256": "ddd1a2ce283150966bb1da673c864ec2f28e4e7109cf13ace40a86c2d9f10e8d",
+      "bytes": 2537
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc04-close-approval-gap-20261120.md",
+      "sha256": "c92ccc8a9f300a5ae47c6285fdc09a2fbde8d9fd709efdd5bbc3e239338781b0",
+      "bytes": 15204
+    }
+  ]
+}

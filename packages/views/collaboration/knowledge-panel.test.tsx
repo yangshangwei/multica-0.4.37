@@ -3,7 +3,7 @@ import { webcrypto } from "node:crypto";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { act, cleanup, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { focusManager, onlineManager, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, ApiError, setApiInstance } from "@multica/core/api";
 import { projectKeys } from "@multica/core/projects/queries";
 import type { Project, Workspace } from "@multica/core/types";
@@ -14,6 +14,7 @@ import { collaborationKnowledgeKeys, collaborationScope, parseCollaborationComme
 import { collaborationIssueFixture, collaborationExecutionFixture, knowledgeCandidateFixture, knowledgeUnavailableCandidateFixture } from "@multica/core/collaboration/test-fixtures";
 import { renderWithI18n } from "../test/i18n";
 import { CollaborationKnowledgePanel, ManagedKnowledgePanel } from "./knowledge-panel";
+import { KnowledgeReview } from "./knowledge-review";
 
 const auth = vi.hoisted(() => ({ userId: "00000000-0000-4000-8000-000000000001" }));
 vi.mock("@multica/core/auth", () => ({ useAuthStore: Object.assign((selector: (state: unknown) => unknown) => selector({ user: { id: auth.userId }, status: "authenticated" }),
@@ -58,7 +59,7 @@ beforeEach(() => {
   vi.spyOn(api, "getCollaborationComments").mockResolvedValue(parseCollaborationComments({ issue_id: issue.id, items: [comment], next_cursor: null }));
   vi.spyOn(api, "getCollaborationComment").mockResolvedValue(comment);
 });
-afterEach(() => { cleanup(); client.clear(); localStorage.clear(); vi.useRealTimers(); vi.restoreAllMocks(); });
+afterEach(() => { cleanup(); client.clear(); localStorage.clear(); focusManager.setFocused(true); onlineManager.setOnline(true); vi.useRealTimers(); vi.restoreAllMocks(); });
 function mount(target = false, currentIssue = issue, collapsed = false) {
   const content = target
     ? <ManagedKnowledgePanel workspaceId={issue.source_workspace.id} />
@@ -68,6 +69,11 @@ function mount(target = false, currentIssue = issue, collapsed = false) {
 async function openReview() {
   await userEvent.click(await screen.findByRole("button", { name: /PRIVATE SUMMARY/ }));
   await screen.findByText("PRIVATE BODY");
+}
+function visibilityView(active: boolean) {
+  return <QueryClientProvider client={client}><button>Outside knowledge</button><div hidden={!active} inert={!active}>
+    <CollaborationKnowledgePanel scope={scope} issue={issue} active={active} />
+  </div></QueryClientProvider>;
 }
 function receipt(requestId: string, action: CollaborationKnowledgeReceipt["action"]): CollaborationKnowledgeReceipt {
   return { protocol_version: 1, request_id: requestId, candidate_id: candidate.candidate_id, version: candidate.availability === "restricted" ? "1" : candidate.version,
@@ -214,14 +220,17 @@ it("resets review confirmation for a changed identity and removes body on source
 });
 
 // M4: Core erases the detail on every refresh (knowledge-cache.test.ts owns that); typed input must outlive the erasure.
-async function refreshDetailHeld() {
+async function refreshDetailHeld(whilePending?: () => void | Promise<void>) {
   let release: (() => void) | undefined;
   vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce(() => new Promise((resolve) => { release = () => resolve(detail()); }));
   act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
   await waitFor(() => expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument());
-  expect(screen.queryByRole("textbox", { name: "Decision reason" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "Approve exact version" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("checkbox", { name: /I reviewed/ })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Reject candidate" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Withdraw contribution" })).not.toBeInTheDocument();
   await waitFor(() => expect(release).toBeDefined());
+  await whilePending?.();
   await act(async () => { release!(); });
   await screen.findByText("PRIVATE BODY");
 }
@@ -229,16 +238,226 @@ async function refreshDetailHeld() {
 it("keeps typed decision input and review confirmation across an unchanged refresh but resets them for a new revision", async () => {
   mount(); await openReview();
   await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
-  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "Needs a source check");
-  await refreshDetailHeld();
+  const reason = screen.getByRole<HTMLTextAreaElement>("textbox", { name: "Decision reason" });
+  await userEvent.type(reason, "Needs a source check");
+  reason.setSelectionRange(8, 14, "backward");
+  await refreshDetailHeld(async () => {
+    expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+    expect(reason).toHaveFocus(); expect(reason).toBeEnabled();
+    expect([reason.selectionStart, reason.selectionEnd, reason.selectionDirection]).toEqual([8, 14, "backward"]);
+    await userEvent.keyboard("delivery");
+    expect(reason).toHaveValue("Needs a delivery check");
+    reason.setSelectionRange(8, 16, "forward");
+  });
   expect(screen.getByRole("checkbox", { name: /I reviewed/ })).toBeChecked();
-  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("Needs a source check");
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Needs a delivery check"); expect(reason).toHaveFocus();
+  expect([reason.selectionStart, reason.selectionEnd, reason.selectionDirection]).toEqual([8, 16, "forward"]);
   expect(screen.getByRole("button", { name: "Approve exact version" })).toBeEnabled();
   candidate = { ...candidate, state_revision: "2" };
   act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
   await waitFor(() => expect(screen.getByRole("checkbox", { name: /I reviewed/ })).not.toBeChecked());
   expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("");
   expect(screen.getByRole("button", { name: "Approve exact version" })).toBeDisabled();
+});
+
+it("keeps an empty focused reason editor mounted and editable during a same-tuple renewal", async () => {
+  mount(); await openReview();
+  const reason = screen.getByRole<HTMLTextAreaElement>("textbox", { name: "Decision reason" });
+  reason.focus(); reason.setSelectionRange(0, 0);
+  await refreshDetailHeld(async () => {
+    expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+    expect(reason).toHaveFocus(); expect(reason).toBeEnabled();
+    expect([reason.selectionStart, reason.selectionEnd]).toEqual([0, 0]);
+    await userEvent.keyboard("Started during renewal");
+  });
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Started during renewal"); expect(reason).toHaveFocus();
+});
+
+it("retains only the human reason after a transient renewal failure and removes it on authoritative denial", async () => {
+  const send = vi.spyOn(api, "rejectCollaborationKnowledge");
+  mount(); await openReview();
+  const reason = screen.getByRole("textbox", { name: "Decision reason" });
+  await userEvent.type(reason, "Human draft");
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockRejectedValueOnce(new TypeError("Offline"));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument());
+  const review = screen.getByRole("region", { name: "Review candidate" });
+  expect(within(review).getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(reason).toHaveFocus(); expect(reason).toBeEnabled();
+  expect(within(review).queryByText("PRIVATE BODY")).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Reject candidate" })).not.toBeInTheDocument();
+  await userEvent.keyboard(" kept while offline");
+  await userEvent.click(within(review).getByRole("button", { name: "Refresh" }));
+  await screen.findByText("PRIVATE BODY");
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Human draft kept while offline");
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockRejectedValueOnce(new ApiError("Denied", 403, "Forbidden"));
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(within(review).queryByText("PRIVATE BODY")).not.toBeInTheDocument());
+  expect(within(review).queryByText("PRIVATE BODY")).not.toBeInTheDocument();
+  expect(within(review).queryByRole("textbox", { name: "Decision reason" })).not.toBeInTheDocument();
+  expect(reason).not.toBeInTheDocument();
+  expect(within(review).queryByRole("checkbox", { name: /I reviewed/ })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Approve exact version" })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Reject candidate" })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Withdraw contribution" })).not.toBeInTheDocument();
+  expect(send).not.toHaveBeenCalled();
+});
+
+it("isolates the previous decision draft immediately while a newly selected candidate is pending", async () => {
+  const first = candidate;
+  const second = { ...knowledgeCandidateFixture, candidate_id: projectId, lineage_id: projectId, source_issue_id: issue.id,
+    source_workspace_id: issue.source_workspace.id, target: { kind: "workspace" as const, workspace_id: issue.source_workspace.id },
+    sources: [{ kind: "memory" as const, issue_id: issue.id, version: "7", sha256: "a".repeat(64) }], summary: "Second candidate", content: "Second conclusion" };
+  vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id,
+    items: [summary(), Object.fromEntries(Object.entries(second).filter(([key]) => key !== "content"))], next_cursor: null, capabilities: { can_propose: true } }));
+  let finish!: () => void;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementation((id) => id === first.candidate_id ? Promise.resolve(detail()) : new Promise((resolve) => {
+    finish = () => resolve(parseCollaborationKnowledgeDetail({ ...lease(), candidate: second, history: [], history_truncated: false }));
+  }));
+  mount(); await openReview();
+  const oldReason = screen.getByRole("textbox", { name: "Decision reason" });
+  await userEvent.type(oldReason, "Only for the first candidate");
+  await userEvent.click(screen.getByRole("button", { name: /Second candidate/ }));
+  await waitFor(() => expect(finish).toBeDefined());
+  expect(oldReason).not.toBeInTheDocument();
+  expect(screen.queryByRole("textbox", { name: "Decision reason" })).not.toBeInTheDocument();
+  await act(async () => finish());
+  await screen.findByText("Second conclusion");
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("");
+  await userEvent.click(screen.getByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await screen.findByText("PRIVATE BODY");
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toHaveValue("");
+});
+
+it("does not reuse decision grants when an unchanged tuple returns without capabilities", async () => {
+  const send = vi.spyOn(api, "approveCollaborationKnowledge");
+  mount(); await openReview();
+  await userEvent.click(screen.getByRole("checkbox", { name: /I reviewed/ }));
+  await userEvent.type(screen.getByRole("textbox", { name: "Decision reason" }), "Client draft");
+  if (candidate.availability !== "available") throw new Error("Expected available fixture");
+  candidate = { ...candidate, capabilities: { can_approve: false, can_reject: false, can_withdraw: false } };
+  await act(async () => { await client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await screen.findByText("PRIVATE BODY");
+  const review = screen.getByRole("region", { name: "Review candidate" });
+  expect(within(review).queryByRole("checkbox", { name: /I reviewed/ })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Approve exact version" })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Reject candidate" })).not.toBeInTheDocument();
+  expect(within(review).queryByRole("button", { name: "Withdraw contribution" })).not.toBeInTheDocument();
+  expect(send).not.toHaveBeenCalled();
+});
+
+it("disables hidden candidate reads while root status renews, erases at expiry and reopens without taking focus", async () => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval", "Date", "performance"] });
+  const mounted = renderWithI18n(visibilityView(true));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  fireEvent.click(screen.getByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  const reason = screen.getByRole("textbox", { name: "Decision reason" });
+  fireEvent.change(reason, { target: { value: "Keep this hidden draft" } });
+  const key = collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id);
+  expect(client.getQueryData(key)).toBeDefined();
+  const candidateReads = vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length;
+  const rootReads = vi.mocked(api.getCollaborationKnowledgeCandidates).mock.calls.length;
+  mounted.rerender(visibilityView(false));
+  const outside = screen.getByRole("button", { name: "Outside knowledge" }); outside.focus();
+  await act(async () => { await client.invalidateQueries({ queryKey: key }); await vi.advanceTimersByTimeAsync(30_100); });
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(candidateReads);
+  expect(vi.mocked(api.getCollaborationKnowledgeCandidates).mock.calls.length).toBeGreaterThan(rootReads);
+  expect(client.getQueryData(key)).toBeUndefined();
+  expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument();
+  await act(async () => {
+    focusManager.setFocused(false); focusManager.setFocused(true);
+    onlineManager.setOnline(false); onlineManager.setOnline(true);
+    await vi.advanceTimersByTimeAsync(20);
+  });
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(candidateReads);
+  let finish!: () => void;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce(() => new Promise((resolve) => { finish = () => resolve(detail()); }));
+  mounted.rerender(visibilityView(true));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(candidateReads + 1);
+  expect(screen.queryByText("PRIVATE BODY")).not.toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(reason).toHaveValue("Keep this hidden draft"); expect(outside).toHaveFocus();
+  await act(async () => { finish(); await vi.advanceTimersByTimeAsync(20); });
+  expect(screen.getByText("PRIVATE BODY")).toBeInTheDocument();
+  expect(screen.getByRole("textbox", { name: "Decision reason" })).toBe(reason);
+  expect(outside).toHaveFocus();
+});
+
+it("disables both review and retained delivery-proposal observers of the same hidden candidate", async () => {
+  vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "setInterval", "clearInterval", "Date", "performance"] });
+  knowledgeVersion = 2;
+  const parsed = parseCollaborationKnowledgeDetail({ ...lease(), history: [], history_truncated: false, candidate: {
+    ...knowledgeCandidateFixture, version: "1", state: "approved", state_revision: "2", source_issue_id: issue.id,
+    source_workspace_id: issue.source_workspace.id, target: { kind: "project", workspace_id: issue.source_workspace.id, project_id: projectId },
+    proposed_by_user_id: null, approved_by_user_id: null, proposed_at: "2026-11-01T00:00:00Z", approved_at: "2026-11-01T00:00:01Z",
+    published_target_revision: "1", proposal_origin: "automation", decision_origin: "automation", usage_status: "active",
+    automation: { job_id: commentId, policy_revision: "0", rule_version: "project-knowledge-v1" },
+    decision: { actor_user_id: null, at: "2026-11-01T00:00:01Z", reason: null }, sources: [{ kind: "delivery", issue_id: issue.id,
+      submission_id: commentId, delivery_event_seq: "10", accepted_event_seq: "11", sha256: "c".repeat(64) }],
+    capabilities: { can_approve: false, can_reject: false, can_withdraw: true },
+  } });
+  if (!parsed) throw new Error("Invalid automatic fixture");
+  candidate = parsed.candidate;
+  const mounted = renderWithI18n(visibilityView(true));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  fireEvent.click(screen.getByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  fireEvent.click(screen.getByRole("button", { name: "Propose correction" }));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  const summaryInput = screen.getByRole("textbox", { name: "Summary" });
+  fireEvent.change(summaryInput, { target: { value: "Retained human correction" } });
+  fireEvent.click(screen.getByRole("checkbox", { name: /Delivery/ }));
+  const reads = vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length;
+  const rootReads = vi.mocked(api.getCollaborationKnowledgeCandidates).mock.calls.length;
+  const key = collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id);
+  mounted.rerender(visibilityView(false));
+  const outside = screen.getByRole("button", { name: "Outside knowledge" }); outside.focus();
+  await act(async () => {
+    await client.invalidateQueries({ queryKey: key });
+    await vi.advanceTimersByTimeAsync(31_000);
+    focusManager.setFocused(false); focusManager.setFocused(true);
+    onlineManager.setOnline(false); onlineManager.setOnline(true);
+    await vi.advanceTimersByTimeAsync(20);
+  });
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(reads);
+  expect(vi.mocked(api.getCollaborationKnowledgeCandidates).mock.calls.length).toBeGreaterThan(rootReads);
+  expect(client.getQueryData(key)).toBeUndefined();
+  expect(summaryInput).toBeInTheDocument(); expect(summaryInput).toHaveValue("Retained human correction");
+  expect(outside).toHaveFocus();
+  mounted.rerender(visibilityView(true));
+  await act(async () => { await vi.advanceTimersByTimeAsync(20); });
+  expect(vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length).toBeGreaterThan(reads);
+  expect(screen.getByRole("textbox", { name: "Summary" })).toBe(summaryInput);
+  expect(screen.getByRole("checkbox", { name: /Delivery/ })).toBeChecked();
+  expect(outside).toHaveFocus();
+});
+
+it("keeps another visible consumer's candidate read running when one review is hidden", async () => {
+  const view = (active: boolean) => <QueryClientProvider client={client}><div hidden={!active} inert={!active}>
+    <CollaborationKnowledgePanel scope={scope} issue={issue} active={active} />
+  </div><div aria-label="Visible knowledge consumer" role="group"><KnowledgeReview scope={scope} candidateId={candidate.candidate_id}
+    issue={issue} canPropose={false} locked={false} onSubmit={async () => {}} onProposal={() => {}} onSelect={() => {}} onClose={() => {}} /></div></QueryClientProvider>;
+  const mounted = renderWithI18n(view(true));
+  await userEvent.click(await screen.findByRole("button", { name: /PRIVATE SUMMARY/ }));
+  await waitFor(() => expect(screen.getAllByText("PRIVATE BODY")).toHaveLength(2));
+  let finish!: () => void, signal: AbortSignal | undefined;
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementationOnce((_id, options) => new Promise((resolve) => {
+    signal = options?.signal; finish = () => resolve(detail());
+  }));
+  act(() => { void client.invalidateQueries({ queryKey: collaborationKnowledgeKeys.candidate(scope, candidate.candidate_id) }); });
+  await waitFor(() => expect(finish).toBeDefined());
+  mounted.rerender(view(false));
+  expect(signal?.aborted).toBe(false);
+  await act(async () => finish());
+  const visible = screen.getByRole("group", { name: "Visible knowledge consumer" });
+  expect(await within(visible).findByText("PRIVATE BODY")).toBeInTheDocument();
+  expect(signal?.aborted).toBe(false);
+  expect(within(visible).getByRole("checkbox", { name: /I reviewed/ })).toBeInTheDocument();
 });
 
 it("resets typed decision input when a held refresh returns a different version", async () => {
@@ -566,7 +785,7 @@ it("a review decision leaves an open proposal draft intact and only the panel's 
   await waitFor(() => expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledWith(send.mock.calls[0]![1].candidate_id, expect.anything()));
 });
 
-it("recovering an older stored proposal keeps a new draft open while it opens the recovered candidate", async () => {
+it("recovering an older stored proposal while hidden keeps the new draft without reading or focusing the recovered candidate", async () => {
   const send = vi.spyOn(api, "proposeCollaborationKnowledge").mockRejectedValue(new TypeError("Lost response"));
   const mounted = mount(); await userEvent.click(await screen.findByRole("button", { name: "Propose knowledge" })); await fillProposal();
   await userEvent.click(screen.getByRole("button", { name: "Submit candidate" }));
@@ -575,14 +794,31 @@ it("recovering an older stored proposal keeps a new draft open while it opens th
   // The lost proposal was applied, so this panel's list now holds it.
   vi.mocked(api.getCollaborationKnowledgeCandidates).mockImplementation(async () => parseCollaborationKnowledgeCandidates({ ...lease(), issue_id: issue.id,
     items: [summary(), { ...summary(), candidate_id: lost.candidate_id, summary: "Recovered proposal" }], next_cursor: null, capabilities: { can_propose: true } }));
-  mount(); await screen.findByRole("button", { name: /Recovered proposal/ });
+  const remounted = renderWithI18n(visibilityView(true)); await screen.findByRole("button", { name: /Recovered proposal/ });
   await userEvent.click(screen.getByRole("button", { name: "Propose knowledge" }));
-  fireEvent.change(screen.getByRole("textbox", { name: "Summary" }), { target: { value: "Fresh draft" } });
-  vi.mocked(api.getCollaborationKnowledgeOperation).mockResolvedValue({ ...receipt(lost.request_id, "propose"), candidate_id: lost.candidate_id });
+  const summaryInput = screen.getByRole("textbox", { name: "Summary" });
+  fireEvent.change(summaryInput, { target: { value: "Fresh draft" } });
+  let finish!: () => void;
+  vi.mocked(api.getCollaborationKnowledgeOperation).mockImplementationOnce(() => new Promise((resolve) => {
+    finish = () => resolve({ ...receipt(lost.request_id, "propose"), candidate_id: lost.candidate_id });
+  }));
+  vi.mocked(api.getCollaborationKnowledgeCandidate).mockImplementation(async (id) => parseCollaborationKnowledgeDetail({ ...lease(),
+    candidate: { ...candidate, candidate_id: id, lineage_id: id }, history: [], history_truncated: false }));
   await userEvent.click(screen.getByRole("button", { name: "Check original result" }));
+  await waitFor(() => expect(finish).toBeDefined());
+  const detailReads = vi.mocked(api.getCollaborationKnowledgeCandidate).mock.calls.length;
+  remounted.rerender(visibilityView(false));
+  const outside = screen.getByRole("button", { name: "Outside knowledge" }); outside.focus();
+  await act(async () => finish());
   await screen.findByText("Candidate proposed. It is not active until approved.");
-  expect(screen.getByRole("textbox", { name: "Summary" })).toHaveValue("Fresh draft");
+  expect(summaryInput).toBeInTheDocument(); expect(summaryInput).toHaveValue("Fresh draft");
+  expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledTimes(detailReads);
+  expect(outside).toHaveFocus(); expect(send).toHaveBeenCalledOnce();
+  remounted.rerender(visibilityView(true));
   await waitFor(() => expect(api.getCollaborationKnowledgeCandidate).toHaveBeenCalledWith(lost.candidate_id, expect.anything()));
+  await screen.findByText("PRIVATE BODY");
+  expect(screen.getByRole("textbox", { name: "Summary" })).toBe(summaryInput);
+  expect(outside).toHaveFocus();
 });
 
 it("recovering a request from the same source opens it even when it is outside the loaded list page", async () => {

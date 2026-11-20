@@ -77,6 +77,54 @@ specific positive fixture; never add a global heartbeat loop or relax the fence
 for stale/offline negative tests. A targeted pass or a later heartbeat-age log
 does not reconstruct a cleaned-up runtime row from an earlier failed run.
 
+Private collaboration history cursors require a generated, nondefault
+`JWT_SECRET` even in a legacy-auth test deployment. Set it before starting the
+API or Go test process: `auth.JWTSecret()` caches its first value with
+`sync.Once`, so a later per-test environment override cannot repair an earlier
+default read. `informationCursorKey()` intentionally rejects the public
+development default with HTTP 503 `information_context_unavailable`. Preserve
+that refusal; configure the isolated fixture instead of weakening the check.
+Keep the generated value only in the private environment file, never the report.
+
+### Interrupted concurrent index fixtures
+
+When a migration test holds a writer transaction to interrupt a concurrent index
+build, cancel the exact PostgreSQL builder while that transaction still holds
+its lock. A Go context cancellation can return to the client before the backend
+query stops; rolling back the writer immediately can let the index finish and
+make the intended invalid-index fixture nondeterministic.
+
+Resolve the builder through `pg_stat_progress_create_index`, joined to the exact
+schema and index name, and require the fixture writer PID in
+`pg_blocking_pids(builder_pid)`. Call `pg_cancel_backend(builder_pid)` and await
+the migration result with PostgreSQL error code `57014` before releasing the
+writer. An unrelated waiting query, `context.Canceled`, or a successful build is
+not proof of the intended interruption. Never cancel a PID selected only by a
+generic blocking relationship.
+
+Keep the invalid-index, unapplied migration ledger, retained data and successful
+repair assertions in `migrate_collaboration_command_history_test.go` and
+`migrate_collaboration_resource_offer_test.go`. Verify the full migration package
+on a fresh database and the interruption cases with `-race`; retain the original
+failed run separately. This changes test synchronization, not migration retry
+or production cancellation behavior.
+
+### Short-lived knowledge fixtures must prove initial disclosure
+
+In `collaboration_knowledge_runtime_test.go`, create and approve a candidate
+with a short TTL only after claim, launch permit and handoff setup have completed.
+Use `knowledgeDBNow()` for its expiry, preserve the existing two-second TTL and
+assert that the first prepared bundle contains exactly the expected contribution
+before invalidating it. Then wait past both database and host expiry before
+testing replay and stale authorization refusal.
+
+An empty initial bundle does not exercise withdrawal or expiry: if setup consumes
+the TTL, replaying the same empty bundle is valid and must not be described as
+redisclosure. Do not extend the TTL merely to hide setup latency or update the
+immutable `expires_at` column. Retain the original failure and verify the complete
+withdrawn/expired/purged/dismissed matrix plus the owning service shard after the
+fixture synchronization change.
+
 ### Private environment registry identity
 
 An application environment file and a development registry are separate inputs.
@@ -128,6 +176,25 @@ select a missing issue. Cleanup is test infrastructure, not a production delete
 or retention policy.
 
 ## 4. Validation and error matrix
+
+### Observing logs without changing later tests
+
+Tests that replace `slog.Default` must preserve the legacy `log.Writer` and `log.Flags` as well. `slog.SetDefault` bridges the legacy logger into a nondefault handler; restoring an original default handler does not restore that writer. A wrapper delegating to the old default handler can recursively acquire the same legacy logger mutex.
+
+Use an independent owned `slog.TextHandler`/`JSONHandler` sink for observation, retain synchronized error capture, and restore all three original values after publishers have joined. Do not discard the error collector or accept only a passing new-test subset while a later old test hangs.
+
+```go
+previous := slog.Default()
+legacyWriter, legacyFlags := log.Writer(), log.Flags()
+// Observe through an independent handler, never through previous.Handler().
+t.Cleanup(func() {
+    slog.SetDefault(previous)
+    log.SetOutput(legacyWriter)
+    log.SetFlags(legacyFlags)
+})
+```
+
+PAY-241's first notification normal round retained its original ten-minute timeout in an old archive test. A stdlib-only probe reproduced the copied observer's blocked logging; the corrected observer preserved both error capture and restored logging, and the complete old/new 35-top suite then passed in normal and race modes. Preserve the original timeout, unfinished inventory and remaining fixture rows; do not normalize them into a successful cleanup.
 
 | Input / operation | Required result |
 | --- | --- |
@@ -452,3 +519,71 @@ from the original two r03 race verification gaps. Installed Go1.27
 `8d2437cfdcfb82fd8807e5063783de1d50f70e589e80cad10e17d8ef23f724d9`;
 the static source witness does not make an unexecuted profile or original
 campaign pass. Subsequent corrected-profile results remain separately bound.
+
+## Handler TestMain invocation-target cleanup
+
+`setupHandlerTestFixture` creates an `agent_invocation_target` for its seeded
+workspace agent. That relation has no foreign key/cascade. Before deleting the
+workspace/user, `cleanupHandlerTestFixture(ctx, pool)` must explicitly delete
+targets for agents in its actual handler-test workspace with the existing
+parameterized slug predicate and propagate any SQL failure. Keep the shared seed
+available throughout the package; deleting it in an individual test's cleanup
+would revoke authority needed by later tests.
+
+Audit invocation targets independently of user/workspace/agent counts. PAY-241
+S3 R03 ended with all named child tests passing and those parent counts at zero,
+but one target remained. A fresh intentional TestMain-only run using
+`-test.run '^$'` reproduced the same residue with zero test bodies; the corrected R04
+TestMain-only run returned all 30 concrete fixture relations to zero. Such a
+run requires a recorded fresh database and is not a compile-only probe or a
+named business test. Preserve the failed database/raw source and bind the new
+GREEN source/configuration and final ledger/gate/connection audit separately.
+
+Evidence: PAY-241 S3 `research/testmain-cleanup-diagnosis-20261118.md` and its
+private `testmain-diagnostic-red-r01` / `testmain-diagnostic-green-r04` records.
+
+## Synthetic execution observation clocks
+
+See [Joint verification environment](./verification-environment.md) for the
+synthetic stage execution fixture's database-clock contract and strict
+future-observation rejection.
+
+## Exact endpoint provisioning during startup
+
+1. **Scope:** `scripts/ensure-postgres.sh <env-file> [--create-database]` and
+   registry `ensure_database()` before migrations. A temporarily unavailable
+   task-owned loopback port must not redirect database creation to shared Docker.
+2. **Signatures:** explicit `DATABASE_URL` owns endpoint, credentials and database;
+   `POSTGRES_DB` selects the legacy no-URL database. The registry delegates with
+   `--current-environment --create-database`, preserving the effective exported
+   manifest configuration and its existing remote provisioning behavior. That
+   mode must not source the original env file again; standalone calls still load
+   their selected file. A stale source file must never override the allocated URL.
+3. **Contract:** parse the URL with Node, preserve non-routing libpq options and
+   reject query overrides for `host`, `hostaddr`, `port`, `dbname` and `service`
+   before connecting. Bound connection probes with `connect_timeout=3` and ten
+   attempts, including when the original URL says `connect_timeout=0`. Preserve
+   other query segments byte-for-byte: libpq treats `+` literally, so rewriting
+   `%20` through `URLSearchParams.set()` can change connection option values. Only an
+   unanswered IPv4 localhost:5432 endpoint may start shared Compose. Create via
+   the exact admin URL using quoted psql variables and `format('%I', ...)`, then
+   verify the target database. Standalone remote URLs verify without creating;
+   the registry explicitly requests creation. Diagnostics must omit credentials.
+4. **Errors:** malformed URLs, routing overrides, missing clients, failed
+   connections and refused creation exit nonzero. `pg_isready` 0/1 proves an
+   existing server answered; only 2 permits default shared startup. Failed
+   authentication never authorizes another server or `docker exec` creation.
+5. **Cases:** a delayed port55432 must create only its URL database using URL
+   credentials despite conflicting `POSTGRES_*` fields. No-URL setup retains
+   shared Docker. Alternate ports, IPv6 and remote hosts never select shared
+   Docker because an initial connection failed.
+6. **Verification:** `scripts/dev-env.test.sh` exercises both entry points,
+   delayed/unavailable/auth-failed endpoints, URL/environment disagreement,
+   effective registry/source-file disagreement, raw query encoding,
+   native/default startup, IPv6, remote verify/create behavior and bounded
+   timeouts. Also retain a fresh real-PostgreSQL create/idempotent-repeat proof,
+   actual `current_database()` and exact owned cleanup.
+7. **Wrong/correct:** classifying every loopback host as shared Docker can create
+   a database on the wrong cluster. Keep the selected connection identity through
+   readiness, creation and migration. R3's original preparation failure and
+   independent red/green evidence are in `artifacts/qa/full-e2e-20261120-r3/`.

@@ -140,20 +140,71 @@ Contracts:
   while honoring every member's human-required stop; `incident` uses it only for
   a separate post-recovery follow-up; the other five
   templates do not provision it;
-- `security-remediation` v1 has a dedicated unlisted `security-remediation-lead`
-  v1 (Coordinator, concurrency two) and seven existing working roles, with no
+- `security-remediation` v2 has a dedicated unlisted `security-remediation-lead`
+  v2 (Coordinator, default concurrency six) and seven existing working roles, with no
   Operator or new role skill. Its two instruction files require exact current-roster
-  Markdown mentions, one dispatch with `action`, actual member task/comment
-  provenance before advancing, and final `no_action`. An `in_review` transition
+  Markdown mentions, one next step per turn (a gate's reviewer batch counts as
+  one) and actual member task/comment provenance before advancing; receipts,
+  activity outcomes (the closing turn's included) and retries are left to the
+  injected Squad Operating Protocol. An `in_review` transition
   additionally requires actual assignment to this squad and status ownership
   in the injected operating protocol; guest/quick-create turns without ownership
   retain the current assignee and status and deliver comments/activity only.
   Missing evidence or member safety stops halt dispatch for human handling;
   production/sensitive-data risks hand off to existing incident/release owners.
+  v2 adds two human gates released by a security owner (a human squad member
+  whose role contains "安全负责人" or `security owner`, else the issue's human
+  creator), a minimal security reproduction before a code repair, twelve more
+  triage fields with default deadlines, commit-bound conclusions, a variant
+  list and `need-to-know` wording limits. A release counts only as the owner's
+  own comment read back from the platform (`author_type`, `author_id`),
+  `revision` 1 and later than every reviewer result (`AddReaction`,
+  `ResolveComment` and the attachment queries raise `revision` as an edit does,
+  so a release somebody reacted to is refused too). The owner posts a new
+  release when this check fails, and everyone leaves it unchanged until the
+  leader explicitly confirms validation. A reviewer result is a
+  comment of `type` `comment`, since `TaskService.FailTask` posts a failed
+  reviewer's error under that reviewer's name as `type` `system` and
+  `loadDelegatedFailureRecoveryTarget` wakes nobody for a restricted agent; it
+  must also be later than the comment that last dispatched that reviewer,
+  because the Security Reviewer answers at both gates and a returned G2 is
+  dispatched again. A missing result gets one retry per reviewer per gate or
+  temporary review point (returning G2 does not reset it); another failure
+  requires the owner to fix the cause, with no review waiver. Temporary review points use all three release checks;
+  other human decisions still require the owner's own unchanged comment. Triage
+  updates are new comments; edits to old delegation comments can cancel and
+  retrigger runs (`UpdateComment`). A recoverable stop resumes only from the
+  owner's new comment naming the repaired blocker and permitted next step, with
+  safety and member stop rules still in force. The leader must not change the
+  roster, a role text, the squad instructions, another author's comment or any agent of the squad;
+  `AddSquadMember`, `UpdateSquadMemberRole`, `UpdateSquad`, `UpdateAgent` and
+  the admin branch of `UpdateComment` do not stop it. Four sections
+  (`## 分诊记录`, `## 人工闸门`, `## 最小安全复现`, `## 保密与披露`) are
+  byte-identical in the two files; the squad file must end with `## 最终证据`,
+  which both truncation checks anchor on. Existing workspace copies are never
+  rewritten, so a v1 leader can serve a v2 squad. Runtime binding also gates
+  selection in `packages/views/editor/extensions/mention-suggestion.tsx`;
+  invocation access is a separate check. Codex config copying in
+  `internal/daemon/execenv/codex_home.go` preserves the user's root
+  `project_doc_max_bytes`, while `codex_sandbox.go` writes its own managed block;
+  neither sizes that key to the injected instruction bytes. The manual
+  workaround must cover generated and additional loaded instruction files, and
+  its runtime effectiveness still needs real-model verification.
   These are template instructions, not an extra execution sandbox or evidence of
   model compliance. `builtin_security_remediation_templates_test.go` and
   `squad_template_security_test.go` cover the content, catalog, private creation,
-  authority, reuse and owning/guest runtime-brief composition contracts;
+  authority, reuse and owning/guest runtime-brief composition contracts.
+  `squad_security_remediation_routing_test.go` and
+  `squad_security_remediation_flow_test.go` (handler) and
+  `squad_security_remediation_notification_test.go` (`cmd/server`) pin the
+  comment routing and notifications the gates rely on, and the releases that are
+  allowed (the squad's creator under the default `private` access, another member
+  once access is opened), with test code playing every role. That a member
+  without access cannot release is pinned by
+  `TestCreateComment_SquadMentionPrivateLeaderBlocksPlainMember`
+  (`squad_comment_trigger_test.go`) and
+  `TestComment_SquadPrivateLeader_PlainMemberNoEnqueue`
+  (`squad_private_leader_test.go`);
 - the leader is created from an unlisted role template at `coordinator`
   autonomy; member seats keep their own role's default level;
 - declared agent callers need Coordinator, and cannot staff a template whose

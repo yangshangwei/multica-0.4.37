@@ -97,8 +97,9 @@ async function setTextProperty(page: Page, container: Locator, name: string, val
   await expect(input).toBeHidden();
 }
 
-export async function createCollaborationWithInitialFields(page: Page, fixture: CollaborationEditingFixture) {
-  await page.locator('[data-slot="sidebar-header"]').getByRole("button", { name: "New collaboration issue", exact: true }).click();
+export async function createCollaborationWithInitialFields(page: Page, fixture: CollaborationEditingFixture,
+  creationTrigger: Locator = page.getByRole("button", { name: "New collaboration issue", exact: true }).and(page.locator('[data-sidebar="menu-button"]'))) {
+  await creationTrigger.click();
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await expect(dialog.getByLabel("Source workspace", { exact: true })).toHaveValue(fixture.workspace.id);
   await dialog.getByLabel("Title", { exact: true }).fill(fixture.title);

@@ -164,6 +164,7 @@ function RecordedUsage({ usage }: { usage: CollaborationRunRecords["usage"] }) {
 function RecordedEntry({ item, scope, issueId }: { item: CollaborationRunRecordItem; scope: CollaborationScope; issueId: string }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
+  const attachmentIds = item.kind === "input" || item.kind === "comment" || item.kind === "result" ? item.attachment_ids ?? [] : [];
   function title() {
     switch (item.kind) {
       case "input": return t(($) => $.records.input);
@@ -188,10 +189,12 @@ function RecordedEntry({ item, scope, issueId }: { item: CollaborationRunRecordI
     {item.kind === "tool_call" || item.kind === "tool_result"
       ? <pre className="max-w-full whitespace-pre-wrap rounded-md bg-muted p-3 text-caption [overflow-wrap:anywhere]">{item.body}</pre>
       : <RichContent resourcePolicy="restricted" content={item.body} />}
-    {item.kind === "input" && item.attachment_ids.length > 0 && <div className="space-y-2">
-      <p className="text-caption text-muted-foreground">{t(($) => $.records.attachments)}</p>
-      <ul className="space-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">{item.attachment_ids.map((id) => <li key={id}>{id}</li>)}</ul>
-      <CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={item.attachment_ids} />
+    {attachmentIds.length > 0 && <div className="space-y-2">
+      {item.kind === "input" && <>
+        <p className="text-caption text-muted-foreground">{t(($) => $.records.attachments)}</p>
+        <ul className="space-y-1 text-caption text-muted-foreground [overflow-wrap:anywhere]">{attachmentIds.map((id) => <li key={id}>{id}</li>)}</ul>
+      </>}
+      <CollaborationCommentAttachments scope={scope} issueId={issueId} attachmentIds={attachmentIds} />
     </div>}
     {item.kind === "comment" && <AppLink href={accountPath({ view: "participating", issueId, commentId: item.comment_id })} className="inline-flex min-h-11 items-center text-caption underline underline-offset-4">{t(($) => $.activity.openComment)}</AppLink>}
   </li>;
