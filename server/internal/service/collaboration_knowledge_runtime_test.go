@@ -59,17 +59,22 @@ func newProviderRuntimeKnowledgeFixture(t *testing.T, provider string, approved,
 	f.fx.Cleanup(t, `DELETE FROM collaboration_knowledge_target WHERE workspace_id=$1`, f.workspace)
 	f.fx.Cleanup(t, `DELETE FROM collaboration_knowledge_invalidation WHERE target_workspace_id=$1`, f.workspace)
 	p := knowledgeServiceProposal(t, f.collaborationQueueFixture)
-	if len(ttl) > 0 {
-		expiry := time.Now().UTC().Add(ttl[0])
-		p.ExpiresAt = &expiry
-	}
-	if _, err = f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p); err != nil {
-		t.Fatal(err)
-	}
-	if approved {
-		if _, err = f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(p.CandidateID), protocol.CollaborationKnowledgeApproveRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ExpectedStateRevision: "1", ExpectedVersion: "1", ExpectedContentSHA256: protocol.CollaborationKnowledgeHash(p.Content)}); err != nil {
+	publish := func() {
+		if len(ttl) > 0 {
+			expiry := knowledgeDBNow(t, f.collaborationQueueFixture).Add(ttl[0]).UTC()
+			p.ExpiresAt = &expiry
+		}
+		if _, err = f.svc.ProposeKnowledge(f.ctx, f.issue.Issue.ID, p); err != nil {
 			t.Fatal(err)
 		}
+		if approved {
+			if _, err = f.svc.ApproveKnowledge(f.ctx, util.MustParseUUID(p.CandidateID), protocol.CollaborationKnowledgeApproveRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ExpectedStateRevision: "1", ExpectedVersion: "1", ExpectedContentSHA256: protocol.CollaborationKnowledgeHash(p.Content)}); err != nil {
+				t.Fatal(err)
+			}
+		}
+	}
+	if len(ttl) == 0 {
+		publish()
 	}
 	submitHostCommand(t, f, f.creator, "first accepted author input")
 	submitHostCommand(t, f, f.handler, "second accepted author input")
@@ -101,6 +106,10 @@ func newProviderRuntimeKnowledgeFixture(t *testing.T, provider string, approved,
 	handoff, err := f.svc.RuntimeHandoffSnapshot(context.Background(), run, authorized.BusinessToken, protocol.CollaborationHandoffSnapshotRequest{RequestID: uuid.NewString(), MemoryVersion: "1"})
 	if err != nil {
 		t.Fatal(err)
+	}
+	// Start the short expiry window after runtime setup, before first disclosure.
+	if len(ttl) > 0 {
+		publish()
 	}
 	return &runtimeKnowledgeFixture{managedCollaborationFixture: f, caps: caps, proposal: p, run: run, claim: claim, permit: permit, business: authorized.BusinessToken, hash: hash, prepare: protocol.CollaborationRunKnowledgePrepare{ProtocolVersion: 1, Identity: claim.Identity, RequestID: uuid.NewString(), HandoffID: handoff.SnapshotID, InvocationFingerprint: strings.Repeat("a", 64)}}
 }
@@ -169,6 +178,9 @@ func TestCollaborationKnowledgeRuntimeWithdrawExpiryPurgeStopFutureDisclosure(t 
 				if err != nil {
 					t.Fatal(err)
 				}
+				if len(bundle.Contributions) != 1 || bundle.Contributions[0].Content != f.proposal.Content {
+					t.Fatal("knowledge invalidation requires a disclosed candidate before the state changes")
+				}
 				authorization, err := f.authorize(t, bundle)
 				if err != nil {
 					t.Fatal(err)
@@ -180,6 +192,9 @@ func TestCollaborationKnowledgeRuntimeWithdrawExpiryPurgeStopFutureDisclosure(t 
 						t.Fatal(err)
 					}
 				case "expired":
+					if err := knowledgeSleepPastDB(f.ctx, f.fx.Pool, *f.proposal.ExpiresAt); err != nil {
+						t.Fatal(err)
+					}
 					time.Sleep(time.Until(*f.proposal.ExpiresAt) + 10*time.Millisecond)
 				case "purged":
 					f.fx.Exec(t, `UPDATE collaboration_memory_version SET content='',purged_at=now(),purged_by_user_id=$2,purge_reason='remove source' WHERE issue_id=$1`, f.issue.Issue.ID, f.creator)

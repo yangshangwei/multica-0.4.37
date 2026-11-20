@@ -52,7 +52,16 @@ export async function openDesktop(profile: string, options: { token?: string; de
     localStorage.setItem("multica-locale", "en");
     localStorage.setItem("multica:chat:isOpen", "false");
   }, { token: options.token, seed: randomUUID() });
-  const start = () => app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.start());
+  const start = async () => {
+    const rendererUrl = process.env.COLLABORATION_ELECTRON_RENDERER_URL;
+    if (!rendererUrl) throw new Error("Native startup requires an explicit renderer URL");
+    // Production loadRenderer starts navigation without returning its promise.
+    // Business assertions must begin after that document has actually loaded.
+    await Promise.all([
+      page.waitForURL(new URL(rendererUrl).href, { waitUntil: "domcontentloaded", timeout: 20_000 }),
+      app.evaluate(() => (globalThis as unknown as { desktopAccountAcceptance: NativeHarness }).desktopAccountAcceptance.start()),
+    ]);
+  };
   return { app, page, errors, accountHeaders, start };
 }
 

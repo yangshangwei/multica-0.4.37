@@ -86,6 +86,45 @@ development default with HTTP 503 `information_context_unavailable`. Preserve
 that refusal; configure the isolated fixture instead of weakening the check.
 Keep the generated value only in the private environment file, never the report.
 
+### Interrupted concurrent index fixtures
+
+When a migration test holds a writer transaction to interrupt a concurrent index
+build, cancel the exact PostgreSQL builder while that transaction still holds
+its lock. A Go context cancellation can return to the client before the backend
+query stops; rolling back the writer immediately can let the index finish and
+make the intended invalid-index fixture nondeterministic.
+
+Resolve the builder through `pg_stat_progress_create_index`, joined to the exact
+schema and index name, and require the fixture writer PID in
+`pg_blocking_pids(builder_pid)`. Call `pg_cancel_backend(builder_pid)` and await
+the migration result with PostgreSQL error code `57014` before releasing the
+writer. An unrelated waiting query, `context.Canceled`, or a successful build is
+not proof of the intended interruption. Never cancel a PID selected only by a
+generic blocking relationship.
+
+Keep the invalid-index, unapplied migration ledger, retained data and successful
+repair assertions in `migrate_collaboration_command_history_test.go` and
+`migrate_collaboration_resource_offer_test.go`. Verify the full migration package
+on a fresh database and the interruption cases with `-race`; retain the original
+failed run separately. This changes test synchronization, not migration retry
+or production cancellation behavior.
+
+### Short-lived knowledge fixtures must prove initial disclosure
+
+In `collaboration_knowledge_runtime_test.go`, create and approve a candidate
+with a short TTL only after claim, launch permit and handoff setup have completed.
+Use `knowledgeDBNow()` for its expiry, preserve the existing two-second TTL and
+assert that the first prepared bundle contains exactly the expected contribution
+before invalidating it. Then wait past both database and host expiry before
+testing replay and stale authorization refusal.
+
+An empty initial bundle does not exercise withdrawal or expiry: if setup consumes
+the TTL, replaying the same empty bundle is valid and must not be described as
+redisclosure. Do not extend the TTL merely to hide setup latency or update the
+immutable `expires_at` column. Retain the original failure and verify the complete
+withdrawn/expired/purged/dismissed matrix plus the owning service shard after the
+fixture synchronization change.
+
 ### Private environment registry identity
 
 An application environment file and a development registry are separate inputs.

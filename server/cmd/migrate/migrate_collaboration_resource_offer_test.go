@@ -178,15 +178,16 @@ func TestCollaborationResourceOfferMigrationsRepairInterruptedHistoryIndex(t *te
 	done := make(chan error, 1)
 	go func() { done <- runMigrations(buildCtx, fx.Pool, opts) }()
 	deadline := time.Now().Add(10 * time.Second)
+	var builder int
 	for {
-		var waiting bool
-		if err := fx.Pool.QueryRow(ctx, `SELECT EXISTS (
-			SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid
-			WHERE c.relnamespace=$1::regnamespace AND c.relname='idx_collaboration_resource_offer_issue_history' AND NOT i.indisvalid)
-			AND EXISTS (SELECT 1 FROM pg_stat_activity WHERE $2::int=ANY(pg_blocking_pids(pid)))`, schema, blocker).Scan(&waiting); err != nil {
+		if err := fx.Pool.QueryRow(ctx, `SELECT COALESCE((
+			SELECT p.pid FROM pg_stat_progress_create_index p
+			JOIN pg_index i ON i.indexrelid=p.index_relid JOIN pg_class c ON c.oid=i.indexrelid
+			WHERE c.relnamespace=$1::regnamespace AND c.relname='idx_collaboration_resource_offer_issue_history'
+			AND NOT i.indisvalid AND $2::int=ANY(pg_blocking_pids(p.pid))), 0)`, schema, blocker).Scan(&builder); err != nil {
 			t.Fatal(err)
 		}
-		if waiting {
+		if builder != 0 {
 			break
 		}
 		select {
@@ -198,9 +199,14 @@ func TestCollaborationResourceOfferMigrationsRepairInterruptedHistoryIndex(t *te
 			t.Fatal("history index did not reach its real concurrent build wait")
 		}
 	}
-	cancelBuild()
-	if err := <-done; err == nil {
-		t.Fatal("interrupted concurrent history index was reported as complete")
+	// Wait for the owned server query to stop before releasing its writer barrier.
+	var cancelled bool
+	if err := fx.Pool.QueryRow(ctx, `SELECT pg_cancel_backend($1)`, builder).Scan(&cancelled); err != nil || !cancelled {
+		t.Fatalf("cancel owned resource history index build: cancelled=%t err=%v", cancelled, err)
+	}
+	var interrupted *pgconn.PgError
+	if err := <-done; !errors.As(err, &interrupted) || interrupted.Code != "57014" {
+		t.Fatalf("resource history index did not acknowledge server cancellation: %v", err)
 	}
 	if err := writer.Rollback(ctx); err != nil {
 		t.Fatal(err)

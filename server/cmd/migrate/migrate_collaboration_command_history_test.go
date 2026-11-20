@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/multica-ai/multica/server/internal/testutil"
 )
 
@@ -31,15 +33,16 @@ func TestCollaborationCommandHistoryMigrationRepairsInterruptedIndex(t *testing.
 	done := make(chan error, 1)
 	go func() { done <- runMigrations(buildCtx, fx.Pool, opts) }()
 	deadline := time.Now().Add(10 * time.Second)
+	var builder int
 	for {
-		var waiting bool
-		if err = fx.Pool.QueryRow(ctx, `SELECT EXISTS (
-			SELECT 1 FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid
-			WHERE c.relnamespace=$1::regnamespace AND c.relname='collaboration_command_history_idx' AND NOT i.indisvalid)
-			AND EXISTS (SELECT 1 FROM pg_stat_activity WHERE $2::int=ANY(pg_blocking_pids(pid)))`, schema, blocker).Scan(&waiting); err != nil {
+		if err = fx.Pool.QueryRow(ctx, `SELECT COALESCE((
+			SELECT p.pid FROM pg_stat_progress_create_index p
+			JOIN pg_index i ON i.indexrelid=p.index_relid JOIN pg_class c ON c.oid=i.indexrelid
+			WHERE c.relnamespace=$1::regnamespace AND c.relname='collaboration_command_history_idx'
+			AND NOT i.indisvalid AND $2::int=ANY(pg_blocking_pids(p.pid))), 0)`, schema, blocker).Scan(&builder); err != nil {
 			t.Fatal(err)
 		}
-		if waiting {
+		if builder != 0 {
 			break
 		}
 		select {
@@ -51,9 +54,15 @@ func TestCollaborationCommandHistoryMigrationRepairsInterruptedIndex(t *testing.
 			t.Fatal("command history index did not reach its actual writer wait")
 		}
 	}
-	cancelBuild()
-	if err = <-done; err == nil {
-		t.Fatal("interrupted command history index was reported as complete")
+	// Client cancellation can return before PostgreSQL has stopped the build.
+	// Keep the writer barrier until this exact backend acknowledges cancellation.
+	var cancelled bool
+	if err = fx.Pool.QueryRow(ctx, `SELECT pg_cancel_backend($1)`, builder).Scan(&cancelled); err != nil || !cancelled {
+		t.Fatalf("cancel owned command history index build: cancelled=%t err=%v", cancelled, err)
+	}
+	var interrupted *pgconn.PgError
+	if err = <-done; !errors.As(err, &interrupted) || interrupted.Code != "57014" {
+		t.Fatalf("command history index did not acknowledge server cancellation: %v", err)
 	}
 	if err = writer.Rollback(ctx); err != nil {
 		t.Fatal(err)

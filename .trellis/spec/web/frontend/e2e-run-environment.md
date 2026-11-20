@@ -610,6 +610,18 @@ make a routing assertion race the normal canonicalization effect.
 
 ### Packaged-controller dependencies and current account pickers
 
+Private packaging copies must also rebind workspace dependency symlinks into
+the frozen source. A copied app whose `node_modules` still resolves
+`@multica/*` to the live checkout is not isolated: a growing `.turbo` log between
+ASAR stat/integrity and stream writing can shift every later member offset while
+electron-builder exits zero. Exclude copied development caches, preserve runtime
+dependency selection, validate every packed/unpacked member hash and archive
+bounds, and compare extracted product outputs with the pinned source manifest
+before functional acceptance. Preserve corrupt originals and rebuild into a new
+directory. Do not substitute older product artifacts. The r2 regression found
+41,855 failed member hashes after a single live log grew; the frozen rebuild
+retained all 495 product output files and removed only cache logs/directories.
+
 The plain-Node packaged Main controller and its host Playwright process must
 resolve the same installed Playwright version. An absolute host `node_modules`
 symlink is not available inside a container that mounts only the checkout.
@@ -628,6 +640,15 @@ helper; the packaged controller's small `.mjs` counterpart follows the same
 steps because plain Node cannot assume Playwright's TypeScript loader. Bind new
 untracked harness files by content hash as well as the tracked patch. Keep all
 receipt, revision, authorization and workflow assertions when adapting controls.
+
+The exact lookup result can coexist with a recent/search option for the same
+account. Anchor its card to the unique `Use this account` button, then assert
+both the exact display name and `Account ID: <full lowercase UUID>` inside that
+card before clicking. A popup-wide exact-name locator is ambiguous after a
+previous transfer has made the recipient recent. Keep the TypeScript helper
+and `collaboration-recipient-picker.mjs` aligned; do not resolve ambiguity with
+`.first()` or remove the account-identity assertion. Replay the complete detail
+and handoff journeys, preserving the original strict-locator failure.
 
 Collaboration actions move between the primary controls and More actions as
 responsibility and status change. In `uiWorkflow`, locate the exact requested
@@ -675,6 +696,24 @@ state's authority. Preserve the original failed run when adapting that visible
 interaction; the observed collapsed state alone does not identify its cause.
 
 ## Collaboration drawers and visible authorization assertions
+
+### Native startup waits for the renderer document
+
+`e2e/fixtures/collaboration-native.ts:openDesktop().start()` must await both
+the existing `desktopAccountAcceptance.start()` IPC call and
+`page.waitForURL(new URL(COLLABORATION_ELECTRON_RENDERER_URL).href,
+{ waitUntil: "domcontentloaded", timeout: 20_000 })`. Arm the URL waiter before
+starting navigation. Production `loadRenderer()` returns void after initiating
+`BrowserWindow.loadURL()`, so awaiting only `app.evaluate(start)` can leave the
+page at `about:blank` and spend the entire five-second business assertion on
+renderer bootstrap. Require the explicit renderer origin and propagate actual
+navigation failure; leave task-heading and workflow assertion budgets unchanged.
+
+The fresh native probe retained start returning at 6.425s, DOMContentLoaded at
+13.006s and the requested task heading at 15.508s. After the fixture correction,
+start returned after DOMContentLoaded and the heading appeared about one second
+later. Keep both probes and replay complete native journeys; a successful IPC
+call alone never proves the renderer is ready.
 
 Resource drawers are modal. Before using background controls such as Copy link,
 Notifications, Submit result or application navigation, dismiss the active

@@ -10,7 +10,10 @@ export async function selectCollaborationRecipient(page, form, recipient) {
   await popup.getByRole("button", { name: lookupLabel, exact: true }).click();
   await popup.getByLabel(lookupLabel, { exact: true }).fill(recipient.id);
   await popup.getByRole("button", { name: "Find account", exact: true }).click();
-  await expect(popup.getByText(recipient.name, { exact: true })).toBeVisible();
-  await popup.getByRole("button", { name: "Use this account", exact: true }).click();
+  const useAccount = popup.getByRole("button", { name: "Use this account", exact: true });
+  const exactResult = useAccount.locator("..");
+  await expect(exactResult.getByText(recipient.name, { exact: true })).toBeVisible();
+  await expect(exactResult.getByText(`Account ID: ${recipient.id.toLowerCase()}`, { exact: true })).toBeVisible();
+  await useAccount.click();
   await expect(form.getByText(`Selected account: ${recipient.name}`, { exact: true })).toBeVisible();
 }
