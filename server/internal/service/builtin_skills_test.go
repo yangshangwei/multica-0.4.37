@@ -234,6 +234,7 @@ func TestWorkingOnIssuesSkillCoversIssueLoopContracts(t *testing.T) {
 		"include the PR URL when a PR exists",
 		"Closes MUL-2759",
 		"--status backlog",
+		"`multica issue budget` is for people only",
 		// The only sanctioned pr_url reference is the negative compatibility
 		// warning about pre-existing data — not a write recommendation
 		// (MUL-5442 owner ruling: no curated key vocabulary).

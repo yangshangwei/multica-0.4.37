@@ -397,7 +397,8 @@ func (h *Handler) writeLifecycleHandoffInTx(r *http.Request, source db.Issue, re
 			}
 			params := service.IssueCreateParams{WorkspaceID: source.WorkspaceID, ParentIssueID: source.ID, ProjectID: source.ProjectID,
 				Title: req.FollowUpTitle, Description: ptrToText(&req.FollowUpDescription), Status: "todo", Priority: priority,
-				AssigneeType: target.AssigneeType, AssigneeID: target.AssigneeID, CreatorType: actorType, CreatorID: parseUUID(actorID)}
+				AssigneeType: target.AssigneeType, AssigneeID: target.AssigneeID, CreatorType: actorType, CreatorID: parseUUID(actorID),
+				VerifiedTaskID: verifiedIssueCreationTaskID(r.Context(), source.WorkspaceID)}
 			if origin.ID.Valid {
 				params.OriginType = pgtype.Text{String: "agent_create", Valid: true}
 				params.OriginID = origin.ID

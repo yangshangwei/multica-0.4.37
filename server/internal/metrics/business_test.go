@@ -238,6 +238,31 @@ func TestBusinessMetricsRuntimeSweepStage(t *testing.T) {
 	}
 }
 
+// TestBusinessMetricsRuntimeSweepStageBudgetLifecycle: the budget lifecycle
+// reconciliation runs in a loop of its own and reports under a stage of its
+// own. A stage name the normalizer does not know is counted as "other", where
+// it could not be told from any other unnamed work.
+func TestBusinessMetricsRuntimeSweepStageBudgetLifecycle(t *testing.T) {
+	if RuntimeSweepStageBudgetLifecycle != "budget_lifecycle" {
+		t.Fatalf("budget lifecycle stage label = %q, want budget_lifecycle", RuntimeSweepStageBudgetLifecycle)
+	}
+	m := NewBusinessMetrics()
+	m.ObserveRuntimeSweepStage(RuntimeSweepStageBudgetLifecycle, 40*time.Millisecond, 4, 6)
+
+	if got := testutil.ToFloat64(m.runtimeSweepCandidateRows.WithLabelValues(RuntimeSweepStageBudgetLifecycle)); got != 4 {
+		t.Fatalf("budget lifecycle candidate rows = %v, want 4", got)
+	}
+	if got := testutil.ToFloat64(m.runtimeSweepRowsChanged.WithLabelValues(RuntimeSweepStageBudgetLifecycle)); got != 6 {
+		t.Fatalf("budget lifecycle changed rows = %v, want 6", got)
+	}
+	if got := testutil.ToFloat64(m.runtimeSweepCandidateRows.WithLabelValues("other")); got != 0 {
+		t.Fatalf("candidate rows counted as other = %v, want 0", got)
+	}
+	if got := testutil.ToFloat64(m.runtimeSweepRowsChanged.WithLabelValues("other")); got != 0 {
+		t.Fatalf("changed rows counted as other = %v, want 0", got)
+	}
+}
+
 func exerciseEvent(m *BusinessMetrics, name string, props map[string]any) {
 	if props == nil {
 		props = map[string]any{}

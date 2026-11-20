@@ -13,6 +13,21 @@ sql:
         # Reserved server-only columns also pass through CTE result tables;
         # table-qualified overrides alone miss those derived task rows.
         overrides:
+          # Budget amounts are 64-bit ticks and must leave the server as decimal
+          # strings, never as JSON numbers; ledger rows also carry stored forms
+          # and provider identifiers. Endpoints build explicit projections.
+          - column: "issue_budget_root.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_member.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_attempt.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_entry.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_operation.*"
+            go_struct_tag: 'json:"-"'
+          - column: "issue_budget_observation.*"
+            go_struct_tag: 'json:"-"'
           # Automation records contain model input closures and retained private
           # outputs. Public endpoints must build current-authority projections.
           - column: "collaboration_knowledge_job.*"

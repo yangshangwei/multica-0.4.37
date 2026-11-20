@@ -37,6 +37,7 @@ import { COLLABORATION_ATTACHMENT_MAX_BYTES, CollaborationAttachmentUploadInputS
   type CollaborationAttachmentUploadInput, type CollaborationAttachmentSelection } from "../collaboration/attachment-schema";
 import { CollaborationCommandCancelInputSchema, parseCollaborationCommandCancelReceipt, matchesCollaborationCommandCancelReceipt, type CollaborationCommandCancelInput } from "../collaboration/command-schema";
 import { PersonalAccessTokenListSchema, CreatePersonalAccessTokenResponseSchema } from "./personal-access-token-schemas";
+import { IssueBudgetSchema, type IssueBudget } from "./issue-budget-schemas";
 import {
   parseCollaborationIssue, parseCollaborationOperation, parseCollaborationWorkbench, parseCollaborationStatusOptions, parseCollaborationRecipient, parseCollaborationRecipientSearch, parseCollaborationFieldOptions,
   type CollaborationWriteInput, type CollaborationParticipantInput, type CollaborationHandoffInput,
@@ -2655,6 +2656,7 @@ export class ApiClient {
     // Target knowledge stays workspace-scoped for headers, but its cursor and
     // server error text need the same private logging boundary as source reads.
     const targetKnowledgeRequest = /^\/api\/(?:projects|workspaces)\/[^/?]+\/knowledge(?:-policy)?(?:[/?]|$)/.test(path);
+    const issueBudgetRequest = /^\/api\/issue-budgets(?:[/?]|$)/.test(path);
     const logPath = collaborationRequest || sourceIssueRequest || targetKnowledgeRequest ? path.split("?", 1)[0] : path;
 
     // Captured where the headers are built: this is the credential the
@@ -2714,7 +2716,7 @@ export class ApiClient {
       // Session rejection has a recovery path; console.error would open the
       // development error overlay while the application returns to sign-in.
       const logLevel = status === 401 || status === 404 ? "warn" : "error";
-      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : targetKnowledgeRequest ? "Knowledge request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
+      this.logger[logLevel](`← ${status} ${logPath}`, { rid, duration: `${Date.now() - start}ms`, error: issueBudgetRequest ? "Budget request failed" : collaborationRequest ? "Collaboration request failed" : sourceIssueRequest ? "Issue request failed" : targetKnowledgeRequest ? "Knowledge request failed" : path.startsWith("/api/admin/resources") ? "Resource request failed" : message });
       throw new ApiError(
         message,
         status,
@@ -3254,6 +3256,34 @@ export class ApiClient {
       throw new Error("GET /api/issues/:id returned a malformed issue");
     }
     return issue;
+  }
+
+  /**
+   * The budget of a root issue, as `GET /api/issue-budgets/{rootId}` answers.
+   *
+   * `null` means the server answered 2xx with something that is not a budget:
+   * a missing or mistyped field, a body that is not JSON, or no body. There
+   * is no safe-empty budget to degrade to: an object of zeros would read as
+   * "nothing spent", and a guessed state as one the server gave. A refusal
+   * (403 `budget_forbidden`, 404 `not_found`) is not `null`; it stays an
+   * ApiError with its status and body.
+   */
+  async getIssueBudget(rootId: string, options?: { workspaceId?: string; signal?: AbortSignal }): Promise<IssueBudget | null> {
+    let raw: unknown;
+    try {
+      raw = await this.fetch<unknown>(
+        `/api/issue-budgets/${encodeURIComponent(rootId)}`,
+        workspaceRequestInit(options),
+      );
+    } catch (error) {
+      // A 2xx body that is not JSON is a malformed answer like any other. The
+      // syntax error is dropped: its message can quote the answer.
+      if (!(error instanceof SyntaxError)) throw error;
+      raw = undefined;
+    }
+    return parseWithFallback<IssueBudget | null>(raw, IssueBudgetSchema, null, {
+      endpoint: "GET /api/issue-budgets/:id", redact: true,
+    });
   }
 
   async recommendIssueCreators(

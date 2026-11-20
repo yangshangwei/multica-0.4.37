@@ -217,7 +217,7 @@ func TestKnowledgeSourceAuthorityChangesBetweenClaimBuildAndFinalize(t *testing.
 		t.Fatalf("real source revocation failed: %s %v", receipt.Code, err)
 	}
 	f.assertSourceRevokedOnly(t)
-	_, err = f.tasks.FinalizeTaskClaim(f.ctx, f.task, db.CreateTaskTokenParams{TokenHash: "matrix-" + uuid.NewString(), TaskID: f.task.ID, AgentID: f.task.AgentID, WorkspaceID: util.MustParseUUID(f.workspace), UserID: util.MustParseUUID(f.creator), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d)
+	_, err = f.tasks.FinalizeTaskClaim(f.ctx, f.task, db.CreateTaskTokenParams{TokenHash: "matrix-" + uuid.NewString(), TaskID: f.task.ID, AgentID: f.task.AgentID, WorkspaceID: util.MustParseUUID(f.workspace), UserID: util.MustParseUUID(f.creator), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d, TaskClaimBudgetProtocolNone)
 	if err != nil {
 		t.Fatalf("source-free finalization imported private source authority: %v", err)
 	}

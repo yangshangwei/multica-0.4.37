@@ -119,6 +119,12 @@ func (s *CollaborationService) EditIssue(ctx context.Context, p CollaborationEdi
 			if err != nil {
 				return CollaborationWorkflowReceipt{}, err
 			}
+			if before.ParentIssueID != after.ParentIssueID {
+				// Budget membership follows the move in this transaction.
+				if err = BindIssueBudgetOnReparent(ctx, t.q, after); err != nil {
+					return CollaborationWorkflowReceipt{}, err
+				}
+			}
 		}
 		if fields.labelsChanged {
 			if err = t.replaceFieldLabels(ctx, fields.afterLabels); err != nil {

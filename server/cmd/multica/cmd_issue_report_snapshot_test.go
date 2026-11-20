@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -382,9 +383,9 @@ func TestIssueReportSnapshotCloudPATShowPreservesReadTransport(t *testing.T) {
 }
 
 func TestIssueReportSnapshotCaptureResponseLossNeverRetries(t *testing.T) {
-	requests := 0
+	var requests atomic.Int32
 	reportSnapshotFake(t, func(w http.ResponseWriter, r *http.Request) {
-		requests++
+		requests.Add(1)
 		connection, _, err := w.(http.Hijacker).Hijack()
 		if err != nil {
 			t.Error(err)
@@ -393,8 +394,8 @@ func TestIssueReportSnapshotCaptureResponseLossNeverRetries(t *testing.T) {
 		_ = connection.Close()
 	})
 	output, err := runReportSnapshotCLI(t, reportSnapshotCaptureArgs()...)
-	if err == nil || output != "" || requests != 1 || !strings.Contains(err.Error(), "original --request-key") {
-		t.Fatalf("uncertain capture output=%q err=%v requests=%d", output, err, requests)
+	if got := requests.Load(); err == nil || output != "" || got != 1 || !strings.Contains(err.Error(), "original --request-key") {
+		t.Fatalf("uncertain capture output=%q err=%v requests=%d", output, err, got)
 	}
 }
 
@@ -825,9 +826,9 @@ func TestIssueReportSnapshotWithdrawRefusesWrongOrPrivateReceipt(t *testing.T) {
 }
 
 func TestIssueReportSnapshotWithdrawResponseLossNeverRetries(t *testing.T) {
-	requests := 0
+	var requests atomic.Int32
 	reportSnapshotFake(t, func(w http.ResponseWriter, _ *http.Request) {
-		requests++
+		requests.Add(1)
 		connection, _, err := w.(http.Hijacker).Hijack()
 		if err != nil {
 			t.Error(err)
@@ -836,8 +837,8 @@ func TestIssueReportSnapshotWithdrawResponseLossNeverRetries(t *testing.T) {
 		_ = connection.Close()
 	})
 	output, err := runReportSnapshotCLI(t, reportSnapshotWithdrawArgs()...)
-	if err == nil || output != "" || requests != 1 || !strings.Contains(err.Error(), "original --request-key") {
-		t.Fatalf("uncertain withdrawal output=%q err=%v requests=%d", output, err, requests)
+	if got := requests.Load(); err == nil || output != "" || got != 1 || !strings.Contains(err.Error(), "original --request-key") {
+		t.Fatalf("uncertain withdrawal output=%q err=%v requests=%d", output, err, got)
 	}
 }
 

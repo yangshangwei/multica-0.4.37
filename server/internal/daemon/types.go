@@ -207,6 +207,11 @@ type Task struct {
 	// Empty or non-task-scoped values are fatal for writable agent tasks; the
 	// daemon must not fall back to its own token. See MUL-3292.
 	AuthToken string `json:"auth_token,omitempty"`
+	// BudgetAttemptID names the budget attempt the server opened for this
+	// claim (budget usage protocol v1). The daemon reports what the provider
+	// invocations of this execution used as one batch under this id. Empty
+	// means the claim carries no attempt and nothing is reported for it.
+	BudgetAttemptID string `json:"budget_attempt_id,omitempty"`
 
 	// droppedPriorSessionID records that this daemon's own reachability gate
 	// cleared PriorSessionID. Unexported, so no claim response can set it; the

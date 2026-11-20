@@ -323,6 +323,17 @@ Use [Frozen report snapshots](report-snapshots.md) for the capture/read/withdraw
 | Reporter consumes an existing sealed public snapshot with GET; missing/unavailable/withdrawn results require human follow-up, never capture, withdrawal, wider workspace reads or a replacement report to bypass withdrawal | `server/internal/service/builtin_role_skills/multica-progress-report/SKILL.md`; `server/internal/handler/task_capability.go` |
 | Fake HTTP regressions verify explicit capture/withdrawal, same-intent receipt replay, one-request reads, no response-loss retry, redirect refusal, strict public/private boundaries, malformed receipts, original commitments and preserved unknown values | `server/cmd/multica/cmd_issue_report_snapshot_test.go` |
 
+## Human-only issue budget CLI
+
+`multica issue budget` is not part of agent issue work. [Issue budget commands are for people only](report-snapshots.md#issue-budget-commands-are-for-people-only) says what an agent does instead.
+
+| Contract | Source |
+| --- | --- |
+| `issue budget` is one command group under `multica issue`: `enable`, `show`, `set-limit`, `set-mode`, `close`, `reopen`, `operation`, `observations`, `attempts` | `server/cmd/multica/cmd_issue_budget.go` (`issueBudgetCmd`, `newIssueBudgetCommand`), registered in `server/cmd/multica/cmd_issue.go` (`init`); `server/cmd/multica/cmd_issue_budget_test.go` (`TestIssueBudgetIsRegisteredWithItsSubcommands`) |
+| Every subcommand, the reads included, refuses a collaboration run, a daemon task context, a missing token, a task, daemon or cloud token and an agent or task identity before any request is sent | `server/cmd/multica/cmd_issue_budget.go` (`budgetStart`, `budgetHumanCredential`); `server/cmd/multica/cmd_agent.go` (`requireHumanLocalCommand`) |
+| The server admits only the human credential of a workspace owner or admin, for reads and writes alike; an agent or task credential and an ordinary member get 403 with the code `budget_forbidden` before a budget table is read, whether or not a root exists | `server/internal/handler/issue_budget.go` (`RequireIssueBudgetHuman`, `budgetRequest`); `server/cmd/server/issue_budget_integration_test.go` (`TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard`); wire fixture `server/internal/handler/testdata/issue_budget_http_v1/error-budget-forbidden.json`; the CLI's reading in `server/cmd/multica/cmd_issue_budget.go` (`budgetRefusal`, `budgetRefusalMeanings`) |
+| Fake HTTP regressions verify that no credential or surrounding other than a person's sends a request, for a read, for a write and for every subcommand | `server/cmd/multica/cmd_issue_budget_test.go` (`TestIssueBudgetIsForPeopleOnly`, `TestIssueBudgetRefusesAClientThatIsNotAPerson`) |
+
 ## Metadata CLI
 
 | Behavior | File:line |

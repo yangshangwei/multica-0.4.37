@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"net/http"
 	"strings"
@@ -330,14 +331,14 @@ func TestTaskCapabilityFinalizationRejectsChangedScopeAndBrokerCredential(t *tes
 	}
 	params := db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_synthetic_second_claim"), TaskID: task.ID, AgentID: task.AgentID, WorkspaceID: token.WorkspaceID, UserID: token.UserID, ExpiresAt: token.ExpiresAt, ApiCapability: token.ApiCapability}
 	t.Run("broker", func(t *testing.T) {
-		_, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil, db.CreateDaemonTokenParams{})
+		_, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil, service.TaskClaimBudgetProtocolNone, db.CreateDaemonTokenParams{})
 		if err == nil {
 			t.Fatal("restricted task accepted extra daemon credential")
 		}
 	})
 	t.Run("project_move", func(t *testing.T) {
 		dbfx.Exec(t, `UPDATE issue SET project_id=NULL WHERE id=$1`, f.issue)
-		_, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil)
+		_, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil, service.TaskClaimBudgetProtocolNone)
 		if err == nil {
 			t.Fatal("payload scope changed before finalization")
 		}

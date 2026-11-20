@@ -1549,7 +1549,10 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	// Daemon API routes (require daemon token or valid user token)
 	r.Route("/api/daemon", func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
+		r.Use(middleware.IssueBudgetNoStore)
 		r.Use(middleware.DaemonAuth(queries, patCache, daemonTokenCache, cloudPATVerifier))
+		r.Post("/budget/attempts/{attemptId}/usage", h.ReportBudgetAttemptUsage)
+		r.Get("/budget/attempts/{attemptId}/usage/{batchKey}", h.GetBudgetAttemptUsage)
 		r.Post("/installations/challenges", h.DaemonInstallationChallenge)
 		r.Post("/installation-bindings", h.BindInstallation)
 		r.Post("/installation-bindings/renew", h.RenewInstallationBinding)
@@ -1641,7 +1644,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 	r.Group(func(r chi.Router) {
 		r.Use(handler.PlatformAdminNoStore)
 		r.Use(middleware.PreserveReportSnapshotHeaders)
+		r.Use(middleware.IssueBudgetNoStore)
 		r.Use(middleware.Auth(queries, patCache, cloudPATVerifier))
+		r.Use(h.RequireIssueBudgetHuman)
 		r.Use(h.TaskCapabilityGuard)
 		r.Use(middleware.InstallationMetadata(queries))
 		r.Use(middleware.RefreshCloudFrontCookies(cfSigner))
@@ -2225,7 +2230,15 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 
 		// --- Workspace-scoped routes (all require workspace membership) ---
 		r.Group(func(r chi.Router) {
-			r.Use(middleware.RequireWorkspaceMember(queries))
+			r.Use(h.RequireIssueBudgetWorkspace)
+
+			r.Route("/api/issue-budgets/{rootId}", func(r chi.Router) {
+				r.Get("/", h.ShowIssueBudget)
+				r.Post("/operations", h.ManageIssueBudget)
+				r.Get("/operations/{key}", h.GetIssueBudgetOperation)
+				r.Get("/observations", h.ListIssueBudgetObservations)
+				r.Get("/attempts", h.ListIssueBudgetAttempts)
+			})
 
 			// Triage owns admission; review handlers also verify the resolved actor.
 			r.Route("/api/triage", func(r chi.Router) {
@@ -2273,6 +2286,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Route("/{id}", func(r chi.Router) {
 					r.Get("/", h.GetIssue)
 					r.Put("/", h.UpdateIssue)
+					r.Post("/budget", h.EnableIssueBudget)
+					r.Get("/budget", h.GetIssueBudgetBinding)
+					r.Get("/budget/operations/{key}", h.GetIssueBudgetEnableOperation)
 					r.Post("/lifecycle-handoffs", h.CreateLifecycleHandoff)
 					r.With(handler.RequireHumanActor).Post("/report-snapshots", h.CreateReportSnapshot)
 					r.With(handler.RequireHumanActor).Post("/report-snapshots/withdrawals", h.WithdrawReportSnapshots)

@@ -559,6 +559,12 @@ type AgentTaskResponse struct {
 	// owning user; the daemon must not fall back to its own credential. See
 	// MUL-3292.
 	AuthToken string `json:"auth_token,omitempty"`
+	// BudgetAttemptID is the budget attempt the server opened for this claim,
+	// set once the claim has committed and only for a task whose issue belongs
+	// to a budget root. A daemon that speaks the budget usage protocol reports
+	// the usage of the execution against it; any other daemon ignores the
+	// field. Absent means the claim got no attempt.
+	BudgetAttemptID string `json:"budget_attempt_id,omitempty"`
 }
 
 // TaskAttribution is the wire shape of a run's accountable-human provenance

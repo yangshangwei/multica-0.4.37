@@ -38,6 +38,11 @@ const (
 	// Advertised only after the managed daemon initializes its durable receipt store.
 	DaemonCapabilityAdminCancelAckV1 = "admin_cancel_ack_v1"
 
+	// DaemonCapabilityBudgetUsageV1 is advertised only by a daemon whose usage
+	// report journal is usable: it reports what each provider invocation of a
+	// claimed attempt used, as one batch per attempt (budget usage protocol v1).
+	DaemonCapabilityBudgetUsageV1 = "budget-usage-v1"
+
 	// AppCapabilityChatDraftRestoreV1 is advertised (X-Client-Capabilities) by
 	// app clients that understand the durable draft-restore recovery path:
 	// chat:cancel_finalized as an invalidation hint plus the draft-restores

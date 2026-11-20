@@ -524,6 +524,11 @@ type Daemon struct {
 	pendingWorkInflight map[string]struct{}  // runtime_id -> hint-driven heartbeat in flight
 	pendingWorkLastRun  map[string]time.Time // runtime_id -> when the last hint-driven heartbeat started
 
+	// budgetUsage is the journal of usage report records (budget usage
+	// protocol v1). It is nil until this process has proven that it can keep
+	// records; until then a task runs without the protocol.
+	budgetUsage *budgetUsageJournal
+
 	cancelReceipts *cancellationOutbox
 	cancelFunc     context.CancelFunc // set by Run(); called by triggerRestart
 	rootCtx        context.Context    // set by Run(); used by long-running recoveries that must survive per-runtime ctx cancellation
@@ -2041,6 +2046,12 @@ func (d *Daemon) Run(ctx context.Context) error {
 		}
 	}
 
+	// Budget usage protocol v1: the journal is opened once the health port is
+	// bound, which makes this process the only daemon of its profile, and
+	// before the first request that can claim a task. Without a usable journal
+	// the daemon does not declare the protocol.
+	d.initializeBudgetUsage()
+
 	// Renew the PAT before the first API call, then do the initial
 	// workspace sync. Both steps live in preflightAuth so the ordering
 	// invariant (renew first) is enforced at one site instead of
@@ -2069,6 +2080,7 @@ func (d *Daemon) Run(ctx context.Context) error {
 	go d.tokenRenewalLoop(ctx)
 	go d.managedCredentialRenewalLoop(ctx)
 	go d.cancellationReceiptLoop(ctx)
+	go d.budgetUsageLoop(ctx, budgetUsageResendInterval)
 
 	// Preflight succeeded and the background loops are up: the daemon has
 	// registered its runtimes and can now claim and run tasks. Flip /health
@@ -5247,7 +5259,12 @@ func (d *Daemon) handleTask(ctx context.Context, task Task, slot int) {
 		}
 	}()
 
-	result, err := d.runner.run(runCtx, task, provider, slot, taskLog)
+	// Budget usage protocol v1: the record of the attempt exists before the
+	// run and is sealed as soon as the run is over. budgetAttempt is nil for a
+	// task without the protocol, and everything below is the legacy path.
+	budgetAttempt := d.beginBudgetUsageAttempt(task, provider, taskLog)
+	result, err := d.runner.run(withBudgetUsageAttempt(runCtx, budgetAttempt), task, provider, slot, taskLog)
+	d.finishBudgetUsageAttempt(ctx, budgetAttempt)
 
 	// Report usage before any early return — the agent accumulates tokens
 	// whether the task completes, errors, or is cancelled mid-run by the poll
@@ -7771,6 +7788,9 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	if err != nil {
 		return TaskResult{}, fmt.Errorf("create agent backend: %w", err)
 	}
+	// The usage report of the attempt names the adapter and the CLI version
+	// this run launches. A task without a record carries a nil attempt.
+	budgetUsageAttemptFrom(ctx).describeLaunch(provider, usesCustomProfileCommand, backendConfig.CLIVersion)
 
 	// Two-tier model resolution: an explicit agent.model wins,
 	// then the daemon-wide MULTICA_<PROVIDER>_MODEL env var. If
@@ -7946,7 +7966,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	// Shared across the resume-retry below so the retry's transcript rows
 	// keep ascending seq values for the same task.
 	var msgSeq atomic.Int32
-	result, tools, err := d.executeAndDrain(ctx, backend, prompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
+	result, tools, err := d.executeAndDrainRecorded(ctx, backend, prompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
 	if err != nil {
 		return TaskResult{}, err
 	}
@@ -8002,7 +8022,7 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		}
 		freshPrompt := BuildPrompt(task, provider, promptOptions...)
 
-		retryResult, retryTools, retryErr := d.executeAndDrain(ctx, backend, freshPrompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
+		retryResult, retryTools, retryErr := d.executeAndDrainRecorded(ctx, backend, freshPrompt, execOpts, taskLog, task.ID, env.CodexHome, &msgSeq)
 		if retryErr != nil {
 			taskLog.Error("fresh session also failed to start; keeping the original poisoned result", "error", retryErr)
 		} else if retryResult.Status != "completed" && retryResult.SessionID == "" {
@@ -8500,6 +8520,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 	// callbacks. An authorization refusal is not a process with unknown exit.
 	session, err := backend.Execute(agentCtx, prompt, opts)
 	if err != nil {
+		markBudgetUsageStartFailed(ctx)
 		if reason := agent.KnowledgeFailureReason(err); reason != "" {
 			return agent.Result{Status: "failed", Error: reason, KnowledgeFailure: reason}, 0, nil
 		}
@@ -8872,6 +8893,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 
 	select {
 	case result, ok := <-session.Result:
+		markBudgetUsageBackendResult(ctx, ok)
 		// Provider inactivity ends with its result. Final transcript delivery
 		// may be slow, but must neither trigger the watchdog nor be cancelled
 		// with it. Join before reading fired so an earlier timeout stays final.
@@ -8896,6 +8918,7 @@ func (d *Daemon) executeAndDrain(ctx context.Context, backend agent.Backend, pro
 			opts.Lifecycle.Stop()
 			select {
 			case result, ok := <-session.Result:
+				markBudgetUsageBackendResult(ctx, ok)
 				finishProcess(ok && result.ProcessExited)
 				waitForDrain()
 				return settleKnowledge(result), toolCount.Load(), nil

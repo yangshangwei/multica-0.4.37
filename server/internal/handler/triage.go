@@ -606,7 +606,7 @@ func (h *Handler) createTriageItemInTx(ctx context.Context, tx pgx.Tx, r *http.R
 	if priority == "" {
 		priority = "none"
 	}
-	created, err := h.IssueService.CreateInTx(ctx, tx, service.IssueCreateParams{WorkspaceID: ws, Title: strings.TrimSpace(in.Title), Description: triageText(in.Description), Status: "backlog", Priority: priority, CreatorType: actorType, CreatorID: creatorID, LabelIDs: labels, StartDate: start, DueDate: due, AllowDuplicate: true}, service.ResolveIssueCountPolicy(ctx, h.IssueService.Entitlements, ws))
+	created, err := h.IssueService.CreateInTx(ctx, tx, service.IssueCreateParams{WorkspaceID: ws, Title: strings.TrimSpace(in.Title), Description: triageText(in.Description), Status: "backlog", Priority: priority, CreatorType: actorType, CreatorID: creatorID, LabelIDs: labels, StartDate: start, DueDate: due, AllowDuplicate: true, VerifiedTaskID: verifiedIssueCreationTaskID(r.Context(), ws)}, service.ResolveIssueCountPolicy(ctx, h.IssueService.Entitlements, ws))
 	if err != nil {
 		return out, err
 	}

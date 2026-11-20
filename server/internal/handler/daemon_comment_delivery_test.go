@@ -15,6 +15,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/multica-ai/multica/server/internal/service"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
@@ -977,7 +978,7 @@ func TestFinalizeTaskClaim_ReceiptCASFailureRollsBackInsertedToken(t *testing.T)
 		WorkspaceID: parseUUID(testWorkspaceID),
 		UserID:      parseUUID(testUserID),
 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
-	}, []pgtype.UUID{parseUUID("00000000-0000-0000-0000-000000000099")}, true, nil, db.CreateDaemonTokenParams{
+	}, []pgtype.UUID{parseUUID("00000000-0000-0000-0000-000000000099")}, true, nil, service.TaskClaimBudgetProtocolNone, db.CreateDaemonTokenParams{
 		TokenHash:   daemonTokenHash,
 		WorkspaceID: parseUUID(testWorkspaceID),
 		DaemonID:    "daemon-claim-rollback",
@@ -1030,7 +1031,7 @@ func TestFinalizeTaskClaim_TriggerDeletedAfterClaimRejectsStaleProvenance(t *tes
 		WorkspaceID: parseUUID(testWorkspaceID),
 		UserID:      parseUUID(testUserID),
 		ExpiresAt:   pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true},
-	}, []pgtype.UUID{parseUUID(fixture.commentID[0]), parseUUID(fixture.commentID[1])}, true, nil)
+	}, []pgtype.UUID{parseUUID(fixture.commentID[0]), parseUUID(fixture.commentID[1])}, true, nil, service.TaskClaimBudgetProtocolNone)
 	if err == nil {
 		t.Fatalf("FinalizeTaskClaim accepted a receipt after persisted trigger changed")
 	}

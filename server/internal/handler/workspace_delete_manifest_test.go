@@ -51,6 +51,15 @@ var workspaceDeletionManifest = map[string]workspaceDeleteAction{
 	"collaboration_test_subject":                workspaceRetainAudit,
 	"collaboration_stage_child":                 workspaceRetainAudit,
 	"collaboration_stage_submission":            workspaceRetainAudit,
+	// Parent-task budget records hold ID copies and no foreign key. Teardown
+	// neither writes nor locks them: unresolved spend stays on record after the
+	// workspace is gone, and public reads still require a live workspace.
+	"issue_budget_root":        workspaceRetainAudit,
+	"issue_budget_member":      workspaceRetainAudit,
+	"issue_budget_attempt":     workspaceRetainAudit,
+	"issue_budget_entry":       workspaceRetainAudit,
+	"issue_budget_operation":   workspaceRetainAudit,
+	"issue_budget_observation": workspaceRetainAudit,
 	// Collaboration identity, rollout and invalidation state belong to the
 	// deployment/accounts, rather than to the workspace being deleted.
 	"collaboration_account_fence":        workspaceDeleteKeep,

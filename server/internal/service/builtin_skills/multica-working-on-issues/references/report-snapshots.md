@@ -42,3 +42,22 @@ successful sealed-snapshot read does not mean every metric is complete. Do not
 replace a frozen metric with current rows or infer deployment/product results
 from task counts. See the source map's report-snapshot contract for the authority
 and integrity boundaries.
+
+## Issue budget commands are for people only
+
+`multica issue budget` (`enable`, `show`, `set-limit`, `set-mode`, `close`,
+`reopen`, `operation`, `observations`, `attempts`) observes what an issue tree
+costs against a budget root. Like report snapshot capture and withdrawal, it is
+run by a person: a workspace owner or admin, signed in with their own
+credentials. Unlike `issue report-snapshot show`, it has no read that a task
+may use.
+
+Never call an `issue budget` command from a task, the reads included. The
+command refuses a missing token, a task, daemon or cloud token, an agent or
+task identity, a daemon-managed task context and a collaboration run before it
+sends anything. The server refuses an agent or task credential, and a member
+who is not an owner or admin, with 403 `budget_forbidden`; that answer is the
+same whether or not a budget root exists, so it says nothing about the issue.
+Do not retry, look for another credential, or read the budget some other way.
+When the work depends on a budget figure or on a change of a limit, say so in
+the result comment and leave it to a workspace owner or admin.

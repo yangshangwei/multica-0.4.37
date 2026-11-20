@@ -699,6 +699,7 @@ func claudeTerminalReasonFailure(terminalReason, resultText string) string {
 	return msg
 }
 
+// A change to how usage is derived here must raise UsageNormalizerVersion("claude").
 func claudeResultUsage(msg claudeSDKMessage, fallbackModel string) map[string]TokenUsage {
 	if len(msg.ModelUsage) > 0 {
 		usage := make(map[string]TokenUsage, len(msg.ModelUsage))

@@ -1662,6 +1662,16 @@ func requestHasClientCapability(r *http.Request, capability string) bool {
 	return false
 }
 
+// claimBudgetProtocol is the budget usage protocol the claiming daemon
+// declared in X-Client-Capabilities. A claim over the daemon WebSocket RPC
+// carries the header the daemon sent when it opened the socket.
+func claimBudgetProtocol(r *http.Request) service.TaskClaimBudgetProtocol {
+	if requestHasClientCapability(r, protocol.DaemonCapabilityBudgetUsageV1) {
+		return service.TaskClaimBudgetProtocolV1
+	}
+	return service.TaskClaimBudgetProtocolNone
+}
+
 func parseRuntimeConnectedAppsForClaim(raw []byte, taskID pgtype.UUID) []runtimeapps.ConnectedApp {
 	raw = bytes.TrimSpace(raw)
 	if len(raw) == 0 || bytes.Equal(raw, []byte("null")) {
@@ -1908,7 +1918,7 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 		// comment/coalesced-comment tasks) are persisted atomically; on failure
 		// the exact claim is requeued and omitted from this batch.
 		commentBackedTask := task.TriggerCommentID.Valid || len(task.CoalescedCommentIds) > 0
-		receipt, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), task, db.CreateTaskTokenParams{
+		finalized, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), task, db.CreateTaskTokenParams{
 			ID:            dbid.NewV7(),
 			TokenHash:     auth.HashToken(tokenStr),
 			ApiCapability: resp.taskCapability,
@@ -1917,8 +1927,21 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 			WorkspaceID:   parseUUID(resp.WorkspaceID),
 			UserID:        rt.OwnerID,
 			ExpiresAt:     pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
-		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
+		}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, claimBudgetProtocol(r), daemonTokens...)
 		if ferr != nil {
+			if errors.Is(ferr, service.ErrIssueBudgetBindingInProgress) {
+				// Not a failure of the claim: a budget binding is on its way
+				// in the workspace of the task's issue, and the claim cannot
+				// tell yet whether the issue is being bound. The task goes
+				// back to the queue and is left out of this batch.
+				slog.Info("batch claim: budget binding in progress; requeueing claim",
+					"task_id", uuidToString(task.ID))
+				if _, rerr := h.TaskService.RequeueTaskAfterClaimFailure(r.Context(), task); rerr != nil {
+					slog.Error("batch claim: requeue after budget binding in progress failed",
+						"task_id", uuidToString(task.ID), "error", rerr)
+				}
+				continue
+			}
 			if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), &task, ferr); failure != nil {
 				continue
 			}
@@ -1932,7 +1955,10 @@ func (h *Handler) ClaimTasksByRuntime(w http.ResponseWriter, r *http.Request) {
 		}
 		resp.AuthToken = tokenStr
 		resp.RemoteMCPDaemonToken = remoteMCPToken
-		resp.DeliveredCommentIDs = uuidStringsOrEmpty(receipt)
+		resp.DeliveredCommentIDs = uuidStringsOrEmpty(finalized.DeliveredCommentIDs)
+		if finalized.BudgetAttemptID.Valid {
+			resp.BudgetAttemptID = uuidToString(finalized.BudgetAttemptID)
+		}
 		out = append(out, resp)
 	}
 
@@ -3660,7 +3686,7 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusInternalServerError, "failed to mint Remote MCP daemon token")
 		return
 	}
-	receipt, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), *task, db.CreateTaskTokenParams{
+	finalized, ferr := h.TaskService.FinalizeTaskClaim(r.Context(), *task, db.CreateTaskTokenParams{
 		ID:            dbid.NewV7(),
 		TokenHash:     auth.HashToken(tokenStr),
 		ApiCapability: resp.taskCapability,
@@ -3669,8 +3695,20 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 		WorkspaceID:   parseUUID(resp.WorkspaceID),
 		UserID:        runtime.OwnerID,
 		ExpiresAt:     pgtype.Timestamptz{Time: time.Now().Add(24 * time.Hour), Valid: true},
-	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, daemonTokens...)
+	}, deliveredCommentIDs, commentBackedTask, resp.KnowledgeContext, claimBudgetProtocol(r), daemonTokens...)
 	if ferr != nil {
+		if errors.Is(ferr, service.ErrIssueBudgetBindingInProgress) {
+			// Not a failure of the claim: a budget binding is on its way in
+			// the workspace of the task's issue, and the claim cannot tell
+			// yet whether the issue is being bound. The task goes back to the
+			// queue and the daemon is told there is nothing for it this time.
+			outcome = "budget_binding_in_progress"
+			slog.Info("task claim: budget binding in progress; requeueing claim",
+				"task_id", uuidToString(task.ID), "runtime_id", runtimeID)
+			requeueFailedClaim("budget_binding_in_progress")
+			payloadBytes, _ = writeMeasuredJSON(w, http.StatusOK, map[string]any{"task": nil})
+			return
+		}
 		if failure := h.settleKnowledgeFinalizeRefusal(r.Context(), task, ferr); failure != nil {
 			outcome = failure.outcome
 			writeError(w, failure.status, failure.message)
@@ -3689,8 +3727,11 @@ func (h *Handler) ClaimTaskByRuntime(w http.ResponseWriter, r *http.Request) {
 	}
 	resp.AuthToken = tokenStr
 	resp.RemoteMCPDaemonToken = remoteMCPToken
-	task.DeliveredCommentIds = receipt
-	resp.DeliveredCommentIDs = uuidStringsOrEmpty(receipt)
+	task.DeliveredCommentIds = finalized.DeliveredCommentIDs
+	resp.DeliveredCommentIDs = uuidStringsOrEmpty(finalized.DeliveredCommentIDs)
+	if finalized.BudgetAttemptID.Valid {
+		resp.BudgetAttemptID = uuidToString(finalized.BudgetAttemptID)
+	}
 
 	slog.Info("task claimed by runtime", "task_id", uuidToString(task.ID), "runtime_id", runtimeID, "agent_id", uuidToString(task.AgentID), "prior_session", resp.PriorSessionID)
 	if resp.Agent != nil && len(resp.Agent.Skills) > 0 {

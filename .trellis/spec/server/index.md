@@ -8,6 +8,7 @@
 |-------|-------------|--------|
 | [Security Boundaries](./security-boundaries.md) | Credential minting gates and automation authorization principals | Active |
 | [Task API capabilities](./task-api-capabilities.md) | Frozen reporter/reviewer scope, current authority, durable non-dispatch and claim limits | M1 increment; host sandbox separate |
+| [Parent-task budget observation](./issue-budgets.md) | Lifetime root attribution, atomic usage, unknown holds and human API/CLI recovery | F3-S1 observe only |
 | [Deterministic report snapshots](./report-snapshots.md) | Frozen safe facts, source gaps, current Reporter reads, human capture and terminal report withdrawal | F2 minimum slice; deterministic API/CLI validation |
 | [Controlled artifact execution](./controlled-artifact-execution.md) | Frozen package approval, one-time claim, confined tar output and durable uncertainty | Local synthetic adapter verified; deployment separate |
 | [Transactional completion enforcement](./delivery-completion-enforcement.md) | Explicit human authorization in all real completion transactions, exact source and retained recovery | Implemented; final acceptance tracked in task |

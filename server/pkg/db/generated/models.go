@@ -2054,6 +2054,118 @@ type Issue struct {
 	IterationRolloverCount int32              `json:"iteration_rollover_count"`
 }
 
+type IssueBudgetAttempt struct {
+	ID                   pgtype.UUID        `json:"-"`
+	WorkspaceID          pgtype.UUID        `json:"-"`
+	BudgetRootID         pgtype.UUID        `json:"-"`
+	TaskID               pgtype.UUID        `json:"-"`
+	ClaimGeneration      int64              `json:"-"`
+	RuntimeID            pgtype.UUID        `json:"-"`
+	AgentID              pgtype.UUID        `json:"-"`
+	IssueID              pgtype.UUID        `json:"-"`
+	ContextParentIssueID pgtype.UUID        `json:"-"`
+	State                string             `json:"-"`
+	ReservedTicks        pgtype.Int8        `json:"-"`
+	ProtocolVersion      pgtype.Int4        `json:"-"`
+	PolicyRevision       pgtype.Int8        `json:"-"`
+	PolicyEpoch          pgtype.Int8        `json:"-"`
+	CreatedAt            pgtype.Timestamptz `json:"-"`
+	UpdatedAt            pgtype.Timestamptz `json:"-"`
+}
+
+type IssueBudgetEntry struct {
+	WorkspaceID   pgtype.UUID `json:"-"`
+	BudgetRootID  pgtype.UUID `json:"-"`
+	Seq           int64       `json:"-"`
+	EntryID       string      `json:"-"`
+	Kind          string      `json:"-"`
+	AttemptID     pgtype.UUID `json:"-"`
+	InvocationID  pgtype.Text `json:"-"`
+	ScopeID       pgtype.Text `json:"-"`
+	EntryJson     []byte      `json:"-"`
+	EntryDigest   string      `json:"-"`
+	Receipt       []byte      `json:"-"`
+	PriceSnapshot []byte      `json:"-"`
+	PriceDigest   pgtype.Text `json:"-"`
+	Source        string      `json:"-"`
+	// Version of the stored entry form in entry_json.
+	SchemaVersion     int32              `json:"-"`
+	AdapterVersion    pgtype.Text        `json:"-"`
+	NormalizerVersion pgtype.Text        `json:"-"`
+	ProducerEpoch     pgtype.Text        `json:"-"`
+	PayloadDigest     pgtype.Text        `json:"-"`
+	ObservedAt        pgtype.Timestamptz `json:"-"`
+	ReportedAt        pgtype.Timestamptz `json:"-"`
+	// When the reporting request arrived at the server; NULL on an entry the server wrote itself. created_at is the commit time of the row.
+	ReceivedAt   pgtype.Timestamptz `json:"-"`
+	Completeness pgtype.Text        `json:"-"`
+	OperationID  pgtype.UUID        `json:"-"`
+	CreatedAt    pgtype.Timestamptz `json:"-"`
+}
+
+type IssueBudgetMember struct {
+	WorkspaceID        pgtype.UUID        `json:"-"`
+	IssueID            pgtype.UUID        `json:"-"`
+	BudgetRootID       pgtype.UUID        `json:"-"`
+	BoundParentIssueID pgtype.UUID        `json:"-"`
+	BindSource         string             `json:"-"`
+	BindingVersion     int32              `json:"-"`
+	BoundAt            pgtype.Timestamptz `json:"-"`
+	TombstonedAt       pgtype.Timestamptz `json:"-"`
+}
+
+type IssueBudgetObservation struct {
+	ID              pgtype.UUID        `json:"-"`
+	WorkspaceID     pgtype.UUID        `json:"-"`
+	BudgetRootID    pgtype.UUID        `json:"-"`
+	Kind            string             `json:"-"`
+	Reason          string             `json:"-"`
+	IssueID         pgtype.UUID        `json:"-"`
+	TaskID          pgtype.UUID        `json:"-"`
+	ClaimGeneration pgtype.Int8        `json:"-"`
+	AttemptID       pgtype.UUID        `json:"-"`
+	Detail          []byte             `json:"-"`
+	CreatedAt       pgtype.Timestamptz `json:"-"`
+}
+
+type IssueBudgetOperation struct {
+	ID            pgtype.UUID        `json:"-"`
+	WorkspaceID   pgtype.UUID        `json:"-"`
+	BudgetRootID  pgtype.UUID        `json:"-"`
+	ScopeKind     string             `json:"-"`
+	ScopeID       pgtype.UUID        `json:"-"`
+	OperationKey  string             `json:"-"`
+	OperationKind string             `json:"-"`
+	IntentDigest  string             `json:"-"`
+	ActorType     string             `json:"-"`
+	ActorID       pgtype.UUID        `json:"-"`
+	Result        []byte             `json:"-"`
+	CreatedAt     pgtype.Timestamptz `json:"-"`
+}
+
+type IssueBudgetRoot struct {
+	ID                  pgtype.UUID        `json:"-"`
+	WorkspaceID         pgtype.UUID        `json:"-"`
+	RootIssueID         pgtype.UUID        `json:"-"`
+	AdmissionState      string             `json:"-"`
+	SettledAsOfRevision pgtype.Int8        `json:"-"`
+	Mode                string             `json:"-"`
+	PolicyRevision      int64              `json:"-"`
+	PolicyEpoch         int64              `json:"-"`
+	LedgerRevision      int64              `json:"-"`
+	LimitTicks          pgtype.Int8        `json:"-"`
+	AttemptReserveTicks pgtype.Int8        `json:"-"`
+	ActualKnownTicks    int64              `json:"-"`
+	EstimatedTicks      int64              `json:"-"`
+	ReservedTicks       int64              `json:"-"`
+	UnknownHoldTicks    int64              `json:"-"`
+	OverrunTicks        int64              `json:"-"`
+	UnknownCount        int64              `json:"-"`
+	ActivatedAt         pgtype.Timestamptz `json:"-"`
+	CreatedAt           pgtype.Timestamptz `json:"-"`
+	UpdatedAt           pgtype.Timestamptz `json:"-"`
+}
+
 type IssueCollaboration struct {
 	IssueID                    pgtype.UUID        `json:"issue_id"`
 	Revision                   int64              `json:"revision"`

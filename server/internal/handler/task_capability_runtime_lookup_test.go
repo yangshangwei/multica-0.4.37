@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/auth"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
+	"github.com/multica-ai/multica/server/internal/service"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
 
@@ -28,7 +29,7 @@ func TestTaskCapabilityFinalizationRecordsRuntimeLookup(t *testing.T) {
 
 	params := db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_runtime_lookup_finalization"), TaskID: task.ID, AgentID: task.AgentID, WorkspaceID: token.WorkspaceID, UserID: token.UserID, ExpiresAt: token.ExpiresAt, ApiCapability: token.ApiCapability}
 	dbfx.Exec(t, `UPDATE issue SET project_id=NULL WHERE id=$1`, f.issue)
-	if _, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil); !errors.Is(err, auth.ErrTaskCapability) {
+	if _, err := testHandler.TaskService.FinalizeTaskClaim(ctx, task, params, nil, false, nil, service.TaskClaimBudgetProtocolNone); !errors.Is(err, auth.ErrTaskCapability) {
 		t.Fatalf("changed project must refuse finalization: %v", err)
 	}
 	// The initial read and binding recheck each count, as does the capability read.

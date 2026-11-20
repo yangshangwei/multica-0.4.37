@@ -78,7 +78,10 @@ type IssueCreateParams struct {
 	DueDate       pgtype.Date
 	OriginType    pgtype.Text
 	OriginID      pgtype.UUID
-	AttachmentIDs []pgtype.UUID
+	// VerifiedTaskID comes only from a server-verified task credential. It is
+	// independent of client-supplied origin fields and is never a JSON input.
+	VerifiedTaskID pgtype.UUID
+	AttachmentIDs  []pgtype.UUID
 	// LabelIDs are the issue-scoped labels to attach to the new issue. They
 	// are validated and written inside the create transaction (see Create),
 	// so the issue is never committed with a partial or wrong label set. An
@@ -573,6 +576,11 @@ func (s *IssueService) CreateInTx(ctx context.Context, tx pgx.Tx, p IssueCreateP
 	}
 	if err != nil {
 		return IssueCreateResult{}, fmt.Errorf("create issue: %w", err)
+	}
+	// A child of a budget member joins the same root in this transaction;
+	// under a parent outside every root this is one index lookup.
+	if err := BindIssueBudgetOnCreate(ctx, qtx, issue, p.VerifiedTaskID); err != nil {
+		return IssueCreateResult{}, err
 	}
 
 	if p.SourceContext != nil {

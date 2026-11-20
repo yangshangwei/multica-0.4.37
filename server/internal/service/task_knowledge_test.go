@@ -62,7 +62,7 @@ func (f *taskKnowledgeFixture) finalize(t *testing.T, chosen string) *protocol.T
 	if chosen != "" && prior == "" {
 		t.Fatal("fixture unexpectedly retired session")
 	}
-	_, err = f.tasks.FinalizeTaskClaim(f.ctx, f.task, db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: f.task.ID, AgentID: f.task.AgentID, WorkspaceID: util.MustParseUUID(f.workspace), UserID: util.MustParseUUID(f.creator), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d)
+	_, err = f.tasks.FinalizeTaskClaim(f.ctx, f.task, db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: f.task.ID, AgentID: f.task.AgentID, WorkspaceID: util.MustParseUUID(f.workspace), UserID: util.MustParseUUID(f.creator), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d, TaskClaimBudgetProtocolNone)
 	if err != nil {
 		t.Fatal(err)
 	}

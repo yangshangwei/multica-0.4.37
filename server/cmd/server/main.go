@@ -767,6 +767,11 @@ func main() {
 	// its bounded transactions run independently once per hour, so a slow GC
 	// round cannot delay offline detection or task recovery.
 	go runRuntimeGCSweeper(sweepCtx, pool, queries, taskSvc.Metrics, h)
+	// The budget lifecycle reconciliation takes a root lock and a transaction
+	// per root, so it does not share the liveness tick either. It has no
+	// observer: a failed round is its own stage metric and log line, and never
+	// the health of the task sweeper.
+	go runBudgetLifecycleSweeper(sweepCtx, service.NewIssueBudgetService(queries, pool), taskSvc.Metrics)
 	// Source-context cleanup is object-store work, so it gets its own goroutine
 	// instead of a slot in the runtime sweep tick.
 	go runSourceContextSweeper(sweepCtx, taskSvc)

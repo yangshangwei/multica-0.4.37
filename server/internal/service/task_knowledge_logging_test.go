@@ -172,7 +172,7 @@ func TestKnowledgeServerLogProbe(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		if _, err = svc.FinalizeTaskClaim(ctx, task, db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: task.ID, AgentID: task.AgentID, WorkspaceID: util.MustParseUUID(workspace), UserID: util.MustParseUUID(owner), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d); err != nil {
+		if _, err = svc.FinalizeTaskClaim(ctx, task, db.CreateTaskTokenParams{TokenHash: auth.HashToken("mat_" + uuid.NewString()), TaskID: task.ID, AgentID: task.AgentID, WorkspaceID: util.MustParseUUID(workspace), UserID: util.MustParseUUID(owner), ExpiresAt: pgtype.Timestamptz{Time: time.Now().Add(time.Hour), Valid: true}}, nil, false, d, service.TaskClaimBudgetProtocolNone); err != nil {
 			t.Fatal(err)
 		}
 		prepared, err := svc.PrepareTaskKnowledge(ctx, service.TaskKnowledgeCaller{RuntimeID: task.RuntimeID, Kind: "daemon_token", TokenHash: auth.HashToken(token)}, task.ID, protocol.TaskKnowledgePrepareRequest{ProtocolVersion: 1, RequestID: uuid.NewString(), ClaimGeneration: d.ClaimGeneration, DispatchedAt: d.DispatchedAt, Session: d.Session, InvocationFingerprint: strings.Repeat("a", 64)})

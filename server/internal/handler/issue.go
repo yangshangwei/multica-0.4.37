@@ -3212,6 +3212,7 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 		DueDate:        dueDate,
 		OriginType:     originType,
 		OriginID:       originID,
+		VerifiedTaskID: verifiedIssueCreationTaskID(r.Context(), wsUUID),
 		Stage:          ptrToInt4(req.Stage),
 		AttachmentIDs:  attachmentIDs,
 		LabelIDs:       labelIDs,
@@ -3318,6 +3319,15 @@ func (h *Handler) CreateIssue(w http.ResponseWriter, r *http.Request) {
 	labelResponses := labelsToResponse(res.Labels)
 	resp.Labels = &labelResponses
 	writeJSON(w, http.StatusCreated, resp)
+}
+
+// Budget attribution trusts the credential binding, never actor headers or
+// caller-provided origin fields.
+func verifiedIssueCreationTaskID(ctx context.Context, workspaceID pgtype.UUID) pgtype.UUID {
+	if token, ok := auth.VerifiedTaskTokenFromContext(ctx); ok && token.WorkspaceID == workspaceID {
+		return token.TaskID
+	}
+	return pgtype.UUID{}
 }
 
 // The service already holds workspace/member/catalog/I1 fences. Reference locks
@@ -4112,6 +4122,13 @@ func (h *Handler) updateIssueAtomicallyOnce(ctx context.Context, workspaceID pgt
 	issue, err := qtx.UpdateIssue(ctx, params)
 	if err != nil {
 		return db.Issue{}, current, issueUpdateOutcome{}, fmt.Errorf("update locked issue: %w", err)
+	}
+	if issue.ParentIssueID != current.ParentIssueID {
+		// Budget membership follows the move in the same transaction. It
+		// records what a later budget gate would refuse; it never refuses.
+		if err = service.BindIssueBudgetOnReparent(ctx, qtx, issue); err != nil {
+			return db.Issue{}, current, issueUpdateOutcome{}, err
+		}
 	}
 
 	attachmentsChanged := false
@@ -5011,6 +5028,11 @@ func (h *Handler) deleteIssuesAndCollectAttachmentURLs(r *http.Request, issues [
 			return issueDeleteResult{}, fmt.Errorf("load issue source context for delete: %w", contextErr)
 		}
 		if err = iteration.RecordIssueDeletion(ctx, tx, records[i], actor, operationID); err != nil {
+			return issueDeleteResult{}, err
+		}
+		// The issue's budget member row outlives it, marked; its root and
+		// everything recorded under them stay as they are.
+		if err = service.TombstoneIssueBudgetMember(ctx, qtx, issue.WorkspaceID, issue.ID); err != nil {
 			return issueDeleteResult{}, err
 		}
 		if err := qtx.DeleteIssue(ctx, db.DeleteIssueParams{ID: issue.ID, WorkspaceID: issue.WorkspaceID}); err != nil {

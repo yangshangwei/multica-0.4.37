@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/multica-ai/multica/server/pkg/agent"
@@ -101,6 +102,10 @@ type Client struct {
 	cancelAckReceiptsReady bool
 	token                  string
 	client                 *http.Client
+
+	// budgetUsageReady is set once the journal of usage report records is
+	// usable. From then on the client declares the budget usage protocol.
+	budgetUsageReady atomic.Bool
 
 	// bundleClient downloads skill bundles. Unlike client it carries no fixed
 	// Timeout: bundles can be large and slow on jittery links, so the caller
@@ -194,6 +199,9 @@ func (c *Client) capabilities() string {
 		if c.cancelAckReceiptsReady {
 			capabilities += "," + protocol.DaemonCapabilityAdminCancelAckV1
 		}
+	}
+	if c.budgetUsageReady.Load() {
+		capabilities += "," + protocol.DaemonCapabilityBudgetUsageV1
 	}
 	return capabilities
 }

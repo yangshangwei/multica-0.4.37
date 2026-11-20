@@ -3731,6 +3731,13 @@ func (s *TaskService) ClaimTaskForRuntime(ctx context.Context, runtimeID pgtype.
 // handler must call this only after the full payload has been built and before
 // writing any response bytes. A failure rolls every write back so the claim can
 // be safely returned to the queue.
+//
+// The last step of the transaction is the budget step: a task of an issue that
+// belongs to a budget root gets its attempt there. budgetProtocol is what the
+// claiming daemon declared in X-Client-Capabilities; a claim passed in as
+// TaskClaimBudgetProtocolNone is recorded as one whose usage will not be
+// reported. ErrIssueBudgetBindingInProgress is a claim to hand back to the
+// queue and nothing else.
 func (s *TaskService) FinalizeTaskClaim(
 	ctx context.Context,
 	task db.AgentTaskQueue,
@@ -3738,17 +3745,18 @@ func (s *TaskService) FinalizeTaskClaim(
 	deliveredCommentIDs []pgtype.UUID,
 	recordCommentReceipt bool,
 	knowledge *protocol.TaskKnowledgeClaimDescriptor,
+	budgetProtocol TaskClaimBudgetProtocol,
 	daemonTokens ...db.CreateDaemonTokenParams,
-) ([]pgtype.UUID, error) {
+) (TaskClaimFinalization, error) {
 	if len(token.ApiCapability) > 0 && s.TxStarter == nil {
-		return nil, errors.New("task capability mint requires a transaction")
+		return TaskClaimFinalization{}, errors.New("task capability mint requires a transaction")
 	}
 
 	if len(daemonTokens) > 1 {
-		return nil, fmt.Errorf("finalize task claim: expected at most one daemon token, got %d", len(daemonTokens))
+		return TaskClaimFinalization{}, fmt.Errorf("finalize task claim: expected at most one daemon token, got %d", len(daemonTokens))
 	}
 	if !task.RuntimeID.Valid {
-		return nil, ErrManagedRuntimeSource
+		return TaskClaimFinalization{}, ErrManagedRuntimeSource
 	}
 	daemonTokens = append([]db.CreateDaemonTokenParams(nil), daemonTokens...)
 	for i := range daemonTokens {
@@ -3759,6 +3767,7 @@ func (s *TaskService) FinalizeTaskClaim(
 	token.InstallationBindingEpoch = pgtype.Int8{}
 	receipt := task.DeliveredCommentIds
 	currentTask := task
+	var budgetClaim taskBudgetClaim
 	err := s.runInTx(ctx, func(qtx *db.Queries) error {
 		if auth.PasswordMode() {
 			session, err := auth.LockPasswordSession(ctx, qtx)
@@ -3842,27 +3851,37 @@ func (s *TaskService) FinalizeTaskClaim(
 				return fmt.Errorf("create remote MCP daemon token: %w", err)
 			}
 		}
-		if !recordCommentReceipt {
-			return nil
+		if recordCommentReceipt {
+			persisted, err := qtx.SetTaskDeliveredCommentIDs(ctx, db.SetTaskDeliveredCommentIDsParams{
+				DeliveredCommentIds:      deliveredCommentIDs,
+				TaskID:                   task.ID,
+				RuntimeID:                task.RuntimeID,
+				DispatchedAt:             task.DispatchedAt,
+				ClaimGeneration:          task.ClaimGeneration,
+				ExpectedTriggerCommentID: task.TriggerCommentID,
+			})
+			if err != nil {
+				return fmt.Errorf("set delivered comment ids: %w", err)
+			}
+			receipt = persisted
 		}
-		persisted, err := qtx.SetTaskDeliveredCommentIDs(ctx, db.SetTaskDeliveredCommentIDsParams{
-			DeliveredCommentIds:      deliveredCommentIDs,
-			TaskID:                   task.ID,
-			RuntimeID:                task.RuntimeID,
-			DispatchedAt:             task.DispatchedAt,
-			ClaimGeneration:          task.ClaimGeneration,
-			ExpectedTriggerCommentID: task.TriggerCommentID,
-		})
+		// The budget step comes behind every other write of the claim, with
+		// or without a comment receipt: the root lock it may take is the last
+		// lock of this transaction.
+		claim, err := issueBudgetLedgers.finalizeTaskBudget(ctx, qtx, s.TxStarter != nil, currentTask, budgetProtocol)
 		if err != nil {
-			return fmt.Errorf("set delivered comment ids: %w", err)
+			return err
 		}
-		receipt = persisted
+		budgetClaim = claim
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return TaskClaimFinalization{}, err
 	}
-	return receipt, nil
+	// The commit is confirmed: the ledger the claim appended to may be read
+	// by the next writer of its root.
+	budgetClaim.Committed()
+	return TaskClaimFinalization{DeliveredCommentIDs: receipt, BudgetAttemptID: budgetClaim.AttemptID}, nil
 }
 
 // RequeueTaskAfterClaimFailure immediately releases an exact dispatched claim
@@ -7486,14 +7505,22 @@ func IssueIdentifier(issuePrefix string, number int32) string {
 // autopilot are never quick-create even if they happen to carry a
 // context blob, so those are filtered up front.
 func (s *TaskService) parseQuickCreateContext(task db.AgentTaskQueue) (QuickCreateContext, bool) {
-	if task.IssueID.Valid || task.ChatSessionID.Valid || task.AutopilotRunID.Valid {
+	return quickCreateTaskContext(task.IssueID, task.ChatSessionID, task.AutopilotRunID, task.Context)
+}
+
+// quickCreateTaskContext is the one definition of what a quick-create task is,
+// on the four columns that decide it. parseQuickCreateContext applies it to a
+// task row; the budget root's in-flight scan applies it to the candidates its
+// query proposes, so the two cannot come to disagree about a task.
+func quickCreateTaskContext(issueID, chatSessionID, autopilotRunID pgtype.UUID, raw []byte) (QuickCreateContext, bool) {
+	if issueID.Valid || chatSessionID.Valid || autopilotRunID.Valid {
 		return QuickCreateContext{}, false
 	}
-	if len(task.Context) == 0 {
+	if len(raw) == 0 {
 		return QuickCreateContext{}, false
 	}
 	var qc QuickCreateContext
-	if err := json.Unmarshal(task.Context, &qc); err != nil {
+	if err := json.Unmarshal(raw, &qc); err != nil {
 		return QuickCreateContext{}, false
 	}
 	if qc.Type != QuickCreateContextType {

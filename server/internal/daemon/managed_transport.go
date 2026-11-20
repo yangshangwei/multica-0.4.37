@@ -80,6 +80,7 @@ func (c *Client) installManagedCredential(workspaceID string, credential Managed
 		child.knowledgeInvocation = c.knowledgeInvocation
 		child.managedWorkspaceID = workspaceID
 		child.cancelAckReceiptsReady = c.cancelAckReceiptsReady
+		child.budgetUsageReady.Store(c.budgetUsageReady.Load())
 		child.platform = c.platform
 		child.version = c.version
 		child.os = c.os
