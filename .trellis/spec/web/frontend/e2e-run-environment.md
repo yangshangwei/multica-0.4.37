@@ -879,7 +879,7 @@ environment field is absent. A partial or invalid explicit allocation must fail;
 it must never fall back to the historical paths.
 
 For the 2026-11-20 full regression, explicitly set `COLLABORATION_OUTPUT_TASK`
-to `.trellis/tasks/11-20-full-e2e-regression-20261120`,
+to the task's actual active or archived path (see the lifecycle contract below),
 `COLLABORATION_OUTPUT_STATE_ROOT`, `COLLABORATION_OUTPUT_ALLOCATION_FILE` and
 `COLLABORATION_OUTPUT_ALLOCATION_SHA256`. The hash pins the complete JSON record:
 task, source root, private state and storage roots, database name and connection
@@ -907,3 +907,37 @@ The canonical two output journeys exercise genuine local daemon/provider/CLI
 processes with deterministic fixture output; they do not establish real-model,
 packaged-Main or installer acceptance. Restore the original gate booleans, keep
 their epoch monotonic, and stop only the recorded owned services.
+
+### Task archival and explicit allocation identity
+
+1. **Scope:** archiving the full-regression task must not require retaining an
+   empty active task directory or prevent later controlled output acceptance.
+   `assertRuntimeOutputAllocation(env, checkout, io)` still runs before side
+   effects in the output fixture.
+2. **Signatures:** `COLLABORATION_OUTPUT_TASK` and the pinned JSON `task` field
+   select the same exact relative path. Allowed paths are
+   `.trellis/tasks/11-20-full-e2e-regression-20261120` and
+   `.trellis/tasks/archive/YYYY-MM/11-20-full-e2e-regression-20261120`, with a
+   four-digit year and month 01–12. No search or implicit redirection occurs.
+3. **Contract:** the selected canonical directory must exist under the recorded
+   checkout. Its regular, nonsymlink `task.json` must contain both `id` and
+   `name` equal to `full-e2e-regression-20261120`. Lifecycle status may change;
+   it is not the identity. All existing allocation digest, database, private
+   state/storage, ownership and service-origin checks still apply.
+4. **Validation:** reject foreign task names, malformed archive paths,
+   traversal/aliases/symlinks, missing or invalid task metadata and a record
+   naming a different path. A stale active-path allocation fails after the
+   directory moves. Partial explicit configuration never enters the historical
+   branch.
+5. **Cases:** an active task with its exact allocation passes; after a normal
+   archive move, a new allocation explicitly pinning the real archive path
+   passes. Reusing the old path or merely creating an empty directory fails.
+6. **Tests:** retain the existing guard matrix and a real temporary-filesystem
+   sequence: admit active, move to archive, refuse the stale allocation, then
+   explicitly repin and admit the archive. These tests make no database or
+   network connection. Actual output journeys remain a separate acceptance gate.
+7. **Wrong / correct:** do not rewrite retained reports/allocation records or
+   keep a symlink at the active path to manufacture continuity. Preserve old
+   evidence; subsequent runs create their own private allocation using the
+   archived task path and a newly computed digest. Archive only after current
+   verification and owned-resource cleanup are complete.

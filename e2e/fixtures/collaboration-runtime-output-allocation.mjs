@@ -2,7 +2,8 @@ import { createHash } from "node:crypto";
 import { lstatSync, readFileSync, realpathSync } from "node:fs";
 import { dirname, isAbsolute, join, relative, resolve } from "node:path";
 
-const currentTask = ".trellis/tasks/11-20-full-e2e-regression-20261120";
+const taskIdentity = "full-e2e-regression-20261120";
+const taskPath = /^\.trellis\/tasks\/(?:archive\/\d{4}-(?:0[1-9]|1[0-2])\/)?11-20-full-e2e-regression-20261120$/;
 const historicalState = "/Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy";
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const explicitKeys = ["COLLABORATION_OUTPUT_TASK", "COLLABORATION_OUTPUT_STATE_ROOT",
@@ -64,10 +65,16 @@ export function assertRuntimeOutputAllocation(env, checkout, io = { lstatSync, r
   }
 
   requireCondition(explicitKeys.every((key) => typeof env[key] === "string" && env[key].length > 0), "explicit allocation is incomplete");
-  requireCondition(env.COLLABORATION_OUTPUT_TASK === currentTask, "the task is not the current acceptance task");
+  const task = env.COLLABORATION_OUTPUT_TASK;
+  requireCondition(taskPath.test(task), "the task is not the current acceptance task");
   canonical(checkout, io);
-  const taskDirectory = canonical(join(checkout, currentTask), io);
+  const taskDirectory = canonical(join(checkout, task), io);
   requireCondition(io.lstatSync(taskDirectory).isDirectory(), "the current task directory is missing");
+  const taskFilename = canonical(join(taskDirectory, "task.json"), io);
+  requireCondition(io.lstatSync(taskFilename).isFile(), "task metadata must be a regular file");
+  const taskMetadata = JSON.parse(io.readFileSync(taskFilename).toString("utf8"));
+  requireCondition(taskMetadata !== null && typeof taskMetadata === "object" && !Array.isArray(taskMetadata)
+    && taskMetadata.id === taskIdentity && taskMetadata.name === taskIdentity, "task metadata identifies a different task");
   const state = env.COLLABORATION_OUTPUT_STATE_ROOT;
   privatePath(state, io, true);
   requireCondition(state !== checkout && state !== dirname(state) && !descendant(checkout, state), "state must be an external private allocation");
@@ -79,7 +86,7 @@ export function assertRuntimeOutputAllocation(env, checkout, io = { lstatSync, r
     && sha256(bytes) === env.COLLABORATION_OUTPUT_ALLOCATION_SHA256, "allocation bytes differ from their pin");
   const allocation = JSON.parse(bytes.toString("utf8"));
   requireCondition(allocation !== null && typeof allocation === "object" && !Array.isArray(allocation), "allocation record is malformed");
-  requireCondition(allocation.task === currentTask && allocation.source_root === checkout
+  requireCondition(allocation.task === task && allocation.source_root === checkout
     && allocation.state_root === state && allocation.database === database
     && allocation.database_url_sha256 === sha256(env.DATABASE_URL), "task, checkout, state or database differs from the allocation");
   const storage = env.COLLABORATION_OUTPUT_STORAGE_ROOT;
@@ -92,6 +99,6 @@ export function assertRuntimeOutputAllocation(env, checkout, io = { lstatSync, r
     && origin(env.PLAYWRIGHT_BASE_URL) === allocation.web_origin
     && origin(env.COLLABORATION_ELECTRON_RENDERER_URL) === allocation.renderer_origin
     && env.MULTICA_DEPLOYMENT_ID === allocation.deployment_id, "service configuration differs from the allocation");
-  return { mode: "explicit", task: currentTask, database, state_root: state, storage_root: storage,
+  return { mode: "explicit", task, database, state_root: state, storage_root: storage,
     allocation_sha256: sha256(bytes) };
 }
