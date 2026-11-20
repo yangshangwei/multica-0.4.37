@@ -61,3 +61,12 @@ The user explicitly requests autonomous comprehensive collaboration/business E2E
 Existing pending changes belong to other sessions; preserve them. Build production assets once, pin/copy them before independent lanes; avoid competing rebuilds. One browser worker, no retries; no real-provider account or external publication required.
 
 R3 browser514/514 latest admitted PASS; original17failureidentities retained. Product/tooling fixes committedcbcb86b94,37e2faa0f,6f51d385f,ddc80d5af. Backend all local/race/Linux/synthetic andquietperformancepassed; GitHuboriginaltestafterresetpassed andfinalPG/Rediscleanup verified. Allroot44portsfree8containersstopped.
+
+## Archive decision, 2026-11-20
+
+The earlier R1/R2 decision to retain this active path is superseded by
+`963461f67`: explicit allocations now admit this exact task at its canonical
+archive path with matching metadata and a newly pinned record. R3 verification,
+independent review, owned work commits and all resource cleanup are complete.
+Original allocations and historical reports remain unchanged. The archive
+session owns the final move, link repair and real-directory admission probe.
