@@ -1,0 +1,565 @@
+{
+  "schema_version": 1,
+  "evidence_type": "historical-evidence-audit-no-model-run",
+  "audited_at": "2026-11-20T07:15:11.547916+00:00",
+  "audited_head": "4c78c8b98958cb8a76f1c9a448b56e94285c36b3",
+  "private_audit_root": "/Volumes/artisan/code/2026/secrem-v2-resume-audit-20261120T065505Z",
+  "new_model_requests": 0,
+  "new_real_admission": false,
+  "database_action": "offline pg_restore decoding only; no database restored or connected",
+  "dumps": [
+    {
+      "name": "secrem_v2_real_20261120_cli_c1",
+      "sha256": "2320322526910edc41cccdde490710caa52ff9b94f74e9035f85f6d275d38afd",
+      "bytes": 867713,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_d1",
+      "sha256": "56120d41fc6091d936a4fe03a3df470ac6e0e8d9226ac977fb45c1d4cb27e9f9",
+      "bytes": 785777,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_fake_c1",
+      "sha256": "57c3368b5c750b5664c830ff0fcf2f1aea1644cd9920ffb497f44ec040b414a7",
+      "bytes": 1006047,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_fake_code",
+      "sha256": "a2f67632ce51479c59b9a1b6253c3d8b39d3202f50279d036058fcfa863915ab",
+      "bytes": 831871,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_fake_d1",
+      "sha256": "a57b823a2dd888bfc88c2661a8aed1ea1cdb4d7cad6322c16a94f738f1bcb948",
+      "bytes": 909911,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_fake_o1",
+      "sha256": "feedb72b1c6faf31ab2adc1bf1247a7135813820372fa12a5d99c877b4d3e083",
+      "bytes": 853291,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_fake_p1",
+      "sha256": "3f84c3b1f1553a29c7464c4e02c91de5a5dea1f1b1e8823c7854af30db009e72",
+      "bytes": 841913,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_o1",
+      "sha256": "0153014eed2c40242e6162cd6d0bad37bc8b934814311422b2b12fa80274ce92",
+      "bytes": 917796,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    },
+    {
+      "name": "secrem_v2_real_20261120_cli_p1",
+      "sha256": "ad4cf466422c1090c47c0bf0511a367294f280e8a17c64dd47829a3c6a29f76a",
+      "bytes": 896187,
+      "mode": "0o600",
+      "hash_matches": true,
+      "toc_exit": 0,
+      "full_decode_exit": 0
+    }
+  ],
+  "C1_dump": {
+    "extraction_exit": 0,
+    "method": "offline pg_restore data-only into private SQL; parsed COPY data, no DB connected or restored",
+    "sql_sha256": "aceff4a02d3181f7ebfa924c920db5a35eab79aa8eb9b862aee6b93571c0d912",
+    "schema_migrations_count": 856,
+    "max_schema_migration": "868_collaboration_runtime_output",
+    "tasks": [
+      {
+        "id": "01a1f79a-473f-7e9e-9cb5-da884d33885b",
+        "agent_id": "2a8df40a-442c-45e4-9f8b-1f00789232f1",
+        "issue_id": "01a1f792-4d00-7b85-9c7b-93534e770916",
+        "status": "queued",
+        "trigger_comment_id": "01a1f79a-4320-75c4-b39f-f22db983e8e4",
+        "delegated_from_task_id": "01a1f792-4d93-76e1-92f8-0835aa3de77d",
+        "is_leader_task": "f",
+        "attempt": "1",
+        "started_at": null,
+        "completed_at": null,
+        "claim_generation": "0",
+        "role": "product-analyst"
+      },
+      {
+        "id": "01a1f792-4d93-76e1-92f8-0835aa3de77d",
+        "agent_id": "4ffc91df-54e8-4eb6-a506-f79668ffbf4d",
+        "issue_id": "01a1f792-4d00-7b85-9c7b-93534e770916",
+        "status": "failed",
+        "trigger_comment_id": null,
+        "delegated_from_task_id": null,
+        "is_leader_task": "t",
+        "attempt": "1",
+        "started_at": "2026-11-20 06:08:44.435814+00",
+        "completed_at": "2026-11-20 06:18:29.839715+00",
+        "claim_generation": "1",
+        "role": "security-remediation-lead"
+      }
+    ],
+    "comment_count": 2,
+    "issue_count": 1,
+    "checkpoint_matches": true,
+    "intake_task_status_matches": true,
+    "issue_status": "in_progress",
+    "comments": [
+      {
+        "id": "01a1f79a-4320-75c4-b39f-f22db983e8e4",
+        "author_type": "agent",
+        "author_id": "4ffc91df-54e8-4eb6-a506-f79668ffbf4d",
+        "source_task_id": "01a1f792-4d93-76e1-92f8-0835aa3de77d",
+        "revision": "1",
+        "type": "comment",
+        "dispatch_eligible": "t",
+        "content_sha256": "e7c2a9dd95a6c5888fcdfef302d2cb04c6de07867ccf5502aa981aeeb1f5ddc1",
+        "matches_intake": true
+      },
+      {
+        "id": "01a1f79b-4285-7e30-93ed-3643c5b6b785",
+        "author_type": "agent",
+        "author_id": "4ffc91df-54e8-4eb6-a506-f79668ffbf4d",
+        "source_task_id": "01a1f792-4d93-76e1-92f8-0835aa3de77d",
+        "revision": "1",
+        "type": "system",
+        "dispatch_eligible": "t",
+        "content_sha256": "be46b9a87d7b9592bac488abd4a5f50cec2ffdeaf352520592a987e3231aef81",
+        "matches_intake": true
+      }
+    ],
+    "analyst_trigger_is_delegation": true,
+    "analyst_delegated_from_original_failed_leader": true
+  },
+  "D1_dump": {
+    "extraction_exit": 0,
+    "method": "offline pg_restore data-only into private SQL; parsed COPY data, no DB connected or restored",
+    "sql_sha256": "f999ab61f05e96e6e89380415155a51f2cffcd085645d6762ba54cdc8eb15eec",
+    "schema_migrations_count": 856,
+    "max_schema_migration": "868_collaboration_runtime_output",
+    "tasks": [],
+    "comment_count": 0,
+    "issue_count": 0
+  },
+  "frozen_fixture_count": 16,
+  "frozen_fixtures_all_match": true,
+  "historical_source_snapshots": {
+    "current-before-p1-successor": {
+      "files": 31,
+      "all_hashes_match": true
+    },
+    "live-o1": {
+      "files": 26,
+      "all_hashes_match": true
+    },
+    "c1-launch": {
+      "files": 33,
+      "all_hashes_match": true
+    }
+  },
+  "historical_artifact_checks": {
+    "C1": {
+      "intake-after.json": true,
+      "intake-result.json": true,
+      "code-verdict.json": true,
+      "http.jsonl": true
+    },
+    "scripts": {
+      "direct_cli_code_harness_test.go": true,
+      "direct_cli_followup_harness_test.go": true,
+      "direct_cli_harness_test.go": true,
+      "direct_cli_backend.go": true,
+      "real_platform_harness_test.go": true,
+      "fake_direct_code.py": true,
+      "contained_git_role_handoff.py": true,
+      "git_role_handoff.py": true
+    },
+    "C1-scripted": {
+      "original_verdict_sha256": "ce5bdef550f0d0354eb733b960db8a7b36e2404bcac10c53746252308ced96b3",
+      "json_matches_committed_report": true,
+      "criteria": {
+        "agent_config_unchanged": true,
+        "all_actual_tasks_complete": true,
+        "comment_actor_source_binding": true,
+        "exact_role_run_count": true,
+        "expected_unassigned_backlog_variants": true,
+        "fix_commit_differs_from_baseline": true,
+        "issue_in_review_not_done": true,
+        "members_unchanged": true,
+        "no_off_issue_comments": true,
+        "separate_test_and_patch_commits": true,
+        "squad_unchanged": true
+      },
+      "evidence_type": "fake",
+      "verdict": "platform-checks-passed-semantic-review-pending"
+    },
+    "D1-scripted": {
+      "original_verdict_sha256": "4636325a828e4699cba16e4cf19369f012bd9902f35c63f24cea7834928ad60e",
+      "json_matches_committed_report": true,
+      "criteria": {
+        "agent_config_unchanged": true,
+        "all_actual_tasks_complete": true,
+        "comment_actor_source_binding": true,
+        "exact_role_run_count": true,
+        "expected_unassigned_backlog_variants": true,
+        "fix_commit_differs_from_baseline": true,
+        "issue_in_review_not_done": true,
+        "members_unchanged": true,
+        "no_off_issue_comments": true,
+        "one_dependency_patch_artifact": true,
+        "squad_unchanged": true
+      },
+      "evidence_type": "fake",
+      "verdict": "platform-checks-passed-semantic-review-pending"
+    },
+    "historical_source_roots": [
+      "real_platform_harness_test.go.03f58c4f5539e307e75cc7892520907823b89b8700e523536e27c290d03b2811",
+      "live-o1",
+      "c1-launch",
+      "current-p1-scratch",
+      "c1-pre-admission",
+      "transport-before-scratch",
+      "final-task-checkpoint",
+      "direct_cli_followup_harness_test.go.b0da181a20d7a27aac478d3ff1c3e713545ff99025e4bc2eb6185c4982caa637",
+      "code-harness-final",
+      "code-wrapper-before-analysis",
+      "current-before-p1-successor"
+    ]
+  },
+  "runtime_observation": {
+    "old_worktree_exists": false,
+    "matching_old_runtime_processes": [],
+    "matching_old_containers": [],
+    "matching_old_networks": [],
+    "cleanup_receipt_sha256": "463ed333c22c6c3de868519b04e42661469c7f4d601f7e652c61c2b2a6ad12bc",
+    "no_database_connection_or_restore": true,
+    "global_codex_config_not_read_or_modified": true,
+    "new_model_requests": 0
+  },
+  "historical_tool_screening": {
+    "session_id": "01a1f5ff-1287-7003-98b8-16496086e2d9",
+    "session_sha256": "1f47593306efda47af2832f7ffd68fab4918f6e65742ffbe1fe445a2dfa4f076",
+    "timestamp": "2026-11-20T06:21:37.244Z",
+    "source_line": 4759,
+    "source_record_sha256": "39d25b0a9d7881c16d3fb2fad0fe558e257fd8e739682ea0400bd6637e93bb5b",
+    "affected_agent": "/root/cli_harness",
+    "affected_operation": "C1 optional product-analyst branch continuation implementation, including reattaching the pending fixture or a successor full-case harness",
+    "reported_reason": "This content was flagged for possible cybersecurity risk.",
+    "reported_access_path": "https://platform.openai.com/settings/organization/status-and-access",
+    "access_program": "Daybreak",
+    "new_access_evidence": false,
+    "retry_performed": false,
+    "scope_limit": "The tool did not identify the triggering substep or announce a blanket ban on historical audit, existing maintenance controls or D1; no such broader claim is inferred. D1 remains unadmitted under the frozen sequential plan and current environment/source prerequisites."
+  },
+  "audit_setup_failures_retained": [
+    "Parent task has no design.md or implement.md by design; source lookup corrected after inventory.",
+    "Offline audit parser initially assumed numeric migration version; corrected to named versions without touching dump.",
+    "Source audit initially assumed unhashed filenames; actual directory uses basename.sha256. No source reconstructed."
+  ],
+  "limits": [
+    "P1 first failed sample missing exact original backend source bytes remains a historical limitation.",
+    "Offline dump decoding and COPY verification do not prove a new running restore environment, live current_database identity or fresh admission.",
+    "Maintenance validation is not real C1/D1 acceptance.",
+    "AC9 and AC10 remain open."
+  ],
+  "child1_product_integration_audit": {
+    "product_checks": [
+      {
+        "path": ".trellis/spec/server/builtin-templates.md",
+        "frozen_sha256": "63ea63d4df748f01ccae760a80fedae3cf29c9f994854d46880aad2fb72daf9c",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/comments.mdx",
+        "frozen_sha256": "62b2091508c53e7aab74ee1947042cd3efe1e99086c4f6e370731da3a6fbe1a9",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/comments.zh.mdx",
+        "frozen_sha256": "69c98d0b24675b35b48076fc7a230f49e70b6edc7d19aa25038d018b751f869c",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/security-model.mdx",
+        "frozen_sha256": "ec269edae0b866558e7f4dfd36957677b7c153882aa7b60756fec39acdafbebe",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/security-model.zh.mdx",
+        "frozen_sha256": "f8f390f72462258335cf1cd2019afca16655aefcfc1da36f458d483f6dc46f47",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/squads.mdx",
+        "frozen_sha256": "97b1a0e0e3ce3257c0afa67bbe24294cd0bf31e23d91494078a64853712cb898",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "apps/docs/content/docs/squads.zh.mdx",
+        "frozen_sha256": "f08d13e669ec7b8edd51cc68e2ea0d776c4a90e47dc9bca0fe9756cc25455b8c",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "e2e/security-remediation-squad.spec.ts",
+        "frozen_sha256": "ccb4e99b6330c7e263413a46c642c2fab65093deee73eaf2023b127a64d4f066",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "packages/views/locales/en/squads.json",
+        "frozen_sha256": "ede3cfe0d1c7475b21193b0c6193e8bf7600e9788c26487469dbaed5fcbc30be",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "packages/views/locales/zh-Hans/squads.json",
+        "frozen_sha256": "27b84e13a1400f8d76e554cc46ca2a8b1d9191b4d4f8e8a8715f5fbc479fbc2a",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "packages/views/squads/components/builtin-squad-catalog.test.tsx",
+        "frozen_sha256": "d95ce47c7b9c2866524cf9fcd46d50ded26b15459a1ebc442d53b9ac58d46e96",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/cmd/server/squad_security_remediation_notification_test.go",
+        "frozen_sha256": "4e68d831717b8a1e3002642048d842bfdc5c63288157909027215240adbde31d",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/docs/content/pages/comments.json",
+        "frozen_sha256": "91f1674fa3ebe14a19c25a5bc7524981395bde39b77505ed37a7913856fd4a82",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/docs/content/pages/security-model.json",
+        "frozen_sha256": "428dca4fcba61ab1c6ad37e98d61f8f97c36897c5756200ff0dac4818ef9fd39",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/docs/content/pages/squads.json",
+        "frozen_sha256": "322c998cb8f864c565cadbea0d887ec3a8382dd311e2d7adce1d8cf8132b1b60",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/handler/squad_comment_trigger_test.go",
+        "frozen_sha256": "449db3782fa3c06ab9548c3fa222bf3ad53473def9cd94e75afc21f53b8b2e8d",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/handler/squad_security_remediation_flow_test.go",
+        "frozen_sha256": "f6dd2046d5e2daec01ab7d6ad116a8f9b456968acc0e46fa4b25a7c62a98f86a",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/handler/squad_security_remediation_routing_test.go",
+        "frozen_sha256": "2869676d041a413406ed8060971afe28c1881ffe3b2115a077e8061b27d75c2d",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/handler/squad_template_security_test.go",
+        "frozen_sha256": "f793bdc6132a2b2d115a975ae8408e5d191fa3992b9210978091045727f7da03",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/handler/subscriber_test.go",
+        "frozen_sha256": "4656ede5e5bd4721e459ea2f11766af356fa3bab34df1121408d46f450bf8e27",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_agent_templates/security-remediation-lead/INSTRUCTIONS.md",
+        "frozen_sha256": "956b6ac3acb5c5474cb2faa9f2fb8d73926677a8b671d6452276f6410c9bb521",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_agent_templates_roster.go",
+        "frozen_sha256": "910666d00727dcdff8912a4c6e1fde7bd7268e3c6c43ba0c7e32df4dbf620af7",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_security_remediation_templates_test.go",
+        "frozen_sha256": "15e45590cf62ed8e4de8a50f6eff6aed089fbf8ee636eb1615364bbc36b78068",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-squads/SKILL.md",
+        "frozen_sha256": "5da3f3eaaaf0a8346b007a7022e36a997096da07edea7497fe2ed6dcc18e9012",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_skills/multica-squads/references/squad-source-map.md",
+        "frozen_sha256": "efe320e53976506655c8ee094a1004947c7447c0bd74e06c07cf0b49b75d57d7",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_squad_templates.go",
+        "frozen_sha256": "3af0b81d1290b47e6a9fd082eb2b43bd7c4a2c0fc6480fd9593b8365958f3a1b",
+        "integrated_matches": true,
+        "current_matches": true
+      },
+      {
+        "path": "server/internal/service/builtin_squad_templates/security-remediation/INSTRUCTIONS.md",
+        "frozen_sha256": "97d50904bb9f3289ea568c12ef3a36b886541571430e57b92576f896052984d9",
+        "integrated_matches": true,
+        "current_matches": true
+      }
+    ],
+    "historical_release_receipt": {
+      "exit": 0,
+      "RUN": 4239,
+      "PASS": 4220,
+      "FAIL": 0,
+      "SKIP": 19,
+      "source_head": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+      "timezone": "Asia/Shanghai",
+      "go": "1.26.6 linux arm64"
+    },
+    "historical_integration_receipt": {
+      "base": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+      "integrated": "50045c12cc6eb32a11e032b68717ec844640f4b8",
+      "branch": "codex/cross-workspace-collaboration",
+      "unrelated_files_checked": 5035,
+      "changed": [],
+      "task_originals_preserved": "/Volumes/artisan/code/2026/security-remediation-v2-evidence-20261120/main-task-originals"
+    },
+    "historical_log_hashes": {
+      "logs/service-linux-release.log": "290a93a3ebf03a3692427c9ede5056e787c52184b61ba04e61a2f75fbc9e0013",
+      "logs/handler_native-20261120-080050.log": "cac0616245f1abd2316b4fdbe48818666b4138e6e01648c730a208ef7c11ada5",
+      "logs/cmdserver-20261120-072527.log": "d339390289b1c14320c9354617bd89380c6574aa67451919644291c84b222f18",
+      "logs/frontend-static.log": "c8e1eb213a730ed06d3b4489fb9680efa70fd08003a362cf934c152be9d68e01",
+      "logs/playwright.log": "1057d6cf08a5b3b448367f46f9cc0dfd50f1678db371834725fe1e9dbd7c2147"
+    },
+    "new_test_execution": false
+  },
+  "current_product_binding": [
+    {
+      "path": "server/pkg/agent/builtin_runtimes.go",
+      "saved_sha256": "3974c0a29242bb38201fef501c692a31a5c2425f1d0c7d42c8339a7d367acf41",
+      "current_sha256": "3974c0a29242bb38201fef501c692a31a5c2425f1d0c7d42c8339a7d367acf41",
+      "matches": true
+    },
+    {
+      "path": "server/internal/daemon/rk1k_driver_agentintegration.go",
+      "saved_sha256": "cbd052f3126961693657c3eef10a93c59d052b08d447d5d12560b2957c69bafa",
+      "current_sha256": "cbd052f3126961693657c3eef10a93c59d052b08d447d5d12560b2957c69bafa",
+      "matches": true
+    },
+    {
+      "path": "server/internal/daemon/daemon.go",
+      "saved_sha256": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+      "current_sha256": "27a914766f0cfebf0be1f66fa6a089a27506cf442fdf597fa0d1f4740fdc7bd9",
+      "matches": true
+    },
+    {
+      "path": "server/internal/handler/daemon.go",
+      "saved_sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73",
+      "current_sha256": "239693e1a475a72d3706b565d9a7e219f3fb1f13ec2fd1a2a87ddefba581fa73",
+      "matches": true
+    },
+    {
+      "path": "server/internal/handler/squad_briefing.go",
+      "saved_sha256": "b15078b76aa2d2af3bf9e4680ed6778a1754d51bbdbcee6bd37b3a9a494d751e",
+      "current_sha256": "b15078b76aa2d2af3bf9e4680ed6778a1754d51bbdbcee6bd37b3a9a494d751e",
+      "matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_squad_templates/security-remediation/INSTRUCTIONS.md",
+      "saved_sha256": "97d50904bb9f3289ea568c12ef3a36b886541571430e57b92576f896052984d9",
+      "current_sha256": "97d50904bb9f3289ea568c12ef3a36b886541571430e57b92576f896052984d9",
+      "matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_agent_templates/security-remediation-lead/INSTRUCTIONS.md",
+      "saved_sha256": "956b6ac3acb5c5474cb2faa9f2fb8d73926677a8b671d6452276f6410c9bb521",
+      "current_sha256": "956b6ac3acb5c5474cb2faa9f2fb8d73926677a8b671d6452276f6410c9bb521",
+      "matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_squad_templates.go",
+      "saved_sha256": "3af0b81d1290b47e6a9fd082eb2b43bd7c4a2c0fc6480fd9593b8365958f3a1b",
+      "current_sha256": "3af0b81d1290b47e6a9fd082eb2b43bd7c4a2c0fc6480fd9593b8365958f3a1b",
+      "matches": true
+    },
+    {
+      "path": "server/internal/service/builtin_agent_templates_roster.go",
+      "saved_sha256": "910666d00727dcdff8912a4c6e1fde7bd7268e3c6c43ba0c7e32df4dbf620af7",
+      "current_sha256": "910666d00727dcdff8912a4c6e1fde7bd7268e3c6c43ba0c7e32df4dbf620af7",
+      "matches": true
+    }
+  ],
+  "independent_historical_audit": {
+    "consistency_assertions": 614,
+    "assertions_are_product_tests": false,
+    "result_sha256": "4fa221c6047cf2cbbb6644ee1ca4d1a798467fe580d8f9afa6dd254ac3783707",
+    "usage_reconciled": {
+      "native_starts": 7,
+      "model_post_requests": 70,
+      "input_tokens": 4231239,
+      "cached_input_tokens": 2874752,
+      "output_tokens": 51044
+    },
+    "usage_caveat": "O1 resumed native usage is cumulative; use gateway per-response sums or session deltas, not naive sum of native terminals."
+  },
+  "maintenance_reexecution": {
+    "python_controls_passed": 50,
+    "direct_backend_named_tests_passed": 11,
+    "backend_count_includes_subtests": true,
+    "native_probe_rerun": false,
+    "real_model_calls": 0,
+    "inventory_hashes": {
+      "go-contract-inventory.json": "defd29b1da927d36054590f72d7cb057aa2444032ed1f8eb8fd92edbe75ad695",
+      "python-inventory-comparison.json": "8eb9dbcb34c382b2e1eb0d496c0194849082bbed38bced93eb0697e44cdd8183",
+      "residue-check.json": "5a689de0a50c30e80ea8836c87edeb0a602c1eb6d238807e50f768120862fb8a"
+    }
+  }
+}

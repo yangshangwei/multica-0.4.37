@@ -4,6 +4,8 @@
 
 # 设计：Codex 真实验收与漏洞验证座位
 
+> 续做阅读指引（2026-11-20）：以下第 1–11 节保留早期设计和阶段性准备状态，原 app-server 入口、有限累计预算、尚未合入、零真实调用及“准备版无条件拒绝 real”等描述不再代表当前实现或结果。最终 CLI 架构见 `research/cli-direct-authorization-20261120.md`、`research/direct-cli-code-harness-20261120.md`；当前 P1/O1 已通过、C1 不完整、D1 未运行及工具访问前置见 `research/resume-evidence-audit-20261120.md`。当前文档范本自建 verifier 的平台自治字段为空，文件权限来自试验部署，不以早期 Contributor 设想覆盖实际平台记录。这里不变更冻结模板、场景预期或补写被拒的续接设计。
+
 ## 1 目标与证据边界
 
 本任务验收普通任务上的 `security-remediation` v2 编排，不是协作 Host API 的泛化验收。真实模型必须经实际 Multica 领取、原生 Codex app-server 适配器、任务令牌和评论/活动接口完成工作；不能把测试程序替角色写好的评论记为真实行为。父任务 AC9 以四个合成案例和一个可选座位试点为范围，AC10 对照子任务一的契约与 v1 失败项。

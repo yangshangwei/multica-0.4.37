@@ -4,6 +4,8 @@
 
 # 执行计划：Codex 真实验收
 
+> 当前执行检查点（2026-11-20 续做审计）：下文早期准备步骤和零调用状态保留为历史。当前已有官方 CLI P1/O1 真实通过样本、C1 装置失败与待分析师队列、D1 脚本；真实后续准入关闭。以本文末尾及 `research/resume-evidence-audit-20261120.md` 为当前待办，不重新询问已明确的调用、提交或清理授权。
+
 ## 已完成的无模型准备
 
 - [x] 读取父任务 AC9/AC10、子任务一设计与平台能力、Codex home/sandbox、普通 daemon driver 和原生 app-server 源码。
@@ -126,3 +128,17 @@ P1fake05和O1fake03完整实际平台脚本验证通过；原生只读transport 
 P1与O1真实样本完成并独立语义通过；P1自动action-only检查过严原失败保留，按原冻结protocol-consistent要求评估，非修改要求刷通过。C1首轮原生completed但wrapper误读leader未挂载测试产生evidence_failed，合法productanalyst排队保留；D1仅脚本。后续实现代理被工具内容筛查拒绝，未绕过。已完成明确的本地wrapper维护，不代表C1续跑获准。
 
 50任务控制与11backend契约通过，原生CLI隔离、完整平台脚本、实际模型用量和逐例语义报告均保存。无完整makecheck重跑：仅任务装置与记录，无生产TS/Go逻辑变更。真实任务仍in_progress，AC9/AC10未完成。检查点/清理见research/cli-checkpoint-cleanup-20261120.md。
+
+## 2026-11-20 续做审计与剩余步骤
+
+- [x] 读取实际 AGENTS/CLAUDE、Trellis 现有任务、相关规范，重新查询 HEAD；保留分支在新 `mc-secrem-v2-audit-20261120` worktree 处理，主检出其他会话改动不带入。
+- [x] 9 个 dump 名称/大小/hash/完整离线解码通过；C1 原 failed leader、queued analyst、委派来源与原平台快照一致；D1 真实库无 task/comment/issue。没有恢复数据库。
+- [x] 冻结 16 个输入与 P1 successor/O1/C1 已保存源码副本逐字节 hash 核对；首个 P1 原 backend 字节缺失的限制继续保留。
+- [x] 找到原 `cli_harness` 工具拒绝：2026-11-20 06:21:37Z，possible cybersecurity risk，回执要求需更宽访问时申请 Daybreak。具体触发子步骤未披露；不凭会话更换、改写请求或其他执行通道重试。
+- [x] 把当前状态与 SDK 历史计数分开，记录 v1 失败项部分验收对照，AC9/AC10 仍开放。
+- [ ] 被拒 C1 续接取得适用的工具方正式访问或复核结果；本轮未取得。
+- [ ] 在此前置之后完成合法可选分析分支支持及其独立验证，保留原失败与待办；未在本轮实现。
+- [ ] 新环境恢复、当前源/配置绑定、无模型全链与角色隔离的独立准入，然后才恢复 C1 真实运行；D1 单独准入后执行。
+- [ ] 全部真实案例与 verifier 工作量齐备后完成 AC9/AC10。需要修改模板则回父任务走新版本。
+
+本轮独立历史审计见 `research/resume-p1-o1-audit-20261120.md`，已有维护控制验证见 `research/resume-maintenance-audit-20261120.md`，根会话 dump/源码/工具限制核验见 `research/resume-evidence-audit-20261120.md/json`。全部只证明所列审计或维护范围。没有新的真实调用、准入、生产源码或模板修改。未运行全仓 make check/lint/typecheck；最终记录检查与本地集成回执单独保留。

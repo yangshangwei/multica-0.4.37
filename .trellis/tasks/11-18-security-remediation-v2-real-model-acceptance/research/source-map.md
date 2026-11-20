@@ -2,6 +2,8 @@
 
 本记录用于 context 注入，避免把超过 64 KiB 的子任务一 design 整份截断。子任务一最终规则以它的正文和父任务最新决定为准；按需读取其 design 第 4、5、8.5、9.4、11、14 节，不用本摘要替代。
 
+当前入口优先阅读 `cli-direct-authorization-20261120.md`、`resume-evidence-audit-20261120.md` 和 `v1-partial-acceptance-crosswalk-20261120.md`。下表的 app-server 源是 SDK 历史参照；当前验证使用独立官方 CLI backend overlay，不声称 SDK 适配器已通过。
+
 | 源 | 本任务使用的事实 |
 |---|---|
 | `server/internal/handler/squad_security_remediation_flow_test.go` | 四个现有脚本场景的真实平台路由、作者、来源任务、回执、活动、状态；脚本不证明模型行为 |
@@ -18,4 +20,4 @@
 
 子任务一试点前修订应覆盖：更新分诊使用新评论；负责人匹配是角色说明子串；需要完整运行时绑定和每名智能体调用权限；G1/G2/临时审查点先等本次 required reviewers 再放行；每 reviewer 每 gate 最多重派一次；revision>1 拒绝，负责人重发新评论，直到 leader 明确核验通过前不做会改变 revision 的操作；测试工程师/诊断工程师停止边界保持；停止后的恢复不能绕过 incident、真实凭据或成员停止条件。
 
-具体未决模型参数只从父任务当前用户决定确认：候选配置是 `api666-zzzcoding/gpt-6-astra`/`magpie`/`max`，尚不代表确定账号或预算。真实调用已授权，不重复问许可。
+当前用户参数已确定：`api666-zzzcoding/gpt-6-astra`/`magpie`/`max`，账号别名 `current-magpie-config`，次数及累计时长不限，单次 watchdog1200秒。真实调用已授权，不重复问许可。工具筛查解除与当前环境独立准入是另外的前置；旧 absolute overlay 路径只作历史证据。
