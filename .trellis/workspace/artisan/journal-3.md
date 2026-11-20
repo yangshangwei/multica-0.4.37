@@ -1519,3 +1519,40 @@ Committed verified F01-F11 core UI fixes and archived their evidence; unrelated 
 ### Next Steps
 
 - Physical phone touch, spoken screen-reader validation and the two unconfirmed narrow-layout candidates remain outside this task.
+
+
+## Session 170: Complete agent-create blocked feedback and consistency
+<!-- trellis-session: v=2 fp=0d0ee81db2a260ad -->
+
+**Date**: 2026-11-20
+**Task**: Complete agent-create blocked feedback and consistency
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Completed and archived blocked-feedback task after fixing live-content, empty-source, stale-adoption and hint-grouping gaps; independent review and all scoped acceptance passed.
+
+### Main Changes
+
+- Unified blocker reasons/focus, draft-preserving recovery, helper conventions, recipient grouping and bilingual handoff wording.
+- Archived 30 accepted criteria with production-source bindings, compact credential-free evidence and independent design review (25/40 to 33/40).
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `307f404fee685094ecc49569b4c0beb0f7127b42` | fix(issues): make blocked agent handoffs explain how to recover |
+| `d6be5c012724c1582ee8150676d54e175cfd76f5` | docs(issues): preserve proof that blocked handoffs recover safely |
+
+### Testing
+
+- [OK] Core8 with3072 combinations; relatedViews330 plus finalgrouping87; root15 static tasks; 18new+15existing Web/Electron cases; 32independentvisual samples.
+- [OK] Disabled helper contrast3.737:1light/4.952:1dark; hintgap4px; final cleanup5portsclosed and owned DBcontainerremoved.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining approved work. P3polish, real spoken screen-reader/physical-touch and packagedinstaller checks remain explicitly out of scope.

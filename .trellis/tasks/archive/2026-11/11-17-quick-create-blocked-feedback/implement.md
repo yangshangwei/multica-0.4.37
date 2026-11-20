@@ -111,6 +111,6 @@
 - [x] 补齐最终 Electron 两项回归，确认独立检查无未解决项。
 - [x] 提交产品、测试、规格及验收记录。
 - [x] 归档本任务。
-- [ ] 记录本次收尾 journal。
+- [x] 记录本次收尾 journal（Session 170）。
 
 证据复用说明：全量 Core/Views 与 issue-assist-flow 等未改行为路径采用 11-20 r2 完整基线加源码一致性核对；本轮新跑 33 个浏览器用例、330 条相关 Views、8 条 Core 及最终分组后 87 条回归。没有把复用记录写成全量新跑。详见 research/acceptance.md。
