@@ -5,6 +5,7 @@ import type { AutopilotTemplate } from "@multica/core/types";
 import { ScrollRestorationProvider } from "../../platform/scroll-restoration";
 import { renderWithI18n } from "../../test/i18n";
 import { AutopilotTemplateCatalog } from "./autopilot-template-catalog";
+import { NavigationProvider } from "../../navigation";
 
 const templates: AutopilotTemplate[] = [{
   key: "workday-repo-audit", version: 1, category: "maintenance", category_label: "Maintenance",
@@ -24,8 +25,11 @@ function createGallery() {
       else viewState.set(key, value);
     },
   };
-  function Page({ loading = false, items = templates }: { loading?: boolean; items?: AutopilotTemplate[] }) {
-    return <ScrollRestorationProvider adapter={adapter}>
+  function Page({ loading = false, items = templates, welcome = false }: { loading?: boolean; items?: AutopilotTemplate[]; welcome?: boolean }) {
+    return <NavigationProvider value={{
+      push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/acme/autopilots",
+      searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path,
+    }}><ScrollRestorationProvider adapter={adapter}>
       <AutopilotTemplateCatalog
         templates={loading ? [] : items}
         loading={loading}
@@ -33,8 +37,9 @@ function createGallery() {
         onRetry={() => {}}
         onPick={onPick}
         onStartBlank={() => {}}
+        welcome={welcome ? { docsHref: "/acme/docs/autopilots", templatesHref: "/acme/autopilots/new/template" } : undefined}
       />
-    </ScrollRestorationProvider>;
+    </ScrollRestorationProvider></NavigationProvider>;
   }
   return { Page, onPick, viewState };
 }
@@ -159,5 +164,58 @@ describe("template gallery navigation restoration", () => {
     second.unmount();
     renderWithI18n(<Page />);
     expect(document.body).toHaveFocus();
+  });
+});
+
+describe("welcome template preview", () => {
+  it("previews six real templates in server order, independently of saved category filters", () => {
+    const { Page, viewState } = createGallery();
+    viewState.set("autopilot-template-group", "maintenance");
+    const items = [
+      "workday-repo-audit", "daily-change-review", "stale-pr-reminder", "bug-triage",
+      "weekly-progress-report", "dependency-audit", "documentation-check", "future-template",
+    ].map((key) => ({ ...templates[0]!, key, title: key }));
+    renderWithI18n(<Page welcome items={items} />);
+    expect(screen.getAllByRole("button", { name: /^View template:/ }).map((card) => card.getAttribute("aria-label"))).toEqual([
+      "View template: daily-change-review", "View template: stale-pr-reminder", "View template: bug-triage",
+      "View template: weekly-progress-report", "View template: dependency-audit", "View template: documentation-check",
+    ]);
+    expect(screen.queryByRole("group", { name: "Filter templates by scenario" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Browse all templates" })).toBeInTheDocument();
+  });
+
+  it("fills a partial registry with available templates and keeps the server schedule", () => {
+    const { Page } = createGallery();
+    renderWithI18n(<Page welcome items={[
+      { ...templates[0]!, key: "future-template", title: "Future template", cron_expression: "17 14 * * 1" },
+      { ...templates[0]!, key: "daily-change-review", title: "Daily change review" },
+    ]} />);
+    const cards = screen.getAllByRole("button", { name: /^View template:/ });
+    expect(cards).toHaveLength(2);
+    expect(cards[0]).toHaveAccessibleName("View template: Future template");
+    expect(cards[0]).toHaveAccessibleDescription(/^Check the repository\. At 14:17.*Mon Run only$/);
+  });
+
+  it("restores welcome scroll and focus after delayed template loading", async () => {
+    const { Page, viewState, onPick } = createGallery();
+    viewState.set("autopilot-template-group", "reporting");
+    const first = renderWithI18n(<Page welcome />);
+    const gallery = screen.getByRole("region", { name: "Let your agents get to work on schedule" });
+    gallery.scrollTop = 240;
+    await userEvent.setup().click(screen.getByRole("button", { name: /Workday repo audit/ }));
+    expect(onPick).toHaveBeenCalledWith("workday-repo-audit");
+    first.unmount();
+    const second = renderWithI18n(<Page welcome loading />);
+    second.rerender(<Page welcome />);
+    expect(screen.getByRole("region", { name: "Let your agents get to work on schedule" }).scrollTop).toBe(240);
+    expect(screen.getByRole("button", { name: /Workday repo audit/ })).toHaveFocus();
+    expect(viewState.has("autopilot-template-focus")).toBe(false);
+  });
+
+  it("returns focus to new automation when a welcome template disappears", () => {
+    const { Page, viewState } = createGallery();
+    viewState.set("autopilot-template-focus", "removed-template");
+    renderWithI18n(<Page welcome />);
+    expect(screen.getByRole("button", { name: "New autopilot" })).toHaveFocus();
   });
 });

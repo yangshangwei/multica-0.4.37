@@ -1,11 +1,12 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { screen, within } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { renderWithI18n } from "../../test/i18n";
 import enAutopilots from "../../locales/en/autopilots.json";
 import { AutopilotsPage } from "./autopilots-page";
 import { useAutopilotsViewStore } from "@multica/core/autopilots/stores";
+import { NavigationProvider } from "../../navigation";
 
 const listAutopilots = vi.hoisted(() => vi.fn());
 const listAutopilotTemplates = vi.hoisted(() => vi.fn());
@@ -15,9 +16,13 @@ vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => "ws-test" }));
 vi.mock("@multica/core/paths", () => ({ useWorkspacePaths: () => ({
   newAutopilotTemplate: () => "/acme/autopilots/new/template",
   autopilotDetail: (id: string) => `/acme/autopilots/${id}`,
+  docsPage: (slug: string) => `/acme/docs/${slug}`,
 }) }));
 vi.mock("@multica/core/workspace/hooks", () => ({ useActorName: () => ({ getActorName: () => "Scout" }) }));
-vi.mock("../../navigation", () => ({ useNavigation: () => ({ push }), useRowLink: () => ({}) }));
+vi.mock("../../navigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../../navigation")>()),
+  useRowLink: () => ({}),
+}));
 vi.mock("./autopilot-dialog", () => ({ AutopilotDialog: () => <div role="dialog">Custom automation</div> }));
 vi.mock("./autopilot-list-actions", () => ({ AutopilotBatchToolbar: () => null, AutopilotRowActions: () => null }));
 vi.mock("./autopilot-list-toolbar", () => ({ AutopilotListToolbar: () => <div data-testid="instance-filters" />, actorFilterValue: (type: string, id: string) => `${type}:${id}` }));
@@ -25,7 +30,14 @@ vi.mock("../../common/actor-avatar", () => ({ ActorAvatar: () => null }));
 
 function renderPage() {
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return renderWithI18n(<QueryClientProvider client={client}><AutopilotsPage /></QueryClientProvider>);
+  return renderWithI18n(
+    <NavigationProvider value={{
+      push, replace: vi.fn(), back: vi.fn(), pathname: "/acme/autopilots",
+      searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path,
+    }}>
+      <QueryClientProvider client={client}><AutopilotsPage /></QueryClientProvider>
+    </NavigationProvider>,
+  );
 }
 
 beforeEach(() => {
@@ -40,16 +52,57 @@ beforeEach(() => {
 });
 
 describe("automation catalog entry", () => {
-  it("makes templates the empty page body and keeps blank creation accessible", async () => {
+  it("welcomes an empty workspace with real templates and blank creation", async () => {
     renderPage();
+    expect(await screen.findByRole("heading", { name: "Let your agents get to work on schedule" })).toBeInTheDocument();
     await userEvent.setup().click(await screen.findByRole("button", { name: /Daily change review/ }));
     expect(push).toHaveBeenCalledWith("/acme/autopilots/new/template?template=daily-change-review&return_to=autopilots");
     expect(screen.queryByText("No autopilots yet")).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "Browse templates" })).not.toBeInTheDocument();
-    const gallery = screen.getByRole("region", { name: "Start from a template" });
-    expect(screen.getAllByRole("button", { name: "Start from scratch" })).toHaveLength(1);
-    await userEvent.setup().click(within(gallery).getByRole("button", { name: "Start from scratch" }));
+    expect(screen.queryByTestId("instance-filters")).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: enAutopilots.page.new_autopilot })).toHaveLength(1);
+    await userEvent.setup().click(screen.getByRole("button", { name: enAutopilots.page.new_autopilot }));
     expect(screen.getByRole("dialog")).toHaveTextContent("Custom automation");
+  });
+
+  it("opens the complete template catalog and in-app automation documentation", async () => {
+    renderPage();
+    const docs = await screen.findByRole("link", { name: "Read documentation" });
+    expect(docs).toHaveAttribute("href", "/acme/docs/autopilots");
+    await userEvent.setup().click(docs);
+    expect(push).toHaveBeenLastCalledWith("/acme/docs/autopilots");
+    const browse = screen.getByRole("link", { name: "Browse all templates" });
+    expect(browse).toHaveAttribute("href", "/acme/autopilots/new/template");
+    await userEvent.setup().click(browse);
+    expect(push).toHaveBeenLastCalledWith("/acme/autopilots/new/template");
+  });
+
+  it("keeps creation and documentation usable while templates load", async () => {
+    listAutopilotTemplates.mockReturnValue(new Promise(() => {}));
+    renderPage();
+    expect(await screen.findByRole("heading", { name: "Let your agents get to work on schedule" })).toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading");
+    expect(screen.getByRole("link", { name: "Read documentation" })).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: enAutopilots.page.new_autopilot }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
+  });
+
+  it("recovers a failed template load without hiding the welcome actions", async () => {
+    listAutopilotTemplates.mockRejectedValueOnce(new Error("Template service unavailable"));
+    renderPage();
+    expect(await screen.findByRole("alert")).toHaveTextContent(enAutopilots.template_picker.load_failed);
+    expect(screen.getByRole("button", { name: enAutopilots.page.new_autopilot })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Read documentation" })).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("button", { name: /Daily change review/ })).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  });
+
+  it("offers blank creation when the server has no templates", async () => {
+    listAutopilotTemplates.mockResolvedValue([]);
+    renderPage();
+    expect(await screen.findByText(enAutopilots.template_picker.empty)).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: enAutopilots.page.new_autopilot }));
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
 
   it("prioritizes existing automations and opens templates from the new action", async () => {

@@ -4,10 +4,23 @@
 template creation picker. Keep the populated management list independent of
 the catalog, and do not change the generic built-in catalog for this feature.
 
+The empty-list entry uses the catalog's `welcome` presentation: a responsive
+introduction, blank-creation action, workspace documentation link and six compact
+template cards. The default presentation remains the complete, filterable picker.
+The welcome view includes a Browse all templates link so every server template
+remains discoverable. Both links use shared `AppLink` and workspace path builders.
+
+Welcome favors the existing daily review, stale PR, bug triage, weekly report,
+dependency and documentation keys; fill spare slots from other server templates,
+and preserve server order. Its category is always All, independent of any saved
+category. Do not add invented templates or schedules to match illustrative art.
+Only display metadata selects the preview; adoption still uses the server key.
+
 - Detect first use from the successfully loaded, unfiltered automation list.
   Loading, errors and filtered-out instances are not an empty workspace.
 - Presentation groups are local metadata keyed by template key. Preserve server
-  ordering and keep unknown templates in All with conservative output wording.
+  ordering and keep unknown templates in the full catalog's All group with
+  conservative output wording.
 - `run_only` means no issue is created up front. Some patrol templates can create
   or update follow-up issues. Do not promise that they never create tasks.
 - Template adoption keeps the prompt, schedule and output mode server-owned.
@@ -38,12 +51,13 @@ native and in-flow Back through the production web application.
 
 ### Scope / trigger
 
-The catalog serves both the empty automation list and the creation picker.
+The catalog serves both the welcome presentation and the creation picker.
 Keep executor, timezone and default-schedule/editability guidance before the
-cards. The recommended marker belongs to the title group, not a separate
-footer row. Both entry points use the catalog's labelled blank action; compact
-or coarse input keeps its 44px target. Keep local solid semantic focus styling
-instead of changing the application's global ring token.
+cards. The full picker's recommended marker belongs to the title group, not a
+separate footer row. Both entry points use the catalog's labelled blank action;
+the welcome action says New autopilot and the full picker says Start from
+scratch. Compact or coarse input keeps its 44px target. Keep local solid
+semantic focus styling instead of changing the application's global ring token.
 
 ### Signatures
 
@@ -69,7 +83,7 @@ writes use the adapter-bound tab, even if another tab becomes active.
   existing group/scroll entries.
 - Restore only after real content is ready: scroll first, then focus the original
   card with `preventScroll`. If absent, use the active filter; if the registry is
-  empty, use the blank action.
+  empty or the welcome presentation has no filters, use the blank action.
 - Consume the pending focus once. Preserve a newer focus owner in another
   control/dialog, and never reapply the handoff on a later refetch.
 - Key the create shell by semantic picker/configure phase. Its retained Back
@@ -117,7 +131,14 @@ writes use the adapter-bound tab, even if another tab becomes active.
 ### Tests required
 
 - `autopilot-template-catalog.test.tsx`: delayed data, one-shot consumption,
-  explicit All/zero, removed target, empty registry and focus-owner protection.
+  explicit All/zero, removed target, empty registry and focus-owner protection;
+  welcome preview ordering, full-catalog access and saved-category independence.
+- `autopilots-page.test.tsx`: true empty versus populated/filtered/loading/error
+  routing, blank creation and documentation, and template failure recovery.
+- Empty-state browser creation must wait for the labelled welcome region and
+  click its New autopilot action. While the list loads, the management header
+  has a same-named action that opens the full picker. A global button locator
+  can take that different route before the welcome response arrives.
 - `template-create-autopilot-page.test.tsx`: keep the real page mounted across
   both Back paths; use route-plus-entry-key state to test confirmed, rejected
   and unreadable creation from both origins. Stage the navigation URL and

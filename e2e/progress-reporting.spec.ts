@@ -361,6 +361,9 @@ test("adopts daily and weekly reports and completes fixture delivery on only the
   const weekly = requiredTemplate(templates, WEEKLY_KEY);
 
   await page.goto(`/${slug}/autopilots`);
+  await expect(page.getByRole("heading", { name: "让智能体按时自己开工", exact: true })).toBeVisible();
+  await page.getByRole("link", { name: "浏览全部模板", exact: true }).click();
+  await page.waitForURL((url) => url.pathname === `/${slug}/autopilots/new/template`);
   const catalog = page.getByRole("region", { name: "从模板开始", exact: true });
   await expect(catalog.getByRole("listitem")).toHaveCount(templates.length);
   const catalogTitles = await catalog.getByRole("listitem").allTextContents();
