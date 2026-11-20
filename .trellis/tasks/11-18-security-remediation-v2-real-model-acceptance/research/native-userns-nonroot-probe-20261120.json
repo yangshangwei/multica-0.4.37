@@ -1,0 +1,25 @@
+{
+  "evidence_type": "offline-nonroot-userns-probe",
+  "argv": [
+    "docker",
+    "run",
+    "--rm",
+    "--pull=never",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--security-opt=seccomp=unconfined",
+    "--user=1000:1000",
+    "--tmpfs=/tmp:rw,nosuid,size=32m",
+    "--tmpfs=/home/node/.codex:rw,nosuid,size=32m,uid=1000,gid=1000",
+    "--entrypoint",
+    "sh",
+    "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+    "-c",
+    "unshare --user --map-root-user --net sh -c \"cat /proc/net/route; echo nested-network-namespace-ran\""
+  ],
+  "exit": 0,
+  "stdout": "nested-network-namespace-ran\n",
+  "stderr": ""
+}

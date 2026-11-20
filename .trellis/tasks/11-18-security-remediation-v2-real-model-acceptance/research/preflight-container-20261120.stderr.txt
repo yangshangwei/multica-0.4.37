@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/Volumes/artisan/code/2026/mc-secrem-v2-20261118/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/prepare.py", line 181, in <module>
+    main()
+    ~~~~^^
+  File "/Volumes/artisan/code/2026/mc-secrem-v2-20261118/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/prepare.py", line 176, in main
+    result["containers"] = container_probe()
+                           ~~~~~~~~~~~~~~~^^
+  File "/Volumes/artisan/code/2026/mc-secrem-v2-20261118/.trellis/tasks/11-18-security-remediation-v2-real-model-acceptance/scripts/prepare.py", line 159, in container_probe
+    raise RuntimeError(f"Isolation probe failed for {role}: {run.stderr}")
+RuntimeError: Isolation probe failed for leader: Traceback (most recent call last):
+  File "<string>", line 6, in <module>
+    assert not pathlib.Path('/root/.codex/auth.json').exists()
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/pathlib/_abc.py", line 450, in exists
+    self.stat(follow_symlinks=follow_symlinks)
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/pathlib/_local.py", line 515, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/root/.codex/auth.json'

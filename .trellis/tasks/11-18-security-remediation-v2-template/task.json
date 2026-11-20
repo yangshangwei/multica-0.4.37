@@ -1,0 +1,38 @@
+{
+  "id": "security-remediation-v2-template",
+  "name": "security-remediation-v2-template",
+  "title": "安全漏洞修复小队 v2：指令、契约测试与文档同步",
+  "description": "交付 security-remediation v2：两份指令正文与版本号、契约测试、处理器层脚本流程、目录文案与文档同步；不运行真实模型。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-18",
+  "completedAt": null,
+  "branch": "codex/security-remediation-v2-20261118",
+  "base_branch": "codex/cross-workspace-collaboration",
+  "worktree_path": "/Volumes/artisan/code/2026/mc-secrem-v2-20261118",
+  "commit": "aa592194b233daf43878c3be52f76c845e0e5044",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "11-18-security-remediation-squad-v2",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "design_decisions": "2026-11-20 user approved19 final decisions and14.2 dispositions",
+    "product_paths": 27,
+    "verified_base": "c56e2194ee45236b8c634843579b7f3e492b0db4",
+    "integration_status": "not_merged",
+    "product_commits": [
+      "15bcd2e5e7a95b69569e546236cdeeb3e87324f8",
+      "0ffc3572ce0441489dd1502ddf2f3f061bb9a44d",
+      "aa592194b233daf43878c3be52f76c845e0e5044"
+    ],
+    "validation": "passed in recorded environment; default UTC baseline failures retained",
+    "ready_for_integration": true
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "synthetic": true,
+  "id": "SYNTHETIC-DEPENDENCY-001",
+  "package": "pilot-labelkit",
+  "affected_versions": [
+    "1.0.0"
+  ],
+  "fixed_versions": [
+    "2.0.0"
+  ],
+  "affected_surface": "application.render_label calls the pinned format_label implementation",
+  "risk": "The fictional UI contract requires rejection after eight trimmed characters; 1.0.0 does not enforce that bound.",
+  "compatibility_delta": "2.0.0 returns LabelResult.text instead of LabelResult.label. The application render_label API must continue returning str.",
+  "source_authority": "Locally authored synthetic fixtures, not a real vendor advisory or authenticity attestation",
+  "releases": {
+    "1.0.0": {
+      "source": "vendor/labelkit_v1.py",
+      "sha256": "622b37d7981f64eb6ba764231b561f7c3306f8c732a1b8086d6a7faeb69d4c73"
+    },
+    "2.0.0": {
+      "source": "vendor/labelkit_v2.py",
+      "sha256": "520e06ee1887d5fc831434152d5606d8323510c9144ab883167c5ad5e8156063"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{"file": ".trellis/spec/server/builtin-templates.md", "reason": "Contract and regression anchors the v2 templates must still satisfy"}
+{"file": ".trellis/spec/server/task-api-capabilities.md", "reason": "Restricted-comment contract; verify v2 text never claims a reviewer result wakes the leader"}
+{"file": ".trellis/spec/server/squad-delegation-receipts.md", "reason": "Verify v2 text does not contradict receipt and activity-outcome rules"}
+{"file": ".trellis/spec/server/database-test-isolation.md", "reason": "Handler-package tests need an explicitly selected task-owned database; a bare ok can mean skipped"}
+{"file": ".trellis/spec/server/verification-environment.md", "reason": "How to run Go package tests with a verified environment"}
+{"file": ".trellis/tasks/11-18-security-remediation-squad-v2/research/v1-pin-source-map.md", "reason": "Checklist of pins to re-verify after the template change, including generated docs drift"}
