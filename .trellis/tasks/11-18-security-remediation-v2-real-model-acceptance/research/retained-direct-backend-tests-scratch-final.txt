@@ -1,0 +1,24 @@
+=== RUN   TestSecurityDirectCLIBackendNativeContract
+=== RUN   TestSecurityDirectCLIBackendNativeContract/completed
+=== RUN   TestSecurityDirectCLIBackendNativeContract/empty
+=== RUN   TestSecurityDirectCLIBackendNativeContract/exit_after_complete
+=== RUN   TestSecurityDirectCLIBackendNativeContract/conflicting_threads
+=== RUN   TestSecurityDirectCLIBackendNativeContract/duplicate_thread
+=== RUN   TestSecurityDirectCLIBackendNativeContract/malformed
+=== RUN   TestSecurityDirectCLIBackendNativeContract/failed
+--- PASS: TestSecurityDirectCLIBackendNativeContract (3.25s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/completed (0.58s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/empty (0.39s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/exit_after_complete (0.55s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/conflicting_threads (0.34s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/duplicate_thread (0.40s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/malformed (0.34s)
+    --- PASS: TestSecurityDirectCLIBackendNativeContract/failed (0.64s)
+=== RUN   TestSecurityDirectCLIBackendGatesBeforeProvider
+--- PASS: TestSecurityDirectCLIBackendGatesBeforeProvider (0.00s)
+=== RUN   TestSecurityDirectCLIBackendResumeIsExplicit
+--- PASS: TestSecurityDirectCLIBackendResumeIsExplicit (0.48s)
+=== RUN   TestSecurityDirectCLIDeliversFrozenP1Material
+--- PASS: TestSecurityDirectCLIDeliversFrozenP1Material (0.48s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	5.030s

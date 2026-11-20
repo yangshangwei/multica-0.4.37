@@ -503,10 +503,16 @@ func (f *secRemPlatformFixture) executeOne() daemon.TaskResult {
 	if task.Agent.ThinkingLevel != f.cfg.ThinkingLevel || task.Agent.Model != f.cfg.Model {
 		f.t.Fatal("claimed thinking level differs from registration")
 	}
+	materialPath := filepath.Join(filepath.Dir(filepath.Dir(f.cfg.FixtureManifestPath)), "fixtures/repos/production/drill.json")
+	material, materialErr := os.ReadFile(materialPath)
+	if materialErr != nil {
+		f.t.Fatal("frozen P1 material missing")
+	}
+	materialHash := sha256.Sum256(material)
 	manifest := map[string]any{"task_id": task.ID, "issue_id": task.IssueID, "squad_id": persistedSquad,
 		"agent_id": task.AgentID, "workspace_id": task.WorkspaceID, "role": f.roles[task.AgentID],
-		"scenario": "P1", "is_leader_task": task.IsLeaderTask, "owner_ids": []string{f.owner}, "read_only_code": true,
-		"issue_identifier": task.IssueIdentifier}
+		"scenario": "P1", "is_leader_task": task.IsLeaderTask, "owner_ids": []string{f.owner}, "read_only_code": true, "no_repository": len(task.Repos) == 0 && len(task.ProjectResources) == 0, "repo_count": len(task.Repos), "project_resource_count": len(task.ProjectResources),
+		"issue_identifier": task.IssueIdentifier, "immutable_files": map[string]string{"drill.json": hex.EncodeToString(materialHash[:])}}
 	if err := secRemWriteJSON(filepath.Join(f.cfg.ClaimManifestDir, task.ID+".json"), manifest); err != nil {
 		f.t.Fatal(err)
 	}

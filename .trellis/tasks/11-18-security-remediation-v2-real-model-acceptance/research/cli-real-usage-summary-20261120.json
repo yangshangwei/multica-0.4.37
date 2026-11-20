@@ -1,0 +1,80 @@
+{
+  "total": {
+    "native_starts": 7,
+    "model_post_requests": 70,
+    "usage": {
+      "input_tokens": 4231239,
+      "cached_input_tokens": 2874752,
+      "output_tokens": 51044
+    },
+    "cost": "not supplied",
+    "cached_is_subset_of_input": true,
+    "official_cli_cases_passed": [
+      "P1",
+      "O1"
+    ],
+    "C1": "incomplete",
+    "D1": "not run with model",
+    "historical_sdk_native_starts": 2,
+    "historical_sdk_post_requests": 7,
+    "historical_sdk_usage": "unknown",
+    "model_catalog_reads": 1
+  },
+  "samples": [
+    {
+      "name": "P1-first",
+      "native_starts": 1,
+      "model_post_requests": 9,
+      "completed_responses": 9,
+      "usage_sum": {
+        "input_tokens": 466674,
+        "cached_input_tokens": 348544,
+        "output_tokens": 9631
+      },
+      "cohort": "official-cli-direct",
+      "platform_acceptance": "failed; environment blocked required scratch/comment file"
+    },
+    {
+      "name": "P1-successor",
+      "starts": 1,
+      "request_attempts": 12,
+      "completed_responses": 12,
+      "usage_sum": {
+        "input_tokens": 636103,
+        "cached_input_tokens": 335616,
+        "output_tokens": 7598
+      },
+      "cost": "not supplied",
+      "cached_is_subset_of_input": true
+    },
+    {
+      "name": "O1",
+      "case": "O1",
+      "native_starts": 4,
+      "request_attempts": 38,
+      "retained_response_records": 38,
+      "completed_responses": 38,
+      "usage_sum": {
+        "input_tokens": 2525393,
+        "cached_input_tokens": 1707264,
+        "output_tokens": 26573
+      },
+      "cost": "not supplied",
+      "cached_is_subset_of_input": true
+    },
+    {
+      "name": "C1-first",
+      "case": "C1",
+      "native_starts": 1,
+      "requests": 11,
+      "completed_responses": 11,
+      "usage_sum": {
+        "input_tokens": 603069,
+        "cached_input_tokens": 483328,
+        "output_tokens": 7242
+      },
+      "native_turns_completed": 1,
+      "platform_acceptance": false
+    }
+  ]
+}

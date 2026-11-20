@@ -1,3 +1,5 @@
+> 当前执行路径（用户2026-11-20最新明确决定）：改用官方 `codex exec` 直接执行，不使用 app-server SDK 客户端。真实完整指令、平台身份和证据不变；此路径证据独立标为 official-cli-direct，旧SDK失败不抹去。不伪造UA/clientInfo，不探测替代模型通道；同账号同模型、已有不限累计预算授权。原文中“只允许app-server/拒绝exec桥”是被本次用户决定替代的旧方案；直连必须运行真正官方CLI，不能只改头部或名称。
+
 > 当前授权覆盖（2026-11-20续）：用户明确不限制本任务真实模型调用次数与总运行时长，要求持续推进到成功。使用当前Codex配置 model=`api666-zzzcoding/gpt-6-astra` / provider=`magpie` / effort=`max` / account alias=`current-magpie-config`。以下旧有限预算/等待具体参数段落是历史，已由本段替代。每次调用仍记账；20分钟单次watchdog仅用于检测卡死，可诊断后重试，不是用户累计预算。真实入口仍须完成实际生产路径及隔离验证，不能凭本授权绕过。
 
 # 执行计划：Codex 真实验收
@@ -117,3 +119,10 @@ overlay 只把本任务文件虚拟挂到 daemon 包，不创建/修改产品文
 实际已执行3次P1平台尝试，前一次在原生启动前拒绝；后两次共2个原生进程、7个POST模型请求，6次官方客户端限定拒绝、1次并发限制。完成模型行为回合0，usageunknown。已正常保留原生客户端身份及协议头；不修改clientInfo伪装，不尝试其他模型路由绕过限制。模型目录读取1次仅证明可见，不能作为SDK授权。真实入口现关闭，待明确SDK支持配置。
 
 P1fake05和O1fake03完整实际平台脚本验证通过；原生只读transport r12、6个会话安全控制、6个CLI通道控制、12个预算/网关控制通过；C1/D1候选4角色文件系统/Git权限探针与6个实际Gitbundle交接测试通过，完整C1/D1driver仍未实现。详见research各记录。没有生产源码/模板行为修改，不发生新模板版本。
+
+
+## 官方CLI阶段最终检查点
+
+P1与O1真实样本完成并独立语义通过；P1自动action-only检查过严原失败保留，按原冻结protocol-consistent要求评估，非修改要求刷通过。C1首轮原生completed但wrapper误读leader未挂载测试产生evidence_failed，合法productanalyst排队保留；D1仅脚本。后续实现代理被工具内容筛查拒绝，未绕过。已完成明确的本地wrapper维护，不代表C1续跑获准。
+
+50任务控制与11backend契约通过，原生CLI隔离、完整平台脚本、实际模型用量和逐例语义报告均保存。无完整makecheck重跑：仅任务装置与记录，无生产TS/Go逻辑变更。真实任务仍in_progress，AC9/AC10未完成。检查点/清理见research/cli-checkpoint-cleanup-20261120.md。

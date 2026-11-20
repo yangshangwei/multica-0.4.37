@@ -1,0 +1,31 @@
+{
+  "mode": "official-cli-direct",
+  "source_hashes": {
+    "direct_cli_backend.go": "e5ddd3157bd6044b6242c6aaca54725a7f57391dd869fcc026e6e91a8351e905",
+    "direct_cli_harness_test.go": "0dfb11b6c99ba5c327903b5ff0bcf132b97888e0025a32847ae04e6e8a548b6b",
+    "real_platform_harness_test.go": "5bc9529464a423d2668c23cba48e2e1bf242a58e2e80518a21e1d3a7194fe248",
+    "direct_cli_backend_test.go": "0d354755b6b50b08e3c54528cd2d2d3b531a510955b60293e0983509c9c08196"
+  },
+  "binary_sha256": "695eff5c3534674cc47b7d0a950baa928320d0ee9dc41d438cb637587967136f",
+  "fake_log_sha256": "a6224a91cf0de669c995c3639bad9299f102d42e677c1d97ec41bf6b77875825",
+  "material_sha256": "1311f4d1c6c7496f57398f9be747aa7a0728a36712b5d99d571a036a1d9be95d",
+  "fixture_delivery": "fixed-name unmodified material after production preparation before exec; immutable mount declared in actual claim manifest",
+  "manifest_fields": [
+    "no_repository",
+    "repo_count",
+    "project_resource_count",
+    "immutable_files"
+  ],
+  "prior_real_attempts_preserved": true,
+  "backend_controls": {
+    "failed_log": "direct-backend-tests-scratch.log",
+    "failure": "test fixture t.TempDir uses /var symlink, strict source refusal expected; only test path normalized",
+    "final_log": "direct-backend-tests-scratch-final.log",
+    "final_log_sha256": "b87aed12a8848b02f81d6aa5c8b4a262722dc73db127d46d6e19399d0a7a8996",
+    "exit": 0,
+    "RUN": 11,
+    "PASS": 11,
+    "FAIL": 0,
+    "SKIP": 0
+  }
+}

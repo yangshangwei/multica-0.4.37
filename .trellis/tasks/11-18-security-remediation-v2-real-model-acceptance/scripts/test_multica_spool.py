@@ -49,6 +49,24 @@ class SpoolTests(unittest.TestCase):
         for argv in [['issue','get','outside'],['--server','https://outside','issue','get','issue'],['issue','get','issue','--token','human'],['issue','comment','add','issue','--content-file','/etc/passwd'],['issue','update','issue','--assignee-id','other'],['squad','update','squad','--instructions','x'],['issue','subscriber','add','issue','--user-id','outside']]:
             with self.subTest(argv=argv):self.assertEqual(self.request(argv)['exit_code'],126)
 
+    def test_declared_help_is_local_and_exact(self):
+        for argv in [['squad','--help'],['squad','member','--help'],['squad','activity','--help'],['issue','comment','add','--help']]:
+            with self.subTest(argv=argv):self.assertEqual(self.request(argv)['exit_code'],0)
+        for argv in [['squad','activity','--reason','write','--help'],['issue','get','outside','--help'],['--config','secret','issue','--help'],['auth','--help']]:
+            with self.subTest(argv=argv):self.assertEqual(self.request(argv)['exit_code'],126)
+        self.assertEqual(self.request(['issue','comment','add','--help'],b'content')['exit_code'],126)
+
+    def test_squad_inventory_keeps_workspace_identity_and_reviewer_ceiling(self):
+        result=self.request(['squad','list','--output','json'])
+        self.assertEqual(result['exit_code'],0)
+        actual=json.loads(base64.b64decode(result['stdout_b64']))
+        self.assertEqual(actual['workspace'],'workspace')
+        self.assertEqual(actual['token'],'mat_synthetic')
+        self.assertEqual(self.request(['squad','list','--workspace','outside'])['exit_code'],126)
+        self.manifest.update(role='security-reviewer',is_leader_task=False)
+        self.assertEqual(self.request(['squad','list','--output','json'])['exit_code'],126)
+        self.assertEqual(self.request(['issue','comment','add','--help'])['exit_code'],0)
+
     def test_review_scope_preserves_allow_read_post_only(self):
         self.manifest.update(role='security-reviewer',is_leader_task=False)
         self.assertEqual(self.request(['issue','get','issue'])['exit_code'],0)

@@ -1,3 +1,5 @@
+> 当前执行路径（用户2026-11-20最新明确决定）：改用官方 `codex exec` 直接执行，不使用 app-server SDK 客户端。真实完整指令、平台身份和证据不变；此路径证据独立标为 official-cli-direct，旧SDK失败不抹去。不伪造UA/clientInfo，不探测替代模型通道；同账号同模型、已有不限累计预算授权。原文中“只允许app-server/拒绝exec桥”是被本次用户决定替代的旧方案；直连必须运行真正官方CLI，不能只改头部或名称。
+
 > 当前授权覆盖（2026-11-20续）：用户明确不限制本任务真实模型调用次数与总运行时长，要求持续推进到成功。使用当前Codex配置 model=`api666-zzzcoding/gpt-6-astra` / provider=`magpie` / effort=`max` / account alias=`current-magpie-config`。以下旧有限预算/等待具体参数段落是历史，已由本段替代。每次调用仍记账；20分钟单次watchdog仅用于检测卡死，可诊断后重试，不是用户累计预算。真实入口仍须完成实际生产路径及隔离验证，不能凭本授权绕过。
 
 # 设计：Codex 真实验收与漏洞验证座位

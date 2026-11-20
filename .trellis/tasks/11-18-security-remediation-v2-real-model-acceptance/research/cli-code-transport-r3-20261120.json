@@ -1,0 +1,449 @@
+{
+  "evidence_type": "scripted-official-cli-isolation",
+  "supplier_requests": 0,
+  "sources": {
+    "codex_exec_code_container.py": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7",
+    "contained_git_role_handoff.py": "8f938ed796a43093da177e5f657234a9ef666af79ca0c6334eab8f7ab269de66",
+    "probe_code_exec_transport.py": "d62acd61e268430521ac44912336adcf1e7d0acda72ca107f26cf78b6e4ab494",
+    "probe_code_leader_transport.py": "f2c02ffc657f9fd573133aedb1a2751a76ca39166100cded5a44f067b5ac292c",
+    "fake_code_exec_responses.py": "8ddb06bc7b92f506f15aa435578efd49744af0686f55ec0c319f0f0616add635",
+    "test_codex_exec_code_container.py": "3c803e2361cae7e2c77a9bfba23995485dba8d123a036d40f31d6f48e0032a45",
+    "test_contained_git_role_handoff.py": "9ac6bdce7b12a0e2275c8853a6aa966700cdb06894a4c0a771f6ad72b9659844"
+  },
+  "roles": [
+    {
+      "role": "implementer",
+      "passed": true,
+      "write_matrix": {
+        "code": "WRITABLE",
+        "new_test": "DENIED",
+        "baseline_test": "DENIED",
+        "agents": "DENIED"
+      },
+      "git_changed": true,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": "86dbe41f26966141a42e74642049be8b46fde2f0",
+        "claim_project_resource_count": null,
+        "claim_repo_count": null,
+        "config_sha256": "fe319bad4e9e4a35b96030bd3d10934a6d2845fb1fcec265511e194af9de6bfa",
+        "container": "secrem-v2-cli-role-c1e60847aebd",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795152907.294079,
+        "head_after": "2863f7025d0782bdab814a85344c74df234c9e96",
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": false,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-exec-r3/implementer/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": null,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {
+          "tests/test_base.py": "2927621d586067078d0f1a4014da9ec3743f9c3ca7a3f72718fcc0cf2ebe0018"
+        },
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "implementer",
+        "run_id": "f1a575ef-dec7-4cea-80a7-b64070a4367c-551eb0996b",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795152864.156118,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f773-168b-7b10-afd1-7e291923322e"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 60,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "be65328835321be7e630e545dcc51d37e5371aafc8da892fdfea445e54997b60"
+    },
+    {
+      "role": "verifier",
+      "passed": true,
+      "write_matrix": {
+        "code": "DENIED",
+        "new_test": "WRITABLE",
+        "baseline_test": "DENIED",
+        "agents": "DENIED"
+      },
+      "git_changed": true,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": "248007b19523a9d072b5287e964998de0e46f40d",
+        "claim_project_resource_count": null,
+        "claim_repo_count": null,
+        "config_sha256": "af79ca91087c24479f88f4e018e4b9f7f9f54cc2babd258e0fdb31fd68cfbcb6",
+        "container": "secrem-v2-cli-role-94ed4f36ee08",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795152942.794601,
+        "head_after": "ed1ac0a5977bbade0859b66af0dc3abee0cf8e9b",
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": false,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-exec-r3/verifier/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": null,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {
+          "tests/test_base.py": "2927621d586067078d0f1a4014da9ec3743f9c3ca7a3f72718fcc0cf2ebe0018"
+        },
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "verifier",
+        "run_id": "86d3c223-f894-4840-835b-b1bc21f6741b-ea878f91e6",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795152913.8469021,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f773-cc21-7a82-a131-aa5496843cac"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 60,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "dc6a76a7f79cea7b8c3881e1038c418801dfb57498b5d85e0c31beb2701118c7"
+    },
+    {
+      "role": "verifier_recheck",
+      "passed": true,
+      "write_matrix": {
+        "code": "DENIED",
+        "new_test": "DENIED",
+        "baseline_test": "DENIED",
+        "agents": "DENIED"
+      },
+      "git_changed": false,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": "ec56f85c28a11b6e86fd10413f54bd8b930169cc",
+        "claim_project_resource_count": null,
+        "claim_repo_count": null,
+        "config_sha256": "d0ea4f2202c50b52d53a213fb0fdfbae019c1fc010ba5fbabd0e4c09890f28b3",
+        "container": "secrem-v2-cli-role-66842bb5acf0",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795152974.491414,
+        "head_after": "ec56f85c28a11b6e86fd10413f54bd8b930169cc",
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": false,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-exec-r3/verifier_recheck/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": null,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {
+          "tests/test_base.py": "2927621d586067078d0f1a4014da9ec3743f9c3ca7a3f72718fcc0cf2ebe0018"
+        },
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "verifier_recheck",
+        "run_id": "6cecd8fa-64f5-413d-a7a6-b8a2d296d40f-cfb03993f7",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795152950.288702,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f774-53cf-7df3-a706-6d99bb1ac62d"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 60,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "21ab13d6981f9668c97a777422dc6c4d969f77be03b261fb0ee7a4eb24446a80"
+    },
+    {
+      "role": "qa",
+      "passed": true,
+      "write_matrix": {
+        "code": "DENIED",
+        "new_test": "DENIED",
+        "baseline_test": "DENIED",
+        "agents": "DENIED"
+      },
+      "git_changed": false,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": "b4f5eaa6e477edc523078042d62bfe00bc9a4e23",
+        "claim_project_resource_count": null,
+        "claim_repo_count": null,
+        "config_sha256": "6980a27cfede713a5347acb143251a9758ea6ac805912b2785d7b5bf1fc080ef",
+        "container": "secrem-v2-cli-role-07fc16e30314",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795153014.58493,
+        "head_after": "b4f5eaa6e477edc523078042d62bfe00bc9a4e23",
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": false,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-exec-r3/qa/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": null,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {
+          "tests/test_base.py": "2927621d586067078d0f1a4014da9ec3743f9c3ca7a3f72718fcc0cf2ebe0018"
+        },
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "qa",
+        "run_id": "d8ca142e-eca4-4740-b63b-de71238fc95e-ea5abae1d2",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795152993.570027,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f774-f68f-7732-85c8-0791893f11bc"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 60,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "b65fac5b5ecc92f1f8b4fdb24681bb6d98878da833d5d2df7856a6b443ecd980"
+    },
+    {
+      "role": "reviewer",
+      "passed": true,
+      "write_matrix": {
+        "code": "DENIED",
+        "new_test": "DENIED",
+        "baseline_test": "DENIED",
+        "agents": "DENIED"
+      },
+      "git_changed": false,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": "54cba5f022f18d76dc500662d934524d7150ed11",
+        "claim_project_resource_count": null,
+        "claim_repo_count": null,
+        "config_sha256": "19741a16512d5f3e5a3af9f0ccd336f23892375429b57fddb496d1ebdb4002e0",
+        "container": "secrem-v2-cli-role-5790152d6524",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795153039.925777,
+        "head_after": "54cba5f022f18d76dc500662d934524d7150ed11",
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": false,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-exec-r3/reviewer/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": null,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {
+          "tests/test_base.py": "2927621d586067078d0f1a4014da9ec3743f9c3ca7a3f72718fcc0cf2ebe0018"
+        },
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "reviewer",
+        "run_id": "661da413-5970-4ad4-b52e-4acfbf78ad33-14c5910bb8",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795153021.33527,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f775-6512-7393-9f00-468e4722371a"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 60,
+            "output_tokens": 30,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "b567aea41d6e1fdb6e79cecf2c3bddadbee24675ceaad881328156598ae311ad"
+    },
+    {
+      "role": "leader_scratch",
+      "passed": true,
+      "metadata": {
+        "agents_bytes": 61,
+        "agents_sha256": "deef246b9020c45c9ffe8bff6471a2bb271581746744dfb7a0f04d204adce65e",
+        "agents_unchanged": true,
+        "baseline_commit": null,
+        "claim_project_resource_count": 1,
+        "claim_repo_count": 0,
+        "config_sha256": "d0d2c8cc528cbdb47a13c75a8b1a5a65b6b7464e0ab2cca9c9acbb717206360d",
+        "container": "secrem-v2-cli-role-b9567267d744",
+        "execution_mode": "official_cli_exec_code",
+        "exit_code": 0,
+        "finished_at": 1795152945.2892869,
+        "helper_sha256": "55e5aceea82f7d36ab9d4e36f79a284b7672c9b141ce73c0d95f90a7c682b138",
+        "image": "sha256:f3ba3b59ec5b66ed823735c612885ef11479914091e976c7df3410a17525608f",
+        "last_message_sha256": "131bde08465935f29d75278dc08286b7ff5ae63fd2ee1042f0945fe60d3c0b57",
+        "leader_ignores_project_resources": true,
+        "native_argv": [
+          "codex",
+          "exec",
+          "--json",
+          "--skip-git-repo-check",
+          "--output-last-message",
+          "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/code-leader-r1/codex/last-message.txt",
+          "-"
+        ],
+        "outcome": "completed",
+        "prepared_repo_count": 0,
+        "project_doc_max_bytes": 131072,
+        "prompt_bytes": 71,
+        "prompt_sha256": "25783b1a8ce13e609411aeb2dab980b982c228e1717dba406516fac96564da81",
+        "protected_test_sha256": {},
+        "protected_tests_unchanged": true,
+        "requirements_sha256": "bac074abd2bf7ddb6eb8ffe43693d5fcccc7828973131f9648439888a2803714",
+        "resume_session_id": null,
+        "role_mode": "leader_scratch",
+        "run_id": "84246c56-7375-4809-9304-b58f993d757a-7f0c73a06c",
+        "sequence": 1,
+        "session_retention_refused": false,
+        "spool_sha256": "eaadfae12b9ce9aba4cb01c556bbaec7c6c5099ca0644211bbe185674def18e5",
+        "started_at": 1795152912.745122,
+        "terminal": {
+          "completed_turns": 1,
+          "failed_events": 0,
+          "invalid_lines": 0,
+          "last_message": "Synthetic official CLI transport completed; this is not a model result.",
+          "thread_ids": [
+            "01a1f773-c8a5-7e63-9229-01c6405e77ae"
+          ],
+          "usage": {
+            "cache_write_input_tokens": 0,
+            "cached_input_tokens": 0,
+            "input_tokens": 90,
+            "output_tokens": 45,
+            "reasoning_output_tokens": 0
+          },
+          "valid": true
+        },
+        "wrapper_sha256": "af830819abd7c6a246b643618e098fc275fa2735bdaccac57397a6860bcdcdb7"
+      },
+      "raw_result_sha256": "06f69369cde67509f81b7aa12c66d97288ba7ddae0300bfb13ff427095073f0f"
+    }
+  ]
+}

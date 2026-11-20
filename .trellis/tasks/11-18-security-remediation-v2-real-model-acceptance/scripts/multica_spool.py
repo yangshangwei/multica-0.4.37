@@ -37,10 +37,12 @@ COMMANDS = {
     ("issue", "update"): (1, {"status", "output"}, {"no-start"}),
     ("issue", "create"): (0, {"title", "description", "status", "priority", "project", "output"}, {"description-stdin", "allow-duplicate"}),
     ("squad", "get"): (1, {"output"}, set()),
+    ("squad", "list"): (0, {"output"}, set()),
     ("squad", "member", "list"): (1, {"output"}, set()),
     ("squad", "activity"): (2, {"reason", "request-id", "output"}, set()),
 }
 REVIEW_COMMANDS = {("issue", "get"), ("issue", "comment", "list"), ("issue", "comment", "add")}
+HELP_COMMANDS = set(COMMANDS) | {key[:length] for key in COMMANDS for length in range(1, len(key))}
 
 
 class Refused(ValueError):
@@ -58,6 +60,11 @@ def contained(path: Path, root: Path) -> Path:
 def parse(argv: list[str]):
     if not isinstance(argv, list) or not argv or len(argv) > 128 or any(not isinstance(x, str) or "\0" in x or len(x) > MAX_REQUEST for x in argv):
         raise Refused("invalid argument vector")
+    if argv[-1] == "--help":
+        prefix = tuple(argv[:-1])
+        if prefix not in HELP_COMMANDS:
+            raise Refused("help is limited to an exact declared command")
+        return prefix, [], {"help": True}
     prefix = next((key for key in sorted(COMMANDS, key=len, reverse=True) if tuple(argv[:len(key)]) == key), None)
     if prefix is None:
         raise Refused("command is outside this trial's CLI surface")
@@ -98,6 +105,10 @@ def validate_request(request, manifest, root):
         raise Refused("request schema rejected")
     cwd = contained(Path(request["cwd"]), root)
     prefix, positions, flags = parse(request["argv"])
+    if flags.get("help"):
+        if request["stdin_b64"]:
+            raise Refused("help does not accept stdin")
+        return cwd, b""
     issue_ids = {manifest["issue_id"], manifest.get("issue_identifier", manifest["issue_id"])}
     if prefix[0] == "issue" and prefix != ("issue", "create") and positions[0] not in issue_ids:
         raise Refused("issue is outside the current claim")

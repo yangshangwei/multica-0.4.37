@@ -1,0 +1,37 @@
+{
+  "evidence_mode": "official-cli-direct-scripted-platform",
+  "model_requests": 0,
+  "source_sha256": "b0da181a20d7a27aac478d3ff1c3e713545ff99025e4bc2eb6185c4982caa637",
+  "fake_cli_sha256": "8009694adc78d8132c7e42646c6f1bfca7503ac16baa8afbe67f50c31b64c6e5",
+  "binary_sha256": "b700d87b338ebf1e8ce4ec8d6c72bf268ca8e1d06a72c8dbf8b8b32d50ed8490",
+  "log_sha256": "0c66048b32109a5ddb1c95163d5eaeea93a9b6076e17ecd89454230314f2e949",
+  "cfg_template": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120/harness-private/direct-fake-o1-01.json",
+  "result": {
+    "criteria": {
+      "all_four_runs_complete": true,
+      "comment_identity_and_scope": true,
+      "exact_role_task_counts": true,
+      "issue_in_review": true,
+      "no_extra_workspace_issue": true,
+      "owner_releases_new_and_unchanged": true,
+      "restricted_reviewer_result_dispatch_inert": true,
+      "roster_and_config_unchanged": true
+    },
+    "evidence_type": "fake",
+    "manual_review_required": [
+      "G1 type other, hold/unknown, evidence owner and missing materials",
+      "reviewer result grounded in synthetic source",
+      "plain leader only explains valid release, no false approval",
+      "human hold conclusion covers each G1 decision with reason/date",
+      "final summary cites original reviewer/owner and preserves unresolved risk",
+      "broker and filesystem evidence contain no forbidden attempts"
+    ],
+    "scenario": "O1",
+    "task_counts": {
+      "security-remediation-lead/false": 1,
+      "security-remediation-lead/true": 2,
+      "security-reviewer/false": 1
+    },
+    "verdict": "platform-checks-passed-semantic-review-pending"
+  }
+}
