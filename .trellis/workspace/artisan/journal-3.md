@@ -1556,3 +1556,44 @@ Completed and archived blocked-feedback task after fixing live-content, empty-so
 ### Next Steps
 
 - No remaining approved work. P3polish, real spoken screen-reader/physical-touch and packagedinstaller checks remain explicitly out of scope.
+
+
+## Session 171: Archive full regression after current verification and cleanup
+<!-- trellis-session: v=2 fp=7425be90d98c1b1b -->
+
+**Date**: 2026-11-20
+**Task**: Archive full regression after current verification and cleanup
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Archived the completed R3 regression with 514 canonical E2E passes, verified repairs, explicit coverage limits and complete owned-resource cleanup.
+
+### Main Changes
+
+- Fixed allocation admission so this exact task can move to its explicit archive path; preserved and repaired all task records and links.
+- Independently reviewed database provisioning, runtime diagnostics and ledger retry safety, including red-green counterexamples.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `963461f67` | fix(e2e): allow completed acceptance tasks to leave the active directory |
+| `cbcb86b94` | fix(dev): keep database startup on the allocated endpoint |
+| `37e2faa0f` | fix(issues): keep creation actions reachable in short windows |
+| `6f51d385f` | fix(daemon): preserve ledger barriers during atomic publication |
+| `ddc80d5af` | test(qa): bind collaboration acceptance to its actual state |
+| `fa1867259` | docs(qa): preserve complete collaboration regression evidence |
+
+### Testing
+
+- [OK] 514 E2E latest passes; 14718 TS passes; 24155 Go named passes with 9 explicit skips; final output and packaged Main 2/2 each.
+- [OK] 28 allocation tests, actual archived-directory admission, task context/link validation, and independent runtime/container cleanup.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No task work remains. Historical failures, pre-ledger performance scope, platform and real-model limits remain documented.
