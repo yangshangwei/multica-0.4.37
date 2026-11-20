@@ -105,3 +105,6 @@ overlay 只把本任务文件虚拟挂到 daemon 包，不创建/修改产品文
 子任务一已实际fast-forward合入codex/cross-workspace-collaboration，集成提交50045c12cc6eb32a11e032b68717ec844640f4b8包含产品15bcd2e5e、0ffc3572c、aa592194b。前置1现在满足。准备规划及无模型机制经独立评审；仍需精确型号/账号/有限预算、真实task-token受管CLI通道（不得绕过受限reviewer外部MCP拒绝）、完整生产driver及最终隔离正负探针。真实调用授权无需再次请求。
 
 下一次继续从主检出的本任务目录读取最新记录，按需要新建隔离验收worktree；本轮产品worktree移除后不再硬编码其路径为运行入口。overlay路径需按新checkout生成，旧research overlay只是历史证据。实际model turns/provider requests/account accesses仍0，本地Codex无模型进程另列。
+
+
+本轮产品worktree已于完成全部提交和实际集成后移除；全部准备脚本、fixture、研究和控制输出已在主检出保存。真实验收的继续工作使用新隔离环境，当前task仍planning且execution_admission=false，原因是具体运行参数和生产受限身份通道尚未闭合，不是调用未授权。

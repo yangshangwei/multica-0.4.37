@@ -428,3 +428,8 @@ Linux默认UTC完整service包跑完：4239 RUN、4210 PASS、10 FAIL事件（�
 2026-11-20，主检出 `codex/cross-workspace-collaboration` 从c56e2194e **实际fast-forward到50045c12cc6eb32a11e032b68717ec844640f4b8**，包含三笔产品提交与独立任务记录提交50045c12c。这次是合入，不是变基/预检。主检出原三个未跟踪任务目录逐文件核对初始15文件hash相同后移至持久证据 `main-task-originals/`；不覆盖旧副本。对主检出全部其他脏文件在合入前后逐个sha256核对，零变化。回执 `work/integration-receipt.json`。
 
 子任务一AC1–AC8已完成并合入，task标completed，路径保留不自动归档。子任务二“子任务一已合入”前置现已满足；真实模型入口仍因具体参数及实际受限角色broker/完整驱动未完成而关闭，调用授权本身已满足。父任务AC9/AC10仍未完成。
+
+
+### 收尾完成
+
+实际集成head先后为50045c12c（产品+任务记录）、2a7e5ee34（集成状态）、52519afb9（遗漏的ignored控制日志转为tracked文本）。三者均已实际合入基线分支。清理完成：48个精确拥有的测试库、3个任务PostgreSQL容器及其数据、任务API/Web进程、旧临时目录、构建缓存、凭据副本、两份stash及产品worktree均已移除。保留分支和持久证据目录。子任务一completed，父任务/子任务二仍打开，下一步是子任务二具体参数与真实driver/broker整合；不再等待提交/清理/模型调用授权。
