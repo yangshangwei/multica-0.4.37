@@ -26,6 +26,7 @@ export const DOCS_SLUGS = {
   installAgentRuntime: "install-agent-runtime",
   selfHostQuickstart: "self-host-quickstart",
   skills: "skills",
+  squads: "squads",
 } as const;
 
 /**

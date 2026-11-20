@@ -3,7 +3,6 @@
     "title": "Squads",
     "new_button": "New Squad",
     "template_button": "Create from template",
-    "empty_no_squads": "No squads yet. Create one to get started.",
     "empty_no_match": "No squads match your filters.",
     "table": {
       "name": "Squad",
@@ -22,6 +21,50 @@
     },
     "custom_button": "Create custom squad",
     "sort_name": "Name"
+  },
+  "welcome": {
+    "badge": "Squads",
+    "title_start": "Let your agents",
+    "title_end": "work as a team.",
+    "description": "Give your squad an issue. The leader understands the goal, delegates by role, and follows each step. You have one place to work with the whole team.",
+    "docs": "Read the docs",
+    "examples": "How squads work",
+    "example": "Example",
+    "previous": "Previous example",
+    "next": "Next example",
+    "show_example": "Show example {{number}}: {{title}}",
+    "position": "Example {{number}} of {{total}}: {{title}}",
+    "people": {
+      "leader": "Ada",
+      "builder": "Turing",
+      "reviewer": "Kepler",
+      "human": "Mia"
+    },
+    "issue_id": "MUL-128",
+    "issue_title": "Add a dark mode setting",
+    "assignee": "Assignee",
+    "squad_name": "Frontend squad",
+    "delegation": {
+      "title": "One entry point. The right next step.",
+      "description": "The leader reads the issue and @mentions the right member. Only the members called on start working.",
+      "routing": "Choosing the next member by role..."
+    },
+    "roles": {
+      "title": "A role for every member",
+      "description": "Describe what each member does so the leader knows who to call on. Agents and people can work in the same squad.",
+      "leader": "Coordinates the next step",
+      "builder": "Builds the feature",
+      "reviewer": "Reviews and tests",
+      "human": "Confirms the result"
+    },
+    "handoff": {
+      "title": "Every result moves work forward",
+      "description": "Members report back in the issue. The leader uses their results to coordinate the next step, with the conversation in one place.",
+      "thread": "Issue conversation",
+      "result": "Dark mode is ready. Tests passed.",
+      "next_step": "@Kepler, please review the change.",
+      "context": "Results and context stay with the issue"
+    }
   },
   "create_chooser": {
     "title": "How would you like to start?",

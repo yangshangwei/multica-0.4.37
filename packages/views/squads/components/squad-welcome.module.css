@@ -1,0 +1,250 @@
+.welcome {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  container-type: inline-size;
+}
+
+.layout {
+  display: grid;
+  align-content: center;
+  gap: 2rem;
+  min-height: 100%;
+  max-width: 100rem;
+  margin-inline: auto;
+  padding: 2.5rem 1.5rem 3rem;
+}
+
+.intro {
+  width: 100%;
+  max-width: 31rem;
+  margin-inline: auto;
+}
+
+.showcase {
+  min-width: 0;
+}
+
+.viewport {
+  overflow: hidden;
+  padding: 1rem 0 1.5rem;
+}
+
+.track {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  gap: 1.25rem;
+  width: min(100%, 28rem);
+  margin-inline: auto;
+  transform: translateX(calc(var(--slide) * -1 * (100% + 1.25rem)));
+  transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.8);
+  background: var(--surface);
+  box-shadow: var(--surface-shadow);
+  opacity: 0.35;
+  transition: opacity 240ms ease;
+}
+
+.card[data-active="true"] {
+  opacity: 1;
+}
+
+.scene {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 20rem;
+  padding: 2.75rem 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--surface-border);
+  background-color: color-mix(in oklab, var(--brand) 5%, var(--surface));
+  background-image: radial-gradient(color-mix(in oklab, var(--brand) 13%, transparent) 0.75px, transparent 0.75px);
+  background-size: 1.25rem 1.25rem;
+}
+
+.exampleLabel {
+  position: absolute;
+  top: 0.875rem;
+  right: 1.25rem;
+  color: var(--muted-foreground);
+  font-size: var(--text-micro);
+  line-height: var(--text-micro--line-height);
+}
+
+.delegation {
+  width: 100%;
+}
+
+.issue,
+.leaderNode,
+.memberNode,
+.roster,
+.thread {
+  border: 1px solid var(--surface-border);
+  border-radius: calc(var(--radius) * 1.4);
+  background: var(--surface);
+  box-shadow: var(--surface-shadow);
+}
+
+.issue {
+  padding: 0.875rem;
+}
+
+.leaderNode {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  width: 84%;
+  margin-inline: auto;
+  padding: 0.875rem;
+}
+
+.avatar {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+}
+
+.leader {
+  color: var(--skill-design);
+  background: color-mix(in oklab, var(--skill-design) 9%, var(--surface));
+}
+
+.builder {
+  color: var(--success-foreground);
+  background: color-mix(in oklab, var(--success) 9%, var(--surface));
+}
+
+.reviewer {
+  color: var(--muted-foreground);
+  background: var(--muted);
+}
+
+.human {
+  color: var(--info-foreground);
+  background: color-mix(in oklab, var(--brand) 9%, var(--surface));
+}
+
+.connector {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 1.75rem;
+  color: var(--brand);
+}
+
+.connector::before {
+  position: absolute;
+  height: 1.75rem;
+  border-left: 1px dashed var(--brand);
+  content: "";
+}
+
+.branch {
+  position: relative;
+  height: 1.75rem;
+  color: var(--brand);
+}
+
+.branch::before {
+  position: absolute;
+  left: 50%;
+  height: 50%;
+  border-left: 1px dashed var(--brand);
+  content: "";
+}
+
+.branch span {
+  position: absolute;
+  inset: 50% 24% 0;
+  border: 1px dashed var(--brand);
+  border-bottom: 0;
+  border-radius: 0.375rem 0.375rem 0 0;
+}
+
+.branch svg {
+  position: absolute;
+  bottom: -0.25rem;
+  left: calc(24% - 0.5rem);
+}
+
+.branch svg:last-child {
+  left: calc(76% - 0.5rem);
+}
+
+.memberNode {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+  padding: 0.75rem;
+}
+
+.working {
+  border-color: var(--brand);
+}
+
+.roster,
+.thread {
+  width: 100%;
+  overflow: hidden;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, 28rem);
+  margin-inline: auto;
+}
+
+@container (min-width: 60rem) {
+  .layout {
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+    align-items: center;
+    gap: 3.5rem;
+    padding: 3rem 0 3rem 6cqw;
+  }
+
+  .intro {
+    margin-inline: 0;
+    padding-bottom: 2.75rem;
+  }
+
+  .track,
+  .controls {
+    margin-inline: 0;
+  }
+}
+
+@container (max-width: 24rem) {
+  .layout {
+    padding-inline: 1rem;
+  }
+
+  .scene {
+    padding-inline: 0.75rem;
+  }
+
+  .memberNode {
+    gap: 0.375rem;
+    padding-inline: 0.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .card {
+    transition: none;
+  }
+}

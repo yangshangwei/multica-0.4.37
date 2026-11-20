@@ -1,0 +1,27 @@
+declare const styles: {
+  readonly welcome: string;
+  readonly layout: string;
+  readonly intro: string;
+  readonly showcase: string;
+  readonly viewport: string;
+  readonly track: string;
+  readonly card: string;
+  readonly scene: string;
+  readonly exampleLabel: string;
+  readonly delegation: string;
+  readonly issue: string;
+  readonly leaderNode: string;
+  readonly avatar: string;
+  readonly leader: string;
+  readonly builder: string;
+  readonly reviewer: string;
+  readonly human: string;
+  readonly connector: string;
+  readonly branch: string;
+  readonly memberNode: string;
+  readonly working: string;
+  readonly roster: string;
+  readonly thread: string;
+  readonly controls: string;
+};
+export default styles;

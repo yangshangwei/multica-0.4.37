@@ -136,6 +136,36 @@ details must remain visible without mouse hover. Active filters use a semantic
 foreground/background pair and expose selected names plus result counts in a
 localized status region; do not replace saved descriptions with template copy.
 
+### Squad first-use welcome
+
+`SquadsPage` mounts the shared `SquadWelcome` only in the workspace tab when
+the squad Query has `isSuccess` and the unfiltered saved list is empty. Error
+feedback takes precedence, including a failed refresh after an empty response.
+Pending or missing reads keep the loading state; a filtered-empty populated
+workspace keeps collection recovery. An explicit `?view=templates` remains
+independent. The inherited `ApiClient.listSquads()` schema fallback is still
+`EMPTY_SQUAD_LIST`, so this view cannot identify malformed successful responses.
+
+The welcome hero owns the single creation `AppLink` to `paths.newSquad()`;
+the existing chooser owns template and custom creation. Documentation uses
+`paths.docsPage(DOCS_SLUGS.squads)` so Web and Desktop use the embedded reader.
+Update both guides and regenerate the Chinese bundle when an entry path changes.
+
+The three examples are illustrative, manually selected local view state. No
+timers, data fetches, stores or agent execution belong in the examples. Every
+inactive scene is both `aria-hidden` and `inert`; the selected dot is pressed,
+previous/next respect the ends, and a status region names the current example.
+Key the welcome by workspace ID: ordinary renders retain the selected example,
+while a workspace change starts at the first one. Container queries handle the
+sidebar/desktop tab width, and reduced motion removes the authored transitions.
+
+Canonical state, navigation, keyboard, inert and remount regressions live in
+`squads/components/squads-page.test.tsx`; chooser behavior remains in
+`squads/create/choose-create-squad-method-page.test.tsx`. The focused browser
+journey is `e2e/squad-welcome.spec.ts`. Check both locales, narrow windows and
+the actual Desktop scroll container; DOM visibility alone does not prove a
+control lies in the viewport or that a native capture painted the latest scroll.
+
 <!-- How props should be defined and typed -->
 
 (To be filled by the team)
@@ -143,6 +173,16 @@ localized status region; do not replace saved descriptions with template copy.
 ---
 
 ## Styling Patterns
+
+### Runtime tokens in local CSS modules
+
+Tailwind `@theme inline` aliases in `packages/ui/styles/tokens.css` are compiled
+into utility rules and are not guaranteed runtime custom properties. A CSS
+module cannot assume `var(--radius-xl)` or `var(--radius-2xl)` exists. Use the
+emitted utility or the exact formula based on the runtime `--radius`, such as
+`calc(var(--radius) * 1.4)` and `calc(var(--radius) * 1.8)`. The ordinary `@theme`
+type scale does provide runtime `--text-*` variables. Verify computed radii on
+the built view; an unresolved token silently produces square panels.
 
 ### Welcome page viewport sizing
 

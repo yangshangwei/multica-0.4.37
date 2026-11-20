@@ -8,10 +8,12 @@ import { renderWithI18n } from "../../test/i18n";
 import { SquadsPage } from "./squads-page";
 
 const mocks = vi.hoisted(() => ({
+  workspace: { id: "ws-1", slug: "acme" },
   squads: [] as Squad[],
   agents: [] as { id: string; name: string }[],
   members: [] as MemberWithUser[],
   squadsError: false,
+  squadsPending: false,
   refetchSquads: vi.fn(),
   templates: [] as SquadTemplate[],
   templatesError: false,
@@ -26,7 +28,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock("@tanstack/react-query", () => ({
   useQuery: (options: { queryKey: unknown[] }) => options.queryKey[0] === "squads"
-    ? { data: mocks.squads, isLoading: false, error: mocks.squadsError ? new Error("failed") : null, refetch: mocks.refetchSquads }
+    ? { data: mocks.squadsPending ? undefined : mocks.squads, isSuccess: !mocks.squadsPending && !mocks.squadsError, error: mocks.squadsError ? new Error("failed") : null, refetch: mocks.refetchSquads }
     : { data: options.queryKey[0] === "members" ? mocks.members : mocks.agents, isLoading: false, refetch: vi.fn() },
   useQueryClient: () => ({ invalidateQueries: vi.fn() }),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
@@ -45,8 +47,8 @@ vi.mock("@multica/core/paths", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/paths")>();
   return {
     ...actual,
-    useCurrentWorkspace: () => ({ id: "ws-1", slug: "acme" }),
-    useWorkspacePaths: () => actual.paths.workspace("acme"),
+    useCurrentWorkspace: () => mocks.workspace,
+    useWorkspacePaths: () => actual.paths.workspace(mocks.workspace.slug),
   };
 });
 vi.mock("@multica/core/squads/stores", () => ({
@@ -101,15 +103,18 @@ function renderPage(navigation = adapter(), locale: "en" | "zh-Hans" = "en") {
       </NavigationProvider>
     );
   }
-  return renderWithI18n(<Page />, { locale });
+  const view = renderWithI18n(<Page />, { locale });
+  return { ...view, rerenderPage: () => view.rerender(<Page />) };
 }
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.workspace = { id: "ws-1", slug: "acme" };
   mocks.squads = [];
   mocks.agents = [{ id: SQUAD.leader_id, name: "Taylor" }];
   mocks.members = [CURRENT_MEMBER];
   mocks.squadsError = false;
+  mocks.squadsPending = false;
   mocks.templates = [TEMPLATE];
   mocks.templatesError = false;
   mocks.viewState.scope = "all";
@@ -156,16 +161,20 @@ describe("SquadsPage discovery and management", () => {
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 
-  it("links directly to both creation methods from an empty directory", async () => {
+  it("links to the creation chooser and in-app documentation from an empty directory", async () => {
     const user = userEvent.setup();
     const navigation = adapter();
     renderPage(navigation);
     for (const [name, href] of [
-      ["Create from template", "/acme/squads/new/template"],
-      ["Create custom squad", "/acme/squads/new/manual"],
+      ["New Squad", "/acme/squads/new"],
+      ["Read the docs", "/acme/docs/squads"],
     ]) {
       const link = screen.getByRole("link", { name });
       expect(link).toHaveAttribute("href", href);
+      link.focus();
+      await user.keyboard("{Enter}");
+      expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
+      vi.mocked(navigation.push).mockClear();
       await user.click(link);
       expect(navigation.push).toHaveBeenCalledExactlyOnceWith(href);
       vi.mocked(navigation.push).mockClear();
@@ -320,9 +329,107 @@ describe("SquadsPage discovery and management", () => {
 
   it("keeps empty-state creation available and never counts templates as saved squads", () => {
     renderPage();
-    expect(screen.getByText("No squads yet. Create one to get started.")).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Create from template" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Let your agents work as a team." })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "New Squad" })).toHaveLength(1);
     expect(within(screen.getByRole("heading", { level: 1 }).parentElement!).queryByText("1")).not.toBeInTheDocument();
+  });
+
+  it("does not mistake a pending squad response for an empty workspace", () => {
+    mocks.squadsPending = true;
+    renderPage();
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Read the docs" })).not.toBeInTheDocument();
+  });
+
+  it("keeps filtered-empty results separate from the welcome page", () => {
+    mocks.squads = [SQUAD];
+    mocks.viewState.filters = { leaders: ["other-leader"], creators: [] };
+    renderPage();
+    expect(screen.getByText("No squads match")).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: "Clear filters" }).length).toBeGreaterThan(0);
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+  });
+
+  it("localizes the welcome copy and controls", () => {
+    renderPage(adapter(), "zh-Hans");
+    expect(screen.getByRole("heading", { name: "让智能体组队， 像团队一样干活" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "新建AI小队" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "阅读文档" })).toHaveAttribute("href", "/acme/docs/squads");
+    expect(screen.getByRole("button", { name: "下一个示例" })).toBeInTheDocument();
+  });
+
+  it("lets keyboard and pointer users explore the examples while hiding inactive slides", async () => {
+    const user = userEvent.setup();
+    renderPage();
+    const carousel = screen.getByRole("region", { name: "How squads work" });
+    const previous = within(carousel).getByRole("button", { name: "Previous example" });
+    const next = within(carousel).getByRole("button", { name: "Next example" });
+    const firstDot = within(carousel).getByRole("button", { name: "Show example 1: One entry point. The right next step." });
+    const slides = within(carousel).getAllByRole("group", { hidden: true });
+
+    expect(previous).toBeDisabled();
+    expect(firstDot).toHaveAttribute("aria-pressed", "true");
+    expect(slides).toHaveLength(3);
+    expect(slides[0]).not.toHaveAttribute("inert");
+    expect(slides[1]).toHaveAttribute("inert");
+    expect(slides[2]).toHaveAttribute("inert");
+    expect(within(carousel).getByRole("heading", { name: "One entry point. The right next step." })).toBeInTheDocument();
+    expect(within(carousel).queryByRole("heading", { name: "A role for every member" })).not.toBeInTheDocument();
+
+    next.focus();
+    await user.keyboard("{Enter}");
+    expect(within(carousel).getByRole("heading", { name: "A role for every member" })).toBeInTheDocument();
+    expect(within(carousel).queryByRole("heading", { name: "One entry point. The right next step." })).not.toBeInTheDocument();
+    expect(previous).toBeEnabled();
+    expect(firstDot).toHaveAttribute("aria-pressed", "false");
+    expect(slides[0]).toHaveAttribute("inert");
+    expect(slides[1]).not.toHaveAttribute("inert");
+    expect(slides[2]).toHaveAttribute("inert");
+
+    await user.click(next);
+    expect(within(carousel).getByRole("heading", { name: "Every result moves work forward" })).toBeInTheDocument();
+    expect(next).toBeDisabled();
+    expect(within(carousel).getByRole("status")).toHaveTextContent("Example 3 of 3: Every result moves work forward");
+
+    await user.click(previous);
+    expect(within(carousel).getByRole("heading", { name: "A role for every member" })).toBeInTheDocument();
+    await user.click(firstDot);
+    expect(within(carousel).getByRole("heading", { name: "One entry point. The right next step." })).toBeInTheDocument();
+    expect(previous).toBeDisabled();
+    expect(within(carousel).getAllByRole("group")).toHaveLength(1);
+  });
+
+  it("starts a newly selected workspace at the first example with its own creation and docs links", async () => {
+    const user = userEvent.setup();
+    const navigation = adapter();
+    const { rerenderPage } = renderPage(navigation);
+    await user.click(screen.getByRole("button", { name: /^Show example 3:/ }));
+    expect(screen.getByRole("status")).toHaveTextContent("Example 3 of 3");
+    rerenderPage();
+    expect(screen.getByRole("status")).toHaveTextContent("Example 3 of 3");
+
+    mocks.workspace = { id: "ws-2", slug: "beta" };
+    navigation.pathname = "/beta/squads";
+    rerenderPage();
+
+    expect(screen.getByRole("status")).toHaveTextContent("Example 1 of 3");
+    expect(screen.getByRole("button", { name: "Previous example" })).toBeDisabled();
+    expect(screen.getByRole("link", { name: "New Squad" })).toHaveAttribute("href", "/beta/squads/new");
+    expect(screen.getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/beta/docs/squads");
+  });
+
+  it("replaces a previously successful empty response with retry feedback when refreshing fails", () => {
+    const { rerenderPage } = renderPage();
+    expect(screen.getByRole("heading", { name: "Let your agents work as a team." })).toBeInTheDocument();
+
+    mocks.squadsError = true;
+    rerenderPage();
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Could not load squads.");
+    expect(screen.getByRole("button", { name: "Retry" })).toBeEnabled();
+    expect(screen.getByRole("link", { name: "New Squad" })).toHaveAttribute("href", "/acme/squads/new");
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Read the docs" })).not.toBeInTheDocument();
   });
 
   it("retains retry and template navigation when the saved squad query fails", async () => {
@@ -330,7 +437,7 @@ describe("SquadsPage discovery and management", () => {
     mocks.squadsError = true;
     renderPage();
     expect(screen.getByRole("alert")).toHaveTextContent("Could not load squads.");
-    expect(screen.queryByText("No squads yet. Create one to get started.")).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Let your agents work as a team." })).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Retry" }));
     expect(mocks.refetchSquads).toHaveBeenCalledOnce();
     await user.click(screen.getByRole("tab", { name: "Templates" }));

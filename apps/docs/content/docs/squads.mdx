@@ -9,6 +9,8 @@ A squad consists of one leader agent and any number of members. Assigning an iss
 
 Squads solve the question of who the work goes to. They don't merge multiple agents into a new agent, and they don't automatically raise concurrency.
 
+When the workspace has no squads, the Squads page shows collaboration examples. Choose **New Squad**, then **Create from template** or **Create custom squad**. **Read the docs** opens this guide inside the app.
+
 ## Start from a template
 
 Open **Squads → Templates**, then choose **Apply to project** to use a workflow on a new or existing project. Choose an execution runtime, or connect one later. Nine templates are built in:
@@ -58,7 +60,7 @@ Check the following before the first issue. The workflow stops if any one is mis
 
 There are two ways to let other people decide a gate:
 
-- **Open it when you create the squad.** On the Squads page choose **New Squad**, then **Create from template** (a workspace with no squads yet shows **Create from template** directly), and set "Who can assign work to this squad" to "Everyone in the workspace". A squad created with **Apply to project** in the template catalog has no such option; its agents are always "Only me".
+- **Open it when you create the squad.** On the Squads page choose **New Squad**, then **Create from template**, and set "Who can assign work to this squad" to "Everyone in the workspace". A squad created with **Apply to project** in the template catalog has no such option; its agents are always "Only me".
 - **Open it afterwards.** The owner of the agents opens each agent's detail page, goes to **Settings** > **Access**, and under "Who can run this agent" chooses "Entire workspace", or "Specific people" with the security owner selected, then clicks **Save**; nothing changes until it is saved. To change several at once, select the agents in the agent list and choose **Set access scope**. Change the leader and every member: after a decision, each delegation the leader makes is checked against the permissions of the person who decided. Agents that were reused keep their earlier setting, so check them too.
 
 Opening the agents to the whole workspace also lets other members run them on the owner's runtime. Choose "Specific people" when only one or two owners decide gates.

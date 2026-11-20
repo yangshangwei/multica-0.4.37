@@ -11,7 +11,6 @@ import {
   Loader2,
   MoreHorizontal,
   Plus,
-  Sparkles,
   SlidersHorizontal,
   Trash2,
   Users,
@@ -101,6 +100,7 @@ import {
 import { useT } from "../../i18n";
 import { PAGE_TOOLBAR } from "../../layout/page-header";
 import { BuiltinSquadCatalog } from "./builtin-squad-catalog";
+import { SquadWelcome } from "./squad-welcome";
 
 // Reveal secondary columns as the container grows. Including 44px touch
 // actions, the tiers need 664px / 820px / 936px and fit @2xl / @4xl / @5xl.
@@ -791,12 +791,13 @@ export function SquadsPage() {
   };
   const currentUser = useAuthStore((s) => s.user);
 
-  const { data: squads = [], isLoading, error: listError, refetch: refetchSquads } = useQuery({
+  const { data: squads = [], isSuccess, error: listError, refetch: refetchSquads } = useQuery({
     ...squadListOptions(wsId),
     enabled: !!wsId,
   });
   const { data: agents = [] } = useQuery(agentListOptions(wsId));
   const { data: members = [] } = useQuery(memberListOptions(wsId));
+  const showWelcome = isSuccess && squads.length === 0;
 
   const agentsById = useMemo(() => {
     const m = new Map<string, Agent>();
@@ -933,7 +934,7 @@ export function SquadsPage() {
         icon={Users}
         title={t(($) => $.page.title)}
         count={squads.length}
-        actions={
+        actions={showWelcome && activeView === "workspace" ? undefined : (
           <Button
             size="sm"
             className="pointer-coarse:min-h-11"
@@ -942,7 +943,7 @@ export function SquadsPage() {
             <Plus className="size-3.5" aria-hidden="true" />
             {t(($) => $.page.new_button)}
           </Button>
-        }
+        )}
       />
 
       <Tabs
@@ -972,34 +973,10 @@ export function SquadsPage() {
               title={t(($) => $.page.list_error)}
               actions={<Button type="button" size="sm" variant="outline" className="pointer-coarse:min-h-11" onClick={() => void refetchSquads()}>{t(($) => $.catalog.retry)}</Button>}
             />
-          ) : isLoading ? (
+          ) : !isSuccess ? (
             <LoadingSkeleton />
-          ) : squads.length === 0 ? (
-            <CollectionPageState
-              icon={Users}
-              title={t(($) => $.page.empty_no_squads)}
-              actions={
-                <>
-                  <Button
-                    size="sm"
-                    className="pointer-coarse:min-h-11"
-                    render={<AppLink href={p.newSquadTemplate()} />}
-                  >
-                    <Sparkles aria-hidden="true" className="size-3.5" />
-                    {t(($) => $.page.template_button)}
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="pointer-coarse:min-h-11"
-                    variant="outline"
-                    render={<AppLink href={p.newSquadManual()} />}
-                  >
-                    <Plus aria-hidden="true" className="size-3.5" />
-                    {t(($) => $.page.custom_button)}
-                  </Button>
-                </>
-              }
-            />
+          ) : showWelcome ? (
+            <SquadWelcome key={wsId} />
           ) : (
             <>
               <SquadListToolbar
