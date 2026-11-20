@@ -1,0 +1,38 @@
+{
+  "nativeFallback": "Native CUA was concretely unavailable to sibling assessment; fresh isolated headless Chromium used, never attached to human Chrome/Desktop.",
+  "userVisible": false,
+  "pages": [
+    {
+      "state": "empty-1280-en-light",
+      "injection": true,
+      "logs": [
+        {
+          "type": "startGroup",
+          "text": "%c[impeccable] 1 anti-pattern found color: oklch(84% 0.19 80.46); font-weight: bold"
+        }
+      ]
+    }
+  ],
+  "cleanup": {
+    "exitCode": 0,
+    "stdout": "Stopped live server on port 8400.\n",
+    "stderr": ""
+  },
+  "preflight": {
+    "titleMutation": true,
+    "scriptExecution": true,
+    "previousTitle": "Issues | Multica"
+  },
+  "server": {
+    "port": 8400,
+    "pid": 77726,
+    "stop": "impeccable live-server stop --keep-inject (cwd review-b)"
+  },
+  "overlayElements": [
+    {
+      "tag": "DIV",
+      "id": "",
+      "class": "impeccable-overlay impeccable-banner"
+    }
+  ]
+}

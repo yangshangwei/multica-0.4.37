@@ -1,0 +1,23 @@
+{
+  "command": [
+    "git",
+    "diff",
+    "--check",
+    "--",
+    "packages/core/package.json",
+    "packages/core/issues/quick-create-submit-state.ts",
+    "packages/core/issues/quick-create-submit-state.test.ts",
+    "packages/views/modals/quick-create-issue.tsx",
+    "packages/views/modals/quick-create-issue.test.tsx",
+    "packages/views/modals/creator-recommendations.tsx",
+    "packages/views/modals/creator-recommendations.test.tsx",
+    "packages/views/modals/quick-create-actor-picker.tsx",
+    "packages/views/modals/quick-create-actor-picker.test.tsx",
+    "packages/views/modals/issue-description-assist.tsx",
+    "packages/views/modals/issue-description-assist.test.tsx",
+    "packages/views/locales/en/modals.json",
+    "packages/views/locales/zh-Hans/modals.json"
+  ],
+  "exit_code": 0,
+  "output": ""
+}

@@ -1,0 +1,50 @@
+{
+  "processes": [
+    {
+      "name": "provider",
+      "pgid": 47309,
+      "signal": "TERM"
+    },
+    {
+      "name": "api",
+      "pgid": 81565,
+      "signal": "TERM"
+    },
+    {
+      "name": "web",
+      "pgid": 73375,
+      "signal": "TERM"
+    },
+    {
+      "name": "renderer",
+      "pgid": 81564,
+      "signal": "TERM"
+    }
+  ],
+  "container": "3cb47f007894fc141515871e73c57127c3f6c7a1db656042498fbcf4278529ec",
+  "retained": false,
+  "containerRemoved": true,
+  "ports": [
+    {
+      "port": 60676,
+      "closed": true
+    },
+    {
+      "port": 60677,
+      "closed": true
+    },
+    {
+      "port": 60678,
+      "closed": true
+    },
+    {
+      "port": 60703,
+      "closed": true
+    },
+    {
+      "port": 59042,
+      "closed": true
+    }
+  ],
+  "untouched": "No make up/down/destroy; no user Desktop; shared Web build was never written by this task."
+}

@@ -1,0 +1,63 @@
+[
+  {
+    "name": "core-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/core",
+      "typecheck"
+    ],
+    "started_at": "2026-11-20T06:38:02.970736+00:00",
+    "exit_code": 0,
+    "duration_seconds": 9.99
+  },
+  {
+    "name": "views-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "started_at": "2026-11-20T06:38:12.961104+00:00",
+    "exit_code": 0,
+    "duration_seconds": 51.26
+  },
+  {
+    "name": "core-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/core",
+      "exec",
+      "eslint",
+      "issues/quick-create-submit-state.ts",
+      "issues/quick-create-submit-state.test.ts"
+    ],
+    "started_at": "2026-11-20T06:39:04.224683+00:00",
+    "exit_code": 0,
+    "duration_seconds": 2.21
+  },
+  {
+    "name": "views-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "eslint",
+      "modals/quick-create-issue.tsx",
+      "modals/quick-create-issue.test.tsx",
+      "modals/quick-create-actor-picker.tsx",
+      "modals/quick-create-actor-picker.test.tsx",
+      "modals/creator-recommendations.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "modals/issue-description-assist.tsx",
+      "modals/issue-description-assist.test.tsx",
+      "chat/components/chat-new-chat-button.test.tsx"
+    ],
+    "started_at": "2026-11-20T06:39:06.434920+00:00",
+    "exit_code": 0,
+    "duration_seconds": 1.54
+  }
+]

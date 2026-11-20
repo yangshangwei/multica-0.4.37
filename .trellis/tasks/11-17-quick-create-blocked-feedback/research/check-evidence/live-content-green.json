@@ -1,0 +1,18 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "exec",
+    "vitest",
+    "run",
+    "modals/quick-create-issue.test.tsx",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=json",
+    "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-17-quick-create-blocked-feedback/research/check-evidence/quick-create-issue-green-results.json"
+  ],
+  "started_at": "2026-11-20T06:44:18.946871+00:00",
+  "exit_code": 0,
+  "duration_seconds": 12.23
+}

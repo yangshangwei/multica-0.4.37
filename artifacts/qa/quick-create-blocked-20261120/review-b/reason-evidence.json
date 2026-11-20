@@ -1,0 +1,35 @@
+{
+  "keyboard": {
+    "active": {
+      "tag": "BUTTON",
+      "text": "Send to agent",
+      "ariaDescription": "_r_2f_"
+    },
+    "tooltip": [
+      {
+        "text": "Write a task description first",
+        "role": null,
+        "width": 181.3125,
+        "height": 26,
+        "hidden": "visible"
+      }
+    ]
+  },
+  "hover": {
+    "active": {
+      "tag": "DIV",
+      "text": "",
+      "ariaDescription": null
+    },
+    "tooltip": [
+      {
+        "text": "Write a task description first",
+        "role": null,
+        "width": 172.246826171875,
+        "height": 24.70001220703125,
+        "hidden": "visible"
+      }
+    ]
+  },
+  "note": "Real Tab and hover paths checked against data-slot=tooltip-content; the matrix role=tooltip probe is inapplicable because this Tooltip content has no explicit role."
+}

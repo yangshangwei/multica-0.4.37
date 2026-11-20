@@ -1,0 +1,156 @@
+{
+  "sources": {
+    "e2e/quick-create-blocked-feedback.spec.ts": "27ef828493adb8ac1ba695cc7f03fda90c42084823b8abe4df75a0314ba4e3f0",
+    "packages/views/modals/quick-create-issue.tsx": "9bf089caf226d7baef748e95ad9c532874cc8cea4ad792496685556161183e94",
+    "packages/views/modals/creator-recommendations.tsx": "319e6b39f691352ba2542b57cff0bd6ad807613c0d4909fcbbd0a14d29162820"
+  },
+  "reports": {
+    "acceptance-final": {
+      "sha256": "87425dca86d49e589907eaa077bcdf6071fffdee0add8ea50957f3b3e892917e",
+      "stats": {
+        "startTime": "2026-11-20T07:21:21.913Z",
+        "duration": 234156.72999999998,
+        "expected": 14,
+        "skipped": 0,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "exit": "1"
+    },
+    "visual-final-r3": {
+      "sha256": "03b43f605493e3225901a251517bd2e757fa05ed572aefca2a07131127af06b1",
+      "stats": {
+        "startTime": "2026-11-20T07:31:13.434Z",
+        "duration": 17535.977,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "fixture-cleanup-confirmation": {
+      "sha256": "7eb6f2876619b07416b6a6ca63ca8b8d9b5733feb39e1ea3fcf6790314f6f61c",
+      "stats": {
+        "startTime": "2026-11-20T07:33:50.397Z",
+        "duration": 20330.656,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "existing-picker": {
+      "sha256": "33a66d3260091e0d8a005b95e2da80ad543919e8099682e67e0b73fc3495f803",
+      "stats": {
+        "startTime": "2026-11-20T07:26:58.800Z",
+        "duration": 23603.226,
+        "expected": 7,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "existing-autonomy": {
+      "sha256": "887655a71d9a4b94375a2a76c1c52c31fa46fbb7a88a062e934b7c4983370bdc",
+      "stats": {
+        "startTime": "2026-11-20T07:30:47.858Z",
+        "duration": 4470.597,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "existing-recommendations": {
+      "sha256": "a9d34d0b82bd2aa1b42fd880977c90ea3376300c8bd4d4cd9012ccf3a730640b",
+      "stats": {
+        "startTime": "2026-11-20T07:30:53.255Z",
+        "duration": 10960.508,
+        "expected": 3,
+        "skipped": 1,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "native-picker": {
+      "sha256": "8e561c6c42b0d5c7dc83b0b6ccee652dcbdaeb7c3315b9f1b86c48110491ca8c",
+      "stats": {
+        "startTime": "2026-11-20T07:32:06.361Z",
+        "duration": 4320.969999999999,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    },
+    "native-recommendations": {
+      "sha256": "e93fa589c99a781f963bd2248a09ecdbc9561c8818c09cc31faac40e5b4ea708",
+      "stats": {
+        "startTime": "2026-11-20T07:32:11.535Z",
+        "duration": 2607.255,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "exit": "0"
+    }
+  },
+  "productionWebBuildId": "yPiCLeEob9_90sBlHK-1y",
+  "cleanup": {
+    "processes": [
+      {
+        "name": "provider",
+        "pgid": 47309,
+        "signal": "TERM"
+      },
+      {
+        "name": "api",
+        "pgid": 81565,
+        "signal": "TERM"
+      },
+      {
+        "name": "web",
+        "pgid": 73375,
+        "signal": "TERM"
+      },
+      {
+        "name": "renderer",
+        "pgid": 81564,
+        "signal": "TERM"
+      }
+    ],
+    "container": "3cb47f007894fc141515871e73c57127c3f6c7a1db656042498fbcf4278529ec",
+    "retained": false,
+    "containerRemoved": true,
+    "ports": [
+      {
+        "port": 60676,
+        "closed": true
+      },
+      {
+        "port": 60677,
+        "closed": true
+      },
+      {
+        "port": 60678,
+        "closed": true
+      },
+      {
+        "port": 60703,
+        "closed": true
+      },
+      {
+        "port": 59042,
+        "closed": true
+      }
+    ],
+    "untouched": "No make up/down/destroy; no user Desktop; shared Web build was never written by this task."
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "command": [
+    "pnpm",
+    "exec",
+    "turbo",
+    "run",
+    "typecheck",
+    "lint",
+    "--filter=!@multica/mobile",
+    "--concurrency=1"
+  ],
+  "started_at": "2026-11-20T07:04:42.830465+00:00",
+  "finished_at": "2026-11-20T07:06:37.040147+00:00",
+  "exit_code": 0,
+  "duration_seconds": 114.21,
+  "note": "Root lint/typecheck completed before the final grouping-only JSX move. The final grouped panel has its own subsequent Views typecheck/lint receipt from trellis-check.",
+  "source_hashes_at_start": {
+    "packages/views/modals/quick-create-issue.tsx": "8758e7f765df07776a3e92d095cd0f932f3e7dad0c191500bee687d24a0769a4",
+    "packages/views/modals/creator-recommendations.tsx": "319e6b39f691352ba2542b57cff0bd6ad807613c0d4909fcbbd0a14d29162820"
+  }
+}

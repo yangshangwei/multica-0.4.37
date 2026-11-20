@@ -1,0 +1,49 @@
+[
+  {
+    "name": "grouping-regression",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "vitest",
+      "run",
+      "modals/quick-create-issue.test.tsx",
+      "modals/create-issue-dialog.test.tsx",
+      "modals/creator-recommendations.test.tsx",
+      "--maxWorkers=1",
+      "--reporter=default",
+      "--reporter=json",
+      "--outputFile=/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-17-quick-create-blocked-feedback/research/check-evidence/grouping-regression-results.json"
+    ],
+    "started_at": "2026-11-20T07:17:12.461685+00:00",
+    "exit_code": 0,
+    "duration_seconds": 9.65
+  },
+  {
+    "name": "grouping-typecheck",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "typecheck"
+    ],
+    "started_at": "2026-11-20T07:17:22.113858+00:00",
+    "exit_code": 0,
+    "duration_seconds": 64.48
+  },
+  {
+    "name": "grouping-lint",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/views",
+      "exec",
+      "eslint",
+      "modals/quick-create-issue.tsx"
+    ],
+    "started_at": "2026-11-20T07:18:26.599204+00:00",
+    "exit_code": 0,
+    "duration_seconds": 2.54
+  }
+]

@@ -1,0 +1,18 @@
+{
+  "command": [
+    "pnpm",
+    "--filter",
+    "@multica/views",
+    "exec",
+    "vitest",
+    "run",
+    "modals/quick-create-issue.test.tsx",
+    "modals/creator-recommendations.test.tsx",
+    "-t",
+    "empty source comment ID|checks live editor text",
+    "--maxWorkers=1"
+  ],
+  "started_at": "2026-11-20T06:52:42.032605+00:00",
+  "exit_code": 1,
+  "duration_seconds": 6.57
+}
