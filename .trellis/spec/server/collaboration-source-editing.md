@@ -225,6 +225,32 @@ new mutation while own content-free recovery stays available. Both positive
 paths must run; a successful resolve plus a forbidden unresolve is not complete
 thread-operation evidence.
 
+### Human edits during run-bound replies
+
+`TestCollaborationHumanEditRuntimeReplyBothCommitOrders` composes the author's
+`EditComment` with an admitted run's `CreateRuntimeComment` replying to that
+human comment. These are distinct content identities, so both writes succeed:
+the current human body becomes V2/revision2 and the Agent reply keeps its own
+comment, parent, Agent and run identity. The already-dispatched command, group
+input, prompt and typed test subject retain V1 and their original candidate.
+Current discussion and frozen execution input intentionally show different
+versions; a display edit does not amend the admitted execution or dispatch again.
+
+Use `runtimeSourceCommitStarter` around the existing commit barrier so the held
+transaction actually owns the source locks. Observe `pg_blocking_pids` before
+release in both orders and join both writers before fixture cleanup. Preserve
+original rows and explicitly account for new events and session sequence;
+complete replay snapshots must compare without removing changing business fields.
+
+Human create/edit replay returns the original content-free receipt, even when
+the current comment has a later revision. Runtime comment replay instead requires
+live business authority before reading its original receipt; verify it before
+settlement. Original report ACK recovery has its own post-settlement contract.
+Do not infer post-settlement comment-write permission from report recovery.
+These service tests use synthetic PR/CI and managed preparation/settlement facts;
+they do not prove remote Git, daemon execution, model quality or ordinary-comment
+administrator permissions.
+
 
 ## Current source surface and phase evidence
 
