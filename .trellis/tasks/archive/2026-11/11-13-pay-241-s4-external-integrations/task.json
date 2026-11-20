@@ -1,9 +1,9 @@
 {
-  "id": "pay-241-s5-performance-acceptance",
-  "name": "pay-241-s5-performance-acceptance",
-  "title": "PAY-241 S5 性能与总验收",
-  "description": "准备并验证100独立协作者状态传播和结果回写延迟，最终逐条核销24用例并保留所有缺口",
-  "status": "in_progress",
+  "id": "pay-241-s4-external-integrations",
+  "name": "pay-241-s4-external-integrations",
+  "title": "PAY-241 S4 外部系统集成验收",
+  "description": "准备支付沙箱、Git/PR/CI、发布回滚的真实集成验证和版本证据，缺环境时保留未验收项",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,8 +11,8 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-13",
-  "completedAt": null,
-  "branch": "codex/cross-workspace-collaboration",
+  "completedAt": "2026-11-20",
+  "branch": null,
   "base_branch": "main",
   "worktree_path": null,
   "commit": null,
@@ -21,15 +21,15 @@
   "children": [],
   "parent": "11-13-pay-241-collaboration-acceptance",
   "relatedFiles": [],
-  "notes": "2026-11-20：随PAY-241父任务按用户明确要求归档，最终候选性能与总验收由用户手工核实。采样工具及r02演练保持原来源的已接受范围，TC-24保持NOT_RUN；归档不表示最终性能、24例总验收或真实业务签字通过，见report.md。",
+  "notes": "2026-11-20：随PAY-241父任务按用户明确要求归档，剩余真实集成由用户手工核实。E01–E07保持NOT_RUN；归档不表示真实仓库/CI、支付/履约、发布/回滚或业务签字已通过。原接入准备证据保持，见report.md。",
   "meta": {
-    "tooling_commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "latest_input_checklist": "research/next-inputs-20261119.md",
     "manual_verification_handoff": {
       "at": "2026-11-20T04:55:14.141635+00:00",
       "disposition": "USER_REQUESTED_ARCHIVE_MANUAL_VERIFICATION_HANDOFF",
       "user_instruction": "归档吧，剩下的任务我手工核实",
       "remaining_verification_owner": "user",
-      "archive_state": "approved_pending_move",
+      "archive_state": "archived",
       "task_status_meaning": "Administrative archive on user instruction; outstanding acceptance is transferred to manual verification, not passed.",
       "overall_acceptance_passed": false,
       "business_signoff_recorded": false,
@@ -40,24 +40,33 @@
       },
       "case_status_changes": {},
       "report": "report.md",
-      "archive_destination": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance",
+      "archive_destination": ".trellis/tasks/archive/2026-11/11-13-pay-241-s4-external-integrations",
       "prior_task_state": {
-        "status": "in_progress",
+        "status": "planning",
         "completedAt": null,
-        "notes": "2026-11-14: sampler and r02 pre-S2-source rehearsal passed (31 tool tests, 79 independent evidence checks); all10000 propagation and100 independent two-metric writebacks converged. Runtime/socket/gate/process cleanup verified. TC-24 remains NOT_RUN; final candidate performance and S2-S4/real business acceptance still required. Task stays in_progress."
+        "notes": "2026-11-19：S3已验收归档，S4仍planning；真实输入I02–I09待提供，E01–E07仍NOT_RUN。最小可填写清单research/next-inputs-20261119.md，未调用外部账户/支付/发布。"
       },
       "new_product_tests_run": 0,
       "product_or_test_code_changed": false,
-      "accepted_scope": "Sampling tooling and r02 rehearsal at their original source only.",
-      "TC24": "NOT_RUN",
-      "final_candidate_accepted": false,
+      "accepted_scope": "Static integration readiness only; no real external acceptance executed.",
+      "external_cases": {
+        "E01": "NOT_RUN",
+        "E02": "NOT_RUN",
+        "E03": "NOT_RUN",
+        "E04": "NOT_RUN",
+        "E05": "NOT_RUN",
+        "E06": "NOT_RUN",
+        "E07": "NOT_RUN"
+      },
       "parent_archive_report": "../11-13-pay-241-collaboration-acceptance/report.md",
       "documentation_check": {
         "verdict": "ACCEPTED_ADMINISTRATIVE_HANDOFF_DOCUMENTATION_ONLY",
         "blocking_findings": 0,
         "report": "../11-13-pay-241-collaboration-acceptance/research/manual-handoff-independent-check-20261120.json",
         "sha256": "2e0030839392ed04ae5c5d763987e2e30afba0ac89fb0bca25feb972916905e9"
-      }
+      },
+      "archived_at": "2026-11-20T05:11:02.609397+00:00",
+      "archive_command": "task.py archive --no-commit --skip-branch-validation (planning documentation task without a dedicated branch)"
     }
   }
 }

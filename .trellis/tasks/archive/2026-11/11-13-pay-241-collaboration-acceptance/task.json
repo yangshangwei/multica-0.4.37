@@ -3,7 +3,7 @@
   "name": "pay-241-collaboration-acceptance",
   "title": "PAY-241 支付异常协作闭环验收",
   "description": "以支付回调异常为验收载体，映射现有协作能力与 24 条测试用例，规划人工审批、权限审计、执行恢复和端到端验证闭环。",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-13",
-  "completedAt": null,
+  "completedAt": "2026-11-20",
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
@@ -27,12 +27,12 @@
   ],
   "parent": null,
   "relatedFiles": [
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/design.md",
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/implement.md",
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
-    ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/prd.md",
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/roles-and-states.md",
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/design.md",
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/implement.md",
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+    ".trellis/tasks/archive/2026-11/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
   ],
   "notes": "2026-11-20：用户明确要求“归档吧，剩下的任务我手工核实”。父任务与剩余S4/S5按行政归档交接，完整业务验收未通过、未记录业务签字；父矩阵保持9 PASS /11 PARTIAL /4 NOT_RUN，S1–S3与TC-06/12等历史内部接受范围保持。剩余业务语义、模型、真实外部集成及最终性能由用户手工核实，见report.md。",
   "meta": {
@@ -2040,7 +2040,7 @@
     "current_pay241_progress": {
       "at": "2026-11-20T04:55:14.141635+00:00",
       "active_child": null,
-      "phase": "USER_MANUAL_HANDOFF_ARCHIVE_APPROVED",
+      "phase": "ARCHIVED_USER_MANUAL_VERIFICATION_HANDOFF",
       "P2_verdict": "P2_CODE_ACCEPTED_R09_SCOPED",
       "joint_service_verdict": "JOINT_SERVICE_ACCEPTED_R09_SCOPED",
       "P2_available": true,
@@ -7019,7 +7019,7 @@
       "disposition": "USER_REQUESTED_ARCHIVE_MANUAL_VERIFICATION_HANDOFF",
       "user_instruction": "归档吧，剩下的任务我手工核实",
       "remaining_verification_owner": "user",
-      "archive_state": "approved_pending_move",
+      "archive_state": "archived",
       "task_status_meaning": "Administrative archive on user instruction; outstanding acceptance is transferred to manual verification, not passed.",
       "overall_acceptance_passed": false,
       "business_signoff_recorded": false,
@@ -7047,7 +7047,9 @@
         "blocking_findings": 0,
         "report": "research/manual-handoff-independent-check-20261120.json",
         "sha256": "2e0030839392ed04ae5c5d763987e2e30afba0ac89fb0bca25feb972916905e9"
-      }
+      },
+      "archived_at": "2026-11-20T05:11:02.545798+00:00",
+      "archive_command": "task.py archive --no-commit"
     }
   }
 }
