@@ -25,3 +25,24 @@ Commands are recorded per lane. Baseline commands use pnpm exec playwright test 
 - All task-owned listeners/containers stopped; original shared PostgreSQL accepts connections.
 - User authorized commit after verification: product 67af89db8, fixtures/specs 7817d8958. Only task-owned files staged; pre-existing work retained. No push/deploy.
 - Task retained at its fixed path because current runtime-output allocation manifests bind this exact existing task directory. Archiving requires updating its explicit fixture contract; completion is recorded in place.
+
+## Fresh rerun requested 2026-11-20
+
+The user requests another complete current-tree run, core flows first, with autonomous reproduction and repair. Reuse this existing task and its approved scope; previous evidence remains historical. New evidence: `artifacts/qa/full-e2e-20261120-r2/`.
+
+- [x] Allocate fresh legacy/API databases, rebuild current Web/Desktop and run core scenarios first.
+- [x] Run all ordinary browser cases and locally available conditional authentication/admin cases.
+- [x] Fresh static/unit/script and isolated backend checks.
+- [x] Reproduce each new failure, repair its owning boundary, retain red/green evidence and repeat impacted journeys.
+- [x] Reconcile current-run counts and coverage gaps; stop task-owned services.
+
+### R2 final evidence
+
+- Fresh canonical browser inventory496/496 latestPASS,0fail/skip,24originally failing cases retained; no historical pass counted.
+- Initial core76/76; concurrent final quick-create source changes validated with fresh production core76/76 and last hint-placement refresh23/23; owning unit67/67. Final build`-Rh1o8Up4vFfJhbqZQGG3`, source stable through verification.
+- Main TS14714unique+4newcases=14718current identities,0unresolved; initial10failures retained and whole-file73/73 replay passed.
+- Backend84packages,default23691namedPASS+9SKIP; supplemented23795namedPASS,0missing/unresolved; narrowraces andknowledgecomposites pass.
+- Performance100participants/10000propagations/100runwritebacks pass. I1closure2060.17ms exceeds2000ms once; independent unchangedprotocol1088.14ms pass. Retain variability as a limit, no speculativeproductfix.
+- Seven test-only repairs independentlyreviewed; two specsupdated. Fresh private ASAR corruption diagnosed/frozen dependency rebuild integritychecked; actualpackagedLinuxMain2/2pass.
+- All27ownedlistenerportsfree,allownedcontainersstopped; originaluserenvironmentsretained. Report`artifacts/qa/full-e2e-20261120-r2/REPORT.md`.
+- Keep task directory at the existing explicit allocation path required by runtime-output/detail fixtures; markcompletedinplace rather thanbreakthetestcontractbyarchiving.

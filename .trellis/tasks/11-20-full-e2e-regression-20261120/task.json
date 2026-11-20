@@ -23,7 +23,7 @@
   "relatedFiles": [
     "packages/core/collaboration/queries.ts"
   ],
-  "notes": "Verified496/496canonical E2E, current14/14focused; original failures retained. Report artifacts/qa/full-e2e-20261120/REPORT.md. All owned processes stopped. Retained task path for explicit runtime-output allocation contract. Work committed as 67af89db8 and 7817d8958; no push or deployment.",
+  "notes": "Verified496/496canonical E2E, current14/14focused; original failures retained. Report artifacts/qa/full-e2e-20261120/REPORT.md. All owned processes stopped. Retained task path for explicit runtime-output allocation contract. Work committed as 67af89db8 and 7817d8958; no push or deployment. R2 fresh run complete:496canonical latestPASS, finalcurrent76+23focusPASS, report artifacts/qa/full-e2e-20261120-r2/REPORT.md. Original failures/I1timingvariability retained;7test-onlyrepairs;allownedservicesstopped.",
   "meta": {
     "verification_report": "artifacts/qa/full-e2e-20261120/REPORT.md",
     "e2e_passed": 496,
@@ -33,6 +33,12 @@
     "work_commits": [
       "67af89db85a25d7bf44dd793f3bd5db07babe397",
       "7817d8958bbe9d0579b3191833d5aa9358fa8a93"
-    ]
+    ],
+    "current_rerun": "artifacts/qa/full-e2e-20261120-r2",
+    "r2_verification_report": "artifacts/qa/full-e2e-20261120-r2/REPORT.md",
+    "r2_e2e_passed": 496,
+    "r2_current_candidate_build": "-Rh1o8Up4vFfJhbqZQGG3",
+    "r2_owned_ports_free": true,
+    "r2_work_commit": "51a113ae8c70417d83bfce5f02285009059cc04f"
   }
 }
