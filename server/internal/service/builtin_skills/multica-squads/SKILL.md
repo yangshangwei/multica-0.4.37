@@ -211,7 +211,7 @@ The diagnostic workflows have different boundaries:
 - `incident` restores service first, then assigns a separate, follow-up root-cause
   task after recovery. Diagnosis must never delay mitigation.
 
-`security-remediation` adds one unlisted Coordinator leader and reuses seven
+`security-remediation` (v2) adds one unlisted Coordinator leader and reuses seven
 working roles. Dependency risks go through applicability review, conditional
 migration review, one minimal repair and independent QA/code/security review;
 code risks add diagnosis only when permitted; other risks start with security
@@ -223,6 +223,76 @@ permissions or proof of real-model behavior. Final delivery reaches `in_review`
 only when the issue is assigned to this squad and its injected operating protocol
 grants status ownership. Guest mentions and quick-create without that ownership
 preserve the current assignee and status and deliver comments/activity only.
+
+Version 2 instructions add, as instruction text only (no new status, approval
+type or permission):
+
+- two human gates, G1 before reproduction and repair and G2 before closing. Each
+  is one comment that dispatches that gate's restricted reviewers together; their
+  result comments never wake the leader when the reviewers are on the current
+  role-template versions (reused older reviewers are unrestricted), so a human
+  security owner must release the gate. The owner is a human squad member whose
+  role contains "安全负责人" or `security owner`, else the issue's human
+  creator; with neither the leader reports "小队缺少安全负责人" and stops.
+  Use that role label only for actual owners: the match is a substring, so
+  "not a security owner" and "security owner's assistant" match too;
+- two release shapes: a comment that mentions the squad (top-level or reply), or
+  a mention-free top-level comment on an issue assigned to the squad. The mention
+  must be picked from the `@` list; a typed or pasted name is plain text. A
+  mention-free reply to the leader's comment starts a plain task without the
+  squad briefing and is not a release;
+- release checks the leader runs before continuing: the release is the owner's
+  own comment, read back from the platform (`author_type`, `author_id`), not
+  changed since it was posted (`revision` 1; an edit, a reaction, a resolve
+  or conclusion, and an attachment change each raise it, whoever makes them),
+  and later than every reviewer result; a reviewer result is a comment of `type` `comment`
+  posted after the comment that last dispatched that reviewer, so neither a
+  G1 result nor one from before a returned G2 counts (a `system` comment under
+  a reviewer's name is the platform's failure notice and wakes nobody); a
+  missing reviewer is looked up with `multica issue runs` and re-dispatched
+  at most once per reviewer per gate or temporary review point; a returned G2
+  does not reset the allowance. Another failure goes to the owner; required reviews cannot be waived. Keep the release
+  unchanged until the leader explicitly confirms it passed these checks; a
+  changed or premature release needs a new owner comment, never an edit;
+- temporary review points require all three gate checks. Other human decisions
+  require the owner's own unchanged comment. To resume a recoverable stop, the
+  owner names the resolved blocker, evidence and allowed nonproduction next
+  step in a new comment using a valid release shape; the leader rechecks safety
+  boundaries and required gates, keeps unresolved stops closed, and cannot
+  override member stops or bring incident/credential/third-party work back into
+  local execution;
+- only a person names the security owner and changes the squad: the leader does
+  not add or remove members, edit a role text, the squad instructions, another
+  author's comment, or any agent of the squad. The platform does not enforce
+  this;
+- a minimal security reproduction before a code repair: one failing automated
+  test on the recorded baseline commit, local fixtures and synthetic data only,
+  stopping at reachable-and-triggerable. An optional member whose role contains
+  "漏洞验证" or `vulnerability verification` makes it independent; the seat is
+  not in the template;
+- twelve more triage fields (`finding_id` through `disclosure`), updated in new
+  comments without editing earlier delegation comments; default deadlines by
+  severity, conclusions bound to the commit they apply to, a same-pattern variant list filed as unassigned `backlog` issues, and
+  `need-to-know` wording limits.
+
+The releasing human must be allowed to invoke every agent in the squad. Agents a
+template creates default to `private` (reused agents keep their owner and
+access), so by default only the person who staffed the squad can release a gate;
+**Apply to project** always staffs `private`. The leader and members also need
+available runtimes; an unbound leader makes the squad unselectable in the
+mention picker. With the default roster and minimal task context, the v2/v2
+instruction file measures 79,766 bytes (about 80 KB); actual configuration can
+make it longer. At the default limit,
+a runtime that reads only the head of its context file drops the roster and
+squad instructions, and both v2 bodies tell the leader to reply
+"本轮指令不完整" and stop in that case. Codex's published default is 32 KiB
+unless `project_doc_max_bytes` is raised; the cut was computed from a measured
+brief, not observed in a real Codex run. As a temporary measure, set that root
+key in the daemon user's Codex config, preserve any larger value, and size it
+for the generated `AGENTS.md` plus other loaded instruction files. Check the
+copied task `CODEX_HOME/config.toml` and truncation diagnostics before work.
+The daemon does not size this budget automatically; the stop rule is model
+guidance, not a host-enforced refusal.
 
 `squad.template_key` / `template_version` record the provenance. They are not
 status: a staffed squad is an ordinary squad.

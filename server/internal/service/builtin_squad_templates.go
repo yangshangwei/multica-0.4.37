@@ -348,8 +348,8 @@ var builtinSquadTemplates = []SquadTemplate{
 			"zh": "安全漏洞修复小队",
 		},
 		Descriptions: map[string]string{
-			"en": "Triages dependency, code and other security risks, routes minimal repairs and independent review, and hands production risks to people.",
-			"zh": "分诊依赖、代码和其他安全风险，安排最小修复与独立审查；生产风险交人工处理。",
+			"en": "Triages dependency, code and other security risks, reproduces a code vulnerability before routing a minimal repair and independent review, has a human security owner confirm key decisions, and hands production risks to people.",
+			"zh": "分诊依赖、代码和其他安全风险，代码漏洞先复现再安排最小修复与独立审查；关键决策由安全负责人确认，生产风险交人工处理。",
 		},
 	},
 	{

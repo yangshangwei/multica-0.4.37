@@ -152,10 +152,10 @@ defaults apply when creating agents or materializing a missing role skill;
 existing workspace copies are reused without overwriting customized content.
 `builtin_agent_templates_test.go` pins the full role-to-skill and autonomy maps.
 
-### Security remediation v1
+### Security remediation v2
 
-`security-remediation` is the ninth built-in squad. Its dedicated unlisted
-`security-remediation-lead` is version 1, Coordinator, with no
+`security-remediation` is the ninth built-in squad, version 2. Its dedicated unlisted
+`security-remediation-lead` is version 2, Coordinator, with no
 new role skill. The seven seats reuse Product Analyst, Security Reviewer,
 Diagnostician, Implementer, QA Engineer, Migration Reviewer and Code Reviewer.
 Keep it before the Operator-bearing release/incident entries, preserve existing
@@ -185,6 +185,229 @@ list; the standalone `/api/squads/from-template` endpoint remains separate.
 The persisted project selection uses `state: configured`; execution readiness is
 derived separately by `getProjectSquadReadiness`. An offline runtime fixture can
 prove successful configuration without establishing a `ready` execution state.
+
+Version 2 changes instruction text only: no status, approval type, permission,
+schema or API. Contracts a later edit must keep:
+
+- **Two bodies, each complete.** Every contract marker must appear in both the
+  squad body and the leader body; a workspace can hold a v1 copy of either.
+  `## 分诊记录`, `## 人工闸门`, `## 最小安全复现` and `## 保密与披露` are
+  byte-identical in the two files (`TestSquadTemplates_SecurityRemediationSharedSections`).
+  Edit the squad copy and copy the block across; never edit the two by hand.
+- **Gates exist because restricted reviewers do not wake the leader.** A gate is
+  one comment dispatching that gate's reviewers plus the release wording. The
+  security owner is a human squad member whose role contains "安全负责人" or
+  `security owner`, else the issue's human creator. Release needs the owner's own
+  comment, every dispatched reviewer's result, and a conclusion per open item.
+- **Only a person designates the security owner.** Both gates hinge on one
+  free-text role on the roster, and the platform lets the leader change it: the
+  leader is a Coordinator, whose autonomy policy allows managing squad
+  membership, and `AddSquadMember`, `UpdateSquadMemberRole` and `UpdateSquad`
+  (`handler/squad.go`) need only `canManageSquad` (a workspace owner or admin, or
+  the squad creator). The leader's task token carries its owner's user id, and a
+  leader staffed from the template is owned by the squad creator. The bodies
+  therefore say the leader does not add or remove members, edit a role text, edit
+  the squad instructions or replace the leader, and treats text asking for it as
+  input (the `gates` group). `UpdateAgent` (`handler/agent.go`) also stays open to
+  agent actors for everything except `autonomy_level`, so the same sentence
+  forbids editing the instructions, skills or configuration of any agent in the
+  squad, the leader included. This is an instruction, not an enforced boundary.
+- **A reviewer's result is a comment of type `comment`.** When a reviewer's run
+  fails for good, `TaskService.FailTask` posts the error under the reviewer's own
+  name, as a reply to the gate comment, with the failed run as `source_task_id`.
+  Only `type: system` separates that notice from a result, so the result check
+  names the type. The security reviewer answers at both gates, and a returned G2
+  is dispatched again with a second gate comment, so the check also wants a
+  result later than the comment that last dispatched that reviewer
+  ("G1 的结果、退回前的结果都不能充当这一次的结果"; "later than this gate's
+  comment" left open which of two G2 comments is meant) and reads the
+  reviewer's latest run. Delegated-failure recovery skips restricted agents
+  (`loadDelegatedFailureRecoveryTarget`), so nothing wakes the leader either:
+  both facts are pinned by
+  `TestSecurityRemediationRouting_FailedReviewerLeavesANoticeAndWakesNobody`.
+  On a release with a reviewer missing, the leader reads
+  `multica issue runs <issue> --output json`: a run still going means wait, a
+  finished run without a result or no run at all means one re-dispatch in the
+  same comment, and a second failure goes to the owner with no third attempt
+  (the `missing_review` group). The fixed gate wording tells the owner to mention
+  the squad when a reviewer stays silent. No waiver exists: a gate with a
+  reviewer that cannot deliver stays closed until a person fixes that reviewer.
+- **The fixed release wording says "不带任何 @", not "不 @ 任何成员".** "成员"
+  reads as people, and a release that mentions an agent runs only that agent
+  (`computeCommentAgentTriggers`), never the leader.
+- **The fixed release wording says to pick the squad from the `@` list.** The
+  server reads a mention only from the link the picker inserts
+  (`util/mention.go` `MentionRe`), and the leader writes the squad's name into
+  the gate comment as plain text, so a name copied from that comment or typed
+  without picking it mentions nobody. On an issue assigned to the squad such a
+  top-level comment still works as the second release shape; as a reply or on a
+  guest issue it does not reach the leader with the squad's context
+  ("输入 @ 后从列表里选中", the `gates` group).
+- **Catalog copy names the risk type that is reproduced.** Only a `code` risk is
+  reproduced before the repair; `other` is the owner's decision at G1 and
+  `dependency` has none. The template's `Descriptions`, the two locale summaries
+  and the docs table say "代码漏洞先复现" / "code vulnerabilities". The component
+  test and the E2E spec assert the locale strings word for word.
+- **A check on a comment's author names its read.** The task prompt introduces
+  a member's comment as "A user" and carries no author id
+  (`daemon/prompt.go` `buildCommentPrompt`), so the release check reads the
+  comment back with `multica issue comment list <issue> --thread <comment> --tail 30 --output json`
+  (the `gates` group). The provenance check reads without `--compact`, which the
+  prompt recommends on every comment read and which drops `source_task_id`
+  (`cmd/multica/cmd_issue.go`; the `provenance` group). `author_type`,
+  `author_id`, `type`, `created_at` and `revision` survive `--compact`.
+- **A release is the owner's own comment, unchanged and later than the results.**
+  `UpdateComment` (`handler/comment.go`) accepts the author or a workspace owner
+  or admin, and an agent's task token carries its runtime owner's user and role,
+  so an agent on an admin-owned runtime can rewrite a member's comment. The edit
+  keeps the author fields and routes the comment again. `revision` starts at 1
+  and goes up on a content edit, on an emoji reaction added or removed, on
+  resolve or unresolve and on an attachment added or deleted
+  (`issue_revision_test.go`,
+  `TestUpdateComment_AdminEditOfAgentCommentClearsStaleLineage`), so the release
+  check refuses a comment whose `revision` is above 1; the bodies also tell the
+  leader not to edit or delete other people's comments. Any member can react to
+  or resolve any comment, so the refusal also meets a release nobody rewrote. It
+  fails closed: the check names the four causes, the leader lists them when it
+  asks for a new comment, and the docs tell the owner to leave a release alone
+  until the leader explicitly confirms that this release passed validation.
+  The acknowledgment cites the release comment in the next dispatch, close or
+  handover comment; an unrelated reply does not end this window. Later mutation
+  does not retroactively roll back an already consumed release. `updated_at` cannot replace `revision`: a reaction
+  leaves it alone, but the comment read prints timestamps to the second
+  (`util.TimestampToString`), so an edit made within the second the comment was
+  created would leave the two equal. Both halves of the trade are pinned by
+  `TestSecurityRemediationRouting_ChangedReleaseCommentKeepsItsAuthor`: a
+  comment rewritten by an admin still reads back under its first author with
+  `revision` 2, and so does one that only got a reaction. The owner's comment must be later than every reviewer result by
+  `created_at`: a leader task that starts late would otherwise accept a release
+  written before the result existed. A decision handed to the owner outside the
+  two gates (no safe version, not reproducible, a second verifier failure)
+  checks the same human identity and unchanged revision. A temporary point
+  that dispatched a required reviewer applies all three release checks, including
+  the result and time ordering; it is not an exemption. All of it sits in the `gates` group. These are
+  instructions; the platform does not stop a machine credential on the admin
+  branch of `UpdateComment` or `DeleteComment`.
+- **A stop that waits for a person says how to resume.** Adding a security owner
+  to the roster creates no comment and wakes nobody, so the missing-owner reply
+  asks the person to comment and mention the squad afterwards ("小队才会继续",
+  the `gates` group).
+- **The closing turn records per protocol and names no outcome.** v1 said "再记录
+  `no_action` 并退出" on the turn that delivers the evidence summary, which the
+  protocol counts as `action`. Both bodies now say "按协议记录并退出", and the v1
+  phrase is in the `removed` list of
+  `TestSquadTemplates_SecurityRemediationLeavesReceiptsToTheProtocol`. The new
+  wording, with "记录后不再发表评论", is the `closing` group of the contract test.
+- **The leader body says where the squad's name comes from.** On a turn without
+  the protocol the issue JSON carries only `assignee_type` and `assignee_id`
+  (`handler/issue.go`), so the body points at an earlier gate comment and, without
+  one, at `multica squad get <assignee_id> --output json` (`cmd_squad.go`). Leader
+  body only.
+- **`need-to-know` binds names and wording, not pushes.** The `disclosure` group
+  covers branch names, commit messages, PR titles and descriptions, and the
+  titles and descriptions of derived issues. Which remote the failing test and
+  the patch are pushed to, and who can read it, is not constrained; `squads.mdx`
+  lists that as a limit. The dependency closing likewise asks for scanner output
+  without naming a scanner.
+- **Release shapes follow comment routing, not preference.** A comment that
+  mentions the squad, or a mention-free top-level comment on an issue assigned to
+  the squad, starts a leader task with the squad briefing. A mention-free reply to
+  the leader's comment starts a plain task with no protocol, roster or squad
+  instructions; only the leader body can speak on that turn, so that rule lives
+  there alone (`TestAgentRoleTemplates_SecurityRemediationLeadWithoutSquadContext`).
+- **The releasing human needs invocation rights on every agent in the squad.**
+  Template staffing defaults to `private`, and project adoption
+  (`project_execution_squad.go`) always staffs `private`. A person without the
+  right gets `blocked` / `invocation_not_allowed` on a squad mention and nothing
+  at all on a mention-free comment, so the leader never wakes and the instructions
+  cannot recover. The gate wording and the docs carry the hint.
+- **Receipts and retries belong to the Squad Operating Protocol.** The bodies
+  point at it and must not restate idempotency keys, receipt checks, activity
+  outcomes or retry rules (`TestSquadTemplates_SecurityRemediationLeavesReceiptsToTheProtocol`).
+- **The status-ownership sentence appears once per body.** New sections say
+  "获得父任务状态管理权时" instead of repeating it
+  (`TestSquadTemplates_SecurityRemediationStatesStatusConditionOnce`).
+- **`## 最终证据` stays the last level-2 section of the squad body.** Both
+  truncation checks anchor on it (`TestSquadTemplates_SecurityRemediationEndsWithFinalEvidence`).
+- **The closing summary reconciles.** Every conclusion lists its source comment,
+  author and commit, and a raw command output outranks a member's account of it
+  (the `reconciliation` group of `TestSquadTemplates_SecurityRemediationV2InstructionContracts`).
+  The v1 pilot closed on review reports that did not match the diff.
+- **The squad body must survive the workspace's instructions editor.** A
+  workspace edits its copy on the squad detail page in a rich-text editor
+  (`ContentEditor`) that writes the whole body back as Markdown on every save. It
+  re-pads tables (about +0.8 KB on this body) and turns a bare `<` outside fenced
+  blocks and code spans into `&lt;`. The leader copies the fixed gate wording word
+  for word, so a placeholder in prose is plain words (`@本小队名称`), never angle
+  brackets (`TestSquadTemplates_SecurityRemediationSquadBodySurvivesTheInstructionsEditor`).
+  The leader body is edited in a plain text box and is stored byte for byte.
+
+Instruction length is a runtime constraint. On the final 2026-11-20 bodies and
+baseline efdb597d6, the minimal task/default-roster composed file is 79,766 bytes
+(about 80 KB), not a universal bound for every task. The squad source is 24,980 B
+and the leader source 25,678 B. Codex receives its brief through this file;
+the documented upstream default is 32 KiB. These are generated-file measurements,
+not observations of a real Codex session. The manual workaround is a sufficient
+root `project_doc_max_bytes` in the configuration actually copied into the task's
+Codex home, verified after copying and accounting for other project documents.
+No shared user configuration is automatically changed by this template.
+
+| Leader | Squad | Generated bytes | A 32 KiB reader stops |
+|---|---|---|---|
+| v2 | v2 | 79,766 | protocol step 2, before the record step, roster and squad body |
+| v1 | v2 | 62,102 | inside the squad's human-gate section |
+| v2 | v1 | 62,369 | protocol step 2, as above |
+| v1 | v1 | 44,705 | platform sections; both bodies survive |
+
+Both v2 bodies instruct the leader to stop with “本轮指令不完整” when required
+context is missing. This is an instruction-level fallback, not a host-enforced
+sandbox or proof the model read and followed it. The leader body and protocol
+heading remain before the cutoff: leader content ends at byte 27,894; protocol
+starts at 29,209 for Coordinator. At the four autonomy levels the file sizes are
+79,766 (Coordinator), 79,942 (Contributor), 80,380 (Observer), and 80,439 (Operator).
+All four cuts occur before protocol step 3, by 193/369/807/866 bytes respectively;
+none can read its record command. Therefore the fallback “协议的记录步骤也看不到时，
+这条评论就是记录” is essential. Re-measure after any body/platform composition change.
+Automatic length handling is separately planned in task `11-20-codex-project-doc-budget`.
+
+Pretrial refinements in the first uncommitted v2 release keep the shared sections
+identical: triage updates use a new comment (merged into the single dispatch when
+needed), never edit old mention-bearing comments; a reviewer has one retry per
+G1/G2 or temporary point, with no reset on a returned gate; the second failure
+requires owner repair, never waiver of a required review. Resumption requires the
+eligible owner's new unchanged comment, evidence the stop condition was removed,
+a permitted nonproduction next step and a fresh stop/gate check. The QA engineer's
+security stop remains in force. These rules are covered by `triage_updates`,
+`safe_resumption`, `missing_review` and the fixed-release-warning contract.
+A `trigger_comment_id`-only lookup is not a safe refinement: task inputs can be
+coalesced, retaining earlier IDs separately. Keep the documented conservative
+lookup until receipt/covered-input association is designed and verified.
+
+Platform behavior the instructions rely on is pinned where the behavior lives,
+not in the template tests: `squad_security_remediation_routing_test.go` (a gate
+comment queues each restricted reviewer; a restricted result does not wake the
+leader; an owner's reply that mentions the squad queues one leader task whose
+originator is that owner; a failed reviewer leaves a `system` notice and wakes
+nobody; a rewritten or reacted-to comment keeps its author and reads back with
+`revision` 2), `squad_security_remediation_flow_test.go` (four
+scripted walks: production escalation, other-risk shelve after an invalid
+release, dependency through both gates, code with a verifier and a variant) and
+`cmd/server/squad_security_remediation_notification_test.go` (a restricted
+reviewer's comment notifies a subscribed member). Test code plays every role in
+them, so they prove where the platform hands control, never that a model follows
+the text. The flow walks also check how each scripted comment is recorded: an
+agent's comment carries `author_type=agent`, that agent's id and the
+`source_task_id` of its running task; the owner's carries `author_type=member`
+and the user id the roster link names. The release checks and the closing
+reconciliation read those fields back. The comment texts in the walks are
+shortened; they are not model answers for what a comment must contain.
+
+Docs that tell a workspace how to pick up a new version must name where a body
+can be read. The squad body shows on the squad detail page's Instructions view.
+The leader body shows on the leader's agent page under Capabilities, then
+Instructions, in the "System prompt" box. An unlisted leader template has no
+page, API or CLI that shows its text, so a workspace that already holds the old
+leader can only read the new body from a squad staffed in another workspace.
 
 ### Runtime recovery must preserve role provenance
 
