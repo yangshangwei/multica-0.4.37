@@ -149,3 +149,38 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 本任务已完成并归档。现有畸形 API 成功响应回退空数组限制已记录；Electron 原生窗口、真实模型和全仓 make check 不在本次验证范围。
+
+
+## Session 177: 分拣台欢迎页完成与生产验收
+<!-- trellis-session: v=2 fp=ee212cee1ab389fb -->
+
+**Date**: 2026-11-21
+**Task**: 分拣台欢迎页完成与生产验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成已确认的首次分拣欢迎页、创建/CSV/文档入口及日常空态导航；隔离生产验收通过并清理测试服务。
+
+### Main Changes
+
+- 共享组件复用既有弹窗、路由和分拣查询；历史失效及焦点回归已覆盖。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `7938f3307` | feat(triage): help teams turn first feedback into reviewed work |
+
+### Testing
+
+- [OK] 262条Views测试、103条Core测试、4条文档链接检查和21条真实API浏览器用例通过。
+- [OK] Core/Views/Desktop类型检查、生产Web构建、范围内ESLint及16组主题语言尺寸截图检查通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本次范围已完成；原生Electron窗口、安装包和全仓make check未包含在本次验收中。
