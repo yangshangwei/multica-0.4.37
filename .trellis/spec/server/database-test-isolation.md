@@ -547,3 +547,43 @@ private `testmain-diagnostic-red-r01` / `testmain-diagnostic-green-r04` records.
 See [Joint verification environment](./verification-environment.md) for the
 synthetic stage execution fixture's database-clock contract and strict
 future-observation rejection.
+
+## Exact endpoint provisioning during startup
+
+1. **Scope:** `scripts/ensure-postgres.sh <env-file> [--create-database]` and
+   registry `ensure_database()` before migrations. A temporarily unavailable
+   task-owned loopback port must not redirect database creation to shared Docker.
+2. **Signatures:** explicit `DATABASE_URL` owns endpoint, credentials and database;
+   `POSTGRES_DB` selects the legacy no-URL database. The registry delegates with
+   `--current-environment --create-database`, preserving the effective exported
+   manifest configuration and its existing remote provisioning behavior. That
+   mode must not source the original env file again; standalone calls still load
+   their selected file. A stale source file must never override the allocated URL.
+3. **Contract:** parse the URL with Node, preserve non-routing libpq options and
+   reject query overrides for `host`, `hostaddr`, `port`, `dbname` and `service`
+   before connecting. Bound connection probes with `connect_timeout=3` and ten
+   attempts, including when the original URL says `connect_timeout=0`. Preserve
+   other query segments byte-for-byte: libpq treats `+` literally, so rewriting
+   `%20` through `URLSearchParams.set()` can change connection option values. Only an
+   unanswered IPv4 localhost:5432 endpoint may start shared Compose. Create via
+   the exact admin URL using quoted psql variables and `format('%I', ...)`, then
+   verify the target database. Standalone remote URLs verify without creating;
+   the registry explicitly requests creation. Diagnostics must omit credentials.
+4. **Errors:** malformed URLs, routing overrides, missing clients, failed
+   connections and refused creation exit nonzero. `pg_isready` 0/1 proves an
+   existing server answered; only 2 permits default shared startup. Failed
+   authentication never authorizes another server or `docker exec` creation.
+5. **Cases:** a delayed port55432 must create only its URL database using URL
+   credentials despite conflicting `POSTGRES_*` fields. No-URL setup retains
+   shared Docker. Alternate ports, IPv6 and remote hosts never select shared
+   Docker because an initial connection failed.
+6. **Verification:** `scripts/dev-env.test.sh` exercises both entry points,
+   delayed/unavailable/auth-failed endpoints, URL/environment disagreement,
+   effective registry/source-file disagreement, raw query encoding,
+   native/default startup, IPv6, remote verify/create behavior and bounded
+   timeouts. Also retain a fresh real-PostgreSQL create/idempotent-repeat proof,
+   actual `current_database()` and exact owned cleanup.
+7. **Wrong/correct:** classifying every loopback host as shared Docker can create
+   a database on the wrong cluster. Keep the selected connection identity through
+   readiness, creation and migration. R3's original preparation failure and
+   independent red/green evidence are in `artifacts/qa/full-e2e-20261120-r3/`.
