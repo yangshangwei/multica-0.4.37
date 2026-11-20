@@ -428,3 +428,56 @@ Pass the actual source identity, clear private evidence before the denial become
 Wrong: check each visible report with the current candidate observer after paging, inside a read-only transaction.
 
 Correct: enter `readCollaborationStageEvidence`, authorize the original frozen run source before cursor/page work, then validate each report against that subject. Use current-candidate applicability only to describe whether the historical evidence can support a new decision.
+
+### Local code revision regression evidence
+
+**Scope.** A failed run followed by success under a different fault flag proves
+retry/report history, not code repair. A local synthetic repair can prove source
+and report association, while real repository/CI/payment acceptance remains
+separate.
+
+**Entry points.** Use existing `RegisterRuntimeCapabilities`, typed comment,
+claim/permit, `RuntimeTestSubject`, `RecordRuntimeTestReport`, `DecideStage`,
+`AdvanceStage` and original-request receipts. The bounded service regression is
+`TestStageCodeRevisionRegressionPreservesFailedHistory`. Its optional
+`PAY241_TC12_EVIDENCE_DIR` selects an existing private absolute directory; each
+execution creates a new exclusive test-name subdirectory. Without it, use the
+ordinary temporary test directory.
+
+**Contract.** Execute the same committed runner/input/argv against real local
+commits A and B. B must directly descend from A and change only the business
+implementation. Retain actual head/tree/blob/bundle hashes, patch, tool identity,
+exit and complete output. Derive the reported outcome from that execution. Bind
+each revision to its own preparation, candidate, command, run, attempt and
+report. Register updated runtime configuration, reload its epoch and renew
+explicit consent before the second run. An earlier failure may require an
+explicit target resume after issue Resume. Before refreshing preparation
+consent, explicitly stop the active target through its current control versions.
+The reused `refreshPreparationConsent` calls a test-only retired
+`ReconfigureTarget` fixture; it does not prove production configuration Switch.
+Fixture PR/CI observations and managed preparation/consent/settlement do not
+attest a daemon checkout or remote execution.
+
+**Validation.** B referring to A's report is `409 stage_evidence_changed` with
+its one original refusal operation. Compare all previous operations and other
+business facts unchanged; account for that exact appended refusal instead of
+ignoring the operation collection. B's approval requires its own passing report
+and fresh code-review dependency. A's immutable report, QA return and original
+receipts remain recoverable; its live applicability becomes `stale`.
+
+**Good/base/bad.** Good: a business-only patch changes actual observed failure
+to success with the same oracle. Base: same-code fault-switch evidence retains
+its narrower retry claim. Bad: change the oracle, fabricate success, or describe
+synthetic fixture observations as real payment repair.
+
+**Required checks.** Retain full original run/report/decision/operation and
+timeline row collections before B, after B and after original-key recovery.
+Verify fixed oracle/input bytes, distinct source identities and unchanged old
+bundles. Run normal/race in separate fresh databases with bounded credential-free
+local subprocesses. Distinguish retained private snapshots from transient rows
+removed by existing fixture cleanup. Do not count the expected failing local
+program as a failed Go suite, or two mode executions as two business cases.
+
+**Wrong versus correct.** A new report ID alone does not show changed source.
+Require the actual implementation patch and execution result to match each
+frozen subject, while keeping synthetic and external-system claims distinct.
