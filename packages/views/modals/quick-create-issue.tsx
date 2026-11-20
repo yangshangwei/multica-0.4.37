@@ -845,6 +845,10 @@ export function AgentCreatePanel({
           </div>
         </div>
 
+        {/* Recipient controls and blocking notices can exceed a short viewport
+            on their own. Keep all variable-height content in one scroller so
+            the property toolbar and submission footer remain reachable. */}
+        <div ref={descriptionScrollRef} className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         {/* Actor picker — agents and squads in one searchable list. Squads
             route to their leader agent on the backend; the leader runs the
             quick-create flow with the squad's Operating Protocol layered
@@ -959,14 +963,9 @@ export function AgentCreatePanel({
         {/* Prompt — same rich editor Advanced uses, so paste/drop images,
             mentions, and formatting all work. The dropZone wrapper enables
             drag-and-drop file uploads alongside paste. */}
-        {/* `flex-1 min-h-0 overflow-y-auto` so the editor area absorbs the
-            remaining vertical space inside the (now max-bounded) DialogContent
-            and scrolls internally. Without it, pasting an image expanded the
-            editor unbounded and pushed the modal past the viewport. */}
         <div
           {...dropZoneProps}
-          ref={descriptionScrollRef}
-          className="relative px-5 pb-3 flex flex-col flex-1 min-h-0 overflow-y-auto"
+          className="relative px-5 pb-3 flex flex-auto shrink-0 flex-col"
         >
           <p id={promptLabelId} className="mb-2 text-label font-medium">{t(($) => $.create_issue.agent.prompt_label)}</p>
           <div ref={descriptionContentRef} className="flex min-h-28 flex-auto shrink-0 flex-col [&>div]:min-h-0">
@@ -1000,9 +999,10 @@ export function AgentCreatePanel({
                 const scroll = descriptionScrollRef.current;
                 const content = descriptionContentRef.current;
                 if (scroll && content) {
+                  const contentTop = content.getBoundingClientRect().top - scroll.getBoundingClientRect().top + scroll.scrollTop;
                   scroll.scrollTop = position === "start"
-                    ? 0
-                    : Math.max(0, content.offsetHeight - scroll.clientHeight);
+                    ? contentTop
+                    : Math.max(0, contentTop + content.offsetHeight - scroll.clientHeight);
                 }
               });
             }}
@@ -1018,6 +1018,7 @@ export function AgentCreatePanel({
             submitting={submitting}
           />
           {isDragOver && <FileDropOverlay />}
+        </div>
         </div>
 
         {anchorCommentId && (

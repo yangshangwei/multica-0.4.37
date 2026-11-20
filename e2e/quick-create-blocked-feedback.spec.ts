@@ -115,19 +115,28 @@ test("empty description remains in the Tab order, explains itself and routes blo
 });
 
 test("clearing the editor and immediately submitting uses live Markdown", async ({ page, baseURL }) => {
+  await page.clock.install();
   const f = await fixture(page, baseURL!);
   const calls = submissions(page);
   const ui = await open(page, f.slug);
   await ui.editor.fill("Delete this before handing it off.");
-  await expect(ui.submit).toBeEnabled();
+  await expect(ui.submit).not.toHaveAttribute("aria-disabled", "true");
   const box = await ui.submit.boundingBox();
   if (!box) throw new Error("No submit geometry");
-  await ui.editor.fill("");
-  const clearedAt = await page.evaluate(() => performance.now());
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  expect(await page.evaluate(start => performance.now() - start, clearedAt)).toBeLessThan(150);
-  await expect(ui.editor).toBeFocused();
-  expect(calls).toHaveLength(0);
+  // Hold the editor's debounce, not the runner's transport latency. The
+  // enabled appearance proves the parent still observes the previous draft.
+  await page.clock.pauseAt(new Date());
+  try {
+    await ui.editor.fill("");
+    await expect(ui.submit).not.toHaveAttribute("aria-disabled", "true");
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    // Tiptap restores focus on the next frame, still before its 150ms update.
+    await page.clock.runFor(32);
+    await expect(ui.editor).toBeFocused();
+    expect(calls).toHaveLength(0);
+  } finally {
+    await page.clock.resume();
+  }
 });
 
 test("zero candidates has two working exits, keeps the draft and makes no recommendation request", async ({ page, baseURL }) => {

@@ -181,14 +181,21 @@ test.describe("AI refinement through real server and task creation", () => {
         for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }, { width: 667, height: 375 }]) {
           await page.setViewportSize(viewport);
           const submit = dialog.getByRole("button", { name: mode === "manual" ? "Create Issue" : "Send to agent", exact: true });
-          await expect(submit).toBeInViewport();
+          await expect(submit).toBeInViewport({ ratio: 1 });
           await dialog.getByLabel(questions[0], { exact: true }).fill("Team leads");
           await expect(dialog.getByRole("button", { name: "Add answers to draft", exact: true })).toBeEnabled();
-          await expect(submit).toBeInViewport();
+          await expect(submit).toBeInViewport({ ratio: 1 });
           const box = await dialog.boundingBox();
           expect(box).not.toBeNull();
           expect(box!.width).toBeLessThanOrEqual(viewport.width);
           await expect.poll(async () => (await dialog.boundingBox())?.height ?? Infinity).toBeLessThanOrEqual(viewport.height * 0.85 + 1);
+          const footer = await submit.evaluate(button => {
+            const footerBox = button.parentElement!.getBoundingClientRect();
+            const dialogBox = button.closest('[role="dialog"]')!.getBoundingClientRect();
+            return { top: footerBox.top, bottom: footerBox.bottom, dialogTop: dialogBox.top, dialogBottom: dialogBox.bottom };
+          });
+          expect(footer.top).toBeGreaterThanOrEqual(footer.dialogTop);
+          expect(footer.bottom).toBeLessThanOrEqual(footer.dialogBottom + 1);
           await page.screenshot({ path: info.outputPath(`${mode}-${viewport.width}.png`) });
         }
       } finally { await api.deleteFeatureWorkspace(workspace.id); }

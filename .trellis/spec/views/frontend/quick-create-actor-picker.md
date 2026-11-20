@@ -154,6 +154,13 @@ Tests: core creator-selection/API/preference suites; views creator-recommendatio
 - Native `disabled` is reserved for submitting and uploading. Every other blocker uses `aria-disabled`: the button stays focusable and activatable, carries no `pointer-events-none` and no native `title`. One reason sentence is shown in a Tooltip and is also the button's accessible description through an always-rendered `sr-only` element, so it does not depend on the tooltip being open.
 - `submit()` is the only entry for the button, the editor shortcut and the dialog shortcut. It re-evaluates with live editor Markdown, because `hasContent` trails the editor by its debounce. Use the live value alone: `hasContent || liveMarkdown` incorrectly treats a just-cleared description as ready, after which the composer silently refuses it without focusing the editor. Keep regressions for immediate typing, immediate clearing, and attachment-only Markdown. A blocked attempt keeps the draft and moves focus:
 
+  In browser debounce regressions, install the browser clock before navigation,
+  pause after the nonempty draft renders, then clear and prove the submit still
+  appears enabled before the actual pointer click. Advance only the focus frame
+  (32ms, below the 150ms editor debounce), assert editor focus and zero POSTs, and
+  resume in `finally`. Host/CDP round-trip timing below 150ms does not prove this
+  race and is load-dependent. The unit suite owns the full deferred-editor matrix.
+
 | State | Reason shown | Focus goes to |
 | --- | --- | --- |
 | `no_recipients` | No agent or squad can take this | First exit of the notice |
