@@ -2,6 +2,7 @@
 import { useDeferredValue, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ApiError } from "@multica/core/api";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspaceId } from "@multica/core/hooks";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { useCurrentMember } from "@multica/core/permissions";
@@ -64,6 +65,7 @@ import { TriageHistoryTimeline } from "./triage-history-timeline";
 import { TriageHistoryFilterSummary } from "./triage-history-filter-summary";
 import { TriageSelect } from "./triage-fields";
 import { TriageFilters } from "./triage-filters";
+import { TriageWelcome } from "./triage-welcome";
 import { useTriageRoute } from "./use-triage-route";
 import {
   nextTriageSelection,
@@ -130,7 +132,8 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
   const enabled = settings.data?.enabled === true;
   const view = VIEWS.find((v) => v === params.get("view")) ?? "ready";
   const selectedId = params.get("issue") ?? "";
-  const q = useDeferredValue(params.get("q") ?? "");
+  const search = params.get("q") ?? "";
+  const q = useDeferredValue(search);
   const offset = Math.max(0, Number(params.get("offset")) || 0);
   const sort =
     params.get("sort") === "newest"
@@ -191,9 +194,38 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
   const emptyRef = useRef<HTMLHeadingElement>(null);
   const [focusTarget, setFocusTarget] = useState<string | null>(null);
   const rows = listUnavailable ? EMPTY_TRIAGE_ITEMS : (list.data?.items ?? EMPTY_TRIAGE_ITEMS);
+  const filtered = !!search || !!q || FILTERS.some((key) => params.has(key));
+  const readyQueueHome = view === "ready" && offset === 0 && !selectedId && !importSelection?.batchId;
+  const readyQueueEmpty = readyQueueHome && !filtered && list.isSuccess && !list.isPlaceholderData &&
+    !listFailed && list.data.total === 0 && rows.length === 0;
+  const onlySnoozed = readyQueueEmpty && (list.data?.counts.snoozed ?? 0) > 0;
+  const canCheckReviewHistory = supported && canReview && settings.isSuccess && !settings.isPlaceholderData &&
+    !settingsFailed && readyQueueEmpty && list.data?.counts.pending === 0 &&
+    !(counts.isSuccess && counts.data.pending > 0);
+  const welcomeHistory = useQuery({
+    ...triageHistoryOptions(wsId, { limit: 1 }),
+    enabled: canCheckReviewHistory,
+    // Keep the confirmed state stable between reads, but drop it immediately
+    // when a Triage mutation or realtime event invalidates the snapshot.
+    staleTime: Infinity,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: "always",
+    refetchOnReconnect: "always",
+  });
+  const historyTotal = canCheckReviewHistory && welcomeHistory.isSuccess && !welcomeHistory.isPlaceholderData &&
+    !welcomeHistory.isStale ? welcomeHistory.data.total : undefined;
+  const showWelcome = historyTotal === 0 && !filtersOpen && sort === "oldest";
+  const hasReviewHistory = historyTotal !== undefined && historyTotal > 0;
   const item = accessLost || isTriageUnavailable(detail.error) ? undefined : detail.data;
   const pending = item?.issue.admission_status === "pending";
   const focusRow = (id: string) => setFocusTarget(id);
+  const openCreate = () => setCreateOpen(true);
+  const openImport = () => setImportOpen({});
+  const selectView = (nextView: (typeof VIEWS)[number], focusTab = false) => {
+    setSelected(new Set());
+    changeParams({ view: nextView, offset: "", issue: "" });
+    if (focusTab) document.getElementById(`triage-view-${nextView}`)?.focus();
+  };
   useEffect(() => {
     if (!accessLost) return;
     setSelected(new Set());
@@ -236,7 +268,6 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
     changeParams({ issue: next });
     focusRow(next);
   };
-  const filtered = !!q || FILTERS.some((key) => params.has(key));
   const historyFilters = triageHistoryFilters(params);
   const clearHistoryFilters = () =>
     changeParams(
@@ -258,7 +289,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
           className={cn("min-w-0", TRIAGE_CONTROL)}
           aria-label={t(($) => $.search)}
           placeholder={t(($) => $.search)}
-          value={params.get("q") ?? ""}
+          value={search}
           onChange={(event) => {
             setSelected(new Set());
             changeParams({ q: event.target.value, offset: "" });
@@ -368,7 +399,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
         if (!canReview) return;
         if (key === "c") {
           event.preventDefault();
-          setCreateOpen(true);
+          openCreate();
         }
         if (!pending) return;
         const actionKey: Record<string, TriageActionName> = {
@@ -428,14 +459,16 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
             <h2 ref={emptyRef} tabIndex={-1} className="text-body font-medium">
               {filtered
                 ? t(($) => $.no_matches)
-                : view === "ready" && (counts.data?.snoozed ?? 0) > 0
+                : onlySnoozed
                   ? t(($) => $.only_snoozed)
-                  : t(($) => $.empty)}
+                  : readyQueueEmpty
+                    ? t(($) => $.ready_empty)
+                    : t(($) => $.empty)}
             </h2>
             <p className="max-w-xs text-caption text-muted-foreground">
               {t(($) => $.empty_description)}
             </p>
-            {filtered && (
+            {filtered ? (
               <Button
                 variant="outline"
                 onClick={() => {
@@ -446,7 +479,15 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               >
                 {t(($) => $.clear_filters)}
               </Button>
-            )}
+            ) : onlySnoozed || hasReviewHistory ? (
+              <Button
+                variant="outline"
+                className={TRIAGE_CONTROL}
+                onClick={() => selectView(onlySnoozed ? "snoozed" : "history", true)}
+              >
+                {t(($) => onlySnoozed ? $.view_snoozed : $.view_history)}
+              </Button>
+            ) : null}
           </div>
         ) : (
           rows.map((row) => {
@@ -777,13 +818,13 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
         <h1 className="min-w-0 flex-1 text-body font-semibold">
           {t(($) => $.title)}
         </h1>
-        {enabled && !accessLost && (
+        {enabled && !accessLost && !showWelcome && (
           <>
             <Button
               variant="ghost"
               className={TRIAGE_CONTROL}
               aria-label={t(($) => $.import_csv)}
-              onClick={() => setImportOpen({})}
+              onClick={openImport}
             >
               <Upload className="size-4" />
               <span className="hidden sm:inline">{t(($) => $.import_csv)}</span>
@@ -795,7 +836,7 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               variant="outline"
               className={TRIAGE_CONTROL}
               aria-label={t(($) => $.create)}
-              onClick={() => setCreateOpen(true)}
+              onClick={openCreate}
             >
               <Plus className="size-4" />
               <span className="hidden sm:inline">{t(($) => $.create)}</span>
@@ -857,17 +898,11 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
                             : -1;
                   if (nextIndex < 0) return;
                   event.preventDefault();
-                  const nextView = VIEWS[nextIndex]!;
-                  setSelected(new Set());
-                  changeParams({ view: nextView, offset: "", issue: "" });
-                  document.getElementById(`triage-view-${nextView}`)?.focus();
+                  selectView(VIEWS[nextIndex]!, true);
                 }}
                 variant={view === name ? "secondary" : "ghost"}
                 className={TRIAGE_CONTROL}
-                onClick={() => {
-                  setSelected(new Set());
-                  changeParams({ view: name, offset: "", issue: "" });
-                }}
+                onClick={() => selectView(name)}
               >
                 {t(($) => $[name])}
                 {name !== "history" && (
@@ -887,7 +922,13 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
             aria-labelledby={`triage-view-${view}`}
             className="min-h-0 flex-1 border-t border-surface-border"
           >
-            {view === "history" && !selectedId ? (
+            {showWelcome ? (
+              <TriageWelcome
+                docsHref={paths.docsPage(DOCS_SLUGS.triage)}
+                onCreate={openCreate}
+                onImport={openImport}
+              />
+            ) : view === "history" && !selectedId ? (
               <div className="flex h-full flex-col">
                 {historyFailed && (
                   <TriageLoadError

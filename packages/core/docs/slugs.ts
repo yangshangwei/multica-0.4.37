@@ -27,6 +27,7 @@ export const DOCS_SLUGS = {
   selfHostQuickstart: "self-host-quickstart",
   skills: "skills",
   squads: "squads",
+  triage: "triage",
 } as const;
 
 /**
