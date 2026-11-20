@@ -12,10 +12,10 @@
   "assignee": "artisan",
   "createdAt": "2026-11-18",
   "completedAt": null,
-  "branch": "codex/security-remediation-v2-cli-20261120",
+  "branch": "codex/secrem-v2-maintenance-20261120t124811z",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": null,
-  "commit": "14057a80f549ca58602971ef7279633363042d4f",
+  "commit": "9e74d1c39b3694552095ac00e0164b34edb69b9f",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -122,7 +122,7 @@
       "date": "2026-11-20",
       "base_head": "1861f2aab5d2d7a4d6db927a43b6cf66a10de653",
       "branch": "codex/secrem-v2-maintenance-20261120t124811z",
-      "worktree_path": "/Volumes/artisan/code/2026/mc-secrem-v2-maintenance-20261120T124811Z",
+      "worktree_path": null,
       "private_evidence_root": "/Volumes/artisan/code/2026/secrem-v2-maintenance-20261120T124811Z",
       "report": "research/access-and-maintenance-20261120.md",
       "implementation_report": "research/test-directory-maintenance-20261120.md",
@@ -136,7 +136,12 @@
       "tool_access_granted": null,
       "independent_review": "passed: research/test-directory-check-20261120.md",
       "test_state_cleaned": true,
-      "worktree_removed": false
+      "worktree_removed": true,
+      "owned_worktree_path": "/Volumes/artisan/code/2026/mc-secrem-v2-maintenance-20261120T124811Z",
+      "integrated_commit": "9e74d1c39b3694552095ac00e0164b34edb69b9f",
+      "integration_base": "1861f2aab5d2d7a4d6db927a43b6cf66a10de653",
+      "unrelated_dirty_paths_unchanged_during_merge": 13243,
+      "cleanup_report": "research/maintenance-checkpoint-cleanup-20261120.md"
     }
   }
 }
