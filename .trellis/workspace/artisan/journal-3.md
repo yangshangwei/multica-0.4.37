@@ -1634,3 +1634,40 @@ Archived the parent tracker at the user's explicit request; retained #37/#38 acc
 ### Next Steps
 
 - No further work remains for this requested archive; other active tasks keep their existing scope.
+
+
+## Session 173: F3-S1 验证接管、本地集成与归档
+<!-- trellis-session: v=2 fp=29bc1ac46c4d79df -->
+
+**Date**: 2026-11-20
+**Task**: F3-S1 验证接管、本地集成与归档
+**Branch**: `codex/f3-completion-20261120`
+
+### Summary
+
+接管原Claude/Codex工作，核验62行S1、91项M1/F2前后对照与最终集成normal/race，Core5355、Views7610通过；限定路径提交并快进共享本地分支，持久保存失败/验收证据并归档F3子任务。生产仅估算与未知，未调用Provider/真实agent、未push/部署，父roadmap保持in_progress。
+
+### Main Changes
+
+- 功能584846f95、集成8126073f6，归档2f4e0fcaf；原工作树与历史数据库保留。
+- 补齐READ COMMITTED/混合版本部署/保留账目回退规范，纠正过期注释。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `584846f95` | feat(budget): preserve parent spending history without blocking execution |
+| `8126073f6` | merge(budget): verify parent budget observation with current collaboration contracts |
+
+### Testing
+
+- [OK] 最终571个顶层验收名、142映射名和91既有名normal/race全部PASS，无失败或跳过。
+- [OK] Core374文件5355测试、Views619文件7610测试；Go build/vet、Core lint/typecheck/knip、Views typecheck通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- F3-S2、F4、F5和剩余M1仍开放；真实供应商费用、结算释放与强制预算另行设计授权。
