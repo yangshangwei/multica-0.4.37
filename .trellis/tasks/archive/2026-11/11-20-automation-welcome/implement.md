@@ -16,7 +16,7 @@
 5. [x] Independent Trellis check reviews scope, states, accessibility and verification.
    Run the Impeccable detector once on the changed UI; resolve mechanical findings
    and keep reference-pinned choices. Use a fresh finish reviewer for screenshots.
-6. [ ] Update the discovery spec, document evidence and limitations, commit only this
+6. [x] Update the discovery spec, document evidence and limitations, commit only this
    task's files using the repository Lore/conventional format, and archive task.
 
 ## Commands
