@@ -751,6 +751,29 @@ Evidence: `11-01-branch-e2e-acceptance/research/continuation-20261107/`.
 The fixture repairs preserve the failed original runs and unchanged product
 bytes; successful repaired journeys do not retroactively pass the originals.
 
+### Immutable preparation and selectable completion fixtures
+
+Complete `verifyAPIPaging()` before starting native clients whose initial deep
+links read run records. Its direct synthetic SQL appends an immutable event but
+publishes no WebSocket invalidation. Pass that already verified evidence into
+`exercisePreparationRecords()` once; do not append twice or require the product
+to refresh a frozen page after an unannounced database write. Preserve old cursor,
+privacy, preparation summary and termination-proof assertions on Web and Desktop.
+
+M1 completion evidence has a real expiry. Create fresh staging/package approvals
+immediately before a complete replay and retain the original expired evidence.
+Select the exact fixture `approvalID`, assert its radio is enabled and focused,
+then press Space and observe the actual preview/authorization/completion requests.
+A disabled radio cannot take focus; pressing Space on a previously focused Close
+button can otherwise appear as a missing preview. Never extend an immutable
+approval's expiry or change the product's selection guard to repair this fixture.
+
+View-switch tests must use the exact current toolbar button and its
+`menuitemradio`, then assert the target view, the expected row and unchanged
+collection URL. A `text=List` locator can select a task card whose title contains
+List and test navigation instead. R3 retains the actual wrong-card trace and
+complete corrected file replay.
+
 ### Business-scenario fixture contracts
 
 - Use `gapWorkflowObservations(issue)` for ordinary `/ai-policy` and `/lifecycle`

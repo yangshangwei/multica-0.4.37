@@ -2,10 +2,12 @@ package daemon
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -15,6 +17,58 @@ import (
 
 	"github.com/multica-ai/multica/server/internal/daemon/collaborationrun"
 )
+
+func TestCollaborationHostHarnessDiagnosticsExcludePrivateData(t *testing.T) {
+	var output bytes.Buffer
+	logger := (collaborationHostRouterInput{Diagnostics: true}).logger(&output)
+	private := "private-credential-and-path"
+	logger.With("token", private).WithGroup(private).Error(
+		"collaboration ledger unavailable; refusing further machine claims", "error", private,
+		slog.Group(private, "nested", private))
+	logger.Warn(private, "token", private)
+	logger.Info("collaboration proof remains pending")
+	var record map[string]any
+	if err := json.Unmarshal(output.Bytes(), &record); err != nil {
+		t.Fatalf("diagnostic did not emit exactly one JSON event: %v", err)
+	}
+	if len(record) != 3 || record["message"] != "collaboration ledger unavailable; refusing further machine claims" ||
+		record["level"] != "ERROR" || strings.Contains(output.String(), private) {
+		t.Fatal("diagnostic lost its fixed message or disclosed excluded fields")
+	}
+	if _, err := time.Parse(time.RFC3339Nano, record["time"].(string)); err != nil {
+		t.Fatal("diagnostic has no parseable observation time")
+	}
+}
+
+func TestCollaborationHostHarnessDiagnosticsAreExplicit(t *testing.T) {
+	for _, body := range []string{`{}`, `{"diagnostics":false}`} {
+		var input collaborationHostRouterInput
+		if err := json.Unmarshal([]byte(body), &input); err != nil {
+			t.Fatal(err)
+		}
+		var output bytes.Buffer
+		input.logger(&output).Error("collaboration ledger unavailable; refusing further machine claims")
+		if output.Len() != 0 {
+			t.Fatal("ordinary host fixture changed its empty diagnostic output contract")
+		}
+	}
+}
+
+func TestCollaborationHostHarnessContextDiagnostic(t *testing.T) {
+	if got := collaborationHostHarnessContextState(context.Background()); got != "none" {
+		t.Fatalf("live poller context reported %q", got)
+	}
+	canceled, cancel := context.WithCancel(context.Background())
+	cancel()
+	if got := collaborationHostHarnessContextState(canceled); got != "canceled" {
+		t.Fatalf("canceled poller context reported %q", got)
+	}
+	expired, end := context.WithDeadline(context.Background(), time.Now().Add(-time.Second))
+	defer end()
+	if got := collaborationHostHarnessContextState(expired); got != "deadline" {
+		t.Fatalf("expired poller context reported %q", got)
+	}
+}
 
 func TestCollaborationHostHarnessGitUsesExistingConfigValidation(t *testing.T) {
 	input := collaborationHostRouterInput{}

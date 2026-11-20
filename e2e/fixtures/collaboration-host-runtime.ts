@@ -365,6 +365,7 @@ export async function startHostDaemon(runtime: HostRuntime, apiUrl: string, read
       DaemonID: runtime.daemonId, DeploymentID: runtime.deploymentId, InstallationID: runtime.installationId,
       RuntimeConfigEpoch: runtime.runtimeConfigEpoch, Directory: directory, Executable: provider, CLIExecutable: cli, Credential: runtime.credential,
       ...(options.git === undefined ? {} : { git: options.git }),
+      ...(process.env.COLLABORATION_HOST_DIAGNOSTICS === "1" ? { diagnostics: true } : {}),
       ...(options.agentTimeoutMs === undefined ? {} : { agent_timeout_ms: options.agentTimeoutMs }), hold_receipt_acks: holdReceiptACKs })}\n`);
     return { child, exit };
   };

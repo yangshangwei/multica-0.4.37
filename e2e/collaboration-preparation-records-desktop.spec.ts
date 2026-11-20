@@ -12,6 +12,9 @@ test("Desktop reads synthetic preparation with native 200 percent captures and u
   preparationRecordEnvironment();
   expect(["localhost", "127.0.0.1"]).toContain(new URL(process.env.COLLABORATION_ELECTRON_RENDERER_URL!).hostname);
   const fixture = await seedCollaborationPreparationRecords();
+  // Complete the synthetic DB append before either startup deep link reads
+  // the immutable records page. Direct fixture SQL does not publish a WS event.
+  const preparedEvidence = await fixture.verifyAPIPaging();
   const viewerProfile = mkdtempSync(join(tmpdir(), "multica-preparation-viewer-"));
   const ownerProfile = mkdtempSync(join(tmpdir(), "multica-preparation-owner-"));
   const applications: Awaited<ReturnType<typeof openDesktop>>[] = [];
@@ -32,7 +35,7 @@ test("Desktop reads synthetic preparation with native 200 percent captures and u
         captures.push(...await captureNativeSection(page === viewer.page ? viewer.app : owner.app, page, focus,
           `preparation-${stage}`, (name) => testInfo.outputPath(name)));
       },
-    });
+    }, preparedEvidence);
     for (const native of applications) {
       expect(native.errors).toEqual([]);
       expect(native.accountHeaders.length).toBeGreaterThan(0);

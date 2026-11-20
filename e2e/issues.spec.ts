@@ -56,13 +56,16 @@ test.describe("Issues", () => {
 
   test("can switch from board to list view", async ({ page }) => {
     const title = "E2E List Switch " + Date.now();
-    await api.createIssue(title);
+    const issue = await api.createIssue(title);
     await reloadAppPage(page);
     await expect(page.locator("text=Backlog")).toBeVisible();
 
-    // Switch to list view
-    await page.click("text=List");
-    await expect(page.getByText(title)).toBeVisible();
+    const listUrl = page.url();
+    await page.getByRole("button", { name: "Board", exact: true }).click();
+    await page.getByRole("menuitemradio", { name: "List", exact: true }).click();
+    await expect(page.getByRole("button", { name: "List", exact: true })).toBeVisible();
+    await expect(page.locator(`a[href$="/issues/${issue.id}"]`).getByText(title, { exact: true })).toBeVisible();
+    await expect(page).toHaveURL(listUrl);
   });
 
   test("can filter issues by created and updated dates", async ({ page }) => {

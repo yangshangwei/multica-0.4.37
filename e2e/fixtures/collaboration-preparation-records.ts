@@ -314,8 +314,9 @@ interface PreparationRecordAdapter {
   capture(stage: string, page: Page, focus: Locator): Promise<void>;
 }
 
-export async function exercisePreparationRecords(viewer: Page, owner: Page, fixture: PreparationRecordFixture, adapter: PreparationRecordAdapter) {
-  const evidence = await fixture.verifyAPIPaging();
+export async function exercisePreparationRecords(viewer: Page, owner: Page, fixture: PreparationRecordFixture, adapter: PreparationRecordAdapter,
+  preparedEvidence?: Awaited<ReturnType<PreparationRecordFixture["verifyAPIPaging"]>>) {
+  const evidence = preparedEvidence ?? await fixture.verifyAPIPaging();
   const showSummary = async (page: Page) => {
     await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
     const records = page.locator(`[id="run-${fixture.runId}"]`).getByRole("region", { name: "Run records", exact: true });
