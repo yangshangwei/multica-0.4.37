@@ -11,7 +11,8 @@ Approval: the user approved the presented reference-led design and explicitly re
 - [x] Capture one batched desktop/light, dark, English and narrow pass; compare supplied reference with visual-verdict and run impeccable detector once. Apply all material fixes as one batch, confirm at most once in the build thread.
 - [x] Independent finish review over screenshots and task contract; resolve material findings.
 - [x] Update applicable squad view spec and record results and remaining evidence limits.
-- [ ] Commit only task-owned files, archive and record the session.
+- [x] Commit task-owned feature and verification files.
+- [x] Archive and record the session (session 175 in journal-4.md).
 
 ## Commands
 - pnpm --filter @multica/views exec vitest run squads/components/squads-page.test.tsx [welcome test if added] locales/parity.test.ts

@@ -17,7 +17,7 @@ The final browser replay verifies creation and documentation navigation, the tem
 
 ## Evidence and provenance
 
-`summary.json` binds current task source SHA-256 values, production launch mode, build ID and actual origins to the final report. `environment.json` records the isolated API health/process identity and candidate directories. The task's static-review details are in `.trellis/tasks/11-20-squad-welcome/research/check-20261120.md` until archival.
+`summary.json` binds current task source SHA-256 values, production launch mode, build ID and actual origins to the final report. `environment.json` records the isolated API health/process identity and candidate directories. The task's static-review details are in `.trellis/tasks/archive/2026-11/11-20-squad-welcome/research/check-20261120.md`.
 
 Final captures are under `results/`. The principal views are:
 
