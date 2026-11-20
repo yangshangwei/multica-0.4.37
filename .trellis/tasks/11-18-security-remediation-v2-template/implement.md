@@ -421,3 +421,10 @@ Linux默认UTC完整service包跑完：4239 RUN、4210 PASS、10 FAIL事件（�
 第一笔只暂存正文/版本/契约与版本钉点；registry描述和E2E摘要通过精确index blob留到第三笔，没有修改已验证的worktree字节。第二笔处理器/通知/场景测试；第三笔目录、文档、生成包、skill、规范。每笔conventional+Lore，Tested/Not-tested包含实际环境与模型未验收边界。git diff--check通过，最后产品hash仍与冻结27路径一致。
 
 任务记录提交独立完成后再实际fast-forward到基线分支；最终集成回执另写。三笔提交本身不能代替合入。
+
+
+### 实际集成回执
+
+2026-11-20，主检出 `codex/cross-workspace-collaboration` 从c56e2194e **实际fast-forward到50045c12cc6eb32a11e032b68717ec844640f4b8**，包含三笔产品提交与独立任务记录提交50045c12c。这次是合入，不是变基/预检。主检出原三个未跟踪任务目录逐文件核对初始15文件hash相同后移至持久证据 `main-task-originals/`；不覆盖旧副本。对主检出全部其他脏文件在合入前后逐个sha256核对，零变化。回执 `work/integration-receipt.json`。
+
+子任务一AC1–AC8已完成并合入，task标completed，路径保留不自动归档。子任务二“子任务一已合入”前置现已满足；真实模型入口仍因具体参数及实际受限角色broker/完整驱动未完成而关闭，调用授权本身已满足。父任务AC9/AC10仍未完成。

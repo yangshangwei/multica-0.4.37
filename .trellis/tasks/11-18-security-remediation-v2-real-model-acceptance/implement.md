@@ -98,3 +98,10 @@ overlay 只把本任务文件虚拟挂到 daemon 包，不创建/修改产品文
 - [ ] 最终策略的完整工具/角色探针及独立复核，再解除准备版真实禁用。
 
 记录：`research/native-boundary-findings-20261120.md`。本轮启动了本地 Codex无模型进程，不能写“没有调用任何 Codex CLI”；真实模型调用与供应商账号访问仍为0。
+
+
+## 2026-11-20 实际合入更新
+
+子任务一已实际fast-forward合入codex/cross-workspace-collaboration，集成提交50045c12cc6eb32a11e032b68717ec844640f4b8包含产品15bcd2e5e、0ffc3572c、aa592194b。前置1现在满足。准备规划及无模型机制经独立评审；仍需精确型号/账号/有限预算、真实task-token受管CLI通道（不得绕过受限reviewer外部MCP拒绝）、完整生产driver及最终隔离正负探针。真实调用授权无需再次请求。
+
+下一次继续从主检出的本任务目录读取最新记录，按需要新建隔离验收worktree；本轮产品worktree移除后不再硬编码其路径为运行入口。overlay路径需按新checkout生成，旧research overlay只是历史证据。实际model turns/provider requests/account accesses仍0，本地Codex无模型进程另列。
