@@ -21,8 +21,43 @@
   "children": [],
   "parent": "11-13-pay-241-collaboration-acceptance",
   "relatedFiles": [],
-  "notes": "2026-11-14: sampler and r02 pre-S2-source rehearsal passed (31 tool tests, 79 independent evidence checks); all10000 propagation and100 independent two-metric writebacks converged. Runtime/socket/gate/process cleanup verified. TC-24 remains NOT_RUN; final candidate performance and S2-S4/real business acceptance still required. Task stays in_progress.",
+  "notes": "2026-11-20：随PAY-241父任务按用户明确要求归档，最终候选性能与总验收由用户手工核实。采样工具及r02演练保持原来源的已接受范围，TC-24保持NOT_RUN；归档不表示最终性能、24例总验收或真实业务签字通过，见report.md。",
   "meta": {
-    "tooling_commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b"
+    "tooling_commit": "8e824b3035c4f17a9a9dfa0504f1294fbcc9b20b",
+    "manual_verification_handoff": {
+      "at": "2026-11-20T04:55:14.141635+00:00",
+      "disposition": "USER_REQUESTED_ARCHIVE_MANUAL_VERIFICATION_HANDOFF",
+      "user_instruction": "归档吧，剩下的任务我手工核实",
+      "remaining_verification_owner": "user",
+      "archive_state": "approved_pending_move",
+      "task_status_meaning": "Administrative archive on user instruction; outstanding acceptance is transferred to manual verification, not passed.",
+      "overall_acceptance_passed": false,
+      "business_signoff_recorded": false,
+      "parent_counts": {
+        "PASS": 9,
+        "PARTIAL": 11,
+        "NOT_RUN": 4
+      },
+      "case_status_changes": {},
+      "report": "report.md",
+      "archive_destination": ".trellis/tasks/archive/2026-11/11-13-pay-241-s5-performance-acceptance",
+      "prior_task_state": {
+        "status": "in_progress",
+        "completedAt": null,
+        "notes": "2026-11-14: sampler and r02 pre-S2-source rehearsal passed (31 tool tests, 79 independent evidence checks); all10000 propagation and100 independent two-metric writebacks converged. Runtime/socket/gate/process cleanup verified. TC-24 remains NOT_RUN; final candidate performance and S2-S4/real business acceptance still required. Task stays in_progress."
+      },
+      "new_product_tests_run": 0,
+      "product_or_test_code_changed": false,
+      "accepted_scope": "Sampling tooling and r02 rehearsal at their original source only.",
+      "TC24": "NOT_RUN",
+      "final_candidate_accepted": false,
+      "parent_archive_report": "../11-13-pay-241-collaboration-acceptance/report.md",
+      "documentation_check": {
+        "verdict": "ACCEPTED_ADMINISTRATIVE_HANDOFF_DOCUMENTATION_ONLY",
+        "blocking_findings": 0,
+        "report": "../11-13-pay-241-collaboration-acceptance/research/manual-handoff-independent-check-20261120.json",
+        "sha256": "2e0030839392ed04ae5c5d763987e2e30afba0ac89fb0bca25feb972916905e9"
+      }
+    }
   }
 }
