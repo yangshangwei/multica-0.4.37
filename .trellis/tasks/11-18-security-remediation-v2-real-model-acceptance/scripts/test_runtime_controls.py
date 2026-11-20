@@ -125,7 +125,67 @@ class Controls(unittest.TestCase):
             source_hashes={str(self.executable): guard.digest(self.executable)},
         )
         with patch.dict(os.environ, {"MULTICA_RUN_REAL_AGENT_SMOKE": "1"}):
-            with self.assertRaisesRegex(guard.Refused, "Preparation build"):
+            with self.assertRaises(guard.Refused):
+                self.registered()
+        self.assertFalse(Path(self.registration["ledger"]).exists())
+
+    def test_uncapped_authority_retains_failures_and_requires_diagnosis(self):
+        self.registration.update(
+            authorization_mode="uncapped_until_success",
+            authorization_ref="user-20261120-continue-until-success",
+            max_starts=None, max_model_requests=None, max_seconds=None, expires_at=None,
+        )
+        registration = self.registered()
+        for _ in range(4):
+            sequence, timeout = guard.reserve_start(registration)
+            self.assertEqual(timeout, 10)
+            guard.mark_start(registration, sequence, 123)
+            self.assertGreater(guard.reserve_model_request(registration), 0)
+            guard.finish_start(registration, sequence, "completed", 0)
+        sequence, _ = guard.reserve_start(registration)
+        guard.finish_start(registration, sequence, "spawn_failed", 125)
+        with self.assertRaises(guard.Refused):
+            guard.reserve_start(registration)
+        guard.acknowledge_failure(registration, "Synthetic spawn failure diagnosed")
+        self.assertEqual(guard.reserve_start(registration)[0], 6)
+        with guard.ledger(registration) as ledger:
+            self.assertEqual(len(ledger["starts"]), 6)
+            self.assertEqual(len(ledger["model_requests"]), 4)
+            self.assertEqual(ledger["starts"][4]["outcome"], "spawn_failed")
+
+    def test_uncapped_without_explicit_authority_is_rejected(self):
+        self.registration.update(authorization_mode="uncapped_until_success", max_starts=None,
+                                 max_model_requests=None, max_seconds=None, expires_at=None)
+        with self.assertRaises(guard.Refused):
+            self.registered()
+
+    def test_reviewed_real_admission_is_bound_without_launching(self):
+        sources = {str(self.executable): guard.digest(self.executable)}
+        admission = {
+            "verdict": "approved", "scope": "P1", "model": "synthetic-model",
+            "account_alias": "synthetic-account", "source_hashes": sources,
+            "verified": ["actual_driver", "original_task_identity", "shell_network_denied",
+                         "permission_widening_denied", "role_filesystem", "instruction_complete", "platform_records"],
+        }
+        path = self.root / "admission.json"
+        path.write_text(json.dumps(admission))
+        path.chmod(0o600)
+        self.registration.update(mode="real", enabled=True, scenario="P1",
+                                 account_alias="synthetic-account", integration_commit="f" * 40,
+                                 isolation_evidence_sha256="e" * 64, source_hashes=sources,
+                                 admission_file=str(path), admission_sha256=guard.digest(path))
+        with patch.dict(os.environ, {"MULTICA_RUN_REAL_AGENT_SMOKE": "1"}):
+            self.assertEqual(self.registered()["scenario"], "P1")
+            for key, value in [("scenario", None), ("scenario", "O1"), ("model", "other"),
+                               ("account_alias", "other"), ("source_hashes", {str(self.executable): "0" * 64})]:
+                previous = self.registration[key]
+                self.registration[key] = value
+                with self.assertRaises(guard.Refused):
+                    self.registered()
+                self.registration[key] = previous
+            path.write_text(json.dumps({**admission, "verified": []}))
+            self.registration["admission_sha256"] = guard.digest(path)
+            with self.assertRaises(guard.Refused):
                 self.registered()
         self.assertFalse(Path(self.registration["ledger"]).exists())
 
@@ -139,6 +199,7 @@ class Controls(unittest.TestCase):
 
     def test_gateway_allowlist_auth_identity_redirect_and_request_cap(self):
         observed = []
+        observed_headers = []
 
         class Upstream(BaseHTTPRequestHandler):
             def log_message(self, *args):
@@ -152,6 +213,7 @@ class Controls(unittest.TestCase):
 
             def respond(self):
                 observed.append((self.command, self.path, self.headers.get("Authorization"), self.headers.get("X-Workspace-ID")))
+                observed_headers.append(dict(self.headers))
                 if self.path.endswith("/compact"):
                     self.send_response(302)
                     self.send_header("Location", "http://unapproved.invalid/")
@@ -174,7 +236,11 @@ class Controls(unittest.TestCase):
             "model_base": f"http://127.0.0.1:{upstream.server_port}/v1",
             "platform_base": f"http://127.0.0.1:{upstream.server_port}",
             "proxy_token": "synthetic-role-token", "model_token": "synthetic-gateway-token",
+            "model_headers": {"x-openai-actor-authorization": "trusted-actor"},
         }
+        evidence_root = self.root / "model-evidence"
+        evidence_root.mkdir(mode=0o700)
+        config["evidence_root"] = str(evidence_root)
         proxy = gateway.Gateway(("127.0.0.1", 0), config, registration)
         threading.Thread(target=proxy.serve_forever, daemon=True).start()
         self.addCleanup(proxy.server_close)
@@ -183,7 +249,9 @@ class Controls(unittest.TestCase):
         def request(method, path, token="synthetic-role-token", model="synthetic-model"):
             client = HTTPConnection("127.0.0.1", proxy.server_port, timeout=3)
             body = json.dumps({"model": model}) if method == "POST" else None
-            client.request(method, path, body=body, headers={"Authorization": "Bearer " + token, "X-Workspace-ID": "synthetic-workspace"})
+            client.request(method, path, body=body, headers={"Authorization": "Bearer " + token, "X-Workspace-ID": "synthetic-workspace",
+                           "User-Agent": "codex_cli_rs/test-native", "originator": "codex_cli_rs", "x-codex-session": "native-session",
+                           "x-openai-actor-authorization": "untrusted-actor", "X-Forwarded-Host": "unapproved.invalid"})
             response = client.getresponse()
             response.read()
             code = response.status
@@ -201,6 +269,21 @@ class Controls(unittest.TestCase):
         self.assertEqual(request("POST", "/model/responses"), 429)
         self.assertEqual(len(observed), 3)
         self.assertTrue(all(row[2] == "Bearer synthetic-gateway-token" for row in observed))
+        for row in observed_headers:
+            lowered = {k.lower(): v for k, v in row.items()}
+            self.assertEqual(lowered["user-agent"], "codex_cli_rs/test-native")
+            self.assertEqual(lowered["originator"], "codex_cli_rs")
+            self.assertEqual(lowered["x-codex-session"], "native-session")
+            self.assertEqual(lowered["x-openai-actor-authorization"], "trusted-actor")
+            self.assertNotIn("x-forwarded-host", lowered)
+        deadline = time.monotonic() + 2
+        while len(list(evidence_root.glob("*/metadata.json"))) < 3 and time.monotonic() < deadline:
+            time.sleep(0.01)
+        captures = [json.loads(p.read_text()) for p in evidence_root.glob("*/metadata.json")]
+        self.assertEqual(len(captures), 3)
+        self.assertEqual(sum(row["complete"] for row in captures), 2)
+        self.assertTrue(all("request_sha256" in row and "response_sha256" in row for row in captures))
+        self.assertTrue(all("synthetic-gateway-token" not in p.read_text() for p in evidence_root.rglob("*" ) if p.is_file()))
         self.assertEqual(request("GET", "/api/issues?limit=1", "synthetic-task-token"), 200)
         self.assertEqual(observed[-1][2:], ("Bearer synthetic-task-token", "synthetic-workspace"))
         self.assertEqual(request("GET", "/api/issues"), 401)

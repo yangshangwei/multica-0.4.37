@@ -7,10 +7,13 @@ import hmac
 from http.client import HTTPConnection, HTTPSConnection
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import os
 from pathlib import Path
 import socket
 import ssl
 import threading
+import time
+import uuid
 from urllib.parse import unquote, urlsplit
 
 import runtime_guard as guard
@@ -19,6 +22,13 @@ import runtime_guard as guard
 MODEL_ROUTES = {("GET", "/model/models"), ("POST", "/model/responses"), ("POST", "/model/responses/compact")}
 API_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE"}
 MAX_BODY = 16 << 20
+NATIVE_HEADERS = {"content-type", "accept", "openai-beta", "user-agent", "originator", "session_id", "conversation_id"}
+
+
+def native_protocol_headers(headers):
+    """Preserve the official client's own identity; never synthesize it."""
+    return {key: value for key, value in headers.items()
+            if key.lower() in NATIVE_HEADERS or key.lower().startswith("x-codex-")}
 
 
 def load_config(path, expected_hash, registration):
@@ -33,7 +43,10 @@ def load_config(path, expected_hash, registration):
         if upstream.scheme not in {"http", "https"} or not upstream.hostname or upstream.username or upstream.password or upstream.query or upstream.fragment:
             raise guard.Refused("Invalid exact upstream")
         if name == "model" and config["mode"] == "real" and upstream.scheme != "https":
-            raise guard.Refused("Real model upstream requires TLS")
+            # The user's existing provider is a local authenticated router.
+            # This exception never admits cleartext remote model endpoints.
+            if upstream.hostname not in {"127.0.0.1", "::1", "localhost"} or config.get("local_router_authorized") is not True:
+                raise guard.Refused("Real model upstream requires TLS or the registered local router")
         if config["mode"] == "fake" and upstream.hostname not in {"127.0.0.1", "localhost", "fake-upstream"}:
             raise guard.Refused("Fake gateway permits only a declared fake endpoint")
     for key in ("proxy_token_file", "model_token_file"):
@@ -41,6 +54,19 @@ def load_config(path, expected_hash, registration):
         if not token or "\r" in token or "\n" in token:
             raise guard.Refused("Invalid credential file")
         config[key.removesuffix("_file")] = token
+    config["model_headers"] = {}
+    if config.get("model_headers_file"):
+        headers_path = guard.private_path(config["model_headers_file"])
+        headers = json.loads(headers_path.read_text())
+        if not isinstance(headers, dict) or set(headers) - {"x-openai-actor-authorization"}:
+            raise guard.Refused("Unregistered model header")
+        if any(not isinstance(v, str) or "\r" in v or "\n" in v for v in headers.values()):
+            raise guard.Refused("Invalid model header")
+        config["model_headers"] = headers
+    if config.get("mode") == "real":
+        evidence = Path(config.get("evidence_root", ""))
+        if not evidence.is_absolute() or evidence.resolve() != evidence or not evidence.is_dir() or evidence.stat().st_mode & 0o077:
+            raise guard.Refused("Private model evidence directory required")
     return config
 
 
@@ -113,7 +139,8 @@ class Handler(BaseHTTPRequestHandler):
             return
         config = self.server.config
         model = (self.command, parsed.path) in MODEL_ROUTES and not parsed.query
-        platform = parsed.path.startswith("/api/") and self.command in API_METHODS
+        platform = (config.get("mode") != "real" and parsed.path.startswith("/api/")
+                    and self.command in API_METHODS)
         if not model and not platform:
             self.reject(403)
             return
@@ -146,7 +173,7 @@ class Handler(BaseHTTPRequestHandler):
                 timeout = guard.reserve_model_request(self.server.registration)
             else:
                 with guard.ledger(self.server.registration) as ledger:
-                    timeout = guard.remaining(self.server.registration, ledger)
+                    timeout = min(guard.remaining(self.server.registration, ledger), 120)
                     if ledger["stopped"] or timeout <= 0:
                         raise guard.Refused("Gateway expired")
             self.connection.settimeout(min(timeout, 15))
@@ -154,8 +181,11 @@ class Handler(BaseHTTPRequestHandler):
             path = upstream.path.rstrip("/") + (parsed.path.removeprefix("/model") if model else parsed.path)
             if parsed.query:
                 path += "?" + parsed.query
-            headers = {"Authorization": "Bearer " + config["model_token"] if model else authorization, "Connection": "close"}
-            for field in ("Content-Type", "Accept", "OpenAI-Beta", "X-Workspace-ID", "Idempotency-Key"):
+            headers = native_protocol_headers(self.headers)
+            headers.update({"Authorization": "Bearer " + config["model_token"] if model else authorization, "Connection": "close"})
+            if model:
+                headers.update(config.get("model_headers", {}))
+            for field in (() if model else ("X-Workspace-ID", "Idempotency-Key")):
                 if value := self.headers.get(field):
                     headers[field] = value
             connection = (HTTPSConnection(upstream.hostname, upstream.port, timeout=timeout, context=ssl.create_default_context())
@@ -175,9 +205,27 @@ class Handler(BaseHTTPRequestHandler):
             watchdog = threading.Timer(timeout, expire)
             watchdog.daemon = True
             watchdog.start()
+            evidence = None
+            evidence_stream = None
+            response_digest = hashlib.sha256()
+            evidence_path = None
+            if model and config.get("evidence_root"):
+                evidence_path = Path(config["evidence_root"]) / (str(time.time_ns()) + "-" + uuid.uuid4().hex[:8])
+                evidence_path.mkdir(mode=0o700)
+                request_path = evidence_path / "request.json"
+                request_path.write_bytes(body or b"")
+                request_path.chmod(0o600)
+                evidence = {"started_at": time.time(), "method": self.command, "path": parsed.path,
+                            "model_requested": self.server.registration["model"],
+                            "native_protocol_headers": native_protocol_headers(self.headers),
+                            "request_sha256": hashlib.sha256(body or b"").hexdigest(), "complete": False}
+                evidence_stream = (evidence_path / "response.stream").open("wb")
+                (evidence_path / "response.stream").chmod(0o600)
             try:
                 connection.request(self.command, path, body=body, headers=headers)
                 response = connection.getresponse()
+                if evidence is not None:
+                    evidence.update(status=response.status, content_type=response.getheader("Content-Type"))
                 if 300 <= response.status < 400:
                     self.reject(502)
                     return
@@ -188,14 +236,31 @@ class Handler(BaseHTTPRequestHandler):
                 self.end_headers()
                 self.close_connection = True
                 while chunk := response.read1(65536):
+                    response_digest.update(chunk)
+                    if evidence_stream is not None:
+                        evidence_stream.write(chunk)
                     self.wfile.write(chunk)
                     self.wfile.flush()
+                if evidence is not None:
+                    evidence["complete"] = True
             finally:
                 watchdog.cancel()
                 connection.close()
+                if evidence_stream is not None:
+                    evidence_stream.flush()
+                    os.fsync(evidence_stream.fileno())
+                    evidence_stream.close()
+                if evidence is not None:
+                    evidence.update(finished_at=time.time(), response_sha256=response_digest.hexdigest())
+                    guard.atomic_save(evidence_path / "metadata.json", evidence)
         except guard.Refused:
             self.reject(429)
         except (OSError, ValueError, socket.timeout):
+            if model:
+                with guard.ledger(self.server.registration) as ledger:
+                    ledger["stopped"] = True
+                    ledger.setdefault("gateway_failures", []).append({"at": time.time(), "path": parsed.path,
+                                                                      "kind": "incomplete_or_evidence_error"})
             self.close_connection = True
 
 

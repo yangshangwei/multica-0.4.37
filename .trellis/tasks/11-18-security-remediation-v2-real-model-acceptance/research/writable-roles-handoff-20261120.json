@@ -1,0 +1,48 @@
+{
+  "source_sha256": "b04eeea3a2fd897e0df6eb1da9fc83e1f9a8164facf368fe25097df5b8762ba8",
+  "roles": [
+    {
+      "role": "contributor",
+      "passed": true,
+      "filesystem_passed": true,
+      "network_passed": true,
+      "git_commit_passed": true
+    },
+    {
+      "role": "implementer",
+      "passed": true,
+      "filesystem_passed": true,
+      "network_passed": true,
+      "git_commit_passed": true
+    },
+    {
+      "role": "verifier",
+      "passed": true,
+      "filesystem_passed": true,
+      "network_passed": true,
+      "git_commit_passed": true
+    },
+    {
+      "role": "reviewer",
+      "passed": true,
+      "filesystem_passed": true,
+      "network_passed": true,
+      "git_commit_passed": true
+    }
+  ],
+  "model_turns": 0,
+  "private_evidence": "/Volumes/artisan/code/2026/secrem-v2-real-evidence-20261120/writable-role-r5",
+  "source_hashes": {
+    "probe_writable_roles.py": "b04eeea3a2fd897e0df6eb1da9fc83e1f9a8164facf368fe25097df5b8762ba8",
+    "git_role_handoff.py": "d24be01ce99e74fa7202a806092c21eef80dc99871f21b5565c89952036d2fc4",
+    "test_git_role_handoff.py": "c03a0247e9e2fbd9148c4125adfc9aa17e06b3f9b91d78470c9902056e8c2199"
+  },
+  "role_result_hashes": {
+    "contributor": "cc93b0d15cf3cda6bae71227a978c392b20f2a747654baa7bfa27a2170ba4e51",
+    "implementer": "1fc7841a42389a62df9472574b2d65ad00102b7d738698bdb8d9d1d0887cf993",
+    "verifier": "4149ec3824dbad5ad1d80f8ca8e1393d28abebdd2363d061f5036f90e8ef795d",
+    "reviewer": "66d90b6cfd027c85170a465c345524f78139115a42b3fc2c16b768a94eec8132"
+  },
+  "handoff_tests": 6,
+  "frozen_p1_wrapper_changed_for_writable_roles": false
+}

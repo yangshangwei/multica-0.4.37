@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Private, hash-bound launch budget. No real launch without both explicit gates."""
+"""Private, hash-bound invocation ledger with explicit finite or uncapped authority."""
 
 import argparse
 from contextlib import contextmanager
@@ -49,18 +49,40 @@ def load_registration(path, expected_hash):
             raise Refused("Real execution bindings incomplete")
         if not data.get("source_hashes"):
             raise Refused("Real source bindings required")
-        # The isolated tool broker and actual daemon admission are not wired yet.
-        # A boolean or an unverified hash must never enable the preparation build.
-        raise Refused("Preparation build cannot admit real execution")
+        if data.get("scenario") not in {"P1", "O1", "C1", "D1"}:
+            raise Refused("A known scenario is required")
+        admission_path = private_path(data.get("admission_file", ""))
+        if digest(admission_path) != data.get("admission_sha256"):
+            raise Refused("Admission evidence changed")
+        admission = json.loads(admission_path.read_text())
+        if admission.get("verdict") != "approved" or admission.get("scope") != data.get("scenario"):
+            raise Refused("Scenario has no independent admission")
+        required = {"actual_driver", "original_task_identity", "shell_network_denied", "permission_widening_denied", "role_filesystem", "instruction_complete", "platform_records"}
+        if not required.issubset(set(admission.get("verified", []))):
+            raise Refused("Admission evidence is incomplete")
+        for filename, expected in admission.get("source_hashes", {}).items():
+            if not Path(filename).is_absolute() or digest(filename) != expected:
+                raise Refused("Reviewed source changed")
+        if admission.get("source_hashes") != data.get("source_hashes"):
+            raise Refused("Registration differs from reviewed sources")
+        if admission.get("model") != data["model"] or admission.get("account_alias") != data["account_alias"]:
+            raise Refused("Model/account differs from admission")
     elif os.environ.get("MULTICA_RUN_REAL_AGENT_SMOKE"):
         raise Refused("Fake entry refuses real-agent opt-in")
-    for key in ("max_starts", "max_model_requests"):
-        if type(data.get(key)) is not int or data[key] <= 0:
-            raise Refused("A positive finite count budget is required")
-    for key in ("max_seconds", "per_start_seconds", "expires_at"):
+    uncapped = data.get("authorization_mode") == "uncapped_until_success"
+    if uncapped:
+        if data.get("authorization_ref") != "user-20261120-continue-until-success":
+            raise Refused("Uncapped authority must name the explicit user decision")
+        if any(data.get(k) is not None for k in ("max_starts", "max_model_requests", "max_seconds", "expires_at")):
+            raise Refused("Uncapped authority uses null cumulative limits")
+    else:
+        for key in ("max_starts", "max_model_requests"):
+            if type(data.get(key)) is not int or data[key] <= 0:
+                raise Refused("A positive finite count budget is required")
+    for key in (("per_start_seconds",) if uncapped else ("max_seconds", "per_start_seconds", "expires_at")):
         if type(data.get(key)) not in (int, float) or not math.isfinite(data[key]) or data[key] <= 0:
             raise Refused("A positive finite time budget is required")
-    if data["per_start_seconds"] > data["max_seconds"] or time.time() >= data["expires_at"]:
+    if not uncapped and (data["per_start_seconds"] > data["max_seconds"] or time.time() >= data["expires_at"]):
         raise Refused("Registration expired or time budgets inconsistent")
     private_path(data["ledger"], exists=False)
     if not isinstance(data.get("argv"), list) or not data["argv"] or not all(isinstance(v, str) for v in data["argv"]):
@@ -121,6 +143,8 @@ def ledger(registration):
 
 
 def remaining(registration, data):
+    if registration.get("authorization_mode") == "uncapped_until_success":
+        return float("inf")
     deadline = registration["expires_at"]
     if data["first_reserved_at"] is not None:
         deadline = min(deadline, data["first_reserved_at"] + registration["max_seconds"])
@@ -129,7 +153,8 @@ def remaining(registration, data):
 
 def reserve_start(registration):
     with ledger(registration) as data:
-        if data["stopped"] or remaining(registration, data) <= 0 or len(data["starts"]) >= registration["max_starts"]:
+        cap = registration["max_starts"]
+        if data["stopped"] or remaining(registration, data) <= 0 or (cap is not None and len(data["starts"]) >= cap):
             raise Refused("Invocation/time budget exhausted or stopped")
         if any(row.get("finished_at") is None for row in data["starts"]):
             raise Refused("An earlier reservation has no terminal record")
@@ -144,7 +169,8 @@ def reserve_start(registration):
 
 def reserve_model_request(registration):
     with ledger(registration) as data:
-        if data["stopped"] or remaining(registration, data) <= 0 or len(data["model_requests"]) >= registration["max_model_requests"]:
+        cap = registration["max_model_requests"]
+        if data["stopped"] or remaining(registration, data) <= 0 or (cap is not None and len(data["model_requests"]) >= cap):
             raise Refused("Model-request/time budget exhausted")
         if not data["starts"] or data["starts"][-1]["started_at"] is None or data["starts"][-1]["finished_at"] is not None:
             raise Refused("No active registered process")
@@ -153,6 +179,35 @@ def reserve_model_request(registration):
             raise Refused("Active process time budget exhausted")
         data["model_requests"].append({"sequence": len(data["model_requests"]) + 1, "reserved_at": time.time(), "start_sequence": data["starts"][-1]["sequence"]})
         return min(remaining(registration, data), process_remaining)
+
+
+def mark_start(registration, sequence, pid):
+    with ledger(registration) as data:
+        row = data["starts"][sequence - 1]
+        if row["started_at"] is not None or row["finished_at"] is not None:
+            raise Refused("Invocation already started or finished")
+        row.update(started_at=time.time(), pid=pid)
+
+
+def finish_start(registration, sequence, outcome, exit_code):
+    with ledger(registration) as data:
+        row = data["starts"][sequence - 1]
+        if row["finished_at"] is not None:
+            raise Refused("Invocation already finished")
+        row.update(finished_at=time.time(), outcome=outcome, exit_code=exit_code)
+        if outcome != "completed":
+            data["stopped"] = True
+
+
+def acknowledge_failure(registration, reason):
+    """Retain every debit and require an explicit operator diagnosis before retry."""
+    if not isinstance(reason, str) or not reason.strip():
+        raise Refused("Retry requires a recorded diagnosis")
+    with ledger(registration) as data:
+        if any(row["finished_at"] is None for row in data["starts"]):
+            raise Refused("Cannot acknowledge an unresolved invocation")
+        data.setdefault("operator_actions", []).append({"at": time.time(), "action": "resume_after_diagnosis", "reason": reason})
+        data["stopped"] = False
 
 
 def execute(registration):

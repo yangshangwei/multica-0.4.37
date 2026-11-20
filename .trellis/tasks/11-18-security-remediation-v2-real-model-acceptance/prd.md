@@ -1,3 +1,5 @@
+> 当前授权覆盖（2026-11-20续）：用户明确不限制本任务真实模型调用次数与总运行时长，要求持续推进到成功。使用当前Codex配置 model=`api666-zzzcoding/gpt-6-astra` / provider=`magpie` / effort=`max` / account alias=`current-magpie-config`。以下旧有限预算/等待具体参数段落是历史，已由本段替代。每次调用仍记账；20分钟单次watchdog仅用于检测卡死，可诊断后重试，不是用户累计预算。真实入口仍须完成实际生产路径及隔离验证，不能凭本授权绕过。
+
 # 安全漏洞修复小队 v2：真实模型验收与漏洞验证座位试点
 
 父任务：`.trellis/tasks/11-18-security-remediation-squad-v2`（需求、背景、决策以其 `prd.md` 为准）。2026-11-20 用户已明确授权本子任务调用 Codex；旧记录中的“未授权”已被替代。规划、合成夹具和不调用模型的环境预检先行，具体执行方案见 `design.md`、`implement.md`。真实启动仍须核实实际合入状态、指定模型/账号和有限预算。

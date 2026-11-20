@@ -1,3 +1,5 @@
+> 当前授权覆盖（2026-11-20续）：用户明确不限制本任务真实模型调用次数与总运行时长，要求持续推进到成功。使用当前Codex配置 model=`api666-zzzcoding/gpt-6-astra` / provider=`magpie` / effort=`max` / account alias=`current-magpie-config`。以下旧有限预算/等待具体参数段落是历史，已由本段替代。每次调用仍记账；20分钟单次watchdog仅用于检测卡死，可诊断后重试，不是用户累计预算。真实入口仍须完成实际生产路径及隔离验证，不能凭本授权绕过。
+
 # 设计：Codex 真实验收与漏洞验证座位
 
 ## 1 目标与证据边界
