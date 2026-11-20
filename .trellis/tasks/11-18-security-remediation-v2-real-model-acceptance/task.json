@@ -14,8 +14,8 @@
   "completedAt": null,
   "branch": "codex/security-remediation-v2-real-20261120",
   "base_branch": "codex/cross-workspace-collaboration",
-  "worktree_path": "/Volumes/artisan/code/2026/mc-secrem-v2-real-20261120",
-  "commit": null,
+  "worktree_path": null,
+  "commit": "6d4c98561860b11070d5c816a8ce01b582445f45",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -62,6 +62,9 @@
     "private_evidence_root": "/Volumes/artisan/code/2026/secrem-v2-real-evidence-20261120",
     "runtime_resources_cleaned": true,
     "retained_database_dumps": 3,
-    "source_commit_tested": "d1b25077b89af8ef72e58c0b040b9ea495261b1b"
+    "source_commit_tested": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
+    "checkpoint_integrated": "6d4c98561860b11070d5c816a8ce01b582445f45",
+    "worktree_removed": true,
+    "next_action": "Use a documented SDK-supported provider configuration; restore fresh environment and admission. Do not infer SDK permission from catalog visibility."
   }
 }
