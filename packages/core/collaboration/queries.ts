@@ -5,7 +5,7 @@ import { z } from "zod";
 import { withQueryAccessBoundary } from "../query-access";
 import { useAuthStore } from "../auth";
 import type { AccountView } from "../paths/account";
-import { collaborationKeys, collaborationScope, protectCollaborationRead, retainCollaborationScope, type CollaborationScope } from "./access";
+import { CollaborationUnavailableError, collaborationKeys, collaborationScope, protectCollaborationRead, retainCollaborationScope, type CollaborationScope } from "./access";
 import type { CollaborationStatusAction } from "./schema";
 
 const freshness = { staleTime: 0, retry: false, refetchOnMount: "always" as const, refetchOnWindowFocus: "always" as const, refetchOnReconnect: "always" as const, refetchInterval: 15_000, refetchIntervalInBackground: false };
@@ -47,7 +47,22 @@ export function useCollaborationStatusOptions(scope: CollaborationScope, issueId
   const client = useQueryClient();
   return useQuery({
     queryKey: [...collaborationKeys.issue(scope, issueId), "status-options", action],
-    queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationStatusOptions(issueId, action, { signal })),
+    queryFn: async ({ signal }) => {
+      const result = await protectCollaborationRead(client, scope, issueId, async () => {
+        try { return await getApi().getCollaborationStatusOptions(issueId, action, { signal }); }
+        catch (error) {
+          if (!(error instanceof ApiError) || error.isStaleAuthResponse || ![403, 404].includes(error.status)) throw error;
+          // Completion can invalidate these options before its form unmounts.
+          // An unavailable action does not revoke independent issue access.
+          const current = await getApi().getCollaborationIssue(issueId, { signal });
+          if (!current) throw new CollaborationUnavailableError();
+          return error;
+        }
+      });
+      // Keep the action refused after the scope/access fence accepted the read.
+      if (result instanceof ApiError) throw result;
+      return result;
+    },
     enabled, staleTime: 0, retry: false,
   });
 }

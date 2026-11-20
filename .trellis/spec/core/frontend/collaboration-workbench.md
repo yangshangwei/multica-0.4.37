@@ -87,6 +87,17 @@ recovery receiving a valid Agent row with null draft returns unavailable;
 the original human intent. The full contract is
 [run-bound Agent outputs](../../server/collaboration-runtime-output.md).
 
+Status options are action-specific authority, not the independent issue read.
+`useCollaborationStatusOptions(scope, issueId, action, enabled)` can refetch while
+the completed action form is still mounted after scope invalidation. On a current
+403/404, revalidate `getCollaborationIssue(issueId, { signal })` inside the same
+`protectCollaborationRead` scope/access fence. A readable issue preserves its
+cache and drafts; propagate the original options error outside that guard so the
+action stays refused. A denied authoritative issue read still clears protected
+data. Missing/malformed or transiently unavailable revalidation fails without
+inventing access loss. A newer access epoch or session change fences the result;
+never restore data or grant the completed action from revalidation.
+
 Resource or operation failure is not automatically parent-access loss. A missing
 file/operation or unsupported file route is unavailable. Creation's
 `account_unavailable` may identify its recipient rather than the caller; recheck
@@ -224,6 +235,9 @@ parse; new forms write an empty string.
 | Unknown write response or malformed receipt | Retain original key and pending intent |
 | Recognized final refusal with matching HTTP/body status, or allowed absent body status | Retire exact operation; retain form input and require explicit current-version submit |
 | Unrecognized code, contradictory status or malformed declared POST receipt | Preserve uncertain intent and original-key recovery |
+| Status-options 403/404, authoritative issue read succeeds | Preserve issue data/drafts; retain the original failed action query |
+| Status-options refusal, authoritative issue read denies access | Clear private issue state through the original access guard |
+| Status-options refusal, authority revalidation is unavailable or superseded | Fail without revoking valid access or restoring an obsolete scope |
 | Fresh recovery permission denial | Clear protected issue cache and obsolete drafts |
 | Current-epoch authority read succeeds after denial | Clear that denial's propagated Query errors without restoring old data or fetching inactive reads |
 | Authority recovery is unavailable or fails | Retain denial and data-free protected state |
@@ -307,7 +321,18 @@ verifies the old prompt disappears and a comment saves without an entire-page
 reload. `views/collaboration/notifications.test.tsx` verifies the Chinese
 assignment text independently from the creation form's self-selection text.
 
+`collaboration/status-options.test.tsx` mounts the actual hook and invalidates the
+scope after completion while the action query remains active. Assert one
+revalidation, a retained completed detail and the original action403; controls
+cover actual issue403/404, transient503 and a newer denial during pending read.
+`e2e/collaboration-detail-journey.spec.ts` keeps both Web and Desktop on the same
+issue after exact acceptance/self-completion and verifies the rendered result.
+
 ## 7. Wrong vs Correct
+
+Wrong: interpret an obsolete completion-options403 as revocation of all issue
+access. Correct: revalidate the authoritative issue within the existing fence,
+then preserve its data while refusing the obsolete action.
 
 Wrong: import request-bearing cancellation helpers from `ApiClient`, or always
 drop the issue scope for GET recovery.
