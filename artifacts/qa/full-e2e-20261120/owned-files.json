@@ -1,0 +1,24 @@
+{
+  "product": [
+    "packages/core/collaboration/queries.ts"
+  ],
+  "regressions": [
+    "packages/core/collaboration/status-options.test.tsx",
+    "e2e/iteration-history-navigation.spec.ts",
+    "server/internal/service/collaboration_stage_execution_fixture_test.go",
+    "server/internal/service/collaboration_stage_execution_fixture_clock_test.go",
+    "e2e/collaboration-host-installed.spec.ts",
+    "e2e/fixtures/collaboration-runtime-output.ts",
+    "e2e/fixtures/collaboration-runtime-output-allocation.mjs",
+    "e2e/fixtures/collaboration-runtime-output-allocation.node-test.mjs"
+  ],
+  "spec": [
+    ".trellis/spec/core/frontend/collaboration-workbench.md",
+    ".trellis/spec/server/verification-environment.md",
+    ".trellis/spec/server/database-test-isolation.md",
+    ".trellis/spec/web/frontend/e2e-run-environment.md"
+  ],
+  "task": ".trellis/tasks/11-20-full-e2e-regression-20261120",
+  "evidence": "artifacts/qa/full-e2e-20261120",
+  "preserve_other_work": true
+}

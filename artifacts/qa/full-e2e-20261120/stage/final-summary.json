@@ -1,0 +1,263 @@
+{
+  "recorded_at": "2026-11-20T01:38:03.728795+00:00",
+  "scope": "stage execution canonical three scenarios on production Web and actual Electron renderer fixture; controlled synthetic deployment/metrics adapter and owned fake provider",
+  "status": "pass",
+  "runs": {
+    "initial": {
+      "report": "artifacts/qa/full-e2e-20261120/stage/browser.json",
+      "sha256": "0fed6a445daa2ffa798f76fea62458c2ba800f6ecfb729bbf7091263d6d6cc6f",
+      "stats": {
+        "startTime": "2026-11-20T01:16:43.645Z",
+        "duration": 7023.039,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 3,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 232,
+          "project": "chromium",
+          "status": "unexpected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "failed",
+              "duration": 1190,
+              "retry": 0,
+              "startTime": "2026-11-20T01:16:44.350Z"
+            }
+          ]
+        },
+        {
+          "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 348,
+          "project": "chromium",
+          "status": "unexpected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "failed",
+              "duration": 949,
+              "retry": 0,
+              "startTime": "2026-11-20T01:16:47.295Z"
+            }
+          ]
+        },
+        {
+          "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 397,
+          "project": "chromium",
+          "status": "unexpected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "failed",
+              "duration": 1089,
+              "retry": 0,
+              "startTime": "2026-11-20T01:16:49.144Z"
+            }
+          ]
+        }
+      ]
+    },
+    "replay1": {
+      "report": "artifacts/qa/full-e2e-20261120/stage/browser-replay1.json",
+      "sha256": "35f98f3fd5d885a16fd0438755e5ffc5574db17804f0033fe5d5d35ee129fbd0",
+      "stats": {
+        "startTime": "2026-11-20T01:24:25.043Z",
+        "duration": 136442.582,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 232,
+          "project": "chromium",
+          "status": "expected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "passed",
+              "duration": 51817,
+              "retry": 0,
+              "startTime": "2026-11-20T01:24:26.060Z"
+            }
+          ]
+        },
+        {
+          "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 348,
+          "project": "chromium",
+          "status": "expected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "passed",
+              "duration": 42955,
+              "retry": 0,
+              "startTime": "2026-11-20T01:25:19.041Z"
+            }
+          ]
+        },
+        {
+          "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+          "file": "collaboration-stage-execution.spec.ts",
+          "line": 397,
+          "project": "chromium",
+          "status": "expected",
+          "expected_status": "passed",
+          "runs": [
+            {
+              "status": "passed",
+              "duration": 39417,
+              "retry": 0,
+              "startTime": "2026-11-20T01:26:02.003Z"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fixture_failure": {
+    "classification": "launcher preparation defect",
+    "initial_failure_location": "e2e/fixtures/collaboration-stage-execution.ts:210",
+    "cause": "Preallocated staging/<slot> directories did not exist; immutable packager requires them before fixture mutation.",
+    "repair": "Task prepare.sh creates eight owned 0700 slot directories and restores staging root to 0500; replay.sh populated the previously absent slots with ownership receipt.",
+    "product_changes": false,
+    "initial_failed_evidence_retained": true
+  },
+  "runtime": {
+    "web": {
+      "component": "web",
+      "mode": "production",
+      "build_id": "ppJO9I3pKqFza7qn0WOdt",
+      "command": "next start --port 13500 existing fixed build",
+      "source_id": "cf6038cce3c1b0a551f8784bf0c137d01ae9fb27a4df507ba3083a4e9c6b16c5",
+      "configuration_id": "47f5f9ba72b8afe643a80958bce4a078dc51b005538771fce20134099df3658a",
+      "commit": "c56e2194e",
+      "launcher_pid": 26499,
+      "started_at": "2026-11-20T01:14:02Z",
+      "listener_pid": 26575
+    },
+    "renderer": {
+      "pid": 26451,
+      "renderer": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/out/renderer",
+      "origin": "http://127.0.0.1:5674",
+      "index_sha256": "6ea39f376dc87103b6c39321d7d086603e8e2c446de0f6e3fd7dd3400d917b4d"
+    },
+    "harness": {
+      "api_url": "http://127.0.0.1:18580",
+      "pid": 26393,
+      "version": 1
+    },
+    "harness_binary": {
+      "path": "/Users/artisan/.multica/dev/envs/check-20261120011251-24747/bin/stage-router.test",
+      "sha256": "2ec02eed25fd5c66f356e2956a62d1c6db6cad09cf1b9c9cca535c70aef895e5",
+      "mode": 493
+    },
+    "web_build_id": "ppJO9I3pKqFza7qn0WOdt",
+    "renderer_index": {
+      "path": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/out/renderer/index.html",
+      "sha256": "6ea39f376dc87103b6c39321d7d086603e8e2c446de0f6e3fd7dd3400d917b4d",
+      "mode": 420
+    }
+  },
+  "cleanup": {
+    "status": "pass",
+    "report": "artifacts/qa/full-e2e-20261120/stage/cleanup-after.json",
+    "sha256": "ca99be6f0f0648b47f534252b68769755203bcc8c1b8e4f2ec6841f22be556ad",
+    "database": {
+      "name": "multica_qa_20261120_stage_18580",
+      "retained": true,
+      "gate": {
+        "enabled": false,
+        "creation_enabled": true,
+        "host_execution_enabled": false,
+        "epoch": "8"
+      },
+      "ledgers": {
+        "collaboration_stage_execution_intent": {
+          "count": 4,
+          "sha256": "e9102b3ecf67c58e31fe4130e7009b7810c64b0d223fe6665d7f0db255619c91"
+        },
+        "collaboration_stage_execution_observation": {
+          "count": 6,
+          "sha256": "4a68fd3897be5f9b8f405a3ba54b426d305098f805e150b6fb84f70fb6c5d425"
+        },
+        "collaboration_stage_rollback_observation": {
+          "count": 3,
+          "sha256": "6d9c065789c600bdeb94c4b4052bcaf839bde972717df17a786c5e2575d0a994"
+        }
+      },
+      "connections_excluding_audit": 0
+    },
+    "artifact_count": 21,
+    "processes_stopped": [
+      26389,
+      26393,
+      26451,
+      26499,
+      26575
+    ],
+    "ports_vacant": [
+      "5674",
+      "13500",
+      "18580"
+    ],
+    "socket_removed": true,
+    "container_untouched": true
+  },
+  "verification": {
+    "static_command": [
+      "pnpm",
+      "exec",
+      "turbo",
+      "run",
+      "lint",
+      "typecheck",
+      "--filter=@multica/core",
+      "--filter=@multica/views",
+      "--filter=@multica/web",
+      "--concurrency=1",
+      "--force"
+    ],
+    "static_exit_code": 0,
+    "static_tasks_passed": 9,
+    "lint_errors": 0,
+    "lint_warnings": 27,
+    "static_log": "artifacts/qa/full-e2e-20261120/stage/review-static.log",
+    "static_sha256": "e83a4c9881213f59c14f089e9e41ab4f551cda4801d999bb686d9fb873a9c365",
+    "shell_syntax": "pass: prepare.sh/replay.sh/cleanup.sh",
+    "node_syntax": "pass: audit.mjs/shutdown.mjs",
+    "harness_terminal": "PASS: TestCollaborationStageExecutionHarness; exit0"
+  },
+  "limitations": [
+    "No real deployment, metrics, payment or model account was accessed.",
+    "Electron renderer fixture does not establish installed Main acceptance.",
+    "All actual backend writer paths and complete A12 phase acceptance remain outside these three canonical tests.",
+    "Repository source has concurrent parent-owned security edits; replay binds to retained Web build ppJO9I3pKqFza7qn0WOdt and renderer hash, not a later rebuilt bundle."
+  ],
+  "evidence_files": {
+    "prepare.sh": "b10e24a289f1414c45b2b34903f61e19fe88a0868baf6a21f56bcb3686535154",
+    "replay.sh": "02fb920e0c2bae81125a83253fea6789d91971bc07e664d9d56833a7567f1684",
+    "slot-allocation-replay1.json": "915483b4ffe9fb442a0ead048b13ecd26556650d23616d55131ff258784f0fa1",
+    "replay1.log": "bf8ec88f22e3d74e7d05130cab7fbcb1a7fa71960c1faa8f4198e189d377ef81",
+    "run.log": "fe21ba300fa1b23349893b570f39ae64579d2e5eb2f7e03c81ddc7635cca3d56",
+    "cleanup-plan.md": "f05c3b3a6b285c82a29d78ca14ac135b17406d6c5d69adfea09db6e733e2770b",
+    "audit.mjs": "fefeb78e35b4fef5a802e31e0c9f187f1ce4966b60573e0cf2c1dc835673c555",
+    "shutdown.mjs": "e6b5a69a8294629bfe65a92373ead4f9204e848ad3b761e011fc4b274954db26",
+    "cleanup.sh": "bb45c4d3968f57a1452a9178da6343ba471f322af0bfb3da8588dd999e7434b6",
+    "shutdown-receipt.json": "7aace9f2148a510be72cdafbdd0b242a678079c6f0ee56921177928090246b3b",
+    "harness-exit.json": "0af7fb7daa1b060ab3b81bc9e1610484a891a82205b18f787aff3a0a480bc1a9"
+  }
+}

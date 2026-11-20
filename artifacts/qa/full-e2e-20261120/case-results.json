@@ -1,0 +1,4969 @@
+{
+  "scope": "Latest actual executions; original failures and source-snapshot boundaries remain in the reports",
+  "counts": {
+    "passed": 496
+  },
+  "automatic_retries": 0,
+  "cases": [
+    {
+      "file": "admin-collaboration-switches.spec.ts",
+      "line": 23,
+      "title": "a super administrator closes and reopens new collaboration issues from Settings and members follow",
+      "status": "passed",
+      "final_run": "conditional/admin-collaboration-switches-native1.json",
+      "started": "2026-11-19T23:23:04.059Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "line": 168,
+      "title": "administrator resource publishing > first resource page screenshot",
+      "status": "passed",
+      "final_run": "conditional/admin-resource-publishing-native1.json",
+      "started": "2026-11-19T23:24:13.004Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "line": 172,
+      "title": "administrator resource publishing > localized responsive states and deployment-disabled feedback",
+      "status": "passed",
+      "final_run": "conditional/admin-resource-publishing-native1.json",
+      "started": "2026-11-19T23:24:15.956Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "admin-resource-publishing.spec.ts",
+      "line": 231,
+      "title": "administrator resource publishing > real uploads reach Web and native markets; revisions, recovery and withdrawal preserve copies",
+      "status": "passed",
+      "final_run": "conditional/admin-resource-publishing-native1.json",
+      "started": "2026-11-19T23:24:23.636Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 223,
+      "title": "role templates: provenance is a server decision > the roster is listed with its autonomy defaults",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:06.412Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 237,
+      "title": "role templates: provenance is a server decision > a client cannot choose its own autonomy_level or template_key",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:07.759Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 262,
+      "title": "role templates: provenance is a server decision > an unlisted leader key is refused",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:07.791Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 273,
+      "title": "autonomy ladder on issue writes > an Observer may edit an issue but not direct it",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:07.801Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 307,
+      "title": "autonomy ladder on issue writes > a Contributor may direct an issue",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:08.264Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 330,
+      "title": "autonomy gate: bypass regressions > a capitalized status key does not slip past the gate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:08.506Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 350,
+      "title": "autonomy gate: bypass regressions > an explicit null assignee is a direction change",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:08.631Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 378,
+      "title": "autonomy gate: bypass regressions > a batch of one is not a way around the gate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:09.035Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 406,
+      "title": "autonomy gate: bypass regressions > an Observer cannot delete issues, singly or in a batch",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:09.427Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 429,
+      "title": "autonomy escalation > an Observer cannot staff a role at all",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:09.760Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 440,
+      "title": "autonomy escalation > an Operator may staff agents at or below its own level",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:09.843Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 456,
+      "title": "autonomy escalation > a Coordinator cannot mint an Operator",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:10.136Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 476,
+      "title": "autonomy escalation > a Coordinator may staff lower-level agents and an equal-level squad leader",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:10.451Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 502,
+      "title": "autonomy escalation > an agent without a declared level retains its staffing access",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:11.014Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 525,
+      "title": "autonomy escalation > an agent cannot promote itself through UpdateAgent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:11.630Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 544,
+      "title": "autonomy escalation > a person may still set an agent's level",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:11.882Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 568,
+      "title": "the human approval boundary > an agent files a request, only a person decides it",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:12.388Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 619,
+      "title": "the human approval boundary > \"executed\" is a status, not a decision a client can post",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:12.993Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 643,
+      "title": "the human approval boundary > an unknown risk class is refused",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:13.340Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 658,
+      "title": "squad staffing from a template > the roster and the squad are created together",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:13.404Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 699,
+      "title": "squad staffing from a template > an existing role agent is reused, not re-applied",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:13.841Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 733,
+      "title": "squad staffing from a template > an Observer cannot staff a squad",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:14.420Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 750,
+      "title": "squad staffing from a template > staffing cannot pull in a role agent the caller may not invoke",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:14.579Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 811,
+      "title": "coordination gates on squads and automation > a Contributor cannot edit a squad or its membership",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:14.998Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-autonomy-gates.spec.ts",
+      "line": 839,
+      "title": "coordination gates on squads and automation > a Contributor cannot create or delete standing automation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:15.320Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-categories.spec.ts",
+      "line": 10,
+      "title": "custom categories survive creation, editing and clearing and compose with directory grouping",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:16.124Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-category-grouping.spec.ts",
+      "line": 23,
+      "title": "saved categories drive the default directory, counts and filters after legacy preference migration",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:39.272Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-mcp.spec.ts",
+      "line": 165,
+      "title": "Agent MCP tab (creator-only) > creator sees the MCP Apps tab and toggling a toolkit writes the allowlist",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:50.470Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-mcp.spec.ts",
+      "line": 190,
+      "title": "Agent MCP tab (creator-only) > a non-creator viewer does not see the MCP Apps tab",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:52.871Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "line": 172,
+      "title": "agent role templates > opens existing members without mutation and restores template browsing",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:18:56.269Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "line": 248,
+      "title": "agent role templates > offers a template starting point and creates from a role",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:00.677Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agent-role-template.spec.ts",
+      "line": 300,
+      "title": "agent role templates > shows the diagnostician evidence contract and server-owned defaults",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:02.814Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "agents-discovery.spec.ts",
+      "line": 97,
+      "title": "agent discovery keeps role and squad identification accurate without changing members",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:04.451Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth-device.spec.ts",
+      "line": 5,
+      "title": "device login authenticates a distinct user without granting another user's workspace",
+      "status": "passed",
+      "final_run": "specialized/device-auth.json",
+      "started": "2026-11-19T23:53:30.322Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth-qa.spec.ts",
+      "line": 8,
+      "title": "email login verifies a real code, restores access after reload, and logout protects the workspace",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:24:35.211Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth.spec.ts",
+      "line": 5,
+      "title": "Authentication > login page renders correctly",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:16.150Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth.spec.ts",
+      "line": 15,
+      "title": "Authentication > login and redirect to /issues",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:17.567Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth.spec.ts",
+      "line": 22,
+      "title": "Authentication > unauthenticated user is redirected to /login",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:18.815Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "auth.spec.ts",
+      "line": 34,
+      "title": "Authentication > logout redirects to /login",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:19.556Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 133,
+      "title": "autopilot lifecycle branches > focuses missing required fields and creates nothing until title and executor are supplied",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:21.202Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 164,
+      "title": "autopilot lifecycle branches > creates a non-template run-only autopilot with its default schedule and persists it on reload",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:24.146Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 189,
+      "title": "autopilot lifecycle branches > renames a manual autopilot without silently creating a schedule",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:28.092Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 207,
+      "title": "autopilot lifecycle branches > adds an explicitly requested default schedule to a manual autopilot exactly once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:32.028Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 228,
+      "title": "autopilot lifecycle branches > persists pause and resume across reload and gates manual runs while paused",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:40.418Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 249,
+      "title": "autopilot lifecycle branches > rolls back a rejected pause and can pause successfully after retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:44.820Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 273,
+      "title": "autopilot lifecycle branches > cancels detail deletion without issuing a delete or losing the manual autopilot",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:49.355Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 292,
+      "title": "autopilot lifecycle branches > restores the list row after failed deletion and removes it after a real retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:19:58.616Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-lifecycle-branches.spec.ts",
+      "line": 324,
+      "title": "autopilot lifecycle branches > preserves a created autopilot when its schedule fails and repairs it without a duplicate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:20:14.390Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-template-zh.spec.ts",
+      "line": 182,
+      "title": "adopts, edits and dispatches Chinese briefs through the real template API",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:26.077Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "autopilot-template.spec.ts",
+      "line": 188,
+      "title": "autopilot templates > restores gallery filters and scroll with native and in-flow Back",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:20:34.577Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "autopilot-template.spec.ts",
+      "line": 219,
+      "title": "autopilot templates > picks a template, requires an assignee, and creates without claiming the prompt",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:20:43.736Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "builtin-agent-concurrency.spec.ts",
+      "line": 22,
+      "title": "built-in agents start at the shared concurrency default > every role template, squad roster and 小阿孚 is created at the same cap as a blank agent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:20:47.934Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "builtin-agent-concurrency.spec.ts",
+      "line": 65,
+      "title": "built-in agents start at the shared concurrency default > an agent staffed from a role template in the browser shows the shared default as its concurrency",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:21:06.974Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "canonical-issue-interaction.spec.ts",
+      "line": 7,
+      "title": "canonical issue URLs preserve a status picker opened before normalization completes",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:24:39.346Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "capability-market.spec.ts",
+      "line": 5,
+      "title": "capability market restores type and draft through history while resource management stays separate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:21:14.386Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "capability-market.spec.ts",
+      "line": 107,
+      "title": "capability market isolates workspace resources, preferences and transient drafts",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:21:27.212Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "capability-market.spec.ts",
+      "line": 219,
+      "title": "capability market separates catalog failures and polls only the active type",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:21:37.295Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "changelog-desktop.spec.ts",
+      "line": 7,
+      "title": "desktop Help, tab restoration and updater action use the in-app reader",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:22:48.896Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "changelog.spec.ts",
+      "line": 56,
+      "title": "Help opens this deployment's attributed changelog",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:22:57.575Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "changelog.spec.ts",
+      "line": 99,
+      "title": "generated publication reaches an open reader and a fresh client without restart",
+      "status": "passed",
+      "final_run": "specialized/changelog-live-replay.json",
+      "started": "2026-11-20T00:02:43.037Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "chat-actor-picker.spec.ts",
+      "line": 139,
+      "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:35.682Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-actor-picker.spec.ts",
+      "line": 139,
+      "title": "new chat reuses responsibility discovery, categories and keyboard selection at wide and narrow widths (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:39.455Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-actor-picker.spec.ts",
+      "line": 201,
+      "title": "floating chat avatar uses the same agent discovery and restores focus on Escape",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:44.905Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-attachments.spec.ts",
+      "line": 82,
+      "title": "Chat attachments > upload-file binds attachment to the chat_session; send back-fills chat_message_id",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:03.629Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 120,
+      "title": "upload rejection preserves text and reattaching binds exactly one file on send [fault injection]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:04.003Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 151,
+      "title": "removing an uploaded attachment sends only the remaining text [real API]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:10.142Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 175,
+      "title": "session creation rejection keeps the new draft and retries without empty navigation [fault injection]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:12.068Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 201,
+      "title": "message rejection retains the draft and retry persists no duplicate [fault injection]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:13.516Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 224,
+      "title": "repeated keyboard submit during a pending send creates only one message [latency injection]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:15.967Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "chat-recovery-branches.spec.ts",
+      "line": 250,
+      "title": "late send acceptance preserves the other session's draft and selection [latency injection]",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:23:17.564Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "line": 84,
+      "title": "CLI surfaces the server's 403 reason > an Observer agent's status change prints the autonomy reason, not the workspace hint (en)",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:02.615Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "line": 84,
+      "title": "CLI surfaces the server's 403 reason > an Observer agent's status change prints the autonomy reason, not the workspace hint (zh)",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:13.237Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "cli-forbidden-reason.spec.ts",
+      "line": 95,
+      "title": "CLI surfaces the server's 403 reason > an ordinary member editing someone else's comment sees the server's reason",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:18.826Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 296,
+      "title": "Desktop offers private resources, sends all plus AI mentions and preserves cancelled command history",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:40.376Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 350,
+      "title": "Desktop creates a private collaboration issue, downloads through native IPC and restores the same issue",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:27:03.962Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 433,
+      "title": "Desktop child links, recorded pages and result notifications survive popouts and restart",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:27:12.118Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 582,
+      "title": "Desktop authors initial fields and preserves discussion through shared edit controls",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:27:30.258Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 622,
+      "title": "Desktop resource owners authorize, withdraw and commit a held configuration switch",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:27:49.456Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 689,
+      "title": "Desktop account links retain one tab across workspaces, popouts and restart",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:27:59.430Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 805,
+      "title": "Desktop cold account links work without workspaces and survive a controlled list error",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:09.969Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 839,
+      "title": "Desktop login opens the pending account destination while workspace loading is stalled",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:13.669Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 874,
+      "title": "Desktop account entry obeys the requires_account_setup guard",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:17.193Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 874,
+      "title": "Desktop account entry obeys the requires_password_change guard",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:18.895Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-account-desktop.spec.ts",
+      "line": 899,
+      "title": "Desktop viewer and server changes discard the previous account tab and close popouts",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:21.769Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-administration-desktop.spec.ts",
+      "line": 11,
+      "title": "Desktop administers disabled-creator collaborations in the account shell and recovers the retained receipt",
+      "status": "passed",
+      "final_run": "conditional/collaboration-administration-desktop-native1.json",
+      "started": "2026-11-19T23:23:44.484Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-administration-web.spec.ts",
+      "line": 61,
+      "title": "Web administers disabled-creator collaborations with explicit succession and original receipt recovery",
+      "status": "passed",
+      "final_run": "conditional/collaboration-administration-web-native1.json",
+      "started": "2026-11-19T23:23:20.876Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "line": 164,
+      "title": "Gap 5: a source workspace holding a collaboration issue cannot be deleted, open or completed, and nothing is cleaned up",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:02:39.837Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "line": 294,
+      "title": "Gap 7: hidden manager actions POSTed by the wrong role are refused and change nothing; a non-participant's @agent never queues",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:02:52.010Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-boundaries-web.spec.ts",
+      "line": 451,
+      "title": "Smaller gaps: title/date edits leave attributed records, the exact recipient resolver stays read-only, a source member resolves and reacts without notifications",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:03:42.419Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-business-scenarios.spec.ts",
+      "line": 100,
+      "title": "S2 support ticket: manual intake becomes AI-assisted, files reach the agent, and a reopened ticket is reworked",
+      "status": "passed",
+      "final_run": "conditional/collaboration-business-scenarios-replay1.json",
+      "started": "2026-11-20T01:09:53.871Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-business-scenarios.spec.ts",
+      "line": 251,
+      "title": "S3 governance: live withdrawal really stops work, removal and cancellation fence AI, and the issue still closes",
+      "status": "passed",
+      "final_run": "conditional/collaboration-business-scenarios-replay1.json",
+      "started": "2026-11-20T01:10:33.290Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-business-scenarios.spec.ts",
+      "line": 402,
+      "title": "S1 outsourcing: client, vendor manager and workspace-less engineer close an issue with a vendor squad and reuse approved knowledge",
+      "status": "passed",
+      "final_run": "conditional/collaboration-business-scenarios-replay1.json",
+      "started": "2026-11-20T01:11:13.382Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-command-history-web.spec.ts",
+      "line": 8,
+      "title": "cancelled waiting commands retain original content after comment changes, refresh and another account reads",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:04:29.551Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "line": 14,
+      "title": "Desktop controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "status": "passed",
+      "final_run": "conditional/collaboration-control-journey-desktop-gate-replay1.json",
+      "started": "2026-11-20T00:56:57.111Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-control-journey-desktop.spec.ts",
+      "line": 14,
+      "title": "Desktop pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "status": "passed",
+      "final_run": "conditional/collaboration-control-journey-desktop-gate-replay1.json",
+      "started": "2026-11-20T00:57:26.186Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-control-journey-web.spec.ts",
+      "line": 10,
+      "title": "Web controls recover partial Resume, isolate agent/squad lanes and stop the whole issue",
+      "status": "passed",
+      "final_run": "conditional/collaboration-control-journey-web-gate-replay1.json",
+      "started": "2026-11-20T00:56:05.630Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-control-journey-web.spec.ts",
+      "line": 10,
+      "title": "Web pending termination proof keeps A paused while whole Resume releases B and squad S",
+      "status": "passed",
+      "final_run": "conditional/collaboration-control-journey-web-gate-replay1.json",
+      "started": "2026-11-20T00:56:25.752Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-creation-default.spec.ts",
+      "line": 26,
+      "title": "collaboration creation default > at the fresh-install defaults an ordinary member creates a collaboration issue while execution stays closed",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:26:27.634Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-creation-default.spec.ts",
+      "line": 61,
+      "title": "collaboration creation default > with new collaboration issues closed the member sees the reason and the server refuses the create",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:26:45.138Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-cross-client-execution.spec.ts",
+      "line": 16,
+      "title": "AC33 Web and actual Electron collaborators execute independent A/B namespaces and one coalesced A follow-up",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-cross-client-execution.json",
+      "started": "2026-11-20T00:38:47.406Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "line": 23,
+      "title": "Web creates one private issue after lost upload/create responses and revokes an open preview through account WS",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:28.132Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-delivery-web.spec.ts",
+      "line": 197,
+      "title": "Web explicitly resubmits rejected creation input without losing files or reviving the rejected key",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:35.263Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "line": 37,
+      "title": "Production Web manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "passed",
+      "final_run": "specialized/detail-fixed.json",
+      "started": "2026-11-20T00:31:21.005Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-detail-journey.spec.ts",
+      "line": 37,
+      "title": "Electron Desktop manual detail: information, delivery, revision, resubmission and exact acceptance",
+      "status": "passed",
+      "final_run": "specialized/detail-fixed.json",
+      "started": "2026-11-20T00:31:53.846Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-drawer-pointer.spec.ts",
+      "line": 26,
+      "title": "Electron resource drawer keeps its titlebar close control clickable and retains drafts across every dismissal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-drawer-pointer.json",
+      "started": "2026-11-19T23:58:31.247Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "line": 10,
+      "title": "Web source creation, field edits and discussion share one authorized issue",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:28:37.528Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-editing-web.spec.ts",
+      "line": 103,
+      "title": "A source member outside the collaboration receives only an empty workspace refresh",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:01.690Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-handoff-chain-desktop.spec.ts",
+      "line": 16,
+      "title": "Electron information return shows the original requester and note before restoring responsibility",
+      "status": "passed",
+      "final_run": "conditional/collaboration-handoff-chain-desktop-replay2.json",
+      "started": "2026-11-20T01:05:15.283Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-handoff-chain-web.spec.ts",
+      "line": 12,
+      "title": "Web directed handoff chain moves current todos with responsibility and only the creator completes",
+      "status": "passed",
+      "final_run": "conditional/collaboration-handoff-chain-web.json",
+      "started": "2026-11-19T23:53:59.249Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-host-installed.spec.ts",
+      "line": 36,
+      "title": "Packaged full Main controls a real native host run and explicitly resumes the shared Agent",
+      "status": "passed",
+      "final_run": "specialized/packaged/host-installed-replay.json",
+      "started": "2026-11-20T01:14:12.058Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-host-runtime.spec.ts",
+      "line": 15,
+      "title": "host Web and actual Electron share one ordinary Agent, preserve authors, and explicitly resume after scoped Stop",
+      "status": "passed",
+      "final_run": "conditional/collaboration-host-runtime.json",
+      "started": "2026-11-20T00:28:34.586Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-host-squad.spec.ts",
+      "line": 13,
+      "title": "a capacity-one host squad merges @A with @S, delegates to its member, joins a later instruction and queues another squad",
+      "status": "passed",
+      "final_run": "conditional/collaboration-host-squad.json",
+      "started": "2026-11-20T00:30:00.500Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-host-switch.spec.ts",
+      "line": 14,
+      "title": "switching a squad to another native runtime waits for confirmed Stop and owner consent, then resumes there without moving local files",
+      "status": "passed",
+      "final_run": "conditional/collaboration-host-switch.json",
+      "started": "2026-11-20T00:31:08.113Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-information-recovery.spec.ts",
+      "line": 38,
+      "title": "Web information recovery preserves structured blocks, exact repairs, original receipts and protected history across A B C E F G",
+      "status": "passed",
+      "final_run": "conditional/collaboration-information-recovery.json",
+      "started": "2026-11-20T00:09:40.389Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-information-recovery.spec.ts",
+      "line": 38,
+      "title": "Desktop information recovery preserves structured blocks, exact repairs, original receipts and protected history across A B C E F G",
+      "status": "passed",
+      "final_run": "conditional/collaboration-information-recovery.json",
+      "started": "2026-11-20T00:12:40.030Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-installed-clients.spec.ts",
+      "line": 29,
+      "title": "cached v0.6.7 CLI cannot bypass paused, unconfirmed-stop or removed-author commands",
+      "status": "passed",
+      "final_run": "cross-client/historical-cli.json",
+      "started": "2026-11-20T00:59:13.480Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-installed-main.spec.ts",
+      "line": 143,
+      "title": "installed Linux full Main and production Web hand off the same issue, preserve authority/history and reject unconfirmed Resume",
+      "status": "passed",
+      "final_run": "specialized/packaged/installed-main-replay.json",
+      "started": "2026-11-20T01:12:11.538Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-knowledge-deployed.spec.ts",
+      "line": 15,
+      "title": "deployed knowledge startup flag controls one actual Host input and its authorization events",
+      "status": "passed",
+      "final_run": "conditional/collaboration-knowledge-deployed-replay1.json",
+      "started": "2026-11-20T01:12:00.664Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 89,
+      "title": "Web external comment proposal, exact human review, correction and workspace derivation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:50.608Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 106,
+      "title": "Web required memory purge clears open source and managed target material",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:04.433Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 138,
+      "title": "Web original-key recovery stays locked after ambiguity and recovers by GET after reload",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:10.172Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 188,
+      "title": "Web definitive unapplied refusal unlocks the draft for a new request",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:12.962Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 214,
+      "title": "Web recorded-run source is selected through the authorized reader",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:15.110Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 232,
+      "title": "Web target-only administrator loses source material but can withdraw",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:17.717Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 265,
+      "title": "Web expiry clears active target material when refresh fails",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:20.563Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-knowledge.spec.ts",
+      "line": 293,
+      "title": "Desktop native source review and independent project/workspace contributions",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:16:33.575Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 94,
+      "title": "Web same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:40:11.497Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "title": "Web creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:41:12.329Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "title": "Web creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:41:52.928Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 94,
+      "title": "Electron same-lane agent and squad controls retain independent holds and whole-issue pause for new targets",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:42:29.644Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "title": "Electron creator complete cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:43:31.811Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lane-close-controls.spec.ts",
+      "line": 100,
+      "title": "Electron creator cancel cancels every author's waiting inputs while live natural proofs remain unconfirmed",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-lane-close-controls.json",
+      "started": "2026-11-20T00:44:28.027Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-leave-web.spec.ts",
+      "line": 14,
+      "title": "Web Leave issue refuses creator and handler; an owner's departure revokes every grant, cancels only their waiting input, stops running work, and rejoining restores nothing",
+      "status": "passed",
+      "final_run": "conditional/collaboration-leave-web.json",
+      "started": "2026-11-19T23:50:33.560Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "title": "Web creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "passed",
+      "final_run": "cross-client/lifecycle-replay.json",
+      "started": "2026-11-20T01:01:34.459Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-lifecycle-controls.spec.ts",
+      "line": 14,
+      "title": "Electron creator removal keeps paused inputs and original natural proof through client and daemon reconnect",
+      "status": "passed",
+      "final_run": "cross-client/lifecycle-replay.json",
+      "started": "2026-11-20T01:02:00.432Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-live-revoke-web.spec.ts",
+      "line": 14,
+      "title": "Web withdrawing a grant during a permitted run stops that work, holds only its target, keeps the queued input, and needs proof plus explicit Resume",
+      "status": "passed",
+      "final_run": "conditional/collaboration-live-revoke-web-gate-replay1.json",
+      "started": "2026-11-20T00:57:50.595Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-machine-boundary.spec.ts",
+      "line": 20,
+      "title": "C13 an ordinary agent's task token sees a collaboration issue only as a reference and cannot write it",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:32:38.919Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-memory-runtime.spec.ts",
+      "line": 45,
+      "title": "two native runtime profiles hand off shared context through the actual run-local CLI",
+      "status": "passed",
+      "final_run": "conditional/collaboration-memory-runtime.json",
+      "started": "2026-11-20T00:31:55.172Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-memory-web.spec.ts",
+      "line": 9,
+      "title": "shared context keeps concurrent edits, restores versions, and permits historical purge after closure",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:39.340Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-memory-web.spec.ts",
+      "line": 155,
+      "title": "shared context recovers a lost save response with its original request after reload",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:46.805Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 97,
+      "title": "Desktop mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:37.570Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 102,
+      "title": "Desktop owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:53.077Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-desktop.spec.ts",
+      "line": 107,
+      "title": "Desktop offline mentions survive a fresh profile and edits notify only newly added people",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:13:10.514Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "title": "Web mixed H+A+B+S mentions retain one comment and exact queued target associations",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:04:56.148Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 46,
+      "title": "Web owner revocation after preview refuses only A and original-key replay stays deduplicated",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:05:08.202Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-mention-journeys-web.spec.ts",
+      "line": 65,
+      "title": "Web offline mentions survive a fresh context and edits notify only newly added people",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:05:22.723Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-multi-account-closure.spec.ts",
+      "line": 26,
+      "title": "three account owners and three native agents close one cross-workspace issue after revision",
+      "status": "passed",
+      "final_run": "conditional/collaboration-multi-account-closure.json",
+      "started": "2026-11-20T00:32:44.577Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "line": 12,
+      "title": "Web offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-offline-handoff.json",
+      "started": "2026-11-19T23:55:28.545Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-offline-handoff.spec.ts",
+      "line": 12,
+      "title": "Electron offline invite and assignment need no acceptance; transferred-away work survives archive and fresh login until removal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-offline-handoff.json",
+      "started": "2026-11-19T23:55:57.897Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "title": "Web offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-offline-result-notifications.json",
+      "started": "2026-11-20T00:55:00.938Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-offline-result-notifications.spec.ts",
+      "line": 15,
+      "title": "Electron offline external participant logs in to information, acceptance and proven AI result notifications without source inbox duplication",
+      "status": "passed",
+      "final_run": "cross-client/collaboration-offline-result-notifications.json",
+      "started": "2026-11-20T00:56:02.465Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-order-export-20261109.spec.ts",
+      "line": 12,
+      "title": "order export: independent owner queues merge authors and preserve AI across transfer",
+      "status": "passed",
+      "final_run": "conditional/collaboration-order-export-20261109.json",
+      "started": "2026-11-20T00:34:57.632Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-order-export-leave-20261109.spec.ts",
+      "line": 13,
+      "title": "order export: owner leaves during live execution and creator removes current handler",
+      "status": "passed",
+      "final_run": "conditional/collaboration-order-export-leave-20261109.json",
+      "started": "2026-11-20T00:35:53.352Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-pay-creation.spec.ts",
+      "line": 8,
+      "title": "Web creates one complete PAY issue through real controls and preserves its original creation identity",
+      "status": "passed",
+      "final_run": "conditional/collaboration-pay-creation.json",
+      "started": "2026-11-19T23:59:22.364Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-pay-creation.spec.ts",
+      "line": 8,
+      "title": "Desktop creates one complete PAY issue through real controls and preserves its original creation identity",
+      "status": "passed",
+      "final_run": "conditional/collaboration-pay-creation.json",
+      "started": "2026-11-19T23:59:40.523Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "line": 27,
+      "title": "PAY-241 S5 collaboration sampling > prepare: 100 password accounts join one collaboration issue through public routes",
+      "status": "passed",
+      "final_run": "performance/browser.json",
+      "started": "2026-11-20T01:06:02.050Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "line": 39,
+      "title": "PAY-241 S5 collaboration sampling > propagation: 100 observers each see 100 status changes on their own socket and token",
+      "status": "passed",
+      "final_run": "performance/browser.json",
+      "started": "2026-11-20T01:20:11.867Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-performance.spec.ts",
+      "line": 55,
+      "title": "PAY-241 S5 collaboration sampling > writeback: 100 controlled runs each return one business result and one finalization",
+      "status": "passed",
+      "final_run": "performance/browser.json",
+      "started": "2026-11-20T01:22:43.406Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-preparation-records-desktop.spec.ts",
+      "line": 8,
+      "title": "Desktop reads synthetic preparation with native 200 percent captures and unchanged proof",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:04.399Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-preparation-records-web.spec.ts",
+      "line": 7,
+      "title": "Web reads synthetic frozen preparation without inferring termination across refresh and viewers",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:05:42.374Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-preview-web.spec.ts",
+      "line": 9,
+      "title": "trigger preview explains shared and later batches before a suppressed target is sent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:05:51.725Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recipient-picker-web.spec.ts",
+      "line": 15,
+      "title": "Web recipient picker exposes self/recent/search results and preserves the outer dialog on Escape",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:22.663Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-records-web.spec.ts",
+      "line": 7,
+      "title": "Web shares ordinary child references and retained run records through account notification links",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:27.216Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Web recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T00:59:53.028Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Web recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T01:00:09.758Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Web recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T01:00:16.657Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Desktop recovery extras preserve typed mentions, original notification events and owner withdrawal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T01:00:29.862Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Desktop recovery extras preserve three original multipart intents through GET, matching retry and changed reselection",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T01:00:45.176Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-extras.spec.ts",
+      "line": 15,
+      "title": "Desktop recovery extras preserve offline and delayed protected reads across participant and source membership loss",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-extras-gate-replay1.json",
+      "started": "2026-11-20T01:00:54.622Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-recovery-ordinary-ui.spec.ts",
+      "line": 49,
+      "title": "Web ordinary child priority and assignee UI retain observed numeric revisions with a separate versionlessAPI control",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-ordinary-ui.json",
+      "started": "2026-11-20T00:07:08.135Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-ordinary-ui.spec.ts",
+      "line": 49,
+      "title": "Desktop ordinary child priority and assignee UI retain observed numeric revisions with a separate versionlessAPI control",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-ordinary-ui.json",
+      "started": "2026-11-20T00:07:49.827Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "line": 14,
+      "title": "Web controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-runtime.json",
+      "started": "2026-11-20T00:39:05.183Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "line": 14,
+      "title": "Web controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-runtime.json",
+      "started": "2026-11-20T00:40:27.459Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "line": 14,
+      "title": "Desktop controlled runtime recovery preserves proven success, retained failure and Stop notifications through original receipt recovery",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-runtime.json",
+      "started": "2026-11-20T00:41:28.477Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-runtime.spec.ts",
+      "line": 14,
+      "title": "Desktop controlled runtime recovery preserves original business reads and queued inputs across author and live grant withdrawal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-runtime.json",
+      "started": "2026-11-20T00:42:24.132Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-subscriptions.spec.ts",
+      "line": 35,
+      "title": "Web ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-subscriptions.json",
+      "started": "2026-11-20T00:08:35.566Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery-subscriptions.spec.ts",
+      "line": 35,
+      "title": "Desktop ordinary subscription preserves exact comment delivery through reconnect, reload and unsubscribe",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery-subscriptions.json",
+      "started": "2026-11-20T00:08:52.200Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 36,
+      "title": "Web recovery priority and handler contention preserve original receipts in both submission orders",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:01:41.721Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 43,
+      "title": "Web recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:02:54.318Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 50,
+      "title": "Web recovery reads 55 offline comments through complete pages and a reauthenticated live WebSocket",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:03:45.143Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 36,
+      "title": "Desktop recovery priority and handler contention preserve original receipts in both submission orders",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:05:06.582Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 43,
+      "title": "Desktop recovery ordinary child numeric API CAS preserves optional UI compatibility in both submission orders",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:05:47.427Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-recovery.spec.ts",
+      "line": 50,
+      "title": "Desktop recovery reads 55 offline comments through complete pages and a reauthenticated live WebSocket",
+      "status": "passed",
+      "final_run": "conditional/collaboration-recovery.json",
+      "started": "2026-11-20T00:06:22.079Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-requirements-history.spec.ts",
+      "line": 8,
+      "title": "Web three authorized sessions synchronize acceptance criteria and reopen complete V1 V2 V3 history",
+      "status": "passed",
+      "final_run": "conditional/collaboration-requirements-history.json",
+      "started": "2026-11-20T00:00:18.228Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-requirements-history.spec.ts",
+      "line": 8,
+      "title": "Desktop three authorized sessions synchronize acceptance criteria and reopen complete V1 V2 V3 history",
+      "status": "passed",
+      "final_run": "conditional/collaboration-requirements-history.json",
+      "started": "2026-11-20T00:00:36.782Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-resource-offers-web.spec.ts",
+      "line": 7,
+      "title": "a private owner offers a resource to an external organizer and independently authorizes it",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:06:03.535Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-resources-web.spec.ts",
+      "line": 7,
+      "title": "resource owners register, authorize, withdraw and switch while participant management preserves authority",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:06:27.866Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "title": "Web typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "status": "passed",
+      "final_run": "conditional/collaboration-retained-attachment.json",
+      "started": "2026-11-19T23:56:51.201Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 141,
+      "title": "Electron typed human and owned AI creation stays atomic and idle from its first private upload through restart",
+      "status": "passed",
+      "final_run": "conditional/collaboration-retained-attachment.json",
+      "started": "2026-11-19T23:57:10.049Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-retained-attachment.spec.ts",
+      "line": 156,
+      "title": "Web and Electron retain exact comment file bytes and immutable AI input after display removal, deletion, refresh and cross-client restart",
+      "status": "passed",
+      "final_run": "conditional/collaboration-retained-attachment.json",
+      "started": "2026-11-19T23:57:33.212Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-runtime-handoff-desktop.spec.ts",
+      "line": 14,
+      "title": "Electron deep link opens retained handoff context and honestly marks an unknown recording tail",
+      "status": "passed",
+      "final_run": "conditional/collaboration-runtime-handoff-desktop.json",
+      "started": "2026-11-19T23:53:46.367Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "line": 9,
+      "title": "ENV-1 live latest shared context preserves the run's empty startup version",
+      "status": "passed",
+      "final_run": "conditional/collaboration-runtime-handoff-web.json",
+      "started": "2026-11-19T23:53:20.770Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-runtime-handoff-web.spec.ts",
+      "line": 47,
+      "title": "Web recipient recalls retained handoff sources and omitted comments, then loses private reads on removal",
+      "status": "passed",
+      "final_run": "conditional/collaboration-runtime-handoff-web.json",
+      "started": "2026-11-19T23:53:27.026Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-runtime-output.spec.ts",
+      "line": 8,
+      "title": "Web controlled Agent output preserves original files, receipts, results and current authority",
+      "status": "passed",
+      "final_run": "output/browser-final.json",
+      "started": "2026-11-20T01:41:38.655Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-runtime-output.spec.ts",
+      "line": 8,
+      "title": "Desktop controlled Agent output preserves original files, receipts, results and current authority",
+      "status": "passed",
+      "final_run": "output/browser-final.json",
+      "started": "2026-11-20T01:42:14.532Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-selection-boundary.spec.ts",
+      "line": 12,
+      "title": "AC87 Web and actual Electron hide subtask creation for shared body/comment selections while ordinary children retain it",
+      "status": "passed",
+      "final_run": "conditional/collaboration-selection-boundary-replay2.json",
+      "started": "2026-11-20T01:06:19.038Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-source-surface.spec.ts",
+      "line": 11,
+      "title": "Web and Electron source list, board, timeline and comments preserve external identity and scoped layout order",
+      "status": "passed",
+      "final_run": "conditional/collaboration-source-surface-gate-replay1.json",
+      "started": "2026-11-20T00:58:16.190Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-stage-approvals.spec.ts",
+      "line": 27,
+      "title": "stage decisions and prepared test reports retain human and runtime history across Web and Desktop",
+      "status": "passed",
+      "final_run": "conditional/collaboration-stage-approvals-replay1.json",
+      "started": "2026-11-20T01:07:25.589Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "line": 232,
+      "title": "release and rollback keep exact builds, human decisions and controlled execution separate on Web and Desktop",
+      "status": "passed",
+      "final_run": "stage/browser-replay1.json",
+      "started": "2026-11-20T01:24:26.060Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "line": 348,
+      "title": "a late authenticated deployment stays historical and a fresh approval cannot endorse it",
+      "status": "passed",
+      "final_run": "stage/browser-replay1.json",
+      "started": "2026-11-20T01:25:19.041Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-stage-execution.spec.ts",
+      "line": 397,
+      "title": "stage evidence gates real submission, M1 completion and administrative or project exits",
+      "status": "passed",
+      "final_run": "stage/browser-replay1.json",
+      "started": "2026-11-20T01:26:02.003Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-terminal-reopen-web.spec.ts",
+      "line": 13,
+      "title": "Web closed issue refuses @agent and Resume, only the creator reopens, and reopening revives nothing or the stop barrier",
+      "status": "passed",
+      "final_run": "conditional/collaboration-terminal-reopen-web.json",
+      "started": "2026-11-19T23:52:04.022Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-timeout-recovery.spec.ts",
+      "line": 19,
+      "title": "actual host timeout retains its failure and recovers committed receipts after a same-ledger restart",
+      "status": "passed",
+      "final_run": "conditional/collaboration-timeout-recovery.json",
+      "started": "2026-11-20T00:34:20.072Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "collaboration-workbench-web.spec.ts",
+      "line": 27,
+      "title": "Web workbench keeps account scope through comments, uncertain cancellation, handoff and revocation",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:24:46.274Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "collaboration-workbench-web.spec.ts",
+      "line": 183,
+      "title": "Web stale lifecycle conflict immediately reports refusal and preserves input for explicit retry",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:24:56.119Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "comments.spec.ts",
+      "line": 27,
+      "title": "Comments > can add a comment on an issue",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:02.964Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "comments.spec.ts",
+      "line": 66,
+      "title": "Comments > comment submit button is disabled when empty",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:08.549Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "line": 96,
+      "title": "G5 a chat message runs on the daemon and its reply, then its failure, appear without reload",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:11.055Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "line": 174,
+      "title": "G6 a plain comment re-engages the assignee, an @mention engages another agent and /note engages none",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:15.526Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "line": 274,
+      "title": "G7 an agent-mode quick create files the issue and notifies the requester; a run that files nothing reports why",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:21.287Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-agent-loops.spec.ts",
+      "line": 350,
+      "title": "G8 a running task streams its transcript, leaves the issue status alone and stays stopped after a late completion",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:25.185Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "line": 111,
+      "title": "G2 a teammate's status change and mention reach the owner's open page and inbox without reload",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:36.984Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "line": 164,
+      "title": "G3 members invite, role change and removal work through the settings UI with matching server permissions",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:41.908Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "line": 215,
+      "title": "G4 My Issues lists only my assignments and search opens a teammate's issue by identifier",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:46.616Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "line": 17,
+      "title": "G1 agent execution loop > G1-01 assigning an agent queues one task that the daemon runs to a live completed reply",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:29.917Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-journeys.spec.ts",
+      "line": 65,
+      "title": "G1 agent execution loop > G1-02 a failed run notifies the creator, retries exactly once and can be stopped before it runs",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:33.477Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "line": 159,
+      "title": "G-E1 assigning a teammate notifies them live; inbox bulk read/archive clear the badge until they are reassigned away",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:56.072Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "line": 289,
+      "title": "G-E2 clearing a teammate's assignment to nobody notifies them and records the change",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:03.701Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "line": 29,
+      "title": "G-D bulk edits and board moves > G-D1 list-view bulk status change and bulk delete write once each and survive reload",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:48.482Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "core-business-workflow.spec.ts",
+      "line": 121,
+      "title": "G-D bulk edits and board moves > G-D2 dragging a board card into another status column moves it once and it stays there after reload",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:25:53.242Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "desktop-settings.spec.ts",
+      "line": 29,
+      "title": "desktop Help selects Updates by keyboard and grouped settings show the stopped daemon in Chinese",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:37:53.633Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "global-scope-navigation.spec.ts",
+      "line": 54,
+      "title": "Web global switching resumes the task, collaboration filters and both scroll positions",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:41.778Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "global-scope-navigation.spec.ts",
+      "line": 54,
+      "title": "Desktop global switching resumes the task, collaboration filters and both scroll positions",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:29:51.350Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 51,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > sandbox without allow-same-origin blocks sessionStorage (documents why we cannot use it)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:16.872Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 65,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > reports scroll position to the parent with the correct token",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:21.518Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 83,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > restores scroll position on a parent restore message",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:21.868Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 102,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > holds position across a 1s-delayed content append, then yields on user wheel (v4 guarantee)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:22.287Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 150,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > ignores restore messages with a mismatched token",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:24.899Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iframe-scroll-bridge.spec.ts",
+      "line": 165,
+      "title": "iframe scroll bridge (real Chromium, sandboxed srcdoc) > parent handshake is bounded (no ready→request-sync→ready loop) and restores once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:25.472Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 58,
+      "title": "AI refinement through real server and task creation > refines a vague feature, preserves folded answers, merges and undoes, then persists exactly once",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:06.296Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 101,
+      "title": "AI refinement through real server and task creation > handles 0 dynamic clarification questions and undo",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:09.805Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 101,
+      "title": "AI refinement through real server and task creation > handles 1 dynamic clarification questions and undo",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:12.513Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 116,
+      "title": "AI refinement through real server and task creation > preserves edits during generation, supports cancellation and real provider failure",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:15.072Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 143,
+      "title": "AI refinement through real server and task creation > creates the unchanged manual draft after a refinement failure",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:20.749Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 175,
+      "title": "AI refinement through real server and task creation > manual keeps creation reachable at desktop and phone widths with long content",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:23.772Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 175,
+      "title": "AI refinement through real server and task creation > agent keeps creation reachable at desktop and phone widths with long content",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:26.803Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-assist-flow.spec.ts",
+      "line": 198,
+      "title": "AI refinement through real server and task creation > agent creation queues the refined prompt through the real API without executing a daemon",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:29.323Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "line": 206,
+      "title": "Web enforces the explicit evidence authorization and shows a narrow keyboard flow",
+      "status": "passed",
+      "final_run": "specialized/m1-fixed-browser.json",
+      "started": "2026-11-20T00:40:33.811Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-completion-authorization.spec.ts",
+      "line": 217,
+      "title": "Electron renderer enforces the explicit evidence authorization in a narrow window",
+      "status": "passed",
+      "final_run": "specialized/m1-fixed-browser.json",
+      "started": "2026-11-20T00:40:43.913Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 152,
+      "title": "failed status update rolls back the optimistic value before a successful retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:11.149Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 177,
+      "title": "failed priority update restores the existing priority and retry persists",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:18.308Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 202,
+      "title": "failed deletion keeps the confirmation and issue until a successful retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:24.430Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 224,
+      "title": "cancelling after a failed deletion leaves the issue readable after reload",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:33.709Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 240,
+      "title": "failed manual creation retains title and description and retry creates exactly one issue",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:38.053Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 275,
+      "title": "failed comment send preserves the draft across reload and retry posts exactly once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:42.271Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-mutation-branches.spec.ts",
+      "line": 307,
+      "title": "repeated send shortcuts while a comment is pending create only one comment",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:46.515Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-optimistic-status.spec.ts",
+      "line": 23,
+      "title": "ordinary status is immediate, rolls back and persists one retry from UUID",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:48.801Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-optimistic-status.spec.ts",
+      "line": 101,
+      "title": "old background detail read preserves the pending ordinary status from UUID",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:53.732Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-optimistic-status.spec.ts",
+      "line": 23,
+      "title": "ordinary status is immediate, rolls back and persists one retry from identifier",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:00.436Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-optimistic-status.spec.ts",
+      "line": 101,
+      "title": "old background detail read preserves the pending ordinary status from identifier",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:07.618Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-table.spec.ts",
+      "line": 87,
+      "title": "Issue Table server grouping > groups 1,001 issues exactly without materializing the full result",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:27.471Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-table.spec.ts",
+      "line": 184,
+      "title": "Issue Table server grouping > keeps same-group children nested and cross-group children at the group root",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:38.739Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-table.spec.ts",
+      "line": 304,
+      "title": "Issue Table server grouping > drops stale branch cursors after a realtime sort-boundary update",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:44.756Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issue-table.spec.ts",
+      "line": 444,
+      "title": "Issue Table server grouping > shows a branch-level retry and never falls back to client grouping",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:39:50.341Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 47,
+      "title": "Issues > issues page loads with board view",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:01.100Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 57,
+      "title": "Issues > can switch from board to list view",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:03.023Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 68,
+      "title": "Issues > can filter issues by created and updated dates",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:04.520Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 111,
+      "title": "Issues > can filter issues by custom created date",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:07.284Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 137,
+      "title": "Issues > can create a new issue",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:09.927Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 160,
+      "title": "Issues > can navigate to issue detail page",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:12.668Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "issues.spec.ts",
+      "line": 189,
+      "title": "Issues > can dismiss issue creation",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:14.837Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "iteration-history-navigation-desktop.spec.ts",
+      "line": 19,
+      "title": "Electron navigation from expanded A to its B parent starts B history collapsed",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:40:32.136Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-history-navigation.spec.ts",
+      "line": 87,
+      "title": "expanded history survives the readable issue commit before its history response",
+      "status": "passed",
+      "final_run": "specialized/history-fixed.json",
+      "started": "2026-11-20T00:31:07.879Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-history-navigation.spec.ts",
+      "line": 192,
+      "title": "navigating from expanded A to its B parent starts B history collapsed",
+      "status": "passed",
+      "final_run": "specialized/history-fixed.json",
+      "started": "2026-11-20T00:31:12.248Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "line": 6,
+      "title": "ISB Electron en: planned scope, exact change details, retained filters and frozen history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:40:45.971Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-scope-business-desktop.spec.ts",
+      "line": 6,
+      "title": "ISB Electron zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:41:12.129Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "line": 6,
+      "title": "ISB Web en: planned scope, exact change details, retained filters and frozen history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:41:35.122Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "line": 6,
+      "title": "ISB Web zh-Hans: planned scope, exact change details, retained filters and frozen history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:41:47.088Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-scope-business.spec.ts",
+      "line": 15,
+      "title": "ISB Web: empty planning history and cancellation before versus after a real empty start",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:05.662Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "line": 18,
+      "title": "workspace planning timezone has one editor (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:13.872Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "line": 18,
+      "title": "workspace planning timezone has one editor (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:16.629Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "line": 63,
+      "title": "workspace iteration settings survive lost closure responses and update another client",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:20.366Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iteration-settings.spec.ts",
+      "line": 145,
+      "title": "workspace iteration settings report normal closure without remounting",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:26.177Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "line": 10,
+      "title": "iteration task toolbar: planned hierarchy and visible refinements (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:30.855Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "line": 10,
+      "title": "iteration task toolbar: planned hierarchy and visible refinements (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:40.579Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-audit-desktop.spec.ts",
+      "line": 96,
+      "title": "iteration audit: actual contrast, focus, controls, touch, history and responsive rendering",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:42:51.002Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "line": 13,
+      "title": "I1 Electron manual planning, atomic carryover and immutable history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:43:18.744Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "line": 27,
+      "title": "I1 Electron settings report normal closure without remounting",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:43:38.404Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1-desktop.spec.ts",
+      "line": 33,
+      "title": "I1 Electron atomic handoff preserves existing next-period commitments",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:43:49.242Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1-history.spec.ts",
+      "line": 5,
+      "title": "I1 filters and groups the complete scope and preserves historical priority, labels and participation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:44:24.711Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "line": 6,
+      "title": "I1 Web manual planning, atomic carryover and immutable history",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:44:31.618Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "line": 32,
+      "title": "I1 Web starts the chosen next period atomically and disables the complete workspace",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:44:45.381Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "iterations-i1.spec.ts",
+      "line": 47,
+      "title": "I1 Web retries detail reads, creates work in the searched iteration and opens chart data by keyboard",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:45:12.542Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "lifecycle-handoff.spec.ts",
+      "line": 112,
+      "title": "creates and reuses an RCA repair with a visible issue audit trail",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:49.263Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "lifecycle-handoff.spec.ts",
+      "line": 171,
+      "title": "refuses unauthorized explicit child reuse without metadata, audit, or queue writes",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:54.308Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "lifecycle-handoff.spec.ts",
+      "line": 171,
+      "title": "refuses unauthorized duplicate title reuse without metadata, audit, or queue writes",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:55.313Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "line": 118,
+      "title": "role picker defaults and omitted-name API creation follow Chinese and English locales",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:13:38.872Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "line": 143,
+      "title": "diagnostician API creation preserves workspace skill and agent copies",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:13:42.628Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "line": 202,
+      "title": "specialist skills localize, search and open their official copies without rewriting stored content",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:13:43.702Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "line": 404,
+      "title": "Chinese squad staffing creates localized roles and English restaffing preserves customized agents",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:02.786Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "localized-template-defaults.spec.ts",
+      "line": 436,
+      "title": "a localized name collision leaves no partial squad and does not block English role names",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:10.683Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "main-supplemental-qa.spec.ts",
+      "line": 69,
+      "title": "real email code login survives refresh and logout protects the workspace",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:56.613Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "main-supplemental-qa.spec.ts",
+      "line": 109,
+      "title": "manual issue status, priority and comment persist through refresh and confirmed deletion",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:10:59.788Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "main-supplemental-qa.spec.ts",
+      "line": 165,
+      "title": "an onboarded member creates another workspace through Welcome, About you and runtime",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:11:08.429Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "mcp-desktop.spec.ts",
+      "line": 79,
+      "title": "native desktop MCP preserves collection, settings and agent discovery flows",
+      "status": "passed",
+      "final_run": "conditional/mcp-desktop.json",
+      "started": "2026-11-19T23:44:44.527Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "line": 71,
+      "title": "deployment MCP files appear live and saved snapshots survive updates and withdrawal",
+      "status": "passed",
+      "final_run": "conditional/mcp-market-deployment-replay1.json",
+      "started": "2026-11-20T01:12:52.052Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "line": 144,
+      "title": "uses the collection canvas and adapts template columns to the available width",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:45:24.158Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "line": 188,
+      "title": "creates and explicitly assigns all sixteen recipes, preserves source after rename, and reuses an instance from an agent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:45:29.344Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "line": 400,
+      "title": "retries a failed assignment without recreating the saved MCP or repeating successful grants",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:45:54.559Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "mcp-market.spec.ts",
+      "line": 433,
+      "title": "a member can discover templates and reuse a workspace instance for their agent without creating one",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:45:58.880Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "missing-user-session.spec.ts",
+      "line": 5,
+      "title": "an obsolete session returns to sign-in and can open the MCP market after a fresh login",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:01.487Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "navigation.spec.ts",
+      "line": 12,
+      "title": "Navigation > sidebar navigation works",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:16.472Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "navigation.spec.ts",
+      "line": 30,
+      "title": "Navigation > settings page loads via sidebar",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:19.376Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "navigation.spec.ts",
+      "line": 39,
+      "title": "Navigation > agents page shows agent list",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:21.219Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "onboarding-shell.spec.ts",
+      "line": 51,
+      "title": "onboarding — structural blocks match the column width on every step",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:11.889Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "onboarding-shell.spec.ts",
+      "line": 88,
+      "title": "onboarding — the shell survives step changes instead of re-mounting",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:13.508Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "onboarding-smoke.spec.ts",
+      "line": 17,
+      "title": "onboarding — answer path completes on Projects after skipping runtime",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:14.783Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "onboarding-smoke.spec.ts",
+      "line": 117,
+      "title": "onboarding — one skip clears the whole questionnaire step",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:19.533Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "onboarding-smoke.spec.ts",
+      "line": 137,
+      "title": "onboarding — zh-Hans renders Chinese labels",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:21.239Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "password-binding-desktop.spec.ts",
+      "line": 10,
+      "title": "an existing Desktop account binds password login without losing its history",
+      "status": "passed",
+      "final_run": "conditional/password-binding-desktop-replay1.json",
+      "started": "2026-11-19T23:42:57.543Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 49,
+      "title": "password authentication branch recovery > invalid username preserves registration fields and can be corrected without restarting",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:26:52.358Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 75,
+      "title": "password authentication branch recovery > five-character password error can be corrected to the supported six-character minimum",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:27:11.462Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 98,
+      "title": "password authentication branch recovery > overlong pasted password is rejected and accepts the corrected 128-character boundary",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:27:44.806Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 123,
+      "title": "password authentication branch recovery > whitespace-only display name reaches server validation and keeps credentials for correction",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:28:11.026Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 146,
+      "title": "password authentication branch recovery > duplicate username after normalization leaves the original identity and password intact",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:28:52.497Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 172,
+      "title": "password authentication branch recovery > incorrect password preserves the login form and a corrected retry restores the same identity",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:29:26.848Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 196,
+      "title": "password authentication branch recovery > unknown account gives a generic error and can sign in after the account is created",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:29:39.991Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 218,
+      "title": "password authentication branch recovery > lost registration response offers sign-in recovery for the account the server already created",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:29:55.753Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 254,
+      "title": "password authentication branch recovery > network failure during login keeps credentials and succeeds after connection recovery",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:30:15.308Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 284,
+      "title": "password authentication branch recovery > temporary authentication service failure preserves the form and permits a real retry",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:30:21.915Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 314,
+      "title": "password authentication branch recovery > Retry-After disables login submissions until cooldown ends without discarding credentials",
+      "status": "passed",
+      "final_run": "conditional/password-branches.json",
+      "started": "2026-11-19T23:30:32.357Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-branches.spec.ts",
+      "line": 358,
+      "title": "password authentication branch recovery > pending registration locks the form and ignores repeated native submissions",
+      "status": "passed",
+      "final_run": "conditional/password-branches-pending-replay1.json",
+      "started": "2026-11-19T23:41:16.049Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "line": 13,
+      "title": "intranet password migration > legacy setup returns to the original identity and workspace",
+      "status": "passed",
+      "final_run": "conditional/password-migration.json",
+      "started": "2026-11-19T23:32:58.302Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-migration.spec.ts",
+      "line": 13,
+      "title": "intranet password migration > temporary recovery returns to the original identity and workspace",
+      "status": "passed",
+      "final_run": "conditional/password-migration.json",
+      "started": "2026-11-19T23:33:55.563Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "line": 8,
+      "title": "intranet password registration > confirmed password registers without email and a second device keeps the same identity",
+      "status": "passed",
+      "final_run": "conditional/password-registration.json",
+      "started": "2026-11-19T23:25:25.260Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-registration.spec.ts",
+      "line": 84,
+      "title": "intranet password registration > confirmation requires an exact match and password visibility stays independent",
+      "status": "passed",
+      "final_run": "conditional/password-registration.json",
+      "started": "2026-11-19T23:25:53.173Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-server-switch.spec.ts",
+      "line": 16,
+      "title": "Electron server switch clears same-host credentials and closes issue windows",
+      "status": "passed",
+      "final_run": "conditional/password-server-switch.json",
+      "started": "2026-11-19T23:37:27.807Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "password-session-persistence.spec.ts",
+      "line": 10,
+      "title": "Desktop remembers password login across restart and rejects a revoked session",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:23.971Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin-accounts.spec.ts",
+      "line": 24,
+      "title": "platform account administration > account controls, lost response recovery, forced password change and observer UI",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-accounts-native1.json",
+      "started": "2026-11-19T23:19:32.743Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "platform-admin-controls.spec.ts",
+      "line": 10,
+      "title": "platform execution controls > admission receipts and original-key recovery survive a lost cancellation response and reload",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-controls-native1.json",
+      "started": "2026-11-19T23:20:48.334Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin-executions.spec.ts",
+      "line": 11,
+      "title": "platform execution metadata > private metadata, filters, cursor, attempt detail and original content permissions",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-executions-native1.json",
+      "started": "2026-11-19T23:21:43.553Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin-initialization.spec.ts",
+      "line": 11,
+      "title": "initialized administrator changes the temporary password before entering administration",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-initialization-native1.json",
+      "started": "2026-11-19T23:17:02.457Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin-installations-read.spec.ts",
+      "line": 14,
+      "title": "managed installation read model > real enrollment and binding keep client, daemon and engine status separate",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-installations-read-native1.json",
+      "started": "2026-11-19T23:22:05.065Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin-observability.spec.ts",
+      "line": 15,
+      "title": "platform observability > windowed metrics, active alerts, original-key recovery and observer boundaries",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-observability-native1.json",
+      "started": "2026-11-19T23:22:25.051Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "platform-admin.spec.ts",
+      "line": 36,
+      "title": "platform administration access > zero-workspace cookie access, ordinary-user denial, and live role revocation",
+      "status": "passed",
+      "final_run": "conditional/platform-admin-native1.json",
+      "started": "2026-11-19T23:18:46.701Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "plugin-surface-document.spec.ts",
+      "line": 11,
+      "title": "plugin surface document (real Chromium, hosted sandbox) > a host-authored launch replacement is not reported as hostile navigation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:33.264Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "plugin-surface-document.spec.ts",
+      "line": 77,
+      "title": "plugin surface document (real Chromium, hosted sandbox) > reports a synchronous hosted plugin error to the pre-armed host listener",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:33.776Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "plugin-surface-security.spec.ts",
+      "line": 5,
+      "title": "plugin surface browser boundary > a normal hosted document relays exactly one guest-created port",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:34.181Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "plugin-surface-security.spec.ts",
+      "line": 34,
+      "title": "plugin surface browser boundary > a first-line external navigation sends no request and cannot retain a bridge",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:34.588Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "plugin-surface-security.spec.ts",
+      "line": 88,
+      "title": "plugin surface browser boundary > two script-capable plugin frames cannot inspect each other",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:35.068Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "progress-reporting.spec.ts",
+      "line": 230,
+      "title": "publishes one built-in reporter and adjacent daily and weekly templates",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:11:13.662Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "progress-reporting.spec.ts",
+      "line": 261,
+      "title": "creates the reporter from the Chinese catalog and reopens its ordinary agent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:11:14.270Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "progress-reporting.spec.ts",
+      "line": 353,
+      "title": "adopts daily and weekly reports and completes fixture delivery on only their report issues",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:11:24.165Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "line": 34,
+      "title": "web: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "status": "passed",
+      "final_run": "specialized/knowledge/browser.json",
+      "started": "2026-11-20T00:36:54.102Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "project-knowledge-automation.spec.ts",
+      "line": 34,
+      "title": "desktop: acceptance, automatic project knowledge, actual daemon input, reopen and fresh reacceptance proof",
+      "status": "passed",
+      "final_run": "specialized/knowledge/browser.json",
+      "started": "2026-11-20T00:37:38.772Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "project-squad-workspace.spec.ts",
+      "line": 20,
+      "title": "keeps project work visible with 1, 8 and 20 squads and persists explicit defaults and issue links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:35.279Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 6,
+      "title": "P1-D01 native navigation opens the exact project risk list from the keyboard",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:46:57.394Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 20,
+      "title": "P1-D02 a native fast preview survives the editor flush and publishes once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:47:06.938Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 42,
+      "title": "P1-D03 cancelling and reloading restores the last native draft without publishing",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:47:14.470Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 57,
+      "title": "P1-D04 native revision history renders the original and corrected progress",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:47:20.927Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 76,
+      "title": "P1-D05 a Chinese native window keeps progress actions readable at 680px",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:47:36.912Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-desktop.spec.ts",
+      "line": 96,
+      "title": "P1-D06 native project tabs do not share progress drafts",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:47:54.599Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-goals.spec.ts",
+      "line": 8,
+      "title": "P1-G01 template preview and cancellation never write the description",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:06.883Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-goals.spec.ts",
+      "line": 31,
+      "title": "P1-G02 selected missing sections append without replacing the original goal",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:14.649Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-goals.spec.ts",
+      "line": 57,
+      "title": "P1-G03 selecting only existing headings disables duplicate template insertion",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:26.128Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-goals.spec.ts",
+      "line": 73,
+      "title": "P1-G04 a real concurrent description conflict preserves local text for reviewed saving",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:29.906Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-goals.spec.ts",
+      "line": 108,
+      "title": "P1-G05 explicit server adoption survives failed refetch and uses that revision for the next edit",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:43.595Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 8,
+      "title": "P1-H01 six done plus two cancelled plus two open display distinct totals and legacy closure",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:48:56.079Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 28,
+      "title": "P1-H02 a candidate-only project has no percentage while its own overdue date remains visible",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:49:03.393Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 52,
+      "title": "P1-H03 all completed issues close scope without accepting the goal or completing the project",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:49:09.081Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 52,
+      "title": "P1-H04 all cancelled issues close scope without claiming delivered work or acceptance",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:49:18.874Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "title": "P1-H05 board independently retains formal issues and excludes candidate-only project links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:49:29.147Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "title": "P1-H06 list independently retains formal issues and excludes candidate-only project links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:49:50.313Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "title": "P1-H07 table independently retains formal issues and excludes candidate-only project links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:06.502Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "title": "P1-H08 swimlane independently retains formal issues and excludes candidate-only project links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:18.152Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 75,
+      "title": "P1-H09 gantt independently retains formal issues and excludes candidate-only project links",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:26.217Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 96,
+      "title": "P1-H10 ordinary triage acceptance adds one formal issue without starting the default squad",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:37.813Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-health.spec.ts",
+      "line": 123,
+      "title": "P1-H11 finishing the open remainder closes a mixed done and cancelled scope without human acceptance",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:50.526Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 59,
+      "title": "P1-L01 cancelling the completion warning leaves project and work unchanged",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:50:56.707Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 74,
+      "title": "P1-L02 completion records the user's reason without completing issues or execution",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:01.407Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 91,
+      "title": "P1-L03 status controls pause cancel and reopen only the project",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:07.442Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 108,
+      "title": "P1-L04 a member cannot delete a project but retains ordinary read access",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:17.230Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 129,
+      "title": "P1-L05 cancelling project deletion sends no delete request",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:24.696Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 143,
+      "title": "P1-L06 owner deletion through the dialog preserves issues and running execution",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:29.659Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 157,
+      "title": "P1-L07 a failed deletion keeps the project readable and can be retried",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:34.721Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 172,
+      "title": "P1-L08 an initially unavailable overview recovers through Retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:43.674Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 182,
+      "title": "P1-L09 refresh failure marks old statistics stale and disables risk navigation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:48.252Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 197,
+      "title": "P1-L10 unsupported capabilities retain the description and hide unsafe editing",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:52.923Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 211,
+      "title": "P1-L11 an owner selects and changes the shared planning timezone and restores the Shanghai default",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:51:54.957Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 229,
+      "title": "P1-L12 the picker excludes invalid timezones and rejected writes leave planning unchanged",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:52:02.546Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 258,
+      "title": "P1-L13 loss of timezone write permission preserves readable project and local progress",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:52:06.947Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 287,
+      "title": "P1-L14 real workspace revocation clears visible drafts even without WebSocket delivery",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:52:10.879Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 328,
+      "title": "P1-L16 when the member leaves without WebSocket delivery, requests stay bounded for 20 seconds",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:52:16.960Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 328,
+      "title": "P1-L16 when an owner removes the member without WebSocket delivery, requests stay bounded for 20 seconds",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:52:41.137Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-lifecycle.spec.ts",
+      "line": 376,
+      "title": "P1-L15 Chinese compact editing supports keyboard preview and an unobstructed publish button",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:07.548Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 14,
+      "title": "P1-P01 mention preview identifies its recipient without publishing or executing",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:10.379Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 36,
+      "title": "P1-P02 a fast trailing-space mention preview stays publishable past the editor debounce",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:15.326Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 62,
+      "title": "P1-P03 ordinary publication preserves its server statistics snapshot after issue changes",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:19.478Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 87,
+      "title": "P1-P04 cancelling immediately retains the last characters when reopening and reloading",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:25.860Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 105,
+      "title": "P1-P05 leaving the overview retains pending progress text without a publication",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:30.415Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 118,
+      "title": "P1-P06 retrying a committed lost response reuses one intent, record and member notification",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:33.137Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 159,
+      "title": "P1-P07 correction requires a reason and retains immutable original text and authorship",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:39.246Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 188,
+      "title": "P1-P08 stale correction compares the latest revision before an explicit retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:41.471Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 209,
+      "title": "P1-P09 missing acceptance basis preserves input and can be corrected before publishing",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:44.357Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 226,
+      "title": "P1-P10 changed goals require explicit description adoption before acceptance publication",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:46.901Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 244,
+      "title": "P1-P11 previous acceptance stays on its original goals and a new failed result can stand alone",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:50.271Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 262,
+      "title": "P1-P12 execution evidence opens its real authorized revision-scoped transcript",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:52.799Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 284,
+      "title": "P1-P13 a real notification opens an older update without exposing its private execution",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:53:55.458Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 316,
+      "title": "P1-P14 source-level403 preserves the member's draft and permits publication after evidence removal",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:02.950Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-progress.spec.ts",
+      "line": 345,
+      "title": "P1-P15 correcting repeated mentions neither duplicates notifications nor starts an agent",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:09.064Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "title": "P1-R01 blocked drilldown shows exactly its formal risk IDs despite personal filters",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:19.547Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "title": "P1-R02 overdue drilldown shows exactly its formal risk IDs despite personal filters",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:23.897Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "title": "P1-R03 unassigned drilldown shows exactly its formal risk IDs despite personal filters",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:30.767Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 9,
+      "title": "P1-R04 in_review drilldown shows exactly its formal risk IDs despite personal filters",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:35.148Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 57,
+      "title": "P1-R05 changed cursors advance by ID and keep the disclosure across a later unchanged page",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:39.413Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 90,
+      "title": "P1-R06 a successful fresh restart includes reentered low IDs and clears the changed notice",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:47.090Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 115,
+      "title": "P1-R07 failed fresh restart preserves the current rows and sticky notice until recovery succeeds",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:53.810Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1-risk.spec.ts",
+      "line": 149,
+      "title": "P1-R08 an emptied suffix with a positive total does not claim that the project has no risks",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:54:59.689Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "projects-p1.spec.ts",
+      "line": 8,
+      "title": "P1-C01 convergence performance: two real pages observe 30 due-date, assignee and admission changes within five seconds",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:55:09.355Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "property-icons.spec.ts",
+      "line": 4,
+      "title": "creates, persists, and clears a custom property icon",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:55:31.746Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "quick-actions.spec.ts",
+      "line": 13,
+      "title": "renders assistant quick actions and sends the hidden prompt",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:55:36.537Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "line": 56,
+      "title": "explicit default outranks accepted history and project candidates do not replace it",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:15.444Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "line": 78,
+      "title": "recommendations require a click, adoption stays explicit, and changed text discards late results",
+      "status": "passed",
+      "final_run": "specialized/recommendation-cli.json",
+      "started": "2026-11-19T23:52:59.142Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "line": 118,
+      "title": "actual Electron renderer adopts suggestions without running a daemon",
+      "status": "passed",
+      "final_run": "specialized/recommendation-cli.json",
+      "started": "2026-11-19T23:53:09.030Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker-phase2.spec.ts",
+      "line": 134,
+      "title": "Chinese narrow-screen controls expose defaults and grounded suggestions",
+      "status": "passed",
+      "final_run": "specialized/recommendation-cli.json",
+      "started": "2026-11-19T23:53:15.956Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 93,
+      "title": "manual assignment reuses discovery and preserves the draft (en)",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:23.212Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 170,
+      "title": "category tabs expose Mika and squad leaders at wide and narrow widths (en)",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:27.191Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 93,
+      "title": "manual assignment reuses discovery and preserves the draft (zh-Hans)",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:31.632Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 170,
+      "title": "category tabs expose Mika and squad leaders at wide and narrow widths (zh-Hans)",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:35.879Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 218,
+      "title": "real API actors keep favorites and accepted recents local to their workspace",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:40.506Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 300,
+      "title": "550 route-mocked actors remain searchable and pageable with browser render samples",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:46.255Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 369,
+      "title": "keyboard actions preserve draft and reset stale choices in a narrow viewport",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:53.515Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-actor-picker.spec.ts",
+      "line": 428,
+      "title": "desktop renderer supports picker search and pinning without starting a daemon",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:30:57.271Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-autonomy.spec.ts",
+      "line": 52,
+      "title": "quick-create autonomy guard > the creator picker lists Observer-level creators disabled with the reason and seeds a Contributor",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:31:01.824Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-autonomy.spec.ts",
+      "line": 96,
+      "title": "quick-create autonomy guard > an explicitly requested Observer explains the refusal and hands off to manual creation assigned to it",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:31:03.754Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "quick-create-autonomy.spec.ts",
+      "line": 139,
+      "title": "quick-create autonomy guard > the API refuses an Observer or an Observer-led squad before enqueueing and accepts Contributors",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:31:06.598Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "retained-languages-desktop.spec.ts",
+      "line": 9,
+      "title": "Desktop keeps retained languages after upgrading ja preferences",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:56:43.428Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "retained-languages-desktop.spec.ts",
+      "line": 9,
+      "title": "Desktop keeps retained languages after upgrading ko preferences",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:56:54.041Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "retained-languages.spec.ts",
+      "line": 41,
+      "title": "retired ja preference falls back to English and both retained choices persist",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:05.955Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "retained-languages.spec.ts",
+      "line": 41,
+      "title": "retired ko preference falls back to English and both retained choices persist",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:12.231Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "retained-languages.spec.ts",
+      "line": 71,
+      "title": "a new client normalizes a retired preference returned by an older server",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:18.049Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "line": 33,
+      "title": "security remediation catalog and project adoption (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:22.873Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "security-remediation-squad.spec.ts",
+      "line": 33,
+      "title": "security remediation catalog and project adoption (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:27.841Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings-integration-catalog.spec.ts",
+      "line": 12,
+      "title": "integration catalog navigation, preferences and responsive layout (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:34.086Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings-integration-catalog.spec.ts",
+      "line": 12,
+      "title": "integration catalog navigation, preferences and responsive layout (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:41.935Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings-preferences.spec.ts",
+      "line": 58,
+      "title": "grouped settings remain reachable from the sidebar and floating chat survives navigation and reload",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:20.330Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings-preferences.spec.ts",
+      "line": 107,
+      "title": "hidden manual issue fields persist and remain usable through the overflow menu",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:14:26.710Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings.spec.ts",
+      "line": 5,
+      "title": "Settings > updating workspace name reflects in sidebar immediately",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:53.431Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "settings.spec.ts",
+      "line": 51,
+      "title": "Settings > connecting a Composio toolkit shows a toast and refreshes the list",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:56.041Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "skill-category-taxonomy.spec.ts",
+      "line": 99,
+      "title": "renders eight lifecycle categories and the batch label menu across presentations",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:57:59.761Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "skill-library-accessibility.spec.ts",
+      "line": 14,
+      "title": "skill library supports keyboard selection, filter recovery and compact layouts",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:58:13.838Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "skill-market.spec.ts",
+      "line": 88,
+      "title": "discovers deployment templates and creates a workspace copy while keeping market context",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:58:19.980Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "skill-template-creation.spec.ts",
+      "line": 112,
+      "title": "creates an edited independent skill after previewing and cancelling without writes",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:58:26.479Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "squads-audit.spec.ts",
+      "line": 29,
+      "title": "squad audit: browser interactions, responsive layout and performance",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:58:41.501Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "squads-design.spec.ts",
+      "line": 4,
+      "title": "squad discovery keeps keyboard navigation, saved choices and project setup usable",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:58:53.927Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "task-lifecycle-qa.spec.ts",
+      "line": 21,
+      "title": "persists a manually created feature request through edits, workflow, comments and confirmed deletion",
+      "status": "passed",
+      "final_run": "fixed-replay.json",
+      "started": "2026-11-20T00:26:31.717Z",
+      "retry": 0,
+      "earlier_failure_retained": false
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 132,
+      "title": "Triage browser + real API branch coverage > disabled triage hides intake and rejects a direct submission without creating work",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:03.457Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 149,
+      "title": "Triage browser + real API branch coverage > a snoozed pending item prevents disabling triage in both settings and the API",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:06.059Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 166,
+      "title": "Triage browser + real API branch coverage > required priority preserves the acceptance draft until a valid priority is selected",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:08.022Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 188,
+      "title": "Triage browser + real API branch coverage > responsibility requires a reviewer and applies only to new intake without assigning execution",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:10.795Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 207,
+      "title": "Triage browser + real API branch coverage > a stale review draft retains its reason, refreshes the revision and commits exactly once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:12.480Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 235,
+      "title": "Triage browser + real API branch coverage > a past snooze time keeps the item ready until a valid future time is confirmed",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:15.217Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 258,
+      "title": "Triage browser + real API branch coverage > a rejected item cannot reopen while disabled and uses current responsibility in the next round",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:17.143Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 299,
+      "title": "Triage API integration branch coverage > intake replay returns one identity and a changed payload cannot reuse its request ID",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:20.605Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 316,
+      "title": "Triage API integration branch coverage > decision replay preserves the original revision and history while rejecting a reused key with a new reason",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:21.073Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-branches.spec.ts",
+      "line": 334,
+      "title": "Triage API integration branch coverage > pending items reject rerun and ordinary assignment while retaining editable content",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:21.501Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-desktop.spec.ts",
+      "line": 9,
+      "title": "native desktop triage navigation, review and compact history use the shared real backend",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:22.618Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-duplicate-picker-desktop.spec.ts",
+      "line": 5,
+      "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:29.575Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-duplicate-picker-desktop.spec.ts",
+      "line": 5,
+      "title": "Native duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:41.353Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-duplicate-picker.spec.ts",
+      "line": 6,
+      "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:52.556Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-duplicate-picker.spec.ts",
+      "line": 6,
+      "title": "Web duplicate picker browses all formal tasks and confirms the chosen target (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-19T23:59:59.764Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-layout.spec.ts",
+      "line": 16,
+      "title": "triage review layout keeps queue controls and decisions usable (en)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:07.289Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage-layout.spec.ts",
+      "line": 16,
+      "title": "triage review layout keeps queue controls and decisions usable (zh-Hans)",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:10.630Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 48,
+      "title": "triage settings, manual intake and ordinary acceptance preserve the execution boundary",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:15.055Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 111,
+      "title": "snooze, rejection and reopen retain old review rounds",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:20.015Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 148,
+      "title": "CSV preview, mapping and partial import create only selected pending rows",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:25.045Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 174,
+      "title": "real comment listeners notify the creator without changing a snoozed review",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:28.058Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 225,
+      "title": "explicit execution shows the real executor and resource context before queuing once",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:28.966Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "triage.spec.ts",
+      "line": 257,
+      "title": "Chinese compact triage keeps validation input and visible review controls",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:33.911Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "line": 162,
+      "title": "B1 compiled CLI against the isolated API > skill labels remain typed and idempotent while issue labels still work",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:21.141Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "line": 196,
+      "title": "B1 compiled CLI against the isolated API > comment updates preserve UTF-8 files and reject stale revisions",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:26.982Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-backports-cli.spec.ts",
+      "line": 230,
+      "title": "B1 compiled CLI against the isolated API > an unrelated member and an outsider cannot update another member's comment",
+      "status": "passed",
+      "final_run": "specialized/cli-replay.json",
+      "started": "2026-11-20T00:02:29.700Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "line": 128,
+      "title": "selectively merged upstream regressions > keeps the full Chinese and emoji comment behind active and archived Inbox previews",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:11:54.387Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "line": 197,
+      "title": "selectively merged upstream regressions > keeps one usable Inbox sidebar toggle in split view and a way back at compact widths",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:02.334Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "line": 243,
+      "title": "selectively merged upstream regressions > edits a bullet inside a checkbox and persists the selected list level after reopening",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:09.341Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "line": 293,
+      "title": "selectively merged upstream regressions > defers hidden private runtime version 0.4.40 to the server's quick-create gate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:16.241Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "upstream-selected-fixes.spec.ts",
+      "line": 293,
+      "title": "selectively merged upstream regressions > defers hidden private runtime version 0.0.1 to the server's quick-create gate",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:12:20.763Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 87,
+      "title": "accepting an invitation joins exactly once and revisiting shows its accepted state",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:36.814Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 105,
+      "title": "declining an invitation persists without membership and prevents later acceptance",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:40.439Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 121,
+      "title": "revoking an invitation while its page is open rejects stale acceptance",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:42.533Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 145,
+      "title": "a nonexistent invitation shows a recoverable empty state",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:47.311Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 157,
+      "title": "another account cannot read accept or decline an invitation addressed to its owner",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:52.479Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 173,
+      "title": "a nonmember cannot open or mutate another workspace and can recover to their own",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:00:59.931Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 192,
+      "title": "[API integration] foreign issue identifiers cannot bypass the selected workspace on reads or writes",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:09.001Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 203,
+      "title": "removing a member from an open workspace relocates the browser and revokes stale API access",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:11.025Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 230,
+      "title": "cancelling workspace deletion preserves data and resets the typed confirmation",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:18.733Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-access-branches.spec.ts",
+      "line": 250,
+      "title": "[browser fault injection] failed workspace deletion keeps the dialog and data until a successful retry",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:21.327Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-defaults.spec.ts",
+      "line": 48,
+      "title": "workspace built-in defaults > saves multiple squads, supports select-all and clear, and keeps creation usable on narrow screens",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:24.671Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-defaults.spec.ts",
+      "line": 113,
+      "title": "workspace built-in defaults > keeps built-in resources available on request and retains a project without a runtime",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:33.134Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-defaults.spec.ts",
+      "line": 162,
+      "title": "workspace built-in defaults > prepares a squad, dispatches an issue and enables an automation only on submission",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:01:40.236Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-name-series.spec.ts",
+      "line": 11,
+      "title": "en naming preference survives reload and generated workspace preserves manual URL and prefix",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:29.342Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    },
+    {
+      "file": "workspace-name-series.spec.ts",
+      "line": 11,
+      "title": "zh-Hans naming preference survives reload and generated workspace preserves manual URL and prefix",
+      "status": "passed",
+      "final_run": "full-native.json",
+      "started": "2026-11-20T00:15:32.618Z",
+      "retry": 0,
+      "earlier_failure_retained": true
+    }
+  ]
+}

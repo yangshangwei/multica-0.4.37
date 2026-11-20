@@ -1,0 +1,38 @@
+{
+  "id": "full-e2e-regression-20261120",
+  "name": "full-e2e-regression-20261120",
+  "title": "Multica 全量端到端回归与故障修复",
+  "description": "基于当前工作区重新构建并验证核心及扩展业务流程，复现修复本次发现的问题，保留逐项证据与覆盖边界。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P1",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-20",
+  "completedAt": "2026-11-20",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "67af89db85a25d7bf44dd793f3bd5db07babe397",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "packages/core/collaboration/queries.ts"
+  ],
+  "notes": "Verified496/496canonical E2E, current14/14focused; original failures retained. Report artifacts/qa/full-e2e-20261120/REPORT.md. All owned processes stopped. Retained task path for explicit runtime-output allocation contract. Work committed as 67af89db8 and 7817d8958; no push or deployment.",
+  "meta": {
+    "verification_report": "artifacts/qa/full-e2e-20261120/REPORT.md",
+    "e2e_passed": 496,
+    "e2e_failed": 0,
+    "e2e_skipped": 0,
+    "archive_deferred_reason": "Current explicit runtime-output allocation binds this task directory.",
+    "work_commits": [
+      "67af89db85a25d7bf44dd793f3bd5db07babe397",
+      "7817d8958bbe9d0579b3191833d5aa9358fa8a93"
+    ]
+  }
+}
