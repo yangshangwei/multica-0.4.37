@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "research_date": "2026-11-20",
+  "captured_at_utc": "2026-11-20T03:32:16.981326+00:00",
+  "active_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
+  "scope": "Static remaining source-stimulus research only; no runtime acceptance",
+  "disposition": "NO_NEW_INTERNAL_STIMULUS_IDENTIFIED_IN_REVIEWED_SOURCE_CASES",
+  "source_head_observed_from_ref_file": "624eb71b96de1f1945d269c47378d6a31005ccd9",
+  "source_binding": "Current file bytes individually hashed; shared HEAD is not an assertion every shared file matches the commit",
+  "reviewed_cases": [
+    "TC-06",
+    "TC-07",
+    "TC-09",
+    "TC-10",
+    "TC-11",
+    "TC-12",
+    "TC-17",
+    "TC-18",
+    "TC-19",
+    "TC-20",
+    "TC-24"
+  ],
+  "parent_case_count": 24,
+  "parent_counts": {
+    "PARTIAL": 11,
+    "PASS": 9,
+    "NOT_RUN": 4
+  },
+  "case_results": {
+    "TC-01": "PARTIAL",
+    "TC-02": "PASS",
+    "TC-03": "PARTIAL",
+    "TC-04": "PARTIAL",
+    "TC-05": "PASS",
+    "TC-06": "PARTIAL",
+    "TC-07": "PARTIAL",
+    "TC-08": "PASS",
+    "TC-09": "NOT_RUN",
+    "TC-10": "NOT_RUN",
+    "TC-11": "NOT_RUN",
+    "TC-12": "PARTIAL",
+    "TC-13": "PASS",
+    "TC-14": "PARTIAL",
+    "TC-15": "PASS",
+    "TC-16": "PASS",
+    "TC-17": "PARTIAL",
+    "TC-18": "PARTIAL",
+    "TC-19": "PARTIAL",
+    "TC-20": "PARTIAL",
+    "TC-21": "PASS",
+    "TC-22": "PASS",
+    "TC-23": "PASS",
+    "TC-24": "NOT_RUN"
+  },
+  "next_smallest_slice": {
+    "owner": "11-13-pay-241-s4-external-integrations",
+    "case": "E01",
+    "required_inputs": [
+      "I02 repository/provider/instance/allowed branch-or-PR/connection reference",
+      "I03 workflow/required checks/run-job-attempt lookup/build digest-retention",
+      "I09 E01 implementer/reviewer/QA identities"
+    ],
+    "does_not_require_all_s4_inputs_upfront": true,
+    "provider_fit_recheck_required": true
+  },
+  "tc24": {
+    "status": "NOT_RUN",
+    "rehearsal_accepted_at_original_scope": true,
+    "final_candidate_ready": false,
+    "reason": "Existing S5 contract requires S2-S4 needed changes stable; S4 provider and adapter requirements remain unbound",
+    "new_rehearsal_recommended_without_specific_gap": false
+  },
+  "execution": {
+    "tests": false,
+    "compile": false,
+    "database": false,
+    "api": false,
+    "network": false,
+    "model_accounts": false,
+    "payment": false,
+    "deployment": false,
+    "git_commands": false,
+    "credential_stores": false,
+    "recursive_agents": false
+  },
+  "reference_count": 42,
+  "references": [
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/remaining-source-stimuli-20261120.md",
+      "bytes": 14243,
+      "sha256": "0ae6a77f6a7a28fc4d6fe3665587eb90d41b64e8a3db4583c29334f873c85de2"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+      "bytes": 25118,
+      "sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
+      "bytes": 92264,
+      "sha256": "c21a41c8f72496b7dfe6cec5818304f7638c2cb8ce35c8977d5b625a934b776a"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/prd.md",
+      "bytes": 9395,
+      "sha256": "2bf85b61aaf95be480dc43168480944d3c9d6202c63679c02da70ddb0f04b140"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/design.md",
+      "bytes": 8499,
+      "sha256": "ad57e8e2e87c23975358279626365f797c5a8224de92b0a0d6b3a737b1e1e0b0"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/implement.md",
+      "bytes": 11699,
+      "sha256": "fbed47c63c182bb1e2221c94989e5010a9aa2a1b6fc36c3c413a5b9e7fa70b54"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-independent-check-20261120.md",
+      "bytes": 10532,
+      "sha256": "70413fb9403414fc5143c16aa1129aab356258c03ad0cf38a208affd900171ca"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc06-independent-check-20261120.json",
+      "bytes": 39157,
+      "sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.md",
+      "bytes": 8974,
+      "sha256": "56c83e2ca50bda78089c721e4e5465877f7c453390c7b76663550351c57ef385"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc12-independent-check-20261120.json",
+      "bytes": 80337,
+      "sha256": "f604778fc10045c2e6849f546638bf31e39a873e1339661638c34115f0ab1fae"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md",
+      "bytes": 2537,
+      "sha256": "ddd1a2ce283150966bb1da673c864ec2f28e4e7109cf13ace40a86c2d9f10e8d"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/r33-full-s2-a01-a12-independent-check-20261118.md",
+      "bytes": 21127,
+      "sha256": "d609ee11bd1e4e6a212270e3c6129c1cdcb9d88bb78813e910a7e5c6641e4baa"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/research/test-report-contract.md",
+      "bytes": 21982,
+      "sha256": "9c3bb62bfa7b88ce75184c143a23011880c759da84cb562a2b699724b93c855f"
+    },
+    {
+      "path": ".trellis/tasks/archive/2026-11/11-13-pay-241-s3-recovery/report.md",
+      "bytes": 2807,
+      "sha256": "7d8c5d884b8023e8c2123954a4d9362607a0bba6ee25705fa39c1e2dc8ca8da2"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/prd.md",
+      "bytes": 2074,
+      "sha256": "ca742f3cebda4901b6194f00b0c453d1ea0f5d428e8da67c969ebe45bc30572a"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/design.md",
+      "bytes": 2371,
+      "sha256": "171ade89e57edb746958edf18dcf42cd4ab9735ac762054eb12b3888342706c1"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/implement.md",
+      "bytes": 1517,
+      "sha256": "59e2f641b7cfd979d33ff39a06ffb738c9db19033b4185e82b6524490699382c"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s4-external-integrations/research/next-inputs-20261119.md",
+      "bytes": 2237,
+      "sha256": "2a19616e0fc775efb18989887b873e118cfdb9547c17ecffe66d60cf843a7418"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/prd.md",
+      "bytes": 4259,
+      "sha256": "f2d9e49da98f2019b55ae7f4fc3cc0df6739190ec8ed8fdf40b4c283666087ae"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/design.md",
+      "bytes": 17720,
+      "sha256": "725f6624c98b359cd83a9167da5b6afdbc0ab75a8409406c07997eea9fbff6eb"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/implement.md",
+      "bytes": 7188,
+      "sha256": "3c7d244276a5c9c9420d86a6f0bed5aef343bdd6897483688c235c1dd8c17ee3"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02.md",
+      "bytes": 6616,
+      "sha256": "77075d79fdeaccc4f575c7ea8c2e973d4fe5069accf5f59ce39c37f7abb11073"
+    },
+    {
+      "path": ".trellis/tasks/11-13-pay-241-s5-performance-acceptance/research/rehearsal-r02-review.json",
+      "bytes": 50390,
+      "sha256": "da161e1d1aa2a7ad204abd7436e59d6d58470c68010a6bb6cf19b71c73327753"
+    },
+    {
+      "path": "server/cmd/server/router.go",
+      "bytes": 151979,
+      "sha256": "a5387f158da87c6eebdf71a8c3149b4b188a1f24d343607c83986460e891ad35"
+    },
+    {
+      "path": "server/internal/handler/github.go",
+      "bytes": 79507,
+      "sha256": "e8100fcfca2c16aa2a82aad1a6d3049a8ab2e3842de849fffb672b27856db493"
+    },
+    {
+      "path": "server/internal/handler/github_stage_evidence_test.go",
+      "bytes": 5430,
+      "sha256": "9a3b16a80fe60e3d50a944d4826a5e2dae116372b8196c06e2124d609c2a7d5b"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/client.go",
+      "bytes": 10475,
+      "sha256": "268a496c572e8cfe0fb272bf6f946507104074f59bf7d6a86f3a025845bbe5bd"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/refresh.go",
+      "bytes": 16370,
+      "sha256": "f2c68759a3ed33871acfd89013a8457cb0bb7b13a09afa78d4b2c15d093d2d13"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/snapshot_test.go",
+      "bytes": 8682,
+      "sha256": "db4a1fe671917b9bdcc8ad42e0e66a37865388eab6b1aa6b43ff545bbcfdedf3"
+    },
+    {
+      "path": "server/internal/integrations/ghsnapshot/refresh_db_test.go",
+      "bytes": 14536,
+      "sha256": "1f4f8fc40440ff49468bb9e5b478da915b60b442a1e6158a895e77c954402a94"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_evidence.go",
+      "bytes": 12444,
+      "sha256": "a870a7904b52e78f949af82eaca61ecbd3d9d4c14a304a386bc750ba05c5d895"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review.go",
+      "bytes": 31292,
+      "sha256": "a46178705d208bbd7aa7b3080e79927dac7bd3fef81d5b051dd0130f21cadc56"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_review_test.go",
+      "bytes": 31394,
+      "sha256": "aa20739aaf5e381768b73ab48ed79457d03326d20a16fb81785440fc7a483d1c"
+    },
+    {
+      "path": "server/internal/service/collaboration_test_report.go",
+      "bytes": 13872,
+      "sha256": "1c06344be5a7b74f8a55f1034243a832c74fc0b0fe8184e14ae68c413bc6cb44"
+    },
+    {
+      "path": "server/internal/service/collaboration_concurrent_content_test.go",
+      "bytes": 26383,
+      "sha256": "3634456cdbe128e7f3005af2be00b58c9f748e70c18b71ad6221138ce4d6cde8"
+    },
+    {
+      "path": "server/internal/service/collaboration_code_revision_regression_test.go",
+      "bytes": 31594,
+      "sha256": "a7224031b0ff558106ef48606e2e7b2a61ee555d05172c2a2526799905e27ae4"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_types.go",
+      "bytes": 9014,
+      "sha256": "500f05fece4da888a44750046a6c420170a96fcaf54c773079ee1460e1cdf68b"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution.go",
+      "bytes": 20591,
+      "sha256": "9a3fb5a253244c3be6b36c33cf42569a5965e4507804d7b6b3bdbeeb1a0eb015"
+    },
+    {
+      "path": "server/internal/service/collaboration_stage_execution_test.go",
+      "bytes": 19196,
+      "sha256": "4ce6ae1613785905dc6db707e8ccc6b285eb41ff9ce08674e36a1610c4a3d1c0"
+    },
+    {
+      "path": "server/cmd/server/collaboration_stage_execution_control_boundary_test.go",
+      "bytes": 8102,
+      "sha256": "d16caf2d8a79639c2d8d2b4626239d996fd05e5920edba6590ae57cfab25158d"
+    },
+    {
+      "path": ".trellis/spec/server/collaboration-stage-approvals.md",
+      "bytes": 48531,
+      "sha256": "9d24f4feedbfa6059a383f32848a975c207bb5cc4f03c04314a5c47d19ea959d"
+    },
+    {
+      "path": ".trellis/spec/web/frontend/collaboration-performance-qa.md",
+      "bytes": 8456,
+      "sha256": "3ad402e649a22d8515f3dcac6333d6ca6dd9ddda6e36eebaa59429b1ff316c4c"
+    }
+  ]
+}
