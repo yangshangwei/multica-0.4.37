@@ -3,11 +3,12 @@ import { createHash, randomUUID } from "node:crypto";
 import { existsSync, lstatSync, readFileSync, readdirSync, realpathSync, rmSync } from "node:fs";
 import { createServer as createHTTPServer, request as httpRequest, type IncomingHttpHeaders } from "node:http";
 import { createServer as createTCPServer, type Socket } from "node:net";
-import { isAbsolute, join, relative } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { promisify } from "node:util";
 import { expect, type Browser, type Locator, type TestInfo } from "@playwright/test";
 import pg from "pg";
 import { z } from "zod";
+import { assertRuntimeOutputAllocation } from "./collaboration-runtime-output-allocation.mjs";
 import {
   CollaborationAttachmentSchema, CollaborationAttachmentsSchema, CollaborationCommentSchema,
   CollaborationCommandHistorySchema, CollaborationControlReceiptSchema, CollaborationOperationSchema, CollaborationResourceReceiptSchema,
@@ -33,7 +34,6 @@ const now = () => new Date().toISOString();
 const execute = promisify(execFile);
 const positive = z.string().regex(/^[1-9][0-9]*$/);
 const hash = z.string().regex(/^[a-f0-9]{64}$/);
-const stateRoot = "/Users/artisan/.multica/acceptance/pay241-s3-output-20261119-tm89sjgy";
 const outputCases = [
   "agent_file_unknown_response_original_cli_retry", "same_key_same_bytes_concurrent_replay",
   "changed_bytes_metadata_retry_and_mixed_race", "failed_result_frozen_files_and_both_shared_renderers",
@@ -347,12 +347,9 @@ function providerFacts(fixture: Pick<OutputFixture, "daemon">) {
 /** A small setup adapter; gate, native daemon, runtime transport and ledger owners are reused. */
 async function withOutputRuntime<T>(evidence: RecoveryEvidence, exercise: (fixture: OutputFixture) => Promise<T>): Promise<T> {
   if (!runtimeOutputEnvironmentReady()) throw new Error("Agent output requires its exact separately permitted task allocation");
-  const env = hostEnvironment(), databaseName = new URL(process.env.DATABASE_URL!).pathname.slice(1);
-  expect(databaseName).toBe(process.env.TASK_DATABASE_NAME);
-  expect(databaseName).toMatch(/^multica_pay241_s3o_20261119_tm89sjgy_[a-z0-9_]+$/);
-  const storageRoot = process.env.COLLABORATION_OUTPUT_STORAGE_ROOT!;
-  if (!isAbsolute(storageRoot) || !realpathSync(storageRoot).startsWith(`${stateRoot}/`)) throw new Error("Output storage observation requires the exact task-owned local root");
-  expect(realpathSync(storageRoot)).toBe(realpathSync(process.env.LOCAL_UPLOAD_DIR!));
+  const allocation = assertRuntimeOutputAllocation(process.env, realpathSync(resolve(import.meta.dirname, "../..")));
+  evidence.set({ output_allocation: allocation });
+  const env = hostEnvironment(), databaseName = allocation.database;
   const beforeGate = await gateSnapshot(), restoreGate = await openHostAcceptanceGate();
   let daemon: RuntimeFixture["daemon"] | undefined, transport: RuntimeFixture["transport"] | undefined;
   let output: OutputFixture["output"] | undefined, processes: OutputFixture["processes"] | undefined;
@@ -398,6 +395,7 @@ async function withOutputRuntime<T>(evidence: RecoveryEvidence, exercise: (fixtu
     fixture = { ...env, owner, handler, participant, outsider, actors, sourceWorkspace, workspace, runtime, daemon, transport, output, processes,
       issues: [], generated: [] };
     const sourcePaths = ["e2e/collaboration-runtime-output.spec.ts", "e2e/fixtures/collaboration-runtime-output.ts",
+      "e2e/fixtures/collaboration-runtime-output-allocation.mjs",
       "e2e/fixtures/collaboration-recovery-runtime.ts", "e2e/fixtures/collaboration-host-provider.go", "e2e/fixtures/collaboration-host-runtime.ts",
       "e2e/fixtures/collaboration-recovery.ts", "e2e/fixtures/collaboration-native.ts", "packages/core/collaboration/attachment-schema.ts",
       "packages/core/collaboration/run-records-schema.ts", "packages/views/collaboration/run-records.tsx",

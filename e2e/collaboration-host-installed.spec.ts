@@ -198,8 +198,30 @@ test("Packaged full Main controls a real native host run and explicitly resumes 
     expect(summary.ledger).toHaveLength(3);
     for (const run of summary.ledger) expect(run).toMatchObject({ version: 2, sealed: true, phase: "proof_acknowledged", proof_state: "host_exit_observed",
       launches: [{ kind: "provider", process_observed: true, terminal_accepted: true, authorized: true, terminal_kind: "managed_launch_ended" }] });
-    expect(summary.messages.filter((message) => "http" in message).flatMap((message) => "http" in message ? message.http : [])
-      .every((fact) => fact.protocol_version === 3 && fact.containment === hostMode && fact.status === 200)).toBe(true);
+    const facts = summary.messages.filter((message) => "http" in message).flatMap((message) => "http" in message ? message.http : []);
+    expect([...new Set(facts.map((fact) => fact.run_id))].sort()).toEqual([first, second, third].map((visit) => visit.identity.run_id).sort());
+    for (const visit of [first, second, third]) {
+      const runFacts = facts.filter((fact) => fact.run_id === visit.identity.run_id);
+      expect([...new Set(runFacts.map((fact) => fact.operation))]).toEqual(["claim", "permit", "termination", "outcome", "proof"]);
+      expect(runFacts.every((fact) => fact.protocol_version === 3 && fact.containment === hostMode)).toBe(true);
+      expect(runFacts.filter((fact) => fact.operation !== "outcome").every((fact) => fact.status === 200)).toBe(true);
+      expect(new Set(runFacts.filter((fact) => fact.launch_hash).map((fact) => fact.launch_hash)).size).toBe(1);
+      const outcomes = runFacts.filter((fact) => fact.operation === "outcome");
+      expect(outcomes).toHaveLength(1);
+      // Stop revokes business writes for this exact run; its independent
+      // termination capability must still record exit and seal the proof.
+      expect(outcomes[0]).toMatchObject({ run_id: visit.identity.run_id, attempt_seq: "1",
+        status: visit.identity.run_id === second.identity.run_id ? 403 : 200 });
+      expect(outcomes[0]!.event_id).toMatch(/^[0-9a-f-]{36}$/);
+      expect(outcomes[0]!.request_sha256).toMatch(/^[0-9a-f]{64}$/);
+      const termination = runFacts.find((fact) => fact.operation === "termination")!;
+      const proof = runFacts.find((fact) => fact.operation === "proof")!;
+      expect(termination).toMatchObject({ kind: "managed_launch_ended", attempt_seq: "1" });
+      expect(proof).toMatchObject({ run_id: visit.identity.run_id, state: "host_exit_observed" });
+      expect(proof.receipt_id).toMatch(/^[0-9a-f-]{36}$/);
+      expect(runFacts.indexOf(outcomes[0]!)).toBeGreaterThan(runFacts.indexOf(termination));
+      expect(runFacts.indexOf(proof)).toBeGreaterThan(runFacts.indexOf(outcomes[0]!));
+    }
     evidence.packaged_status = status;
     expect(errors).toEqual([]);
   } finally {

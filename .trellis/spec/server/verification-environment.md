@@ -299,3 +299,55 @@ Git's path-aware clean object ID. The P6 `9b0291c83697` failure involved only
 unchanged, and the source/configuration rollback was independently accepted.
 The new executor's CRLF regression changes from one named failure to passing
 while all eight bounded fixture cases remain covered.
+
+
+## Synthetic execution observation clocks
+
+### 1. Scope / trigger
+
+Apply to test-only stage deployment sources whose signed observations are
+validated against PostgreSQL time. A container clock can lag the host by a few
+milliseconds even when both clocks appear synchronized.
+
+### 2. Signatures
+
+`stageExecutionSourceFixture.observationClock(context.Context) (time.Time, error)`
+is supplied by `newStageExecutionFixture` using
+`Queries.ArtifactExecutionDatabaseTime(ctx)`. `Execute` signs that UTC timestamp;
+`stageObservationValid` remains the production validator.
+
+### 3. Contracts
+
+Synthetic proof creation and verification use the same authoritative clock.
+Propagate clock-read errors without producing a signed observation. Preserve the
+strict production rejection of future observations; this fixture adjustment does
+not introduce clock tolerance or alter external deployment semantics.
+
+### 4. Validation / error matrix
+
+| Condition | Required behavior |
+| --- | --- |
+| Fixture clock succeeds | Signed observation contains that exact UTC instant |
+| Fixture clock fails | Return the error and no proof |
+| Observation is after verifier time | Production validation still rejects it |
+| Host and database clocks differ | Fixture does not use host `time.Now()` |
+
+### 5. Good / base / bad cases
+
+Good: a synthetic deployment receives database time before signing its proof.
+Base: retain an unknown receipt when a real external observation is invalid.
+Bad: relax production future-time checks to make a test-generated receipt pass.
+
+### 6. Required tests and assertion points
+
+`collaboration_stage_execution_fixture_clock_test.go` verifies exact supplied
+time, retained future-proof rejection, and clock failure without a proof. Repeat
+affected completion-preview/stage-completion cases against a fresh database.
+The 2026-11-20 diagnostics observed synthetic host timestamps 14–19ms ahead of
+PostgreSQL and `stage_execution_conflict`; keep that evidence alongside replays.
+
+### 7. Wrong vs correct
+
+Wrong: classify every unknown synthetic receipt as a timeout and raise budgets.
+Correct: inspect the observation refusal, use database time in the test source,
+and retain strict production checks plus the original failed runs.

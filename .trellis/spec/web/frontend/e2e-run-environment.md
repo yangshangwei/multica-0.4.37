@@ -830,3 +830,41 @@ An unconditional Knowledge native case needs the explicit renderer/source root;
 it must not acquire a new skip to compensate for missing preparation. The
 password-session persistence test has its own synthetic password API and needs
 only the same built Desktop assets, not a real password-mode server.
+
+## Controlled Agent output allocation
+
+`collaboration-runtime-output.ts` admits its current task before any database
+gate write, actor registration, upload inspection or daemon launch. Its historical
+exact database and storage guard remains available only when every new allocation
+environment field is absent. A partial or invalid explicit allocation must fail;
+it must never fall back to the historical paths.
+
+For the 2026-11-20 full regression, explicitly set `COLLABORATION_OUTPUT_TASK`
+to `.trellis/tasks/11-20-full-e2e-regression-20261120`,
+`COLLABORATION_OUTPUT_STATE_ROOT`, `COLLABORATION_OUTPUT_ALLOCATION_FILE` and
+`COLLABORATION_OUTPUT_ALLOCATION_SHA256`. The hash pins the complete JSON record:
+task, source root, private state and storage roots, database name and connection
+URL digest, API/Web/renderer origins and deployment ID. The task directory must
+exist under the exact checkout. Keep the record mode0600 within an externally
+allocated owner0700 state directory; storage must be an owner0700 descendant and
+equal both `LOCAL_UPLOAD_DIR` and `COLLABORATION_OUTPUT_STORAGE_ROOT`.
+Reject symlink path segments, noncanonical paths and mismatching ownership.
+
+The database URL must identify the exact nondefault loopback database and contain
+no query or fragment. `pg.Client` can honor `?host=` and `?port=` overrides even
+when `new URL(...).hostname` is loopback. Pinning that URL does not remove the
+override: reject it before connecting. The Node guard suite verifies the actual
+effective PG connection parameters without opening a connection, as well as
+historical admission, fresh allocation, partial/malformed records, task/source
+mismatch, storage escapes, permissions and origin/deployment drift. POSIX ownership
+verification explicitly skips on platforms without `getuid`; it does not establish
+Windows acceptance.
+
+Retain each allocation and source/artifact hash set with its browser report. If a
+stopped container receives a new ephemeral port, record and pin its new exact
+connection identity before restarting the owned services. Verify real API identity,
+production Web runtime URLs, built native renderer and effective PG destination.
+The canonical two output journeys exercise genuine local daemon/provider/CLI
+processes with deterministic fixture output; they do not establish real-model,
+packaged-Main or installer acceptance. Restore the original gate booleans, keep
+their epoch monotonic, and stop only the recorded owned services.

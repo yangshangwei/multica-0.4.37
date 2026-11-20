@@ -502,3 +502,9 @@ GREEN source/configuration and final ledger/gate/connection audit separately.
 
 Evidence: PAY-241 S3 `research/testmain-cleanup-diagnosis-20261118.md` and its
 private `testmain-diagnostic-red-r01` / `testmain-diagnostic-green-r04` records.
+
+## Synthetic execution observation clocks
+
+See [Joint verification environment](./verification-environment.md) for the
+synthetic stage execution fixture's database-clock contract and strict
+future-observation rejection.

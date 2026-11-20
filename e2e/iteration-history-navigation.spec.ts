@@ -88,43 +88,43 @@ test("expanded history survives the readable issue commit before its history res
   const { workspace, issue, iterationId } = fixture;
   const uuidPath = `/${workspace.slug}/issues/${issue.id}`;
   const canonicalPath = `/${workspace.slug}/issues/${issue.identifier}`;
-  const origin = new URL(process.env.PLAYWRIGHT_BASE_URL!).origin;
-  let releasePage!: () => void;
   let releaseHistory!: () => void;
-  const pageReleased = new Promise<void>((done) => { releasePage = done; });
   const historyReleased = new Promise<void>((done) => { releaseHistory = done; });
   const handlers: Promise<void>[] = [];
   const historyRequests: Request[] = [];
   const events: unknown[] = [];
-  let replacement: Request | undefined;
-  let replacementCaptured = false;
-  const pattern = (url: URL) => url.pathname === canonicalPath ||
-    (url.pathname === `/api/workspaces/${workspace.id}/iterations` && url.searchParams.get("issue_id") === issue.id);
+  await page.addInitScript(({ uuidPath, canonicalPath }) => {
+    const original = history.replaceState.bind(history);
+    let pending: (() => void) | undefined;
+    Reflect.set(window, "__iterationHistoryReleaseNormalization", () => {
+      const commit = pending;
+      pending = undefined;
+      commit?.();
+    });
+    history.replaceState = (data, unused, url) => {
+      const target = url == null ? null : new URL(String(url), location.href);
+      if (location.pathname === uuidPath && target?.pathname === canonicalPath) {
+        Reflect.set(window, "__iterationHistoryHeldNormalization", {
+          from: location.pathname, to: target.pathname,
+        });
+        pending = () => original(data, unused, url);
+        return;
+      }
+      original(data, unused, url);
+    };
+  }, { uuidPath, canonicalPath });
+  const releaseNormalization = () => page.evaluate(() => {
+    Reflect.get(window, "__iterationHistoryReleaseNormalization")?.();
+  });
+  const pattern = (url: URL) => url.pathname === `/api/workspaces/${workspace.id}/iterations` && url.searchParams.get("issue_id") === issue.id;
   const handler = async (route: Route) => {
     const request = route.request();
-    const url = new URL(request.url());
-    if (request.method() === "GET" && url.origin === origin && url.pathname === canonicalPath && request.headers().rsc === "1") {
-      const pending = (async () => {
-        replacement = request;
-        events.push({ stage: "readable page request started", pathname: url.pathname, rsc: request.headers().rsc });
-        const response = await route.fetch();
-        expect(response.status()).toBe(200);
-        replacementCaptured = true;
-        await pageReleased;
-        await route.fulfill({ response });
-        events.push({ stage: "readable page response released" });
-      })();
-      handlers.push(pending);
-      await pending;
-      return;
-    }
     if (participationRequest(request, fixture, issue.id)) {
       const pending = (async () => {
         historyRequests.push(request);
         events.push({ stage: "issue participation request held", issueId: issue.id });
         await historyReleased;
-        // Canonicalization may cancel an outgoing observer. A later observer
-        // can read the same issue; neither transport lifetime is the contract.
+        // Keep the history response independent of the address-only commit.
         await route.continue();
       })();
       handlers.push(pending);
@@ -140,7 +140,9 @@ test("expanded history survives the readable issue commit before its history res
     const { summary, details } = historyPanel(page);
     await expect(summary).toBeVisible();
     await expect(details).toHaveCount(1);
-    await expect.poll(() => replacementCaptured, { message: "The readable RSC response must be held before the UUID click" }).toBe(true);
+    await expect.poll(() => page.evaluate(() => Reflect.get(window, "__iterationHistoryHeldNormalization")), {
+      message: "The actual canonical history replacement must be held before the UUID click",
+    }).toEqual({ from: uuidPath, to: canonicalPath });
     await summary.evaluate((element) => {
       Reflect.set(window, "__iterationHistoryOriginal", element.parentElement);
       element.addEventListener("click", () => {
@@ -153,11 +155,7 @@ test("expanded history survives the readable issue commit before its history res
     await expect.poll(() => historyRequests.length).toBeGreaterThan(0);
     events.push({ stage: "real UUID summary click opened history", pathname: new URL(page.url()).pathname });
 
-    const replaced = page.waitForResponse((response) => response.request() === replacement);
-    releasePage();
-    const response = await replaced;
-    expect(response.status()).toBe(200);
-    expect(await response.finished()).toBeNull();
+    await releaseNormalization();
     await expect(page).toHaveURL(new RegExp(`${canonicalPath}$`));
     await expect(page.getByRole("button", { name: issue.title, exact: true })).toBeVisible();
     events.push({
@@ -167,6 +165,7 @@ test("expanded history survives the readable issue commit before its history res
       oldElementConnected: await page.evaluate(() => Reflect.get(window, "__iterationHistoryOriginal")?.isConnected),
     });
     await expect(details).toHaveJSProperty("open", true);
+    expect(await page.evaluate(() => Reflect.get(window, "__iterationHistoryOriginal")?.isConnected)).toBe(true);
 
     const loaded = page.waitForResponse((history) => participationRequest(history.request(), fixture, issue.id) && history.status() === 200);
     releaseHistory();
@@ -178,9 +177,10 @@ test("expanded history survives the readable issue commit before its history res
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/iterations/${iterationId}$`));
     await expect(page.getByRole("button", { name: "Filter tasks", exact: true })).toBeVisible();
   } finally {
-    releasePage();
+    await releaseNormalization();
     releaseHistory();
-    await info.attach("history-navigation-events", { body: JSON.stringify({ replacementCaptured, historyRequests: historyRequests.length, events }, null, 2), contentType: "application/json" });
+    const replacement = await page.evaluate(() => Reflect.get(window, "__iterationHistoryHeldNormalization"));
+    await info.attach("history-navigation-events", { body: JSON.stringify({ replacement, historyRequests: historyRequests.length, events }, null, 2), contentType: "application/json" });
     try {
       await Promise.all(handlers);
     } finally {
