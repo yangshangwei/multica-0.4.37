@@ -3,7 +3,7 @@
   "name": "quick-create-blocked-feedback",
   "title": "优化通过智能体创建弹窗的阻塞反馈与一致性",
   "description": "让通过智能体创建弹窗在无法提交时说明原因并给出下一步，统一两个 AI 辅助按钮的行为、收件方一行的层级与键盘路径，以及交给这一动作的用词",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "artisan",
   "assignee": "artisan",
   "createdAt": "2026-11-17",
-  "completedAt": null,
+  "completedAt": "2026-11-20",
   "branch": "codex/cross-workspace-collaboration",
   "base_branch": "main",
   "worktree_path": null,
@@ -46,6 +46,10 @@
   ],
   "notes": "Accepted 2026-11-20: 18 new browser cases and 15 existing Web/Electron cases, Core 8 and Views 330 plus final grouping 87; independent code/design review and owned-resource cleanup passed. See research/acceptance.md. Explicit P3 polish and physical assistive-device checks remain out of scope.",
   "meta": {
-    "acceptance": "research/acceptance.md"
+    "acceptance": "research/acceptance.md",
+    "work_commits": [
+      "307f404fee685094ecc49569b4c0beb0f7127b42",
+      "d6be5c012724c1582ee8150676d54e175cfd76f5"
+    ]
   }
 }
