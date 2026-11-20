@@ -15,7 +15,7 @@
   "branch": "codex/security-remediation-v2-cli-20261120",
   "base_branch": "codex/cross-workspace-collaboration",
   "worktree_path": null,
-  "commit": "15e9e8d5227153a8123e51d074aa1c66766bf36d",
+  "commit": "14057a80f549ca58602971ef7279633363042d4f",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -108,7 +108,14 @@
       "direct_backend_named_tests_passed": 11,
       "direct_backend_count_includes_subtests": true,
       "historical_consistency_assertions_passed": 614,
-      "historical_consistency_assertions_are_product_tests": false
+      "historical_consistency_assertions_are_product_tests": false,
+      "integrated_commit": "14057a80f549ca58602971ef7279633363042d4f",
+      "integration_base": "689fcb2d8e9070a3bf63f023e54dffb16c88c53a",
+      "worktree_removed": true,
+      "cleanup_report": "research/resume-checkpoint-cleanup-20261120.md",
+      "unrelated_dirty_paths_unchanged_during_merge": 8798,
+      "static_checks": "scoped go vet/gofmt/29 Python AST and documentation checks passed",
+      "private_evidence_root": "/Volumes/artisan/code/2026/secrem-v2-resume-audit-20261120T065505Z"
     },
     "continuation_tool_access_evidence": "No new grant or tool-side review evidence available in this audit; actual account access status not probed."
   }

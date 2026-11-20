@@ -142,3 +142,5 @@ P1与O1真实样本完成并独立语义通过；P1自动action-only检查过严
 - [ ] 全部真实案例与 verifier 工作量齐备后完成 AC9/AC10。需要修改模板则回父任务走新版本。
 
 本轮独立历史审计见 `research/resume-p1-o1-audit-20261120.md`，已有维护控制验证见 `research/resume-maintenance-audit-20261120.md`，根会话 dump/源码/工具限制核验见 `research/resume-evidence-audit-20261120.md/json`。全部只证明所列审计或维护范围。没有新的真实调用、准入、生产源码或模板修改。未运行全仓 make check/lint/typecheck；最终记录检查与本地集成回执单独保留。
+
+本轮审计已实际合入 `14057a80f`（并行基线先到689fcb2d8，零路径交集后变基）。50 Python、11 Go命名结果和范围内静态检查通过；8,798个其他脏路径在合入窗口内指纹不变。审计worktree及新建测试状态已清理，任务与分支保留；最终回执见 `research/resume-checkpoint-cleanup-20261120.md`。未完成项和工具访问前置不变。
