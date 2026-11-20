@@ -1,0 +1,51 @@
+{
+  "tag": "integrated-race-migrations",
+  "package": "./internal/migrations",
+  "database": "f3_budget_cx_takeover_race_migrations",
+  "exit": 0,
+  "seconds": 3.65,
+  "counts": {
+    "pass": 4
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "fade22b9b75655bbc5db6a4c057d194da1408e4247d08fef12aed82bbb110342",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/migrations",
+    "-run",
+    "^(TestIssueBudgetIndexMigrationContract|TestIssueBudgetReadyMigrationListsEveryIndex|TestIssueBudgetRollbackKeepsLedgerRows|TestIssueBudgetTableMigrationContract)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m",
+    "-race"
+  ],
+  "tests": [
+    {
+      "name": "TestIssueBudgetTableMigrationContract",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetIndexMigrationContract",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationListsEveryIndex",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRollbackKeepsLedgerRows",
+      "action": "pass"
+    }
+  ]
+}

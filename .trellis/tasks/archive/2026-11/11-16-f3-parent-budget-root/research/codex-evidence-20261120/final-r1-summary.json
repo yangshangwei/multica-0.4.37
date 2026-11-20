@@ -1,0 +1,102 @@
+[
+  {
+    "database": "f3_budget_cx_final_normal_service",
+    "package": "./internal/service",
+    "exit": 0,
+    "counts": {
+      "pass": 364
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-normal-service.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_normal_handler",
+    "package": "./internal/handler",
+    "exit": 0,
+    "counts": {
+      "pass": 159
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-normal-handler.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_normal_router",
+    "package": "./cmd/server",
+    "exit": 0,
+    "counts": {
+      "pass": 54
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-normal-router.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_normal_migrations",
+    "package": "./internal/migrations",
+    "exit": 0,
+    "counts": {
+      "pass": 4
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-normal-migrations.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_normal_migrate",
+    "package": "./cmd/migrate",
+    "exit": 0,
+    "counts": {
+      "pass": 6
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-normal-migrate.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_race_service",
+    "package": "./internal/service",
+    "exit": 0,
+    "counts": {
+      "pass": 364
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-race-service.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_race_handler",
+    "package": "./internal/handler",
+    "exit": 0,
+    "counts": {
+      "pass": 159
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-race-handler.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_race_router",
+    "package": "./cmd/server",
+    "exit": 0,
+    "counts": {
+      "pass": 54
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-race-router.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_race_migrations",
+    "package": "./internal/migrations",
+    "exit": 0,
+    "counts": {
+      "pass": 4
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-race-migrations.jsonl",
+    "missing_expected": []
+  },
+  {
+    "database": "f3_budget_cx_final_race_migrate",
+    "package": "./cmd/migrate",
+    "exit": 0,
+    "counts": {
+      "pass": 6
+    },
+    "log": "/tmp/f3-codex-20261120/final-r1-race-migrate.jsonl",
+    "missing_expected": []
+  }
+]

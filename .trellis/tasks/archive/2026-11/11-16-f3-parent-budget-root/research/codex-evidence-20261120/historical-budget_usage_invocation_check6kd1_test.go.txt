@@ -1,0 +1,504 @@
+package daemon
+
+import (
+	"context"
+	"fmt"
+	"math"
+	"path/filepath"
+	"reflect"
+	"slices"
+	"strings"
+	"sync/atomic"
+	"testing"
+
+	"github.com/google/uuid"
+
+	"github.com/multica-ai/multica/server/pkg/agent"
+)
+
+// Check 6kd1, points C1, C2, C4, C5 and C6: what one invocation records.
+
+// check6kd1Capturing is a backend that keeps the options of every launch and
+// ends each launch at once with the next of the given results.
+func check6kd1Capturing(seen *[]agent.ExecOptions, results ...agent.Result) budgetUsageTestBackend {
+	launch := 0
+	return func(_ context.Context, _ string, opts agent.ExecOptions) (*agent.Session, error) {
+		*seen = append(*seen, opts)
+		result := results[min(launch, len(results)-1)]
+		launch++
+		messages := make(chan agent.Message)
+		close(messages)
+		out := make(chan agent.Result, 1)
+		out <- result
+		return &agent.Session{Messages: messages, Result: out}, nil
+	}
+}
+
+// check6kd1Batch is a sealed batch as the checker of this lane reads it.
+type check6kd1Batch struct {
+	raw  []byte
+	root *check6kd1Value
+}
+
+// check6kd1Read parses bytes with the checker's own reader and requires the
+// daemon's promises about form (key order, UTC whole seconds). It does not
+// require the batch to be acceptable to the server.
+func check6kd1ReadBatch(t *testing.T, raw []byte) check6kd1Batch {
+	t.Helper()
+	root, err := check6kd1Parse(raw)
+	if err != nil {
+		t.Fatalf("the batch is not one JSON value: %v\n%s", err, raw)
+	}
+	if err := check6kd1DaemonForm(raw); err != nil {
+		t.Fatalf("the batch does not have the daemon's form: %v\n%s", err, raw)
+	}
+	return check6kd1Batch{raw: raw, root: root}
+}
+
+func (b check6kd1Batch) invocations() []*check6kd1Value {
+	return b.root.fields["invocations"].items
+}
+
+// text returns a string field of the envelope, and whether it is there.
+func (b check6kd1Batch) text(key string) (string, bool) {
+	value, present := b.root.fields[key]
+	if !present {
+		return "", false
+	}
+	return value.text, true
+}
+
+// check6kd1UsageText renders the usage of an invocation as
+// "model input/output/cache_read/cache_write cost" items, in wire order.
+func check6kd1UsageText(invocation *check6kd1Value) string {
+	var items []string
+	for _, item := range invocation.fields["usage"].items {
+		tokens := item.fields["tokens"].fields
+		cost := "-"
+		if value, present := item.fields["cost_ticks"]; present {
+			cost = value.text
+		}
+		items = append(items, fmt.Sprintf("%s %s/%s/%s/%s %s", item.fields["model"].text,
+			tokens["input"].text, tokens["output"].text, tokens["cache_read"].text, tokens["cache_write"].text, cost))
+	}
+	return strings.Join(items, "; ")
+}
+
+// TestCheck6KD1ResumedForTheEightCombinations runs every combination of the
+// three inputs that decide `resumed` through the recording wrapper and the
+// real executeAndDrain, and requires that the backend was launched with the
+// very options the value was judged from.
+func TestCheck6KD1ResumedForTheEightCombinations(t *testing.T) {
+	t.Parallel()
+
+	type row struct {
+		name string
+		opts agent.ExecOptions
+		want bool
+	}
+	var rows []row
+	for mask := range 8 {
+		opts := agent.ExecOptions{}
+		var parts []string
+		if mask&1 != 0 {
+			opts.ResumeSessionID = "session-1"
+			parts = append(parts, "resume id")
+		}
+		if mask&2 != 0 {
+			opts.ExtraArgs = []string{"--verbose"}
+			parts = append(parts, "daemon-level arguments")
+		}
+		if mask&4 != 0 {
+			opts.CustomArgs = []string{"--model", "x"}
+			parts = append(parts, "agent custom arguments")
+		}
+		name := "none of the three"
+		if len(parts) > 0 {
+			name = strings.Join(parts, " and ")
+		}
+		rows = append(rows, row{name: name, opts: opts, want: mask != 0})
+	}
+	rows = append(rows,
+		// Emptiness is the length of the slice as passed, whatever backs it.
+		row{name: "empty lists with spare capacity", opts: agent.ExecOptions{ExtraArgs: make([]string, 0, 4), CustomArgs: make([]string, 0, 4)}, want: false},
+		row{name: "one daemon-level argument that is the empty string", opts: agent.ExecOptions{ExtraArgs: []string{""}}, want: true},
+		row{name: "one custom argument that is the empty string", opts: agent.ExecOptions{CustomArgs: []string{""}}, want: true},
+		row{name: "a resume id of one space", opts: agent.ExecOptions{ResumeSessionID: " "}, want: true},
+		// What runTask passes to its fresh-session retry and to a first run
+		// of an agent with every other option set: none of these is one of
+		// the three inputs.
+		row{name: "every other option set", opts: agent.ExecOptions{
+			Cwd: "/work", Model: "model-x", SystemPrompt: "brief", ThreadName: "thread", MaxTurns: 3,
+			ResumeExpected: true, ResumeContinuityNotice: "the earlier conversation is gone",
+			QwenpawWorkspace: "/qwenpaw", McpConfig: []byte(`{"mcpServers":{}}`), ThinkingLevel: "high",
+			ServiceTier: "fast", OpenclawMode: "local", ClaudeSettingsPath: "/settings.json", CodexEphemeral: true,
+		}, want: false},
+	)
+
+	for _, tc := range rows {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			f := budgetUsageTestNewCaptureFixture(t)
+			var seen []agent.ExecOptions
+			passed := tc.opts
+			capture := f.record(context.Background(), t, check6kd1Capturing(&seen, agent.Result{Status: "completed"}), passed, f.logger)
+			if capture.err != nil {
+				t.Fatalf("the launch failed: %v", capture.err)
+			}
+			if len(capture.record.Invocations) != 1 {
+				t.Fatalf("record holds %d invocations, want 1", len(capture.record.Invocations))
+			}
+			if got := capture.record.Invocations[0].Resumed; got != tc.want {
+				t.Errorf("resumed = %t, want %t for %+v", got, tc.want, tc.opts)
+			}
+			if len(seen) != 1 {
+				t.Fatalf("the backend was launched %d times, want once", len(seen))
+			}
+			// The launch got the options the value was judged from: the same
+			// resume id and the same two slices, not a copy that grew.
+			if !reflect.DeepEqual(seen[0], tc.opts) {
+				t.Errorf("the backend was launched with other options than the ones passed in\n got:  %+v\n want: %+v", seen[0], tc.opts)
+			}
+			for name, pair := range map[string][2][]string{
+				"ExtraArgs":  {seen[0].ExtraArgs, tc.opts.ExtraArgs},
+				"CustomArgs": {seen[0].CustomArgs, tc.opts.CustomArgs},
+			} {
+				got, want := pair[0], pair[1]
+				if (got == nil) != (want == nil) || len(got) != len(want) || cap(got) != cap(want) {
+					t.Errorf("%s reached the backend as another slice: len %d cap %d nil %t, want len %d cap %d nil %t",
+						name, len(got), cap(got), got == nil, len(want), cap(want), want == nil)
+				}
+				if len(want) > 0 && &got[0] != &want[0] {
+					t.Errorf("%s reached the backend as a copy", name)
+				}
+			}
+			// The same value is in the batch.
+			batch := check6kd1ReadBatch(t, capture.attempt.seal())
+			if err := check6kd1ValidateBatch(batch.raw); err != nil {
+				t.Fatalf("the batch breaks the wire format: %v\n%s", err, batch.raw)
+			}
+			if got := batch.invocations()[0].fields["resumed"].text; got != fmt.Sprint(tc.want) {
+				t.Errorf("the batch says resumed = %s, want %t", got, tc.want)
+			}
+		})
+	}
+}
+
+// TestCheck6KD1RetryIsASecondInvocationWithItsOwnValues repeats what runTask
+// does around its fresh-session retry: a first launch that resumes, then a
+// second one with the resume id cleared and everything else as it was. Each
+// launch is an invocation with its own `resumed` and its own usage, and
+// merging the two results afterwards changes neither.
+func TestCheck6KD1RetryIsASecondInvocationWithItsOwnValues(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		name        string
+		extra       []string
+		custom      []string
+		wantRetried bool
+	}{
+		{name: "no arguments: the retry is a fresh session", wantRetried: false},
+		{name: "daemon-level arguments: the retry is not proven fresh", extra: []string{"--debug"}, wantRetried: true},
+		{name: "agent custom arguments: the retry is not proven fresh", custom: []string{"--continue"}, wantRetried: true},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			f := budgetUsageTestNewCaptureFixture(t)
+			attempt, err := f.journal.begin(budgetUsageTestSeed(uuid.NewString()), f.logger)
+			if err != nil {
+				t.Fatalf("create the record of the attempt: %v", err)
+			}
+			ctx := withBudgetUsageAttempt(context.Background(), attempt)
+
+			refused := agent.Result{Status: "failed", Error: "No conversation found with session ID: gone", Usage: map[string]agent.TokenUsage{
+				"model-x":     {InputTokens: 3, OutputTokens: 1},
+				"model-first": {InputTokens: 5, CostUSDTicks: 2},
+			}}
+			fresh := agent.Result{Status: "completed", SessionID: "session-2", Usage: map[string]agent.TokenUsage{
+				"model-x":      {InputTokens: 20, OutputTokens: 9, CacheReadTokens: 4, CacheWriteTokens: 2, CostUSDTicks: 7},
+				"model-second": {OutputTokens: 6},
+			}}
+			var seen []agent.ExecOptions
+			backend := check6kd1Capturing(&seen, refused, fresh)
+			var msgSeq atomic.Int32
+
+			opts := agent.ExecOptions{ResumeSessionID: "session-1", ResumeExpected: true, ResumeContinuityNotice: "notice", ExtraArgs: tc.extra, CustomArgs: tc.custom}
+			first, firstTools, firstErr := f.daemon.executeAndDrainRecorded(ctx, backend, "prompt", opts, f.logger, "task-1", "", &msgSeq)
+			if firstErr != nil {
+				t.Fatalf("first launch: %v", firstErr)
+			}
+			// runTask, before its single retry.
+			opts.ResumeSessionID = ""
+			opts.ResumeContinuityNotice = ""
+			retry, retryTools, retryErr := f.daemon.executeAndDrainRecorded(ctx, backend, "fresh prompt", opts, f.logger, "task-1", "", &msgSeq)
+			if retryErr != nil {
+				t.Fatalf("retry launch: %v", retryErr)
+			}
+			// runTask, after it: the two results become one.
+			merged, _ := reconcileFreshRetryResult(first, first.Usage, firstTools, retry, retryTools, retryErr)
+			if got := merged.Usage["model-x"]; got.InputTokens != 23 || got.OutputTokens != 10 || got.CostUSDTicks != 7 {
+				t.Fatalf("the merged result does not carry the sum of both launches: %+v", merged.Usage)
+			}
+			// Whatever happens to the maps of the results later must not
+			// reach the record.
+			first.Usage["model-x"] = agent.TokenUsage{InputTokens: 999999}
+			retry.Usage["model-x"] = agent.TokenUsage{InputTokens: 888888}
+			merged.Usage["model-x"] = agent.TokenUsage{InputTokens: 777777}
+
+			if len(seen) != 2 || seen[0].ResumeSessionID != "session-1" || seen[1].ResumeSessionID != "" {
+				t.Fatalf("launch options = %+v, want a resume and a launch without a resume id", seen)
+			}
+			record := attempt.snapshot()
+			if len(record.Invocations) != 2 {
+				t.Fatalf("record holds %d invocations, want 2: %+v", len(record.Invocations), record.Invocations)
+			}
+			if record.Invocations[0].InvocationID == record.Invocations[1].InvocationID {
+				t.Fatalf("both launches carry the invocation id %s", record.Invocations[0].InvocationID)
+			}
+			if got := []bool{record.Invocations[0].Resumed, record.Invocations[1].Resumed}; !slices.Equal(got, []bool{true, tc.wantRetried}) {
+				t.Errorf("resumed = %v, want [true %t]", got, tc.wantRetried)
+			}
+			wantFirst := map[string]budgetUsageCounts{
+				"model-x":     {InputTokens: 3, OutputTokens: 1},
+				"model-first": {InputTokens: 5, CostTicks: 2},
+			}
+			wantRetry := map[string]budgetUsageCounts{
+				"model-x":      {InputTokens: 20, OutputTokens: 9, CacheReadTokens: 4, CacheWriteTokens: 2, CostTicks: 7},
+				"model-second": {OutputTokens: 6},
+			}
+			if !reflect.DeepEqual(record.Invocations[0].Usage, wantFirst) {
+				t.Errorf("first invocation holds %+v, want its own usage %+v", record.Invocations[0].Usage, wantFirst)
+			}
+			if !reflect.DeepEqual(record.Invocations[1].Usage, wantRetry) {
+				t.Errorf("second invocation holds %+v, want its own usage %+v", record.Invocations[1].Usage, wantRetry)
+			}
+
+			batch := check6kd1ReadBatch(t, attempt.seal())
+			if err := check6kd1ValidateBatch(batch.raw); err != nil {
+				t.Fatalf("the batch breaks the wire format: %v\n%s", err, batch.raw)
+			}
+			invocations := batch.invocations()
+			if len(invocations) != 2 {
+				t.Fatalf("batch carries %d invocations, want 2", len(invocations))
+			}
+			const (
+				wantFirstWire = "model-first 5/0/0/0 2; model-x 3/1/0/0 -"
+				wantRetryWire = "model-second 0/6/0/0 -; model-x 20/9/4/2 7"
+			)
+			if got := check6kd1UsageText(invocations[0]); got != wantFirstWire {
+				t.Errorf("first invocation on the wire: %s, want %s", got, wantFirstWire)
+			}
+			if got := check6kd1UsageText(invocations[1]); got != wantRetryWire {
+				t.Errorf("second invocation on the wire: %s, want %s", got, wantRetryWire)
+			}
+			if got := invocations[0].fields["ended"].text + "," + invocations[1].fields["ended"].text; got != "returned,returned" {
+				t.Errorf("ended = %s, want returned,returned", got)
+			}
+		})
+	}
+}
+
+// check6kd1ProviderKeys lists every provider key the repository knows: the
+// protocol families and the built-in runtime identities. No executable is
+// looked up.
+func check6kd1ProviderKeys() []string {
+	keys := slices.Clone(agent.SupportedTypes)
+	for _, runtime := range agent.BuiltinRuntimes {
+		keys = append(keys, runtime.ID)
+	}
+	return keys
+}
+
+// TestCheck6KD1AdapterOfEveryProviderKeyCanBeSent: a key the server's
+// pattern refuses would cost every batch of that provider.
+func TestCheck6KD1AdapterOfEveryProviderKeyCanBeSent(t *testing.T) {
+	t.Parallel()
+
+	keys := check6kd1ProviderKeys()
+	if len(keys) < 26 {
+		t.Fatalf("only %d provider keys are known, want the 25 protocol families and omp: %v", len(keys), keys)
+	}
+	seen := map[string]bool{}
+	journal := budgetUsageTestOpenJournal(t, filepath.Join(t.TempDir(), "journal"))
+	logger, _ := budgetUsageTestLogger()
+	for _, key := range keys {
+		if seen[key] {
+			t.Errorf("the provider key %q is listed twice", key)
+		}
+		seen[key] = true
+		for _, custom := range []bool{false, true} {
+			want := key
+			if custom {
+				want = "custom-" + key
+			}
+			name := budgetUsageAdapterName(key, custom)
+			if name != want {
+				t.Errorf("adapter of %q (custom %t) = %q, want %q", key, custom, name, want)
+			}
+			if !check6kd1Adapter.MatchString(name) {
+				t.Errorf("adapter %q of the provider key %q does not match %s", name, key, check6kd1Adapter)
+			}
+			if got := agent.UsageNormalizerVersion(key); !check6kd1Identifier.MatchString(got) {
+				t.Errorf("normalizer version %q of %q does not match %s", got, key, check6kd1Identifier)
+			}
+			// Through the record and the batch, as handleTask and runTask do:
+			// the seed names the adapter, the launch description names it
+			// again.
+			seed := budgetUsageTestSeed(uuid.NewString())
+			seed.Adapter = budgetUsageAdapterName(key, custom)
+			seed.NormalizerVersion = agent.UsageNormalizerVersion(key)
+			attempt, err := journal.begin(seed, logger)
+			if err != nil {
+				t.Fatalf("create record for %q: %v", key, err)
+			}
+			seeded := attempt.snapshot().Adapter
+			attempt.describeLaunch(key, custom, "1.0.0")
+			batch := check6kd1ReadBatch(t, attempt.seal())
+			if err := check6kd1ValidateBatch(batch.raw); err != nil {
+				t.Errorf("the batch of the provider key %q (custom %t) breaks the wire format: %v", key, custom, err)
+			}
+			if got, _ := batch.text("adapter"); got != want || seeded != want {
+				t.Errorf("adapter of %q (custom %t): seeded %q, in the batch %q, want %q", key, custom, seeded, got, want)
+			}
+		}
+	}
+	t.Logf("%d provider keys, plain and custom: %v", len(keys), keys)
+}
+
+// TestCheck6KD1AdapterVersionAgreesInRecordAndBatch takes versions the
+// lane's own table does not have through the launch description, the record
+// on disk and the batch, and requires the checker to accept every batch.
+func TestCheck6KD1AdapterVersionAgreesInRecordAndBatch(t *testing.T) {
+	t.Parallel()
+
+	const (
+		ideographicSpace = string(rune(0x3000))
+		noBreakSpace     = string(rune(0x00a0))
+		nextLine         = string(rune(0x0085)) // a control character that is also white space
+		lastC1Control    = string(rune(0x009f))
+		lineSeparator    = string(rune(0x2028)) // white space, not a control character
+		zeroWidth        = string(rune(0x200b)) // a format character, neither
+		threeBytes       = string(rune(0x6a21))
+	)
+	cases := []struct {
+		name    string
+		version string
+		want    string
+	}{
+		{"white space of every kind around", ideographicSpace + noBreakSpace + nextLine + lineSeparator + "\v\f1.2.3" + nextLine + noBreakSpace + lineSeparator + "\r\n", "1.2.3"},
+		{"a no-break space inside", "1.2.3" + noBreakSpace + "beta", "1.2.3" + noBreakSpace + "beta"},
+		{"a line separator inside", "1.2.3" + lineSeparator + "beta", "1.2.3" + lineSeparator + "beta"},
+		{"a zero-width space inside", "1.2.3" + zeroWidth + "beta", "1.2.3" + zeroWidth + "beta"},
+		{"a next-line control inside", "1.2.3" + nextLine + "beta", ""},
+		{"a NUL inside", "1.2.3\x00beta", ""},
+		{"a NUL at the end, which trimming leaves", "1.2.3\x00", ""},
+		{"a carriage return inside", "1.2.3\rbeta", ""},
+		{"a unit separator inside", "1.2.3\x1fbeta", ""},
+		{"the last C1 control inside", "1.2.3" + lastC1Control + "beta", ""},
+		{"120 bytes in 40 characters", strings.Repeat(threeBytes, 40), strings.Repeat(threeBytes, 40)},
+		{"121 bytes: 40 characters and a letter", strings.Repeat(threeBytes, 40) + "v", ""},
+		{"123 bytes in 41 characters", strings.Repeat(threeBytes, 41), ""},
+		{"121 bytes of which one is trimmed", strings.Repeat("v", 120) + " ", strings.Repeat("v", 120)},
+		{"122 bytes after trimming", " " + strings.Repeat("v", 122) + " ", ""},
+		{"one byte", "7", "7"},
+		{"a byte that is not UTF-8 at the start", "\xff1.2.3", ""},
+		{"a truncated character at the end", "1.2.3\xe6\xa8", ""},
+		{"white space around a byte that is not UTF-8", " \xc0\xaf ", ""},
+		{"quotes, a backslash and angle brackets", `v"1.2.3" \ <dev> & co`, `v"1.2.3" \ <dev> & co`},
+		{"several lines of output", "tool 1.2.3\ncommit abcdef\n", ""},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if got := budgetUsageAdapterVersion(tc.version); got != tc.want {
+				t.Errorf("budgetUsageAdapterVersion(%q) = %q, want %q", tc.version, got, tc.want)
+			}
+			journal := budgetUsageTestOpenJournal(t, filepath.Join(t.TempDir(), "journal"))
+			logger, _ := budgetUsageTestLogger()
+			attempt, err := journal.begin(budgetUsageTestSeed(budgetUsageTestAttemptA), logger)
+			if err != nil {
+				t.Fatalf("create record: %v", err)
+			}
+			attempt.describeLaunch("claude", false, tc.version)
+			inMemory := attempt.snapshot().AdapterVersion
+			onDisk, err := journal.read(budgetUsageTestAttemptA)
+			if err != nil {
+				t.Fatalf("read the record back: %v", err)
+			}
+			raw := attempt.seal()
+			batch := check6kd1ReadBatch(t, raw)
+			if err := check6kd1ValidateBatch(raw); err != nil {
+				t.Errorf("the version %q costs the batch: %v\n%s", tc.version, err, raw)
+			}
+			inBatch, present := batch.text("adapter_version")
+			if inMemory != tc.want || onDisk.AdapterVersion != tc.want || inBatch != tc.want || present != (tc.want != "") {
+				t.Errorf("version %q: in memory %q, on disk %q, in the batch %q (present %t); want %q everywhere",
+					tc.version, inMemory, onDisk.AdapterVersion, inBatch, present, tc.want)
+			}
+		})
+	}
+}
+
+// TestCheck6KD1UsageRows takes rows of every kind from a Result through the
+// record into the batch.
+func TestCheck6KD1UsageRows(t *testing.T) {
+	t.Parallel()
+
+	cases := []struct {
+		name  string
+		usage map[string]agent.TokenUsage
+		// wantWire is the usage of the invocation on the wire.
+		wantWire string
+		// refused is what the checker says about the batch; empty when the
+		// batch keeps every rule of the wire format.
+		refused string
+	}{
+		{name: "four zeros and no cost is not sent", usage: map[string]agent.TokenUsage{"m": {}}, wantWire: ""},
+		{name: "four zeros and a cost is sent", usage: map[string]agent.TokenUsage{"m": {CostUSDTicks: 1}}, wantWire: "m 0/0/0/0 1"},
+		{name: "tokens and a cost of zero: no cost on the wire", usage: map[string]agent.TokenUsage{"m": {InputTokens: 4}}, wantWire: "m 4/0/0/0 -"},
+		{name: "only a cache read count", usage: map[string]agent.TokenUsage{"m": {CacheReadTokens: 4}}, wantWire: "m 0/0/4/0 -"},
+		{name: "only a cache write count", usage: map[string]agent.TokenUsage{"m": {CacheWriteTokens: 4}}, wantWire: "m 0/0/0/4 -"},
+		{name: "only an output count", usage: map[string]agent.TokenUsage{"m": {OutputTokens: 4}}, wantWire: "m 0/4/0/0 -"},
+		{name: "the largest values", usage: map[string]agent.TokenUsage{"m": {InputTokens: math.MaxInt64, OutputTokens: math.MaxInt64, CacheReadTokens: math.MaxInt64, CacheWriteTokens: math.MaxInt64, CostUSDTicks: math.MaxInt64}},
+			wantWire: "m 9223372036854775807/9223372036854775807/9223372036854775807/9223372036854775807 9223372036854775807"},
+		{name: "a mix of rows, sorted by model", usage: map[string]agent.TokenUsage{
+			"zeta": {InputTokens: 1}, "alpha": {CostUSDTicks: 9}, "nothing": {}, "Beta": {OutputTokens: 2, CostUSDTicks: 3},
+		}, wantWire: "Beta 0/2/0/0 3; alpha 0/0/0/0 9; zeta 1/0/0/0 -"},
+		// What the wire format has no form for. The daemon does not validate
+		// for the server; these rows say what follows.
+		{name: "tokens and a negative cost: the cost is left out", usage: map[string]agent.TokenUsage{"m": {InputTokens: 4, CostUSDTicks: -3}}, wantWire: "m 4/0/0/0 -"},
+		{name: "four zeros and a negative cost is not sent", usage: map[string]agent.TokenUsage{"m": {CostUSDTicks: -3}}, wantWire: ""},
+		{name: "a negative count is sent with its sign", usage: map[string]agent.TokenUsage{"m": {InputTokens: -5, OutputTokens: 2}}, wantWire: "m -5/2/0/0 -", refused: "not a canonical decimal string"},
+		{name: "a negative count beside a valid row", usage: map[string]agent.TokenUsage{"good": {InputTokens: 7}, "m": {CacheReadTokens: -1}}, wantWire: "good 7/0/0/0 -; m 0/0/-1/0 -", refused: "not a canonical decimal string"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			f := budgetUsageTestNewCaptureFixture(t)
+			var seen []agent.ExecOptions
+			capture := f.record(context.Background(), t, check6kd1Capturing(&seen, agent.Result{Status: "completed", Usage: tc.usage}), agent.ExecOptions{}, f.logger)
+			batch := check6kd1ReadBatch(t, capture.attempt.seal())
+			invocations := batch.invocations()
+			if len(invocations) != 1 {
+				t.Fatalf("batch carries %d invocations, want 1", len(invocations))
+			}
+			if got := check6kd1UsageText(invocations[0]); got != tc.wantWire {
+				t.Errorf("usage on the wire: %q, want %q", got, tc.wantWire)
+			}
+			if strings.Contains(string(batch.raw), `"cost_ticks":"0"`) || strings.Contains(string(batch.raw), `"cost_ticks":"-`) {
+				t.Errorf("the batch carries a cost that is not above zero: %s", batch.raw)
+			}
+			err := check6kd1ValidateBatch(batch.raw)
+			switch {
+			case tc.refused == "" && err != nil:
+				t.Errorf("the batch breaks the wire format: %v\n%s", err, batch.raw)
+			case tc.refused != "" && err == nil:
+				t.Errorf("the checker accepts a batch it was expected to refuse (%s): %s", tc.refused, batch.raw)
+			case tc.refused != "" && !strings.Contains(err.Error(), tc.refused):
+				t.Errorf("refused for another reason: %v, want ...%s...", err, tc.refused)
+			}
+		})
+	}
+}

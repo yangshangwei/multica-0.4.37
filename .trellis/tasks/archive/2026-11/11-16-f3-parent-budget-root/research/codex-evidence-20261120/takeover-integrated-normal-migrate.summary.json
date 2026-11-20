@@ -1,0 +1,58 @@
+{
+  "tag": "integrated-normal-migrate",
+  "package": "./cmd/migrate",
+  "database": "f3_budget_cx_takeover_normal_migrate",
+  "exit": 0,
+  "seconds": 5.55,
+  "counts": {
+    "pass": 6
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "2d61c41b78509834cb442d2b0a4af74dee81e8c0343b6f057b64cbfe98a04bd4",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./cmd/migrate",
+    "-run",
+    "^(TestIssueBudgetMigrationsRunUpDownUp|TestIssueBudgetReadyMigrationRejectsAPredicateOnAPlainIndex|TestIssueBudgetReadyMigrationRejectsAWeakenedIndex|TestIssueBudgetReadyMigrationRejectsAnotherGapIndex|TestIssueBudgetReadyMigrationRejectsAnotherOpenAttemptIndex|TestIssueBudgetRollbackRefusesWhileLedgerRowsExist)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m"
+  ],
+  "tests": [
+    {
+      "name": "TestIssueBudgetMigrationsRunUpDownUp",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRollbackRefusesWhileLedgerRowsExist",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationRejectsAWeakenedIndex",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationRejectsAnotherGapIndex",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationRejectsAnotherOpenAttemptIndex",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationRejectsAPredicateOnAPlainIndex",
+      "action": "pass"
+    }
+  ]
+}

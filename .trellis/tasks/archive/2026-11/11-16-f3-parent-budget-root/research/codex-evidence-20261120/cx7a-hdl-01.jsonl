@@ -1,0 +1,7 @@
+{"ImportPath":"github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]","Action":"build-output","Output":"# github.com/multica-ai/multica/server/internal/handler\n"}
+{"ImportPath":"github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]","Action":"build-output","Output":"# [github.com/multica-ai/multica/server/internal/handler]\n"}
+{"ImportPath":"github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]","Action":"build-output","Output":"vet: internal/handler/issue.go:3215:3: unknown field VerifiedTaskID in struct literal of type service.IssueCreateParams\n"}
+{"ImportPath":"github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]","Action":"build-fail"}
+{"Time":"2026-11-20T20:07:59.54472+08:00","Action":"start","Package":"github.com/multica-ai/multica/server/internal/handler"}
+{"Time":"2026-11-20T20:07:59.544851+08:00","Action":"output","Package":"github.com/multica-ai/multica/server/internal/handler","Output":"FAIL\tgithub.com/multica-ai/multica/server/internal/handler [build failed]\n","OutputType":"frame"}
+{"Time":"2026-11-20T20:07:59.54487+08:00","Action":"fail","Package":"github.com/multica-ai/multica/server/internal/handler","Elapsed":0,"FailedBuild":"github.com/multica-ai/multica/server/internal/handler [github.com/multica-ai/multica/server/internal/handler.test]"}

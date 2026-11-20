@@ -1,0 +1,52 @@
+{
+  "database": "f3_budget_cx_usage_handler",
+  "package": "./internal/handler",
+  "exit": 1,
+  "counts": {
+    "pass": 9,
+    "fail": 1
+  },
+  "tests": [
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid_id",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/missing",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/oversize",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors",
+      "action": "fail"
+    },
+    {
+      "test": "TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAtomicRefusalVersusLegacy",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/cx6a-hdl-01.jsonl"
+}

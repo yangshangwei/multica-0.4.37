@@ -1,0 +1,647 @@
+{
+  "database": "f3_budget_cx_final_race_handler",
+  "package": "./internal/handler",
+  "exit": 0,
+  "counts": {
+    "pass": 159
+  },
+  "tests": [
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid_id",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/missing",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/oversize",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder/invalid",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAuthorizationAndValidationOrder",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageAtomicRefusalVersusLegacy",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageLateHoldAndRevokedWorkspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestDaemonBudgetUsageHTTPStateAndErrorMapping",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetSingleRuntimeDeclaredProtocol",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetSingleRuntimeUndeclaredProtocol",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBatch/declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBatch/not_declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBatch",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetOutsideEveryRoot/single_runtime,_declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetOutsideEveryRoot/single_runtime,_not_declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetOutsideEveryRoot/batch,_declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetOutsideEveryRoot/batch,_not_declared",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetOutsideEveryRoot",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader/among_others,_with_spaces",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader/a_longer_name",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader/a_shorter_name",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader/other_letter_case",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader/an_empty_header",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetCapabilityHeader",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetSingleRuntimeBindingInProgress",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBindingInProgressInvalidatesEmptyVerdict",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBatchBindingInProgress",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetFinalizeFailure/single_runtime",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetFinalizeFailure/batch",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetFinalizeFailure",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetDaemonRPC/declared_among_others",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetDaemonRPC/other_capabilities_only",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetDaemonRPC/none",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetDaemonRPC",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetClosedRoot",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBindingInProgressLogsAtInfo/single_runtime",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBindingInProgressLogsAtInfo/batch",
+      "action": "pass"
+    },
+    {
+      "test": "TestClaimBudgetBindingInProgressLogsAtInfo",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/custom_archived",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/already_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/non_done",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/off",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/observe",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/no_project",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/stale",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/missing_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/different_head",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/authority",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/credential",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal/other_issue",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewCredentialHorizon",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionCandidatesPaginationAndAuthority",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeliveryCompletionCandidatesBoundedHiddenScan",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementHumanGate",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations/owner",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations/admin",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementPrivacyAndParsingOrder",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementLoaderAndTombstone",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementShowCoverageAndOff",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementRevokedInvokeCannotReserve",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementWorkspaceMiddleware",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetCreateUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetVerifiedCreationTaskIsWorkspaceScoped",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetLifecycleFollowUpUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetTriageCreationUsesVerifiedExecutionIdentity",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetBusinessReopenWritesNothing",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetMoveKeepsTheMemberRow",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetMoveIntoAnotherRootIsRecordedNotRefused",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetDeleteMemberLeavesATombstone",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetBatchDeleteTombstonesEveryMember",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetDeleteRootIssueTombstonesTheRoot",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/C1_POST_/api/issues",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/C2_POST_/api/comments/{id}/sub-issues",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/C4_lifecycle_handoff_follow-up",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/S3_UpdateIssue",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/S4_DetachDirectChildIssues",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds/S6_PrepareWorkspaceDeletionLinks",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetEveryParentCapableWriterBinds",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetWritesNothingForATreeWithoutARoot",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetConcurrentWritersKeepEveryTreeBound",
+      "action": "pass"
+    },
+    {
+      "test": "TestDeleteMemberIssueKeepsBudgetRows",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetLedgerLoadIsOrderedByItsKey",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetQueriesRoundTrip",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetSchemaCatalog",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetSchemaConstraints",
+      "action": "pass"
+    },
+    {
+      "test": "TestWorkspaceDeletionLeavesBudgetRowsUntouched",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-empty.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/enable-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-budget-forbidden.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-not-found.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-policy-revision-conflict.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/issue-binding.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-empty.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-last-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-close-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-committed-stale.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-committed.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-reopen-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-set-limit-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-set-mode-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-unknown.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-known.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-no-limit.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-open.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-tombstoned-off.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-200-replayed-set-limit.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-201-enable-no-gaps.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-201-enable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementStrictBody",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementPageParameters",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts/live_request",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts/canceled_request",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/legacy_internal_only",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/different_public_identity",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection/duplicate_storage_field",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRequiresBoundStoredPublicProjection",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit/public",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit/audit",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotActivityScanBeyondTimelineCap",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/duplicate_key",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/workspace_conflict",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/actor_spoof",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries/duplicate_workspace",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotSourceGapAndFailedSeal",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotConcurrentOriginalRequest",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotOwnedDeleteCleanup",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders/withdrawal_first",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders/correction_first",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders",
+      "action": "pass"
+    },
+    {
+      "test": "TestWorkspaceDeletionManifestPreservesKnowledgeHistory",
+      "action": "pass"
+    },
+    {
+      "test": "TestProjectDeletionPreservesKnowledgeAutomationHistory",
+      "action": "pass"
+    },
+    {
+      "test": "TestWorkspaceDeletionRemovesKnowledgePolicy",
+      "action": "pass"
+    },
+    {
+      "test": "TestWorkspaceDeletionManifestCoversPublicSchema",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/final-r1-race-handler.jsonl"
+}

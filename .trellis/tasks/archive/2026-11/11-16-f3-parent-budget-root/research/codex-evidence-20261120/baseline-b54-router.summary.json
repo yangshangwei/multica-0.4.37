@@ -1,0 +1,179 @@
+{
+  "database": "f3_budget_cx_baseline_router",
+  "package": "./cmd/server",
+  "exit": 0,
+  "counts": {
+    "pass": 42
+  },
+  "tests": [
+    {
+      "test": "TestF2ReportSnapshotPublicProjectionAndHumanReceipt",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/other_report",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/unbound_snapshot",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/post_capture",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/post_withdrawal",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/head",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/delete",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/query",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/empty_query",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/duplicate_query",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/encoded_path",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/upper_uuid",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/workspace_header",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/actor_header",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/source_header",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/slug_header",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix/credential_exchange",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionReporterExactGetMatrix",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionRevocationAndFreshClaim",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject/progress-reporter1",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject/code-reviewer2",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/token/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/token/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/claim/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/claim/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/runtime_owner/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/runtime_owner/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_membership/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_membership/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_invoke/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/originator_invoke/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_project/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_project/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_admission/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_admission/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_kind/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/report_kind/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/withdrawal/before_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier/withdrawal/after_first_read",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotFirstReadAuthorityBarrier",
+      "action": "pass"
+    },
+    {
+      "test": "TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/baseline-b54-router.jsonl"
+}

@@ -1,0 +1,90 @@
+[
+  {
+    "package": "./cmd/multica",
+    "exit": 0,
+    "counts": {
+      "pass": 118
+    },
+    "canonical": {
+      "TestIssueCompletionCLICommandContract": "pass",
+      "TestIssueCompletionExplicitAuthorizationAndSubmit": "pass",
+      "TestIssueCompletionUnknownAuthorizationIsLookupOnly": "pass",
+      "TestIssueCompletionUnknownSubmitIsLookupOnlyAndShowSeparatesCurrent": "pass",
+      "TestIssueCompletionUnknownRevocationIsLookupOnly": "pass",
+      "TestIssueCompletionOperationFileLockAndIntegrityPrecedeWrites": "pass",
+      "TestIssueCompletionSubmitRedirectIsNotFollowed": "pass",
+      "TestIssueCompletionAuthorizationValidationBindsStateAndReceipt": "pass",
+      "TestIssueCompletionExpiredAuthorizationDoesNotSubmit": "pass",
+      "TestIssueCompletionPrepareListsEvidenceWithoutAuthorizing": "pass",
+      "TestIssueReportSnapshotCLICommandContract": "pass",
+      "TestIssueReportSnapshotPublicProjectionAndHumanReceipt": "pass",
+      "TestIssueReportSnapshotCaptureAndExplicitReplay": "pass",
+      "TestIssueReportSnapshotReporterReadsOnlyExactSnapshot": "pass",
+      "TestIssueReportSnapshotInvalidInputsNeverRequest": "pass",
+      "TestIssueReportSnapshotCaptureRejectsTaskCredentialsLocally": "pass",
+      "TestIssueReportSnapshotCloudPATWritesStayLocal": "pass",
+      "TestIssueReportSnapshotCloudPATShowPreservesReadTransport": "pass",
+      "TestIssueReportSnapshotCaptureResponseLossNeverRetries": "pass",
+      "TestIssueReportSnapshotDoesNotFollowRedirects": "pass",
+      "TestIssueReportSnapshotMalformedEnvelopeHasNoOutput": "pass",
+      "TestIssueReportSnapshotBindsSuccessfulResponseToIntent": "pass",
+      "TestIssueReportSnapshotMissingOrRefusedReadDoesNotGenerate": "pass",
+      "TestIssueReportSnapshotShowPreservesUnknownMetrics": "pass",
+      "TestIssueReportSnapshotResponseSizeIsBounded": "pass",
+      "TestIssueReportSnapshotWithdrawAndOriginalReceiptReplay": "pass",
+      "TestIssueReportSnapshotCaptureReceiptMustBindOriginalIntent": "pass",
+      "TestIssueReportSnapshotShowRefusesPrivateFieldsAndHumanReceipt": "pass",
+      "TestIssueReportSnapshotWithdrawRequiresExplicitHumanIntent": "pass",
+      "TestIssueReportSnapshotWithdrawRefusesWrongOrPrivateReceipt": "pass",
+      "TestIssueReportSnapshotWithdrawResponseLossNeverRetries": "pass",
+      "TestIssueReportSnapshotWithdrawPreservesExactReasonAndRefusesContentFallback": "pass"
+    },
+    "log": "/tmp/f3-codex-5c/b54/baseline-cmd-multica.jsonl"
+  },
+  {
+    "package": "./internal/middleware",
+    "exit": 0,
+    "counts": {
+      "pass": 6
+    },
+    "canonical": {
+      "TestReportSnapshotHeadersNoStoreBeforeAuthentication": "pass",
+      "TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged": "pass"
+    },
+    "log": "/tmp/f3-codex-5c/b54/baseline-internal-middleware.jsonl"
+  },
+  {
+    "package": "./internal/reportsnapshot",
+    "exit": 0,
+    "counts": {
+      "pass": 28
+    },
+    "canonical": {
+      "TestPublicSnapshotUnknownAndNoProjectStayExplicit": "pass",
+      "TestPublicSnapshotReplayKeepsCalendarAndIgnoresArrayOrder": "pass",
+      "TestPublicSnapshotOnlyProjectsProvenLifecycleFacts": "pass",
+      "TestPublicSnapshotContainsOnlyReplayFacts": "pass",
+      "TestPublicSnapshotStrictSchemaAndIndependentValidation": "pass",
+      "TestPublicReplayNullableValidityCannotInventKnownFalse": "pass",
+      "TestPublicProjectionSanitizesGapMetadataWithoutBroadeningImpact": "pass",
+      "TestPublicReplayRejectsUnsupportedProjectAndSourceContracts": "pass",
+      "TestKnownCandidateGapPreservesCoverageDenominator": "pass",
+      "TestWindowCreationUsesBirthEvidenceDespiteStatusHistoryGap": "pass",
+      "TestPublicProjectReasonsPreserveHealthPriority": "pass",
+      "TestPublicProjectReasonsUnknownAndNotApplicableAreNull": "pass",
+      "TestPublicProjectReasonsAreRecomputedAndDigestBound": "pass",
+      "TestSnapshotLifecycleAndHalfOpenWindow": "pass",
+      "TestSnapshotUnknownIsNotZeroOrFalse": "pass",
+      "TestSnapshotDigestsAndFrozenReplay": "pass",
+      "TestSnapshotDSTWindowAndSavedOffsets": "pass",
+      "TestSnapshotNoProjectAndMissingSource": "pass",
+      "TestSnapshotSourceGapAndPayloadIdentity": "pass",
+      "TestSnapshotProductionHistoryAndClassificationRemainUnknown": "pass",
+      "TestSnapshotTerminalSwitchDoesNotCloseAgain": "pass",
+      "TestSnapshotConflictsAndMalformedSealsRefuse": "pass",
+      "TestFreezeHealthPrivacyAndMetricParity": "pass",
+      "TestInternalSnapshotLegacyIdentity": "pass"
+    },
+    "log": "/tmp/f3-codex-5c/b54/baseline-internal-reportsnapshot.jsonl"
+  }
+]

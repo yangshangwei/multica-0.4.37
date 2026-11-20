@@ -1,0 +1,418 @@
+package daemon
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"regexp"
+	"strconv"
+	"time"
+	"unicode"
+	"unicode/utf8"
+)
+
+// Check 6kd1: an independent, strict checker of the wire format of a usage
+// batch (budget usage protocol v1). It is written from design section 11.5
+// and its supplement of 2026-11-18 alone and does not use the daemon's wire
+// types: the bytes are read token by token into a plain tree, so that a
+// repeated key, a key in another letter case or a null cannot hide behind a
+// struct decode.
+
+const (
+	check6kd1MaxBodyBytes   = 256 << 10
+	check6kd1MaxInvocations = 32
+	check6kd1MaxUsageItems  = 256
+)
+
+var (
+	check6kd1BatchKey   = regexp.MustCompile(`^[A-Za-z0-9_-]{16,64}$`)
+	check6kd1Adapter    = regexp.MustCompile(`^[a-z][a-z0-9_-]{0,62}$`)
+	check6kd1Identifier = regexp.MustCompile(`^[A-Za-z0-9._-]{1,64}$`)
+	check6kd1UUID       = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+	check6kd1Decimal    = regexp.MustCompile(`^(0|[1-9][0-9]*)$`)
+	check6kd1WholeUTC   = regexp.MustCompile(`^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$`)
+)
+
+// check6kd1Value is one JSON value of a batch.
+type check6kd1Value struct {
+	// kind is 'o' object, 'a' array, 's' string, 'n' number, 'b' boolean or
+	// 'z' null.
+	kind   byte
+	keys   []string
+	fields map[string]*check6kd1Value
+	items  []*check6kd1Value
+	text   string
+}
+
+func (v *check6kd1Value) describe() string {
+	switch v.kind {
+	case 'o':
+		return "an object"
+	case 'a':
+		return "an array"
+	case 's':
+		return "a string"
+	case 'n':
+		return "a number"
+	case 'b':
+		return "a boolean"
+	default:
+		return "null"
+	}
+}
+
+// check6kd1Parse reads exactly one JSON value that fills the whole body.
+func check6kd1Parse(raw []byte) (*check6kd1Value, error) {
+	if len(raw) > check6kd1MaxBodyBytes {
+		return nil, fmt.Errorf("the body has %d bytes, more than 256 KiB", len(raw))
+	}
+	if !utf8.Valid(raw) {
+		return nil, errors.New("the body is not valid UTF-8")
+	}
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	decoder.UseNumber()
+	value, err := check6kd1Read(decoder)
+	if err != nil {
+		return nil, fmt.Errorf("not one JSON value: %w", err)
+	}
+	if int(decoder.InputOffset()) != len(raw) {
+		return nil, fmt.Errorf("%d trailing bytes after the value", len(raw)-int(decoder.InputOffset()))
+	}
+	if !json.Valid(raw) {
+		return nil, errors.New("not valid JSON")
+	}
+	return value, nil
+}
+
+func check6kd1Read(decoder *json.Decoder) (*check6kd1Value, error) {
+	token, err := decoder.Token()
+	if err != nil {
+		return nil, err
+	}
+	switch t := token.(type) {
+	case json.Delim:
+		switch t {
+		case '{':
+			value := &check6kd1Value{kind: 'o', fields: make(map[string]*check6kd1Value)}
+			for decoder.More() {
+				keyToken, err := decoder.Token()
+				if err != nil {
+					return nil, err
+				}
+				key, ok := keyToken.(string)
+				if !ok {
+					return nil, fmt.Errorf("an object key is %v, not a string", keyToken)
+				}
+				if _, repeated := value.fields[key]; repeated {
+					return nil, fmt.Errorf("duplicate key %q", key)
+				}
+				child, err := check6kd1Read(decoder)
+				if err != nil {
+					return nil, err
+				}
+				value.keys = append(value.keys, key)
+				value.fields[key] = child
+			}
+			if _, err := decoder.Token(); err != nil {
+				return nil, err
+			}
+			return value, nil
+		case '[':
+			value := &check6kd1Value{kind: 'a', items: []*check6kd1Value{}}
+			for decoder.More() {
+				child, err := check6kd1Read(decoder)
+				if err != nil {
+					return nil, err
+				}
+				value.items = append(value.items, child)
+			}
+			if _, err := decoder.Token(); err != nil {
+				return nil, err
+			}
+			return value, nil
+		}
+		return nil, fmt.Errorf("unexpected delimiter %q", t.String())
+	case string:
+		return &check6kd1Value{kind: 's', text: t}, nil
+	case json.Number:
+		return &check6kd1Value{kind: 'n', text: t.String()}, nil
+	case bool:
+		return &check6kd1Value{kind: 'b', text: strconv.FormatBool(t)}, nil
+	case nil:
+		return &check6kd1Value{kind: 'z'}, nil
+	}
+	return nil, fmt.Errorf("unexpected token %v", token)
+}
+
+// check6kd1Object requires an object that has every required key, and no key
+// beyond the required and the optional ones. Key names are compared byte for
+// byte.
+func check6kd1Object(value *check6kd1Value, where string, required, optional []string) error {
+	if value.kind != 'o' {
+		return fmt.Errorf("%s is %s, want an object", where, value.describe())
+	}
+	known := make(map[string]bool, len(required)+len(optional))
+	for _, key := range required {
+		known[key] = true
+	}
+	for _, key := range optional {
+		known[key] = true
+	}
+	for _, key := range value.keys {
+		if !known[key] {
+			return fmt.Errorf("%s: unknown field %q", where, key)
+		}
+	}
+	for _, key := range required {
+		if _, present := value.fields[key]; !present {
+			return fmt.Errorf("%s: missing field %q", where, key)
+		}
+	}
+	return nil
+}
+
+// check6kd1String requires a string without a control character (Unicode Cc,
+// judged after decoding).
+func check6kd1String(value *check6kd1Value, where string) (string, error) {
+	if value.kind != 's' {
+		return "", fmt.Errorf("%s is %s, want a string", where, value.describe())
+	}
+	for _, r := range value.text {
+		if unicode.IsControl(r) {
+			return "", fmt.Errorf("%s holds the control character U+%04X", where, r)
+		}
+	}
+	return value.text, nil
+}
+
+func check6kd1Pattern(value *check6kd1Value, where string, pattern *regexp.Regexp) (string, error) {
+	text, err := check6kd1String(value, where)
+	if err != nil {
+		return "", err
+	}
+	if !pattern.MatchString(text) {
+		return "", fmt.Errorf("%s = %q does not match %s", where, text, pattern)
+	}
+	return text, nil
+}
+
+func check6kd1Time(value *check6kd1Value, where string) error {
+	text, err := check6kd1String(value, where)
+	if err != nil {
+		return err
+	}
+	if _, err := time.Parse(time.RFC3339, text); err != nil {
+		return fmt.Errorf("%s = %q is not an RFC 3339 time: %v", where, text, err)
+	}
+	return nil
+}
+
+// check6kd1Count requires a canonical decimal string: no sign, no leading
+// zero, no fraction, no exponent, within the range of a 64-bit integer.
+func check6kd1Count(value *check6kd1Value, where string) (uint64, error) {
+	text, err := check6kd1String(value, where)
+	if err != nil {
+		return 0, err
+	}
+	if !check6kd1Decimal.MatchString(text) {
+		return 0, fmt.Errorf("%s = %q is not a canonical decimal string", where, text)
+	}
+	number, err := strconv.ParseUint(text, 10, 63)
+	if err != nil {
+		return 0, fmt.Errorf("%s = %q is out of range", where, text)
+	}
+	return number, nil
+}
+
+// check6kd1ValidateBatch checks a request body against protocol v1.
+func check6kd1ValidateBatch(raw []byte) error {
+	root, err := check6kd1Parse(raw)
+	if err != nil {
+		return err
+	}
+	if err := check6kd1Object(root, "batch",
+		[]string{"protocol_version", "batch_key", "producer_epoch", "adapter", "normalizer_version", "reported_at", "invocations"},
+		[]string{"adapter_version"}); err != nil {
+		return err
+	}
+	if version := root.fields["protocol_version"]; version.kind != 'n' || version.text != "1" {
+		return fmt.Errorf("protocol_version is %s %q, want the number 1", version.describe(), version.text)
+	}
+	if _, err := check6kd1Pattern(root.fields["batch_key"], "batch_key", check6kd1BatchKey); err != nil {
+		return err
+	}
+	if _, err := check6kd1Pattern(root.fields["producer_epoch"], "producer_epoch", check6kd1Identifier); err != nil {
+		return err
+	}
+	if _, err := check6kd1Pattern(root.fields["adapter"], "adapter", check6kd1Adapter); err != nil {
+		return err
+	}
+	if _, err := check6kd1Pattern(root.fields["normalizer_version"], "normalizer_version", check6kd1Identifier); err != nil {
+		return err
+	}
+	if version, present := root.fields["adapter_version"]; present {
+		text, err := check6kd1String(version, "adapter_version")
+		if err != nil {
+			return err
+		}
+		if len(text) < 1 || len(text) > 120 {
+			return fmt.Errorf("adapter_version has %d bytes, want 1 to 120", len(text))
+		}
+	}
+	if err := check6kd1Time(root.fields["reported_at"], "reported_at"); err != nil {
+		return err
+	}
+	invocations := root.fields["invocations"]
+	if invocations.kind != 'a' {
+		return fmt.Errorf("invocations is %s, want an array", invocations.describe())
+	}
+	if len(invocations.items) > check6kd1MaxInvocations {
+		return fmt.Errorf("%d invocations, more than %d", len(invocations.items), check6kd1MaxInvocations)
+	}
+	seen := make(map[string]bool, len(invocations.items))
+	usageItems := 0
+	for i, invocation := range invocations.items {
+		where := fmt.Sprintf("invocations[%d]", i)
+		if err := check6kd1Object(invocation, where,
+			[]string{"invocation_id", "resumed", "ended", "observed_at", "usage"}, nil); err != nil {
+			return err
+		}
+		id, err := check6kd1Pattern(invocation.fields["invocation_id"], where+".invocation_id", check6kd1UUID)
+		if err != nil {
+			return err
+		}
+		if seen[id] {
+			return fmt.Errorf("%s: repeated invocation_id %s", where, id)
+		}
+		seen[id] = true
+		if resumed := invocation.fields["resumed"]; resumed.kind != 'b' {
+			return fmt.Errorf("%s.resumed is %s, want a boolean", where, resumed.describe())
+		}
+		ended, err := check6kd1String(invocation.fields["ended"], where+".ended")
+		if err != nil {
+			return err
+		}
+		if ended != "returned" && ended != "interrupted" && ended != "unknown" {
+			return fmt.Errorf("%s.ended = %q is none of returned, interrupted, unknown", where, ended)
+		}
+		if err := check6kd1Time(invocation.fields["observed_at"], where+".observed_at"); err != nil {
+			return err
+		}
+		usage := invocation.fields["usage"]
+		if usage.kind != 'a' {
+			return fmt.Errorf("%s.usage is %s, want an array", where, usage.describe())
+		}
+		if ended == "unknown" && len(usage.items) != 0 {
+			return fmt.Errorf("%s: an unknown invocation carries %d usage items", where, len(usage.items))
+		}
+		models := make(map[string]bool, len(usage.items))
+		for n, item := range usage.items {
+			itemWhere := fmt.Sprintf("%s.usage[%d]", where, n)
+			if err := check6kd1Object(item, itemWhere, []string{"model", "tokens"}, []string{"cost_ticks"}); err != nil {
+				return err
+			}
+			model, err := check6kd1String(item.fields["model"], itemWhere+".model")
+			if err != nil {
+				return err
+			}
+			if len(model) < 1 || len(model) > 120 {
+				return fmt.Errorf("%s.model has %d bytes, want 1 to 120", itemWhere, len(model))
+			}
+			if models[model] {
+				return fmt.Errorf("%s: the model %q is listed twice in one invocation", itemWhere, model)
+			}
+			models[model] = true
+			tokens := item.fields["tokens"]
+			if err := check6kd1Object(tokens, itemWhere+".tokens",
+				[]string{"input", "output", "cache_read", "cache_write"}, nil); err != nil {
+				return err
+			}
+			var total uint64
+			for _, name := range []string{"input", "output", "cache_read", "cache_write"} {
+				count, err := check6kd1Count(tokens.fields[name], itemWhere+".tokens."+name)
+				if err != nil {
+					return err
+				}
+				if count > 0 {
+					total = 1
+				}
+			}
+			cost, hasCost := item.fields["cost_ticks"]
+			if hasCost {
+				ticks, err := check6kd1Count(cost, itemWhere+".cost_ticks")
+				if err != nil {
+					return err
+				}
+				if ticks == 0 {
+					return fmt.Errorf("%s.cost_ticks is \"0\"; a cost is greater than zero or absent", itemWhere)
+				}
+			}
+			if total == 0 && !hasCost {
+				return fmt.Errorf("%s has four zero token counts and no cost", itemWhere)
+			}
+			usageItems++
+		}
+	}
+	if usageItems > check6kd1MaxUsageItems {
+		return fmt.Errorf("%d usage items, more than %d", usageItems, check6kd1MaxUsageItems)
+	}
+	return nil
+}
+
+// check6kd1DaemonForm checks what the daemon promises beyond the wire format:
+// every time is UTC in whole seconds, and the keys come in the order of the
+// frozen example of design 11.5.
+func check6kd1DaemonForm(raw []byte) error {
+	root, err := check6kd1Parse(raw)
+	if err != nil {
+		return err
+	}
+	if err := check6kd1Order(root, "batch", "protocol_version", "batch_key", "producer_epoch", "adapter", "adapter_version", "normalizer_version", "reported_at", "invocations"); err != nil {
+		return err
+	}
+	if text := root.fields["reported_at"].text; !check6kd1WholeUTC.MatchString(text) {
+		return fmt.Errorf("reported_at = %q is not UTC in whole seconds", text)
+	}
+	for i, invocation := range root.fields["invocations"].items {
+		where := fmt.Sprintf("invocations[%d]", i)
+		if err := check6kd1Order(invocation, where, "invocation_id", "resumed", "ended", "observed_at", "usage"); err != nil {
+			return err
+		}
+		if text := invocation.fields["observed_at"].text; !check6kd1WholeUTC.MatchString(text) {
+			return fmt.Errorf("%s.observed_at = %q is not UTC in whole seconds", where, text)
+		}
+		previous := ""
+		for n, item := range invocation.fields["usage"].items {
+			itemWhere := fmt.Sprintf("%s.usage[%d]", where, n)
+			if err := check6kd1Order(item, itemWhere, "model", "tokens", "cost_ticks"); err != nil {
+				return err
+			}
+			if err := check6kd1Order(item.fields["tokens"], itemWhere+".tokens", "input", "output", "cache_read", "cache_write"); err != nil {
+				return err
+			}
+			model := item.fields["model"].text
+			if n > 0 && model <= previous {
+				return fmt.Errorf("%s: the model %q does not sort after %q", itemWhere, model, previous)
+			}
+			previous = model
+		}
+	}
+	return nil
+}
+
+// check6kd1Order requires the keys of an object to come in the given order;
+// a key of the order may be absent.
+func check6kd1Order(value *check6kd1Value, where string, order ...string) error {
+	next := 0
+	for _, key := range value.keys {
+		for next < len(order) && order[next] != key {
+			next++
+		}
+		if next == len(order) {
+			return fmt.Errorf("%s: the key %q is out of the order %v (found %v)", where, key, order, value.keys)
+		}
+		next++
+	}
+	return nil
+}

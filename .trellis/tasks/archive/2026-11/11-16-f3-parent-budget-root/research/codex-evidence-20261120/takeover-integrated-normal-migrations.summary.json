@@ -1,0 +1,50 @@
+{
+  "tag": "integrated-normal-migrations",
+  "package": "./internal/migrations",
+  "database": "f3_budget_cx_takeover_normal_migrations",
+  "exit": 0,
+  "seconds": 2.15,
+  "counts": {
+    "pass": 4
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "0f74e4db64e96b08ed204bf7f61807d07603cab9fb783707f825c62ed0080981",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/migrations",
+    "-run",
+    "^(TestIssueBudgetIndexMigrationContract|TestIssueBudgetReadyMigrationListsEveryIndex|TestIssueBudgetRollbackKeepsLedgerRows|TestIssueBudgetTableMigrationContract)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m"
+  ],
+  "tests": [
+    {
+      "name": "TestIssueBudgetTableMigrationContract",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetIndexMigrationContract",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadyMigrationListsEveryIndex",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetRollbackKeepsLedgerRows",
+      "action": "pass"
+    }
+  ]
+}

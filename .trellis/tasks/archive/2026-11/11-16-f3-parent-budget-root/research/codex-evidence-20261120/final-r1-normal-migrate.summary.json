@@ -1,0 +1,35 @@
+{
+  "database": "f3_budget_cx_final_normal_migrate",
+  "package": "./cmd/migrate",
+  "exit": 0,
+  "counts": {
+    "pass": 6
+  },
+  "tests": [
+    {
+      "test": "TestIssueBudgetMigrationsRunUpDownUp",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetRollbackRefusesWhileLedgerRowsExist",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetReadyMigrationRejectsAWeakenedIndex",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetReadyMigrationRejectsAnotherGapIndex",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetReadyMigrationRejectsAnotherOpenAttemptIndex",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetReadyMigrationRejectsAPredicateOnAPlainIndex",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/final-r1-normal-migrate.jsonl"
+}

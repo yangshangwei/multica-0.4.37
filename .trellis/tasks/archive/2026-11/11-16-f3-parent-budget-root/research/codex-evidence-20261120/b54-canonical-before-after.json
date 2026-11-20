@@ -1,0 +1,977 @@
+{
+  "./cmd/multica": {
+    "baseline": {
+      "log": "/tmp/f3-codex-5c/b54/baseline-cmd-multica.jsonl",
+      "canonical": {
+        "TestIssueCompletionCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueCompletionExplicitAuthorizationAndSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownAuthorizationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownSubmitIsLookupOnlyAndShowSeparatesCurrent": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownRevocationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionOperationFileLockAndIntegrityPrecedeWrites": [
+          "pass"
+        ],
+        "TestIssueCompletionSubmitRedirectIsNotFollowed": [
+          "pass"
+        ],
+        "TestIssueCompletionAuthorizationValidationBindsStateAndReceipt": [
+          "pass"
+        ],
+        "TestIssueCompletionExpiredAuthorizationDoesNotSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionPrepareListsEvidenceWithoutAuthorizing": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureAndExplicitReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotReporterReadsOnlyExactSnapshot": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotInvalidInputsNeverRequest": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureRejectsTaskCredentialsLocally": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATWritesStayLocal": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATShowPreservesReadTransport": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotDoesNotFollowRedirects": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMalformedEnvelopeHasNoOutput": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotBindsSuccessfulResponseToIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMissingOrRefusedReadDoesNotGenerate": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowPreservesUnknownMetrics": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotResponseSizeIsBounded": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawAndOriginalReceiptReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureReceiptMustBindOriginalIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowRefusesPrivateFieldsAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRequiresExplicitHumanIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRefusesWrongOrPrivateReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawPreservesExactReasonAndRefusesContentFallback": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/cx7a-cli-final-normal.jsonl",
+      "canonical": {
+        "TestIssueCompletionCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueCompletionExplicitAuthorizationAndSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownAuthorizationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownSubmitIsLookupOnlyAndShowSeparatesCurrent": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownRevocationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionOperationFileLockAndIntegrityPrecedeWrites": [
+          "pass"
+        ],
+        "TestIssueCompletionSubmitRedirectIsNotFollowed": [
+          "pass"
+        ],
+        "TestIssueCompletionAuthorizationValidationBindsStateAndReceipt": [
+          "pass"
+        ],
+        "TestIssueCompletionExpiredAuthorizationDoesNotSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionPrepareListsEvidenceWithoutAuthorizing": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureAndExplicitReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotReporterReadsOnlyExactSnapshot": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotInvalidInputsNeverRequest": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureRejectsTaskCredentialsLocally": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATWritesStayLocal": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATShowPreservesReadTransport": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotDoesNotFollowRedirects": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMalformedEnvelopeHasNoOutput": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotBindsSuccessfulResponseToIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMissingOrRefusedReadDoesNotGenerate": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowPreservesUnknownMetrics": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotResponseSizeIsBounded": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawAndOriginalReceiptReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureReceiptMustBindOriginalIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowRefusesPrivateFieldsAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRequiresExplicitHumanIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRefusesWrongOrPrivateReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawPreservesExactReasonAndRefusesContentFallback": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/cx7a-cli-final-race.jsonl",
+      "canonical": {
+        "TestIssueCompletionCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueCompletionExplicitAuthorizationAndSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownAuthorizationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownSubmitIsLookupOnlyAndShowSeparatesCurrent": [
+          "pass"
+        ],
+        "TestIssueCompletionUnknownRevocationIsLookupOnly": [
+          "pass"
+        ],
+        "TestIssueCompletionOperationFileLockAndIntegrityPrecedeWrites": [
+          "pass"
+        ],
+        "TestIssueCompletionSubmitRedirectIsNotFollowed": [
+          "pass"
+        ],
+        "TestIssueCompletionAuthorizationValidationBindsStateAndReceipt": [
+          "pass"
+        ],
+        "TestIssueCompletionExpiredAuthorizationDoesNotSubmit": [
+          "pass"
+        ],
+        "TestIssueCompletionPrepareListsEvidenceWithoutAuthorizing": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCLICommandContract": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureAndExplicitReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotReporterReadsOnlyExactSnapshot": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotInvalidInputsNeverRequest": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureRejectsTaskCredentialsLocally": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATWritesStayLocal": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCloudPATShowPreservesReadTransport": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotDoesNotFollowRedirects": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMalformedEnvelopeHasNoOutput": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotBindsSuccessfulResponseToIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotMissingOrRefusedReadDoesNotGenerate": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowPreservesUnknownMetrics": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotResponseSizeIsBounded": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawAndOriginalReceiptReplay": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotCaptureReceiptMustBindOriginalIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotShowRefusesPrivateFieldsAndHumanReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRequiresExplicitHumanIntent": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawRefusesWrongOrPrivateReceipt": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawResponseLossNeverRetries": [
+          "pass"
+        ],
+        "TestIssueReportSnapshotWithdrawPreservesExactReasonAndRefusesContentFallback": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  },
+  "./internal/middleware": {
+    "baseline": {
+      "log": "/tmp/f3-codex-5c/b54/baseline-internal-middleware.jsonl",
+      "canonical": {
+        "TestReportSnapshotHeadersNoStoreBeforeAuthentication": [
+          "pass"
+        ],
+        "TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/final-r2-normal-middleware.jsonl",
+      "canonical": {
+        "TestReportSnapshotHeadersNoStoreBeforeAuthentication": [
+          "pass"
+        ],
+        "TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/final-r3-race-middleware.jsonl",
+      "canonical": {
+        "TestReportSnapshotHeadersNoStoreBeforeAuthentication": [
+          "pass"
+        ],
+        "TestReportSnapshotHeadersLeaveOtherNamespacesUnchanged": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  },
+  "./internal/reportsnapshot": {
+    "baseline": {
+      "log": "/tmp/f3-codex-5c/b54/baseline-internal-reportsnapshot.jsonl",
+      "canonical": {
+        "TestPublicSnapshotUnknownAndNoProjectStayExplicit": [
+          "pass"
+        ],
+        "TestPublicSnapshotReplayKeepsCalendarAndIgnoresArrayOrder": [
+          "pass"
+        ],
+        "TestPublicSnapshotOnlyProjectsProvenLifecycleFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotContainsOnlyReplayFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotStrictSchemaAndIndependentValidation": [
+          "pass"
+        ],
+        "TestPublicReplayNullableValidityCannotInventKnownFalse": [
+          "pass"
+        ],
+        "TestPublicProjectionSanitizesGapMetadataWithoutBroadeningImpact": [
+          "pass"
+        ],
+        "TestPublicReplayRejectsUnsupportedProjectAndSourceContracts": [
+          "pass"
+        ],
+        "TestKnownCandidateGapPreservesCoverageDenominator": [
+          "pass"
+        ],
+        "TestWindowCreationUsesBirthEvidenceDespiteStatusHistoryGap": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsPreserveHealthPriority": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsUnknownAndNotApplicableAreNull": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsAreRecomputedAndDigestBound": [
+          "pass"
+        ],
+        "TestSnapshotLifecycleAndHalfOpenWindow": [
+          "pass"
+        ],
+        "TestSnapshotUnknownIsNotZeroOrFalse": [
+          "pass"
+        ],
+        "TestSnapshotDigestsAndFrozenReplay": [
+          "pass"
+        ],
+        "TestSnapshotDSTWindowAndSavedOffsets": [
+          "pass"
+        ],
+        "TestSnapshotNoProjectAndMissingSource": [
+          "pass"
+        ],
+        "TestSnapshotSourceGapAndPayloadIdentity": [
+          "pass"
+        ],
+        "TestSnapshotProductionHistoryAndClassificationRemainUnknown": [
+          "pass"
+        ],
+        "TestSnapshotTerminalSwitchDoesNotCloseAgain": [
+          "pass"
+        ],
+        "TestSnapshotConflictsAndMalformedSealsRefuse": [
+          "pass"
+        ],
+        "TestFreezeHealthPrivacyAndMetricParity": [
+          "pass"
+        ],
+        "TestInternalSnapshotLegacyIdentity": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/final-r2-normal-reportsnapshot.jsonl",
+      "canonical": {
+        "TestPublicSnapshotUnknownAndNoProjectStayExplicit": [
+          "pass"
+        ],
+        "TestPublicSnapshotReplayKeepsCalendarAndIgnoresArrayOrder": [
+          "pass"
+        ],
+        "TestPublicSnapshotOnlyProjectsProvenLifecycleFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotContainsOnlyReplayFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotStrictSchemaAndIndependentValidation": [
+          "pass"
+        ],
+        "TestPublicReplayNullableValidityCannotInventKnownFalse": [
+          "pass"
+        ],
+        "TestPublicProjectionSanitizesGapMetadataWithoutBroadeningImpact": [
+          "pass"
+        ],
+        "TestPublicReplayRejectsUnsupportedProjectAndSourceContracts": [
+          "pass"
+        ],
+        "TestKnownCandidateGapPreservesCoverageDenominator": [
+          "pass"
+        ],
+        "TestWindowCreationUsesBirthEvidenceDespiteStatusHistoryGap": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsPreserveHealthPriority": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsUnknownAndNotApplicableAreNull": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsAreRecomputedAndDigestBound": [
+          "pass"
+        ],
+        "TestSnapshotLifecycleAndHalfOpenWindow": [
+          "pass"
+        ],
+        "TestSnapshotUnknownIsNotZeroOrFalse": [
+          "pass"
+        ],
+        "TestSnapshotDigestsAndFrozenReplay": [
+          "pass"
+        ],
+        "TestSnapshotDSTWindowAndSavedOffsets": [
+          "pass"
+        ],
+        "TestSnapshotNoProjectAndMissingSource": [
+          "pass"
+        ],
+        "TestSnapshotSourceGapAndPayloadIdentity": [
+          "pass"
+        ],
+        "TestSnapshotProductionHistoryAndClassificationRemainUnknown": [
+          "pass"
+        ],
+        "TestSnapshotTerminalSwitchDoesNotCloseAgain": [
+          "pass"
+        ],
+        "TestSnapshotConflictsAndMalformedSealsRefuse": [
+          "pass"
+        ],
+        "TestFreezeHealthPrivacyAndMetricParity": [
+          "pass"
+        ],
+        "TestInternalSnapshotLegacyIdentity": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/final-r3-race-reportsnapshot.jsonl",
+      "canonical": {
+        "TestPublicSnapshotUnknownAndNoProjectStayExplicit": [
+          "pass"
+        ],
+        "TestPublicSnapshotReplayKeepsCalendarAndIgnoresArrayOrder": [
+          "pass"
+        ],
+        "TestPublicSnapshotOnlyProjectsProvenLifecycleFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotContainsOnlyReplayFacts": [
+          "pass"
+        ],
+        "TestPublicSnapshotStrictSchemaAndIndependentValidation": [
+          "pass"
+        ],
+        "TestPublicReplayNullableValidityCannotInventKnownFalse": [
+          "pass"
+        ],
+        "TestPublicProjectionSanitizesGapMetadataWithoutBroadeningImpact": [
+          "pass"
+        ],
+        "TestPublicReplayRejectsUnsupportedProjectAndSourceContracts": [
+          "pass"
+        ],
+        "TestKnownCandidateGapPreservesCoverageDenominator": [
+          "pass"
+        ],
+        "TestWindowCreationUsesBirthEvidenceDespiteStatusHistoryGap": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsPreserveHealthPriority": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsUnknownAndNotApplicableAreNull": [
+          "pass"
+        ],
+        "TestPublicProjectReasonsAreRecomputedAndDigestBound": [
+          "pass"
+        ],
+        "TestSnapshotLifecycleAndHalfOpenWindow": [
+          "pass"
+        ],
+        "TestSnapshotUnknownIsNotZeroOrFalse": [
+          "pass"
+        ],
+        "TestSnapshotDigestsAndFrozenReplay": [
+          "pass"
+        ],
+        "TestSnapshotDSTWindowAndSavedOffsets": [
+          "pass"
+        ],
+        "TestSnapshotNoProjectAndMissingSource": [
+          "pass"
+        ],
+        "TestSnapshotSourceGapAndPayloadIdentity": [
+          "pass"
+        ],
+        "TestSnapshotProductionHistoryAndClassificationRemainUnknown": [
+          "pass"
+        ],
+        "TestSnapshotTerminalSwitchDoesNotCloseAgain": [
+          "pass"
+        ],
+        "TestSnapshotConflictsAndMalformedSealsRefuse": [
+          "pass"
+        ],
+        "TestFreezeHealthPrivacyAndMetricParity": [
+          "pass"
+        ],
+        "TestInternalSnapshotLegacyIdentity": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  },
+  "./internal/service": {
+    "baseline": {
+      "log": "/tmp/f3-codex-20261120/baseline-b54-svc.jsonl",
+      "canonical": {
+        "TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditHasNoPublicProjection": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/final-r1-normal-service.jsonl",
+      "canonical": {
+        "TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditHasNoPublicProjection": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/final-r1-race-service.jsonl",
+      "canonical": {
+        "TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift": [
+          "pass"
+        ],
+        "TestReportSnapshotCollectionAuditHasNoPublicProjection": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  },
+  "./internal/handler": {
+    "baseline": {
+      "log": "/tmp/f3-codex-20261120/baseline-b54-hdl.jsonl",
+      "canonical": {
+        "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewCredentialHorizon": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesPaginationAndAuthority": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesBoundedHiddenScan": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRequiresBoundStoredPublicProjection": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotActivityScanBeyondTimelineCap": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotSourceGapAndFailedSeal": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentOriginalRequest": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOwnedDeleteCleanup": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/final-r1-normal-handler.jsonl",
+      "canonical": {
+        "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewCredentialHorizon": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesPaginationAndAuthority": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesBoundedHiddenScan": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRequiresBoundStoredPublicProjection": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotActivityScanBeyondTimelineCap": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotSourceGapAndFailedSeal": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentOriginalRequest": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOwnedDeleteCleanup": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/final-r1-race-handler.jsonl",
+      "canonical": {
+        "TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewBranchesAndCurrentRefusal": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewCredentialHorizon": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesPaginationAndAuthority": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure": [
+          "pass"
+        ],
+        "TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization": [
+          "pass"
+        ],
+        "TestDeliveryCompletionCandidatesBoundedHiddenScan": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRequiresBoundStoredPublicProjection": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotActivityScanBeyondTimelineCap": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotStrictRequestAndHeaderBoundaries": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotSourceGapAndFailedSeal": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentOriginalRequest": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOwnedDeleteCleanup": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotCancelStopsCollectionWithoutRestart": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  },
+  "./cmd/server": {
+    "baseline": {
+      "log": "/tmp/f3-codex-20261120/baseline-b54-router.jsonl",
+      "canonical": {
+        "TestF2ReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionReporterExactGetMatrix": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionRevocationAndFreshClaim": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotFirstReadAuthorityBarrier": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "normal": {
+      "log": "/tmp/f3-codex-20261120/final-r1-normal-router.jsonl",
+      "canonical": {
+        "TestF2ReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionReporterExactGetMatrix": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionRevocationAndFreshClaim": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotFirstReadAuthorityBarrier": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    },
+    "race": {
+      "log": "/tmp/f3-codex-20261120/final-r1-race-router.jsonl",
+      "canonical": {
+        "TestF2ReportSnapshotPublicProjectionAndHumanReceipt": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionReporterExactGetMatrix": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionRevocationAndFreshClaim": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotProductionLegacyReviewerAndNoProject": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotFirstReadAuthorityBarrier": [
+          "pass"
+        ],
+        "TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody": [
+          "pass"
+        ]
+      },
+      "package_status": [
+        "pass"
+      ]
+    }
+  }
+}

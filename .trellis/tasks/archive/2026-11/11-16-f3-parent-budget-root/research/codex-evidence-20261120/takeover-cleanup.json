@@ -1,0 +1,62 @@
+{
+  "scope": "Only11 databases allocated by this takeover; prior Claude and prior cx databases retained",
+  "system_identifier": "7680566871570878508",
+  "results": [
+    {
+      "database": "f3_budget_cx_takeover_race_migrate",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_race_migrations",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_race_router",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_race_handler",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_race_service",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_normal_migrate",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_normal_migrations",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_normal_router",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_normal_handler",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_normal_service",
+      "action": "dropped",
+      "connections_before": 0
+    },
+    {
+      "database": "f3_budget_cx_takeover_template",
+      "action": "dropped",
+      "connections_before": 0
+    }
+  ],
+  "multica_database_touched": false
+}

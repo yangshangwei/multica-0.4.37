@@ -252,7 +252,7 @@ Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1
 - [x] 来源研究：[总表](research/f3-source-map-20261113.md)、[usage](research/f3-usage-source-map-20261113.md)、[执行/claim](research/f3-execution-source-map-20261113.md)。
 - [x] [最小合同](research/f3-minimum-budget-contract-20261113.md) 及其 §11 源码复核修订。
 - [x] [验收矩阵](research/f3-acceptance-matrix-20261113.md) B01–B60、E01–E06；requirements F3-01–14；design §13。
-- [ ] 用户审阅 D2–D6 并对最终方案给出独立明确的实施授权。
+- [x] 用户于2026-11-16接受D2–D6并独立授权F3-S1，实施与最终交付见子任务。
 
 获得授权后的建议顺序（每步有自己的出口，前一步未过不进下一步）：
 
@@ -266,3 +266,10 @@ Views 全量套件已在修复后重跑并通过 602 files / 7,332 tests。M1-S1
 8. **不回归与收尾**：B54，normal/race 各用新建数据库并证明零 skip，独立 check，更新 spec。
 
 回滚点：第 3 步前无持久变更；第 3 步后以停用观察开关回退，账目保留。
+
+
+## 16. F3-S1 本地交付（2026-11-20）
+
+已完成并归档的F3-S1仅观察、不拦截，人工API/CLI与quick-create归属已交付。功能提交584846f95、与当前共享源码集成8126073f6；交付分支codex/f3-completion-20261120，共享本地codex/cross-workspace-collaboration已快进到同一验证源码。62行S1和91项既有Go用例有逐名normal/race证据；合并后Core374files/5355tests、Views619files/7610tests全通过。
+
+完整交付、生产证据限制、原失败与可校验清单见 [F3最终交付](../archive/2026-11/11-16-f3-parent-budget-root/research/codex-final-delivery-20261120.md)。生产actual没有可信来源，估算/未知不能当真实账单；没有结算释放或金额强制。M1-S2–S6、F3-S2、F4、F5-A–E仍开放，父任务维持in_progress。

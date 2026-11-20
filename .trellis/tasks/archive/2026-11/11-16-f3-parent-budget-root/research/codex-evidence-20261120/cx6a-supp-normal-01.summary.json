@@ -1,0 +1,35 @@
+{
+  "database": "f3_budget_cx_supp_normal",
+  "package": "./internal/service",
+  "exit": 0,
+  "counts": {
+    "pass": 6
+  },
+  "tests": [
+    {
+      "test": "TestIssueBudgetUsageAcceptanceRetryKeepsActualAndLimit",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders/usage_then_cancel_hold",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders/cancel_hold_then_usage",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetUsageAcceptanceMovesAndParentDeletionKeepOriginalRoot",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetUsageAcceptanceConcurrentReservationsPastLimit",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/cx6a-supp-normal-01.jsonl"
+}

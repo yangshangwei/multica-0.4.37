@@ -1,0 +1,327 @@
+[
+  {
+    "tag": "integrated-normal-service",
+    "package": "./internal/service",
+    "database": "f3_budget_cx_takeover_normal_service",
+    "exit": 0,
+    "seconds": 63.27,
+    "counts": {
+      "pass": 393
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "9f118b45a216108655414b42ad4c95f544ef18d130efb985f2da209f445073a7",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestBuildAgentSkillBundlesAssignsBuiltinID|TestBuildAgentSkillBundlesProducesRefsAndFullBundles|TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestIssueBudgetBindingNeverLocksOrUpdatesARootRow|TestIssueBudgetBindingRefusesATransactionThatIsNotReadCommitted|TestIssueBudgetCloseAndReopenKeepTheSameRoot|TestIssueBudgetCollaborationEditBindsOnlyWhenTheParentChanges|TestIssueBudgetCollaborationWritersBindMembers|TestIssueBudgetCreateInheritsTheParentRoot|TestIssueBudgetDeletedRootIssueKeepsTheSlot|TestIssueBudgetDeletedRootIssueRefusesOnlyReopen|TestIssueBudgetEnableConcurrentlyOnOneIssue|TestIssueBudgetEnableFreezesDescendantsAndRecordsInFlightTasks|TestIssueBudgetEnableHoldsTheBindingLockUntilItCommits|TestIssueBudgetEnableIsOnePerIssueAndReplaysByOriginalKey|TestIssueBudgetEnableParentAndChildConcurrently|TestIssueBudgetEnableRacingChildCreate|TestIssueBudgetEnableRefusesOverlappingRoots|TestIssueBudgetEnableRequiresAnOrdinaryFormalIssue|TestIssueBudgetEnableThatBindsNothingTakesNoBindingLock|TestIssueBudgetEnableWaitsForAClaimThatReadUnbound|TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop|TestIssueBudgetEntryRowIsDerivedFromTheEntry|TestIssueBudgetFinalizeAndASetLimitOnOneRootCommitInTheOrderTheyLockIt|TestIssueBudgetFinalizeAttributesAQuickCreateTaskThroughItsContextParent|TestIssueBudgetFinalizeAttributesATaskRunFromAnotherWorkspaceToTheWorkspaceOfItsIssue|TestIssueBudgetFinalizeCountsEveryTaskOfAnIssue|TestIssueBudgetFinalizeDoesNotReserveWithoutAnAmountForAnotherFailureOfItsEntry|TestIssueBudgetFinalizeGoesOnWhenTheRootRowOfAMemberIsGone|TestIssueBudgetFinalizeIntentDigestMatchesGoldenVectors|TestIssueBudgetFinalizeJudgesTheLimitWithItsOwnReservation|TestIssueBudgetFinalizeJudgesTwoClaimsThatQueueOnTheRootLockOneAfterTheOther|TestIssueBudgetFinalizeKeepsTheHoldWhenTheReserveOfAReclaimDoesNotFit|TestIssueBudgetFinalizeLeavesAQuickCreateTaskThatNamesNoMemberAlone|TestIssueBudgetFinalizeLeavesATreeWithoutARootAlone|TestIssueBudgetFinalizeNeedsReadCommittedWhereThereIsARoot|TestIssueBudgetFinalizeOnALedgerThatCannotBeLoaded|TestIssueBudgetFinalizeRecordsADaemonWithoutTheProtocolAsAGap|TestIssueBudgetFinalizeRecordsEveryReasonARootWouldRefuseFor|TestIssueBudgetFinalizeRefusedForABindingInProgressLeavesNothing|TestIssueBudgetFinalizeRefusedWhileARootIsEnabledIsAttributedAtItsNextClaim|TestIssueBudgetFinalizeReservesWithoutAnAmountOnARootThatDeclaresNoReserve|TestIssueBudgetFinalizeReservesWithoutAnAmountWhenItsReserveDoesNotFit|TestIssueBudgetFinalizeServedFromTheCacheWritesWhatAFullReplayGives|TestIssueBudgetFinalizeStepGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeSupersedesAnEarlierClaimThatReservedNoAmount|TestIssueBudgetFinalizeSupersedesTheEarlierClaimOfATask|TestIssueBudgetFinalizeThatDoesNotCommitPublishesNothing|TestIssueBudgetFinalizeThatFailsInTheBudgetStepLeavesNothing|TestIssueBudgetFinalizeThatReadNoMemberMakesEnablingWaitAndIsRecordedAsAGap|TestIssueBudgetFinalizeWithoutATransactionFailsTheClaimOfAMemberIssue|TestIssueBudgetFinalizeWithoutATransactionGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeWritesNothingForARootSwitchedOff|TestIssueBudgetFinalizeWritesTheAttemptItsReservationAndItsReceipt|TestIssueBudgetInFlightScanDecidesQuickCreateByTheSharedDefinition|TestIssueBudgetInFlightScanFindsATaskRunFromAnotherWorkspace|TestIssueBudgetInFlightScanUsesTheContextParentOnlyWithoutAnIssue|TestIssueBudgetIntentDigestGoldenVectors|TestIssueBudgetIsScopedToTheWorkspace|TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing|TestIssueBudgetLedgerAppendWritesRowsAndIsPublishedOnceCommitted|TestIssueBudgetLedgerCacheIsSafeForConcurrentUse|TestIssueBudgetLedgerCacheKeepsWithinItsLimit|TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows|TestIssueBudgetLedgerConcurrentWritersAndReadersAgree|TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten|TestIssueBudgetLedgerEntryLimitHoldsTheLargestUsageEntry|TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger|TestIssueBudgetLedgerFailedReaderDropsOnlyTheStateItUsed|TestIssueBudgetLedgerIsUnavailableForEachCause|TestIssueBudgetLedgerLoadsTheWholeLedgerOnceAndThenTheTail|TestIssueBudgetLedgerMustStartAtTheFirstSeq|TestIssueBudgetLedgerReaderWithoutTheRootLockPublishesNothing|TestIssueBudgetLedgerReplayCostGrowsWithTheRowsRead|TestIssueBudgetLedgerStatesAreNeverAssignedThrough|TestIssueBudgetLedgerTooLargeToCacheIsReplayedOnEveryLoad|TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay|TestIssueBudgetLedgerUnderTheRootLockDropsAStateAheadOfTheDatabase|TestIssueBudgetLifecycleAndABudgetStepThatWantTheSameAttemptWriteOneHold|TestIssueBudgetLifecycleAndTheFinalizationOfTheNextClaimLeaveOneHoldEach|TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold|TestIssueBudgetLifecycleDoesNotWaitForATaskAnIssueOrABinder|TestIssueBudgetLifecycleHoldsEveryEndedAttemptOfARootInOneBatch|TestIssueBudgetLifecycleHoldsWhatAnEndedAttemptReserved|TestIssueBudgetLifecycleLeavesARootThatIsOff|TestIssueBudgetLifecycleLeavesARootWhoseLedgerDoesNotLoad|TestIssueBudgetLifecycleLeavesAnAttemptThatIsNotOpen|TestIssueBudgetLifecycleOfAnUnknownRootIsNotFound|TestIssueBudgetLifecycleReasonTable|TestIssueBudgetLifecycleReasonTablePlacesEveryReasonTheServerWrites|TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage|TestIssueBudgetLifecycleRoundDoesNotWaitForAContendedRootLock|TestIssueBudgetLifecycleRoundFindStatementEndsWhatAReconciliationEnds|TestIssueBudgetLifecycleRoundFindsExactlyWhatAReconciliationCloses|TestIssueBudgetLifecycleRoundFindsTheRootsWithAnEndedAttempt|TestIssueBudgetLifecycleRoundGoesOnAfterARootThatFails|TestIssueBudgetLifecycleRoundReconcilesEachRootInATransactionOfItsOwn|TestIssueBudgetLifecycleRoundStopsWithItsContext|TestIssueBudgetLifecycleRunOnTwoConnectionsWritesOnce|TestIssueBudgetLifecycleRunTwiceWritesOnce|TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim|TestIssueBudgetLifecycleTakesTheRootLockAndNoOther|TestIssueBudgetLifecycleThatDoesNotCommitPublishesNothing|TestIssueBudgetLimitAndReserveAreSetTogether|TestIssueBudgetMalformedRequestsSendNoStatement|TestIssueBudgetManagementMembership|TestIssueBudgetManagementReplaysByOriginalKey|TestIssueBudgetManagementRequiresTheCurrentPolicyRevision|TestIssueBudgetModeSwitchIssuesANewEpochOnEveryReturn|TestIssueBudgetNegativePolicyRevisionIsAMalformedRequest|TestIssueBudgetObservationOffResumeIsAtomicAndReplayed|TestIssueBudgetOffBindingInterleavesWithResume|TestIssueBudgetOffBindingKeepsMembersWithoutObservations|TestIssueBudgetOnlyAFirstBindingTakesTheBindingLock|TestIssueBudgetOperationsRefuseATransactionAtAnotherLevel|TestIssueBudgetOperationsRunInsideAReadCommittedTransaction|TestIssueBudgetOriginalKeyReplaysForAnotherOperator|TestIssueBudgetOriginalKeyStandsForTheWholeIntent|TestIssueBudgetQuickCreateDefinitionIsShared|TestIssueBudgetQuickCreateIgnoresSelfReportedOrigin|TestIssueBudgetQuickCreateRecordsEachDifferentRoot|TestIssueBudgetReadConcurrentSnapshot|TestIssueBudgetReadCursorAndTime|TestIssueBudgetReadOperationRecovery|TestIssueBudgetReadPages|TestIssueBudgetReadProjection|TestIssueBudgetReadQueryPlans|TestIssueBudgetReadSnapshotAndUnknowns|TestIssueBudgetReparentBindsAnUnboundSubtree|TestIssueBudgetReparentNeverRewritesAMemberRow|TestIssueBudgetReparentThroughAParentLoopStillBinds|TestIssueBudgetReparentWaitsForAClaimThatReadUnbound|TestIssueBudgetSetLimitToTheCurrentLimitIsRefused|TestIssueBudgetTaskRetryAndReclaimLeaveTheBindingAlone|TestIssueBudgetTransactionsFollowTheLockOrder|TestIssueBudgetUsageAcceptanceConcurrentReservationsPastLimit|TestIssueBudgetUsageAcceptanceMovesAndParentDeletionKeepOriginalRoot|TestIssueBudgetUsageAcceptanceRetryKeepsActualAndLimit|TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders|TestIssueBudgetUsageDBAtomicInvalidAndProtocol|TestIssueBudgetUsageDBConcurrentDuplicate|TestIssueBudgetUsageDBConcurrentFinalize|TestIssueBudgetUsageDBConcurrentSwitch|TestIssueBudgetUsageDBEmptyAndUnreserved|TestIssueBudgetUsageDBEnvelopeGapsAndFrozenPrices|TestIssueBudgetUsageDBInternalSettlementAndAttemptConsistency|TestIssueBudgetUsageDBLateClosedDeletedSuperseded|TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable|TestIssueBudgetUsageDBPendingQueryDoesNotLock|TestIssueBudgetUsageDBReplayConflictsAndSwitch|TestIssueBudgetUsageDBStatementsAndUnknownQuery|TestIssueBudgetUsageDBUnexpectedEntryReplayRollsBack|TestIssueBudgetUsageDecodeBoundaries|TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey|TestIssueBudgetUsageDecodeFrozenFixtures|TestIssueBudgetUsageDecodeRejects|TestIssueBudgetUsageDecodeStringAndDecimalLimits|TestIssueBudgetUsageEvidence|TestIssueBudgetUsageIntentGolden|TestIssueBudgetUsageLargestStoredEntry|TestIssueBudgetUsageNormalizeCostAndScope|TestIssueBudgetUsageNormalizeEnvelopeGapsAndFrozenPrice|TestIssueBudgetUsagePriceSnapshot|TestIssueBudgetUsageProductionEvidenceConsequences|TestIssueBudgetWriterInventoryIsComplete|TestIssueBudgetWritersThatBindNoExistingIssueDoNotWaitForABinder|TestReportSnapshotCollectionAuditHasNoPublicProjection|TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts|TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift|TestWorkingOnIssuesSkillCoversIssueLoopContracts)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m"
+    ]
+  },
+  {
+    "tag": "integrated-normal-handler",
+    "package": "./internal/handler",
+    "database": "f3_budget_cx_takeover_normal_handler",
+    "exit": 0,
+    "seconds": 40.45,
+    "counts": {
+      "pass": 159
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "d28e3f722d64f0f7daa9b7ad492bd0eac30d5f1f74840466effa650477069de9",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^(TestClaimBudgetBatch|TestClaimBudgetBatchBindingInProgress|TestClaimBudgetBindingInProgressInvalidatesEmptyVerdict|TestClaimBudgetBindingInProgressLogsAtInfo|TestClaimBudgetCapabilityHeader|TestClaimBudgetClosedRoot|TestClaimBudgetDaemonRPC|TestClaimBudgetFinalizeFailure|TestClaimBudgetOutsideEveryRoot|TestClaimBudgetSingleRuntimeBindingInProgress|TestClaimBudgetSingleRuntimeDeclaredProtocol|TestClaimBudgetSingleRuntimeUndeclaredProtocol|TestDaemonBudgetUsageAtomicRefusalVersusLegacy|TestDaemonBudgetUsageAuthorizationAndValidationOrder|TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence|TestDaemonBudgetUsageHTTPStateAndErrorMapping|TestDaemonBudgetUsageLateHoldAndRevokedWorkspace|TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors|TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth|TestDeleteMemberIssueKeepsBudgetRows|TestDeliveryCompletionCandidatesBoundedHiddenScan|TestDeliveryCompletionCandidatesPaginationAndAuthority|TestDeliveryCompletionPreviewBranchesAndCurrentRefusal|TestDeliveryCompletionPreviewCredentialHorizon|TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites|TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization|TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure|TestF2ReportSnapshotActivityScanBeyondTimelineCap|TestF2ReportSnapshotCancelStopsCollectionWithoutRestart|TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources|TestF2ReportSnapshotConcurrentOriginalRequest|TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt|TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts|TestF2ReportSnapshotOwnedDeleteCleanup|TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown|TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable|TestF2ReportSnapshotRequiresBoundStoredPublicProjection|TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF|TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit|TestF2ReportSnapshotSourceGapAndFailedSeal|TestF2ReportSnapshotStrictRequestAndHeaderBoundaries|TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts|TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders|TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent|TestIssueBudgetBatchDeleteTombstonesEveryMember|TestIssueBudgetBusinessReopenWritesNothing|TestIssueBudgetConcurrentWritersKeepEveryTreeBound|TestIssueBudgetCreateUsesVerifiedExecutionIdentity|TestIssueBudgetDeleteMemberLeavesATombstone|TestIssueBudgetDeleteRootIssueTombstonesTheRoot|TestIssueBudgetEveryParentCapableWriterBinds|TestIssueBudgetLedgerLoadIsOrderedByItsKey|TestIssueBudgetLifecycleFollowUpUsesVerifiedExecutionIdentity|TestIssueBudgetManagementFrozenWire|TestIssueBudgetManagementHumanGate|TestIssueBudgetManagementLoaderAndTombstone|TestIssueBudgetManagementOperations|TestIssueBudgetManagementPageParameters|TestIssueBudgetManagementPrivacyAndParsingOrder|TestIssueBudgetManagementRevokedInvokeCannotReserve|TestIssueBudgetManagementShowCoverageAndOff|TestIssueBudgetManagementStrictBody|TestIssueBudgetManagementWorkspaceMiddleware|TestIssueBudgetMoveIntoAnotherRootIsRecordedNotRefused|TestIssueBudgetMoveKeepsTheMemberRow|TestIssueBudgetQueriesRoundTrip|TestIssueBudgetSchemaCatalog|TestIssueBudgetSchemaConstraints|TestIssueBudgetTriageCreationUsesVerifiedExecutionIdentity|TestIssueBudgetVerifiedCreationTaskIsWorkspaceScoped|TestIssueBudgetWritesNothingForATreeWithoutARoot|TestProjectDeletionPreservesKnowledgeAutomationHistory|TestWorkspaceDeletionLeavesBudgetRowsUntouched|TestWorkspaceDeletionManifestCoversPublicSchema|TestWorkspaceDeletionManifestPreservesKnowledgeHistory|TestWorkspaceDeletionRemovesKnowledgePolicy)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m"
+    ]
+  },
+  {
+    "tag": "integrated-normal-router",
+    "package": "./cmd/server",
+    "database": "f3_budget_cx_takeover_normal_router",
+    "exit": 0,
+    "seconds": 19.27,
+    "counts": {
+      "pass": 54
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "7cf5c27a385d1c01a28db4351ab0f2201a23c72f4a32055743a5f769cd621c0d",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^(TestBudgetLifecycleRunsOutsideTheLivenessLoop|TestBudgetLifecycleSweepReconcilesTheRootsItFinds|TestBudgetLifecycleSweepReportsWhatTheRoundDid|TestBudgetLifecycleSweepWithNothingToReconcileIsOneRead|TestBudgetLifecycleSweeperStopsWithItsContext|TestF2ReportSnapshotFirstReadAuthorityBarrier|TestF2ReportSnapshotProductionLegacyReviewerAndNoProject|TestF2ReportSnapshotProductionReporterExactGetMatrix|TestF2ReportSnapshotProductionRevocationAndFreshClaim|TestF2ReportSnapshotPublicProjectionAndHumanReceipt|TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody|TestIssueBudgetRouterClaimUsageAndOriginalBatchRecovery|TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard|TestIssueBudgetRouterHumanPATAndCrossWorkspacePrivacy|TestIssueBudgetRouterManagementRecoveryAndTombstone)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m"
+    ]
+  },
+  {
+    "tag": "integrated-normal-migrations",
+    "package": "./internal/migrations",
+    "database": "f3_budget_cx_takeover_normal_migrations",
+    "exit": 0,
+    "seconds": 2.15,
+    "counts": {
+      "pass": 4
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "0f74e4db64e96b08ed204bf7f61807d07603cab9fb783707f825c62ed0080981",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/migrations",
+      "-run",
+      "^(TestIssueBudgetIndexMigrationContract|TestIssueBudgetReadyMigrationListsEveryIndex|TestIssueBudgetRollbackKeepsLedgerRows|TestIssueBudgetTableMigrationContract)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m"
+    ]
+  },
+  {
+    "tag": "integrated-normal-migrate",
+    "package": "./cmd/migrate",
+    "database": "f3_budget_cx_takeover_normal_migrate",
+    "exit": 0,
+    "seconds": 5.55,
+    "counts": {
+      "pass": 6
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "2d61c41b78509834cb442d2b0a4af74dee81e8c0343b6f057b64cbfe98a04bd4",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/migrate",
+      "-run",
+      "^(TestIssueBudgetMigrationsRunUpDownUp|TestIssueBudgetReadyMigrationRejectsAPredicateOnAPlainIndex|TestIssueBudgetReadyMigrationRejectsAWeakenedIndex|TestIssueBudgetReadyMigrationRejectsAnotherGapIndex|TestIssueBudgetReadyMigrationRejectsAnotherOpenAttemptIndex|TestIssueBudgetRollbackRefusesWhileLedgerRowsExist)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m"
+    ]
+  },
+  {
+    "tag": "integrated-race-service",
+    "package": "./internal/service",
+    "database": "f3_budget_cx_takeover_race_service",
+    "exit": 0,
+    "seconds": 123.87,
+    "counts": {
+      "pass": 393
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "8b536a76f114e24f952f55b8400b7b293c9a7f8e51e7b0d21217d5312b20cc97",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/service",
+      "-run",
+      "^(TestBuildAgentSkillBundlesAssignsBuiltinID|TestBuildAgentSkillBundlesProducesRefsAndFullBundles|TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestIssueBudgetBindingNeverLocksOrUpdatesARootRow|TestIssueBudgetBindingRefusesATransactionThatIsNotReadCommitted|TestIssueBudgetCloseAndReopenKeepTheSameRoot|TestIssueBudgetCollaborationEditBindsOnlyWhenTheParentChanges|TestIssueBudgetCollaborationWritersBindMembers|TestIssueBudgetCreateInheritsTheParentRoot|TestIssueBudgetDeletedRootIssueKeepsTheSlot|TestIssueBudgetDeletedRootIssueRefusesOnlyReopen|TestIssueBudgetEnableConcurrentlyOnOneIssue|TestIssueBudgetEnableFreezesDescendantsAndRecordsInFlightTasks|TestIssueBudgetEnableHoldsTheBindingLockUntilItCommits|TestIssueBudgetEnableIsOnePerIssueAndReplaysByOriginalKey|TestIssueBudgetEnableParentAndChildConcurrently|TestIssueBudgetEnableRacingChildCreate|TestIssueBudgetEnableRefusesOverlappingRoots|TestIssueBudgetEnableRequiresAnOrdinaryFormalIssue|TestIssueBudgetEnableThatBindsNothingTakesNoBindingLock|TestIssueBudgetEnableWaitsForAClaimThatReadUnbound|TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop|TestIssueBudgetEntryRowIsDerivedFromTheEntry|TestIssueBudgetFinalizeAndASetLimitOnOneRootCommitInTheOrderTheyLockIt|TestIssueBudgetFinalizeAttributesAQuickCreateTaskThroughItsContextParent|TestIssueBudgetFinalizeAttributesATaskRunFromAnotherWorkspaceToTheWorkspaceOfItsIssue|TestIssueBudgetFinalizeCountsEveryTaskOfAnIssue|TestIssueBudgetFinalizeDoesNotReserveWithoutAnAmountForAnotherFailureOfItsEntry|TestIssueBudgetFinalizeGoesOnWhenTheRootRowOfAMemberIsGone|TestIssueBudgetFinalizeIntentDigestMatchesGoldenVectors|TestIssueBudgetFinalizeJudgesTheLimitWithItsOwnReservation|TestIssueBudgetFinalizeJudgesTwoClaimsThatQueueOnTheRootLockOneAfterTheOther|TestIssueBudgetFinalizeKeepsTheHoldWhenTheReserveOfAReclaimDoesNotFit|TestIssueBudgetFinalizeLeavesAQuickCreateTaskThatNamesNoMemberAlone|TestIssueBudgetFinalizeLeavesATreeWithoutARootAlone|TestIssueBudgetFinalizeNeedsReadCommittedWhereThereIsARoot|TestIssueBudgetFinalizeOnALedgerThatCannotBeLoaded|TestIssueBudgetFinalizeRecordsADaemonWithoutTheProtocolAsAGap|TestIssueBudgetFinalizeRecordsEveryReasonARootWouldRefuseFor|TestIssueBudgetFinalizeRefusedForABindingInProgressLeavesNothing|TestIssueBudgetFinalizeRefusedWhileARootIsEnabledIsAttributedAtItsNextClaim|TestIssueBudgetFinalizeReservesWithoutAnAmountOnARootThatDeclaresNoReserve|TestIssueBudgetFinalizeReservesWithoutAnAmountWhenItsReserveDoesNotFit|TestIssueBudgetFinalizeServedFromTheCacheWritesWhatAFullReplayGives|TestIssueBudgetFinalizeStepGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeSupersedesAnEarlierClaimThatReservedNoAmount|TestIssueBudgetFinalizeSupersedesTheEarlierClaimOfATask|TestIssueBudgetFinalizeThatDoesNotCommitPublishesNothing|TestIssueBudgetFinalizeThatFailsInTheBudgetStepLeavesNothing|TestIssueBudgetFinalizeThatReadNoMemberMakesEnablingWaitAndIsRecordedAsAGap|TestIssueBudgetFinalizeWithoutATransactionFailsTheClaimOfAMemberIssue|TestIssueBudgetFinalizeWithoutATransactionGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeWritesNothingForARootSwitchedOff|TestIssueBudgetFinalizeWritesTheAttemptItsReservationAndItsReceipt|TestIssueBudgetInFlightScanDecidesQuickCreateByTheSharedDefinition|TestIssueBudgetInFlightScanFindsATaskRunFromAnotherWorkspace|TestIssueBudgetInFlightScanUsesTheContextParentOnlyWithoutAnIssue|TestIssueBudgetIntentDigestGoldenVectors|TestIssueBudgetIsScopedToTheWorkspace|TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing|TestIssueBudgetLedgerAppendWritesRowsAndIsPublishedOnceCommitted|TestIssueBudgetLedgerCacheIsSafeForConcurrentUse|TestIssueBudgetLedgerCacheKeepsWithinItsLimit|TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows|TestIssueBudgetLedgerConcurrentWritersAndReadersAgree|TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten|TestIssueBudgetLedgerEntryLimitHoldsTheLargestUsageEntry|TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger|TestIssueBudgetLedgerFailedReaderDropsOnlyTheStateItUsed|TestIssueBudgetLedgerIsUnavailableForEachCause|TestIssueBudgetLedgerLoadsTheWholeLedgerOnceAndThenTheTail|TestIssueBudgetLedgerMustStartAtTheFirstSeq|TestIssueBudgetLedgerReaderWithoutTheRootLockPublishesNothing|TestIssueBudgetLedgerReplayCostGrowsWithTheRowsRead|TestIssueBudgetLedgerStatesAreNeverAssignedThrough|TestIssueBudgetLedgerTooLargeToCacheIsReplayedOnEveryLoad|TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay|TestIssueBudgetLedgerUnderTheRootLockDropsAStateAheadOfTheDatabase|TestIssueBudgetLifecycleAndABudgetStepThatWantTheSameAttemptWriteOneHold|TestIssueBudgetLifecycleAndTheFinalizationOfTheNextClaimLeaveOneHoldEach|TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold|TestIssueBudgetLifecycleDoesNotWaitForATaskAnIssueOrABinder|TestIssueBudgetLifecycleHoldsEveryEndedAttemptOfARootInOneBatch|TestIssueBudgetLifecycleHoldsWhatAnEndedAttemptReserved|TestIssueBudgetLifecycleLeavesARootThatIsOff|TestIssueBudgetLifecycleLeavesARootWhoseLedgerDoesNotLoad|TestIssueBudgetLifecycleLeavesAnAttemptThatIsNotOpen|TestIssueBudgetLifecycleOfAnUnknownRootIsNotFound|TestIssueBudgetLifecycleReasonTable|TestIssueBudgetLifecycleReasonTablePlacesEveryReasonTheServerWrites|TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage|TestIssueBudgetLifecycleRoundDoesNotWaitForAContendedRootLock|TestIssueBudgetLifecycleRoundFindStatementEndsWhatAReconciliationEnds|TestIssueBudgetLifecycleRoundFindsExactlyWhatAReconciliationCloses|TestIssueBudgetLifecycleRoundFindsTheRootsWithAnEndedAttempt|TestIssueBudgetLifecycleRoundGoesOnAfterARootThatFails|TestIssueBudgetLifecycleRoundReconcilesEachRootInATransactionOfItsOwn|TestIssueBudgetLifecycleRoundStopsWithItsContext|TestIssueBudgetLifecycleRunOnTwoConnectionsWritesOnce|TestIssueBudgetLifecycleRunTwiceWritesOnce|TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim|TestIssueBudgetLifecycleTakesTheRootLockAndNoOther|TestIssueBudgetLifecycleThatDoesNotCommitPublishesNothing|TestIssueBudgetLimitAndReserveAreSetTogether|TestIssueBudgetMalformedRequestsSendNoStatement|TestIssueBudgetManagementMembership|TestIssueBudgetManagementReplaysByOriginalKey|TestIssueBudgetManagementRequiresTheCurrentPolicyRevision|TestIssueBudgetModeSwitchIssuesANewEpochOnEveryReturn|TestIssueBudgetNegativePolicyRevisionIsAMalformedRequest|TestIssueBudgetObservationOffResumeIsAtomicAndReplayed|TestIssueBudgetOffBindingInterleavesWithResume|TestIssueBudgetOffBindingKeepsMembersWithoutObservations|TestIssueBudgetOnlyAFirstBindingTakesTheBindingLock|TestIssueBudgetOperationsRefuseATransactionAtAnotherLevel|TestIssueBudgetOperationsRunInsideAReadCommittedTransaction|TestIssueBudgetOriginalKeyReplaysForAnotherOperator|TestIssueBudgetOriginalKeyStandsForTheWholeIntent|TestIssueBudgetQuickCreateDefinitionIsShared|TestIssueBudgetQuickCreateIgnoresSelfReportedOrigin|TestIssueBudgetQuickCreateRecordsEachDifferentRoot|TestIssueBudgetReadConcurrentSnapshot|TestIssueBudgetReadCursorAndTime|TestIssueBudgetReadOperationRecovery|TestIssueBudgetReadPages|TestIssueBudgetReadProjection|TestIssueBudgetReadQueryPlans|TestIssueBudgetReadSnapshotAndUnknowns|TestIssueBudgetReparentBindsAnUnboundSubtree|TestIssueBudgetReparentNeverRewritesAMemberRow|TestIssueBudgetReparentThroughAParentLoopStillBinds|TestIssueBudgetReparentWaitsForAClaimThatReadUnbound|TestIssueBudgetSetLimitToTheCurrentLimitIsRefused|TestIssueBudgetTaskRetryAndReclaimLeaveTheBindingAlone|TestIssueBudgetTransactionsFollowTheLockOrder|TestIssueBudgetUsageAcceptanceConcurrentReservationsPastLimit|TestIssueBudgetUsageAcceptanceMovesAndParentDeletionKeepOriginalRoot|TestIssueBudgetUsageAcceptanceRetryKeepsActualAndLimit|TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders|TestIssueBudgetUsageDBAtomicInvalidAndProtocol|TestIssueBudgetUsageDBConcurrentDuplicate|TestIssueBudgetUsageDBConcurrentFinalize|TestIssueBudgetUsageDBConcurrentSwitch|TestIssueBudgetUsageDBEmptyAndUnreserved|TestIssueBudgetUsageDBEnvelopeGapsAndFrozenPrices|TestIssueBudgetUsageDBInternalSettlementAndAttemptConsistency|TestIssueBudgetUsageDBLateClosedDeletedSuperseded|TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable|TestIssueBudgetUsageDBPendingQueryDoesNotLock|TestIssueBudgetUsageDBReplayConflictsAndSwitch|TestIssueBudgetUsageDBStatementsAndUnknownQuery|TestIssueBudgetUsageDBUnexpectedEntryReplayRollsBack|TestIssueBudgetUsageDecodeBoundaries|TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey|TestIssueBudgetUsageDecodeFrozenFixtures|TestIssueBudgetUsageDecodeRejects|TestIssueBudgetUsageDecodeStringAndDecimalLimits|TestIssueBudgetUsageEvidence|TestIssueBudgetUsageIntentGolden|TestIssueBudgetUsageLargestStoredEntry|TestIssueBudgetUsageNormalizeCostAndScope|TestIssueBudgetUsageNormalizeEnvelopeGapsAndFrozenPrice|TestIssueBudgetUsagePriceSnapshot|TestIssueBudgetUsageProductionEvidenceConsequences|TestIssueBudgetWriterInventoryIsComplete|TestIssueBudgetWritersThatBindNoExistingIssueDoNotWaitForABinder|TestReportSnapshotCollectionAuditHasNoPublicProjection|TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts|TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift|TestWorkingOnIssuesSkillCoversIssueLoopContracts)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m",
+      "-race"
+    ]
+  },
+  {
+    "tag": "integrated-race-handler",
+    "package": "./internal/handler",
+    "database": "f3_budget_cx_takeover_race_handler",
+    "exit": 0,
+    "seconds": 89.64,
+    "counts": {
+      "pass": 159
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "e77cf11f10cf15699a08280b193079007598d5947a8e8344557a5ce281c36efa",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/handler",
+      "-run",
+      "^(TestClaimBudgetBatch|TestClaimBudgetBatchBindingInProgress|TestClaimBudgetBindingInProgressInvalidatesEmptyVerdict|TestClaimBudgetBindingInProgressLogsAtInfo|TestClaimBudgetCapabilityHeader|TestClaimBudgetClosedRoot|TestClaimBudgetDaemonRPC|TestClaimBudgetFinalizeFailure|TestClaimBudgetOutsideEveryRoot|TestClaimBudgetSingleRuntimeBindingInProgress|TestClaimBudgetSingleRuntimeDeclaredProtocol|TestClaimBudgetSingleRuntimeUndeclaredProtocol|TestDaemonBudgetUsageAtomicRefusalVersusLegacy|TestDaemonBudgetUsageAuthorizationAndValidationOrder|TestDaemonBudgetUsageHTTPReceiptsAndLegacyIndependence|TestDaemonBudgetUsageHTTPStateAndErrorMapping|TestDaemonBudgetUsageLateHoldAndRevokedWorkspace|TestDaemonBudgetUsageRuntimeRemovalAndDatabaseErrors|TestDaemonBudgetUsageTaskCredentialRejectedByDaemonAuth|TestDeleteMemberIssueKeepsBudgetRows|TestDeliveryCompletionCandidatesBoundedHiddenScan|TestDeliveryCompletionCandidatesPaginationAndAuthority|TestDeliveryCompletionPreviewBranchesAndCurrentRefusal|TestDeliveryCompletionPreviewCredentialHorizon|TestDeliveryCompletionPreviewCurrentBindingsWithoutWrites|TestDeliveryCompletionPreviewIncompletePackageIsNotAuthorization|TestDeliveryCompletionPreviewStrictInputsAndReadCommitFailure|TestF2ReportSnapshotActivityScanBeyondTimelineCap|TestF2ReportSnapshotCancelStopsCollectionWithoutRestart|TestF2ReportSnapshotCaptureReplayCorrectionAndFrozenSources|TestF2ReportSnapshotConcurrentOriginalRequest|TestF2ReportSnapshotConcurrentWithdrawalReturnsOneReceipt|TestF2ReportSnapshotOnlyLiveSerializationConflictRestarts|TestF2ReportSnapshotOwnedDeleteCleanup|TestF2ReportSnapshotReportOnlyGapKeepsSourceUnknown|TestF2ReportSnapshotReportWithdrawalIsTerminalAndRecoverable|TestF2ReportSnapshotRequiresBoundStoredPublicProjection|TestF2ReportSnapshotRetainedPagesKeepOneCutAndConfirmEOF|TestF2ReportSnapshotRowSealBindsPublicAndCollectionAudit|TestF2ReportSnapshotSourceGapAndFailedSeal|TestF2ReportSnapshotStrictRequestAndHeaderBoundaries|TestF2ReportSnapshotUpdateGapDoesNotDiscardProjectFacts|TestF2ReportSnapshotWithdrawalAndCorrectionSerializeBothOrders|TestF2ReportSnapshotWithdrawalRejectsMalformedAndStaleIntent|TestIssueBudgetBatchDeleteTombstonesEveryMember|TestIssueBudgetBusinessReopenWritesNothing|TestIssueBudgetConcurrentWritersKeepEveryTreeBound|TestIssueBudgetCreateUsesVerifiedExecutionIdentity|TestIssueBudgetDeleteMemberLeavesATombstone|TestIssueBudgetDeleteRootIssueTombstonesTheRoot|TestIssueBudgetEveryParentCapableWriterBinds|TestIssueBudgetLedgerLoadIsOrderedByItsKey|TestIssueBudgetLifecycleFollowUpUsesVerifiedExecutionIdentity|TestIssueBudgetManagementFrozenWire|TestIssueBudgetManagementHumanGate|TestIssueBudgetManagementLoaderAndTombstone|TestIssueBudgetManagementOperations|TestIssueBudgetManagementPageParameters|TestIssueBudgetManagementPrivacyAndParsingOrder|TestIssueBudgetManagementRevokedInvokeCannotReserve|TestIssueBudgetManagementShowCoverageAndOff|TestIssueBudgetManagementStrictBody|TestIssueBudgetManagementWorkspaceMiddleware|TestIssueBudgetMoveIntoAnotherRootIsRecordedNotRefused|TestIssueBudgetMoveKeepsTheMemberRow|TestIssueBudgetQueriesRoundTrip|TestIssueBudgetSchemaCatalog|TestIssueBudgetSchemaConstraints|TestIssueBudgetTriageCreationUsesVerifiedExecutionIdentity|TestIssueBudgetVerifiedCreationTaskIsWorkspaceScoped|TestIssueBudgetWritesNothingForATreeWithoutARoot|TestProjectDeletionPreservesKnowledgeAutomationHistory|TestWorkspaceDeletionLeavesBudgetRowsUntouched|TestWorkspaceDeletionManifestCoversPublicSchema|TestWorkspaceDeletionManifestPreservesKnowledgeHistory|TestWorkspaceDeletionRemovesKnowledgePolicy)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m",
+      "-race"
+    ]
+  },
+  {
+    "tag": "integrated-race-router",
+    "package": "./cmd/server",
+    "database": "f3_budget_cx_takeover_race_router",
+    "exit": 0,
+    "seconds": 22.44,
+    "counts": {
+      "pass": 54
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "8111dec104268bcdad7eed039d96b4aeaa1263d6c3cf38983dd59268a19fdc6b",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/server",
+      "-run",
+      "^(TestBudgetLifecycleRunsOutsideTheLivenessLoop|TestBudgetLifecycleSweepReconcilesTheRootsItFinds|TestBudgetLifecycleSweepReportsWhatTheRoundDid|TestBudgetLifecycleSweepWithNothingToReconcileIsOneRead|TestBudgetLifecycleSweeperStopsWithItsContext|TestF2ReportSnapshotFirstReadAuthorityBarrier|TestF2ReportSnapshotProductionLegacyReviewerAndNoProject|TestF2ReportSnapshotProductionReporterExactGetMatrix|TestF2ReportSnapshotProductionRevocationAndFreshClaim|TestF2ReportSnapshotPublicProjectionAndHumanReceipt|TestF2ReportSnapshotReadCommitFailureWithholdsPublicBody|TestIssueBudgetRouterClaimUsageAndOriginalBatchRecovery|TestIssueBudgetRouterCredentialBoundaryBeforeCapabilityGuard|TestIssueBudgetRouterHumanPATAndCrossWorkspacePrivacy|TestIssueBudgetRouterManagementRecoveryAndTombstone)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m",
+      "-race"
+    ]
+  },
+  {
+    "tag": "integrated-race-migrations",
+    "package": "./internal/migrations",
+    "database": "f3_budget_cx_takeover_race_migrations",
+    "exit": 0,
+    "seconds": 3.65,
+    "counts": {
+      "pass": 4
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "fade22b9b75655bbc5db6a4c057d194da1408e4247d08fef12aed82bbb110342",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/migrations",
+      "-run",
+      "^(TestIssueBudgetIndexMigrationContract|TestIssueBudgetReadyMigrationListsEveryIndex|TestIssueBudgetRollbackKeepsLedgerRows|TestIssueBudgetTableMigrationContract)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m",
+      "-race"
+    ]
+  },
+  {
+    "tag": "integrated-race-migrate",
+    "package": "./cmd/migrate",
+    "database": "f3_budget_cx_takeover_race_migrate",
+    "exit": 0,
+    "seconds": 5.57,
+    "counts": {
+      "pass": 6
+    },
+    "missing_expected": [],
+    "package_terminal": [
+      "pass"
+    ],
+    "raw_sha256": "853c71e00d9b915ad458cb9ce7606f43d716b9a97a0e262e3bd4dcc21c199fee",
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./cmd/migrate",
+      "-run",
+      "^(TestIssueBudgetMigrationsRunUpDownUp|TestIssueBudgetReadyMigrationRejectsAPredicateOnAPlainIndex|TestIssueBudgetReadyMigrationRejectsAWeakenedIndex|TestIssueBudgetReadyMigrationRejectsAnotherGapIndex|TestIssueBudgetReadyMigrationRejectsAnotherOpenAttemptIndex|TestIssueBudgetRollbackRefusesWhileLedgerRowsExist)$",
+      "-count=1",
+      "-p",
+      "1",
+      "-json",
+      "-timeout=10m",
+      "-race"
+    ]
+  }
+]

@@ -1,0 +1,325 @@
+functions: 124853 (34715 in the module), call graph nodes: 124853
+
+== forward: every module function that names an isolation level
+
+  RR-WRITE     (*internal/handler.Handler).iterationHistoryReadAttempt  [internal/handler/iteration_history.go:44]
+      names [REPEATABLE READ, READ WRITE]
+      is handed 2 function values at its call sites:
+        (*internal/handler.Handler).ListIterations$1 [internal/handler/iteration_list.go:96]
+        (*internal/handler.Handler).readIterationHistoryView$1 [internal/handler/iteration_history.go:93]
+      calls + closures           reaches    70 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    71 module functions: no seam, no issue writer
+
+  RR-WRITE     (*internal/handler.Handler).projectTransactionOnce  [internal/handler/project_write_fence.go:109]
+      names [READ COMMITTED, READ WRITE REPEATABLE READ, READ WRITE pgx:read committed]
+      is handed 17 function values at its call sites:
+        (*internal/handler.Handler).CreateProjectResource$1 [internal/handler/project_resource.go:528]
+        (*internal/handler.Handler).DeleteProject$1 [internal/handler/project.go:902]
+        (*internal/handler.Handler).GetProjectCapabilities$1 [internal/handler/project_timezone.go:50]
+        (*internal/handler.Handler).GetProjectDeleteImpact$1 [internal/handler/project.go:827]
+        (*internal/handler.Handler).GetProjectHealthIssues$1 [internal/handler/project_health.go:189]
+        (*internal/handler.Handler).GetProjectOverview$1 [internal/handler/project_health.go:113]
+        (*internal/handler.Handler).GetProjectPlanningTimezone$1 [internal/handler/project_timezone.go:62]
+        (*internal/handler.Handler).GetProjectUpdateExecutionEvidence$1 [internal/handler/project_update.go:985]
+        (*internal/handler.Handler).ListProjectUpdateRevisions$1 [internal/handler/project_update.go:903]
+        (*internal/handler.Handler).ListProjectUpdates$1 [internal/handler/project_update.go:835]
+        (*internal/handler.Handler).PreviewProjectUpdate$1 [internal/handler/project_update.go:558]
+        (*internal/handler.Handler).UpdateProject$1 [internal/handler/project.go:647]
+        (*internal/handler.Handler).UpdateProjectPlanningTimezone$1 [internal/handler/project_timezone.go:107]
+        (*internal/handler.Handler).UpdateProjectResource$1 [internal/handler/project_resource.go:645]
+        (*internal/handler.Handler).collectProjectResponseCounts$1 [internal/handler/project.go:117]
+        (*internal/handler.Handler).reportSnapshotHumanTransaction$1 [internal/handler/report_snapshot.go:275]
+        (*internal/handler.Handler).writeProjectUpdate$1 [internal/handler/project_update.go:615]
+      calls + closures           reaches   546 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   549 module functions: no seam, no issue writer
+
+  RR-WRITE     (*internal/handler.Handler).runProjectTransaction  [internal/handler/project_write_fence.go:74]
+      names [pgx:repeatable read]
+      is handed 14 function values at its call sites:
+        (*internal/handler.Handler).GetProjectCapabilities$1 [internal/handler/project_timezone.go:50]
+        (*internal/handler.Handler).GetProjectDeleteImpact$1 [internal/handler/project.go:827]
+        (*internal/handler.Handler).GetProjectHealthIssues$1 [internal/handler/project_health.go:189]
+        (*internal/handler.Handler).GetProjectOverview$1 [internal/handler/project_health.go:113]
+        (*internal/handler.Handler).GetProjectPlanningTimezone$1 [internal/handler/project_timezone.go:62]
+        (*internal/handler.Handler).GetProjectUpdateExecutionEvidence$1 [internal/handler/project_update.go:985]
+        (*internal/handler.Handler).ListProjectUpdateRevisions$1 [internal/handler/project_update.go:903]
+        (*internal/handler.Handler).ListProjectUpdates$1 [internal/handler/project_update.go:835]
+        (*internal/handler.Handler).PreviewProjectUpdate$1 [internal/handler/project_update.go:558]
+        (*internal/handler.Handler).UpdateProject$1 [internal/handler/project.go:647]
+        (*internal/handler.Handler).UpdateProjectPlanningTimezone$1 [internal/handler/project_timezone.go:107]
+        (*internal/handler.Handler).collectProjectResponseCounts$1 [internal/handler/project.go:117]
+        (*internal/handler.Handler).reportSnapshotHumanTransaction$1 [internal/handler/report_snapshot.go:275]
+        (*internal/handler.Handler).writeProjectUpdate$1 [internal/handler/project_update.go:615]
+      calls + closures           reaches   548 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   551 module functions: no seam, no issue writer
+
+  RR-WRITE     (*internal/service.CollaborationService).readCollaborationStageEvidence  [internal/service/collaboration_stage_evidence_read.go:15]
+      names [REPEATABLE READ]
+      is handed 3 function values at its call sites:
+        (*internal/service.CollaborationService).StageCodeEvidence$1 [internal/service/collaboration_stage_review_view.go:134]
+        (*internal/service.CollaborationService).TestReport$1 [internal/service/collaboration_test_report_view.go:352]
+        (*internal/service.CollaborationService).TestReports$1 [internal/service/collaboration_test_report_view.go:266]
+      calls + closures           reaches   264 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   269 module functions: no seam, no issue writer
+
+  RR-WRITE     (*internal/service.IterationService).previewIterationOnce  [internal/service/iteration_lifecycle_preview.go:91]
+      names [REPEATABLE READ, READ WRITE]
+      calls + closures           reaches   118 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   119 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/handler.Handler).collaborationIssueResponse  [internal/handler/collaboration.go:112]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches   141 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   146 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/handler.Handler).beginIssueTableSnapshot  [internal/handler/issue_table_query.go:35]
+      names [REPEATABLE READ READ ONLY]
+      returns its transaction to (*internal/handler.Handler).ListIssueTableFacets
+      returns its transaction to (*internal/handler.Handler).ListIssueTableGroups
+      returns its transaction to (*internal/handler.Handler).ListIssueTableRows
+      calls + closures           reaches   212 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2105 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RR-READ-ONLY (*internal/handler.Handler).taskCapabilityRead  [internal/handler/task_capability.go:151]
+      names [REPEATABLE READ READ ONLY]
+      is handed 5 function values at its call sites
+      calls + closures           reaches   754 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2508 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RR-READ-ONLY (*internal/service.AdminCollaborationService).read  [internal/service/admin_collaboration_view.go:79]
+      names [REPEATABLE READ READ ONLY]
+      is handed 5 function values at its call sites
+      calls + closures           reaches    59 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    63 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).readCollaborationContent  [internal/service/collaboration_comments.go:103]
+      names [REPEATABLE READ READ ONLY]
+      is handed 26 function values at its call sites
+      calls + closures           reaches   435 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   443 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).CreationOptions  [internal/service/collaboration_creation_options.go:27]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    49 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  1936 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RR-READ-ONLY (*internal/service.CollaborationService).FieldOptions  [internal/service/collaboration_fields.go:52]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    44 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    45 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).readKnowledge  [internal/service/collaboration_knowledge_view.go:232]
+      names [REPEATABLE READ READ ONLY]
+      is handed 3 function values at its call sites
+      calls + closures           reaches   144 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   164 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).StatusOptions  [internal/service/collaboration_lifecycle.go:109]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    66 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    67 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).ListNotifications  [internal/service/collaboration_notifications.go:147]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    31 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    32 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).GetControlOperation  [internal/service/collaboration_queue.go:450]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    33 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    34 module functions: no seam, no issue writer
+
+  RR-READ-ONLY (*internal/service.CollaborationService).readTargetSwitchProposals  [internal/service/collaboration_switch_view.go:65]
+      names [REPEATABLE READ READ ONLY]
+      calls + closures           reaches    91 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    93 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/handler.Handler).withIterationRead  [internal/handler/iteration_operations.go:53]
+      names [READ COMMITTED, READ WRITE]
+      is handed 3 function values at its call sites
+      calls + closures           reaches    19 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    20 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/handler.Handler).CreateProjectResource  [internal/handler/project_resource.go:490]
+      names [pgx:read committed]
+      calls + closures           reaches  1072 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2839 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RC-EXPLICIT  (*internal/handler.Handler).UpdateProjectResource  [internal/handler/project_resource.go:601]
+      names [pgx:read committed]
+      calls + closures           reaches  1072 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2839 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RC-EXPLICIT  (*internal/handler.Handler).projectNotificationTransaction  [internal/handler/project_update_notifications.go:69]
+      names [READ COMMITTED, READ WRITE]
+      is handed 2 function values at its call sites
+      calls + closures           reaches    18 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    18 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/handler.Handler).runProjectDeleteTransaction  [internal/handler/project_write_fence.go:83]
+      names [pgx:read committed]
+      is handed 1 function values at its call sites
+      calls + closures           reaches   548 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   551 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/handler.Handler).DeleteSquad  [internal/handler/squad.go:540]
+      names [READ COMMITTED, READ WRITE]
+      calls + closures           reaches   647 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2509 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RC-EXPLICIT  internal/iteration.RunTransaction  [internal/iteration/transaction.go:23]
+      names [pgx:read committed]
+      is handed 1 function values at its call sites
+      calls + closures           reaches   194 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   255 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/service.CollaborationService).workflowInTx  [internal/service/collaboration_workflow.go:461]
+      names [READ COMMITTED]
+      is handed 22 function values at its call sites
+      calls + closures           reaches   811 module functions: 6 of the 12 targets
+        REACHES internal/service.BindIssueBudgetOnCreate
+        REACHES internal/service.BindIssueBudgetOnReparent
+        REACHES (*internal/service.IssueService).CreateInTx
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+      calls + closures + iface   reaches  2469 module functions: 11 of the 12 targets
+        REACHES internal/service.BindIssueBudgetOnCreate
+        REACHES internal/service.BindIssueBudgetOnReparent
+        REACHES (*internal/service.IssueService).CreateInTx
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RC-EXPLICIT  internal/service.WriteIssueStatus  [internal/service/issue_status_write.go:26]
+      names [READ COMMITTED]
+      calls + closures           reaches   427 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  2228 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+  RC-EXPLICIT  (internal/service.iterationTransactionStarter).BeginTx  [internal/service/iteration.go:33]
+      names [READ COMMITTED, READ WRITE pgx:read committed]
+      returns its transaction to (*internal/service.iterationTransactionStarter).BeginTx
+      returns its transaction to internal/iteration.RunTransaction
+      calls + closures           reaches   195 module functions: no seam, no issue writer
+      calls + closures + iface   reaches   256 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/service.IterationService).notificationTransaction  [internal/service/iteration_notifications.go:67]
+      names [READ COMMITTED, READ WRITE]
+      is handed 3 function values at its call sites
+      calls + closures           reaches    18 module functions: no seam, no issue writer
+      calls + closures + iface   reaches    18 module functions: no seam, no issue writer
+
+  RC-EXPLICIT  (*internal/service.TaskService).startTaskAtomically  [internal/service/task_start.go:18]
+      names [READ COMMITTED]
+      calls + closures           reaches    47 module functions: no seam, no issue writer
+      calls + closures + iface   reaches  1933 module functions: 8 of the 12 targets
+        REACHES (*pkg/db/generated.Queries).CreateIssue
+        REACHES (*pkg/db/generated.Queries).CreateIssueWithOrigin
+        REACHES (*pkg/db/generated.Queries).UpdateIssue
+        REACHES (*pkg/db/generated.Queries).UpdateCollaborationIssueStructure
+        REACHES (*pkg/db/generated.Queries).DetachDirectChildIssues
+        REACHES (*pkg/db/generated.Queries).PrepareWorkspaceDeletionLinks
+        REACHES (*pkg/db/generated.Queries).DeleteIssue
+        REACHES (*pkg/db/generated.Queries).DeleteWorkspaceIssueRoots
+
+== backward (calls + closures): functions that begin a transaction or name a level, and can reach a seam
+
+internal/service.BindIssueBudgetOnCreate: 190 module functions can reach it; of those:
+  (*internal/handler.Handler).CreateTriageItem                                             [internal/handler/triage.go:659] begins through (*internal/handler.Handler).beginTriageWrite
+  (*internal/handler.Handler).commitTriageImportRow                                        [internal/handler/triage_import.go:379] begins
+  (*internal/handler.Handler).writeLifecycleHandoffInTx                                    [internal/handler/lifecycle_handoff_transaction.go:247] begins
+  (*internal/service.CollaborationService).Create                                          [internal/service/collaboration.go:156] begins
+  (*internal/service.CollaborationService).mutateCollaborationWorkflow                     [internal/service/collaboration_workflow.go:409] begins
+  (*internal/service.CollaborationService).workflowInTx                                    [internal/service/collaboration_workflow.go:461] RC-EXPLICIT [READ COMMITTED]
+  (*internal/service.IssueService).createOnce                                              [internal/service/issue.go:275] begins
+ direct references:
+  called at internal/service/issue.go:579                        in (*internal/service.IssueService).CreateInTx
+
+internal/service.BindIssueBudgetOnReparent: 173 module functions can reach it; of those:
+  (*internal/handler.Handler).updateIssueAtomicallyOnce                                    [internal/handler/issue.go:3936] begins
+  (*internal/service.CollaborationService).mutateCollaborationWorkflow                     [internal/service/collaboration_workflow.go:409] begins
+  (*internal/service.CollaborationService).workflowInTx                                    [internal/service/collaboration_workflow.go:461] RC-EXPLICIT [READ COMMITTED]
+ direct references:
+  called at internal/handler/issue.go:4119                       in (*internal/handler.Handler).updateIssueAtomicallyOnce
+  called at internal/service/collaboration_edit.go:124           in (*internal/service.CollaborationService).EditIssue$1
+
+internal/service.TombstoneIssueBudgetMember: 14 module functions can reach it; of those:
+  (*internal/handler.Handler).deleteIssuesAndCollectAttachmentURLs                         [internal/handler/issue.go:4850] begins
+ direct references:
+  called at internal/handler/issue.go:5025                       in (*internal/handler.Handler).deleteIssuesAndCollectAttachmentURLs
+
+(*internal/service.IssueService).CreateInTx: 189 module functions can reach it; of those:
+  (*internal/handler.Handler).CreateTriageItem                                             [internal/handler/triage.go:659] begins through (*internal/handler.Handler).beginTriageWrite
+  (*internal/handler.Handler).commitTriageImportRow                                        [internal/handler/triage_import.go:379] begins
+  (*internal/handler.Handler).writeLifecycleHandoffInTx                                    [internal/handler/lifecycle_handoff_transaction.go:247] begins
+  (*internal/service.CollaborationService).Create                                          [internal/service/collaboration.go:156] begins
+  (*internal/service.CollaborationService).mutateCollaborationWorkflow                     [internal/service/collaboration_workflow.go:409] begins
+  (*internal/service.CollaborationService).workflowInTx                                    [internal/service/collaboration_workflow.go:461] RC-EXPLICIT [READ COMMITTED]
+  (*internal/service.IssueService).createOnce                                              [internal/service/issue.go:275] begins
+ direct references:
+  called at internal/handler/lifecycle_handoff_transaction.go:405 in (*internal/handler.Handler).writeLifecycleHandoffInTx
+  called at internal/handler/triage.go:609                       in (*internal/handler.Handler).createTriageItemInTx
+  called at internal/service/collaboration.go:315                in (*internal/service.CollaborationService).createCollaborationIssueInTx
+  called at internal/service/collaboration_stage_actions.go:577  in (*internal/service.collaborationWorkflowTx).materializeStageChildren
+  called at internal/service/issue.go:315                        in (*internal/service.IssueService).createOnce

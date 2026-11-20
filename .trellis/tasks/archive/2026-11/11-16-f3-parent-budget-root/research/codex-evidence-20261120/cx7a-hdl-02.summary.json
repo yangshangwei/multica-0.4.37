@@ -1,0 +1,156 @@
+{
+  "database": "f3_budget_cx_management_handler",
+  "package": "./internal/handler",
+  "exit": 1,
+  "counts": {
+    "pass": 32,
+    "fail": 4
+  },
+  "tests": [
+    {
+      "test": "TestIssueBudgetManagementHumanGate",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations/owner",
+      "action": "fail"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations/admin",
+      "action": "fail"
+    },
+    {
+      "test": "TestIssueBudgetManagementOperations",
+      "action": "fail"
+    },
+    {
+      "test": "TestIssueBudgetManagementPrivacyAndParsingOrder",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementLoaderAndTombstone",
+      "action": "fail"
+    },
+    {
+      "test": "TestIssueBudgetManagementShowCoverageAndOff",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-empty.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/attempts-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/enable-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-budget-forbidden.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-not-found.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/error-policy-revision-conflict.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/issue-binding.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-empty.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-last-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/observations-page.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-close-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-committed-stale.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-committed.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-reopen-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-set-limit-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-set-mode-request.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/operation-unknown.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-known.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-no-limit.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-open.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-tombstoned-off.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/show-unavailable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-200-replayed-set-limit.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-201-enable-no-gaps.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire/write-201-enable.json",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementFrozenWire",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementStrictBody",
+      "action": "pass"
+    },
+    {
+      "test": "TestIssueBudgetManagementPageParameters",
+      "action": "pass"
+    }
+  ],
+  "log": "/tmp/f3-codex-20261120/cx7a-hdl-02.jsonl"
+}

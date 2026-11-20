@@ -1,0 +1,115 @@
+
+ RUN  v4.1.0 /private/tmp/f3-codex-7b-check/core-overlay/packages/core
+
+ ❯ api/issue-budget-review.check7kb.test.ts (10 tests | 6 failed) 24ms
+     × does not put a 400 budget error body in the client logger 18ms
+     × does not put a 403 budget error body in the client logger 1ms
+     × does not put a 404 budget error body in the client logger 1ms
+     × does not put a 409 budget error body in the client logger 1ms
+     × does not put a 500 budget error body in the client logger 1ms
+     × does not put a 502 budget error body in the client logger 0ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 400 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"1da12901"}],["← 400 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"1da12901","duration":"2ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 403 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"477e527f"}],["← 403 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"477e527f","duration":"1ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 404 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"d7ad9aaa"}],["← 404 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"d7ad9aaa","duration":"0ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 409 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"3110b6b3"}],["← 409 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"3110b6b3","duration":"0ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/6]⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 500 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"b20c1cfb"}],["← 500 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"b20c1cfb","duration":"0ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/6]⎯
+
+ FAIL  api/issue-budget-review.check7kb.test.ts > review: Core budget error privacy > does not put a 502 budget error body in the client logger
+AssertionError: expected '[["→ GET /api/issue-budgets/7d0c2b9e-…' not to contain 'budget-secret-reason 73500000000'
+
+Expected: "budget-secret-reason 73500000000"
+Received: "[["→ GET /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"7a733eb3"}],["← 502 /api/issue-budgets/7d0c2b9e-5a41-4f7c-8e63-1b2a9c4d5e6f",{"rid":"7a733eb3","duration":"0ms","error":"budget-secret-reason 73500000000"}]]"
+
+ ❯ api/issue-budget-review.check7kb.test.ts:16:48
+     14|     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON…
+     15|     await expect(client.getIssueBudget(ROOT)).rejects.toMatchObject({ …
+     16|     expect(JSON.stringify(log.mock.calls)).not.toContain(secret);
+       |                                                ^
+     17|   });
+     18| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/6]⎯
+
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  6 failed | 96 passed (102)
+   Start at  19:49:30
+   Duration  791ms (transform 606ms, setup 0ms, import 1.12s, tests 160ms, environment 0ms)
+

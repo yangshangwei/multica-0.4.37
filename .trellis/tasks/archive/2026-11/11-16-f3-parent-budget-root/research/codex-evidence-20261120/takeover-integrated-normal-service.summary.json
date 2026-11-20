@@ -1,0 +1,1606 @@
+{
+  "tag": "integrated-normal-service",
+  "package": "./internal/service",
+  "database": "f3_budget_cx_takeover_normal_service",
+  "exit": 0,
+  "seconds": 63.27,
+  "counts": {
+    "pass": 393
+  },
+  "missing_expected": [],
+  "package_terminal": [
+    "pass"
+  ],
+  "raw_sha256": "9f118b45a216108655414b42ad4c95f544ef18d130efb985f2da209f445073a7",
+  "command": [
+    "bash",
+    "scripts/go-test-with-agent-cli-guard.sh",
+    "--",
+    "go",
+    "-C",
+    "server",
+    "test",
+    "./internal/service",
+    "-run",
+    "^(TestBuildAgentSkillBundlesAssignsBuiltinID|TestBuildAgentSkillBundlesProducesRefsAndFullBundles|TestBuiltinSkillsConformToTemplate|TestBuiltinSkillsFrontmatterIsStrictYAML|TestIssueBudgetBindingNeverLocksOrUpdatesARootRow|TestIssueBudgetBindingRefusesATransactionThatIsNotReadCommitted|TestIssueBudgetCloseAndReopenKeepTheSameRoot|TestIssueBudgetCollaborationEditBindsOnlyWhenTheParentChanges|TestIssueBudgetCollaborationWritersBindMembers|TestIssueBudgetCreateInheritsTheParentRoot|TestIssueBudgetDeletedRootIssueKeepsTheSlot|TestIssueBudgetDeletedRootIssueRefusesOnlyReopen|TestIssueBudgetEnableConcurrentlyOnOneIssue|TestIssueBudgetEnableFreezesDescendantsAndRecordsInFlightTasks|TestIssueBudgetEnableHoldsTheBindingLockUntilItCommits|TestIssueBudgetEnableIsOnePerIssueAndReplaysByOriginalKey|TestIssueBudgetEnableParentAndChildConcurrently|TestIssueBudgetEnableRacingChildCreate|TestIssueBudgetEnableRefusesOverlappingRoots|TestIssueBudgetEnableRequiresAnOrdinaryFormalIssue|TestIssueBudgetEnableThatBindsNothingTakesNoBindingLock|TestIssueBudgetEnableWaitsForAClaimThatReadUnbound|TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop|TestIssueBudgetEntryRowIsDerivedFromTheEntry|TestIssueBudgetFinalizeAndASetLimitOnOneRootCommitInTheOrderTheyLockIt|TestIssueBudgetFinalizeAttributesAQuickCreateTaskThroughItsContextParent|TestIssueBudgetFinalizeAttributesATaskRunFromAnotherWorkspaceToTheWorkspaceOfItsIssue|TestIssueBudgetFinalizeCountsEveryTaskOfAnIssue|TestIssueBudgetFinalizeDoesNotReserveWithoutAnAmountForAnotherFailureOfItsEntry|TestIssueBudgetFinalizeGoesOnWhenTheRootRowOfAMemberIsGone|TestIssueBudgetFinalizeIntentDigestMatchesGoldenVectors|TestIssueBudgetFinalizeJudgesTheLimitWithItsOwnReservation|TestIssueBudgetFinalizeJudgesTwoClaimsThatQueueOnTheRootLockOneAfterTheOther|TestIssueBudgetFinalizeKeepsTheHoldWhenTheReserveOfAReclaimDoesNotFit|TestIssueBudgetFinalizeLeavesAQuickCreateTaskThatNamesNoMemberAlone|TestIssueBudgetFinalizeLeavesATreeWithoutARootAlone|TestIssueBudgetFinalizeNeedsReadCommittedWhereThereIsARoot|TestIssueBudgetFinalizeOnALedgerThatCannotBeLoaded|TestIssueBudgetFinalizeRecordsADaemonWithoutTheProtocolAsAGap|TestIssueBudgetFinalizeRecordsEveryReasonARootWouldRefuseFor|TestIssueBudgetFinalizeRefusedForABindingInProgressLeavesNothing|TestIssueBudgetFinalizeRefusedWhileARootIsEnabledIsAttributedAtItsNextClaim|TestIssueBudgetFinalizeReservesWithoutAnAmountOnARootThatDeclaresNoReserve|TestIssueBudgetFinalizeReservesWithoutAnAmountWhenItsReserveDoesNotFit|TestIssueBudgetFinalizeServedFromTheCacheWritesWhatAFullReplayGives|TestIssueBudgetFinalizeStepGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeSupersedesAnEarlierClaimThatReservedNoAmount|TestIssueBudgetFinalizeSupersedesTheEarlierClaimOfATask|TestIssueBudgetFinalizeThatDoesNotCommitPublishesNothing|TestIssueBudgetFinalizeThatFailsInTheBudgetStepLeavesNothing|TestIssueBudgetFinalizeThatReadNoMemberMakesEnablingWaitAndIsRecordedAsAGap|TestIssueBudgetFinalizeWithoutATransactionFailsTheClaimOfAMemberIssue|TestIssueBudgetFinalizeWithoutATransactionGoesOnWhenTheIssueRowIsGone|TestIssueBudgetFinalizeWritesNothingForARootSwitchedOff|TestIssueBudgetFinalizeWritesTheAttemptItsReservationAndItsReceipt|TestIssueBudgetInFlightScanDecidesQuickCreateByTheSharedDefinition|TestIssueBudgetInFlightScanFindsATaskRunFromAnotherWorkspace|TestIssueBudgetInFlightScanUsesTheContextParentOnlyWithoutAnIssue|TestIssueBudgetIntentDigestGoldenVectors|TestIssueBudgetIsScopedToTheWorkspace|TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing|TestIssueBudgetLedgerAppendWritesRowsAndIsPublishedOnceCommitted|TestIssueBudgetLedgerCacheIsSafeForConcurrentUse|TestIssueBudgetLedgerCacheKeepsWithinItsLimit|TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows|TestIssueBudgetLedgerConcurrentWritersAndReadersAgree|TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten|TestIssueBudgetLedgerEntryLimitHoldsTheLargestUsageEntry|TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger|TestIssueBudgetLedgerFailedReaderDropsOnlyTheStateItUsed|TestIssueBudgetLedgerIsUnavailableForEachCause|TestIssueBudgetLedgerLoadsTheWholeLedgerOnceAndThenTheTail|TestIssueBudgetLedgerMustStartAtTheFirstSeq|TestIssueBudgetLedgerReaderWithoutTheRootLockPublishesNothing|TestIssueBudgetLedgerReplayCostGrowsWithTheRowsRead|TestIssueBudgetLedgerStatesAreNeverAssignedThrough|TestIssueBudgetLedgerTooLargeToCacheIsReplayedOnEveryLoad|TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay|TestIssueBudgetLedgerUnderTheRootLockDropsAStateAheadOfTheDatabase|TestIssueBudgetLifecycleAndABudgetStepThatWantTheSameAttemptWriteOneHold|TestIssueBudgetLifecycleAndTheFinalizationOfTheNextClaimLeaveOneHoldEach|TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold|TestIssueBudgetLifecycleDoesNotWaitForATaskAnIssueOrABinder|TestIssueBudgetLifecycleHoldsEveryEndedAttemptOfARootInOneBatch|TestIssueBudgetLifecycleHoldsWhatAnEndedAttemptReserved|TestIssueBudgetLifecycleLeavesARootThatIsOff|TestIssueBudgetLifecycleLeavesARootWhoseLedgerDoesNotLoad|TestIssueBudgetLifecycleLeavesAnAttemptThatIsNotOpen|TestIssueBudgetLifecycleOfAnUnknownRootIsNotFound|TestIssueBudgetLifecycleReasonTable|TestIssueBudgetLifecycleReasonTablePlacesEveryReasonTheServerWrites|TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage|TestIssueBudgetLifecycleRoundDoesNotWaitForAContendedRootLock|TestIssueBudgetLifecycleRoundFindStatementEndsWhatAReconciliationEnds|TestIssueBudgetLifecycleRoundFindsExactlyWhatAReconciliationCloses|TestIssueBudgetLifecycleRoundFindsTheRootsWithAnEndedAttempt|TestIssueBudgetLifecycleRoundGoesOnAfterARootThatFails|TestIssueBudgetLifecycleRoundReconcilesEachRootInATransactionOfItsOwn|TestIssueBudgetLifecycleRoundStopsWithItsContext|TestIssueBudgetLifecycleRunOnTwoConnectionsWritesOnce|TestIssueBudgetLifecycleRunTwiceWritesOnce|TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim|TestIssueBudgetLifecycleTakesTheRootLockAndNoOther|TestIssueBudgetLifecycleThatDoesNotCommitPublishesNothing|TestIssueBudgetLimitAndReserveAreSetTogether|TestIssueBudgetMalformedRequestsSendNoStatement|TestIssueBudgetManagementMembership|TestIssueBudgetManagementReplaysByOriginalKey|TestIssueBudgetManagementRequiresTheCurrentPolicyRevision|TestIssueBudgetModeSwitchIssuesANewEpochOnEveryReturn|TestIssueBudgetNegativePolicyRevisionIsAMalformedRequest|TestIssueBudgetObservationOffResumeIsAtomicAndReplayed|TestIssueBudgetOffBindingInterleavesWithResume|TestIssueBudgetOffBindingKeepsMembersWithoutObservations|TestIssueBudgetOnlyAFirstBindingTakesTheBindingLock|TestIssueBudgetOperationsRefuseATransactionAtAnotherLevel|TestIssueBudgetOperationsRunInsideAReadCommittedTransaction|TestIssueBudgetOriginalKeyReplaysForAnotherOperator|TestIssueBudgetOriginalKeyStandsForTheWholeIntent|TestIssueBudgetQuickCreateDefinitionIsShared|TestIssueBudgetQuickCreateIgnoresSelfReportedOrigin|TestIssueBudgetQuickCreateRecordsEachDifferentRoot|TestIssueBudgetReadConcurrentSnapshot|TestIssueBudgetReadCursorAndTime|TestIssueBudgetReadOperationRecovery|TestIssueBudgetReadPages|TestIssueBudgetReadProjection|TestIssueBudgetReadQueryPlans|TestIssueBudgetReadSnapshotAndUnknowns|TestIssueBudgetReparentBindsAnUnboundSubtree|TestIssueBudgetReparentNeverRewritesAMemberRow|TestIssueBudgetReparentThroughAParentLoopStillBinds|TestIssueBudgetReparentWaitsForAClaimThatReadUnbound|TestIssueBudgetSetLimitToTheCurrentLimitIsRefused|TestIssueBudgetTaskRetryAndReclaimLeaveTheBindingAlone|TestIssueBudgetTransactionsFollowTheLockOrder|TestIssueBudgetUsageAcceptanceConcurrentReservationsPastLimit|TestIssueBudgetUsageAcceptanceMovesAndParentDeletionKeepOriginalRoot|TestIssueBudgetUsageAcceptanceRetryKeepsActualAndLimit|TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders|TestIssueBudgetUsageDBAtomicInvalidAndProtocol|TestIssueBudgetUsageDBConcurrentDuplicate|TestIssueBudgetUsageDBConcurrentFinalize|TestIssueBudgetUsageDBConcurrentSwitch|TestIssueBudgetUsageDBEmptyAndUnreserved|TestIssueBudgetUsageDBEnvelopeGapsAndFrozenPrices|TestIssueBudgetUsageDBInternalSettlementAndAttemptConsistency|TestIssueBudgetUsageDBLateClosedDeletedSuperseded|TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable|TestIssueBudgetUsageDBPendingQueryDoesNotLock|TestIssueBudgetUsageDBReplayConflictsAndSwitch|TestIssueBudgetUsageDBStatementsAndUnknownQuery|TestIssueBudgetUsageDBUnexpectedEntryReplayRollsBack|TestIssueBudgetUsageDecodeBoundaries|TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey|TestIssueBudgetUsageDecodeFrozenFixtures|TestIssueBudgetUsageDecodeRejects|TestIssueBudgetUsageDecodeStringAndDecimalLimits|TestIssueBudgetUsageEvidence|TestIssueBudgetUsageIntentGolden|TestIssueBudgetUsageLargestStoredEntry|TestIssueBudgetUsageNormalizeCostAndScope|TestIssueBudgetUsageNormalizeEnvelopeGapsAndFrozenPrice|TestIssueBudgetUsagePriceSnapshot|TestIssueBudgetUsageProductionEvidenceConsequences|TestIssueBudgetWriterInventoryIsComplete|TestIssueBudgetWritersThatBindNoExistingIssueDoNotWaitForABinder|TestReportSnapshotCollectionAuditHasNoPublicProjection|TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts|TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift|TestWorkingOnIssuesSkillCoversIssueLoopContracts)$",
+    "-count=1",
+    "-p",
+    "1",
+    "-json",
+    "-timeout=10m"
+  ],
+  "tests": [
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-squads",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsConformToTemplate",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-autopilots",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-creating-agents",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-mentioning",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-onboarding",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-projects-and-resources",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-runtimes-and-repos",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-skill-importing",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-squads",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML/multica-working-on-issues",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuiltinSkillsFrontmatterIsStrictYAML",
+      "action": "pass"
+    },
+    {
+      "name": "TestWorkingOnIssuesSkillCoversIssueLoopContracts",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetObservationOffResumeIsAtomicAndReplayed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOffBindingKeepsMembersWithoutObservations",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOffBindingInterleavesWithResume/resume_after_off_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOffBindingInterleavesWithResume/resume_while_binding_waits",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOffBindingInterleavesWithResume",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetQuickCreateRecordsEachDifferentRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetQuickCreateIgnoresSelfReportedOrigin",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableHoldsTheBindingLockUntilItCommits",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableThatBindsNothingTakesNoBindingLock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWaitsForAClaimThatReadUnbound",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReparentWaitsForAClaimThatReadUnbound",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOnlyAFirstBindingTakesTheBindingLock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetWritersThatBindNoExistingIssueDoNotWaitForABinder",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetInFlightScanFindsATaskRunFromAnotherWorkspace",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetInFlightScanDecidesQuickCreateByTheSharedDefinition",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetQuickCreateDefinitionIsShared",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetBindingRefusesATransactionThatIsNotReadCommitted",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeOnALedgerThatCannotBeLoaded",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeAttributesAQuickCreateTaskThroughItsContextParent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeLeavesAQuickCreateTaskThatNamesNoMemberAlone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeReservesWithoutAnAmountWhenItsReserveDoesNotFit",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeKeepsTheHoldWhenTheReserveOfAReclaimDoesNotFit",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeDoesNotReserveWithoutAnAmountForAnotherFailureOfItsEntry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeAttributesATaskRunFromAnotherWorkspaceToTheWorkspaceOfItsIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeNeedsReadCommittedWhereThereIsARoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeWithoutATransactionFailsTheClaimOfAMemberIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeWithoutATransactionGoesOnWhenTheIssueRowIsGone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeStepGoesOnWhenTheIssueRowIsGone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeThatDoesNotCommitPublishesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeServedFromTheCacheWritesWhatAFullReplayGives",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeRefusedForABindingInProgressLeavesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeJudgesTwoClaimsThatQueueOnTheRootLockOneAfterTheOther",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeRefusedWhileARootIsEnabledIsAttributedAtItsNextClaim",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeThatReadNoMemberMakesEnablingWaitAndIsRecordedAsAGap",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeAndASetLimitOnOneRootCommitInTheOrderTheyLockIt",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeIntentDigestMatchesGoldenVectors",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeWritesTheAttemptItsReservationAndItsReceipt",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeReservesWithoutAnAmountOnARootThatDeclaresNoReserve",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeCountsEveryTaskOfAnIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeSupersedesTheEarlierClaimOfATask",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeSupersedesAnEarlierClaimThatReservedNoAmount",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeLeavesATreeWithoutARootAlone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeWritesNothingForARootSwitchedOff",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeGoesOnWhenTheRootRowOfAMemberIsGone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeRecordsADaemonWithoutTheProtocolAsAGap",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeRecordsEveryReasonARootWouldRefuseFor",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeThatFailsInTheBudgetStepLeavesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetFinalizeJudgesTheLimitWithItsOwnReservation",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerLoadsTheWholeLedgerOnceAndThenTheTail",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/an_entry_in_a_form_version_this_build_does_not_read",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/white_space_behind_the_stored_form",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/a_stored_form_without_most_of_its_keys",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/bytes_that_are_no_entry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/a_hold_on_a_reservation_no_entry_opened",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/an_identity_used_again_with_other_content",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/a_row_that_repeats_an_entry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/a_seq_is_missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_entries_behind_the_third_start_one_seq_late",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_entries_end_before_the_root's_revision",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/an_entry_beyond_the_root's_revision",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_actual_known_ticks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_estimated_ticks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_reserved_ticks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_unknown_hold_ticks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_overrun_ticks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause/the_root_row_is_off_by_one_in_unknown_count",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerIsUnavailableForEachCause",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerMustStartAtTheFirstSeq",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCacheKeepsWithinItsLimit",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerTooLargeToCacheIsReplayedOnEveryLoad",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnderTheRootLockDropsAStateAheadOfTheDatabase",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerReaderWithoutTheRootLockPublishesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerFailedReaderDropsOnlyTheStateItUsed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/a_state_of_the_root's_revision_with_other_content/under_the_root_lock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/a_state_of_the_root's_revision_with_other_content/a_reader",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_it_cannot_take/under_the_root_lock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_it_cannot_take/a_reader",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_it_cannot_take/under_the_root_lock,_with_a_state_published_meanwhile",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_it_cannot_take/a_reader_overtaken_by_a_writer",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_brings_it_to_other_figures/under_the_root_lock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_brings_it_to_other_figures/a_reader",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_brings_it_to_other_figures/under_the_root_lock,_with_a_state_published_meanwhile",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/an_older_state_whose_tail_brings_it_to_other_figures/a_reader_overtaken_by_a_writer",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows/loads_that_agree_with_the_cache_say_nothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCachedStateThatDisagreesGivesWayToTheRows",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay/under_the_root_lock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay/a_reader",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay/under_the_root_lock,_with_a_state_published_during_the_replay",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay/a_reader,_with_a_state_published_during_the_replay",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerUnavailableIsDecidedByTheFullReplay",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger/the_read_of_the_tail",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger/the_read_of_every_row,_with_a_state_published_meanwhile",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger/the_read_of_every_row,_after_a_cached_state_was_dropped",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerFailedReadIsNotAnUnavailableLedger",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendWritesRowsAndIsPublishedOnceCommitted",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/an_identity_of_201_bytes",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/a_stored_form_one_byte_over_what_a_server_may_write",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/fields_of_another_kind",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/a_reservation_in_upper_case",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/a_reservation_that_is_no_attempt_id",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/a_hold_on_a_reservation_the_ledger_does_not_hold",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/an_identity_the_ledger_holds_with_other_content",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing/a_ledger_that_is_not_the_ledger_of_the_root_row",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerAppendThatIsRefusedWritesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten/one_byte_over_is_refused_with_nothing_sent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten/exactly_the_limit_is_written_and_read_back",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten/a_load_reads_a_row_of_the_largest_form",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten/the_ledger_goes_on_behind_a_longer_row",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryFormIsCappedWhereItIsWritten",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerEntryLimitHoldsTheLargestUsageEntry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_sized_reservation",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/an_unsized_reservation",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_hold",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_settlement",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/usage_with_the_longest_identity",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_gap_of_an_attempt",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_gap_of_no_attempt",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/an_exclusion",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_reservation_in_upper_case",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_reservation_without_dashes",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_reservation_in_braces",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_reservation_that_is_no_UUID",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_gap_whose_reservation_is_no_UUID",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_kind_the_ledger_does_not_know",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/a_usage_identity_of_201_bytes",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/fields_of_another_kind",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry/no_identity",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEntryRowIsDerivedFromTheEntry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerReplayCostGrowsWithTheRowsRead",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerCacheIsSafeForConcurrentUse",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerConcurrentWritersAndReadersAgree",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLedgerStatesAreNeverAssignedThrough",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleTakesTheRootLockAndNoOther",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleDoesNotWaitForATaskAnIssueOrABinder",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleAndTheFinalizationOfTheNextClaimLeaveOneHoldEach",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleAndABudgetStepThatWantTheSameAttemptWriteOneHold",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRunOnTwoConnectionsWritesOnce",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundFindsTheRootsWithAnEndedAttempt",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundFindsExactlyWhatAReconciliationCloses",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundFindStatementEndsWhatAReconciliationEnds",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundReconcilesEachRootInATransactionOfItsOwn",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundGoesOnAfterARootThatFails",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundDoesNotWaitForAContendedRootLock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRoundStopsWithItsContext",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleHoldsWhatAnEndedAttemptReserved",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage/the_queue_row_is_gone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage/the_HTTP_request_of_the_claim_was_aborted",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage/the_TTL_ran_out",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage/nothing_is_running_any_more",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage/the_task_was_claimed_again",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReleasesNothingForAFactThatIsNotUsage",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleRunTwiceWritesOnce",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold/the_only_attempt_of_the_root",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold/beside_an_attempt_that_has_one",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleClosesAnAttemptWithoutAReservationWithoutAHold",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleLeavesARootWhoseLedgerDoesNotLoad",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleLeavesARootThatIsOff",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleOfAnUnknownRootIsNotFound",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleThatDoesNotCommitPublishesNothing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReasonTable",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/the_root_was_off_at_the_second_claim",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/the_same_attempt_when_the_row_ended_at_its_own_claim",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/a_later_claim_without_an_attempt,_then_completed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/a_later_claim_without_an_attempt,_then_cancelled",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/a_later_claim_without_an_attempt,_then_failed_for_a_timeout",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/a_later_claim_without_an_attempt,_then_failed_for_a_runtime_that_went_offline",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim/a_later_claim_without_an_attempt,_then_failed_for_a_reason_no_build_knows",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleSupersedesTheAttemptOfAnEarlierClaim",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleHoldsEveryEndedAttemptOfARootInOneBatch",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleLeavesAnAttemptThatIsNotOpen",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLifecycleReasonTablePlacesEveryReasonTheServerWrites",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementMembership",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadOperationRecovery",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadSnapshotAndUnknowns",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadPages",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadConcurrentSnapshot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadQueryPlans",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadProjection",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReadCursorAndTime",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableIsOnePerIssueAndReplaysByOriginalKey",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableConcurrentlyOnOneIssue/same_key_and_intent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableConcurrentlyOnOneIssue/same_key,_other_intent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableConcurrentlyOnOneIssue/other_key",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableConcurrentlyOnOneIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableParentAndChildConcurrently",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRefusesOverlappingRoots",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetCloseAndReopenKeepTheSameRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetDeletedRootIssueKeepsTheSlot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetCreateInheritsTheParentRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRacingChildCreate/create_commits_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRacingChildCreate/enable_commits_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRacingChildCreate/either_order",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRacingChildCreate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableFreezesDescendantsAndRecordsInFlightTasks",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetInFlightScanUsesTheContextParentOnlyWithoutAnIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetTaskRetryAndReclaimLeaveTheBindingAlone",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop/fifteen_levels",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop/parent_loop",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop/its_own_parent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop/a_loop_outranks_a_member_below_the_issue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableWalksPastTenLevelsAndRefusesALoop",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetEnableRequiresAnOrdinaryFormalIssue",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetIsScopedToTheWorkspace",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementRequiresTheCurrentPolicyRevision",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetNegativePolicyRevisionIsAMalformedRequest",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetManagementReplaysByOriginalKey",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetModeSwitchIssuesANewEpochOnEveryReturn",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetSetLimitToTheCurrentLimitIsRefused",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetLimitAndReserveAreSetTogether",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetDeletedRootIssueRefusesOnlyReopen",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOriginalKeyStandsForTheWholeIntent",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetIntentDigestGoldenVectors",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOriginalKeyReplaysForAnotherOperator",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetMalformedRequestsSendNoStatement",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetTransactionsFollowTheLockOrder",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOperationsRefuseATransactionAtAnotherLevel",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetOperationsRunInsideAReadCommittedTransaction",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetBindingNeverLocksOrUpdatesARootRow",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReparentNeverRewritesAMemberRow",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReparentBindsAnUnboundSubtree",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetReparentThroughAParentLoopStillBinds",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetCollaborationWritersBindMembers",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetCollaborationEditBindsOnlyWhenTheParentChanges",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceRetryKeepsActualAndLimit",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders/usage_then_cancel_hold",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders/cancel_hold_then_usage",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceUsageAndCancellationBothOrders",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceMovesAndParentDeletionKeepOriginalRoot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageAcceptanceConcurrentReservationsPastLimit",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBReplayConflictsAndSwitch",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable/off",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable/unreadable",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBOffAndUnavailableRemainRetryable",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBAtomicInvalidAndProtocol",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBEnvelopeGapsAndFrozenPrices",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBEmptyAndUnreserved/unreserved",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBEmptyAndUnreserved/empty",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBEmptyAndUnreserved",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBLateClosedDeletedSuperseded/closed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBLateClosedDeletedSuperseded/deleted",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBLateClosedDeletedSuperseded/superseded",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBLateClosedDeletedSuperseded",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBStatementsAndUnknownQuery",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBInternalSettlementAndAttemptConsistency",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBUnexpectedEntryReplayRollsBack",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeFrozenFixtures/budget_usage_v1_batch.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeFrozenFixtures/budget_usage_v1_batch_empty.json",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeFrozenFixtures",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/unknown",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/case",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/duplicate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/boolean",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/protocol",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/protocol_string",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/batch_key",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/adapter",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/epoch",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/normalizer",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/version",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/timestamp",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/observed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/array_null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/usage_null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/uuid_uppercase",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/uuid_duplicate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/ended",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/unknown_usage",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/model_empty",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/model_long",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/model_duplicate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/decimal_number",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/decimal_leading_zero",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/decimal_overflow",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/cost_zero",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/cost_null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/empty_item",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/control",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/mode",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/sequence",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/baseline_event_id",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/overlap",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/supersedes",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/currency",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/zero_basis",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/price_version",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects/forbidden/proof",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeRejects",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeBoundaries",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageIntentGolden",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/normalizer_version/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/normalizer_version/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/reported_at/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/reported_at/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/protocol_version/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/protocol_version/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/batch_key/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/batch_key/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/producer_epoch/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/producer_epoch/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/adapter/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/adapter/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/adapter_version/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].invocation_id/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].invocation_id/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].resumed/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].resumed/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].ended/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].ended/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].observed_at/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].observed_at/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].model/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].model/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].cost_ticks/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.input/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.input/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.output/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.output/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.cache_read/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.cache_read/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.cache_write/missing",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey/invocations[0].usage[0].tokens.cache_write/null",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeEveryRequiredFieldAndObjectKey",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDecodeStringAndDecimalLimits",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBConcurrentDuplicate",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBConcurrentFinalize",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBConcurrentSwitch/usage_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBConcurrentSwitch/switch_first",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBConcurrentSwitch",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageDBPendingQueryDoesNotLock",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageEvidence",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsagePriceSnapshot",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/reported/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/adapter_estimate/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/server_estimate/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/no_price/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/zero_estimate/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/bad_rate/unproven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/reported/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/adapter_estimate/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/server_estimate/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/no_price/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/zero_estimate/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope/bad_rate/proven",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeCostAndScope",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences/claude1/fresh",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences/claude1/resumed",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences/claude2/fresh",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences/custom-claude1/fresh",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences/codex1/fresh",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageProductionEvidenceConsequences",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageNormalizeEnvelopeGapsAndFrozenPrice",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetUsageLargestStoredEntry",
+      "action": "pass"
+    },
+    {
+      "name": "TestIssueBudgetWriterInventoryIsComplete",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditPageSizeDoesNotChangeFacts",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/cut",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/page_hash",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/missing_EOF",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/page_boundary",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/classification",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift/missing_source",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditRejectsCutPageAndProvenanceDrift",
+      "action": "pass"
+    },
+    {
+      "name": "TestReportSnapshotCollectionAuditHasNoPublicProjection",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuildAgentSkillBundlesProducesRefsAndFullBundles",
+      "action": "pass"
+    },
+    {
+      "name": "TestBuildAgentSkillBundlesAssignsBuiltinID",
+      "action": "pass"
+    }
+  ]
+}

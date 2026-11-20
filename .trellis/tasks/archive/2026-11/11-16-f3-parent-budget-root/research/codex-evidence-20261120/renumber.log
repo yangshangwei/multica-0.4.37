@@ -1,0 +1,124 @@
+worktree: /Volumes/artisan/code/2026/mc-f3-completion-20261120
+F3 migrations: 17 stems, 866..882 -> 869..885
+highest other migration here: 865
+--- server/cmd/migrate/issue_budget_test.go: 17 line(s)
+  9: "866_issue_budget",
+     "869_issue_budget",
+  10: "867_issue_budget_root_id",
+      "870_issue_budget_root_id",
+  11: "868_issue_budget_root_issue",
+      "871_issue_budget_root_issue",
+  12: "869_issue_budget_member_issue",
+      "872_issue_budget_member_issue",
+  13: "870_issue_budget_member_root",
+      "873_issue_budget_member_root",
+  14: "871_issue_budget_attempt_id",
+      "874_issue_budget_attempt_id",
+  15: "872_issue_budget_attempt_claim",
+      "875_issue_budget_attempt_claim",
+  16: "873_issue_budget_attempt_root",
+      "876_issue_budget_attempt_root",
+  17: "874_issue_budget_entry_seq",
+      "877_issue_budget_entry_seq",
+  18: "875_issue_budget_entry_identity",
+      "878_issue_budget_entry_identity",
+  19: "876_issue_budget_entry_attempt",
+      "879_issue_budget_entry_attempt",
+  20: "877_issue_budget_operation_id",
+      "880_issue_budget_operation_id",
+  21: "878_issue_budget_operation_scope",
+      "881_issue_budget_operation_scope",
+  22: "879_issue_budget_observation_root",
+      "882_issue_budget_observation_root",
+  23: "880_issue_budget_observation_gap",
+      "883_issue_budget_observation_gap",
+  24: "881_issue_budget_attempt_open",
+      "884_issue_budget_attempt_open",
+  25: "882_issue_budget_ready",
+      "885_issue_budget_ready",
+--- server/cmd/migrate/main.go: 15 line(s)
+  139: "867_issue_budget_root_id":                              "issue_budget_root_id_key",
+       "870_issue_budget_root_id":                              "issue_budget_root_id_key",
+  140: "868_issue_budget_root_issue":                           "issue_budget_root_issue_key",
+       "871_issue_budget_root_issue":                           "issue_budget_root_issue_key",
+  141: "869_issue_budget_member_issue":                         "issue_budget_member_issue_key",
+       "872_issue_budget_member_issue":                         "issue_budget_member_issue_key",
+  142: "870_issue_budget_member_root":                          "issue_budget_member_root_idx",
+       "873_issue_budget_member_root":                          "issue_budget_member_root_idx",
+  143: "871_issue_budget_attempt_id":                           "issue_budget_attempt_id_key",
+       "874_issue_budget_attempt_id":                           "issue_budget_attempt_id_key",
+  144: "872_issue_budget_attempt_claim":                        "issue_budget_attempt_claim_key",
+       "875_issue_budget_attempt_claim":                        "issue_budget_attempt_claim_key",
+  145: "873_issue_budget_attempt_root":                         "issue_budget_attempt_root_idx",
+       "876_issue_budget_attempt_root":                         "issue_budget_attempt_root_idx",
+  146: "874_issue_budget_entry_seq":                            "issue_budget_entry_seq_key",
+       "877_issue_budget_entry_seq":                            "issue_budget_entry_seq_key",
+  147: "875_issue_budget_entry_identity":                       "issue_budget_entry_identity_key",
+       "878_issue_budget_entry_identity":                       "issue_budget_entry_identity_key",
+  148: "876_issue_budget_entry_attempt":                        "issue_budget_entry_attempt_idx",
+       "879_issue_budget_entry_attempt":                        "issue_budget_entry_attempt_idx",
+  149: "877_issue_budget_operation_id":                         "issue_budget_operation_id_key",
+       "880_issue_budget_operation_id":                         "issue_budget_operation_id_key",
+  150: "878_issue_budget_operation_scope":                      "issue_budget_operation_scope_key",
+       "881_issue_budget_operation_scope":                      "issue_budget_operation_scope_key",
+  151: "879_issue_budget_observation_root":                     "issue_budget_observation_root_idx",
+       "882_issue_budget_observation_root":                     "issue_budget_observation_root_idx",
+  152: "880_issue_budget_observation_gap":                      "issue_budget_observation_gap_idx",
+       "883_issue_budget_observation_gap":                      "issue_budget_observation_gap_idx",
+  153: "881_issue_budget_attempt_open":                         "issue_budget_attempt_open_idx",
+       "884_issue_budget_attempt_open":                         "issue_budget_attempt_open_idx",
+--- server/internal/migrations/issue_budget_test.go: 23 line(s)
+  25: {"867_issue_budget_root_id", "issue_budget_root_id_key", "issue_budget_root", true, "id", "", ""},
+      {"870_issue_budget_root_id", "issue_budget_root_id_key", "issue_budget_root", true, "id", "", ""},
+  26: {"868_issue_budget_root_issue", "issue_budget_root_issue_key", "issue_budget_root", true, "workspace_id, root_
+      {"871_issue_budget_root_issue", "issue_budget_root_issue_key", "issue_budget_root", true, "workspace_id, root_
+  27: {"869_issue_budget_member_issue", "issue_budget_member_issue_key", "issue_budget_member", true, "workspace_id,
+      {"872_issue_budget_member_issue", "issue_budget_member_issue_key", "issue_budget_member", true, "workspace_id,
+  28: {"870_issue_budget_member_root", "issue_budget_member_root_idx", "issue_budget_member", false, "budget_root_id
+      {"873_issue_budget_member_root", "issue_budget_member_root_idx", "issue_budget_member", false, "budget_root_id
+  29: {"871_issue_budget_attempt_id", "issue_budget_attempt_id_key", "issue_budget_attempt", true, "id", "", ""},
+      {"874_issue_budget_attempt_id", "issue_budget_attempt_id_key", "issue_budget_attempt", true, "id", "", ""},
+  30: {"872_issue_budget_attempt_claim", "issue_budget_attempt_claim_key", "issue_budget_attempt", true, "task_id, c
+      {"875_issue_budget_attempt_claim", "issue_budget_attempt_claim_key", "issue_budget_attempt", true, "task_id, c
+  31: {"873_issue_budget_attempt_root", "issue_budget_attempt_root_idx", "issue_budget_attempt", false, "budget_root
+      {"876_issue_budget_attempt_root", "issue_budget_attempt_root_idx", "issue_budget_attempt", false, "budget_root
+  32: {"874_issue_budget_entry_seq", "issue_budget_entry_seq_key", "issue_budget_entry", true, "budget_root_id, seq"
+      {"877_issue_budget_entry_seq", "issue_budget_entry_seq_key", "issue_budget_entry", true, "budget_root_id, seq"
+  33: {"875_issue_budget_entry_identity", "issue_budget_entry_identity_key", "issue_budget_entry", true, "budget_roo
+      {"878_issue_budget_entry_identity", "issue_budget_entry_identity_key", "issue_budget_entry", true, "budget_roo
+  34: {"876_issue_budget_entry_attempt", "issue_budget_entry_attempt_idx", "issue_budget_entry", false, "attempt_id"
+      {"879_issue_budget_entry_attempt", "issue_budget_entry_attempt_idx", "issue_budget_entry", false, "attempt_id"
+  35: {"877_issue_budget_operation_id", "issue_budget_operation_id_key", "issue_budget_operation", true, "id", "", "
+      {"880_issue_budget_operation_id", "issue_budget_operation_id_key", "issue_budget_operation", true, "id", "", "
+  36: {"878_issue_budget_operation_scope", "issue_budget_operation_scope_key", "issue_budget_operation", true, "work
+      {"881_issue_budget_operation_scope", "issue_budget_operation_scope_key", "issue_budget_operation", true, "work
+  37: {"879_issue_budget_observation_root", "issue_budget_observation_root_idx", "issue_budget_observation", false, 
+      {"882_issue_budget_observation_root", "issue_budget_observation_root_idx", "issue_budget_observation", false, 
+  38: {"880_issue_budget_observation_gap", "issue_budget_observation_gap_idx", "issue_budget_observation", false, "b
+      {"883_issue_budget_observation_gap", "issue_budget_observation_gap_idx", "issue_budget_observation", false, "b
+  39: {"881_issue_budget_attempt_open", "issue_budget_attempt_open_idx", "issue_budget_attempt", false, "budget_root
+      {"884_issue_budget_attempt_open", "issue_budget_attempt_open_idx", "issue_budget_attempt", false, "budget_root
+  44: const issueBudgetReadyMigration = "882_issue_budget_ready"
+      const issueBudgetReadyMigration = "885_issue_budget_ready"
+  52: raw := readMigrationFile(t, "866_issue_budget.up.sql")
+      raw := readMigrationFile(t, "869_issue_budget.up.sql")
+  61: t.Errorf("866_issue_budget.up.sql contains %q", bad)
+      t.Errorf("869_issue_budget.up.sql contains %q", bad)
+  65: t.Errorf("866_issue_budget.up.sql creates %d tables, want %d", got, len(issueBudgetTables))
+      t.Errorf("869_issue_budget.up.sql creates %d tables, want %d", got, len(issueBudgetTables))
+  90: t.Errorf("%s is listed as a positive amount but 866_issue_budget.up.sql has no such bigint column", name)
+      t.Errorf("%s is listed as a positive amount but 869_issue_budget.up.sql has no such bigint column", name)
+  177: for _, stem := range []string{"866_issue_budget", issueBudgetReadyMigration} {
+       for _, stem := range []string{"869_issue_budget", issueBudgetReadyMigration} {
+  201: t.Fatalf("866_issue_budget.up.sql does not create %s", table)
+       t.Fatalf("869_issue_budget.up.sql does not create %s", table)
+  205: t.Fatalf("866_issue_budget.up.sql: %s has no closing line", table)
+       t.Fatalf("869_issue_budget.up.sql: %s has no closing line", table)
+--- server/migrations/866_issue_budget.up.sql: 1 line(s)
+  10: -- own concurrent migration (867-881). 882 verifies them.
+      -- own concurrent migration (870-884). 885 verifies them.
+--- server/migrations/882_issue_budget_ready.down.sql: 1 line(s)
+  3: -- row. 866 repeats the check under the same locks before it drops the tables.
+     -- row. 869 repeats the check under the same locks before it drops the tables.
+lines to change: 57 in 5 file(s); files to rename: 34
+applied; temp files left: 0

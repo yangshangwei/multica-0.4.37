@@ -1,5 +1,8 @@
 # F3 验收矩阵：单一父任务预算根（observe 最小首包）
 
+> 2026-11-20：本表保留原 expected 与历史修订；F3-S1 的62行已由独立复核逐项映射 normal/race 通过证据，见 [F3 验收映射](../../archive/2026-11/11-16-f3-parent-budget-root/research/codex-acceptance-map.md)。纯结算/更正与合成 actual 不代表真实供应商验证。F3-S2 E01–E06 仍未实施。最终交付分支与集成验证另见子任务的最终交付记录。
+
+
 日期：2026-11-14 续写（文件名沿用 2026-11-13 规划批次，供既有链接解析）。状态：**仅 expected 与计划；没有任何一行已运行**。未获 F3 实施授权，本文件不是通过证据。
 
 配套：[最小合同](f3-minimum-budget-contract-20261113.md)（下称“合同”）、[来源总表](f3-source-map-20261113.md)、[usage 分源](f3-usage-source-map-20261113.md)、[执行/claim 分源](f3-execution-source-map-20261113.md)。需求编号 F3-01–F3-14 定义在 [requirements.md](../requirements.md) 的 F3 节。
@@ -80,16 +83,16 @@
 | B30 | pure | 同一 provider session 跨两个 invocation，累计 80 → 200；基线可证 / 基线缺失 | 可证：i1=80、i2=120，合计 200 只入一次；缺失：i2 记 ambiguity，A 只含 80，U 增加一项，不把 200 记两次也不猜 |
 | B31 | db | 一批 3 个事件，第 2 个违反约束 | 整批不提交、无“全部成功”响应；与现有逐行 warn 后 200 的行为相反，回归用例显式对照 |
 | B32 | db+auth | 提交成功但响应丢失；以原 key 重发相同内容 / 不同内容 | 相同 → 原收据且 A 不变；不同 → conflict，A 不变 |
-| B33 | db | commit 结果未知时查询：返回 issued / pending / 查无 | 均显示 unknown 并给原查询方式；不据此新建根、attempt、invocation 或 key |
+| B33 | db | commit 结果未知时查询：返回 issued / pending / 查无 | 均显示 unknown 并给原查询方式；不据此新建根、attempt、invocation 或 key（2026-11-17 修订：服务端的操作行只在提交之后才存在，没有 issued / pending 两种状态。查询只有两种答案：已提交则返回原结果，否则 `unknown` 并给原查询方式。daemon 的恢复是原字节原 key 重发。见子任务 `design.md` §11.9） |
 
 ## 6. 影子预留生命周期（F3-10）
 
 | ID | 层 | 场景 | Expected |
 | --- | --- | --- | --- |
 | B34 | claim | 领取最终化成功 | attempt + 影子 reservation + 原操作收据与 claim 同事务提交；任一写失败则该领取失败并单列为持久化失败，不记为“额度不足” |
-| B35 | claim | finalize 响应丢失，daemon 重领（generation+1）并重新 finalize | 现状没有“按原 claim 查询”，重领会重新发 token（合同 §11 R2）。Expected：产生新 attempt 与新影子预留；前一代 attempt 标 `superseded_unproven`，其 R 转 H 而不释放（原 daemon 可能已启动）；两代 attempt 用服务端签发的 `budget_attempt_id` 区分，回调不带该 ID 时记 `coverage_gap:attempt_unbound` |
+| B35 | claim | finalize 响应丢失，daemon 重领（generation+1）并重新 finalize | 现状没有“按原 claim 查询”，重领会重新发 token（合同 §11 R2）。Expected：产生新 attempt 与新影子预留；前一代 attempt 标 `superseded_unproven`，其 R 转 H 而不释放（原 daemon 可能已启动）；两代 attempt 用服务端签发的 `budget_attempt_id` 区分，回调不带该 ID 时记 `coverage_gap:attempt_unbound`（2026-11-17 修订：末句不实现。新入口的路径里就带 attempt id，不带到不了这个入口；旧上报路径预算从不读。不带 ID 的回调只可能来自没有预算协议的 daemon，那次执行在 finalize 时已记 `coverage_gap:legacy_protocol`（B53）。见子任务 `design.md` §11.2） |
 | B35a | claim | finalize 事务失败后原行 requeue（未写出任何响应字节） | 预留与 attempt 随同一事务回滚，不留孤儿；之后的领取是第一个 attempt |
-| B36 | db | 取消 / 超时 / 进程退出，仅有生命周期事实 | R 转 H；U 增加对应原因；不释放。附带“可信最终用量 + scope 完整 + 不可再执行证明”时才结算并释放余额 |
+| B36 | db | 取消 / 超时 / 进程退出，仅有生命周期事实 | R 转 H；U 增加对应原因；不释放。附带“可信最终用量 + scope 完整 + 不可再执行证明”时才结算并释放余额（2026-11-17 修订：首包没有结算的生产路径。“scope 完整”与“不可再执行”没有证据来源（合同 §11 R10），可靠的释放证明是 S2 的前置条件。后半句在 pure 层成立；db 层只验证带齐证明的 settle 条目经内部追加函数写入后的存储、重放与投影。见子任务 `design.md` §11.8） |
 | B37 | db | 仅有：队列行消失、HTTP abort、TTL 到期、当前运行数=0、重新 claim | 逐项断言均**不**释放；H 保持 |
 | B38 | db | 最终化/消费与取消并发 | 同一 reservation 恰一个终结贡献与一份收据；取消不覆盖已消费事实；重复执行结果相同 |
 
@@ -100,7 +103,7 @@
 | B39 | auth | 建根/调额/close/reopen：owner、admin、普通成员、mat_ task token、daemon 凭据、携带 human ID 的机器凭据 | 仅前两者且具备当前根任务编辑权时成功；其余拒绝且无副作用 |
 | B40 | auth | 调额携带过期 `expected_policy_revision`；mode 关→开后复用旧 epoch | 冲突拒绝；不取最新值代为续权；epoch 不复用（防 ABA） |
 | B41 | auth | 操作者在提交前被降级 / 移出工作空间 | 事务内复核失败 → 拒绝；先前已提交的原操作仍可被当前有权者按原 key 读到，并标示 stale |
-| B42 | auth | invoke 被撤后：新预留请求 / 已发生调用的晚到用量 | 前者拒绝；后者在 telemetry 身份仍有效时入原根；daemon 也被撤 → 拒绝，对应金额保持 unknown |
+| B42 | auth | invoke 被撤后：新预留请求 / 已发生调用的晚到用量 | 前者拒绝；后者在 telemetry 身份仍有效时入原根；daemon 也被撤 → 拒绝，对应金额保持 unknown（2026-11-17 修订：拆成两半。晚到用量的一半随第 6 步的入口验证；“新预留请求被拒”读作“被现有 finalize 检查拒绝的领取不写 attempt”，留在第 7 步。见子任务 `design.md` §11.3） |
 | B43 | auth | Reporter / Reviewer / custom task / mcn_ 读根、列根、读收据 | 全部拒绝；F2 exact GET、人工采集、终止撤回的既有用例结果不变 |
 | B44 | auth | 鉴权失败、404、冲突的响应体与头 | no-store；不含隐藏根、其他任务、provider 会话或金额；源删除后只返回最小经济 tombstone |
 
@@ -128,12 +131,12 @@
 
 | ID | 层 | 场景 | Expected |
 | --- | --- | --- | --- |
-| B55 | claim | quick-create task（`issue_id` 为 NULL，`context.parent_issue_id` 指向已绑定成员）执行并在完成后 LinkTaskToIssue | 若 D6 选“纳入”：finalize 时按服务端保存的 context 父任务归入原根，新建的子任务在其创建事务内成为成员；若 D6 选“不纳入”：列 `not_applicable:quick_create` 且该次支出不显示为 0。两种选择都不得出现“子任务已是成员但创建它的那次执行无记录也无缺口” |
-| B56 | db | 删除有 A=30 的成员 issue，现有 FK 级联物理删除其 `agent_task_queue`、`task_usage`、`task_token` 行 | 预算的成员、attempt、事件行全部仍在（它们不带 FK，保存的是 ID 副本）；根 A 仍为 30；取消 task 先于删除事务提交这一顺序不产生释放 |
+| B55 | claim | quick-create task（`issue_id` 为 NULL，`context.parent_issue_id` 指向已绑定成员）执行并在完成后 LinkTaskToIssue | 若 D6 选“纳入”：finalize 时按服务端保存的 context 父任务归入原根，新建的子任务在其创建事务内成为成员；若 D6 选“不纳入”：列 `not_applicable:quick_create` 且该次支出不显示为 0。两种选择都不得出现“子任务已是成员但创建它的那次执行无记录也无缺口”。2026-11-16 修订（D6 已选“纳入”；E2 清点 V4）：创建时服务端不比对请求父任务与 `context.parent_issue_id`，故 attempt 按 context 父任务归根、子任务按实际落到的父任务绑定；两者不同（含请求未带父任务）时记一条差异观察，支出仍只进 context 父任务的根，业务创建不被拒绝。同日再修订（独立复核 F7、F8）：一次 quick-create 执行可以建 0、1 或多个 issue，三种都要覆盖，差异观察按每个被创建的 issue 记；归属依据是服务端从执行凭据解析出的 task，不是调用方自报的 origin；context 父任务在 finalize 前被删除时，attempt 仍归它的根并带 `would_refuse:root_deleted` |
+| B56 | db | 删除有 A=30 的成员 issue，现有 FK 级联物理删除其 `agent_task_queue`、`task_usage`、`task_token` 行 | 预算的成员、attempt、事件行全部仍在（它们不带 FK，保存的是 ID 副本）；根 A 仍为 30；取消 task 不产生释放（2026-11-16 修订：当前 HEAD 的取消已在删除事务之内，不再是“先于删除事务提交”，expected 不变） |
 | B57 | db | 删除父 P，直接子任务被 `DetachDirectChildIssues` 清空 `parent_issue_id` | 子任务的成员行仍指向 P 的根并保留原父 ID；之后执行归原根 |
 | B58 | auth | 预算管理请求的 `X-Actor-Source`：人工会话、个人 PAT、`task_token`、`cloud_pat`、`mdt_` daemon 凭据、未知/缺失来源 | 采用允许名单：只有明确识别的人工来源通过；未知与缺失来源拒绝（现有 `RequireHumanActor` 对未知来源放行，不可直接复用） |
 | B59 | db | 启用根时成员范围深于 10 层；范围内存在环 | 事务内递归遍历不受现有 10 层查环上限限制，深层成员全部绑定；发现环则拒绝启用并给出原因，不写入部分成员 |
-| B60 | db | 未取工作空间 fence 的 issue writer（待 E2 清点：autopilot create_issue、onboarding、协作结构 writer、工作空间拆除）在已有根的父任务下创建子任务 | 清点完成前，这类路径创建的子任务若未绑定，必须被对账发现并记 `coverage_gap:unfenced_writer`；清点完成后改为逐路径断言已绑定 |
+| B60 | db | 未取工作空间 fence 的 issue writer（待 E2 清点：autopilot create_issue、onboarding、协作结构 writer、工作空间拆除）在已有根的父任务下创建子任务 | 清点完成前，这类路径创建的子任务若未绑定，必须被对账发现并记 `coverage_gap:unfenced_writer`；清点完成后改为逐路径断言已绑定。2026-11-16 清点完成：除工作空间整体删除外所有 writer 都取 fence，可带父任务的创建入口共 5 条、改父写入共 4 处，本行改为对这 9 处逐一断言；测试夹具用裸 SQL 建的子任务不算产品路径 |
 
 ## 10. S2 预登记（不属于首包出口）
 

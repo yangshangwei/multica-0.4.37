@@ -1,0 +1,25 @@
+[
+  {
+    "name": "merge-all-history-whitespace",
+    "exit": 2,
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "--check"
+    ],
+    "interpretation": "Existing shared PAY historical report whitespace; preserved unchanged"
+  },
+  {
+    "name": "f3-vs-shared-whitespace",
+    "exit": 0,
+    "command": [
+      "git",
+      "diff",
+      "--cached",
+      "f2ea7d50d0e2ae412e1ee7961c47247390f20478",
+      "--check"
+    ],
+    "interpretation": "F3 delta against shared target"
+  }
+]
