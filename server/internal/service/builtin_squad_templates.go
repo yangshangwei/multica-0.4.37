@@ -309,7 +309,7 @@ var builtinSquadTemplates = []SquadTemplate{
 	},
 	{
 		Key:               "security-remediation",
-		Version:           1,
+		Version:           2,
 		DefaultName:       "Security Remediation Squad",
 		AvatarEmoji:       "🛡️",
 		LeaderTemplateKey: "security-remediation-lead",

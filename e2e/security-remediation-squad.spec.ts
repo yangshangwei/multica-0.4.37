@@ -95,7 +95,7 @@ for (const labels of [
       expect(selection).toMatchObject({ state: "configured", template_key: "security-remediation" });
       expect(selection.squad_id).toBeTruthy();
       const squad = await api.requestJSON<Squad>(`/api/squads/${selection.squad_id}`);
-      expect(squad).toMatchObject({ name: labels.title, template_key: "security-remediation", template_version: 1 });
+      expect(squad).toMatchObject({ name: labels.title, template_key: "security-remediation", template_version: 2 });
 
       const customName = "Application security response";
       const customDescription = "Our application-specific review and repair policy.";
