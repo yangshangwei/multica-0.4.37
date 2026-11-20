@@ -1597,3 +1597,40 @@ Archived the completed R3 regression with 514 canonical E2E passes, verified rep
 ### Next Steps
 
 - No task work remains. Historical failures, pre-ledger performance scope, platform and real-model limits remain documented.
+
+
+## Session 172: Archive November 18 E2E follow-up at user request
+<!-- trellis-session: v=2 fp=27c8bcf7072505da -->
+
+**Date**: 2026-11-20
+**Task**: Archive November 18 E2E follow-up at user request
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Archived the parent tracker at the user's explicit request; retained #37/#38 acceptance, original case ownership and historical evidence.
+
+### Main Changes
+
+- Moved the parent into archive/2026-11 and repaired parent/child document links. Archive commit: 01c4cba0a.
+- Closed this tracker without adding acceptance claims for other original cases; preserved all parallel work.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `22e0b202f60255f5dc9030139454ec87e4606270` | fix(issues): keep ordinary status visible while a write is pending |
+| `da19f01ddc722396327cda94227cb9a6d7036cc7` | fix(iterations): preserve expansion while an issue address becomes readable |
+
+### Testing
+
+- [OK] Verified completed parent and child records, 21 local links, task context manifests and git diff --check.
+- [OK] No product tests rerun: task metadata and documentation only; historical Web14/14 and Electron6/6 evidence retained.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No further work remains for this requested archive; other active tasks keep their existing scope.
