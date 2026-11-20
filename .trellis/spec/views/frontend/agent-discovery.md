@@ -5,6 +5,48 @@ separation for the agents page. Saved agents are the default directory; the
 role-template catalog lives only in the New agent → Use template flow. Do not
 reintroduce a template inventory into the directory.
 
+## Agent first-use welcome
+
+`AgentsPage` renders the shared `AgentWelcome` only when `agentListOptions(wsId)`
+has `isSuccess` and its unfiltered array is empty. The query includes archived
+records (`include_archived: true`), so an archived-only directory remains a
+directory. Ownership, search, category, squad and availability filters cannot
+select onboarding. Pending reads keep the skeleton; an error, including a failed
+refresh with cached empty or populated data, takes precedence and offers retry.
+A successfully empty response bypasses activity, run-count, presence, membership
+and template readiness gates.
+
+The existing `ApiClient.listAgents()` malformed-response fallback is `[]`.
+The view cannot distinguish that successful fallback from a valid empty response;
+do not claim the welcome detects malformed API payloads.
+
+The hero owns the single creation `AppLink` to `paths.newAgent()`, while the
+header retains `ApprovalQueueAction`. Its documentation and runtime entries use
+`paths.docsPage(DOCS_SLUGS.agents)` and `paths.runtimes()`. Runtime completion
+requires a successful runtime query and an explicit `status === "online"`;
+pending, failed or offline observations do not prove setup. Existing Query and
+WebSocket updates reveal the directory after the first agent arrives. No
+persisted onboarding flag or separate welcome route is involved.
+
+Three explicitly labelled examples use local manual carousel state, without
+timers, records, stores or execution. Inactive slides are `aria-hidden` and
+`inert`; position buttons are pressed only for the active slide, previous/next
+respect the ends, and a live status names the selection. Key the welcome by
+workspace ID so ordinary updates retain the slide and a workspace switch resets
+it. Container queries stack narrow layouts; reduced motion removes transitions.
+Local CSS must use runtime `--radius` formulas, as described in
+`component-guidelines.md`, rather than Tailwind `@theme inline` radius aliases.
+
+Canonical state, filter, archive, runtime and remount regressions live in
+`agents/components/agents-page.test.tsx`; entry links, manual controls, hidden
+slides and bilingual copy live in `agent-welcome.test.tsx`.
+`e2e/agent-welcome.spec.ts` checks production-Web links, keyboard interaction,
+runtime readiness, real create/archive updates and both locales/themes at
+1440, 1024, 390 and 320 pixels. Assert both document and welcome-scroll-container
+overflow, visible primary actions, reachable narrow carousel controls, and
+computed card/checklist radii. Retain screenshots and the reference verdict:
+DOM tests do not prove compiled CSS or actual control placement.
+
 ## Squad complete-membership contract (cross-layer)
 
 ### Scope / Trigger

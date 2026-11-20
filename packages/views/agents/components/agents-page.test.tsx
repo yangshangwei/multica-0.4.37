@@ -2,7 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { Agent, AgentRoleTemplate, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
+import type { Agent, AgentRoleTemplate, AgentRuntime, Squad, SquadTemplate, SquadMember } from "@multica/core/types";
 import type { AgentActivity } from "@multica/core/agents";
 import { renderWithI18n } from "../../test/i18n";
 import { NavigationProvider, type NavigationAdapter } from "../../navigation";
@@ -18,8 +18,14 @@ import { AgentsPage } from "./agents-page";
 // state on those queries.
 
 const mocks = vi.hoisted(() => ({
+  workspaceId: "workspace-1",
   agents: [] as Agent[],
   agentsLoading: false,
+  agentsSuccess: true,
+  agentsError: null as Error | null,
+  refetchAgents: vi.fn(),
+  runtimes: [] as Pick<AgentRuntime, "id" | "status">[],
+  runtimesSuccess: true,
   squads: [] as Squad[] | undefined,
   squadsPending: false,
   squadsError: false,
@@ -94,10 +100,13 @@ vi.mock("@tanstack/react-query", () => ({
       return {
         data: mocks.agents,
         isLoading: mocks.agentsLoading,
-        error: null,
-        refetch: vi.fn(),
+        isPending: mocks.agentsLoading || (!mocks.agentsSuccess && !mocks.agentsError),
+        isSuccess: mocks.agentsSuccess && !mocks.agentsLoading && !mocks.agentsError,
+        error: mocks.agentsError,
+        refetch: mocks.refetchAgents,
       };
     }
+    if (key === "runtimes") return { data: mocks.runtimes, isSuccess: mocks.runtimesSuccess };
     if (key === "squads") return { data: mocks.squads, isPending: mocks.squadsPending, isError: mocks.squadsError, refetch: vi.fn() };
     if (key === "agent-run-counts") {
       return { data: mocks.runCounts, isPending: mocks.runCountsPending };
@@ -159,7 +168,7 @@ vi.mock("@multica/core/auth", () => ({
 }));
 
 vi.mock("@multica/core/hooks", () => ({
-  useWorkspaceId: () => "workspace-1",
+  useWorkspaceId: () => mocks.workspaceId,
 }));
 
 // Derived from the real path factory rather than a hand-written literal: a
@@ -285,8 +294,13 @@ function betaPrecedesAlpha(): boolean {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mocks.workspaceId = "workspace-1";
   mocks.agents = [ALPHA, BETA];
   mocks.agentsLoading = false;
+  mocks.agentsSuccess = true;
+  mocks.agentsError = null;
+  mocks.runtimes = [];
+  mocks.runtimesSuccess = true;
   mocks.squads = [];
   mocks.squadsPending = false;
   mocks.squadsError = false;
@@ -512,7 +526,7 @@ describe("AgentsPage discovery", () => {
     mocks.agents = [];
     mocks.templates = [REVIEW_TEMPLATE];
     renderPage();
-    expect(screen.getByText("No agents yet")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Meet your first AI teammate" })).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Built-in agents" })).not.toBeInTheDocument();
   });
 
@@ -622,8 +636,137 @@ describe("AgentsPage listReady gate", () => {
 
     renderPage();
 
-    expect(screen.getByText("No agents yet")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Meet your first AI teammate" })).toBeInTheDocument();
     expect(screen.queryByTestId("skeleton")).not.toBeInTheDocument();
+  });
+});
+
+describe("AgentsPage welcome", () => {
+  it("keeps one creation entry and the approval queue on a successfully empty page", () => {
+    mocks.agents = [];
+    renderPage();
+
+    expect(screen.getByRole("link", { name: "New agent" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "New agent" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Approvals" })).toBeInTheDocument();
+    expect(screen.queryByTestId("agent-list-toolbar")).not.toBeInTheDocument();
+  });
+
+  it.each([true, false])("keeps a pending query out of onboarding even if no request is fetching (loading=%s)", (loading) => {
+    mocks.agents = [];
+    mocks.agentsSuccess = false;
+    mocks.agentsLoading = loading;
+    renderPage();
+
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+    expect(screen.getAllByTestId("skeleton").length).toBeGreaterThan(0);
+  });
+
+  it("shows retryable query failure rather than the welcome", async () => {
+    mocks.agents = [];
+    mocks.agentsSuccess = false;
+    mocks.agentsError = new Error("Directory unavailable");
+    renderPage();
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Directory unavailable");
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Try again" }));
+    expect(mocks.refetchAgents).toHaveBeenCalledOnce();
+  });
+
+  it.each(["empty", "populated"])("shows retry feedback after a failed refresh of cached %s data", async (cachedState) => {
+    mocks.agents = cachedState === "empty" ? [] : [ALPHA];
+    const adapter = makeAdapter();
+    const view = renderPage(adapter);
+    if (cachedState === "empty") {
+      expect(screen.getByRole("heading", { name: "Meet your first AI teammate" })).toBeInTheDocument();
+    } else {
+      expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    }
+
+    mocks.agentsSuccess = false;
+    mocks.agentsError = new Error("Refresh unavailable");
+    view.rerender(<NavigationProvider value={adapter}><AgentsPage /></NavigationProvider>);
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Refresh unavailable");
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+    expect(screen.queryByTestId("agent-list-toolbar")).not.toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Try again" }));
+    expect(mocks.refetchAgents).toHaveBeenCalledOnce();
+  });
+
+  it("retains the selected example across query updates and starts over for another workspace", async () => {
+    mocks.agents = [];
+    const adapter = makeAdapter();
+    const view = renderPage(adapter);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Next example" }));
+    expect(screen.getByRole("heading", { name: "Assign work like a teammate" })).toBeInTheDocument();
+
+    mocks.runtimes = [{ id: "runtime-example", status: "online" }];
+    view.rerender(<NavigationProvider value={adapter}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByText("Runtime connected")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Assign work like a teammate" })).toBeInTheDocument();
+
+    mocks.workspaceId = "workspace-2";
+    mocks.runtimes = [];
+    view.rerender(<NavigationProvider value={adapter}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByRole("heading", { name: "Describe what it should do" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Previous example" })).toBeDisabled();
+    expect(screen.queryByRole("heading", { name: "Assign work like a teammate" })).not.toBeInTheDocument();
+  });
+
+  it("replaces the welcome as soon as the first agent arrives and restores it when the directory empties", () => {
+    mocks.agents = [];
+    const adapter = makeAdapter();
+    const view = renderPage(adapter);
+    expect(screen.getByRole("heading", { name: "Meet your first AI teammate" })).toBeInTheDocument();
+
+    mocks.agents = [ALPHA];
+    view.rerender(<NavigationProvider value={adapter}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+    expect(screen.getByTestId("agent-list-toolbar")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+
+    mocks.agents = [];
+    view.rerender(<NavigationProvider value={adapter}><AgentsPage /></NavigationProvider>);
+    expect(screen.getByRole("heading", { name: "Meet your first AI teammate" })).toBeInTheDocument();
+  });
+
+  it("keeps search results in the directory when existing agents do not match", () => {
+    renderPage();
+    fireEvent.change(screen.getByRole("textbox", { name: "Search agents" }), { target: { value: "no-such-agent" } });
+    expect(screen.getByText('No agents match "no-such-agent".')).toBeInTheDocument();
+    expect(screen.getByTestId("agent-list-toolbar")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+  });
+
+  it.each(["all", "archived"])("keeps an archived-only directory in the %s list", (scope) => {
+    mocks.agents = [makeAgent({ ...ALPHA, archived_at: "2026-11-20T00:00:00Z" })];
+    mocks.viewState.scope = scope;
+    renderPage();
+
+    expect(screen.getByTestId("agent-list-toolbar")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Meet your first AI teammate" })).not.toBeInTheDocument();
+    if (scope === "archived") expect(screen.getByText("Alpha Agent")).toBeInTheDocument();
+  });
+
+  it.each([
+    { status: "online" as const, success: true, connected: true },
+    { status: "offline" as const, success: true, connected: false },
+    { status: "online" as const, success: false, connected: false },
+  ])("derives runtime completion only from a successful online observation ($status, success=$success)", ({ status, success, connected }) => {
+    mocks.agents = [];
+    mocks.runtimes = [{ id: "runtime-example", status }];
+    mocks.runtimesSuccess = success;
+    renderPage();
+
+    if (connected) {
+      expect(screen.getByText("Runtime connected")).toBeInTheDocument();
+    } else {
+      expect(screen.queryByText("Runtime connected")).not.toBeInTheDocument();
+    }
+    expect(screen.getByRole("link", { name: connected ? "View runtimes" : "Connect runtime" })).toHaveAttribute("href", "/test-workspace/runtimes");
   });
 });
 
