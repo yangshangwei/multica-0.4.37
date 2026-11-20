@@ -46,3 +46,18 @@ The user requests another complete current-tree run, core flows first, with auto
 - Seven test-only repairs independentlyreviewed; two specsupdated. Fresh private ASAR corruption diagnosed/frozen dependency rebuild integritychecked; actualpackagedLinuxMain2/2pass.
 - All27ownedlistenerportsfree,allownedcontainersstopped; originaluserenvironmentsretained. Report`artifacts/qa/full-e2e-20261120-r2/REPORT.md`.
 - Keep task directory at the existing explicit allocation path required by runtime-output/detail fixtures; markcompletedinplace rather thanbreakthetestcontractbyarchiving.
+
+## R3 fresh collaboration-first regression, 2026-11-20
+
+The user explicitly requests autonomous comprehensive collaboration/business E2E and all available functions, reproducing and repairing new defects. Reuse this existing scope and task; do not create another task or count old passes. New evidence: `artifacts/qa/full-e2e-20261120-r3/`.
+
+- [x] Capture current source and isolate production legacy/password environments.
+- [x] Fresh collaboration-first and core business browser tests, then complete canonical inventory.
+- [x] Fresh static/unit/script/backend verification in independent owned lanes.
+- [x] Enable available controlled runtime/native/knowledge/stage/cross-client paths.
+- [x] Reproduce failures, minimally repair owning boundaries with red/green evidence, review.
+- [x] Reconcile every case, current-source drift and honest remaining gaps; clean owned resources.
+
+Existing pending changes belong to other sessions; preserve them. Build production assets once, pin/copy them before independent lanes; avoid competing rebuilds. One browser worker, no retries; no real-provider account or external publication required.
+
+R3 browser514/514 latest admitted PASS; original17failureidentities retained. Product/tooling fixes committedcbcb86b94,37e2faa0f,6f51d385f,ddc80d5af. Backend all local/race/Linux/synthetic andquietperformancepassed; GitHuboriginaltestafterresetpassed andfinalPG/Rediscleanup verified. Allroot44portsfree8containersstopped.

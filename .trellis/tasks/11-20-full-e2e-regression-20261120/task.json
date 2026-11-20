@@ -23,13 +23,13 @@
   "relatedFiles": [
     "packages/core/collaboration/queries.ts"
   ],
-  "notes": "Verified496/496canonical E2E, current14/14focused; original failures retained. Report artifacts/qa/full-e2e-20261120/REPORT.md. All owned processes stopped. Retained task path for explicit runtime-output allocation contract. Work committed as 67af89db8 and 7817d8958; no push or deployment. R2 fresh run complete:496canonical latestPASS, finalcurrent76+23focusPASS, report artifacts/qa/full-e2e-20261120-r2/REPORT.md. Original failures/I1timingvariability retained;7test-onlyrepairs;allownedservicesstopped.",
+  "notes": "Verified496/496canonical E2E, current14/14focused; original failures retained. Report artifacts/qa/full-e2e-20261120/REPORT.md. All owned processes stopped. Retained task path for explicit runtime-output allocation contract. Work committed as 67af89db8 and 7817d8958; no push or deployment. R2 fresh run complete:496canonical latestPASS, finalcurrent76+23focusPASS, report artifacts/qa/full-e2e-20261120-r2/REPORT.md. Original failures/I1timingvariability retained;7test-onlyrepairs;allownedservicesstopped. R3 browser514/514latestadmittedPASS,17originalfailedidentitiesretained;finalledgeroutput2andMain2PASS;root44portsfree8containersstopped. BackendexternalGitHubreplay/PGcleanup pending. R3 finalbackend24155namedPASS9explicitSKIP0unresolved;GitHubafterresetoriginalPASS;allownedresourcesstopped. Readyforindependentarchive.",
   "meta": {
     "verification_report": "artifacts/qa/full-e2e-20261120/REPORT.md",
     "e2e_passed": 496,
     "e2e_failed": 0,
     "e2e_skipped": 0,
-    "archive_deferred_reason": "R3 final verification, output-fixture replay and owned-resource cleanup remain pending; allocation path dependency repaired in 963461f67.",
+    "archive_deferred_reason": "R3 verification and cleanup complete; independent archive coordinator owns the pending directory move and post-move admission check.",
     "archive_readiness_record": ".trellis/tasks/11-20-full-e2e-regression-20261120/research/archive-readiness.md",
     "archive_allocation_fix_commit": "963461f6727091ce450dc546cb46c41eccbfcbbd",
     "work_commits": [
@@ -41,6 +41,25 @@
     "r2_e2e_passed": 496,
     "r2_current_candidate_build": "-Rh1o8Up4vFfJhbqZQGG3",
     "r2_owned_ports_free": true,
-    "r2_work_commit": "51a113ae8c70417d83bfce5f02285009059cc04f"
+    "r2_work_commit": "51a113ae8c70417d83bfce5f02285009059cc04f",
+    "r3_verification_report": "artifacts/qa/full-e2e-20261120-r3/REPORT.md",
+    "r3_e2e_passed": 514,
+    "r3_e2e_failed": 0,
+    "r3_e2e_skipped": 0,
+    "r3_originally_failed_cases": 17,
+    "r3_current_candidate_build": "hkdVBnDw48prvVOiZ5KxE",
+    "r3_work_commits": [
+      "cbcb86b94",
+      "37e2faa0f",
+      "6f51d385f",
+      "ddc80d5af"
+    ],
+    "r3_root_cleanup_report": "artifacts/qa/full-e2e-20261120-r3/root-runtime-cleanup-final.json",
+    "r3_output_ledger_final_report": "artifacts/qa/full-e2e-20261120-r3/output-ledger-final/archive-owner-final.json",
+    "r3_backend_named_pass": 24155,
+    "r3_backend_explicit_skips": 9,
+    "r3_backend_unresolved": 0,
+    "r3_all_owned_resources_stopped": true,
+    "r3_backend_cleanup_report": "artifacts/qa/full-e2e-20261120-r3/backend/cleanup-final.json"
   }
 }
