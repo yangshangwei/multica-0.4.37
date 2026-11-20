@@ -14,8 +14,8 @@
   "completedAt": null,
   "branch": "codex/security-remediation-v2-cli-20261120",
   "base_branch": "codex/cross-workspace-collaboration",
-  "worktree_path": "/Volumes/artisan/code/2026/mc-secrem-v2-cli-20261120",
-  "commit": "6d4c98561860b11070d5c816a8ce01b582445f45",
+  "worktree_path": null,
+  "commit": "15e9e8d5227153a8123e51d074aa1c66766bf36d",
   "pr_url": null,
   "subtasks": [],
   "children": [],
@@ -64,7 +64,7 @@
     "retained_database_dumps": 3,
     "source_commit_tested": "d1b25077b89af8ef72e58c0b040b9ea495261b1b",
     "checkpoint_integrated": "6d4c98561860b11070d5c816a8ce01b582445f45",
-    "worktree_removed": false,
+    "worktree_removed": true,
     "next_action": "Retain pending C1 analyst task; finish allowed local transport maintenance. Continuation implementation was stopped by tool content screening; no circumvention.",
     "execution_path": "official-cli-direct",
     "sdk_access_blocker_retained": true,
@@ -85,6 +85,7 @@
     "retained_database_dumps_cli": 9,
     "private_cli_evidence_root": "/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120",
     "final_python_controls_passed": 50,
-    "direct_backend_contracts_passed": 11
+    "direct_backend_contracts_passed": 11,
+    "checkpoint_integrated_cli": "15e9e8d5227153a8123e51d074aa1c66766bf36d"
   }
 }

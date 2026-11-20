@@ -9,3 +9,5 @@
 最终任务内Python控制50/50通过；直接backend11/11通过；真实P1/O1与脚本C1/D1的具体检查点见逐案记录。没有修改生产源码或模板正文，不应声称当前app-server后端通过验收。
 
 历史首个CLI失败样本的未跟踪directbackend原始源码字节未及时保留，只有hash与旧binary/输入/事件；该限制明确记录，不事后重建冒充原文。后续P1/O1/C1准入源均保存实际字节副本。
+
+最终检查点已实际合入15e9e8d52；175个父子任务文件逐字节一致、任务worktree干净后移除mc-secrem-v2-cli-20261120，保留codex/security-remediation-v2-cli-20261120分支及私有final-task-checkpoint源副本。合入过程中另一个会话更新了一个artifacts/qa文件，本任务未触碰或恢复它，回执明确此并发限制。所有实际模型运行来源仍是624eb71b9及当时绑定装置，不以最新基线冒充运行来源。
