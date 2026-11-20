@@ -1,5 +1,7 @@
 # 技术设计草案
 
+最新（2026-11-20 TC-12）：仅新增一个service测试，以真实本地business-only Git A→B和固定runner/input证明失败→修订后通过，复用生产报告/阶段与明确managed preparation/consent/settlement夹具。完整新r03普通/竞态各1顶层通过，12组A历史与原回执保持；无产品改动，TC-12仍PARTIAL，父9PASS/11PARTIAL/4NOT_RUN。真实支付修复、daemon checkout/远端CI仍为S4，以下为保留历史。
+
 最新（2026-11-20 TC-04）：一个新router测试证明真实机器凭据无法签发/撤销人工完成授权或关闭具备有效交付和人工授权的协作任务。合法人类同请求成功，产品逻辑未改；内部切片独立接受，TC-04保持PARTIAL，父9PASS/11PARTIAL/4NOT_RUN。真实模型与S4/S5/签字仍开放；以下均保留历史。
 
 最新（2026-11-20 TC-01）：完整正向UI创建补证已接受，父9PASS/10PARTIAL/5NOT_RUN；TC-01/P1语义不被正向例自动核销。复用当前创建/原键恢复，无产品改动。TC-02/13及S1–S3保持已验收，下面为过程快照。

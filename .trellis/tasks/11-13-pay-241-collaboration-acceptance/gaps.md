@@ -2,6 +2,8 @@
 
 原24例没有整体通过结论。历史PAY-1、S1、当前单元/协议测试与真实集成证据分开记录；test-matrix.csv为逐项当前账本。
 
+当前（2026-11-20 TC-12补证）：父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**。本地真实business-only A→B、固定runner/input/argv实际失败→通过与生产report/stage关联在新r03普通/竞态各1顶层通过，12组A历史/原回执保持；[独立检查](research/tc12-independent-check-20261120.md)核对精确范围。TC-12保持PARTIAL：PR/CI及managed preparation/consent/settlement为明确夹具，真实支付仓库修复、daemon checkout与远端CI未验，归S4。r01/r02两次夹具恢复顺序失败完整保留，产品逻辑/依赖未改。以下计数与顺序为历史。
+
 当前（2026-11-20 TC-04补证）：父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**。真实签发机器凭据对人工完成授权/精确撤销/有效协作关闭的拒绝，连同完整事实不变和同body人类成功对照已[独立接受](research/tc04-independent-check-20261120.md)，TC-04从NOT_RUN推进PARTIAL。真实模型依据/风险/置信度质量仍未验证；普通任务获得明确人类授权后的Agent执行仍合法。r01错误码夹具失败保留，r02新库普通/竞态各11命名通过，无产品改动。TC-01必填/P1、TC-03分诊通知、S4输入、最终S5及签字继续开放。
 
 当前（2026-11-20 TC-01补证）：父矩阵 **9 PASS /10 PARTIAL /5 NOT_RUN**。TC-01完整正向UI创建/原身份/actor/time已独立通过，整例从NOT_RUN到PARTIAL；TC-03新增真实项目/起止日期/当前handler/High证据但状态不变，见[检查](research/tc01-independent-check-20261120.md)。通用字段仍可选，不能据正向例核销全局必填；P1映射和分诊通知语义未确认。真实模型、S4输入、最终S5与签字仍开放。以下TC-02及更早计数保留历史。

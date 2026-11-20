@@ -1,3 +1,7 @@
+## 2026-11-20 已执行切片：TC-12 本地实际代码修订回归
+
+按[最小补证计划](../../../docs/plans/2026-11-20-pay-241-code-revision-regression.md)新增单个service测试。一顶层，普通/竞态新r03各1PASS；真实本地Git A→business-only B、固定oracle/input/argv、原失败/QA退回、新候选/run/report/QA批准、12组A历史与原key保持。原r01/r02各0PASS1FAIL及source/config/raw保留，修正仅明确Resume/Stop夹具顺序；没有产品/依赖改动。生产report/stage与test-only managed preparation/consent/settlement分列，真实支付修复仍S4，TC-12保持PARTIAL。Main完成独立检查、资源/源核对、父记录及定向Lore提交推送，父任务不归档。
+
 ## 2026-11-20 已接受切片：TC-04 真实机器完成／授权拒绝
 
 沿用父任务及[最小补证计划](../../../docs/plans/2026-11-20-pay-241-machine-completion-proof.md)。仅新增一个实际router测试文件，复用TC-13真实claim及M1精确制品/交付夹具；两顶层、九拒绝叶、每模式十一命名。generic/restricted mat先成功读取，JWT+Agent提示独立；合法人类同body成功证明拒绝不是无效请求。完整新r02普通/竞态各11命名通过并独立接受；r01门禁响应预期失败保留。TC-04推进PARTIAL，父9PASS/11PARTIAL/4NOT_RUN；真实模型分析质量未测。真实模型质量、允许的指定普通任务执行授权和未启用策略保持各自合同，不扩大为禁止所有Agent状态写入。Main负责新隔离源/配置/数据库、记录、定向Lore提交推送。

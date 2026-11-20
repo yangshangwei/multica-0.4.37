@@ -1,5 +1,19 @@
 # PAY-241 当前会话进度
 
+## 2026-11-20：TC-12 本地真实代码修订回归完成，整例保持 PARTIAL
+
+父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**，原父任务继续 `in_progress`。一个新增 service 测试在完整新 r03 普通/竞态各 **1 顶层 PASS、零 FAIL/SKIP**；一个不同命名、两次模式执行，不是两条业务用例。[TC-12 独立检查](research/tc12-independent-check-20261120.md)已接受内部补证，阻挡项0。
+
+本地隔离 Git 的 A `b0cf66498df47bc42b0345301cb441d67ebbb81d` 实际运行失败：同一合成回调三次导致履约计数3；B `e5cbb7cd6c251dbe0f8c9796fe707c8d83bbe704` 直接以 A 为父，仅修改 business.py 后计数1、退出0。同一 runner/input/argv/tool，实际 commit/tree/blob/bundle/patch 和完整输出均保留。结果通过现有 candidate→typed comment→claim/permit→subject→run/report→QA return→development→新候选/review/report→QA approve 关联。B 借 A 报告精确409 stage_evidence_changed，仅新增原拒绝operation；A 的12组完整历史、原回执及bundle保持，新QA指向B报告与新review。
+
+范围是生产报告/阶段服务与本地合成代码执行。PR/CI观察、账号、managed preparation/consent/settlement为夹具；refreshPreparationConsent复用test-only retired ReconfigureTarget，未验证生产Switch、实际daemon checkout、浏览器、真实模型、支付或远端CI。TC-12继续PARTIAL；真实支付仓库业务修复与回归归S4，不能用本轮合成结果核销。
+
+原normal-r01和r02均0PASS/1FAIL完整保留。r01在target先于issue Resume处issue_paused，尚未执行A；r02已有A失败/QA退回，B准备刷新时缺target暂停导致target_pause_required。仅修显式Resume顺序及B配置前StopQueue，保留原断言/超时，完整新r03不拼接片段。最终源码a7224031，gofmt/vet通过；normal/race实际编译该最终源码。较早compile-only绑定e62源码，不冒充最终单独编译证明。
+
+执行源为已提交efdb597d6的5092服务端文件加唯一新测试，冻结5093记录，ROOT逐字节整合。历史共享PG仍启动，未向旧库写入/重启；本轮用独立现有pgvector镜像容器、当前1712迁移文件创建856账本/663索引的新template和六专库。失败/成功历史及原配置保留；七库停机前连接0、原gate epoch2恢复；10条记录命令及122个本地子命令退出，自有容器已停止、数据卷保留。实际残留见独立检查和私有final closure。既有fixture清理瞬态行，12组原历史存于私有快照，不能声称全业务行仍在SQL。共享journal及peer WIP保持。
+
+下一接续：TC-12内部版本关联补证已完成，真实修复仍待S4 I02–I09；TC-01全局必填、TC-03 P1/分诊语义、TC-04/14真实模型、最终S5与业务签字保持开放。继续内部补证前应先选取尚缺的精确刺激，复用已接受证据；本轮不把新的研究线索写成实施承诺。父任务不归档；测试/规范/计划已定向Lore提交`6ef6d152c`（3路径），验收记录另提交，推送以本轮最终Git回执为准。
+
 ## 2026-11-20：TC-04机器完成／人工授权拒绝内部切片独立通过
 
 父矩阵 **9 PASS /11 PARTIAL /4 NOT_RUN**。只将TC-04从NOT_RUN推进PARTIAL；真实模型分析的依据、风险和置信度仍未验证。[独立检查](research/tc04-independent-check-20261120.md)接受内部权限切片，阻挡项0，父任务继续in_progress。
