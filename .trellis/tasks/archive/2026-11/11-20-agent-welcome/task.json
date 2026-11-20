@@ -1,0 +1,43 @@
+{
+  "id": "agent-welcome",
+  "name": "agent-welcome",
+  "title": "智能体空状态：首页引导与功能演示",
+  "description": "参考用户截图，在工作空间没有智能体时展示创建引导和三张功能演示卡片，有智能体时直接显示列表。",
+  "status": "completed",
+  "dev_type": "frontend",
+  "scope": "agents",
+  "package": null,
+  "priority": "P2",
+  "creator": "artisan",
+  "assignee": "artisan",
+  "createdAt": "2026-11-20",
+  "completedAt": "2026-11-21",
+  "branch": "codex/cross-workspace-collaboration",
+  "base_branch": "main",
+  "worktree_path": null,
+  "commit": "b137eced55c2ca4ad76a7a8ff4f14325855a771a",
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    ".trellis/spec/views/frontend/agent-discovery.md",
+    "packages/views/agents/components/agent-welcome.tsx",
+    "packages/views/agents/components/agent-welcome.module.css",
+    "packages/views/agents/components/agent-welcome.module.css.d.ts",
+    "packages/views/agents/components/agent-welcome.test.tsx",
+    "packages/views/agents/components/agents-page.tsx",
+    "packages/views/agents/components/agents-page.test.tsx",
+    "packages/views/locales/en/agents.json",
+    "packages/views/locales/zh-Hans/agents.json",
+    "e2e/agent-welcome.spec.ts"
+  ],
+  "notes": "Approved scope implemented and independently checked. 134 focused tests; Views/Web/Desktop types; lint; production welcome and directory journeys; 16 layout combinations and visual verdict 94. See evidence.md. Inherited malformed-success list fallback remains documented; actual Electron and real models were not exercised.",
+  "meta": {
+    "acceptance": "passed",
+    "visual_score": 94,
+    "evidence": "evidence.md",
+    "qa_artifacts": "artifacts/qa/agent-welcome-20261120",
+    "owned_environment_cleanup": "passed"
+  }
+}
