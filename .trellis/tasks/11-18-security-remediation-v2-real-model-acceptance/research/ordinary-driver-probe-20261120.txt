@@ -1,0 +1,7 @@
+=== RUN   TestSecurityRemediationOrdinaryDriverPreparation
+--- PASS: TestSecurityRemediationOrdinaryDriverPreparation (0.01s)
+=== RUN   TestSecurityRemediationRealModelEntry
+    zz_secrem_preparation_test.go:57: real-agent gate absent; no executable or account access
+--- SKIP: TestSecurityRemediationRealModelEntry (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	1.723s
