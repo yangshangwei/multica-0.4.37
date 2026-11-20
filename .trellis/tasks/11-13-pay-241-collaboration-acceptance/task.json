@@ -34,7 +34,7 @@
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
     ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/current-baseline.md"
   ],
-  "notes": "2026-11-20：TC-01正向创建r02两端2/2独立接受，6会话、2UI创建/空标题门禁及原键GET/结果GET/同body重放，整例PARTIAL；TC03补项目/排期/当前handler/High，仍PARTIAL。父9PASS/10PARTIAL/5NOT_RUN，无产品改动，原失败保留。全局必填/P1/分诊语义、真实模型/S4/最终S5/签字继续开放。",
+  "notes": "2026-11-20：TC-06/12内部补证保持接受；已核对剩余15条未整例通过的精确条款、实际入口和现有测试，未发现值得新增测试的独立内部刺激。父9PASS/11PARTIAL/4NOT_RUN；首选接续为S4 E01的I02/I03及相关I09，TC-01/03语义、TC-04/14真实模型、其余S4、最终S5和签字仍开放。本轮仅研究/输入合同与记录，未新增产品或测试，未运行服务。",
   "meta": {
     "progress_history": [
       {
@@ -1893,12 +1893,99 @@
         "at": "2026-11-19T17:10:36.654944+00:00",
         "reason": "TC01 bounded positive creation accepted, entire case remainspartial",
         "previous_notes": "2026-11-20：TC-02真实三会话description同步/Activity历史独立通过，Web/Desktop r02各1顶层，共6会话18观察/30分页/4UI编辑，父9PASS/9PARTIAL/6NOT_RUN。仅2测试+规范，无产品改动；原r01时间格式夹具失败保留。S1-S3已归档；TC01正向创建待补，全局必填/P1映射、真实模型/S4/最终S5/业务签字独立。"
+      },
+      {
+        "at": "2026-11-20T03:39:43.846422+00:00",
+        "reason": "Synchronize stale current TC01 summary to authoritative CSV and retained TC06/12 acceptance; preserve replaced values without rewriting old evidence.",
+        "previous_current_fields": {
+          "notes": "2026-11-20：TC-01正向创建r02两端2/2独立接受，6会话、2UI创建/空标题门禁及原键GET/结果GET/同body重放，整例PARTIAL；TC03补项目/排期/当前handler/High，仍PARTIAL。父9PASS/10PARTIAL/5NOT_RUN，无产品改动，原失败保留。全局必填/P1/分诊语义、真实模型/S4/最终S5/签字继续开放。",
+          "latest_continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
+          "acceptance_state": "in_progress_TC01_positive_accepted_parent_open",
+          "parent_matrix_current_counts": {
+            "PASS": 9,
+            "PARTIAL": 10,
+            "NOT_RUN": 5,
+            "matrix_sha256": "ac849f56b40ff8afcdc7760354b1beb6d9828b49a72519aa171f36e207eead5e"
+          },
+          "next_internal_slice": {
+            "case": "TC-06",
+            "phase": "CONCURRENT_CONTENT_SUPPLEMENT_ACCEPTED_REMOTE_REPOSITORY_CI_PENDING_S4",
+            "source": "research/tc06-content-stimulus-gap-20261120.md",
+            "limits": "Live human-edit/runtime-reply and frozen-source supplement complete. Full TC06 remains PARTIAL; real remote branch/PR/CI requires S4 I02/I03. No next internal implementation preregistered. Preserve TC12 accepted local supplement and all existing acceptances."
+          },
+          "current_pay241_progress_selected_fields": {
+            "at": "2026-11-19T17:10:36.654944+00:00",
+            "phase": "TC01_POSITIVE_ACCEPTED_PARENT_OPEN",
+            "parent24": {
+              "PASS": 9,
+              "PARTIAL": 10,
+              "NOT_RUN": 5
+            },
+            "handoff_document": ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md",
+            "latest_completed_round": "TC01 positive creation r02",
+            "current_blocker": "GlobalmandatoryPAY/P1/triagenotificationsemantics; realmodel/S4inputs/finalS5/businesssignatures remain.",
+            "continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
+            "S5_final_candidate": "WAIT_FINAL_S3_S4",
+            "S2_commit_archive_pending": true,
+            "next_authorized_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+            "coordinator_thread": "01a1f3be-fba1-7fa0-9a29-e12c038e558e",
+            "parent_matrix": {
+              "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+              "sha256": "ac6d73351c306805d154050b246e094e4cac6ef5a4707de1e482aecf68176e73"
+            },
+            "progress_review": {
+              "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.json",
+              "sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7"
+            },
+            "new_task_or_Git_commit": false
+          }
+        }
+      },
+      {
+        "at": "2026-11-20T03:42:26.445742+00:00",
+        "reason": "Independent review: preserve old TC01 single-result and S3 quality aliases; current execution points to retained TC06 normal/race, while this session has documentation validation only.",
+        "previous_current_fields": {
+          "current_pay241_progress_selected_fields": {
+            "latest_actual_result_sha256": "aaa3ef04814ab4017a2e650071e864d04bbd921f868c53c94e42afe51264d401",
+            "current_state_evidence": {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/business-receipt-audit.json",
+              "sha256": "63ac0c5a074d8fb937886e60a832dfb08062cca2981e0744d4629db91a36c3fb"
+            },
+            "parent_matrix_application": {
+              "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/parent-matrix-application-tc23.json",
+              "sha256": "70b57ff6e5f2f2c9322e123a05be533f6ea9b2f06477356c853cefae15a224b3"
+            },
+            "observed_at": "2026-11-18T15:39:59Z"
+          },
+          "current_increment_quality_gate": {
+            "at": "2026-11-19T03:26:22.948741+00:00",
+            "status": "PASS",
+            "scope": "ordinary comment listener code + complete ordinary subscription R05 and controlled Extras-B R03 only",
+            "code_normal_race_each": {
+              "tops": 35,
+              "names": 57
+            },
+            "ordinary_R05": {
+              "tops": 2,
+              "retry": 0,
+              "blockers": 0
+            },
+            "runtime_R03": {
+              "tops": 4,
+              "subcases": 10,
+              "retry": 0,
+              "blockers": 0
+            },
+            "whole_S3_quality_gate": false,
+            "work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08"
+          }
+        }
       }
     ],
     "current_pay241_progress": {
-      "at": "2026-11-19T17:10:36.654944+00:00",
+      "at": "2026-11-20T03:39:43.846422+00:00",
       "active_child": null,
-      "phase": "TC01_POSITIVE_ACCEPTED_PARENT_OPEN",
+      "phase": "NEXT_INPUT_CONTRACT_ACCEPTED_PARENT_OPEN",
       "P2_verdict": "P2_CODE_ACCEPTED_R09_SCOPED",
       "joint_service_verdict": "JOINT_SERVICE_ACCEPTED_R09_SCOPED",
       "P2_available": true,
@@ -1911,21 +1998,22 @@
       "full_S2_accepted": true,
       "parent24": {
         "PASS": 9,
-        "PARTIAL": 10,
-        "NOT_RUN": 5
+        "PARTIAL": 11,
+        "NOT_RUN": 4
       },
       "progress_report": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/session-progress.md",
       "runtime_services_stopped": true,
-      "handoff_document": ".trellis/tasks/11-13-pay-241-s3-recovery/research/new-session-handoff-20261118.md",
-      "latest_completed_round": "TC01 positive creation r02",
-      "current_blocker": "GlobalmandatoryPAY/P1/triagenotificationsemantics; realmodel/S4inputs/finalS5/businesssignatures remain.",
+      "handoff_document": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
+      "latest_completed_round": "TC06 concurrent-content normal/race r01 (historical accepted execution; no new runtime round)",
+      "current_blocker": "TC01/03 business semantics; TC04/14 separately scoped real-model evidence; S4 I02-I09. E01 needs only I02/I03 and relevant I09 first. Final S5 awaits stable required S4 changes.",
       "progress_review": {
-        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/tc01-independent-check-20261120.json",
-        "sha256": "e0341ac03122fe047311056d3ad348a59bdce48c5df0895238a52af3becc16a7"
+        "status": "ACCEPTED_DOCUMENTATION_ONLY",
+        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-independent-check-20261120.json",
+        "sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32"
       },
       "S2_R33_actual_result_sha256": "41cf801e5bb428f3c76f4e4184352f825d04d21148d7549687686bbde4cf0782",
-      "latest_actual_result_sha256": "aaa3ef04814ab4017a2e650071e864d04bbd921f868c53c94e42afe51264d401",
-      "continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
+      "latest_actual_result_sha256": null,
+      "continuation_plan": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
       "r20_code_and_output_verdict": "ACCEPTED_SCOPE_ONLY",
       "r20_original_four_commands_started": 0,
       "r20_code_review": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r20-panel-repair-independent-check-20261116.json",
@@ -1935,7 +2023,7 @@
         "path": ".trellis/tasks/11-13-pay-241-s2-stage-approvals/research/r22-continuation-status-check-20261116.json",
         "sha256": "220d991e344ec1b844da1191c786327418d292970b39367996e1646773dbfaff"
       },
-      "coordinator_thread": "01a1f3be-fba1-7fa0-9a29-e12c038e558e",
+      "coordinator_thread": "01a1f6fd-76d4-7d50-9e8f-97c45203de73",
       "runtime_API_stopped": true,
       "production_platforms_running": false,
       "r22_genuine_red": {
@@ -1969,9 +2057,9 @@
       "R23_actual_scenarios_started": 0,
       "S3_remaining_recovery": "COMPLETED_ARCHIVED",
       "S4_real_inputs": "I02_I09_NOT_SUPPLIED",
-      "S5_final_candidate": "WAIT_FINAL_S3_S4",
-      "new_task_or_Git_commit": false,
-      "observed_at": "2026-11-18T15:39:59Z",
+      "S5_final_candidate": "WAIT_REQUIRED_S4_CHANGES_STABLE_AND_FINAL_CANDIDATE",
+      "new_task_or_Git_commit": true,
+      "observed_at": "2026-11-20T03:42:26.445742+00:00",
       "latest_completed_four_case_round": "R33-r01",
       "full_s2_accepted": true,
       "r23_codec_independent_verdict": "ACCEPTED",
@@ -2097,8 +2185,11 @@
         "sha256": "39e6a541aba4741342e4557350be544833780c93bd11b9100d55f338992e64da"
       },
       "current_state_evidence": {
-        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/business-receipt-audit.json",
-        "sha256": "63ac0c5a074d8fb937886e60a832dfb08062cca2981e0744d4629db91a36c3fb"
+        "kind": "documentation_only",
+        "status": "ACCEPTED_DOCUMENTATION_ONLY",
+        "contract": "research/next-input-contract-20261120.md",
+        "review": "research/next-input-independent-check-20261120.json",
+        "review_sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32"
       },
       "r27_submission_red": {
         "path": "/Volumes/artisan/.multica-acceptance/pay241-r27-preview-20261117-x12xjirm/verification/submission-red-r01/result.json",
@@ -3486,17 +3577,19 @@
         "blocking_product_findings": 0
       },
       "parent_matrix_application": {
-        "path": "/Volumes/artisan/.multica-acceptance/pay241-s3-clients-20261118-x4c5mjep/runtime/block-information-r08/parent-matrix-application-tc23.json",
-        "sha256": "70b57ff6e5f2f2c9322e123a05be533f6ea9b2f06477356c853cefae15a224b3"
+        "kind": "unchanged_entire_CSV",
+        "sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb",
+        "new_passes": 0,
+        "new_product_tests": 0
       },
       "parent_matrix": {
-        "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
-        "sha256": "ac6d73351c306805d154050b246e094e4cac6ef5a4707de1e482aecf68176e73"
+        "path": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/test-matrix.csv",
+        "sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb"
       },
       "full_S2_ROOT_record_application_done": true,
-      "S2_commit_archive_pending": true,
+      "S2_commit_archive_pending": false,
       "S2_merged_or_committed_this_turn": false,
-      "next_authorized_task": ".trellis/tasks/11-13-pay-241-s3-recovery",
+      "next_authorized_task": ".trellis/tasks/11-13-pay-241-collaboration-acceptance",
       "current_blocking_code_findings_scope": "FULL_S2_ACCEPTED_FROZEN_CONSUMING_SOURCE_SELECTED_ROOT",
       "real_S4_or_final_S5_or_parent_accepted": false,
       "S3_source_binding": ".trellis/tasks/11-13-pay-241-s3-recovery/research/s3-source-binding-20261118.md",
@@ -3522,7 +3615,22 @@
       "full_S3_accepted": true,
       "field_CAS_work_commit": "96a2bffe36803b2005354a213d21bba241286edd",
       "current_S3_ordinary_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/ordinary-subscription-r05-independent-check-20261119.json",
-      "current_S3_runtime_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.json"
+      "current_S3_runtime_report": ".trellis/tasks/11-13-pay-241-s3-recovery/research/controlled-runtime-r03-independent-check-20261119.json",
+      "latest_execution_evidence": {
+        "scope": "Retained TC06 r01 historical service execution at d1b25077b; not executed in this documentation session. Two distinct mode receipts, no single combined result hash.",
+        "report": "research/tc06-independent-check-20261120.json",
+        "report_sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57",
+        "results": [
+          {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-tc06-20261120-n164r8b4/verification/tc06-service-normal-r01/result.json",
+            "sha256": "75160fff3c0f47e4791fffa55fced7e02800336832539f57fd7faedc1bf18115"
+          },
+          {
+            "path": "/Volumes/artisan/.multica-acceptance/pay241-tc06-20261120-n164r8b4/verification/tc06-service-race-r01/result.json",
+            "sha256": "e2b5172a123047d352ecc5e328e0fc389e3c52be4ebeff511e8ce997be295a5d"
+          }
+        ]
+      }
     },
     "r16_progress_history": [
       {
@@ -3544,7 +3652,7 @@
       }
     ],
     "r16_progress_reconciled_at": "2026-11-16T02:56:13.022636+00:00",
-    "latest_continuation_plan": "docs/plans/2026-11-20-pay-241-creation-proof.md",
+    "latest_continuation_plan": ".trellis/tasks/11-13-pay-241-collaboration-acceptance/research/next-input-contract-20261120.md",
     "continuation_checkpoints": [
       {
         "at": "2026-11-17T12:28:43.553554+00:00",
@@ -4530,12 +4638,12 @@
         "previous_notes": "2026-11-18 最新R32原四3PASS1FAIL0NOTRUN/retry0：前三PASS，第四完成/回执恢复通过后587策略off失败409。策略only37条diagnostics无cap，原PUTrequest/trace/user/PID4038 LockDeliveryPolicyProject55P03→HTTP409artifact_authority_busy已证明，非CAS；原holder未知。R31空claim修复37pkg命名每mode接受/ROOT5+五build保持，R32仅2私有测试改动11每mode通过。API85045/bridge85029正常一次SIGTERM停止、连接0/gate82恢复/70settled55complete/租约预留0，Web86953/renderer86966保留；381旧制品保留/424当前7新槽位冻结。R33同层短reader等待回归与M1专用现250ms预算计划推进，旧stage-policy NOWAIT不改变；真实RED前产品未改。全部旧成功写入/失败不重放，完整S2/A12/S3-S5/父24仍开放0PASS9PARTIAL15NOTRUN。无新依赖/Git/真实模型资金生产。"
       }
     ],
-    "acceptance_state": "in_progress_TC01_positive_accepted_parent_open",
+    "acceptance_state": "in_progress_remaining_inputs_researched_parent_open",
     "parent_matrix_current_counts": {
       "PASS": 9,
-      "PARTIAL": 10,
-      "NOT_RUN": 5,
-      "matrix_sha256": "ac849f56b40ff8afcdc7760354b1beb6d9828b49a72519aa171f36e207eead5e"
+      "PARTIAL": 11,
+      "NOT_RUN": 4,
+      "matrix_sha256": "b7cd01931c5851f81d9caa2d1b4488ac13c03f8aa921d1e1a83cb83c6fd992eb"
     },
     "field_CAS_increment_acceptance": {
       "path": ".trellis/tasks/11-13-pay-241-s3-recovery/research/cas-independent-check-20261118.json",
@@ -4987,26 +5095,14 @@
       }
     ],
     "current_increment_quality_gate": {
-      "at": "2026-11-19T03:26:22.948741+00:00",
-      "status": "PASS",
-      "scope": "ordinary comment listener code + complete ordinary subscription R05 and controlled Extras-B R03 only",
-      "code_normal_race_each": {
-        "tops": 35,
-        "names": 57
-      },
-      "ordinary_R05": {
-        "tops": 2,
-        "retry": 0,
-        "blockers": 0
-      },
-      "runtime_R03": {
-        "tops": 4,
-        "subcases": 10,
-        "retry": 0,
-        "blockers": 0
-      },
-      "whole_S3_quality_gate": false,
-      "work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08"
+      "at": "2026-11-20T03:42:26.445742+00:00",
+      "status": "ACCEPTED_DOCUMENTATION_ONLY",
+      "scope": "remaining-input research and documentation only; no new product/test/runtime verification",
+      "report": "research/next-input-independent-check-20261120.json",
+      "tests_run": 0,
+      "whole_parent_accepted": false,
+      "blocking_findings": 0,
+      "report_sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32"
     },
     "ordinary_subscription_runtime_work_commit": "699d510b9478f05cc4160bb1dcfbd24b43527a08",
     "resume_progress_history_20261119": [
@@ -6697,10 +6793,20 @@
       "report": ".trellis/tasks/archive/2026-11/11-13-pay-241-s2-stage-approvals/report.md"
     },
     "next_internal_slice": {
-      "case": "TC-06",
-      "phase": "CONCURRENT_CONTENT_SUPPLEMENT_ACCEPTED_REMOTE_REPOSITORY_CI_PENDING_S4",
-      "source": "research/tc06-content-stimulus-gap-20261120.md",
-      "limits": "Live human-edit/runtime-reply and frozen-source supplement complete. Full TC06 remains PARTIAL; real remote branch/PR/CI requires S4 I02/I03. No next internal implementation preregistered. Preserve TC12 accepted local supplement and all existing acceptances."
+      "case": null,
+      "phase": "NO_NEW_INTERNAL_STIMULUS_IN_REVIEWED_REMAINDERS_INPUT_REQUIRED",
+      "source": "research/next-input-contract-20261120.md",
+      "limits": "TC06/12 supplements remain accepted. No new test or product implementation selected. Resume affected scope only after concrete semantic decision, external input, actual failure or source drift. Parent remains open.",
+      "next_external_slice": {
+        "task": ".trellis/tasks/11-13-pay-241-s4-external-integrations",
+        "case": "E01",
+        "required_inputs": [
+          "I02",
+          "I03",
+          "I09 E01 implementer/reviewer/QA subset"
+        ],
+        "all_I02_I09_required_before_E01": false
+      }
     },
     "TC13_acceptance": {
       "at": "2026-11-19T15:33:38.477789+00:00",
@@ -6838,6 +6944,29 @@
       },
       "report_json_sha256": "e0611f7f0a6f9409277eef80a5e509a07394f5aee92e03e7dc6116a0af729d57",
       "work_commit": "0d3cc34be910e2d2b6c56d11892a34951fe6b9b7"
+    },
+    "next_input_reconciliation": {
+      "at": "2026-11-20T03:39:43.846422+00:00",
+      "status": "ACCEPTED_DOCUMENTATION_ONLY",
+      "contract": "research/next-input-contract-20261120.md",
+      "research": [
+        "research/remaining-semantics-20261120.md",
+        "research/remaining-source-stimuli-20261120.md"
+      ],
+      "parent_counts": {
+        "PASS": 9,
+        "PARTIAL": 11,
+        "NOT_RUN": 4
+      },
+      "matrix_changed": false,
+      "new_product_files": 0,
+      "new_test_files": 0,
+      "tests_run": 0,
+      "runtime_services_started": 0,
+      "parent_complete": false,
+      "independent_report": "research/next-input-independent-check-20261120.json",
+      "independent_report_sha256": "52bf5ed1365c7fc151052c4a22d7d0105dabe0ca602170499f5ab1a008db1f32",
+      "work_commit": "55c3f2e1f49e402fa44de98d09c0b718bb85bc49"
     }
   }
 }
