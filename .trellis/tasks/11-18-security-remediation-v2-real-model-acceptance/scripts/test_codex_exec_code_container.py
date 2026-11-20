@@ -13,9 +13,7 @@ import codex_exec_code_container as code
 
 class CodePolicy(unittest.TestCase):
     def setUp(self):
-        evidence=Path('/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120')
-        evidence.mkdir(exist_ok=True)
-        self.tmp=tempfile.TemporaryDirectory(prefix='code-policy-test-',dir=evidence);self.addCleanup(self.tmp.cleanup)
+        self.tmp=tempfile.TemporaryDirectory(prefix='code-policy-test-');self.addCleanup(self.tmp.cleanup)
         self.root=Path(self.tmp.name).resolve();(self.root/'tests').mkdir()
         (self.root/'app.py').write_text('value = 1\n');(self.root/'tests/test_base.py').write_text('def test_base(): pass\n')
         for args in [['init','-q'],['config','user.name','Synthetic'],['config','user.email','synthetic@example.invalid'],['add','.'],['commit','-qm','Synthetic baseline']]:

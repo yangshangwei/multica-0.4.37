@@ -12,10 +12,8 @@ import contained_git_role_handoff as contained
 
 class ContainedGit(unittest.TestCase):
     def setUp(self):
-        base=Path('/Volumes/artisan/code/2026/secrem-v2-cli-evidence-20261120')
-        base.mkdir(exist_ok=True)
-        self.tmp=tempfile.TemporaryDirectory(prefix='contained-git-test-',dir=base);self.addCleanup(self.tmp.cleanup)
-        self.root=Path(self.tmp.name);self.repo=self.root/'repo';self.repo.mkdir()
+        self.tmp=tempfile.TemporaryDirectory(prefix='contained-git-test-');self.addCleanup(self.tmp.cleanup)
+        self.root=Path(self.tmp.name).resolve();self.repo=self.root/'repo';self.repo.mkdir()
         (self.repo/'tests').mkdir();(self.repo/'app.py').write_text('value = 1\n');(self.repo/'tests/test_base.py').write_text('def test_base(): pass\n')
         self.git('init','-q');self.git('config','user.name','Synthetic');self.git('config','user.email','synthetic@example.invalid');self.git('add','.');self.git('commit','-qm','Synthetic baseline')
         self.base=self.git('rev-parse','HEAD');self.protected={'tests/test_base.py':hashlib.sha256((self.repo/'tests/test_base.py').read_bytes()).hexdigest()}
