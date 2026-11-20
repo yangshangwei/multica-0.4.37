@@ -43,9 +43,10 @@ describe("creator suggestions",()=>{
  it("only requests on click and only selects on explicit adoption",async()=>{
   const needsSpace=vi.fn();render(ui(text,actors,{onNeedsSpace:needsSpace}));expect(call).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
-  fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   expect(call).toHaveBeenCalledTimes(1);expect(needsSpace).toHaveBeenCalledTimes(1);
   await screen.findByText("Investigate failures");expect(pick).not.toHaveBeenCalled();
+  // Visible text is the bare verb; the name still says whom.
+  expect(screen.getByRole("button",{name:"Use Ada"})).toHaveTextContent(/^Use$/);
   fireEvent.click(screen.getByRole("button",{name:"Use Ada"}));
   expect(pick).toHaveBeenCalledWith({type:"agent",id:"a"});
  });
@@ -54,6 +55,7 @@ describe("creator suggestions",()=>{
   const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   const signal=call.mock.calls[0]![0].signal as AbortSignal;
   text="Write documentation";view.rerender(ui());expect(signal.aborted).toBe(true);
+  expect(screen.getByRole("status")).toHaveTextContent("Something changed. Recommendations were cleared; ask again.");
   await act(async()=>resolve({recommendations:[{actor_type:"agent",actor_id:"a",reason:"Investigate failures"}]}));
   expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();expect(pick).not.toHaveBeenCalled();
  });
@@ -61,13 +63,65 @@ describe("creator suggestions",()=>{
   render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await screen.findByRole("button",{name:"Use Ada"});text="Changed immediately";
   fireEvent.click(screen.getByRole("button",{name:"Use Ada"}));expect(pick).not.toHaveBeenCalled();
+  expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
+  expect(screen.getByRole("status")).toHaveTextContent("Something changed. Recommendations were cleared; ask again.");
  });
  it("omits no-longer-eligible actors and keeps failure distinct from no matches",async()=>{
   const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await screen.findByRole("button",{name:"Use Ada"});view.rerender(ui(text,[]));
   expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
+  // With nobody left to suggest the button is off, so the failure needs candidates again.
+  view.rerender(ui());
   call.mockRejectedValueOnce(new Error("failed"));fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
   await waitFor(()=>expect(screen.getByRole("alert")).toBeInTheDocument());expect(pick).not.toHaveBeenCalled();
+ });
+ it("turns into the cancel control while pending, like the description helper",async()=>{
+  let resolve!:(value:unknown)=>void;call.mockImplementation(()=>new Promise(r=>{resolve=r}));
+  render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
+  expect(screen.getByRole("status")).toHaveTextContent("Finding suggestions...");
+  expect(screen.queryByRole("button",{name:"Suggest an agent"})).not.toBeInTheDocument();
+  expect(screen.getAllByRole("button")).toHaveLength(1);
+  fireEvent.click(screen.getByRole("button",{name:"Cancel"}));
+  expect((call.mock.calls[0]![0].signal as AbortSignal).aborted).toBe(true);
+  expect(screen.getByRole("button",{name:"Suggest an agent"})).toBeEnabled();
+  // A deliberate cancel is not a stale result, so nothing is announced.
+  expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  await act(async()=>resolve({recommendations:[{actor_type:"agent",actor_id:"a",reason:"Investigate failures"}]}));
+  expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
+ });
+ it("shows a failure in the alert tone with a retry that asks again",async()=>{
+  call.mockRejectedValueOnce(new Error("failed"));
+  render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
+  const alert=await screen.findByRole("alert");
+  expect(alert).toHaveTextContent("Could not get recommendations. Try again or choose manually.");
+  expect(alert.className).toContain("text-destructive");
+  fireEvent.click(screen.getByRole("button",{name:"Try again"}));
+  expect(call).toHaveBeenCalledTimes(2);
+  await screen.findByRole("button",{name:"Use Ada"});
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+ });
+ it("says why a shown result disappeared, until the next request, but not for a discarded error",async()=>{
+  const view=render(ui());fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
+  await screen.findByRole("button",{name:"Use Ada"});
+  view.rerender(ui(text,actors,{projectId:"other-project"}));
+  expect(screen.queryByRole("button",{name:"Use Ada"})).not.toBeInTheDocument();
+  expect(screen.getByRole("status")).toHaveTextContent("Something changed. Recommendations were cleared; ask again.");
+  call.mockRejectedValueOnce(new Error("failed"));
+  fireEvent.click(screen.getByRole("button",{name:"Suggest an agent"}));
+  await screen.findByRole("alert");
+  expect(screen.queryByText("Something changed. Recommendations were cleared; ask again.")).not.toBeInTheDocument();
+  view.rerender(ui(text,actors,{projectId:"third-project"}));
+  expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+  expect(screen.queryByRole("status")).not.toBeInTheDocument();
+ });
+ it("does not ask for suggestions when nobody can be suggested, and says why",()=>{
+  render(ui(text,[]));
+  const button=screen.getByRole("button",{name:"Suggest an agent"});
+  expect(button).toBeDisabled();
+  expect(button).toHaveAccessibleDescription("No agent or squad to suggest.");
+  expect(screen.getByText("No agent or squad to suggest.")).toBeVisible();
+  fireEvent.click(button);
+  expect(call).not.toHaveBeenCalled();
  });
 });
 

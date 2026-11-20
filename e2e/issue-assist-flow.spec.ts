@@ -122,7 +122,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       await editor.fill("Keep my later edit about monthly reports.");
       await done;
-      await expect(dialog.getByRole("status")).toHaveText("Content changed. Optimize again to use your latest edits.");
+      await expect(dialog.getByRole("status")).toHaveText("Content changed. Refine again to use your latest edits.");
       await expect(editor).toHaveText("Keep my later edit about monthly reports.");
       await dialog.getByRole("button", { name: "Discard", exact: true }).click();
       await editor.fill("Cancel this E2E_ASSIST_DELAY");
@@ -132,7 +132,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await expect(editor).toHaveText("Cancel this E2E_ASSIST_DELAY");
       await editor.fill("Preserve this draft E2E_ASSIST_FAIL");
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
-      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
+      await expect(dialog.getByRole("alert")).toContainText("Refinement failed.");
       await expect(editor).toHaveText("Preserve this draft E2E_ASSIST_FAIL");
       await editor.fill("Retry with complete requirements E2E_ASSIST_ZERO");
       await dialog.getByRole("button", { name: "Try again", exact: true }).click();
@@ -152,7 +152,7 @@ test.describe("AI refinement through real server and task creation", () => {
       await dialog.getByRole("button", { name: /^(Refine description|Help me refine)$/ }).click();
       const draftMarkdown: string = (await optimized).request().postDataJSON().text;
       expect(draftMarkdown.replaceAll("\\_", "_")).toBe(failedDraft);
-      await expect(dialog.getByRole("alert")).toContainText("Optimization failed.");
+      await expect(dialog.getByRole("alert")).toContainText("Refinement failed.");
       await expect(editor).toHaveText(failedDraft);
       const submit = dialog.getByRole("button", { name: "Create Issue", exact: true });
       await expect(submit).toBeEnabled();
@@ -180,7 +180,7 @@ test.describe("AI refinement through real server and task creation", () => {
         await editor.fill("Weekly reporting requirements.\n".repeat(80));
         for (const viewport of [{ width: 1280, height: 900 }, { width: 390, height: 844 }, { width: 667, height: 375 }]) {
           await page.setViewportSize(viewport);
-          const submit = dialog.getByRole("button", { name: mode === "manual" ? "Create Issue" : "Create", exact: true });
+          const submit = dialog.getByRole("button", { name: mode === "manual" ? "Create Issue" : "Send to agent", exact: true });
           await expect(submit).toBeInViewport();
           await dialog.getByLabel(questions[0], { exact: true }).fill("Team leads");
           await expect(dialog.getByRole("button", { name: "Add answers to draft", exact: true })).toBeEnabled();
@@ -203,12 +203,12 @@ test.describe("AI refinement through real server and task creation", () => {
         method: "POST", body: { name: "Weekly reporter " + suffix, runtime_id: runtime.id, visibility: "workspace" },
       });
       const { dialog, editor } = await open(page, workspace.slug, "agent");
-      await dialog.getByRole("button", { name: /Send to/ }).click();
+      await dialog.getByRole("button", { name: /^Send to (?!agent$)/ }).click();
       await page.locator("button[data-picker-item]").filter({ hasText: agent.name }).click();
       await refine(page, dialog, editor, "E2E_ASSIST_ONE");
       // Unanswered clarifications must never block task creation.
       const accepted = page.waitForResponse((res) => responseFor(res, "/api/issues/quick-create"));
-      await dialog.getByRole("button", { name: "Create", exact: true }).click();
+      await dialog.getByRole("button", { name: "Send to agent", exact: true }).click();
       const response = await accepted;
       expect(response.status()).toBe(202);
       const task: { task_id: string } = await response.json();

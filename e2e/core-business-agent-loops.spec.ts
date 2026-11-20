@@ -70,7 +70,7 @@ async function streamTaskMessage(actor: Actor, taskId: string, seq: number, cont
   expect(response.ok, await response.clone().text()).toBe(true);
 }
 
-/** New Issue in agent mode → Send to <agent> → Create; returns the 202 body. */
+/** New Issue in agent mode → Send to <agent> → Send to agent; returns the 202 body. */
 async function quickCreate(page: Page, agent: { id: string; name: string }, prompt: string) {
   await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
   const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
@@ -80,12 +80,12 @@ async function quickCreate(page: Page, agent: { id: string; name: string }, prom
   await expect(editor).toBeFocused();
   await editor.fill(prompt);
   await expect(editor).toHaveText(prompt);
-  await dialog.getByRole("button", { name: /^Send to/ }).click();
+  await dialog.getByRole("button", { name: /^Send to (?!agent$)/ }).click();
   await page.getByPlaceholder("Search names or responsibilities...", { exact: true }).fill(agent.name);
   await page.locator(`[data-actor-key="agent:${agent.id}"] button[data-picker-item]`).click();
-  await expect(dialog.getByRole("button", { name: /^Send to/ })).toContainText(agent.name);
+  await expect(dialog.getByRole("button", { name: /^Send to (?!agent$)/ })).toContainText(agent.name);
   const accepted = page.waitForResponse((response) => isPost(response, "/api/issues/quick-create"));
-  await dialog.getByRole("button", { name: /^Create(?:\s|$)/ }).last().click();
+  await dialog.getByRole("button", { name: "Send to agent", exact: true }).click();
   const response = await accepted;
   expect(response.status()).toBe(202);
   expect(response.request().postDataJSON()).toMatchObject({ agent_id: agent.id, prompt });

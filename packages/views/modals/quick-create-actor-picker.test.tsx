@@ -264,9 +264,9 @@ describe("QuickCreateActorPicker", () => {
     await user.click(screen.getByRole("button", { name: "Retry AI squads" }));
     expect(retry).toHaveBeenCalledOnce();
     await user.type(input, "No match");
-    expect(screen.queryByText("No matching actors")).not.toBeInTheDocument();
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Agents" }));
-    expect(screen.getByText("No matching actors")).toBeInTheDocument();
+    expect(screen.getByText("No matches")).toBeInTheDocument();
   });
 
   it("disables pins until preferences are ready and reports initial loading", async () => {
@@ -275,8 +275,8 @@ describe("QuickCreateActorPicker", () => {
     await openPicker(user);
     expect(screen.getByRole("button", { name: "Pin Ada to favorites" })).toBeDisabled();
     rerender(<Harness preferencesReady={false} agentState={{pending:true,error:false,hasData:false,onRetry:vi.fn()}} squadState={{pending:true,error:false,hasData:false,onRetry:vi.fn()}} />);
-    expect(screen.getByRole("status")).toHaveTextContent("Loading actors...");
-    expect(screen.queryByText("No matching actors")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Loading...");
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
   });
 
   it("appends a display page, retains it through pinning and resets it when the search changes", async () => {
@@ -310,7 +310,7 @@ describe("QuickCreateActorPicker", () => {
     expect(document.querySelectorAll("button[data-picker-item]")).toHaveLength(4);
     await user.click(screen.getByRole("button", {name:"Back to shortcuts"}));
     await user.click(screen.getByRole("button", {name:"AI squads"}));
-    expect(screen.getByText("No favorites or recently used actors of this type")).toBeInTheDocument();
+    expect(screen.getByText("No favorites or recent picks of this type")).toBeInTheDocument();
     expect(screen.getByRole("button", {name:"Browse all (1)"})).toBeEnabled();
   });
 });
@@ -349,7 +349,7 @@ it("orders the categories and opens the full Mika category even from unrelated s
   await user.type(input, "Coordinate");
   await user.click(screen.getByRole("button", { name: "AI squads" }));
   expect(input).toHaveValue("Coordinate");
-  expect(screen.getByText("No matching actors")).toBeInTheDocument();
+  expect(screen.getByText("No matches")).toBeInTheDocument();
   await user.click(screen.getByRole("button", { name: "小阿孚" }));
   await user.click(input);
   await user.keyboard("{Enter}");

@@ -33,7 +33,7 @@ async function open(page:Page,slug?:string) {
  if(slug) await page.goto(`/${slug}/issues`,{waitUntil:'domcontentloaded'});
  await page.getByRole('button',{name:'New Issue',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'Quick create issue',exact:true});await expect(dialog).toBeVisible();
- return {dialog,editor:dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]'),creator:dialog.getByRole('button',{name:/^Send to/})};
+ return {dialog,editor:dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]'),creator:dialog.getByRole('button',{name:/^Send to (?!agent$)/})};
 }
 async function choose(page:Page,creator:ReturnType<Page['getByRole']>,type:string,id:string) {
  await creator.click();await page.locator(`[data-actor-key="${type}:${id}"] button[data-picker-item]`).click();
@@ -61,7 +61,7 @@ test('explicit default outranks accepted history and project candidates do not r
   expect((await preference(page,f.workspace.slug)).defaultActor).toEqual({type:'agent',id:f.writer.id});
   await choose(page,ui.creator,'agent',f.diagnostic.id);
   const accepted=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/issues/quick-create'&&r.request().method()==='POST');
-  await ui.dialog.getByRole('button',{name:'Create',exact:true}).click();expect((await accepted).status()).toBe(202);await expect(ui.dialog).toBeHidden();
+  await ui.dialog.getByRole('button',{name:'Send to agent',exact:true}).click();expect((await accepted).status()).toBe(202);await expect(ui.dialog).toBeHidden();
   ui=await open(page);await expect(ui.creator).toContainText(f.writer.name);
   await ui.dialog.getByRole('button',{name:'No project',exact:true}).click();
   await page.locator('button[data-picker-item]').filter({hasText:f.project.title}).click();
@@ -92,22 +92,22 @@ test('recommendations require a click, adoption stays explicit, and changed text
   await expect(ui.editor).toHaveText('Diagnose refund failures and verify fixes.');
   const after=await preference(page,f.workspace.slug);expect(after.defaultActor).toEqual(before.defaultActor);expect(after.recentActors).toEqual(before.recentActors);
   await ui.editor.fill('Diagnose refund failures CREATORSLOW');await page.waitForTimeout(200);
-  await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();await expect(ui.dialog.getByText('Finding suitable assistants...')).toBeVisible();
+  await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();await expect(ui.dialog.getByText('Finding suggestions...')).toBeVisible();
   await ui.editor.fill('Write technical documentation instead.');await page.waitForTimeout(1800);
   await expect(ui.dialog.getByRole('button',{name:/^Use /})).toHaveCount(0);await expect(ui.creator).toContainText(f.diagnostic.name);
   await ui.editor.fill('CREATORFAIL diagnose failures');await page.waitForTimeout(200);await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();
-  await expect(ui.dialog.getByRole('alert')).toBeVisible();await expect(ui.dialog.getByRole('button',{name:'Create',exact:true})).toBeEnabled();
+  await expect(ui.dialog.getByRole('alert')).toBeVisible();await expect(ui.dialog.getByRole('button',{name:'Send to agent',exact:true})).toBeEnabled();
   await ui.editor.fill('Diagnose refund failures');await page.waitForTimeout(200);await ui.dialog.getByRole('button',{name:'Suggest an agent',exact:true}).click();
   await expect(ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true})).toBeVisible();
   await page.setViewportSize({width:375,height:812});await expect(ui.dialog.getByRole('button',{name:`Use ${f.diagnostic.name}`,exact:true})).toBeInViewport();
-  await expect(ui.dialog.getByRole('button',{name:'Create',exact:true})).toBeInViewport({ratio:1});
+  await expect(ui.dialog.getByRole('button',{name:'Send to agent',exact:true})).toBeInViewport({ratio:1});
   await expect(ui.editor).toBeInViewport({ratio:0.5});
   await page.screenshot({path:info.outputPath('recommendations-375.png'),animations:'disabled'});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   const lastSuggestion=await tabThroughRecommendations(page,ui.dialog);
   const adoptedName=(await lastSuggestion.getAttribute('aria-label'))!.slice('Use '.length);
   await expect(ui.editor).toBeInViewport({ratio:0.5});
-  await expect(ui.dialog.getByRole('button',{name:'Create',exact:true})).toBeInViewport({ratio:1});
+  await expect(ui.dialog.getByRole('button',{name:'Send to agent',exact:true})).toBeInViewport({ratio:1});
   await page.screenshot({path:info.outputPath('recommendations-375-scrolled.png'),animations:'disabled'});
   await lastSuggestion.click();await expect(ui.creator).toContainText(adoptedName);
   await expect(ui.editor).toHaveText('Diagnose refund failures');
@@ -138,12 +138,12 @@ test('Chinese narrow-screen controls expose defaults and grounded suggestions',a
   await page.emulateMedia({colorScheme:'dark'});await page.goto(`/${f.workspace.slug}/issues`,{waitUntil:'domcontentloaded'});
   await page.getByRole('button',{name:'新建任务',exact:true}).click();
   const dialog=page.getByRole('dialog',{name:'快速创建任务',exact:true});await expect(dialog).toBeVisible();await page.setViewportSize({width:375,height:812});
-  const creator=dialog.getByRole('button',{name:/^交给/});await creator.click();
-  await page.getByRole('button',{name:'将当前助手设为默认',exact:true}).click();await page.keyboard.press('Escape');
+  const creator=dialog.getByRole('button',{name:/^交给(?!智能体$)/});await creator.click();
+  await page.getByRole('button',{name:'将当前选择设为默认',exact:true}).click();await page.keyboard.press('Escape');
   const editor=dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]');await editor.fill('请排查退款失败，并验证修复。');await page.waitForTimeout(200);
   await dialog.getByRole('button',{name:'帮我选智能体',exact:true}).click();
   await expect(dialog.getByRole('button',{name:`使用 ${f.diagnostic.name}`,exact:true})).toBeInViewport();
-  await expect(dialog.getByRole('button',{name:'创建',exact:true})).toBeInViewport({ratio:1});
+  await expect(dialog.getByRole('button',{name:'交给智能体',exact:true})).toBeInViewport({ratio:1});
   await expect(editor).toBeInViewport({ratio:0.5});
   await page.screenshot({path:info.outputPath('recommendations-zh-375.png'),animations:'disabled'});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -151,7 +151,7 @@ test('Chinese narrow-screen controls expose defaults and grounded suggestions',a
   const lastSuggestion=await tabThroughRecommendations(page,dialog);
   const adoptedName=(await lastSuggestion.getAttribute('aria-label'))!.slice('使用 '.length);
   await expect(editor).toBeInViewport({ratio:0.5});
-  await expect(dialog.getByRole('button',{name:'创建',exact:true})).toBeInViewport({ratio:1});
+  await expect(dialog.getByRole('button',{name:'交给智能体',exact:true})).toBeInViewport({ratio:1});
   await page.screenshot({path:info.outputPath('recommendations-zh-375-scrolled.png'),animations:'disabled'});
   await lastSuggestion.click();await expect(creator).toContainText(adoptedName);
   await expect(editor).toHaveText('请排查退款失败，并验证修复。');

@@ -62,7 +62,7 @@ test.describe("quick-create autonomy guard", () => {
     await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
 
     // Nothing is remembered yet, so the seed is the first agent that can create.
-    const trigger = page.getByRole("button", { name: /^Send to/ });
+    const trigger = page.getByRole("button", { name: /^Send to (?!agent$)/ });
     await expect(trigger).toContainText(fixture.contributor.name);
     await expect(trigger).not.toContainText(fixture.observer.name);
 
@@ -83,7 +83,7 @@ test.describe("quick-create autonomy guard", () => {
     const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
     await dialog.locator('[contenteditable="true"]').first().fill("File the slow ES query as its own task.");
     const accepted = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/issues/quick-create" && response.request().method() === "POST");
-    await page.getByRole("button", { name: /^Create(?:\s|$)/ }).last().click();
+    await page.getByRole("button", { name: "Send to agent", exact: true }).click();
     const response = await accepted;
     expect(response.status()).toBe(202);
     expect(response.request().postDataJSON()).toMatchObject({ squad_id: fixture.contributorSquad.id });
@@ -106,16 +106,17 @@ test.describe("quick-create autonomy guard", () => {
     await page.goto(`/${fixture.slug}/agents/${fixture.observer.id}`, { waitUntil: "domcontentloaded" });
     await page.getByRole("button", { name: "Assign work", exact: true }).click();
     const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
-    await expect(page.getByRole("button", { name: /^Send to/ })).toContainText(fixture.observer.name);
+    await expect(page.getByRole("button", { name: /^Send to (?!agent$)/ })).toContainText(fixture.observer.name);
     await expect(dialog.getByText(`${fixture.observer.name} cannot create this issue`, { exact: true })).toBeVisible();
     await expect(dialog.getByText(new RegExp(`needs autonomy level Contributor or above\\. ${fixture.observer.name} is Observer`))).toBeVisible();
 
     const prompt = dialog.locator('[contenteditable="true"]').first();
     await prompt.fill("Analyse why the ES query takes three minutes.");
-    // Content is present, so the autonomy refusal is what keeps Create disabled.
-    const create = dialog.locator(`button[title="${BLOCKED_TOOLTIP}"]`);
+    // Content is present, so the autonomy refusal is what keeps the submit button blocked.
+    // aria-disabled, so it stays focusable and its reason is readable.
+    const create = dialog.getByRole("button", { name: "Send to agent", exact: true });
     await expect(create).toBeDisabled();
-    await expect(create).toHaveText(/^Create/);
+    await expect(create).toHaveAccessibleDescription(BLOCKED_TOOLTIP);
     await prompt.press("ControlOrMeta+Enter");
     await expect(dialog).toBeVisible();
 
