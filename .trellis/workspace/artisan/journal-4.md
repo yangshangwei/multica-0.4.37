@@ -112,3 +112,40 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Status
 
 [OK] **Completed**
+
+
+## Session 176: 智能体欢迎页完成与生产验收
+<!-- trellis-session: v=2 fp=96f2f1a7cf2d63e5 -->
+
+**Date**: 2026-11-21
+**Task**: 智能体欢迎页完成与生产验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成首个智能体欢迎页、独立检查和生产 Web 验收，归档 11-20-agent-welcome。
+
+### Main Changes
+
+- 共享 AgentWelcome 替换通用空状态：三步上手、创建/文档/运行时链接、三张手动演示卡片；查询成功且原始列表为空时展示。
+- 保留加载/失败/筛选/归档目录、审批入口和在线运行时事实；增加刷新失败与工作空间切换回归，修正 CSS 编译期圆角变量。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `b137eced55c2ca4ad76a7a8ff4f14325855a771a` | feat(agents): help empty workspaces recruit their first AI teammate |
+
+### Testing
+
+- [OK] 6 个 Vitest 文件、134 项测试通过；Views/Web/Desktop 类型检查、定向 ESLint 和机械设计检测通过。
+- [OK] 生产 Web 欢迎页完整流程和既有智能体目录回归通过；中英文×浅深色×四种尺寸共 16 组布局、圆角与溢出检查通过，视觉评分 84→94。
+- [OK] 保留原始圆角失败和头像/名称重复链接定位失败；专用 API/Web 进程停止，已标记的测试数据库删除，证据保留于 artifacts/qa/agent-welcome-20261120。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本任务已完成并归档。现有畸形 API 成功响应回退空数组限制已记录；Electron 原生窗口、真实模型和全仓 make check 不在本次验证范围。
