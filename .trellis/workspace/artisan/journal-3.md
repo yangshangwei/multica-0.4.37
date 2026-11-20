@@ -1671,3 +1671,40 @@ Archived the parent tracker at the user's explicit request; retained #37/#38 acc
 ### Next Steps
 
 - F3-S2、F4、F5和剩余M1仍开放；真实供应商费用、结算释放与强制预算另行设计授权。
+
+
+## Session 174: Complete automation welcome and browser acceptance
+<!-- trellis-session: v=2 fp=453083989b5436ee -->
+
+**Date**: 2026-11-21
+**Task**: Complete automation welcome and browser acceptance
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Delivered and archived the approved automation welcome; corrected the loading-header click race and completed independent source and visual acceptance.
+
+### Main Changes
+
+- Shared welcome introduction, six real templates, creation/docs/catalog actions and canonical scroll/focus restoration; populated management list retained.
+- Completed task archived at .trellis/tasks/archive/2026-11/11-20-automation-welcome; unrelated pending task and journal changes preserved.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `80df04fe3` | feat(autopilots): help teams start their first automation |
+
+### Testing
+
+- [OK] 122 focused component/locale tests; focused ESLint and views typecheck passed.
+- [OK] 14 production Chromium cases passed in 40.3s; 18 screenshots reviewed, ship 94/100; detector returned no findings.
+- [OK] Only owned API/Web processes stopped; allocated ports 18602 and 13522 verified closed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining approved implementation work. See archived verification.md for retained evidence and packaged/native acceptance limits.

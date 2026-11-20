@@ -20,7 +20,7 @@
 | File | Lines | Status |
 |------|-------|--------|
 | `journal-4.md` | ~114 | Active |
-| `journal-3.md` | ~1673 | Archived |
+| `journal-3.md` | ~1710 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
@@ -33,6 +33,7 @@
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
 | 175 | 2026-11-21 | AI小队空状态首页实现与生产验收 | `3059b899a64c20270d4bad41f00d8e3593e4f9df` | `codex/cross-workspace-collaboration` |
+| 174 | 2026-11-21 | Complete automation welcome and browser acceptance | `80df04fe3` | `codex/cross-workspace-collaboration` |
 | 173 | 2026-11-20 | F3-S1 验证接管、本地集成与归档 | `584846f95`, `8126073f6` | `codex/f3-completion-20261120` |
 | 172 | 2026-11-20 | Archive November 18 E2E follow-up at user request | `22e0b202f60255f5dc9030139454ec87e4606270`, `da19f01ddc722396327cda94227cb9a6d7036cc7` | `codex/cross-workspace-collaboration` |
 | 171 | 2026-11-20 | Archive full regression after current verification and cleanup | `963461f67`, `cbcb86b94`, `37e2faa0f`, `6f51d385f`, `ddc80d5af`, `fa1867259` | `codex/cross-workspace-collaboration` |
