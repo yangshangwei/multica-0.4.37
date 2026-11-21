@@ -223,10 +223,11 @@ test("squad audit: browser interactions, responsive layout and performance", asy
     await api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
     await page.context().addCookies([{ name: "multica-locale", value: "zh-Hans", url: new URL(page.url()).origin }]);
     await page.reload();
-    await expect(page.getByRole("tab", { name: "工作空间", exact: true })).toBeVisible();
-    await page.getByRole("tab", { name: "模板", exact: true }).click();
-    await expect(page).toHaveURL(/view=templates/);
-    await page.getByRole("tab", { name: "工作空间", exact: true }).click();
+    await expect(page.getByRole("tab", { name: "工作空间", exact: true })).toHaveCount(0);
+    await page.goto(`/${workspace.slug}/squads?view=templates&from=bookmark#top`);
+    await expect(page).toHaveURL(`/${workspace.slug}/marketplace?from=bookmark&type=squad-templates#top`);
+    await expect(page.getByRole("tab", { name: "AI小队模板", exact: true })).toHaveAttribute("aria-selected", "true");
+    await page.goto(`/${workspace.slug}/squads`);
     await expect(squadLink).toBeVisible();
     await page.screenshot({ path: `.omx/reports/squad-browser/${phase}-zh-touch.png`, animations: "disabled" });
     await cdp.send("Emulation.setTouchEmulationEnabled", { enabled: false });

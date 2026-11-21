@@ -4,17 +4,23 @@
 
 The workspace sidebar exposes one Capability market destination while Skills and
 MCP remain management pages. Web and Desktop mount the same `MarketplacePage`.
-The market has MCP and Skills tabs; neither an external registry nor a combined
-resource/permission model is introduced.
+The market has MCP, Skills, and built-in AI squad template tabs; neither an
+external registry nor a combined resource/permission model is introduced.
 
 ## Signatures and routes
 
 - `paths.workspace(slug).marketplace()` → `/{slug}/marketplace`.
-- `paths.workspace(slug).marketplaceTab(type: "mcp" | "skills")` adds `?type=…`.
+- `paths.workspace(slug).marketplaceTab(type: "mcp" | "skills" | "squad-templates")` adds `?type=…`.
 - `McpMarketPanel({ workspaceId, active? })` and
   `SkillMarketPanel({ workspaceId, active? })` own their domain catalogs/dialogs.
+- `SquadTemplatesMarketPanel({ workspaceId, active })` adapts the shared squad
+  template catalog to the market, loading the saved squad inventory only while
+  active so template cards can link existing instances accurately.
 - Missing or unrecognized `type` selects MCP. Navigation uses the shared
   adapter, retaining unrelated query parameters and the fragment.
+- The old `/{slug}/squads?view=templates` bookmark replaces its location with
+  `/{slug}/marketplace?type=squad-templates`, preserving unrelated query
+  parameters and the fragment.
 
 The parameterless page builder, `WORKSPACE_PAGES`, sidebar, route icon mapping,
 command-search keywords and editor workspace-link recognition must agree.
@@ -27,8 +33,10 @@ not a new root route and does not reserve a workspace slug.
 The URL owns the selected type. Once visited, a type panel stays mounted but
 hidden/inert when inactive. Pass `active=false` into its queries and dialogs;
 CSS on the surrounding panel alone cannot hide a portal. Returning to a type
-restores its draft and source/filter context. Never eagerly mount the complete
-SkillsPage or MCP management controller just to reuse its catalog.
+restores its draft and source/filter context. Squad template queries are disabled
+while inactive and their project setup dialog is closed with the panel. Never
+eagerly mount the complete SkillsPage or MCP management controller just to reuse
+its catalog.
 
 Controllers remount on workspace identity changes. Desktop's TabContent mounts
 only one active tab host; it does not keep inactive React page trees alive.
@@ -49,12 +57,15 @@ provenance, input and retry contracts live in the corresponding market specs.
 | Inactive visited type | No visible portals or catalog polling; retain draft |
 | Workspace changes | Fresh scoped controller; no old assignment/draft shown |
 | One catalog fails | Other type remains reachable; error is not an empty catalog |
+| Squad inventory fails | Show retry feedback; do not imply no saved instances |
+| Legacy squad template URL | Replace with the market squad-template type and preserve other URL context |
 | Empty resource library | Keep management page and offer explicit market link |
 
 ## Good, base and bad cases
 
 - Good: a dirty Skill editor survives a type round-trip with the same DOM values.
-- Base: the menu opens MCP and Skills opens from its library's From template link.
+- Base: the menu opens MCP; Skills opens from its library's From template link;
+  the squad welcome opens the squad-template category.
 - Bad: selecting a type unmounts a dirty editor, or hiding the panel leaves its
   portaled dialog over the other type.
 
@@ -73,6 +84,12 @@ the user has begun editing. Keep the visited panel and pass its visibility:
 
 ```tsx
 <SkillMarketPanel workspaceId={workspaceId} active={type === "skills"} />
+```
+
+The squad catalog follows the same retained panel contract:
+
+```tsx
+<SquadTemplatesMarketPanel workspaceId={workspaceId} active={type === "squad-templates"} />
 ```
 
 The surrounding shell must also hide/inert the inactive panel.

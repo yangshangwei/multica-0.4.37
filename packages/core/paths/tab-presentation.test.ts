@@ -15,8 +15,8 @@ function present(url: string, data: TabEntityData = {}) {
 }
 
 describe("resolveTabPresentation — pages", () => {
-  it("keeps both capability catalogs under the localized market tab title", () => {
-    for (const type of ["mcp", "skills"]) {
+  it("keeps every capability catalog under the localized market tab title", () => {
+    for (const type of ["mcp", "skills", "squad-templates"]) {
       expect(present(`/acme/marketplace?type=${type}`)).toEqual({
         visual: { kind: "icon", icon: "Store" },
         title: { kind: "nav", navKey: "marketplace" },

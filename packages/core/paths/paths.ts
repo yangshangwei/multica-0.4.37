@@ -104,7 +104,7 @@ function workspaceScoped(slug: string) {
     runtimeSettings: (machineId: string, runtimeId: string) =>
       `${ws}/runtimes/${encode(machineId)}/runtime/${encode(runtimeId)}`,
     marketplace: () => `${ws}/marketplace`,
-    marketplaceTab: (type: "mcp" | "skills") => `${ws}/marketplace?type=${type}`,
+    marketplaceTab: (type: "mcp" | "skills" | "squad-templates") => `${ws}/marketplace?type=${type}`,
     skills: () => `${ws}/skills`,
     mcp: () => `${ws}/mcp`,
     skillDetail: (id: string) => `${ws}/skills/${encode(id)}`,

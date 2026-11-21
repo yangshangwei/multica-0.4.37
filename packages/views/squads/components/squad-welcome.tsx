@@ -200,6 +200,10 @@ export function SquadWelcome() {
               <Plus className="size-4" aria-hidden="true" />
               {t(($) => $.page.new_button)}
             </Button>
+            <Button variant="ghost" className="h-11 gap-2 px-2" render={<AppLink href={paths.marketplaceTab("squad-templates")} />}>
+              <Layers2 className="size-4" aria-hidden="true" />
+              {t(($) => $.welcome.templates)}
+            </Button>
             <Button variant="ghost" className="h-11 gap-2 px-2" render={<AppLink href={paths.docsPage(DOCS_SLUGS.squads)} />}>
               <BookOpen className="size-4" aria-hidden="true" />
               {t(($) => $.welcome.docs)}

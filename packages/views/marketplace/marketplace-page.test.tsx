@@ -35,6 +35,11 @@ vi.mock("../skills", () => ({
     </div>
   ),
 }));
+vi.mock("./squad-templates-market-panel", () => ({
+  SquadTemplatesMarketPanel: ({ workspaceId, active }: { workspaceId: string; active: boolean }) => (
+    <div data-testid="squad-templates-panel" data-workspace={workspaceId} data-active={active} />
+  ),
+}));
 
 function Page({ locale = "en" }: { locale?: "en" | "zh-Hans" }) {
   return (
@@ -58,6 +63,7 @@ describe("MarketplacePage", () => {
     ["type=unknown", "MCP"],
     ["type=mcp", "MCP"],
     ["type=skills", "Skills"],
+    ["type=squad-templates", "Squad templates"],
   ])("restores the active catalog from %s", (search, label) => {
     state.searchParams = new URLSearchParams(search);
     render(<Page />);
@@ -103,6 +109,33 @@ describe("MarketplacePage", () => {
     expect(skillDraft).toHaveValue("skill instructions");
   });
 
+  it("retains the squad-template panel while switching and preserves location context", async () => {
+    state.searchParams = new URLSearchParams("source=deployment");
+    state.hash = "#catalog";
+    const user = userEvent.setup();
+    const { rerender } = render(<Page />);
+
+    expect(screen.queryByTestId("squad-templates-panel")).toBeNull();
+    await user.click(screen.getByRole("tab", { name: "Squad templates" }));
+    expect(state.push).toHaveBeenLastCalledWith("/acme/marketplace?source=deployment&type=squad-templates#catalog");
+
+    state.searchParams = new URLSearchParams("source=deployment&type=squad-templates");
+    rerender(<Page />);
+    const panel = screen.getByTestId("squad-templates-panel");
+    expect(panel).toHaveAttribute("data-active", "true");
+
+    state.searchParams = new URLSearchParams("source=deployment&type=skills");
+    rerender(<Page />);
+    expect(panel).toBeInTheDocument();
+    expect(panel).toHaveAttribute("data-active", "false");
+    expect(panel.closest('[role="tabpanel"]')).toHaveAttribute("inert");
+
+    state.searchParams = new URLSearchParams("source=deployment&type=squad-templates");
+    rerender(<Page />);
+    expect(screen.getByTestId("squad-templates-panel")).toBe(panel);
+    expect(panel).toHaveAttribute("data-active", "true");
+  });
+
   it("activates a focused type with the keyboard", async () => {
     const user = userEvent.setup();
     render(<Page />);
@@ -112,6 +145,20 @@ describe("MarketplacePage", () => {
     expect(state.push).not.toHaveBeenCalled();
     await user.keyboard("{Enter}");
     expect(state.push).toHaveBeenCalledWith("/acme/marketplace?type=skills");
+  });
+
+  it("reaches the squad-template category with tab keyboard navigation", async () => {
+    state.searchParams = new URLSearchParams("type=skills");
+    const user = userEvent.setup();
+    render(<Page />);
+    const skills = screen.getByRole("tab", { name: "Skills" });
+    skills.focus();
+
+    await user.keyboard("{ArrowRight}");
+    const squadTemplates = screen.getByRole("tab", { name: "Squad templates" });
+    expect(squadTemplates).toHaveFocus();
+    await user.keyboard("{Enter}");
+    expect(state.push).toHaveBeenCalledWith("/acme/marketplace?type=squad-templates");
   });
 
   it("resets retained panels when workspace identity changes", async () => {
@@ -133,5 +180,6 @@ describe("MarketplacePage", () => {
     expect(screen.getByRole("tablist", { name: "能力类型" })).toBeVisible();
     expect(screen.getByRole("tab", { name: "MCP" })).toBeVisible();
     expect(screen.getByRole("tab", { name: "Skills" })).toBeVisible();
+    expect(screen.getByRole("tab", { name: "AI小队模板" })).toBeVisible();
   });
 });

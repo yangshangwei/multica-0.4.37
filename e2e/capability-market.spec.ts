@@ -31,6 +31,7 @@ test("capability market restores type and draft through history while resource m
     const types = page.getByRole("tablist", { name: "Capability type", exact: true });
     const mcp = types.getByRole("tab", { name: "MCP", exact: true });
     const skills = types.getByRole("tab", { name: "Skills", exact: true });
+    const squadTemplates = types.getByRole("tab", { name: "Squad templates", exact: true });
     await expect(mcp).toHaveAttribute("aria-selected", "true");
     await expect(page.getByTestId("mcp-market")).toBeVisible();
     const navigationScreenshot = info.outputPath("capability-market-navigation.png");
@@ -49,6 +50,15 @@ test("capability market restores type and draft through history while resource m
     await expect(skills).toHaveAttribute("aria-selected", "true");
     await page.reload();
     await expect(skills).toHaveAttribute("aria-selected", "true");
+
+    await squadTemplates.click();
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=squad-templates`);
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("region", { name: "Squad templates", exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(skills).toHaveAttribute("aria-selected", "true");
+    await page.goForward();
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
 
     await page.goto(`/${slug}/marketplace?type=invalid&context=keep#catalog`);
     await expect(mcp).toHaveAttribute("aria-selected", "true");

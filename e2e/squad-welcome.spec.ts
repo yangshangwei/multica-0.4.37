@@ -50,10 +50,11 @@ test("empty squads explain collaboration and keep creation and docs reachable", 
     await expect(page).toHaveURL(`/${workspace.slug}/docs/squads`);
     await expect(page.getByRole("heading", { name: "AI小队", exact: true })).toBeVisible();
     await page.goBack();
-    await page.getByRole("tab", { name: "Templates", exact: true }).click();
-    await expect(page).toHaveURL(`/${workspace.slug}/squads?view=templates`);
+    await page.getByRole("link", { name: "Browse templates", exact: true }).click();
+    await expect(page).toHaveURL(`/${workspace.slug}/marketplace?type=squad-templates`);
+    await expect(page.getByRole("tab", { name: "Squad templates", exact: true })).toHaveAttribute("aria-selected", "true");
     await expect(page.getByRole("button", { name: "Apply to project", exact: true }).first()).toBeVisible();
-    await page.getByRole("tab", { name: "Workspace", exact: true }).click();
+    await page.goBack();
     await expect(hero).toBeVisible();
 
     for (const locale of ["en", "zh-Hans"] as const) {

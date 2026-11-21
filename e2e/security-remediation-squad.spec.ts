@@ -60,7 +60,7 @@ for (const labels of [
       const template = templates.find((entry) => entry.key === "security-remediation");
       if (!template) throw new Error("Security remediation template was not returned");
 
-      const catalogPath = `/${workspace.slug}/squads?view=templates`;
+      const catalogPath = `/${workspace.slug}/marketplace?type=squad-templates`;
       await page.setViewportSize({ width: 1440, height: 1000 });
       await page.goto(catalogPath);
       const catalog = page.getByRole("region", { name: labels.catalog, exact: true });

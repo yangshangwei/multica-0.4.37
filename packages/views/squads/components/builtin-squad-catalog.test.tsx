@@ -11,15 +11,19 @@ const mocks = vi.hoisted(() => ({
   pending: false,
   failed: false,
   retry: vi.fn(),
+  templateQueryEnabled: true,
 }));
 
 vi.mock("../../agents/create/use-role-templates", () => ({
-  useSquadTemplates: () => ({
-    data: mocks.templates,
-    isPending: mocks.pending,
-    isError: mocks.failed,
-    refetch: mocks.retry,
-  }),
+  useSquadTemplates: (options?: { enabled?: boolean }) => {
+    mocks.templateQueryEnabled = options?.enabled ?? true;
+    return {
+      data: mocks.templates,
+      isPending: mocks.pending,
+      isError: mocks.failed,
+      refetch: mocks.retry,
+    };
+  },
 }));
 vi.mock("@multica/core/paths", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/paths")>();
@@ -60,13 +64,13 @@ function squad(id: string, name: string, overrides: Partial<Squad> = {}): Squad 
   };
 }
 
-function renderCatalog(squads: Squad[] = [], locale: SupportedLocale = "en") {
+function renderCatalog(squads: Squad[] = [], locale: SupportedLocale = "en", active = true) {
   const navigation: NavigationAdapter = {
     push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/acme/squads",
     searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path,
   };
   return {
-    ...renderWithI18n(<NavigationProvider value={navigation}><BuiltinSquadCatalog squads={squads} /></NavigationProvider>, { locale }),
+    ...renderWithI18n(<NavigationProvider value={navigation}><BuiltinSquadCatalog squads={squads} active={active} /></NavigationProvider>, { locale }),
     navigation,
   };
 }
@@ -76,6 +80,7 @@ beforeEach(() => {
   mocks.templates = [TEMPLATE];
   mocks.pending = false;
   mocks.failed = false;
+  mocks.templateQueryEnabled = true;
 });
 
 describe("BuiltinSquadCatalog", () => {
@@ -129,6 +134,21 @@ describe("BuiltinSquadCatalog", () => {
     expect(within(dialog).getByText(TEMPLATE.instructions)).toBeVisible();
     fireEvent.click(within(dialog).getByRole("button", { name: "Close" }));
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+
+  it("stops fetching and closes project setup when the market panel becomes inactive", () => {
+    const { rerender, navigation } = renderCatalog();
+    fireEvent.click(screen.getByRole("button", { name: "Apply to project" }));
+    expect(screen.getByRole("dialog", { name: TEMPLATE.title })).toBeVisible();
+
+    rerender(
+      <NavigationProvider value={navigation}>
+        <BuiltinSquadCatalog squads={[]} active={false} />
+      </NavigationProvider>,
+    );
+
+    expect(mocks.templateQueryEnabled).toBe(false);
+    expect(screen.queryByRole("dialog", { name: TEMPLATE.title })).not.toBeInTheDocument();
   });
 
   it.each([

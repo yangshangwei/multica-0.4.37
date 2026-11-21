@@ -56,6 +56,7 @@ describe("paths.workspace(slug)", () => {
     expect(ws.marketplace()).toBe("/acme/marketplace");
     expect(ws.marketplaceTab("mcp")).toBe("/acme/marketplace?type=mcp");
     expect(ws.marketplaceTab("skills")).toBe("/acme/marketplace?type=skills");
+    expect(ws.marketplaceTab("squad-templates")).toBe("/acme/marketplace?type=squad-templates");
     expect(paths.workspace("team space").marketplace()).toBe("/team%20space/marketplace");
   });
 

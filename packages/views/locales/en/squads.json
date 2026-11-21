@@ -1,6 +1,8 @@
 {
   "page": {
     "title": "Squads",
+    "tagline": "Give work to a squad and let the leader coordinate each role.",
+    "learn_more": "Learn more",
     "new_button": "New Squad",
     "template_button": "Create from template",
     "empty_no_match": "No squads match your filters.",
@@ -15,10 +17,6 @@
     "row_menu": "Squad actions",
     "archive_action": "Archive",
     "list_error": "Could not load squads.",
-    "tabs": {
-      "workspace": "Workspace",
-      "templates": "Templates"
-    },
     "custom_button": "Create custom squad",
     "sort_name": "Name"
   },
@@ -28,6 +26,7 @@
     "title_end": "work as a team.",
     "description": "Give your squad an issue. The leader understands the goal, delegates by role, and follows each step. You have one place to work with the whole team.",
     "docs": "Read the docs",
+    "templates": "Browse templates",
     "examples": "How squads work",
     "example": "Example",
     "previous": "Previous example",
@@ -216,6 +215,8 @@
     "description": "Choose a workflow and apply it to a new or existing project.",
     "loading": "Loading squad templates...",
     "error": "Could not load squad templates.",
+    "squads_loading": "Loading saved squads...",
+    "squads_error": "Could not load saved squads.",
     "empty": "No squad templates are available.",
     "retry": "Retry",
     "use_for_project": "Apply to project",

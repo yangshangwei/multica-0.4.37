@@ -107,10 +107,17 @@ installation changes. Base UI assigns switch IDs to hidden checkboxes: use
 
 ### Squad discovery and template identity
 
-The squad page keeps workspace instances separate from the template catalog.
-`?view=templates` opens the catalog; the default URL opens saved squads. Preserve
-unrelated query parameters and the hash when replacing the current view. A
-template-instance link must return to the catalog through browser Back.
+The squad page is a single saved-squad directory. Built-in templates live in
+the Capability market's `squad-templates` category; the successful-empty
+`SquadWelcome` keeps a direct catalog link. The old `?view=templates` bookmark
+replaces its location with `/{slug}/marketplace?type=squad-templates`, preserving
+unrelated query parameters and the hash. Template-instance links return to the
+market category through browser Back.
+
+`SquadTemplatesMarketPanel` only loads saved squads while active, because the
+catalog matches active instances by template provenance. It passes `active` to
+`BuiltinSquadCatalog`; an inactive catalog stops template fetching and closes its
+project setup dialog so no portal remains over another market category.
 
 Match instances by `template_key`, never by the editable squad name. Concise
 catalog summaries are display copy only: pass the original template into project
@@ -138,12 +145,13 @@ localized status region; do not replace saved descriptions with template copy.
 
 ### Squad first-use welcome
 
-`SquadsPage` mounts the shared `SquadWelcome` only in the workspace tab when
-the squad Query has `isSuccess` and the unfiltered saved list is empty. Error
-feedback takes precedence, including a failed refresh after an empty response.
-Pending or missing reads keep the loading state; a filtered-empty populated
-workspace keeps collection recovery. An explicit `?view=templates` remains
-independent. The inherited `ApiClient.listSquads()` schema fallback is still
+`SquadsPage` is a single saved-squad directory and mounts the shared
+`SquadWelcome` only when the squad Query has `isSuccess` and the unfiltered
+saved list is empty. Error feedback takes precedence, including a failed refresh
+after an empty response. Pending or missing reads keep the loading state; a
+filtered-empty populated workspace keeps collection recovery. The legacy
+`?view=templates` URL redirects to the market and never selects this welcome.
+The inherited `ApiClient.listSquads()` schema fallback is still
 `EMPTY_SQUAD_LIST`, so this view cannot identify malformed successful responses.
 
 The welcome hero owns the single creation `AppLink` to `paths.newSquad()`;
