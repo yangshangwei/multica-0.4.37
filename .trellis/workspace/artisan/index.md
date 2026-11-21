@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 179
+- **Total Sessions**: 180
 - **Last Active**: 2026-11-21
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~254 | Active |
+| `journal-4.md` | ~290 | Active |
 | `journal-3.md` | ~1710 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 180 | 2026-11-21 | Skills 欢迎页验收、提交与归档 | `86b910dfa0fd7e5593739fc5defee2bf99831c35` | `codex/cross-workspace-collaboration` |
 | 179 | 2026-11-21 | 运行时欢迎页完成与生产验收 | `055ae1d768dea657a30544f6bc94b2a1965c6f45` | `codex/cross-workspace-collaboration` |
 | 178 | 2026-11-21 | 收件箱延后：持久化提醒与跨设备验收 | `9e54271fdbb90571f7a713f10f9a7a69056097f3` | `codex/cross-workspace-collaboration` |
 | 177 | 2026-11-21 | 分拣台欢迎页完成与生产验收 | `7938f3307` | `codex/cross-workspace-collaboration` |

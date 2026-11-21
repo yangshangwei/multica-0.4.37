@@ -252,3 +252,39 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 详细验收见 `.trellis/tasks/archive/2026-11/11-21-runtime-welcome/verification.md`。
+
+
+## Session 180: Skills 欢迎页验收、提交与归档
+<!-- trellis-session: v=2 fp=dc65b8d1057279d7 -->
+
+**Date**: 2026-11-21
+**Task**: Skills 欢迎页验收、提交与归档
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+技能库成功确认没有已保存 skill 时展示欢迎页，用三个手动示例解释添加、分配和后续复用。首条 skill 保存后恢复目录。
+
+### Main Changes
+
+- 复用现有创建选择器、应用内文档和模板市场；欢迎页只保留一个新建入口。
+- 记录成功空目录条件、焦点恢复、中英双语场景及快照语义；归档需求、设计与验收。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `86b910dfa0fd7e5593739fc5defee2bf99831c35` | feat(skills): explain reusable team methods before first creation |
+
+### Testing
+
+- [OK] 本轮重跑 474 项 Skills 和语言一致性测试、定向 ESLint、Views/Web/Desktop 类型检查，全部通过。
+- [OK] 核对已验收源码哈希；此前生产 Web 构建与浏览器流程、Electron 渲染器流程及 94/100 视觉复核对应同一产品源码。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 验收见 `.trellis/tasks/archive/2026-11/11-21-skills-welcome/evidence.md`。已记录既有 API 空数组回退和安装包、原生移动端验收边界。
