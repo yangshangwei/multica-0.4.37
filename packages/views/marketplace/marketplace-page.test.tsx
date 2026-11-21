@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, render, screen } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
@@ -63,11 +63,6 @@ beforeEach(() => {
   state.searchParams = new URLSearchParams();
   state.hash = "";
   state.push.mockClear();
-});
-
-afterEach(() => {
-  vi.restoreAllMocks();
-  vi.unstubAllGlobals();
 });
 
 describe("MarketplacePage", () => {
@@ -161,38 +156,25 @@ describe("MarketplacePage", () => {
     expect(state.push).toHaveBeenCalledWith("/acme/marketplace?type=skills");
   });
 
-  it("keeps the selected type in view on URL changes and strip resize, and releases its observer", () => {
-    const scroll = vi.spyOn(HTMLElement.prototype, "scrollIntoView");
-    const observers: Array<{ notify: () => void; targets: Element[]; disconnect: ReturnType<typeof vi.fn> }> = [];
-    vi.stubGlobal("ResizeObserver", class {
-      private entry;
-      constructor(callback: () => void) {
-        this.entry = { notify: callback, targets: [] as Element[], disconnect: vi.fn() };
-        observers.push(this.entry);
-      }
-      observe = (target: Element) => { this.entry.targets.push(target); };
-      disconnect = () => { this.entry.disconnect(); };
-    });
-    const { rerender, unmount } = render(<Page />);
-    const strip = screen.getByRole("tablist").parentElement;
-    const initialObserver = observers.find((observer) => observer.targets.includes(strip!));
-    expect(initialObserver).toBeDefined();
-    expect(scroll.mock.contexts.at(-1)).toBe(screen.getByRole("tab", { name: "MCP" }));
-    expect(scroll).toHaveBeenLastCalledWith({ block: "nearest", inline: "nearest" });
+  it("keeps the example and its docs in sync with committed category navigation", async () => {
+    const { rerender } = render(<Page />);
+    const example = () => within(screen.getByRole("figure", { name: "Usage example" }));
+    expect(example().getByText("Playwright", { exact: true })).toBeInTheDocument();
 
-    state.searchParams = new URLSearchParams("type=agent-templates");
+    await userEvent.setup().click(screen.getByRole("tab", { name: "Skills" }));
+    expect(state.push).toHaveBeenCalledWith("/acme/marketplace?type=skills");
+    expect(example().getByText("Playwright", { exact: true })).toBeInTheDocument();
+
+    state.searchParams = new URLSearchParams("type=skills");
     rerender(<Page />);
-    const selected = screen.getByRole("tab", { name: "Agent templates" });
-    expect(scroll.mock.contexts.at(-1)).toBe(selected);
-    expect(initialObserver?.disconnect).toHaveBeenCalledOnce();
-    scroll.mockClear();
-    const activeObserver = observers.find((observer) => observer.targets.includes(strip!) && observer.disconnect.mock.calls.length === 0);
-    expect(activeObserver).toBeDefined();
-    act(() => activeObserver?.notify());
-    expect(scroll.mock.contexts.at(-1)).toBe(selected);
-    expect(scroll).toHaveBeenLastCalledWith({ block: "nearest", inline: "nearest" });
-    unmount();
-    expect(activeObserver?.disconnect).toHaveBeenCalledOnce();
+    expect(example().queryByText("Playwright", { exact: true })).not.toBeInTheDocument();
+    expect(example().getByText("Sign-up checklist", { exact: true })).toBeInTheDocument();
+    expect(example().getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/acme/docs/skills");
+
+    state.searchParams = new URLSearchParams();
+    rerender(<Page />);
+    expect(example().getByText("Playwright", { exact: true })).toBeInTheDocument();
+    expect(example().getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/acme/docs/mcp");
   });
 
   it("lazily retains agent templates through history and resets them with the workspace", async () => {

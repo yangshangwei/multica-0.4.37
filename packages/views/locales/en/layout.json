@@ -23,13 +23,45 @@
     "iterations": "Iterations"
   },
   "marketplace": {
-    "tagline": "Browse MCP, skill, squad, and agent templates.",
-    "learn_more": "Learn more →",
     "type_label": "Capability type",
-    "mcp": "MCP",
-    "skills": "Skills",
-    "squad_templates": "Squad templates",
-    "agent_templates": "Agent templates"
+    "welcome": {
+      "title": "Equip your team for the next task",
+      "description": "Connect a tool, reuse a workflow, or start with a template for an agent or squad. Pick a category to see how it helps."
+    },
+    "example": {
+      "label": "Usage example",
+      "task": "Check sign-up before release",
+      "show": "See how it’s used",
+      "docs": "Read the docs"
+    },
+    "mcp": {
+      "label": "MCP",
+      "purpose": "Connect tools",
+      "resource": "Playwright",
+      "setup": "Configure the Playwright MCP server and assign it to your test agent.",
+      "outcome": "The agent can open the page and fill in the sign-up form."
+    },
+    "skills": {
+      "label": "Skills",
+      "purpose": "Reuse workflows",
+      "resource": "Sign-up checklist",
+      "setup": "Save the sign-up checks and how to record results as a skill.",
+      "outcome": "Reuse the same steps each time you test sign-up."
+    },
+    "squad_templates": {
+      "label": "Squad templates",
+      "purpose": "Build a squad",
+      "resource": "Release Squad",
+      "setup": "Start with the Release Squad template and give the squad this task.",
+      "outcome": "The lead coordinates testing and release prep, then asks a person to approve the release."
+    },
+    "agent_templates": {
+      "label": "Agent templates",
+      "purpose": "Create an agent",
+      "resource": "QA Engineer",
+      "setup": "Create an agent from the QA Engineer template, then assign the sign-up check.",
+      "outcome": "The agent checks the flow and reports the results in the task."
+    }
   },
   "tab": {
     "issue": "Issue",

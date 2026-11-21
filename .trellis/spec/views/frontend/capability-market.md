@@ -50,6 +50,35 @@ There is no new global navigation guard or cross-route draft persistence.
 Leaving a workspace/page or switching Desktop tabs retains existing transient
 dialog disposal behavior, while caches/preferences remain workspace-scoped.
 
+## Welcome and case directory
+
+`MarketplaceWelcome` stays inside the shared market and is driven by the same
+URL-selected category as the retained catalog panels. Keep all four directory
+entries visible; Base UI tab semantics provide arrow-key focus movement and
+Enter/Space activation, while navigation still commits through the existing
+adapter. The selected entry, case detail, and documentation destination must
+agree after direct entry and browser history changes. Invalid or missing types
+continue to select MCP.
+
+The release sign-up check is clearly marked as an example. Its MCP, Skills,
+squad-template, and agent-template details explain what the user would
+configure, reuse, assemble, or create, and what that enables. Selecting a
+directory entry or opening its compact disclosure is presentation-only: it
+does not install, assign, create, or execute a resource. Keep the documentation
+link category-specific and use the existing documentation/navigation adapter.
+
+The welcome directory uses a two-column layout on narrow surfaces and sits
+beside the example on wide surfaces. On compact layouts, use a native closed
+`details` disclosure inside the active catalog's existing scroll root so the
+example can open without trapping the catalog below a second scroller. Preserve
+the agent-template panel's original scroll root and restoration key by passing
+the disclosure through its leading slot. Do not bring back a horizontal type
+strip or a width observer. Active styling must stay identifiable on hover;
+keyboard focus stays visible, coarse-pointer targets remain at least 44px, and
+the case transition is disabled for reduced-motion users. Keep the welcome
+presentation-only and workspace-scoped; it must not add preferences, queries,
+or a new route.
+
 Market copy creation and ordinary skill creation keep their different success
 navigation. MCP save and assignment remain separate. Domain permission,
 provenance, input and retry contracts live in the corresponding market specs.

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, type ReactNode } from "react";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
@@ -11,11 +11,17 @@ import { useT } from "../i18n";
 import { PAGE_GUTTER } from "../layout/page-header";
 import { useRestoredScrollRef, useRestoredViewState, useViewStateWriter } from "../platform/scroll-restoration";
 
-export function AgentTemplatesMarketPanel({ workspaceId, active }: { workspaceId: string; active: boolean }) {
-  return <AgentTemplatesMarketPanelContent key={workspaceId} workspaceId={workspaceId} active={active} />;
+interface AgentTemplatesMarketPanelProps {
+  workspaceId: string;
+  active: boolean;
+  leading?: ReactNode;
 }
 
-function AgentTemplatesMarketPanelContent({ workspaceId, active }: { workspaceId: string; active: boolean }) {
+export function AgentTemplatesMarketPanel(props: AgentTemplatesMarketPanelProps) {
+  return <AgentTemplatesMarketPanelContent key={props.workspaceId} {...props} />;
+}
+
+function AgentTemplatesMarketPanelContent({ workspaceId, active, leading }: AgentTemplatesMarketPanelProps) {
   const { t } = useT("agents");
   const paths = useWorkspacePaths();
   const { data, isPending, isError, refetch } = useRoleTemplates({ enabled: active && !!workspaceId });
@@ -48,6 +54,7 @@ function AgentTemplatesMarketPanelContent({ workspaceId, active }: { workspaceId
       data-tab-scroll-root="agent-template-market"
       className={cn("min-h-0 min-w-0 flex-1 overflow-y-auto py-6", PAGE_GUTTER)}
     >
+      {leading}
       <div className="mx-auto w-full max-w-5xl">
         <h2 className="text-balance text-title-lg font-semibold">{t(($) => $.role_templates.market_title)}</h2>
         <p className="mt-2 max-w-2xl text-pretty text-body text-muted-foreground">{t(($) => $.role_templates.market_description)}</p>

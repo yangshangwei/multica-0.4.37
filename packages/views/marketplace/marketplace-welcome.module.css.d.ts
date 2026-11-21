@@ -1,0 +1,26 @@
+declare const styles: {
+  readonly marketplace: string;
+  readonly welcome: string;
+  readonly intro: string;
+  readonly title: string;
+  readonly description: string;
+  readonly directory: string;
+  readonly entry: string;
+  readonly entryIcon: string;
+  readonly purpose: string;
+  readonly entryArrow: string;
+  readonly wideExample: string;
+  readonly ticket: string;
+  readonly ticketHeader: string;
+  readonly exampleLabel: string;
+  readonly ticketBody: string;
+  readonly caseDetail: string;
+  readonly capabilityStep: string;
+  readonly outcome: string;
+  readonly ticketFooter: string;
+  readonly docsLink: string;
+  readonly compactExample: string;
+  readonly summary: string;
+  readonly chevron: string;
+};
+export default styles;
