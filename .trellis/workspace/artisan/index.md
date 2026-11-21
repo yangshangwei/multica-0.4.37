@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 184
+- **Total Sessions**: 185
 - **Last Active**: 2026-11-21
 <!-- @@@/auto:current-status -->
 
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~413 | Active |
+| `journal-4.md` | ~448 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 185 | 2026-11-21 | Capability market welcome | `a40a44f59` | `codex/cross-workspace-collaboration` |
 | 184 | 2026-11-21 | 智能体模板纳入能力市场 | `828df41865f067ee4328f38e123682f73cf2beb1`, `09281851723cdabdf20ed1e6a55f6354cebec926` | `codex/cross-workspace-collaboration` |
 | 183 | 2026-11-21 | 简化 AI 小队页并迁移模板到能力市场 | `3e1b08d4c` | `codex/cross-workspace-collaboration` |
 | 182 | 2026-11-21 | MCP 市场浏览与配置引导优化 | `9e5dfbe5c` | `codex/cross-workspace-collaboration` |

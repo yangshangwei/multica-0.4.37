@@ -411,3 +411,38 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Status
 
 [OK] **Completed**
+
+
+## Session 185: Capability market welcome
+<!-- trellis-session: v=2 fp=c1c19e5117f7381a -->
+
+**Date**: 2026-11-21
+**Task**: Capability market welcome
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Added a bilingual capability-market welcome and responsive case directory, preserved URL/history and catalog lifecycle behavior, and verified with focused views tests and production Web Playwright.
+
+### Main Changes
+
+- Added a shared task example for MCP, Skills, squad templates, and agent templates with compact disclosure inside existing catalog scroll roots.
+- Documented the URL, selection, scrolling, and reduced-motion contract.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a40a44f59` | Help teams choose the right capability for a task |
+
+### Testing
+
+- [OK] 89 focused Vitest tests, views typecheck, scoped ESLint, Playwright 2/2, Impeccable detector, and diff checks passed.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Native Desktop renderer acceptance remains unrun.
