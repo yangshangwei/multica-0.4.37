@@ -1,0 +1,22 @@
+declare const styles: {
+  readonly welcome: string;
+  readonly layout: string;
+  readonly intro: string;
+  readonly steps: string;
+  readonly step: string;
+  readonly stepIcon: string;
+  readonly showcase: string;
+  readonly exampleLabel: string;
+  readonly iterationCard: string;
+  readonly cardHeader: string;
+  readonly status: string;
+  readonly progressSummary: string;
+  readonly progressTrack: string;
+  readonly progressBar: string;
+  readonly taskList: string;
+  readonly task: string;
+  readonly taskIcon: string;
+  readonly taskIconDone: string;
+  readonly handoff: string;
+};
+export default styles;

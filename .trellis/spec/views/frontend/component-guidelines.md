@@ -166,6 +166,30 @@ journey is `e2e/squad-welcome.spec.ts`. Check both locales, narrow windows and
 the actual Desktop scroll container; DOM visibility alone does not prove a
 control lies in the viewport or that a native capture painted the latest scroll.
 
+### Iteration first-use welcome
+
+`IterationOverview` may render `IterationWelcome` only when the workspace
+settings read says iterations are enabled and the complete catalogue query has
+successfully returned an empty array with no active filters. The catalogue is
+current saved data, not an audit log: an empty response cannot prove that a
+deleted unused iteration never existed. A history-only catalogue, a filtered
+empty result, a pending read, or a failed refresh must retain the ordinary
+timeline state and its recovery controls.
+
+The welcome owns the single `Create iteration` action and opens the existing
+controlled creation dialog. It may move the settings link into the intro while
+the welcome is visible, but must not add a second route or persist a dismissed
+flag. The illustrative card is local static content; it must not read, create,
+or mutate iteration data. Keep the existing planned-empty detail actions
+(`Add existing tasks` and `New task`) unchanged.
+
+The canonical regression matrix lives in
+`iterations/iteration-navigation.test.tsx`: successful empty catalogue,
+history-only, filtered-empty, failed read, disabled settings, and the existing
+empty planned detail. `e2e/iteration-welcome.spec.ts` owns compiled CSS checks
+for English desktop and Simplified Chinese mobile layouts, including document
+overflow and reachable creation/settings controls.
+
 <!-- How props should be defined and typed -->
 
 (To be filled by the team)
