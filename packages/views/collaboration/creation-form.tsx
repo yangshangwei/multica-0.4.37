@@ -26,14 +26,21 @@ import { PillButton } from "../common/pill-button";
 import { recoverFocus } from "./focus";
 import { CollaborationCreationDescriptionAssist } from "./creation-description-assist";
 
-export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTrigger }: {
+export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTrigger, open: controlledOpen, onOpenChange, hideTrigger = false, returnFocus }: {
   scope: CollaborationScope; sourceWorkspaceId?: string; renderTrigger?: (label: string) => ReactElement;
+  open?: boolean; onOpenChange?: (open: boolean) => void; hideTrigger?: boolean;
+  returnFocus?: { current: HTMLElement | null };
 }) {
   const { t } = useT("collaboration");
   const navigation = useNavigation();
-  const [open, setOpen] = useState(false);
+  const [localOpen, setLocalOpen] = useState(false);
+  const open = controlledOpen ?? localOpen;
+  const setOpen = onOpenChange ?? setLocalOpen;
   const [size, setSize] = useState<"default" | "assist" | "expanded">("default");
   const explicitlySized = useRef(false);
+  useEffect(() => {
+    if (controlledOpen === true) { setSize("default"); explicitlySized.current = false; }
+  }, [controlledOpen]);
   const trigger = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDivElement>(null);
   const expanded = size === "expanded";
@@ -51,10 +58,11 @@ export function CollaborationCreationEntry({ scope, sourceWorkspaceId, renderTri
     if (next) { setSize("default"); explicitlySized.current = false; }
     setOpen(next);
   }}>
-    <DialogTrigger ref={trigger} render={renderTrigger?.(t(($) => $.creation.entry)) ??
-      <Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground">{t(($) => $.creation.entry)}</Button>} />
+    {!hideTrigger && <DialogTrigger ref={trigger} render={renderTrigger?.(t(($) => $.creation.entry)) ??
+      <Button className="pointer-coarse:min-h-11 focus-visible:ring-faint-foreground focus-visible:border-faint-foreground">{t(($) => $.creation.entry)}</Button>} />}
     <DialogContent ref={dialog} showCloseButton={false} data-expanded={expanded}
       style={{ WebkitAppRegion: "no-drag" } as CSSProperties}
+      finalFocus={returnFocus ? () => returnFocus.current : undefined}
       initialFocus={() => {
         if (document.activeElement === trigger.current) dialog.current?.focus({ preventScroll: true });
         // Base UI otherwise queues an unconditional focus frame. Recover only

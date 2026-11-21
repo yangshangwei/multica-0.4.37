@@ -33,7 +33,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Quick-create Actor Picker](./quick-create-actor-picker.md) | Local favorites/recent actors, scoped hydration, full-description search and nested-picker focus | Active |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Core StoreApi injection through navigation plumbing; local/server state boundaries | Active contracts; general guide pending |
-| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Persistent shell switch, restored collaboration state and direct-link focus | Active |
+| [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Unified sidebar, scoped creation, account feedback, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Batch issue outcomes](../../core/frontend/issue-batch-outcomes.md) | Shared batch adapters and truthful partial/zero-result feedback | Client contract implemented; backend acceptance separate |
 | [Personal Inbox snooze](../../server/inbox-snooze.md) | Shared picker/views, authoritative selection, exact time, safe errors and touch controls | Shared contract; evidence in task |

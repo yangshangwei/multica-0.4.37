@@ -39,8 +39,11 @@ block explicit account links or restored account tabs before onboarding.
 
 Detailed account links may remain in an account popout; account list navigation
 returns to the main account tab. Preserve native Cmd+W and existing workspace
-issue windows. With no workspace sidebar, reserve native toolbar clearance,
-omit its unavailable toggle and show the localized account tab/window title.
+issue windows. Both scopes mount the shared sidebar and its external toggle;
+reserve native toolbar clearance and show the localized account tab/window
+title. A remembered navigation workspace never becomes account content's
+workspace context. Without an active workspace, mount only `FeedbackModalHost`
+instead of the workspace modal registry.
 
 ## 4. Validation & Error Matrix
 
@@ -123,8 +126,8 @@ assert that usage and long-body captures show their intended, distinct states.
 ## Source surface native navigation evidence
 
 A fresh native session may legitimately restore the account shell while its
-workspace list loads. Source E2E uses the fixed global `Workspaces` button and
-then the contextual workspace menu before using workspace sidebar links; a renderer URL cannot select the tab-owned
+workspace list loads. Source E2E uses the sidebar's `Switch workspace` menu
+directly in either scope before using workspace links; a renderer URL cannot select the tab-owned
 MemoryRouter. List/board/Gantt/comment and relative layout CLI evidence reuse
 the existing source fixture, with actual native sort transforms complete before
 pointer release. This harness exercises renderer/preload and named Main hooks;

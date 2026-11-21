@@ -1,5 +1,4 @@
 import { useTabStore } from "../stores/tab-store";
-import { DesktopAccountNavigation } from "./account-navigation";
 import { useEffect, useLayoutEffect, useRef, useSyncExternalStore } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { animate, motion, useMotionValue, type MotionStyle } from "motion/react";
@@ -14,7 +13,7 @@ import {
   SidebarTrigger,
   useSidebar,
 } from "@multica/ui/components/ui/sidebar";
-import { ModalRegistry } from "@multica/views/modals/registry";
+import { FeedbackModalHost, ModalRegistry } from "@multica/views/modals/registry";
 import {
   AppSidebar,
   GlobalShortcuts,
@@ -32,8 +31,10 @@ import { getCurrentSlug, subscribeToCurrentSlug } from "@multica/core/platform";
 import { useDesktopUnreadBadge } from "@multica/views/platform";
 import {
   DesktopNavigationProvider,
+  resumeDesktopScope,
   routeContentLinkPath,
 } from "@/platform/navigation";
+import { useWindowOverlayStore } from "@/stores/window-overlay-store";
 import { TabBar } from "./tab-bar";
 import { TabContent } from "./tab-content";
 import { SidebarVersion, desktopAppVersion } from "./sidebar-version";
@@ -41,7 +42,7 @@ import { WindowOverlay } from "./window-overlay";
 import { UpdateNotificationNavigationBridge } from "./update-notification";
 
 const TOP_BAR_HEIGHT_CLASS = "h-12";
-const WINDOW_TOOLBAR_CLEARANCE = 120;
+const WINDOW_TOOLBAR_CLEARANCE = 200;
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const toolbarMotion = {
   type: "spring",
@@ -80,15 +81,16 @@ function useShellGeometry(target: number, shouldReduceMotion: boolean) {
   return value;
 }
 
-function WindowToolbar({ hasSidebar }: { hasSidebar: boolean }) {
+function WindowToolbar() {
   const { canGoBack, canGoForward, goBack, goForward } = useTabHistory();
   const navButtonClassName =
     "flex size-7 items-center justify-center rounded-md text-faint-foreground transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-30";
 
   return (
     <div
+      data-slot="window-toolbar"
       className={cn(
-        "fixed left-0 top-12 z-30 flex w-30 shrink-0 items-center px-3",
+        "fixed left-0 top-0 z-30 flex w-50 shrink-0 items-center pr-3 pl-23",
         TOP_BAR_HEIGHT_CLASS,
       )}
       style={{ WebkitAppRegion: "drag" } as React.CSSProperties}
@@ -97,10 +99,10 @@ function WindowToolbar({ hasSidebar }: { hasSidebar: boolean }) {
         className="flex items-center gap-1"
         style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
       >
-        {hasSidebar && <SidebarTrigger
+        <SidebarTrigger
           className="size-7 text-faint-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
           style={{ WebkitAppRegion: "no-drag" } as React.CSSProperties}
-        />}
+        />
         <div className="flex items-center gap-1">
           <button
             type="button"
@@ -131,7 +133,7 @@ function WindowToolbar({ hasSidebar }: { hasSidebar: boolean }) {
 }
 
 function SidebarTopSpacer() {
-  return <div className={cn("shrink-0", TOP_BAR_HEIGHT_CLASS)} />;
+  return <div className={cn("shrink-0", TOP_BAR_HEIGHT_CLASS)} style={{ WebkitAppRegion: "drag" } as React.CSSProperties} />;
 }
 
 function useNativeNavigationGestures() {
@@ -152,9 +154,9 @@ function useNativeNavigationGestures() {
 // The main area's top bar doubles as a window drag region. When the sidebar
 // is not occupying main-flow width, leave room for the fixed window toolbar
 // so tabs do not land beneath the traffic lights / navigation controls.
-function MainTopBar({ shouldReduceMotion, hasSidebar }: { shouldReduceMotion: boolean; hasSidebar: boolean }) {
+function MainTopBar({ shouldReduceMotion }: { shouldReduceMotion: boolean }) {
   const { state, isCompact } = useSidebar();
-  const sidebarHidden = !hasSidebar || state === "collapsed" || isCompact;
+  const sidebarHidden = state === "collapsed" || isCompact;
   const toolbarOffset = useShellGeometry(
     sidebarHidden ? WINDOW_TOOLBAR_CLEARANCE : 0,
     shouldReduceMotion,
@@ -180,13 +182,12 @@ function MainTopBar({ shouldReduceMotion, hasSidebar }: { shouldReduceMotion: bo
 // The canvas hugs the expanded sidebar with a hairline gap. When the sidebar
 // leaves the main flow, the left margin must grow to mirror the fixed mr-2 so
 // the floating canvas sits symmetrically inside the window frame.
-function MainCanvas({ children, shouldReduceMotion, hasSidebar }: {
+function MainCanvas({ children, shouldReduceMotion }: {
   children: React.ReactNode;
   shouldReduceMotion: boolean;
-  hasSidebar: boolean;
 }) {
   const { state, isCompact } = useSidebar();
-  const sidebarHidden = !hasSidebar || state === "collapsed" || isCompact;
+  const sidebarHidden = state === "collapsed" || isCompact;
   const marginLeft = useShellGeometry(sidebarHidden ? 8 : 2, shouldReduceMotion);
 
   return (
@@ -259,6 +260,7 @@ function DesktopInboxBridge() {
 
 export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorkspaceList?: () => void }) {
   const activeScope = useTabStore((state) => state.activeScope);
+  const lastWorkspaceSlug = useTabStore((state) => state.lastWorkspaceSlug);
   useInternalLinkHandler();
   useNativeNavigationGestures();
   useNavigationInputBindings();
@@ -270,8 +272,7 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
 
   // Reactive read of current workspace slug from the platform singleton.
   // On first mount, it is null until WorkspaceRouteLayout (inside the tab
-  // router) sets it. Once set, the sidebar and other shell-level components
-  // can resolve workspace-scoped paths via useWorkspacePaths().
+  // router) sets it. Only this active route can enable workspace-owned services.
   const currentSlug = useSyncExternalStore(
     subscribeToCurrentSlug,
     getCurrentSlug,
@@ -293,11 +294,18 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
   // diverging. TabContent stays outside the gate: it must always render so
   // the tab router can mount WorkspaceRouteLayout, which is what populates
   // the singleton in the first place.
-  const { data: workspaces = [] } = useQuery(workspaceListOptions());
+  const workspaceList = useQuery(workspaceListOptions());
+  const workspaces = workspaceList.data;
   const slug =
-    activeScope !== "account" && currentSlug && workspaces.some((w) => w.slug === currentSlug)
+    activeScope !== "account" && currentSlug && workspaces?.some((w) => w.slug === currentSlug)
       ? currentSlug
       : null;
+  // This directory is navigation-only. It must never become the account
+  // content's WorkspaceSlugProvider or restore the ambient API header.
+  const navigationWorkspace = workspaces?.find((workspace) => workspace.slug === slug)
+    ?? workspaces?.find((workspace) => workspace.slug === lastWorkspaceSlug)
+    ?? workspaces?.[0]
+    ?? null;
 
   return (
     <DesktopNavigationProvider>
@@ -305,44 +313,52 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
           use useWorkspaceSlug() (nullable) or useRequiredWorkspaceSlug()
           (throws). TabContent MUST always render so the tab router can
           mount WorkspaceRouteLayout, which calls setCurrentWorkspace()
-          to populate the slug. The sidebar gates on the resolved slug
-          (see above) to avoid the useRequiredWorkspaceSlug and
-          useWorkspaceId throws. Zero-workspace users see the
+          to populate the slug. Workspace-owned services gate on that resolved
+          slug to avoid useRequiredWorkspaceSlug and useWorkspaceId throws.
+          Zero-workspace users see the
           window-level overlay (new-workspace flow) triggered by
           IndexRedirect, not a route. */}
       <WorkspaceSlugProvider slug={slug}>
         <UpdateNotificationNavigationBridge workspaceSlug={slug} />
         <DesktopInboxBridge />
         <div className="flex h-screen min-h-0 flex-col bg-app-shell">
-          <DesktopAccountNavigation onRetry={onRetryWorkspaceList} />
           {/* bg-app-shell is the wrapper's non-inset fill, so it also owns the
               non-inset half of --sidebar-wrapper-fill. sidebar.tsx supplies the
               inset half of both. Anything that has to paint an opaque layer
               over this wrapper (the tab flares) reads the variable rather than
               re-deriving which of the two is in play. */}
-          {/* hasExternalTrigger: WindowToolbar below parks a SidebarTrigger
-              below the global scope row, where it is always reachable. Page
+          {/* hasExternalTrigger: WindowToolbar parks a SidebarTrigger next to
+              the native traffic lights, where it is always reachable. Page
               headers inside the canvas must not add their own fallback one on
               top of it — desktop windows sit below `xl`, exactly where that
               fallback renders, so every page showed a second identical icon
-              50px under this one (MUL-6218). */}
+              beneath this one (MUL-6218). */}
           <SidebarProvider
             hasExternalTrigger
-            className="min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)] [&_[data-slot=sidebar-container]]:top-12 [&_[data-slot=sidebar-container]]:h-[calc(100svh-3rem)]"
+            className="min-h-0 flex-1 bg-app-shell [--sidebar-wrapper-fill:var(--app-shell)]"
           >
             {slug && <GlobalShortcuts />}
-            <WindowToolbar hasSidebar={!!slug} />
-            {slug && (
-              <AppSidebar
-                topSlot={<SidebarTopSpacer />}
-                searchSlot={<SearchTrigger />}
-                versionSlot={desktopAppVersion() ? <SidebarVersion /> : undefined}
-              />
-            )}
+            <WindowToolbar />
+            <AppSidebar
+              navigationWorkspace={navigationWorkspace}
+              onWorkspaceSelect={(targetSlug) => {
+                const store = useTabStore.getState();
+                if (store.activeScope === "workspace" && store.activeWorkspaceSlug === targetSlug) return;
+                const overlay = useWindowOverlayStore.getState();
+                if (overlay.overlay) overlay.close();
+                store.switchWorkspace(targetSlug);
+              }}
+              onCollaborationResume={() => { resumeDesktopScope("account"); }}
+              workspaceListUnavailable={workspaceList.data === undefined && workspaceList.isLoadingError}
+              onRetryWorkspaces={onRetryWorkspaceList}
+              topSlot={<SidebarTopSpacer />}
+              searchSlot={slug ? <SearchTrigger /> : undefined}
+              versionSlot={desktopAppVersion() ? <SidebarVersion /> : undefined}
+            />
             {/* Right side: header + content container */}
             <div className="flex flex-1 min-w-0 flex-col">
-                <MainTopBar shouldReduceMotion={shouldReduceMotion} hasSidebar={!!slug} />
-                <MainCanvas shouldReduceMotion={shouldReduceMotion} hasSidebar={!!slug}>
+                <MainTopBar shouldReduceMotion={shouldReduceMotion} />
+                <MainCanvas shouldReduceMotion={shouldReduceMotion}>
                 {/* Same indicator, same anchor as web: DashboardLayout puts it
                     at the top of SidebarInset, and MainCanvas is desktop's
                     equivalent relative/overflow-hidden content box. Desktop
@@ -355,7 +371,7 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
             </div>
           </SidebarProvider>
         </div>
-        {slug && <ModalRegistry />}
+        {slug ? <ModalRegistry /> : <FeedbackModalHost />}
         {slug && <SearchCommand />}
         <WindowOverlay />
       </WorkspaceSlugProvider>

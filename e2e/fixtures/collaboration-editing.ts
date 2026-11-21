@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { expect, type Locator, type Page, type Route } from "@playwright/test";
 import { TestApiClient } from "../fixtures";
 import { selectCollaborationRecipient } from "./collaboration-offline-handoff";
+import { openNewCollaborationIssue } from "./sidebar-navigation";
 
 type Reference = { id: string; name: string };
 type IterationReference = Reference & { revision: number };
@@ -98,9 +99,10 @@ async function setTextProperty(page: Page, container: Locator, name: string, val
 }
 
 export async function createCollaborationWithInitialFields(page: Page, fixture: CollaborationEditingFixture,
-  creationTrigger: Locator = page.getByRole("button", { name: "New collaboration issue", exact: true }).and(page.locator('[data-sidebar="menu-button"]'))) {
-  await creationTrigger.click();
+  sourceSelection: "preselected" | "explicit" = "preselected") {
+  await openNewCollaborationIssue(page);
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+  if (sourceSelection === "explicit") await dialog.getByLabel("Source workspace", { exact: true }).selectOption(fixture.workspace.id);
   await expect(dialog.getByLabel("Source workspace", { exact: true })).toHaveValue(fixture.workspace.id);
   await dialog.getByLabel("Title", { exact: true }).fill(fixture.title);
   await dialog.getByLabel("Description", { exact: true }).fill("One issue shared with an external handler.");

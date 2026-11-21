@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from 'node:crypto';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -31,7 +32,7 @@ async function authenticate(page:Page,token:string,language="en") {
 }
 async function open(page:Page,slug?:string) {
  if(slug) await page.goto(`/${slug}/issues`,{waitUntil:'domcontentloaded'});
- await page.getByRole('button',{name:'New Issue',exact:true}).click();
+ await openNewIssue(page);
  const dialog=page.getByRole('dialog',{name:'Quick create issue',exact:true});await expect(dialog).toBeVisible();
  return {dialog,editor:dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]'),creator:dialog.getByRole('button',{name:/^Send to (?!agent$)/})};
 }
@@ -136,7 +137,7 @@ test('Chinese narrow-screen controls expose defaults and grounded suggestions',a
  const f=await fixture('zh-Hans');try {
   await authenticate(page,f.api.getToken()!,'zh-Hans');await page.setViewportSize({width:1280,height:900});
   await page.emulateMedia({colorScheme:'dark'});await page.goto(`/${f.workspace.slug}/issues`,{waitUntil:'domcontentloaded'});
-  await page.getByRole('button',{name:'新建任务',exact:true}).click();
+  await openNewIssue(page);
   const dialog=page.getByRole('dialog',{name:'快速创建任务',exact:true});await expect(dialog).toBeVisible();await page.setViewportSize({width:375,height:812});
   const creator=dialog.getByRole('button',{name:/^交给(?!智能体$)/});await creator.click();
   await page.getByRole('button',{name:'将当前选择设为默认',exact:true}).click();await page.keyboard.press('Escape');

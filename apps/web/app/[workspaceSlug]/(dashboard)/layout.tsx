@@ -1,14 +1,16 @@
 "use client";
 
 import { Suspense } from "react";
-import { DashboardLayout } from "@multica/views/layout";
+import { AppSidebar, DashboardLayout } from "@multica/views/layout";
 import { MulticaIcon } from "@multica/ui/components/common/multica-icon";
 import { SearchCommand, SearchTrigger } from "@multica/views/search";
 import { FloatingChat } from "@multica/views/chat";
 import { WebNotificationBridge } from "@/components/web-notification-bridge";
 import { WorkspaceDocumentTitle } from "@/platform/workspace-document-title";
+import { useWebSidebarNavigation } from "@/platform/scope-shell";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const sidebar = useWebSidebarNavigation();
   return (
     <>
       {/* useSearchParams requires a Suspense boundary in the app router. Sits
@@ -19,7 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Suspense>
       <DashboardLayout
         loadingIndicator={<MulticaIcon className="size-6" />}
-        searchSlot={<SearchTrigger />}
+        sidebar={<AppSidebar {...sidebar} searchSlot={<SearchTrigger />} />}
         extra={
           <>
             <SearchCommand />

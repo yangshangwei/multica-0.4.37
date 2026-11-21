@@ -1,5 +1,4 @@
 export { AppSidebar } from "./app-sidebar";
-export { GlobalScopeNavigation } from "./global-scope-navigation";
 export {
   CollectionPageHeader,
   CollectionPageHeaderAction,

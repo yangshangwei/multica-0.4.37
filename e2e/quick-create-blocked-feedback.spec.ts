@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { writeFileSync } from "node:fs";
 import { test, expect, type Locator, type Page, type Response } from "@playwright/test";
 import { legacyLaneMissing, loginLegacyOwner, openLegacySession, sql } from "./fixtures/lane-guards";
@@ -56,7 +57,7 @@ function controls(page: Page, language: "en" | "zh-Hans" = "en") {
 
 async function open(page: Page, slug?: string, language: "en" | "zh-Hans" = "en") {
   if (slug) await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: language === "zh-Hans" ? "新建任务" : "New Issue", exact: true }).click();
+  await openNewIssue(page);
   const ui = controls(page, language);
   await expect(ui.dialog).toBeVisible();
   await expect(ui.dialog).toHaveCSS("opacity", "1");

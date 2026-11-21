@@ -8,8 +8,17 @@ must remain available with zero, pending or unavailable workspaces.
 
 ## 2. Signatures
 
-- Views `GlobalScopeNavigation({ activeScope, onWorkspace, onCollaboration, children? })`
-  owns the accessible two-button switch; platforms own its fixed shell row.
+- The shared `AppSidebar` owns the accessible Collaboration and Workspace
+  headings. Platform shells provide resume and workspace-selection callbacks;
+  they do not render a separate fixed scope-switch row.
+- `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?,
+  onCollaborationResume?, workspaceListUnavailable?, onRetryWorkspaces?,
+  topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
+  member or null as its navigation preview. Omitted `navigationWorkspace`
+  uses the actual route workspace. Selection callbacks receive its slug.
+- Core `useSidebarPreferences` persists only `groups.work`, `groups.ai` and
+  `groups.resources` booleans through `StorageAdapter`; `NavigationGroup`
+  owns active-route reveal and manual collapse for the current full path.
 - Core `navigationScope(path)`, `resolveScopePath(state, owner, scope, workspaceSlugs?)`
   and `useScopeHistoryStore` own Web's session-lifetime last destinations.
 - Desktop `resumeDesktopScope(scope, workspaceSlugs?)` restores via no-argument
@@ -26,6 +35,40 @@ must remain available with zero, pending or unavailable workspaces.
 Only global switching consults remembered destinations. Notifications and task
 links keep explicit path/query/fragment semantics. Activating the current scope
 is a no-op. Do not send a default issue/list path to a global resume operation.
+
+Collaboration appears above Workspace in the shared left directory. Current
+handling and Participating are explicit list links, with the selected list
+remaining highlighted when its detail is open. The Collaboration heading
+resumes the exact account destination. The workspace name resumes the displayed
+workspace's destination; its adjacent selector chooses a directory member.
+
+Select the navigation workspace from the actual route, otherwise the remembered
+available workspace, otherwise the first authoritative directory member. A
+preview must never populate `WorkspaceSlugProvider`, the API workspace header
+or the route singleton. Workspace hooks, pins, search, shortcuts and ordinary
+creation mount only under the real workspace route. Cache-only capability
+queries in the preview use `enabled: false`. Web scope history is session-only:
+an account document reload can fall back to the first workspace; Desktop keeps
+its existing persisted `lastWorkspaceSlug`.
+
+New is one menu backed by the existing ordinary and collaboration forms. In
+account scope ordinary creation is disabled and collaboration creation requires
+an explicit source. Workspace-origin collaboration preselects the actual source.
+The ordinary shortcut remains workspace-scoped. The controlled collaboration
+dialog returns focus to New. Shared notifications keep the protected account
+Query and original exact links/read/archive flow. Workspace-side realtime owns
+notification invalidation only; the account workbench owns issue subscriptions.
+
+Work defaults open; AI Team and Resources & connections default closed. Persist
+only manual boolean preferences, not server data or automatic active-route
+reveal. Entering a different child route reveals its group; manual collapse on
+the current route remains possible. Clear a path-local manual override when the
+path changes: `/agents` collapse → `/squads` → Back to `/agents` must reveal the
+active group again, rather than resurrecting the old collapse. Compact sheets close on full-path changes,
+including account query-only navigation. Account Help uses `FeedbackModalHost`
+from the existing modal registry module; workspace shells use `ModalRegistry`
+exclusively, so one feedback dialog is mounted and no workspace modal opens on
+behalf of a preview.
 
 Web's route history and scroll/view-state maps are Server/viewer/session-owned.
 Changing ownership clears the former identity, including if that identity later
@@ -62,12 +105,11 @@ shared provider forwards the option; native SPA adapters keep their existing
 replacement behavior. Never request `preserveView` to open a different resource
 or workspace. Ordinary `replace` calls still use the platform router.
 
-The global row is 48px high and outside the content canvas and sidebar collapse.
-Viewport-fixed sidebar containers start below it. Desktop reserves 80px for
-native traffic lights in that row, with no-drag interactive controls; history
-controls move to the next row with 120px tab clearance when the sidebar is hidden.
-The switch remains at the same coordinates in both scopes. Do not reintroduce a
-footer switch or a content-level workspace selector.
+The shared sidebar remains outside the content canvas and owns both scope
+headings. Desktop's toolbar sits in the top 48px with 92px traffic-light
+clearance, no-drag sidebar/history controls and 200px tab clearance when the
+sidebar is hidden. Its sidebar top spacer remains draggable. Do not reintroduce
+a fixed scope-switch row, footer switch, or content-level workspace selector.
 
 ## 4. Validation / Error Matrix
 
@@ -85,6 +127,11 @@ footer switch or a content-level workspace selector.
 | Explicit same-anchor link repeated | Refocus through a new navigation key |
 | Resolved UUID becomes its canonical issue identifier | Preserve mounted controls, query and fragment; replace history entry |
 | Navigation to another resource | Use ordinary routing; never retain the outgoing view with `preserveView` |
+| Account previews a remembered workspace | Render explicit workspace links without installing its identity or fetching workspace resources |
+| Account page reload on Web | Use the first authoritative workspace if session history no longer exists |
+| Group entered through a child route | Reveal it without persisting an automatic preference |
+| Compact account query changes | Dismiss the sidebar sheet after destination commit |
+| Account Help opens Feedback | Render one feedback host; keep workspace-only modals unmounted |
 
 ## 5. Good / Base / Bad Cases
 
@@ -103,10 +150,26 @@ Core scope-history tests own valid paths, ownership and membership fallback.
 Desktop account-tab tests own pointer migration/persistence/pruning and exact
 tab/history/memento roundtrips. Platform tests cover workspace mirror clearing,
 resume/direct opens, current-scope no-op and delayed Next route commits. Shared
-tests own switch keyboard/current state and anchor/scroll behavior. Production
+tests own sidebar keyboard/current state, group preferences and anchor/scroll
+behavior. `layout/app-sidebar.test.tsx` covers preview query gating, pins and
+unread counts; `modals/feedback-host.test.tsx` and platform shell tests cover
+account modal ownership. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
+
+The browser journey targets the workspace-name heading, never the removed
+Workspaces scope button. In compact layouts open the actual sidebar trigger
+before selecting a destination and assert that query-only view changes close
+the sheet. Before compact captures, await the actual responsive branch, the
+sheet's final in-viewport geometry and its finite opening animations. An
+attached or visible navigation landmark alone can still be the outgoing desktop
+branch or an offscreen sheet in transition; it is not painted layout evidence.
+Preserve the same-session exact workspace restoration checks; after
+a document reload distinguish Web's directory fallback from Desktop's persisted
+workspace pointer. `E2E_PASSWORD_AUTH=1` uses synthetic password registration
+and the public onboarding APIs, with isolated-account cleanup; the legacy
+email-code branch remains available.
 
 The scope-navigation browser regression injects a failed issue read, resumes the
 cached detail at 620, drains earlier handlers, then activates the current error

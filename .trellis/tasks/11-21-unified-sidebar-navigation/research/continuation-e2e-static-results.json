@@ -1,0 +1,59 @@
+{
+  "lint": {
+    "exit": 0,
+    "log": "continuation-e2e-lint.log"
+  },
+  "discovery": {
+    "exit": 0,
+    "log": "continuation-e2e-discovery.log"
+  },
+  "typecheck": {
+    "exit": 2,
+    "log": "continuation-e2e-typecheck.log"
+  },
+  "diff": {
+    "exit": 0,
+    "log": "continuation-e2e-diff.log"
+  },
+  "files": [
+    "e2e/auth-qa.spec.ts",
+    "e2e/auth.spec.ts",
+    "e2e/collaboration-account-desktop.spec.ts",
+    "e2e/collaboration-business-scenarios.spec.ts",
+    "e2e/collaboration-creation-default.spec.ts",
+    "e2e/collaboration-delivery-web.spec.ts",
+    "e2e/collaboration-multi-account-closure.spec.ts",
+    "e2e/collaboration-order-export-20261109.spec.ts",
+    "e2e/collaboration-order-export-leave-20261109.spec.ts",
+    "e2e/collaboration-recipient-picker-web.spec.ts",
+    "e2e/core-business-agent-loops.spec.ts",
+    "e2e/fixtures/collaboration-editing.ts",
+    "e2e/fixtures/collaboration-knowledge.ts",
+    "e2e/fixtures/collaboration-native.ts",
+    "e2e/fixtures/collaboration-pay-creation.ts",
+    "e2e/fixtures/collaboration-retained-attachments.ts",
+    "e2e/fixtures/iterations-i1.ts",
+    "e2e/global-scope-navigation.spec.ts",
+    "e2e/helpers.ts",
+    "e2e/issue-assist-flow.spec.ts",
+    "e2e/issue-mutation-branches.spec.ts",
+    "e2e/issues.spec.ts",
+    "e2e/iterations-audit-desktop.spec.ts",
+    "e2e/main-supplemental-qa.spec.ts",
+    "e2e/mcp-desktop.spec.ts",
+    "e2e/navigation.spec.ts",
+    "e2e/quick-create-actor-picker-phase2.spec.ts",
+    "e2e/quick-create-actor-picker.spec.ts",
+    "e2e/quick-create-autonomy.spec.ts",
+    "e2e/quick-create-blocked-feedback.spec.ts",
+    "e2e/settings-preferences.spec.ts",
+    "e2e/task-lifecycle-qa.spec.ts",
+    "e2e/upstream-selected-fixes.spec.ts",
+    "e2e/workspace-access-branches.spec.ts",
+    "e2e/fixtures/sidebar-navigation.ts"
+  ],
+  "sourceHashes": {
+    "e2e/global-scope-navigation.spec.ts": "1f6ee9b860e26a8c7fda8e7aa8651726b45f8013c27c87e36e84431f72680797",
+    "e2e/fixtures/sidebar-navigation.ts": "cade750bd9b026a77f95acc5de4af2b5e8e66af8b84256fe85a1a95596ff3735"
+  }
+}

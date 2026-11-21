@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { test, expect, type Page } from "@playwright/test";
@@ -48,8 +49,9 @@ test("Web creates one private issue after lost upload/create responses and revok
   });
   await authenticate(page, source.getToken()!);
   await page.goto("/account");
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   let dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+  await dialog.getByLabel("Source workspace", { exact: true }).selectOption(workspace.id);
   const title = `Created collaboration ${key}`;
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill("Creation body stays on the original issue.");
@@ -73,7 +75,7 @@ test("Web creates one private issue after lost upload/create responses and revok
   expect(uploaded).toMatchObject({ issue_id: null, intended_issue_id: null });
   expect(uploadKey).not.toBe("");
   await page.reload();
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await expect(dialog.getByLabel("Title", { exact: true })).toHaveValue(title);
   await expect(dialog.getByLabel("Description", { exact: true })).toHaveValue("Creation body stays on the original issue.");
@@ -95,7 +97,7 @@ test("Web creates one private issue after lost upload/create responses and revok
   await expect(dialog.getByRole("button", { name: "Check creation result", exact: true })).toBeEnabled();
   expect(createdId).not.toBe("");
   await page.reload();
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   const creationRecovery = page.waitForResponse((response) => response.url().includes(`/creations/${createKey}?`));
   await dialog.getByRole("button", { name: "Check creation result", exact: true }).click();
@@ -222,8 +224,9 @@ test("Web explicitly resubmits rejected creation input without losing files or r
   try {
     await authenticate(page, creator.getToken()!);
     await page.goto("/account");
-    await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    await openNewCollaborationIssue(page);
     let dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+    await dialog.getByLabel("Source workspace", { exact: true }).selectOption(workspace.id);
     const title = `Corrected creation ${suffix}`;
     await dialog.getByLabel("Title", { exact: true }).fill(title);
     await dialog.getByLabel("Description", { exact: true }).fill("Keep this input and its unconsumed private file.");
@@ -250,7 +253,7 @@ test("Web explicitly resubmits rejected creation input without losing files or r
     await expect(dialog.getByRole("button", { name: "Create collaboration issue", exact: true })).toBeEnabled();
 
     await page.reload();
-    await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    await openNewCollaborationIssue(page);
     dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
     await expect(dialog.getByLabel("Title", { exact: true })).toHaveValue(title);
     await expect(dialog.getByRole("checkbox", { name: "Include correction-note.txt", exact: true })).toBeChecked();

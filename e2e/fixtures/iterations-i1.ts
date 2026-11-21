@@ -32,7 +32,7 @@ export async function iterationClosureFlow(page: Page, api: TestApiClient, works
   const base = `/api/workspaces/${workspace.id}`;
   const capability = await api.requestJSON<{ supported: boolean }>(`${base}/iteration-capabilities`);
   expect(capability.supported, "I1 E2E requires its isolated test API's feature fixture").toBe(true);
-  await page.getByRole("link", { name: "Settings", exact: true }).first().click();
+  await page.getByRole("link", { name: "Workspace settings", exact: true }).first().click();
   await page.getByRole("tab", { name: "Iterations", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Iteration settings", exact: true })).toBeVisible();
   const toggle = page.getByRole("switch", { name: "Enable iterations", exact: true });
@@ -183,7 +183,7 @@ export async function iterationClosureFlow(page: Page, api: TestApiClient, works
   await frozenTaskEvent.scrollIntoViewIfNeeded();
   await p1Capture(page, info, "i1-frozen-task-events");
   if (handoff) {
-    await page.getByRole("link", { name: "Settings", exact: true }).first().click();
+    await page.getByRole("link", { name: "Workspace settings", exact: true }).first().click();
     await page.getByRole("tab", { name: "Iterations", exact: true }).click();
     await page.getByRole("switch", { name: "Enable iterations", exact: true }).click();
     const disable = page.getByRole("dialog");
@@ -200,7 +200,7 @@ export async function iterationClosureFlow(page: Page, api: TestApiClient, works
 // This deliberately stays on one mounted settings page: reloading clears the old enable mutation.
 export async function iterationSettingsFeedbackFlow(page: Page, api: TestApiClient, workspace: { id: string; slug: string }, info: TestInfo) {
   const base = `/api/workspaces/${workspace.id}`;
-  await page.getByRole("link", { name: "Settings", exact: true }).first().click();
+  await page.getByRole("link", { name: "Workspace settings", exact: true }).first().click();
   await page.getByRole("tab", { name: "Iterations", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Iteration settings", exact: true })).toBeVisible();
   const settingsURL = page.url();

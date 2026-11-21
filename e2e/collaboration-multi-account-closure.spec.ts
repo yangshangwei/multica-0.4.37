@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { expectCommentMenuWithout } from "./fixtures/collaboration-comment-menu";
 import { randomUUID } from "node:crypto";
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -76,7 +77,7 @@ test("three account owners and three native agents close one cross-workspace iss
       return page;
     };
     const p = await open(P), d = await open(D), q = await open(Q);
-    await p.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    await openNewCollaborationIssue(p);
     const creation = p.getByRole("dialog", { name: "New collaboration issue", exact: true });
     await creation.getByRole("combobox", { name: "Source workspace", exact: true }).selectOption(product.workspace.id);
     const title = `Order duplicate-charge collaboration ${suffix}`;

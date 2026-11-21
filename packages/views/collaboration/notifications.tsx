@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactElement } from "react";
 import { Bell } from "lucide-react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationNotificationsOptions, useUpdateCollaborationNotification, type CollaborationScope } from "@multica/core/collaboration";
@@ -10,7 +10,9 @@ import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import { recoverFocus } from "./focus";
 
-export function CollaborationNotifications({ scope, view }: { scope: CollaborationScope; view: AccountView }) {
+export function CollaborationNotifications({ scope, view, renderTrigger }: { scope: CollaborationScope; view: AccountView;
+  renderTrigger?: (label: string, unreadCount: number | undefined) => ReactElement;
+}) {
   const { t } = useT("collaboration");
   const client = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -43,12 +45,12 @@ export function CollaborationNotifications({ scope, view }: { scope: Collaborati
       default: return t(($) => $.activity.kinds.other);
     }
   };
-  return <div className="ml-auto min-w-0"><Popover open={open} onOpenChange={(next) => { if (next) navigating.current = false; setOpen(next); }}>
-    <PopoverTrigger render={<Button variant="ghost" aria-label={triggerLabel} title={triggerLabel} className="min-w-11 pointer-coarse:min-h-11" />}>
+  return <div className={renderTrigger ? "min-w-0" : "ml-auto min-w-0"}><Popover open={open} onOpenChange={(next) => { if (next) navigating.current = false; setOpen(next); }}>
+    {renderTrigger ? <PopoverTrigger render={renderTrigger(triggerLabel, unreadCount)} /> : <PopoverTrigger render={<Button variant="ghost" aria-label={triggerLabel} title={triggerLabel} className="min-w-11 pointer-coarse:min-h-11" />}>
       <Bell aria-hidden="true" className="size-4 md:hidden" /><span className="hidden md:inline">{t(($) => $.page.notifications)}</span>
       {unreadCount !== undefined && <><span aria-hidden="true" className="tabular-nums md:hidden">{unreadCount}</span>
         <span className="hidden tabular-nums md:inline">{t(($) => $.page.unread, { count: unreadCount })}</span></>}
-    </PopoverTrigger>
+    </PopoverTrigger>}
     <PopoverContent align="end" finalFocus={() => !navigating.current} className="max-h-[70vh] w-96 max-w-[calc(100vw-2rem)] min-w-0 overflow-y-auto p-4">
       <PopoverTitle>{t(($) => $.page.notifications)}</PopoverTitle>
       {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}

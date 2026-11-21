@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Page, type Locator, type Response } from "@playwright/test";
 import pg from "pg";
@@ -36,7 +37,7 @@ async function setup(page: Page, mode: "manual" | "agent" = "manual") {
 
 async function open(page: Page, slug: string, mode: "manual" | "agent" = "manual") {
   await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   const dialog = page.getByRole("dialog", { name: mode === "manual" ? "New Issue" : "Quick create issue", exact: true });
   await expect(dialog).toBeVisible({ timeout: 30_000 });
   return { dialog, editor: dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]') };

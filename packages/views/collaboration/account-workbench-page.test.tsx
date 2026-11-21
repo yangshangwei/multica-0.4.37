@@ -28,15 +28,25 @@ afterEach(() => { clients.splice(0).forEach((client) => client.clear()); vi.unst
 vi.mock("../rich-content", () => ({ RichContent: ({ content }: { content: string }) => <p>{content}</p> }));
 
 function mount(view: "current" | "participating" = "current", locale: "en" | "zh-Hans" = "en", issueId: string | null = id,
-  restoration: ScrollRestorationAdapter = { get: () => undefined }) {
+  restoration: ScrollRestorationAdapter = { get: () => undefined }, navigationInSidebar = false) {
   setApiInstance(new ApiClient("https://server.example"));
   const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   clients.push(client);
   const nav: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
   return renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={nav}><ScrollRestorationProvider adapter={restoration}>
-    <AccountWorkbenchPage destination={{ view, issueId, commentId: null }} />
+    <AccountWorkbenchPage destination={{ view, issueId, commentId: null }} navigationInSidebar={navigationInSidebar} />
   </ScrollRestorationProvider></NavigationProvider></QueryClientProvider>, { locale });
 }
+
+it("lets the full sidebar own account navigation and creation without duplicating controls", async () => {
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ items: [], total: 0, next_cursor: null }))));
+  mount("participating", "en", null, { get: () => undefined }, true);
+  expect(await screen.findByRole("heading", { name: "Participating" })).toBeInTheDocument();
+  expect(screen.queryByRole("navigation", { name: "Collaboration" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "New collaboration issue" })).not.toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: /^Notifications/ })).not.toBeInTheDocument();
+  expect(await screen.findByText("No participating issues yet.")).toBeInTheDocument();
+});
 
 it("opens selected detail independently of an empty current list without workspace requests", async () => {
   const fetch = vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(

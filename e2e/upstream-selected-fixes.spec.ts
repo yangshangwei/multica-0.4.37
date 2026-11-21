@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Locator, type Page, type Response } from "@playwright/test";
 import pg from "pg";
@@ -312,7 +313,7 @@ test.describe("selectively merged upstream regressions", () => {
 
         await authenticateBrowser(page, member, "agent");
         await page.goto("/" + scenario.workspace.slug + "/issues", { waitUntil: "domcontentloaded" });
-        await page.getByRole("button", { name: "New Issue", exact: true }).click();
+        await openNewIssue(page);
         const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
         await expect(dialog).toBeVisible({ timeout: 30_000 });
         await dialog.getByRole("button", { name: /^Send to (?!agent$)/ }).click();

@@ -296,7 +296,7 @@ test("iteration audit: actual contrast, focus, controls, touch, history and resp
     await page.keyboard.press("Escape");
     await sidebarIterations().click();
   }
-  await page.getByRole("link", { name: "Settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
+  await page.getByRole("link", { name: "Workspace settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
   await page.getByRole("tab", { name: "Iterations", exact: true }).click();
   await capture("settings-light-wide");
   await page.getByRole("switch", { name: "Enable iterations", exact: true }).click();

@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { expect, test, type BrowserContext, type Page } from "@playwright/test";
 import type { CollaborationCommentReceipt, CollaborationDeliveryHistory, CollaborationIssue, CollaborationMentionTargets } from "@multica/core/collaboration";
@@ -29,7 +30,7 @@ const hostIssue = (issue: { id: string; title: string }, target: BizTarget, agen
 async function createInUI(page: Page, baseURL: string, input: { workspaceId: string; title: string; description: string; policy: "manual" | "assisted";
   recipient: BizActor; file?: { name: string; body: string } }) {
   await page.goto(new URL("/account", baseURL).href);
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   const creation = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
   await creation.getByRole("combobox", { name: "Source workspace", exact: true }).selectOption(input.workspaceId);
   await creation.getByLabel("Title", { exact: true }).fill(input.title);

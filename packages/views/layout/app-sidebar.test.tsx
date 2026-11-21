@@ -4,7 +4,10 @@ import { ApiError } from "@multica/core/api";
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
-const { iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { eventCallbacks, invalidateQueries, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+  eventCallbacks: new Map<string, () => void>(),
+  invalidateQueries: vi.fn(),
+  queryLog: [] as string[],
   appForeground: { current: true },
   iterationCapability: { current: { supported: true, manual: true, enabled: false } },
   triageSettings: { current: { enabled: false } },
@@ -14,7 +17,7 @@ const { iterationCapability, triageSettings, appForeground, chatSessions, chatSt
   detail: { current: { isPending: false, isError: false, data: null as unknown, error: null as unknown } },
   deletePin: vi.fn(),
   inboxItems: { current: [] as { id: string; read: boolean }[] },
-  navigation: { current: { pathname: "/acme/issues" } },
+  navigation: { current: { pathname: "/acme/issues", search: "" } as { pathname: string; search?: string } },
   summary: { current: [] as { workspace_id: string; count: number }[] },
   workspaces: {
     current: [] as { id: string; name: string; slug: string; avatar_url: string | null }[],
@@ -32,6 +35,22 @@ const { iterationCapability, triageSettings, appForeground, chatSessions, chatSt
       },
     ],
   },
+}));
+
+vi.mock("@multica/core/collaboration", () => ({
+  useCollaborationScope: () => ({ apiScope: "test", server: "http://127.0.0.1:8080", userId: "user-1" }),
+  collaborationKeys: { notifications: () => ["collaboration", "notifications"] },
+  isCollaborationScopeCurrent: () => true,
+}));
+vi.mock("@multica/core/realtime", () => ({
+  useWSEvent: (event: string, callback: () => void) => { eventCallbacks.set(event, callback); },
+  useWSReconnect: (callback: () => void) => { eventCallbacks.set("reconnect", callback); },
+}));
+vi.mock("../collaboration/creation-form", () => ({
+  CollaborationCreationEntry: ({ sourceWorkspaceId, open }: { sourceWorkspaceId?: string; open?: boolean }) => open ? <div data-testid="collaboration-creation" data-workspace-id={sourceWorkspaceId} /> : null,
+}));
+vi.mock("../collaboration/notifications", () => ({
+  CollaborationNotifications: ({ renderTrigger }: { renderTrigger: (label: string, count: number) => React.ReactElement }) => renderTrigger("Collaboration notifications", 0),
 }));
 
 vi.mock("@dnd-kit/core", () => ({
@@ -109,9 +128,10 @@ vi.mock("../collaboration/source-bridge", () => ({
   }) => <div data-testid="collaboration-creation" data-workspace-id={workspaceId}>{renderTrigger("New collaboration issue")}</div>,
 }));
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
-vi.mock("../navigation", () => ({
+vi.mock("../navigation", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("../navigation")>()),
   AppLink: ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>,
-  useNavigation: () => ({ pathname: navigation.current.pathname, push: vi.fn() }),
+  useNavigation: () => ({ pathname: navigation.current.pathname, push: vi.fn(), searchParams: new URLSearchParams(navigation.current.search ?? ""), hash: "" }),
 }));
 vi.mock("../projects/components/project-icon", () => ({ ProjectIcon: () => <span /> }));
 vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span /> }));
@@ -133,7 +153,6 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
   // nav to derive each item's icon from its href) stay intact; only the
   // workspace/context hooks below are stubbed to control routes in tests.
   ...(await importOriginal<typeof import("@multica/core/paths")>()),
-  paths: { workspace: (slug: string) => ({ issues: () => `/${slug}/issues` }) },
   useCurrentWorkspace: () => ({ id: "ws-1", name: "Acme", slug: "acme" }),
   useWorkspacePaths: () => ({
     inbox: () => "/acme/inbox",
@@ -196,6 +215,7 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@tanstack/react-query")>()),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
   useQuery: ({ queryKey }: { queryKey: readonly unknown[] }) => {
+    queryLog.push(String(queryKey[0]));
     if (queryKey[0] === "iterations") return { data: iterationCapability.current };
     if (queryKey[0] === "triage" && queryKey[2] === "settings") return { data: triageSettings.current };
     if (queryKey[0] === "pins") return { data: pins.current };
@@ -206,16 +226,37 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
     if (queryKey[0] === "chat" && queryKey[2] === "sessions") return { data: chatSessions.current };
     return { data: [] };
   },
-  useQueryClient: () => ({ fetchQuery: vi.fn(), invalidateQueries: vi.fn() }),
+  useQueryClient: () => ({ fetchQuery: vi.fn(), invalidateQueries }),
 }));
 
-it("places collaboration creation immediately after ordinary creation for the current workspace", () => {
+it("exposes explicit collaboration views before workspace navigation", () => {
+  const { container } = renderWithI18n(<AppSidebar />);
+  const links = Array.from(container.querySelectorAll("button[data-href]"), (button) => button.getAttribute("data-href"));
+  expect(links.slice(0, 2)).toEqual(["/account?view=current", "/account?view=participating"]);
+  expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
+});
+
+it("keeps account navigation usable without a workspace or workspace providers", () => {
+  navigation.current = { pathname: "/account", search: "view=participating" };
+  queryLog.length = 0;
+  eventCallbacks.clear();
+  const { container } = renderWithI18n(<AppSidebar navigationWorkspace={null} />);
+  expect(container.querySelector('[data-href="/account?view=participating"]')).toHaveAttribute("data-active", "true");
+  expect(container.querySelector('[data-href="/acme/issues"]')).not.toBeInTheDocument();
+  expect(screen.getByText("Choose a workspace to access its issues and resources.")).toBeInTheDocument();
+  expect(queryLog.every((key) => key === "workspaces" || key === "invitations")).toBe(true);
+  expect(eventCallbacks.size).toBe(0);
+  navigation.current = { pathname: "/acme/issues" };
+});
+
+it("refreshes only collaboration notifications from the workspace sidebar without duplicate issue subscriptions", () => {
+  navigation.current = { pathname: "/acme/issues" };
+  eventCallbacks.clear();
+  invalidateQueries.mockClear();
   renderWithI18n(<AppSidebar />);
-  const buttons = screen.getAllByRole("button");
-  const ordinary = screen.getByRole("button", { name: "New Issue" });
-  const collaboration = screen.getByRole("button", { name: "New collaboration issue" });
-  expect(buttons.indexOf(collaboration)).toBe(buttons.indexOf(ordinary) + 1);
-  expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", "ws-1");
+  expect([...eventCallbacks.keys()]).toEqual(["collaboration:workbench_changed", "reconnect"]);
+  eventCallbacks.get("collaboration:workbench_changed")!();
+  expect(invalidateQueries).toHaveBeenCalledExactlyOnceWith({ queryKey: ["collaboration", "notifications"] }, { cancelRefetch: false });
 });
 
 describe("PinRow", () => {
@@ -280,6 +321,15 @@ describe("mobile sheet dismissal", () => {
     navigation.current = { pathname: "/acme/inbox" };
     rerender(<AppSidebar />);
 
+    expect(sidebarState.setOpenMobile).toHaveBeenCalledWith(false);
+  });
+
+  it("dismisses on an account query-only view change", () => {
+    navigation.current = { pathname: "/account", search: "view=current" };
+    const { rerender } = render(<AppSidebar navigationWorkspace={null} />);
+    sidebarState.setOpenMobile.mockClear();
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    rerender(<AppSidebar navigationWorkspace={null} />);
     expect(sidebarState.setOpenMobile).toHaveBeenCalledWith(false);
   });
 
@@ -498,6 +548,9 @@ describe("nav structure", () => {
   it("renders every section in order", () => {
     const { container } = render(<AppSidebar />);
     expect(navHrefs(container)).toEqual([
+      // account collaboration
+      "/account?view=current",
+      "/account?view=participating",
       // personal
       "/acme/inbox",
       "/acme/my-issues",

@@ -6,6 +6,7 @@ import pg from "pg";
 import { expect, test, type Page, type Request, type Route } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
 import { deepLink, nativeScreenshot, openDesktop } from "./fixtures/collaboration-native";
+import { openSidebarNavigation } from "./fixtures/sidebar-navigation";
 
 const apiUrl = process.env.COLLABORATION_E2E_API_URL;
 const databaseUrl = process.env.DATABASE_URL;
@@ -15,10 +16,21 @@ type Issue = { id: string; identifier: string; title: string };
 async function seed() {
   const api = new TestApiClient();
   const key = randomUUID().slice(0, 8);
-  await api.login(`scope-${key}@example.invalid`, "Navigation viewer");
+  const passwordAuth = process.env.E2E_PASSWORD_AUTH === "1";
+  const passwordUsername = `scope${key}`;
+  if (passwordAuth) {
+    await api.registerPassword(passwordUsername, `Scope-${key}-Navigation!`, "Navigation viewer");
+  } else {
+    await api.login(`scope-${key}@example.invalid`, "Navigation viewer");
+  }
   const first = await api.ensureWorkspace("First navigation space", `scope-first-${key}`);
   const second = await api.requestJSON<Workspace>("/api/workspaces", { method: "POST", body: { name: "Second navigation space", slug: `scope-second-${key}` } });
-  await api.markUserOnboarded();
+  if (passwordAuth) {
+    await api.requestJSON("/api/me/onboarding", { method: "PATCH", body: { questionnaire: { source: ["friends_colleagues"] } } });
+    await api.requestJSON("/api/me/onboarding/complete", { method: "POST", body: {} });
+  } else {
+    await api.markUserOnboarded();
+  }
   api.setWorkspaceId(second.id);
   api.setWorkspaceSlug(second.slug);
   const viewer = await api.requestJSON<{ id: string }>("/api/me");
@@ -45,10 +57,16 @@ async function seed() {
     await db.query("ROLLBACK");
     throw error;
   } finally { await db.end(); }
-  return { api, first, second, source, issues, key };
+  return { api, first, second, source, issues, key, passwordUsername: passwordAuth ? passwordUsername : null };
 }
 
 const globalNav = (page: Page) => page.getByRole("navigation", { name: "Application navigation", exact: true });
+
+async function openNavigation(page: Page, locale: "en" | "zh-Hans" = "en") {
+  const navigation = await openSidebarNavigation(page);
+  await expect(navigation).toHaveAccessibleName(locale === "en" ? "Application navigation" : "应用导航");
+  return navigation;
+}
 
 for (const platform of ["Web", "Desktop"] as const) {
   test(`${platform} global switching resumes the task, collaboration filters and both scroll positions`, async ({ page: webPage }, testInfo) => {
@@ -59,12 +77,30 @@ for (const platform of ["Web", "Desktop"] as const) {
     const profile = platform === "Desktop" ? mkdtempSync(join(tmpdir(), "multica-scope-navigation-")) : null;
     let native: Awaited<ReturnType<typeof openDesktop>> | undefined;
     let page = webPage;
+    const capture = async (name: string) => {
+      // Native capturePage does not apply Playwright screenshot's animation
+      // handling. Wait for actual finite transitions in both clients instead.
+      await expect.poll(() => page.evaluate(() => document.getAnimations().filter((animation) =>
+        (animation.playState === "running" || animation.pending)
+        && animation.effect?.getComputedTiming().endTime !== Infinity).length),
+      { message: "Screenshots require settled application and popup transitions" }).toBe(0);
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      });
+      return native ? nativeScreenshot(native.app, page, testInfo.outputPath(name))
+        : page.screenshot({ path: testInfo.outputPath(name), fullPage: false });
+    };
     try {
+      await webPage.setViewportSize({ width: 1440, height: 960 });
       const sourcePath = `/${fixture.second.slug}/issues/${fixture.source.id}`;
       if (profile) {
         native = await openDesktop(profile, { token: fixture.api.getToken()! });
         page = native.page;
         await native.start();
+        const nativeWindow = await native.app.browserWindow(page);
+        await nativeWindow.evaluate((target) => target.setContentSize(1440, 960));
+        await nativeWindow.dispose();
         await expect(globalNav(page)).toBeVisible();
         await page.evaluate((path) => window.dispatchEvent(new CustomEvent("multica:navigate", { detail: { path } })), sourcePath);
       } else {
@@ -77,11 +113,30 @@ for (const platform of ["Web", "Desktop"] as const) {
       }
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await expect(globalNav(page)).toHaveCount(1);
+      await expect(page.locator('[data-slot="global-scope-bar"]')).toHaveCount(0);
+      await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
+      await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeEnabled();
+      await expect(page.getByRole("menuitem", { name: "New collaboration issue", exact: true })).toBeEnabled();
+      await page.keyboard.press("Escape");
       const originalBounds = await globalNav(page).boundingBox();
-      if (native) await nativeScreenshot(native.app, page, testInfo.outputPath("desktop-scope-workspace.png"));
-      else await page.screenshot({ path: testInfo.outputPath("web-scope-workspace.png"), fullPage: false });
+      await capture(`${platform.toLowerCase()}-scope-workspace.png`);
       await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
-      await page.getByRole("link", { name: "Participating", exact: true }).click();
+      await globalNav(page).getByRole("link", { name: "Participating", exact: true }).click();
+      await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
+      await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeDisabled();
+      await page.getByRole("menuitem", { name: "New collaboration issue", exact: true }).click();
+      const creation = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+      await expect(creation).toBeVisible();
+      await expect(creation.getByRole("combobox", { name: "Source workspace", exact: true })).toHaveValue("");
+      await creation.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(creation).toBeHidden();
+      await expect(globalNav(page).getByRole("button", { name: "New", exact: true })).toBeFocused();
+      await globalNav(page).getByRole("button", { name: "Help", exact: true }).click();
+      await page.getByRole("menuitem", { name: "Feedback", exact: true }).click();
+      const feedback = page.getByRole("dialog", { name: "Feedback", exact: true });
+      await expect(feedback).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(feedback).toBeHidden();
       const selected = fixture.issues[0]!;
       await page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(selected.title) }).click();
       await expect(page.getByRole("heading", { name: selected.title, exact: true })).toBeVisible();
@@ -97,7 +152,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       // Let the real capture listener observe a committed frame before switching.
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       const saved = { list: await list.evaluate((element) => element.scrollTop), detail: await detail.evaluate((element) => element.scrollTop) };
-      await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
       await expect(page.getByRole("heading", { name: selected.title, exact: true })).toBeVisible();
@@ -110,7 +165,6 @@ for (const platform of ["Web", "Desktop"] as const) {
       const resumedBounds = await globalNav(page).boundingBox();
       expect(resumedBounds?.x).toBe(originalBounds?.x);
       expect(resumedBounds?.y).toBe(originalBounds?.y);
-      const capture = async (name: string) => native ? nativeScreenshot(native.app, page, testInfo.outputPath(name)) : page.screenshot({ path: testInfo.outputPath(name), fullPage: false });
       await capture(`${platform.toLowerCase()}-scope-resumed.png`);
 
       // The app owns this root's saved offset. A retained read error can still
@@ -145,14 +199,14 @@ for (const platform of ["Web", "Desktop"] as const) {
       };
       await page.route(issueUrl, intercept);
       try {
-        await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+        await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
         await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
         await expect(banner).toBeVisible();
         await detail.evaluate((element) => { element.scrollTop = 620; });
         await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
         expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
-        await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+        await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
         await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
         await expect(banner).toBeVisible();
@@ -198,7 +252,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(page.locator("#description")).toBeFocused();
       await detail.evaluate((element) => { element.scrollTop = 800; });
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
-      await globalNav(page).getByRole("button", { name: "Workspaces", exact: true }).click();
+      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
       await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(800);
@@ -208,21 +262,47 @@ for (const platform of ["Web", "Desktop"] as const) {
         await window.evaluate((target) => { target.setContentSize(900, 1000); target.webContents.setZoomFactor(2); });
         await window.dispose();
       } else await page.setViewportSize({ width: 390, height: 844 });
-      await expect(globalNav(page).getByRole("button", { name: "Workspaces", exact: true })).toBeVisible();
-      await expect(globalNav(page).getByRole("button", { name: "Collaboration", exact: true })).toBeVisible();
+      await expect.poll(() => page.evaluate(() => innerWidth)).toBe(native ? 450 : 390);
+      const compactNavigation = await openNavigation(page);
+      await expect(compactNavigation.getByRole("button", { name: fixture.second.name, exact: true })).toBeVisible();
+      await expect(compactNavigation.getByRole("button", { name: "Collaboration", exact: true })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact.png`);
+      // The query-only view change must dismiss the compact navigation sheet.
+      await compactNavigation.getByRole("link", { name: "Current handling", exact: true }).click();
+      await expect(page.locator('[data-slot="sidebar"][data-mobile="true"]')).toBeHidden();
+      await expect(page.getByRole("heading", { name: "Current handling", exact: true })).toBeVisible();
+      await openNavigation(page);
+      await globalNav(page).getByRole("link", { name: "Participating", exact: true }).click();
+      await expect(page.locator('[data-slot="sidebar"][data-mobile="true"]')).toBeHidden();
+      await expect(page.getByRole("heading", { name: "Participating", exact: true })).toBeVisible();
+      await capture(`${platform.toLowerCase()}-scope-compact-dismissed.png`);
       await fixture.api.requestJSON("/api/me", { method: "PATCH", body: { language: "zh-Hans" } });
       await page.addInitScript(() => {
         localStorage.setItem("multica-locale", "zh-Hans");
         document.cookie = "multica-locale=zh-Hans; path=/; SameSite=Lax";
       });
       await page.reload();
-      const chineseNavigation = page.getByRole("navigation", { name: "应用导航", exact: true });
-      await expect(chineseNavigation.getByRole("button", { name: "工作空间", exact: true })).toBeVisible();
+      const chineseNavigation = await openNavigation(page, "zh-Hans");
+      // Web scope history lives for this document session; a full account
+      // reload previews the first authoritative member. Desktop persists MRU.
+      const reloadedWorkspace = native ? fixture.second : fixture.first;
+      await expect(chineseNavigation.getByRole("button", { name: reloadedWorkspace.name, exact: true })).toBeVisible();
       await expect(chineseNavigation.getByRole("button", { name: "协作空间", exact: true })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact-zh.png`);
+      await chineseNavigation.getByRole("link", { name: "当前处理", exact: true }).click();
+      await expect(page.locator('[data-slot="sidebar"][data-mobile="true"]')).toBeHidden();
+      if (native) {
+        const window = await native.app.browserWindow(page);
+        await window.evaluate((target) => { target.webContents.setZoomFactor(1); target.setContentSize(1440, 960); });
+        await window.dispose();
+      } else await page.setViewportSize({ width: 1440, height: 960 });
+      await expect.poll(() => page.evaluate(() => innerWidth)).toBe(1440);
+      await openNavigation(page, "zh-Hans");
+      await expect(chineseNavigation.getByRole("link", { name: "当前处理", exact: true })).toHaveAttribute("aria-current", "page");
+      await expect(chineseNavigation.getByRole("link", { name: "工作空间设置", exact: true })).toBeVisible();
+      await capture(`${platform.toLowerCase()}-scope-wide-zh.png`);
       await testInfo.attach("scope-restoration.json", { body: JSON.stringify({ platform, source: fixture.source.id, selected: selected.id, saved, originalBounds, resumedBounds }), contentType: "application/json" });
       if (native) expect(native.errors).toEqual([]);
     } finally {
@@ -249,6 +329,7 @@ for (const platform of ["Web", "Desktop"] as const) {
         fixture.api.setWorkspaceSlug(workspace.slug);
         await fixture.api.deleteFeatureWorkspace(workspace.id);
       }
+      if (fixture.passwordUsername) await fixture.api.deletePasswordAccount(fixture.passwordUsername);
     }
   });
 }

@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./sidebar-navigation";
 import { createHash, randomUUID } from "node:crypto";
 import { expect, type Browser, type Locator, type Page, type Request, type Response, type TestInfo } from "@playwright/test";
 import pg from "pg";
@@ -235,8 +236,9 @@ export async function exercisePayCreation(browser: Browser, platform: RecoveryPl
     const sessions: RecoverySession[] = [], traffic: Traffic[] = [];
     try {
       const product = await open(fixture.actors.product); sessions.push(product); const productTraffic = new Traffic(product); traffic.push(productTraffic);
-      await product.page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+      await openNewCollaborationIssue(product.page);
       const dialog = product.page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+      await dialog.getByLabel("Source workspace", { exact: true }).selectOption(fixture.workspace.id);
       await expect(dialog.getByLabel("Source workspace", { exact: true })).toHaveValue(fixture.workspace.id);
       const title = dialog.getByLabel("Title", { exact: true }), submit = dialog.getByRole("button", { name: "Create collaboration issue", exact: true });
       await expect(title).toHaveAttribute("required", ""); await title.fill("   "); await expect(submit).toBeDisabled();

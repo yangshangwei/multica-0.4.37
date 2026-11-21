@@ -8,6 +8,7 @@ import { test, expect, type ElectronApplication, type Locator, type Page, type T
 import { TestApiClient } from "./fixtures";
 import { openDesktop, deepLink, selectDesktopWorkspace, nativeScreenshot, captureNativeSection, responseEvidence, type NativeHarness } from "./fixtures/collaboration-native";
 import { seedCollaborationResourceJourney, type CollaborationResourceSnapshot } from "./fixtures/collaboration-resources";
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { createCollaborationWithInitialFields, exerciseCollaborationDiscussion, exerciseCollaborationFields,
   revealCollaborationEditingAction, seedCollaborationEditing } from "./fixtures/collaboration-editing";
 import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
@@ -363,8 +364,7 @@ test("Desktop creates a private collaboration issue, downloads through native IP
     app = native.app;
     let page = native.page;
     await native.start();
-    await page.getByRole("button", { name: "New collaboration issue", exact: true })
-      .and(page.locator('[data-sidebar="menu-button"]')).click();
+    await openNewCollaborationIssue(page);
     const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
     const title = `Native created collaboration ${key}`;
     await dialog.getByLabel("Title", { exact: true }).fill(title);
@@ -588,8 +588,7 @@ test("Desktop authors initial fields and preserves discussion through shared edi
     const native = await openDesktop(profile, { token: editing.source.getToken()!, deepLink: "multica://account" });
     app = native.app;
     await native.start();
-    const creationTrigger = native.page.getByRole("main").getByRole("button", { name: "New collaboration issue", exact: true });
-    const issue = await createCollaborationWithInitialFields(native.page, editing, creationTrigger);
+    const issue = await createCollaborationWithInitialFields(native.page, editing, "explicit");
     await exerciseCollaborationFields(native.page, editing, issue.id);
     const discussion = await exerciseCollaborationDiscussion(native.page, editing.source, issue.id);
     expect((await snapshot(native.page)).accountGroup!.tabs).toHaveLength(1);

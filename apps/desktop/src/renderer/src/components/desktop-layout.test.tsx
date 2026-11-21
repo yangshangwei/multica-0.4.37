@@ -51,6 +51,7 @@ vi.mock("@/platform/navigation", () => ({
     <>{children}</>
   ),
   routeContentLinkPath: vi.fn(),
+  resumeDesktopScope: vi.fn(),
 }));
 
 vi.mock("@multica/core/paths", () => ({
@@ -95,7 +96,6 @@ vi.mock("@multica/views/search", () => ({
 vi.mock("@multica/views/chat", () => ({ FloatingChat: () => null }));
 vi.mock("./tab-bar", () => ({ TabBar: () => null }));
 vi.mock("./window-overlay", () => ({ WindowOverlay: () => null }));
-vi.mock("./account-navigation", () => ({ DesktopAccountNavigation: () => null }));
 
 // Stands in for whatever page the active tab is showing. Reports the one fact
 // a `PageHeader` reads before deciding to render its own fallback trigger.
@@ -164,7 +164,7 @@ describe("DesktopShell sidebar trigger", () => {
       });
     }
 
-    for (const [padding, margin] of [[120, 8], [0, 2]]) {
+    for (const [padding, margin] of [[200, 8], [0, 2]]) {
       fireEvent.click(trigger);
       for (let frame = 0; frame < 5; frame++) {
         await act(async () => {
@@ -194,15 +194,15 @@ describe("DesktopShell sidebar trigger", () => {
       await nextFrame();
     }
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(120);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(200);
 
     act(() => {
       reducedMotion = true;
       mediaEvents.dispatchEvent(new Event("change"));
     });
     await nextFrame();
-    expect(header.style.paddingLeft).toBe("120px");
-    expect(dragRegion.style.left).toBe("120px");
+    expect(header.style.paddingLeft).toBe("200px");
+    expect(dragRegion.style.left).toBe("200px");
     expect(canvas.style.marginLeft).toBe("8px");
 
     act(() => {
@@ -212,6 +212,6 @@ describe("DesktopShell sidebar trigger", () => {
     fireEvent.click(trigger);
     await nextFrame();
     expect(Number.parseFloat(header.style.paddingLeft)).toBeGreaterThan(0);
-    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(120);
+    expect(Number.parseFloat(header.style.paddingLeft)).toBeLessThan(200);
   });
 });

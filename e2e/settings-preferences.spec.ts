@@ -1,3 +1,4 @@
+import { openNewIssue, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test as base, expect, type Page } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -29,7 +30,7 @@ const test = base.extend<{ preferences: PreferencesFixture }>({
         localStorage.setItem("multica:chat:isOpen", "false");
       }, token);
       await page.goto(`/${slug}/issues`);
-      await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+      await expect(sidebarNewButton(page)).toBeVisible();
       await runFixture({ api, slug });
     } finally {
       if (testInfo.status !== testInfo.expectedStatus) {
@@ -46,7 +47,7 @@ const test = base.extend<{ preferences: PreferencesFixture }>({
 test.use({ viewport: { width: 1440, height: 1000 }, trace: "retain-on-failure" });
 
 async function openPreferences(page: Page, slug: string) {
-  await page.getByRole("link", { name: "Settings", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/settings`);
   await expect(page.getByRole("tab", { name: "Profile", exact: true })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("tab", { name: "Preferences", exact: true }).click();
@@ -57,7 +58,7 @@ async function openPreferences(page: Page, slug: string) {
 
 test("grouped settings remain reachable from the sidebar and floating chat survives navigation and reload", async ({ page, preferences }) => {
   const { slug } = preferences;
-  await page.getByRole("link", { name: "Settings", exact: true }).click();
+  await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
   await expect(page.getByRole("tab", { name: "Profile", exact: true })).toHaveAttribute("aria-selected", "true");
   const navigation = page.getByRole("tablist");
   for (const group of ["Personal", "Workspace", "Issues", "Connections"]) {
@@ -81,7 +82,7 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
-  await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+  await expect(sidebarNewButton(page)).toBeVisible();
   await expect(launcher).toHaveCount(0);
   await openPreferences(page, slug);
   await expect(floating).not.toBeChecked();
@@ -126,7 +127,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await expect(priority).not.toBeChecked();
   await expect(quickPriority).toBeChecked();
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   await expect(page.getByRole("dialog", { name: "Quick create issue", exact: true }).getByRole("button", { name: "No priority", exact: true })).toBeVisible();
   await page.getByTitle("Switch to manual create — fill the fields yourself", { exact: true }).click();
 
@@ -161,7 +162,7 @@ test("hidden manual issue fields persist and remain usable through the overflow 
   await page.getByRole("link", { name: "Workspace issues", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/issues`);
   await page.reload();
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   await expect(dialog.getByRole("button", { name: "No priority", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
 });

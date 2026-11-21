@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from "vitest";
-import { screen, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ApiClient, setApiInstance } from "@multica/core/api";
@@ -13,6 +13,52 @@ const runId = "00000000-0000-4000-8000-000000000002";
 vi.mock("@multica/core/auth", () => ({ useAuthStore: { getState: () => ({ user: { id: "00000000-0000-4000-8000-000000000001" } }) } }));
 const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 afterEach(() => { client.clear(); vi.unstubAllGlobals(); });
+
+it("keeps a sidebar trigger labelled while its unread count is unknown and preserves its custom content", async () => {
+  let resolve!: (response: Response) => void;
+  vi.stubGlobal("fetch", vi.fn(() => new Promise<Response>((ready) => { resolve = ready; })));
+  setApiInstance(new ApiClient("https://server.example"));
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/acme/issues", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => path }}>
+    <CollaborationNotifications scope={collaborationScope(id)} view="participating" renderTrigger={(label, unread) => <button type="button" aria-label={label}>Collaboration notifications{unread !== undefined && <span>{unread}</span>}</button>} />
+  </NavigationProvider></QueryClientProvider>);
+  const trigger = screen.getByRole("button", { name: "Notifications" });
+  expect(trigger).toHaveTextContent("Collaboration notifications");
+  expect(trigger).not.toHaveTextContent("0");
+  await act(async () => resolve(new Response(JSON.stringify({ items: [], unread_count: 0, next_cursor: null }))));
+  expect(await screen.findByRole("button", { name: "Notifications 0 unread" })).toHaveTextContent("Collaboration notifications0");
+  await userEvent.click(trigger);
+  expect(await screen.findByText("No notifications.")).toBeInTheDocument();
+});
+
+it("updates a sidebar unread badge after read and archive through the existing protected notification actions", async () => {
+  let readAt: string | null = null;
+  let archivedAt: string | null = null;
+  const timestamp = "2026-11-21T10:00:00Z";
+  const fetch = vi.fn(async (input: string, options?: RequestInit) => {
+    const url = new URL(input);
+    if (options?.method === "POST") {
+      if (url.pathname.endsWith("/read")) readAt = timestamp;
+      if (url.pathname.endsWith("/archive")) archivedAt = timestamp;
+      return new Response(JSON.stringify({ id, read_at: readAt, archived_at: archivedAt }));
+    }
+    const item = { id, issue_id: id, event_seq: "1", kind: "assigned", is_mention: false, source_kind: "issue", source_id: null,
+      issue_title: "Shared issue", can_open: true, created_at: timestamp, read_at: readAt, archived_at: archivedAt };
+    return new Response(JSON.stringify({ items: archivedAt ? [] : [item], unread_count: readAt || archivedAt ? 0 : 1, next_cursor: null }));
+  });
+  vi.stubGlobal("fetch", fetch);
+  setApiInstance(new ApiClient("https://server.example"));
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/acme/issues", searchParams: new URLSearchParams(), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => path }}>
+    <CollaborationNotifications scope={collaborationScope(id)} view="participating" renderTrigger={(label, unread) => <button type="button" aria-label={label}>Collaboration notifications {unread}</button>} />
+  </NavigationProvider></QueryClientProvider>);
+  await userEvent.click(await screen.findByRole("button", { name: "Notifications 1 unread" }));
+  await userEvent.click(await screen.findByRole("button", { name: "Mark read" }));
+  await waitFor(() => expect(screen.getByRole("button", { name: "Notifications 0 unread" })).toHaveTextContent("Collaboration notifications 0"));
+  await userEvent.click(screen.getByRole("button", { name: "Archive" }));
+  expect(await screen.findByText("No notifications.")).toBeInTheDocument();
+  expect(fetch.mock.calls.filter(([, options]) => options?.method === "POST").map(([input]) => new URL(input).pathname)).toEqual([
+    `/api/me/collaboration-notifications/${id}/read`, `/api/me/collaboration-notifications/${id}/archive`,
+  ]);
+});
 
 it("opens an AI group result on its representative run and retains issue links for older notifications", async () => {
   const notification = { id, issue_id: id, event_seq: "10", kind: "ai_failed", is_mention: false, source_kind: "issue", source_id: null,

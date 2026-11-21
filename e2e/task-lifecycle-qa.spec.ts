@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Response } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -35,7 +36,7 @@ test("persists a manually created feature request through edits, workflow, comme
     }, token);
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "New Issue", exact: true }).click();
+    await openNewIssue(page);
     const title = `Team weekly report ${suffix}`;
     const description = "Let team members write a weekly report and share progress with their manager.";
     const titleInput = page.getByRole("textbox", { name: "Title", exact: true });

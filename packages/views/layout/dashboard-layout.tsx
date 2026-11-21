@@ -15,6 +15,8 @@ interface DashboardLayoutProps {
   extra?: ReactNode;
   /** Rendered inside sidebar header as a search trigger */
   searchSlot?: ReactNode;
+  /** Platform-wired navigation; defaults to the shared workspace sidebar. */
+  sidebar?: ReactNode;
   /** Loading indicator */
   loadingIndicator?: ReactNode;
 }
@@ -23,6 +25,7 @@ export function DashboardLayout({
   children,
   extra,
   searchSlot,
+  sidebar,
   loadingIndicator,
 }: DashboardLayoutProps) {
   return (
@@ -36,7 +39,7 @@ export function DashboardLayout({
       <SidebarProvider className="h-full min-h-0 bg-app-shell">
         <GlobalShortcuts />
         <WorkspacePresencePrefetch />
-        <AppSidebar searchSlot={searchSlot} />
+        {sidebar ?? <AppSidebar searchSlot={searchSlot} />}
         <SidebarInset className="relative overflow-hidden">
           <NavigationProgress />
           {children}

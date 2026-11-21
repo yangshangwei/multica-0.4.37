@@ -16,5 +16,5 @@ export function DesktopAccountWorkbenchRoute() {
   setCurrentWorkspace(null, null);
   const destination = parseAccountPath(`${location.pathname}${location.search}${location.hash}`);
   if (!user || user.requires_account_setup || user.requires_password_change || !destination) return null;
-  return <AccountWorkbenchPage destination={destination} administrationHref={accountPath({ administration: true })} />;
+  return <AccountWorkbenchPage destination={destination} administrationHref={accountPath({ administration: true })} navigationInSidebar />;
 }

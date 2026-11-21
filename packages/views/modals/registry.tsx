@@ -73,3 +73,12 @@ export function ModalRegistry() {
     </>
   );
 }
+
+/** Account shells can offer feedback without mounting workspace-only modals. */
+export function FeedbackModalHost() {
+  const modal = useModalStore((s) => s.modal);
+  const data = useModalStore((s) => s.data);
+  const close = useModalStore((s) => s.close);
+
+  return modal === "feedback" ? <FeedbackModal onClose={close} data={data} /> : null;
+}

@@ -330,7 +330,7 @@ test("native desktop MCP preserves collection, settings and agent discovery flow
     await expect(page.getByText("native-browser", { exact: true })).toBeVisible();
     await capture("native-shared-configurations");
 
-    await page.getByRole("link", { name: "Settings", exact: true }).click();
+    await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
     await page.getByRole("tab", { name: "MCP", exact: true }).click();
     await expect(page.getByRole("heading", { name: "MCP", exact: true })).toHaveCount(1);
     await expect(page.getByText("native-browser", { exact: true })).toBeVisible();

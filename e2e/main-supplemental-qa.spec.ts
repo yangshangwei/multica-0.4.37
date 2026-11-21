@@ -1,3 +1,4 @@
+import { openAccountMenu, openNewIssue, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Page, type Response } from "@playwright/test";
 import pg from "pg";
@@ -60,7 +61,7 @@ async function authenticate(page: Page, api: TestApiClient, mode: "manual" | "ag
 
 async function openCreate(page: Page, slug: string, mode: "manual" | "agent" = "manual") {
   await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: "New Issue", exact: true }).click();
+  await openNewIssue(page);
   const dialog = page.getByRole("dialog", { name: mode === "manual" ? "New Issue" : "Quick create issue", exact: true });
   await expect(dialog).toBeVisible();
   return { dialog, editor: dialog.locator('.ProseMirror.rich-text-editor[contenteditable="true"]') };
@@ -94,10 +95,9 @@ test("real email code login survives refresh and logout protects the workspace",
     expect((await verified).ok()).toBe(true);
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/issues$`), { timeout: 30_000 });
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
     await page.screenshot({ path: info.outputPath("authenticated-after-refresh.png") });
-    // The avatar initial participates in this button's accessible name.
-    await page.getByRole("button", { name: workspace.name }).click();
+    await openAccountMenu(page);
     await page.getByRole("menuitem", { name: "Log out", exact: true }).click();
     await expect(page).toHaveURL(/\/login(?:\?|$)/);
     await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });

@@ -19,9 +19,9 @@ import { AdminCollaborationPage, AdminCollaborationEntry } from "../admin/collab
 import adminStyles from "../admin/admin-visual.module.css";
 
 /** Account identity owns every query; selected detail is independent of list membership. */
-export function AccountWorkbenchPage({ destination, administrationHref }: { destination: AccountDestination; administrationHref?: string }) {
+export function AccountWorkbenchPage({ destination, administrationHref, navigationInSidebar = false }: { destination: AccountDestination; administrationHref?: string; navigationInSidebar?: boolean }) {
   return destination.administration ? <AccountAdministrationPage issueId={destination.issueId} />
-    : <CollaborationWorkbenchPage destination={destination} administrationHref={administrationHref} />;
+    : <CollaborationWorkbenchPage destination={destination} administrationHref={administrationHref} navigationInSidebar={navigationInSidebar} />;
 }
 
 function AccountAdministrationPage({ issueId }: { issueId: string | null }) {
@@ -33,24 +33,24 @@ function AccountAdministrationPage({ issueId }: { issueId: string | null }) {
   </main>;
 }
 
-function CollaborationWorkbenchPage({ destination, administrationHref }: { destination: AccountDestination; administrationHref?: string }) {
+function CollaborationWorkbenchPage({ destination, administrationHref, navigationInSidebar }: { destination: AccountDestination; administrationHref?: string; navigationInSidebar: boolean }) {
   const { t } = useT("collaboration");
   const scope = useCollaborationScope();
   useCollaborationRealtime(scope, destination.issueId);
   return <main className="flex h-full min-h-0 min-w-0 flex-col bg-background text-foreground">
     <header className="flex shrink-0 flex-wrap items-center gap-x-8 gap-y-2 px-4 py-3 md:gap-y-3 md:px-6 md:py-4">
-      <h1 className="sr-only text-title font-semibold md:not-sr-only">{t(($) => $.page.title)}</h1>
-      <nav aria-label={t(($) => $.page.title)} className="flex w-full min-w-0 flex-wrap gap-2 text-body md:w-auto">
+      <h1 className="text-title font-semibold">{navigationInSidebar ? destination.view === "current" ? t(($) => $.page.current) : t(($) => $.page.participating) : t(($) => $.page.title)}</h1>
+      {!navigationInSidebar && <nav aria-label={t(($) => $.page.title)} className="flex w-full min-w-0 flex-wrap gap-2 text-body md:w-auto">
         {(["current", "participating"] as const).map((view) => <AppLink key={view} href={accountPath({ ...destination, view })}
           aria-current={destination.view === view ? "page" : undefined}
           className="inline-flex items-center rounded-md px-3 py-2 text-muted-foreground hover:bg-accent hover:text-foreground aria-[current=page]:bg-accent aria-[current=page]:font-semibold aria-[current=page]:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
           {view === "current" ? t(($) => $.page.current) : t(($) => $.page.participating)}
         </AppLink>)}
-      </nav>
+      </nav>}
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-2 md:gap-x-8 [&>button]:h-auto [&>button]:min-h-8 [&>button]:whitespace-normal pointer-coarse:[&>button]:min-h-11">
-        <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />
+        {!navigationInSidebar && <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />}
         {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
-        <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />
+        {!navigationInSidebar && <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />}
       </div>
     </header>
     <WorkbenchBody key={`${scope.apiScope}:${scope.userId}:${accountRouteKey(accountPath(destination))}`} scope={scope} destination={destination} />

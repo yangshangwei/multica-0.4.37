@@ -18,7 +18,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Component Guidelines](./component-guidelines.md) | Component patterns, props, composition | To fill |
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Ordinary issue UI revision observations, optimistic reads and scoped administrative drafts | Active contracts; general guide pending |
-| [Global scope navigation](./global-scope-navigation.md) | Fixed Workspace/Collaboration switch, identity-owned resume and explicit focus | Active |
+| [Global scope navigation](./global-scope-navigation.md) | Shared sidebar, account-safe previews, disclosure preferences, identity-owned resume and explicit focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Confirmed cookie logout](./cookie-logout.md) | Awaited HttpOnly-cookie clearing, preserved failed logout drafts and session-fenced teardown | Active |

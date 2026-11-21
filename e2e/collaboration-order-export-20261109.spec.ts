@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import { expect, test, type BrowserContext, type Page } from "@playwright/test";
@@ -51,7 +52,7 @@ test("order export: independent owner queues merge authors and preserve AI acros
       return page;
     };
     const p = await open(P), d = await open(D), q = await open(Q);
-    await p.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+    await openNewCollaborationIssue(p);
     const creation = p.getByRole("dialog", { name: "New collaboration issue", exact: true });
     await creation.getByRole("combobox", { name: "Source workspace", exact: true }).selectOption(product.workspace.id);
     const title = `订单导出 Excel ${suffix}`;

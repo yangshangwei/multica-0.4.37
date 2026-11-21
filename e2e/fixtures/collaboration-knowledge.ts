@@ -215,7 +215,7 @@ export async function openTarget(page: Page, f: KnowledgeFixture, kind: "project
       await expect(sourceDrawer).toBeHidden();
     }
     await selectDesktopWorkspace(page, f.workspace);
-    await page.getByRole("link", { name: kind === "project" ? "Projects" : "Settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
+    await page.getByRole("link", { name: kind === "project" ? "Projects" : "Workspace settings", exact: true }).and(page.locator('[data-sidebar="menu-button"]')).click();
     if (kind === "project") await page.getByText(f.project.title, { exact: true }).first().click();
     else await page.getByRole("tab", { name: "General", exact: true }).click();
   }

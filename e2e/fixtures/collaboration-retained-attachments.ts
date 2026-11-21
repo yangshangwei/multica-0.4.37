@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./sidebar-navigation";
 import { closeCommentHistory, commentMenuItem, openCommentHistory } from "./collaboration-comment-menu";
 import { revealCollaborationDisclosure, revealCollaborationMentions } from "./collaboration-disclosures";
 import { createHash, randomUUID } from "node:crypto";
@@ -113,8 +114,9 @@ export async function exerciseTypedCreation(session: RetainedSession, fixture: R
   const title = `Typed retained creation ${randomUUID().slice(0, 10)}`;
   const bytes = Buffer.from(`Private typed creation bytes ${randomUUID()}`);
   await session.navigate("/account");
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+  await dialog.getByLabel("Source workspace", { exact: true }).selectOption(fixture.executionWorkspace.id);
   await dialog.getByLabel("Title", { exact: true }).fill(title);
   await dialog.getByLabel("Description", { exact: true }).fill(body);
   await selectCollaborationRecipient(page, dialog, { id: fixture.creatorId, name: fixture.human.name });

@@ -1,3 +1,4 @@
+import { openNewCollaborationIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect, type Page, type Request, type Route } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
@@ -52,8 +53,9 @@ test("Web recipient picker exposes self/recent/search results and preserves the 
 
   await authenticate(page, source.getToken()!);
   await page.goto("/account");
-  await page.getByRole("button", { name: "New collaboration issue", exact: true }).click();
+  await openNewCollaborationIssue(page);
   const dialog = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
+  await dialog.getByLabel("Source workspace", { exact: true }).selectOption(workspace.id);
   const control = dialog.locator('[data-recipient-picker]');
   await expect(control).toHaveCount(1);
   const trigger = control.getByRole("button", { name: "Recipient", exact: true });

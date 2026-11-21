@@ -1,3 +1,4 @@
+import { openAccountMenu, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import pg from "pg";
@@ -46,11 +47,11 @@ test("email login verifies a real code, restores access after reload, and logout
     await page.locator('input[data-slot="input-otp"]').fill(code);
     expect((await verified).ok()).toBe(true);
     await expect(page).toHaveURL(new RegExp(`/${workspace.slug}/issues$`), { timeout: 30_000 });
-    await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("button", { name: "New Issue", exact: true })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
     await page.screenshot({ path: info.outputPath("email-authenticated.png") });
-    await page.getByRole("button", { name: "Email QA " + suffix }).click();
+    await openAccountMenu(page);
     await page.getByRole("menuitem", { name: "Log out", exact: true }).click();
     await expect(page).toHaveURL(/\/login(?:\?|$)/, { timeout: 30_000 });
     await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });

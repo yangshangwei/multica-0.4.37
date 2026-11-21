@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { test, expect, type Page } from "@playwright/test";
 import { legacyLaneMissing, loginLegacyOwner, openLegacySession, rawRequest, sql } from "./fixtures/lane-guards";
 
@@ -59,7 +60,7 @@ test.describe("quick-create autonomy guard", () => {
     });
     await openLegacySession(page, baseURL!, fixture.token, "agent");
     await page.goto(`/${fixture.slug}/issues`, { waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
+    await openNewIssue(page);
 
     // Nothing is remembered yet, so the seed is the first agent that can create.
     const trigger = page.getByRole("button", { name: /^Send to (?!agent$)/ });

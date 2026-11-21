@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { cpus, platform, release, tmpdir } from "node:os";
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
@@ -49,7 +50,7 @@ async function setup(page: Page, info: TestInfo) {
 
 async function openCreate(page: Page, slug: string) {
   await page.goto(`/${slug}/issues`, { waitUntil: "domcontentloaded" });
-  await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
+  await openNewIssue(page);
   await expect(page.getByRole("button", { name: /^Send to (?!agent$)/ })).toBeVisible();
 }
 
@@ -116,7 +117,7 @@ for (const locale of ["en", "zh-Hans"] as const) {
       });
       await page.setViewportSize({ width: 1280, height: 900 });
       await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
-      await page.getByRole("button", { name: zh ? "新建任务" : "New Issue", exact: true }).first().click();
+      await openNewIssue(page);
       const dialog = page.getByRole("dialog", { name: zh ? "新建任务" : "New Issue", exact: true });
       const title = dialog.getByRole("textbox", { name: zh ? "标题" : "Title", exact: true });
       await title.fill("Preserve my manual draft");
@@ -177,7 +178,7 @@ for (const locale of ["en", "zh-Hans"] as const) {
       const zh = locale === "zh-Hans";
       await page.setViewportSize({ width: 1280, height: 900 });
       await page.goto(`/${workspace.slug}/issues`, { waitUntil: "domcontentloaded" });
-      await page.getByRole("button", { name: zh ? "新建任务" : "New Issue", exact: true }).first().click();
+      await openNewIssue(page);
       const trigger = page.getByRole("button", { name: zh ? /^交给(?!智能体$)/ : /^Send to (?!agent$)/ });
       await trigger.click();
       const mika = page.getByRole("button", { name: "小阿孚", exact: true });
@@ -472,7 +473,7 @@ test("desktop renderer supports picker search and pinning without starting a dae
       localStorage.setItem("theme", "light");
     }, token);
     await page.reload({ waitUntil: "domcontentloaded" });
-    await page.getByRole("button", { name: "New Issue", exact: true }).first().click({ timeout: 45_000 });
+    await openNewIssue(page, { timeout: 45_000 });
     await openPicker(page);
     const search = page.getByPlaceholder(SEARCH);
     await search.fill("saved responsibilities");

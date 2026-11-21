@@ -1,4 +1,5 @@
 import { webcrypto } from "node:crypto";
+import { useRef, useState } from "react";
 import { afterEach, expect, it, vi } from "vitest";
 import { act, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -271,6 +272,30 @@ it("keeps account creation entry usable with zero sources and returns keyboard f
   await waitFor(() => expect(trigger).toHaveFocus());
   await user.click(trigger);
   await user.click(screen.getByRole("button", { name: "Cancel" }));
+  await waitFor(() => expect(trigger).toHaveFocus());
+});
+
+it("opens the existing dialog from a controlled New action and returns focus without a duplicate trigger", async () => {
+  setApiInstance(new ApiClient("https://server.example"));
+  const fetch = vi.fn().mockResolvedValue(json({ ...options, creation_enabled: false, sources: [] }));
+  vi.stubGlobal("fetch", fetch);
+  const client = new QueryClient(); clients.push(client);
+  const navigation: NavigationAdapter = { push: vi.fn(), replace: vi.fn(), back: vi.fn(), pathname: "/account", searchParams: new URLSearchParams(), hash: "", getShareableUrl: (path) => path };
+  function Controlled() {
+    const [open, setOpen] = useState(false);
+    const trigger = useRef<HTMLButtonElement>(null);
+    return <><button type="button" ref={trigger} onClick={() => setOpen(true)}>New</button>
+      <CollaborationCreationEntry scope={collaborationScope(actor)} open={open} onOpenChange={setOpen} hideTrigger returnFocus={trigger} />
+    </>;
+  }
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={navigation}><Controlled /></NavigationProvider></QueryClientProvider>);
+  expect(screen.queryByRole("button", { name: "New collaboration issue" })).not.toBeInTheDocument();
+  const trigger = screen.getByRole("button", { name: "New" });
+  await userEvent.click(trigger);
+  expect(await screen.findByRole("dialog", { name: "New collaboration issue" })).toBeInTheDocument();
+  expect(await screen.findByText("You need a workspace you can create issues in. Shared issues remain available here.")).toBeInTheDocument();
+  expect(fetch.mock.calls.every(([url]) => !new URL(String(url)).searchParams.has("source_workspace_id"))).toBe(true);
+  await userEvent.keyboard("{Escape}");
   await waitFor(() => expect(trigger).toHaveFocus());
 });
 

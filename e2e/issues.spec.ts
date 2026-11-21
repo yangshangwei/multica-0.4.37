@@ -1,3 +1,4 @@
+import { openNewIssue, sidebarNewButton } from "./fixtures/sidebar-navigation";
 import { test, expect } from "@playwright/test";
 import pg from "pg";
 import { loginAsDefault, createTestApi, preferManualCreateMode, reloadAppPage } from "./helpers";
@@ -140,9 +141,7 @@ test.describe("Issues", () => {
   test("can create a new issue", async ({ page }) => {
     await preferManualCreateMode(page);
 
-    const newIssueButton = page.getByRole("button", { name: "New Issue" });
-    await expect(newIssueButton).toBeVisible();
-    await newIssueButton.click();
+    await openNewIssue(page);
 
     const title = "E2E Created " + Date.now();
     const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
@@ -192,7 +191,7 @@ test.describe("Issues", () => {
   test("can dismiss issue creation", async ({ page }) => {
     await preferManualCreateMode(page);
 
-    await page.getByRole("button", { name: "New Issue" }).click();
+    await openNewIssue(page);
 
     const titleInput = page.getByRole("textbox", { name: "Title", exact: true });
     await expect(titleInput).toBeVisible();
@@ -200,6 +199,6 @@ test.describe("Issues", () => {
     await page.keyboard.press("Escape");
 
     await expect(titleInput).not.toBeVisible();
-    await expect(page.getByRole("button", { name: "New Issue" })).toBeVisible();
+    await expect(sidebarNewButton(page)).toBeVisible();
   });
 });

@@ -1,3 +1,4 @@
+import { openNewIssue } from "./fixtures/sidebar-navigation";
 import { randomUUID } from "node:crypto";
 import { expect, type Page, type Response } from "@playwright/test";
 import {
@@ -72,7 +73,7 @@ async function streamTaskMessage(actor: Actor, taskId: string, seq: number, cont
 
 /** New Issue in agent mode → Send to <agent> → Send to agent; returns the 202 body. */
 async function quickCreate(page: Page, agent: { id: string; name: string }, prompt: string) {
-  await page.getByRole("button", { name: "New Issue", exact: true }).first().click();
+  await openNewIssue(page);
   const dialog = page.getByRole("dialog", { name: "Quick create issue", exact: true });
   const editor = dialog.locator('[contenteditable="true"]').first();
   await expect(editor).toBeVisible();

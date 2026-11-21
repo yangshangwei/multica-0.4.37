@@ -16,6 +16,7 @@ test.describe("Navigation", () => {
     // Each destination renames the browser tab after itself (MUL-6222).
     await expect(page).toHaveTitle("Inbox | Multica");
 
+    await page.getByRole("button", { name: "AI Team", exact: true }).click();
     await page.getByRole("link", { name: "Agents" }).click();
     await expect(page).toHaveURL(/\/agents/, { timeout: ROUTE_CHANGE_TIMEOUT });
     await waitForPageText(page, "Agents");
@@ -28,7 +29,7 @@ test.describe("Navigation", () => {
   });
 
   test("settings page loads via sidebar", async ({ page }) => {
-    await page.getByRole("link", { name: "Settings", exact: true }).click();
+    await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
     await expect(page).toHaveURL(/\/settings/, { timeout: ROUTE_CHANGE_TIMEOUT });
     await waitForPageText(page, "Settings");
 
@@ -37,6 +38,7 @@ test.describe("Navigation", () => {
   });
 
   test("agents page shows agent list", async ({ page }) => {
+    await page.getByRole("button", { name: "AI Team", exact: true }).click();
     await page.getByRole("link", { name: "Agents" }).click();
     await expect(page).toHaveURL(/\/agents/, { timeout: ROUTE_CHANGE_TIMEOUT });
     await waitForPageText(page, "Agents");

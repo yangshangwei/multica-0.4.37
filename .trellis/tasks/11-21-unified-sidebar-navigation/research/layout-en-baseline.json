@@ -1,0 +1,117 @@
+{
+  "global_navigation": {
+    "label": "Application navigation"
+  },
+  "nav": {
+    "inbox": "Inbox",
+    "chat": "Chat",
+    "my_issues": "My Issues",
+    "issues": "Issues",
+    "projects": "Projects",
+    "autopilots": "Autopilot",
+    "agents": "Agents",
+    "squads": "Squads",
+    "usage": "Analytics",
+    "runtimes": "Runtimes",
+    "skills": "Skills",
+    "marketplace": "Capability market",
+    "mcp": "MCP",
+    "docs": "Docs",
+    "settings": "Settings",
+    "changelog": "Changelog",
+    "triage": "Triage",
+    "iterations": "Iterations"
+  },
+  "marketplace": {
+    "type_label": "Capability type",
+    "welcome": {
+      "title": "Equip your team for the next task",
+      "description": "Connect a tool, reuse a workflow, or start with a template for an agent or squad. Pick a category to see how it helps."
+    },
+    "example": {
+      "label": "Usage example",
+      "task": "Check sign-up before release",
+      "show": "See how it’s used",
+      "docs": "Read the docs"
+    },
+    "mcp": {
+      "label": "MCP",
+      "purpose": "Connect tools",
+      "resource": "Playwright",
+      "setup": "Configure the Playwright MCP server and assign it to your test agent.",
+      "outcome": "The agent can open the page and fill in the sign-up form."
+    },
+    "skills": {
+      "label": "Skills",
+      "purpose": "Reuse workflows",
+      "resource": "Sign-up checklist",
+      "setup": "Save the sign-up checks and how to record results as a skill.",
+      "outcome": "Reuse the same steps each time you test sign-up."
+    },
+    "squad_templates": {
+      "label": "Squad templates",
+      "purpose": "Build a squad",
+      "resource": "Release Squad",
+      "setup": "Start with the Release Squad template and give the squad this task.",
+      "outcome": "The lead coordinates testing and release prep, then asks a person to approve the release."
+    },
+    "agent_templates": {
+      "label": "Agent templates",
+      "purpose": "Create an agent",
+      "resource": "QA Engineer",
+      "setup": "Create an agent from the QA Engineer template, then assign the sign-up check.",
+      "outcome": "The agent checks the flow and reports the results in the task."
+    }
+  },
+  "tab": {
+    "issue": "Issue",
+    "project": "Project",
+    "autopilot": "Autopilot",
+    "agent": "Agent",
+    "member": "Member",
+    "squad": "Squad",
+    "skill": "Skill",
+    "machine": "Machine",
+    "runtime": "Runtime",
+    "attachment": "Attachment",
+    "create_agent": "Create Agent",
+    "create_squad": "Create Squad",
+    "unknown": "Unknown page",
+    "iteration": "Iteration"
+  },
+  "help": {
+    "trigger": "Help",
+    "docs": "Docs",
+    "feedback": "Feedback",
+    "server_version": "Server version {{version}}",
+    "changelog": "Changelog"
+  },
+  "workspace_loader": {
+    "loading_workspace": "Loading workspace…",
+    "loading_named_prefix": "Loading"
+  },
+  "sidebar": {
+    "unpin_tooltip": "Unpin",
+    "workspaces_label": "Workspaces",
+    "create_workspace": "Create workspace",
+    "pending_invitations_label": "Pending invitations",
+    "invitation_workspace_fallback": "Workspace",
+    "invitation_join": "Join",
+    "invitation_decline": "Decline",
+    "log_out": "Log out",
+    "new_issue": "New Issue",
+    "new_issue_shortcut": "C",
+    "pinned_label": "Pinned",
+    "work_group": "Work",
+    "ai_team_group": "AI Team",
+    "resources_group": "Resources & connections",
+    "workspace_issues": "Workspace issues",
+    "unread_overflow": "99+"
+  },
+  "desktop": {
+    "version": {
+      "label": "Desktop version {{version}}",
+      "tooltip": "Desktop version {{version}} — check for updates"
+    }
+  }
+}

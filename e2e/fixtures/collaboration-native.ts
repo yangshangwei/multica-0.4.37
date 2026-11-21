@@ -70,12 +70,11 @@ export async function deepLink(app: ElectronApplication, path: string) {
     .desktopAccountAcceptance.deepLink(`multica://account${value.slice("/account".length)}`), path);
 }
 
-/** Workspace selection is contextual; the fixed shell switch first resumes it. */
+/** Select through the sidebar's explicit workspace directory in either scope. */
 export async function selectDesktopWorkspace(page: Page, workspace: { name: string }) {
-  await page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Workspaces", exact: true }).click();
-  const trigger = page.locator('[data-sidebar="header"] [data-sidebar="menu-button"]').first();
-  await expect(trigger).toBeVisible();
-  await trigger.click();
+  const navigation = page.getByRole("navigation", { name: "Application navigation", exact: true });
+  if (!await navigation.isVisible()) await page.locator('[data-slot="sidebar-trigger"]:visible').first().click();
+  await navigation.getByRole("button", { name: "Switch workspace", exact: true }).click();
   await page.getByRole("menuitem").filter({ hasText: workspace.name }).click();
 }
 
