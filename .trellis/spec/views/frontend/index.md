@@ -25,6 +25,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Collaboration Creation Interaction](./collaboration-creation.md) | Scoped completion, recipient identity/ARIA, painted focus, visible feedback/actions and debounced parents | Active |
 | [Collaboration knowledge](./collaboration-knowledge.md) | Shared automatic status/policy, human/system audit, exact review, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |
 | [Add a computer](./connect-remote-computer.md) | Per-system installers, safe commands, inventory baselines and factual connection states | Active |
+| [Runtime Welcome](./runtime-welcome.md) | Successful-empty inventory, retained machine/profile states, configured download/help and manual connection examples | Active |
 | [Workspace Naming](./workspace-naming.md) | Series catalog, personal preference and manual URL/prefix ownership | Active |
 | [Automation Template Discovery](./automation-template-discovery.md) | Empty-state routing, template semantics and two-step gallery restoration | Active |
 | [Agent Discovery](./agent-discovery.md) | Squad complete-membership contract, role provenance from template_key, template/member separation, preference & scope composition | Active |

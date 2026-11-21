@@ -15,6 +15,11 @@
       "title": "还没有运行时",
       "hint": "桌面端会自动扫描这台电脑。想把另一台电脑加进来——服务器、远程开发机，或任何能开终端的电脑——在这里添加。"
     },
+    "load_error": {
+      "title": "无法加载运行时",
+      "hint": "电脑可能仍然在线，请重新加载运行时列表。",
+      "retry": "重试"
+    },
     "no_matches": {
       "title": "无匹配",
       "with_query": "没有运行时匹配 \"{{query}}\"{{filterSuffix}}。",
@@ -25,6 +30,34 @@
     "bootstrapping": {
       "title": "正在启动本地运行时...",
       "hint": "通常需要几秒钟。守护进程正在向工作空间注册。"
+    }
+  },
+  "welcome": {
+    "title": "给智能体一台干活的电脑",
+    "description": "运行时是智能体真正执行任务的地方：你的电脑、一台服务器，或者云端机器。",
+    "add_runtime": "添加运行时",
+    "guide": "查看连接指南",
+    "download_desktop": "下载桌面端",
+    "examples": "接入运行时的方式",
+    "example": "示例",
+    "previous": "上一个示例",
+    "next": "下一个示例",
+    "show_example": "查看示例 {{number}}：{{title}}",
+    "position": "示例 {{number}} / {{total}}：{{title}}",
+    "desktop": {
+      "title": "这台电脑，自动连接",
+      "description": "登录桌面端，这台电脑上已安装的 Claude Code、Codex 等 CLI 会自动出现。",
+      "machine": "studio-mbp",
+      "machine_hint": "这台电脑 · 桌面端",
+      "online": "在线",
+      "detected": "自动识别到的 CLI"
+    },
+    "remote": {
+      "title": "其他机器，按步骤连接",
+      "description": "在服务器或另一台电脑上安装 CLI，再按照连接指引完成这台机器的设置。",
+      "prompt": "在那台机器上运行",
+      "install_hint": "安装 Multica CLI 后",
+      "connected": "ci-runner-02 已连接到 Multica"
     }
   },
   "mika_setup": {
