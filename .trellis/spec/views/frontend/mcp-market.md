@@ -26,6 +26,54 @@ including `$NAME` and Windows `%NAME%` as well as braced/angle forms. Keep those
 fields on the same test-only detector; checking only `${NAME}` leaves unusable
 recipes publishable even when they contain no credential keywords.
 
+## Standalone first-use introduction
+
+`McpWorkspaceTab` owns the standalone welcome gate alongside its existing
+membership, inventory and management state. `McpPage` only selects the page
+presentation; do not add a second query owner at the route boundary.
+
+The shared `mcp/mcp-welcome.tsx` appears only for `presentation="page"`, a
+confirmed current member, successful membership and inventory queries, a defined
+raw inventory, no retained member/server failure, and zero saved servers. Use
+`getSettingsQueryState()` for failure/access semantics: cached empty data during
+a failed refresh or cold retry must not claim a successfully empty workspace.
+The existing early gate withholds inaccessible or unknown inventory. Populated
+cached data retains its ordinary settings recovery behavior.
+
+Any saved server, including a disabled one, suppresses the welcome. Catalog
+templates and per-agent discovery are not the workspace inventory. Empty →
+populated → empty Query updates switch the presentation without a separate route
+or persisted onboarding flag. An empty current inventory is not proof that a
+workspace never had a server; inherited API parsing fallbacks remain unchanged.
+The embedded Settings tab keeps its compact empty message.
+
+The welcome owns one market action and, for owners/admins, one custom-create
+action. Hide duplicate page-header actions only while it is visible. Reuse
+`paths.marketplaceTab("mcp")`, the existing custom editor and its mutation owner.
+Keep the editor mounted when inventory changes beneath it. Its create-mode
+`finalFocus` resolves the live add-action ref, which can move from welcome to
+header after a save or background update. Ordinary members receive management
+guidance and can still browse the market.
+
+Three static, localized examples show choosing a service, supplying connection
+details and explicitly assigning agents. They perform no queries, mutations,
+connections or execution. Describe assignment for shared workspace
+configurations. Some runtimes also load user and project MCP configurations.
+Selection is manual local state. Inactive examples are hidden from accessibility
+and inert, dots expose pressed state, endpoint arrows disable, and a polite
+status announces the selection. The keyed workspace controller resets the
+examples on workspace change. Local container queries and reduced-motion CSS
+follow the Skill/Agent welcome family.
+
+Canonical query/permission/transition and dialog-preservation coverage lives in
+`settings/components/mcp-tab.test.tsx`; local bilingual interaction coverage is
+`mcp/mcp-welcome.test.tsx`. Focused real-build acceptance is
+`e2e/mcp-welcome.spec.ts` and `e2e/mcp-welcome-desktop.spec.ts`, including action
+focus, narrow scroll reachability, compiled themes/locales and no document
+overflow. The Web suite captures genuinely empty Skill/Agent references before
+creating any agents; externally deleting its saved MCP explicitly reloads the
+route, while the component suite owns live Query transitions.
+
 ## Identity and configuration
 
 - `(source, key)` identifies a recipe, never a user-editable instance name.

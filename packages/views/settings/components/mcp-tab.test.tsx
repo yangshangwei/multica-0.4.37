@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { ApiError } from "@multica/core/api/client";
 import enCommon from "../../locales/en/common.json";
 import enSettings from "../../locales/en/settings.json";
 import enAgents from "../../locales/en/agents.json";
@@ -32,12 +33,33 @@ const data = vi.hoisted(() => ({
   push: vi.fn(),
   templateOptions: vi.fn(() => ({ queryKey: ["mcp-server-templates"] })),
   role: "owner" as "owner" | "admin" | "member",
+  memberStatus: "success" as "success" | "pending" | "error",
+  serverStatus: "success" as "success" | "pending" | "error",
+  memberError: null as Error | null,
+  serverError: null as Error | null,
+  memberPresent: true,
+  isFetching: false,
 }));
 
 vi.mock("@tanstack/react-query", () => ({
-  useQuery: (options: { queryKey: readonly unknown[] }) => options.queryKey.includes("members")
-    ? { data: [{ user_id: "user-1", role: data.role }], isLoading: false }
-    : { data: data.servers, isLoading: data.isLoading, refetch: data.refetch },
+  useQuery: (options: { queryKey: readonly unknown[] }) => {
+    const members = options.queryKey.includes("members");
+    const status = members ? data.memberStatus : data.serverStatus;
+    const error = members ? data.memberError : data.serverError;
+    return {
+      data: members ? (data.memberPresent ? [{ user_id: "user-1", role: data.role }] : []) : data.servers,
+      status,
+      isSuccess: status === "success",
+      isPending: status === "pending",
+      isError: status === "error",
+      isLoading: members ? false : data.isLoading,
+      isFetching: data.isFetching,
+      error,
+      dataUpdatedAt: 1,
+      errorUpdatedAt: error ? 2 : 0,
+      refetch: data.refetch,
+    };
+  },
 }));
 
 vi.mock("@multica/core/workspace/queries", () => ({
@@ -90,6 +112,12 @@ describe("McpTab", () => {
     data.wsId = "workspace-1";
     data.role = "owner";
     data.isLoading = false;
+    data.memberStatus = "success";
+    data.serverStatus = "success";
+    data.memberError = null;
+    data.serverError = null;
+    data.memberPresent = true;
+    data.isFetching = false;
     data.servers = [
       server({ id: "srv-1", name: "linear", transport: "http" }),
       server({ id: "srv-2", name: "local-tool", transport: "stdio" }),
@@ -616,16 +644,138 @@ describe("McpTab", () => {
     ).toBeInTheDocument();
   });
 
-  it.each(["page", "settings"] as const)("keeps an empty %s library in management with an explicit market entry", async (presentation) => {
+  it("keeps an empty settings library compact with an explicit market entry", async () => {
     const user = userEvent.setup();
     data.servers = [];
-    render(<McpTab presentation={presentation} />, { wrapper: Wrapper });
+    render(<McpTab />, { wrapper: Wrapper });
     expect(screen.getByText("No shared MCP servers")).toBeVisible();
     expect(screen.queryByRole("tab")).toBeNull();
     expect(data.templateOptions).not.toHaveBeenCalled();
     expect(data.push).not.toHaveBeenCalled();
     await user.click(screen.getByRole("button", { name: "Browse capability market" }));
     expect(data.push).toHaveBeenCalledWith("/acme/marketplace?type=mcp");
+  });
+
+  it("introduces a successful empty page with one real action per purpose", async () => {
+    const user = userEvent.setup();
+    data.servers = [];
+    render(<McpPage />, { wrapper: Wrapper });
+
+    expect(screen.getByRole("region", { name: "Connect your agents to your tools" })).toBeVisible();
+    expect(screen.queryByText("No shared MCP servers")).not.toBeInTheDocument();
+    expect(data.templateOptions).not.toHaveBeenCalled();
+    expect(data.push).not.toHaveBeenCalled();
+    expect(screen.getAllByRole("button", { name: enSettings.mcp.browse_market })).toHaveLength(1);
+    const create = screen.getByRole("button", { name: enSettings.mcp.add_server });
+    expect(screen.getAllByRole("button", { name: enSettings.mcp.add_server })).toHaveLength(1);
+    await user.click(create);
+    expect(screen.getByRole("dialog")).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(create).toHaveFocus());
+    await user.click(screen.getByRole("button", { name: enSettings.mcp.browse_market }));
+    expect(data.push).toHaveBeenCalledWith("/acme/marketplace?type=mcp");
+  });
+
+  it("lets ordinary members understand MCP and browse without a creation action", () => {
+    data.role = "member";
+    data.servers = [];
+    render(<McpPage />, { wrapper: Wrapper });
+    expect(screen.getByRole("region", { name: "Connect your agents to your tools" })).toBeVisible();
+    expect(screen.getByRole("button", { name: enSettings.mcp.browse_market })).toBeVisible();
+    expect(screen.queryByRole("button", { name: enSettings.mcp.add_server })).not.toBeInTheDocument();
+    expect(screen.getByText("Ask a workspace owner or admin to add and assign MCP servers.")).toBeVisible();
+  });
+
+  it("retains the real editor and hands focus to the header when saved data replaces its welcome opener", async () => {
+    const user = userEvent.setup();
+    data.servers = [];
+    const view = render(<McpPage />, { wrapper: Wrapper });
+    const welcomeOpener = screen.getByRole("button", { name: enSettings.mcp.add_server });
+    await user.click(welcomeOpener);
+    const dialog = screen.getByRole("dialog");
+    const name = screen.getByLabelText("Server name");
+    await user.type(name, "draft-tool");
+    data.servers = [server({ name: "newly-saved-tool" })];
+    view.rerender(<McpPage />);
+    expect(screen.getByRole("dialog")).toBe(dialog);
+    expect(name).toHaveValue("draft-tool");
+    expect(welcomeOpener).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByRole("button", { name: enSettings.mcp.add_server })).toHaveFocus());
+  });
+
+  it.each(["member", "server"] as const)("does not introduce cached emptiness after a %s query failure or while retrying", (query) => {
+    data.servers = [];
+    if (query === "member") {
+      data.memberStatus = "error";
+      data.memberError = new Error("unavailable");
+    } else {
+      data.serverStatus = "error";
+      data.serverError = new Error("unavailable");
+    }
+    const view = render(<McpPage />, { wrapper: Wrapper });
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    expect(screen.getByRole("alert")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Retry" })).toBeEnabled();
+
+    data.isFetching = true;
+    if (query === "member") data.memberStatus = "pending";
+    else data.serverStatus = "pending";
+    view.rerender(<McpPage />);
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Retrying..." })).toBeDisabled();
+  });
+
+  it.each(["member", "server"] as const)("withholds the introduction for pending or denied %s reads", (query) => {
+    data.servers = [];
+    if (query === "member") data.memberStatus = "pending";
+    else data.serverStatus = "pending";
+    const view = render(<McpPage />, { wrapper: Wrapper });
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    if (query === "member") {
+      data.memberStatus = "error";
+      data.memberError = new ApiError("forbidden", 403, "Forbidden");
+    } else {
+      data.serverStatus = "error";
+      data.serverError = new ApiError("forbidden", 403, "Forbidden");
+    }
+    view.rerender(<McpPage />);
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: enSettings.mcp.add_server })).not.toBeInTheDocument();
+  });
+
+  it("keeps missing membership and unknown inventory distinct from an empty page", () => {
+    data.servers = [];
+    data.memberPresent = false;
+    const view = render(<McpPage />, { wrapper: Wrapper });
+    expect(screen.getByRole("alert")).toBeVisible();
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    data.memberPresent = true;
+    data.servers = undefined as unknown as typeof data.servers;
+    view.rerender(<McpPage />);
+    expect(screen.getByRole("status")).toHaveTextContent(enSettings.mcp.market.workspace_loading);
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+  });
+
+  it("reacts to saved inventory and resets the selected example only when the workspace changes", async () => {
+    const user = userEvent.setup();
+    data.servers = [];
+    const view = render(<McpPage />, { wrapper: Wrapper });
+    await user.click(screen.getByRole("button", { name: "Next example" }));
+    view.rerender(<McpPage />);
+    expect(screen.getByRole("heading", { name: "Configure the connection" })).toBeVisible();
+    data.wsId = "workspace-2";
+    view.rerender(<McpPage />);
+    expect(screen.getByRole("heading", { name: "Choose a service" })).toBeVisible();
+    data.servers = [server({ name: "disabled-tool", enabled: false })];
+    view.rerender(<McpPage />);
+    expect(screen.queryByRole("region", { name: "Connect your agents to your tools" })).not.toBeInTheDocument();
+    expect(screen.getByText("disabled-tool")).toBeVisible();
+    data.servers = [];
+    view.rerender(<McpPage />);
+    expect(screen.getByRole("region", { name: "Connect your agents to your tools" })).toBeVisible();
   });
 
   it("lets members browse the market while retaining the shared inventory", async () => {

@@ -11,8 +11,11 @@ const AGENT_KEYS = Object.keys(enAgents.tab_body.mcp_config) as Array<
   keyof typeof enAgents.tab_body.mcp_config
 >;
 const SETTINGS_KEYS = Object.keys(enSettings.mcp).filter(
-  (key) => key !== "market",
-) as Array<Exclude<keyof typeof enSettings.mcp, "market">>;
+  (key) => key !== "market" && key !== "welcome",
+) as Array<Exclude<keyof typeof enSettings.mcp, "market" | "welcome">>;
+const WELCOME_KEYS = Object.keys(enSettings.mcp.welcome) as Array<
+  keyof typeof enSettings.mcp.welcome
+>;
 const MARKET_KEYS = Object.keys(enSettings.mcp.market) as Array<
   keyof typeof enSettings.mcp.market
 >;
@@ -39,6 +42,13 @@ describe("MCP locale contracts", () => {
           source: enSettings.mcp.market[key],
           resolve: (params: Record<string, string>) =>
             i18n.t(($) => $.mcp.market[key], { ns: "settings", ...params }),
+        })),
+        ...WELCOME_KEYS.map((key) => ({
+          namespace: "settings",
+          key: `mcp.welcome.${key}`,
+          source: enSettings.mcp.welcome[key],
+          resolve: (params: Record<string, string>) =>
+            i18n.t(($) => $.mcp.welcome[key], { ns: "settings", ...params }),
         })),
         ...SETTINGS_KEYS.map((key) => ({
           namespace: "settings",
