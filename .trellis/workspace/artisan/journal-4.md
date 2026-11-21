@@ -184,3 +184,37 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 本次范围已完成；原生Electron窗口、安装包和全仓make check未包含在本次验收中。
+
+
+## Session 178: 收件箱延后：持久化提醒与跨设备验收
+<!-- trellis-session: v=2 fp=4ca412a919e96138 -->
+
+**Date**: 2026-11-21
+**Task**: 收件箱延后：持久化提醒与跨设备验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成 Web/Desktop 通知组延后、快捷与自定义时间、撤销冲突、到期及重要事件唤回、计数和跨设备同步；全部质量门通过并归档。
+
+### Main Changes
+
+- 共享收件箱 UI/Core 与服务端事务和来源回执；修复真实桌面视图标签去重。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9e54271fdbb90571f7a713f10f9a7a69056097f3` | feat(inbox): return postponed notifications when they need attention |
+
+### Testing
+
+- [OK] 620 Core/Views 断言；201 个后端具名结果在普通和竞态模式均通过；6 条生产 Web/Electron 链路无跳过或重试；重启、清理审计和全仓静态检查通过。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 本期范围已交付；原生移动端入口、批量/重复延后和生产发布属于后续范围。
