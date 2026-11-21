@@ -18,7 +18,7 @@ Expected files: shared `layout/app-sidebar*`, a Core navigation-preferences leaf
 - [x] Trellis independent quality review and safe local fixes.
 - [x] Production build plus Web/native browser journey and batched desktop/compact visual QA, with at most one corrective round.
 - [x] Update affected specs/docs, record evidence and final remaining risks.
-- [ ] Commit only task-owned changes with Lore decision trailers; finish/archive/journal under task ownership.
+- [x] Commit only task-owned changes with Lore decision trailers; finish/archive/journal under task ownership.
 
 ## Checks
 
