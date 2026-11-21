@@ -23,45 +23,13 @@
     "iterations": "迭代"
   },
   "marketplace": {
+    "tagline": "浏览 MCP、Skill、AI小队模板和智能体模板。",
+    "learn_more": "了解更多 →",
     "type_label": "能力类型",
-    "welcome": {
-      "title": "为下一项任务配好能力",
-      "description": "给智能体接上工具，把流程存下来复用，或从模板创建智能体和 AI小队。选一类能力，看看它怎么用。"
-    },
-    "example": {
-      "label": "使用示例",
-      "task": "发布前检查注册流程",
-      "show": "查看使用示例",
-      "docs": "阅读文档"
-    },
-    "mcp": {
-      "label": "MCP",
-      "purpose": "接入工具",
-      "resource": "Playwright",
-      "setup": "配置 Playwright MCP 服务，再把它分配给负责测试的智能体。",
-      "outcome": "智能体可以打开页面，填写注册表单。"
-    },
-    "skills": {
-      "label": "Skills",
-      "purpose": "复用流程",
-      "resource": "注册检查清单",
-      "setup": "把注册检查步骤和结果记录格式存成一个 skill。",
-      "outcome": "下次检查注册流程时，可以直接复用同一套步骤。"
-    },
-    "squad_templates": {
-      "label": "AI小队模板",
-      "purpose": "组建小队",
-      "resource": "发布小队",
-      "setup": "用发布小队模板组队，再把任务交给小队。",
-      "outcome": "队长协调测试和发布准备，再请人确认是否发布。"
-    },
-    "agent_templates": {
-      "label": "智能体模板",
-      "purpose": "创建智能体",
-      "resource": "测试工程师",
-      "setup": "用测试工程师模板创建智能体，再把注册检查交给它。",
-      "outcome": "智能体检查注册流程，并在任务中汇报结果。"
-    }
+    "mcp": "MCP",
+    "skills": "Skills",
+    "squad_templates": "AI小队模板",
+    "agent_templates": "智能体模板"
   },
   "tab": {
     "issue": "任务",
