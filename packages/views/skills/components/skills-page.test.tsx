@@ -16,7 +16,14 @@ import { NavigationProvider, type NavigationAdapter } from "../../navigation";
 // opened in a background tab instead of the source page.
 
 const mocks = vi.hoisted(() => ({
-  skills: [] as SkillSummary[],
+  skills: [] as SkillSummary[] | undefined,
+  skillStatus: "success" as "success" | "pending" | "error",
+  fetchStatus: "idle" as "idle" | "fetching" | "paused",
+  listError: null as Error | null,
+  supportingError: null as Error | null,
+  workspaceId: "ws-1",
+  refetch: vi.fn(),
+  dialogFinalFocus: null as (() => HTMLElement | null) | null,
   viewState: {
     // The row-anchor regression rig below lives in the LIST view.
     viewMode: "list" as string,
@@ -47,12 +54,13 @@ vi.mock("@tanstack/react-query", () => ({
     if (options.queryKey?.[0] === "skills") {
       return {
         data: mocks.skills,
-        isLoading: false,
-        error: null,
-        refetch: vi.fn(),
+        isSuccess: mocks.skillStatus === "success",
+        isLoading: mocks.skillStatus === "pending" && mocks.fetchStatus === "fetching",
+        error: mocks.listError,
+        refetch: mocks.refetch,
       };
     }
-    return { data: [], isLoading: false, error: null, refetch: vi.fn() };
+    return { data: [], isLoading: false, error: mocks.supportingError, refetch: vi.fn() };
   },
 }));
 
@@ -77,7 +85,7 @@ vi.mock("@multica/core/auth", () => ({
 }));
 
 vi.mock("@multica/core/hooks", () => ({
-  useWorkspaceId: () => "ws-1",
+  useWorkspaceId: () => mocks.workspaceId,
 }));
 
 // Partial mock: SkillIcon resolves its icon from the real WORKSPACE_PAGES, and
@@ -127,10 +135,14 @@ vi.mock("./create-skill-dialog", () => ({
   CreateSkillDialog: ({
     initialEntry,
     initialPresentation,
+    finalFocus,
   }: {
     initialEntry?: { kind: string; templateName?: string };
     initialPresentation?: { category?: string };
-  }) => (
+    finalFocus?: () => HTMLElement | null;
+  }) => {
+    mocks.dialogFinalFocus = finalFocus ?? null;
+    return (
     <div
       role="dialog"
       aria-label="Create skill"
@@ -138,7 +150,8 @@ vi.mock("./create-skill-dialog", () => ({
       data-template-name={initialEntry?.templateName}
       data-category={initialPresentation?.category}
     />
-  ),
+    );
+  },
 }));
 // The toolbar keeps its real exports (originIcon & co. feed the sidebar and
 // the card); only the component is replaced with a search box plus the view
@@ -232,6 +245,12 @@ function middleClick(target: Element): MouseEvent {
 beforeEach(() => {
   vi.clearAllMocks();
   mocks.skills = [importedSkill];
+  mocks.skillStatus = "success";
+  mocks.fetchStatus = "idle";
+  mocks.listError = null;
+  mocks.supportingError = null;
+  mocks.workspaceId = "ws-1";
+  mocks.dialogFinalFocus = null;
   mocks.viewState.viewMode = "list";
   mocks.viewState.filters.categories = [];
   mocks.viewState.filters.labels = [];
@@ -255,10 +274,94 @@ describe("SkillsPage market entry", () => {
     mocks.skills = [];
     const adapter = makeAdapter();
     renderPage(adapter);
-    expect(screen.getByText("No skills yet")).toBeVisible();
-    expect(screen.getByRole("link", { name: "Browse capability marketplace" })).toHaveAttribute("href", "/acme/marketplace?type=skills");
+    expect(screen.getByRole("heading", { name: "Turn your team’s know-how into a skill" })).toBeVisible();
+    expect(screen.getByRole("link", { name: "From template" })).toHaveAttribute("href", "/acme/marketplace?type=skills");
     expect(screen.queryByRole("tab", { name: "Skill templates" })).not.toBeInTheDocument();
     expect(adapter.push).not.toHaveBeenCalled();
+  });
+});
+
+describe("SkillsPage welcome state", () => {
+  const title = "Turn your team’s know-how into a skill";
+
+  it("has one create action, workspace documentation and the existing method chooser", async () => {
+    mocks.skills = [];
+    renderPage(makeAdapter());
+    const create = screen.getByRole("button", { name: "New skill" });
+    expect(screen.getAllByRole("button", { name: "New skill" })).toHaveLength(1);
+    expect(screen.getByRole("link", { name: "Read the docs" })).toHaveAttribute("href", "/acme/docs/skills");
+    await userEvent.click(create);
+    expect(screen.getByRole("dialog", { name: "Create skill" })).toHaveAttribute("data-entry", "methods");
+    expect(mocks.dialogFinalFocus?.()).toBe(create);
+  });
+
+  it.each(["fetching", "paused", "idle"] as const)("keeps unknown %s data out of both the welcome and empty results", (fetchStatus) => {
+    mocks.skills = undefined;
+    mocks.skillStatus = "pending";
+    mocks.fetchStatus = fetchStatus;
+    renderPage(makeAdapter());
+    expect(screen.queryByRole("heading", { name: title })).not.toBeInTheDocument();
+    expect(screen.queryByText("No matches")).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: "Search skills" })).not.toBeInTheDocument();
+  });
+
+  it.each([
+    { name: "the first read", data: undefined },
+    { name: "an empty refresh", data: [] as SkillSummary[] },
+  ])("keeps the retryable query error above the welcome for $name", async ({ data }) => {
+    mocks.skills = data;
+    mocks.skillStatus = "error";
+    mocks.listError = new Error("Skill service unavailable");
+    renderPage(makeAdapter());
+    expect(screen.getByRole("alert")).toHaveTextContent("Skill service unavailable");
+    expect(screen.queryByRole("heading", { name: title })).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Try again" }));
+    expect(mocks.refetch).toHaveBeenCalledOnce();
+  });
+
+  it("does not wait for supporting queries before welcoming an empty library", () => {
+    mocks.skills = [];
+    mocks.supportingError = new Error("Supporting data unavailable");
+    renderPage(makeAdapter());
+    expect(screen.getByRole("heading", { name: title })).toBeVisible();
+    expect(screen.getByText(/Some workspace data failed to load/)).toBeVisible();
+  });
+
+  it("follows saved data transitions and retains a connected dialog focus fallback", async () => {
+    mocks.skills = [];
+    const adapter = makeAdapter();
+    const view = renderPage(adapter);
+    const welcomeTrigger = screen.getByRole("button", { name: "New skill" });
+    await userEvent.click(welcomeTrigger);
+    mocks.skills = [importedSkill];
+    view.rerender(<NavigationProvider value={adapter}><SkillsPage /></NavigationProvider>);
+    expect(screen.queryByRole("heading", { name: title })).not.toBeInTheDocument();
+    expect(screen.getByText("animations")).toBeInTheDocument();
+    expect(welcomeTrigger.isConnected).toBe(false);
+    expect(mocks.dialogFinalFocus?.()).toBe(screen.getByRole("button", { name: "New skill" }));
+
+    mocks.skills = [];
+    view.rerender(<NavigationProvider value={adapter}><SkillsPage /></NavigationProvider>);
+    expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+  });
+
+  it("resets the selected illustration when workspace identity changes", async () => {
+    mocks.skills = [];
+    const adapter = makeAdapter();
+    const view = renderPage(adapter);
+    await userEvent.click(screen.getByRole("button", { name: "Next example" }));
+    expect(screen.getByRole("group", { name: "Assign it to your agents" })).toBeInTheDocument();
+    mocks.workspaceId = "ws-2";
+    view.rerender(<NavigationProvider value={adapter}><SkillsPage /></NavigationProvider>);
+    expect(screen.getByRole("group", { name: "Five ways to add a skill" })).toBeInTheDocument();
+  });
+
+  it("keeps a filtered populated library in recovery rather than showing the welcome", () => {
+    renderPage(makeAdapter());
+    fireEvent.change(screen.getByRole("textbox", { name: "Search skills" }), { target: { value: "missing skill" } });
+    expect(screen.getByText("No matches")).toBeVisible();
+    expect(screen.getByRole("button", { name: "Clear search" })).toBeVisible();
+    expect(screen.queryByRole("heading", { name: title })).not.toBeInTheDocument();
   });
 });
 

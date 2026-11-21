@@ -40,7 +40,7 @@ import {
 import { runtimeDisplayLabel, runtimeListOptions } from "@multica/core/runtimes";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
 import { Badge } from "@multica/ui/components/ui/badge";
-import { Button } from "@multica/ui/components/ui/button";
+import { Button, buttonVariants } from "@multica/ui/components/ui/button";
 import { Checkbox } from "@multica/ui/components/ui/checkbox";
 import {
   LIST_GRID_BOTTOM_CLEARANCE,
@@ -75,6 +75,7 @@ import { useSkillPresentation } from "../hooks/use-skill-presentation";
 import type { SkillPresentation } from "../lib/skill-presentation";
 import { originSourceUrl, readOrigin, type OriginInfo } from "../lib/origin";
 import { CreateSkillDialog } from "./create-skill-dialog";
+import { SkillWelcome } from "./skill-welcome";
 import {
   useSkillsViewStore,
   DEFAULT_HIDDEN_COLUMNS,
@@ -201,9 +202,11 @@ export type PresentedSkillRow = SkillRow & {
 function PageHeaderBar({
   onCreate,
   buttonRef,
+  showCreate,
 }: {
   onCreate: () => void;
   buttonRef: React.Ref<HTMLButtonElement>;
+  showCreate: boolean;
 }) {
   const { t } = useT("skills");
   const paths = useWorkspacePaths();
@@ -217,15 +220,15 @@ function PageHeaderBar({
         label: t(($) => $.page.learn_more),
       }}
       actions={<>
-        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
+        <AppLink className={buttonVariants({ variant: "outline", size: "sm" })} href={paths.marketplaceTab("skills")}>
           {t(($) => $.market.from_template)}
-        </Button>
-        <CollectionPageHeaderAction
+        </AppLink>
+        {showCreate && <CollectionPageHeaderAction
           ref={buttonRef}
           icon={Plus}
           label={t(($) => $.page.new_skill)}
           onClick={onCreate}
-        />
+        />}
       </>}
     />
   );
@@ -481,27 +484,6 @@ function CreatorCell({ creator }: { creator: MemberWithUser | null }) {
 // Empty state
 // ---------------------------------------------------------------------------
 
-function EmptyState({ onCreate, buttonRef }: { onCreate: () => void; buttonRef: React.Ref<HTMLButtonElement> }) {
-  const { t } = useT("skills");
-  const paths = useWorkspacePaths();
-  return (
-    <CollectionPageState
-      icon={SkillIcon}
-      title={t(($) => $.page.empty.title)}
-      description={t(($) => $.page.empty.description)}
-      actions={<>
-        <Button variant="outline" size="sm" render={<AppLink href={paths.marketplaceTab("skills")} />}>
-          {t(($) => $.market.browse_market)}
-        </Button>
-        <Button ref={buttonRef} type="button" onClick={onCreate} size="sm">
-          <Plus aria-hidden="true" className="size-3" />
-          {t(($) => $.page.new_skill)}
-        </Button>
-      </>}
-    />
-  );
-}
-
 function CategoryEmptyState({
   category,
   onCreate,
@@ -714,6 +696,7 @@ export default function SkillsPage() {
   const {
     data: skillData,
     isLoading,
+    isSuccess,
     error: listError,
     refetch: refetchList,
   } = useQuery(skillListOptions(wsId));
@@ -933,7 +916,7 @@ export default function SkillsPage() {
 
   const hasActiveFilters = Object.values(filters).some((values) => values.length > 0);
   const totalCount = skills.length;
-  const showEmpty = !isLoading && totalCount === 0;
+  const showWelcome = isSuccess && skillData !== undefined && totalCount === 0;
   // A single selected category that has no skills at all gets its own empty
   // state with a pre-filled "New skill" entry. Counted off the unfiltered
   // facets: when a search or another filter is what narrowed the list to
@@ -965,6 +948,7 @@ export default function SkillsPage() {
       <PageHeaderBar
         buttonRef={createButtonRef}
         onCreate={() => setCreation({ triggerRef: createButtonRef })}
+        showCreate={!showWelcome}
       />
       {listError ? (
         <CollectionPageState
@@ -991,14 +975,12 @@ export default function SkillsPage() {
         </div>
       )}
 
-      {isLoading ? (
+      {isLoading || skillData === undefined ? (
         <div className="flex-1 overflow-y-auto @container">
           <LoadingSkeleton />
         </div>
-      ) : showEmpty ? (
-        <div className="flex flex-1 items-center justify-center">
-          <EmptyState buttonRef={emptyCreateButtonRef} onCreate={() => setCreation({ triggerRef: emptyCreateButtonRef })} />
-        </div>
+      ) : showWelcome ? (
+        <SkillWelcome key={wsId} buttonRef={emptyCreateButtonRef} onCreate={() => setCreation({ triggerRef: emptyCreateButtonRef })} />
       ) : (
         <>
           <span role="status" aria-atomic="true" className="sr-only">

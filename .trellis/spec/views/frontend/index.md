@@ -47,6 +47,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Built-in Skill Localization](./builtin-skill-localization.md) | Display identity, bilingual search, and raw instruction preservation | Active |
 | [Skill Presentation](./skill-presentation.md) | Category / icon in `config.presentation`, workspace labels, parity and rollout rules, batch label management | Active |
 | [Skill Template Discovery](./skill-market-discovery.md) | Workspace/template separation, catalog entry, source filtering, copy navigation and focus | Active |
+| [Skills Welcome](./skill-welcome.md) | Successful-empty directory, five real creation methods, manual examples, focus and Web/Desktop acceptance | Active |
 | [Capability Market](./capability-market.md) | Shared MCP/Skills discovery routes, retained type panels, resource-management boundaries and multi-platform navigation | Active |
 | [MCP Market](./mcp-market.md) | Trusted recipes, workspace instances, explicit assignment, agent-context reuse and failure recovery | Active |
 | [Iteration Operations](../../core/frontend/iteration-operations.md) | Progress/scope presentation, complete activity, frozen facts, preview identity, recovery and desktop routes | Active |

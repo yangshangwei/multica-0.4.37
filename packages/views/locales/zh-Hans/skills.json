@@ -79,6 +79,45 @@
       "summary": "对照基线观察上线结果，记录指标和回滚结论。"
     }
   },
+  "welcome": {
+    "title": "把团队的做事方法写成 skill",
+    "description": "Skill 是一份可复用的做事说明（SKILL.md）。在工作空间里添加一次，就能分配给多个智能体使用。",
+    "docs": "阅读文档",
+    "examples": "了解 skill 的用法",
+    "example": "示例",
+    "previous": "上一个示例",
+    "next": "下一个示例",
+    "show_example": "查看示例 {{number}}：{{title}}",
+    "position": "示例 {{number}} / {{total}}：{{title}}",
+    "add": {
+      "title": "五种方式添加",
+      "description": "从空白 SKILL.md 或模板开始，也可以从本地文件、URL、已连接的运行时导入。"
+    },
+    "assignment": {
+      "title": "分配给智能体",
+      "description": "一个 skill 可以给多个智能体用。在 skill 详情或智能体设置中，选择需要它的智能体。",
+      "skill_name": "pr-review",
+      "agent_name": "Kepler",
+      "other_agent_name": "Turing",
+      "instruction": "先跑测试，再看可访问性和性能。",
+      "used_by": "使用此 skill 的智能体",
+      "reviewer": "审查者",
+      "engineer": "全栈",
+      "add": "分配给智能体"
+    },
+    "reuse": {
+      "title": "维护一份，后续执行复用",
+      "description": "修改工作空间中的这一份 skill，使用它的智能体会在后续执行中读取新版；正在执行的任务不受影响。",
+      "filename": "SKILL.md",
+      "saved": "已保存",
+      "checklist": "审查清单",
+      "tests": "运行相关测试",
+      "accessibility": "检查可访问性",
+      "performance": "记录性能风险",
+      "next_run": "后续执行读取更新后的说明",
+      "snapshot": "从运行时复制的是文件快照，不会持续同步。"
+    }
+  },
   "page": {
     "title": "Skills",
     "tagline": "工作空间里任何智能体都能使用的指令。",
