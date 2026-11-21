@@ -8,8 +8,8 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 185
-- **Last Active**: 2026-11-21
+- **Total Sessions**: 186
+- **Last Active**: 2026-11-22
 <!-- @@@/auto:current-status -->
 
 ---
@@ -19,7 +19,7 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~448 | Active |
+| `journal-4.md` | ~479 | Active |
 | `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
@@ -32,6 +32,7 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 186 | 2026-11-22 | 统一侧栏导航完成验收 | `bb016cc5b` | `codex/cross-workspace-collaboration` |
 | 185 | 2026-11-21 | Capability market welcome | `a40a44f59` | `codex/cross-workspace-collaboration` |
 | 184 | 2026-11-21 | 智能体模板纳入能力市场 | `828df41865f067ee4328f38e123682f73cf2beb1`, `09281851723cdabdf20ed1e6a55f6354cebec926` | `codex/cross-workspace-collaboration` |
 | 183 | 2026-11-21 | 简化 AI 小队页并迁移模板到能力市场 | `3e1b08d4c` | `codex/cross-workspace-collaboration` |

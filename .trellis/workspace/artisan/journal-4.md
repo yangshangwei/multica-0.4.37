@@ -446,3 +446,34 @@ Added a bilingual capability-market welcome and responsive case directory, prese
 ### Next Steps
 
 - Native Desktop renderer acceptance remains unrun.
+
+
+## Session 186: 统一侧栏导航完成验收
+<!-- trellis-session: v=2 fp=ccd6ef00b7629524 -->
+
+**Date**: 2026-11-22
+**Task**: 统一侧栏导航完成验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+统一 Web/Desktop 协作与工作空间左栏，修复分组历史返回折叠问题，完成双端生产构建和实际导航验收。
+
+### Main Changes
+
+- 统一侧栏、New 菜单、协作通知、账户安全反馈与 Web/Desktop 壳层；同步旧 E2E 入口。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `bb016cc5b` | feat(navigation): keep collaboration reachable beside workspace work |
+
+### Testing
+
+- [OK] 275 项聚焦测试、四包 typecheck/lint、locale parity、双端构建和 Web/实际 Electron 两条完整流程通过。
+- [OK] 中英文宽屏/窄屏、原生 200% 缩放截图已检查；6 项既有 E2E lint 问题无新增。
+
+### Status
+
+[OK] **Completed**
