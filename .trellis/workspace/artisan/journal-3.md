@@ -1485,6 +1485,84 @@ Audited68local branches,20origin refs and100worktree heads; joined equivalent hi
 - 父任务继续跟踪其余原编号；PAY-241 S3 与既有创建弹窗任务保持原归属。
 
 
+## Session 163: PAY-241 普通订阅与受控恢复验收
+<!-- trellis-session: v=2 fp=08e70aeff627e8b4 -->
+
+**Date**: 2026-11-19
+**Task**: PAY-241 普通订阅与受控恢复验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+普通评论通知去重、普通订阅R05和受控Extras-B R03均独立接受；TC21/22定义场景PASS，父矩阵6PASS/11PARTIAL/7NOT_RUN，完整S3继续进行中。
+
+### Main Changes
+
+- 普通评论原事件持久inbox身份去重，保留已读/归档及legacy行；原RED和日志死锁失败保留。
+- 两端普通订阅完整2/2及受控运行4/4十子场景通过，10Provider/12原输入/0恢复启动；修正原编辑器提交区域和同run View/Hide实际按钮。
+- 更新父矩阵、父/子进度、恢复规范和有序计划；当前受控L1/L2原ACK/冲突/迟到拒绝与历史保持已映射。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `8b1f3dcf626a3da9ea4797ca92ed98284266620a` | fix(notifications): keep comment replays from reopening inbox work |
+| `699d510b9478f05cc4160bb1dcfbd24b43527a08` | test(recovery): preserve original delivery and run identities |
+
+### Testing
+
+- [OK] Go普通/竞态各35顶层57命名通过；gofmt/vet/sqlc/UUID约定及匹配编译通过。
+- [OK] 匹配来源的目标TypeScript/ESLint/list通过；Web/Desktop普通订阅2/2、受控R03四顶层十子场景通过，零重试，独立阻挡项0。
+- [OK] 原token40授权读取/80精确拒绝、10预留释放、12重放/迟到核账对、旧事实及0恢复启动核对；自有服务停止、连接0、原gate恢复、855迁移/663索引及3624前端来源条目保持。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Agent输出附件runtime写入、原文件/请求身份、当前attempt/capability、唯一存储和评论/结果引用验证。
+- 普通priority/assignee当前UI numeric CAS与legacy无版本兼容，或明确bounded R04且保留TC16 PARTIAL。
+- 完成最终S3 R01-R09来源/资源核对后归档；真实S4 I02-I09与最终S5/业务签字分别推进。
+
+
+## Session 164: PAY-241 S3 recovery accepted and archived
+<!-- trellis-session: v=2 fp=1d1fc039393b07c2 -->
+
+**Date**: 2026-11-19
+**Task**: PAY-241 S3 recovery accepted and archived
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Completed real ordinary UI RED/GREEN, promoted TC-16, verified finite S3 R01-R09, committed accepted prior S3 code selectively and archived task. Parent7PASS10PARTIAL7NOT_RUN; S4 inputs and finalS5 remain.
+
+### Main Changes
+
+- Preserve observed UI revision through field owners, confirmation and common-revision batches; exact21path integration.
+- Commit accepted information recovery66paths with3S2hunks left unstaged, plus scoped E2E evidence.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `81fc27ac8` | fix(issues): prevent stale field choices from overwriting newer work |
+| `f6703b7e4` | feat(collaboration): keep blocked work recoverable with its original history |
+| `2a46ff823` | test(collaboration): preserve complete recovery evidence across both clients |
+
+### Testing
+
+- [OK] Accepted Core64/Views216; fresh Web/Desktop2tops6cases0retry; ROOTtypecheck9/9 and lint6/6(31warnings0errors); registrationNode8/8.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Use S4 research/next-inputs-20261119.md to obtain real repository/CI/payment/fulfillment/nonproduction deployment/metrics/reviewer inputs, then E01-E07 and finalS5.
+
+
 ## Session 165: Core UI audit remediation committed
 <!-- trellis-session: v=2 fp=02a7d4f0265f1246 -->
 
@@ -1519,6 +1597,146 @@ Committed verified F01-F11 core UI fixes and archived their evidence; unrelated 
 ### Next Steps
 
 - Physical phone touch, spoken screen-reader validation and the two unconfirmed narrow-layout candidates remain outside this task.
+
+
+## Session 166: Fix retained collaboration drawer dismissal
+<!-- trellis-session: v=2 fp=82a205101cf9f39d -->
+
+**Date**: 2026-11-19
+**Task**: Fix retained collaboration drawer dismissal
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Confirmed native close failure, restored Base UI hidden lifecycle, added close/backdrop/reopen regression, and verified 59 related tests plus native Electron.
+
+### Main Changes
+
+- Shared Dialog now adds forced hidden/inert/aria-hidden only for invisible scopes; preserves mounted drafts and native focus.
+- Added real close-button and initial hidden-shell/backdrop coverage; documented Base UI undefined-property merging.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3fc0cacbd` | fix(ui): let retained drawers disappear when closed |
+
+### Testing
+
+- [OK] 59 relevant component tests passed; UI and Views typechecks, scoped ESLint and diff checks passed.
+- [OK] Native Electron: X closes drawer and backdrop; focus returns; Escape and reopen verified with actual history.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work for this repair. Full E2E and packaged Windows/Linux verification were not run.
+
+
+## Session 167: Repair native pointer dismissal and correct prior verification
+<!-- trellis-session: v=2 fp=cfaea6d41a79e785 -->
+
+**Date**: 2026-11-19
+**Task**: Repair native pointer dismissal and correct prior verification
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+User feedback exposed the remaining Electron drag-region interception. Added popup no-drag, proved actual OS coordinate X failure before and success after, and corrected prior AX-only evidence.
+
+### Main Changes
+
+- Resource DialogContent opts out of native window dragging; existing DialogClose and retained state remain.
+- Pinned popup CSS contract; documented required native-coordinate verification and first-pass coverage gap.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fd9386170` | fix(collaboration): let native mouse clicks reach the drawer close control |
+
+### Testing
+
+- [OK] 21 component tests, Views typecheck, scoped lint/diff and independent review passed.
+- [OK] Actual OS coordinate X on original issue: failed before; Details and Activity twice passed after. Escape/backdrop still work.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No remaining work for this repair. Packaged cross-platform and full E2E checks not run.
+
+
+## Session 168: Multica fresh full E2E regression and repair
+<!-- trellis-session: v=2 fp=14ef8ee7a5ea6db5 -->
+
+**Date**: 2026-11-20
+**Task**: Multica fresh full E2E regression and repair
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Fresh496/496canonical E2E passes;14current-candidate security/core passes;14,709TS unit passes;23,688Go named passes with9explicit skips. Fixed false collaboration access loss after completion, repaired bounded fixtures, preserved original failures. All owned services cleaned.
+
+### Main Changes
+
+- Core status-options403/404 now revalidates issue authority without clearing readable detail;5regressions and Web/Desktop repro+green retained.
+- History/packagedStop/clock/output-allocation fixtures corrected with strict existing behavior and independent checks; pre-existing user work retained.
+
+### Git Commits
+
+(No commits - planning session)
+
+### Testing
+
+- [OK] Production Web+Desktop/realLinuxMain,daemon/CLI,100-account10,000event performance and100writebacks verified;REPORT.md contains exact boundaries.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Review uncommitted task-owned files listed in artifacts/qa/full-e2e-20261120/owned-files.json; no commit or deploy performed.
+
+
+## Session 169: Fresh core-first full E2E regression r2
+<!-- trellis-session: v=2 fp=9e3d2b39c171b9bd -->
+
+**Date**: 2026-11-20
+**Task**: Fresh core-first full E2E regression r2
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+Fresh496/496E2E latestPASS; final current76core+23focusedPASS;14718current TS identities; backend23795namedPASS9SKIP. Fixed7test fixtures, preserved24original E2E failures and I1performance variability. Allownedservicesstopped.
+
+### Main Changes
+
+- Seven fixture/assertion repairs and two specs; no task-owned product change or timeout weakening.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `51a113ae8` | test(qa): keep regressions attributable to business behavior |
+| `689fcb2d8` | chore(task): retain fresh regression evidence and honest coverage limits |
+
+### Testing
+
+- [OK] Fresh production Web/Desktop, actual Linux packaged Main2/2,100participant10000propagations and100controlledrunwritebacks.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- Review report artifacts/qa/full-e2e-20261120-r2/REPORT.md; real mobile/Windows/macOS installer and commercial-model acceptance remain separate.
 
 
 ## Session 170: Complete agent-create blocked feedback and consistency

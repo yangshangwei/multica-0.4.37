@@ -8,7 +8,7 @@
 
 <!-- @@@auto:current-status -->
 - **Active File**: `journal-4.md`
-- **Total Sessions**: 181
+- **Total Sessions**: 183
 - **Last Active**: 2026-11-21
 <!-- @@@/auto:current-status -->
 
@@ -19,8 +19,8 @@
 <!-- @@@auto:active-documents -->
 | File | Lines | Status |
 |------|-------|--------|
-| `journal-4.md` | ~322 | Active |
-| `journal-3.md` | ~1710 | Archived |
+| `journal-4.md` | ~390 | Active |
+| `journal-3.md` | ~1928 | Archived |
 | `journal-2.md` | ~1968 | Archived |
 | `journal-1.md` | ~2037 | Archived |
 <!-- @@@/auto:active-documents -->
@@ -32,6 +32,8 @@
 <!-- @@@auto:session-history -->
 | # | Date | Title | Commits | Branch |
 |---|------|-------|---------|--------|
+| 183 | 2026-11-21 | 简化 AI 小队页并迁移模板到能力市场 | `3e1b08d4c` | `codex/cross-workspace-collaboration` |
+| 182 | 2026-11-21 | MCP 市场浏览与配置引导优化 | `9e5dfbe5c` | `codex/cross-workspace-collaboration` |
 | 181 | 2026-11-21 | MCP 首次使用介绍页验收与归档 | `ef7419625f799798be09004991dfcc4d4cfef8ad` | `codex/cross-workspace-collaboration` |
 | 180 | 2026-11-21 | Skills 欢迎页验收、提交与归档 | `86b910dfa0fd7e5593739fc5defee2bf99831c35` | `codex/cross-workspace-collaboration` |
 | 179 | 2026-11-21 | 运行时欢迎页完成与生产验收 | `055ae1d768dea657a30544f6bc94b2a1965c6f45` | `codex/cross-workspace-collaboration` |
@@ -44,7 +46,13 @@
 | 172 | 2026-11-20 | Archive November 18 E2E follow-up at user request | `22e0b202f60255f5dc9030139454ec87e4606270`, `da19f01ddc722396327cda94227cb9a6d7036cc7` | `codex/cross-workspace-collaboration` |
 | 171 | 2026-11-20 | Archive full regression after current verification and cleanup | `963461f67`, `cbcb86b94`, `37e2faa0f`, `6f51d385f`, `ddc80d5af`, `fa1867259` | `codex/cross-workspace-collaboration` |
 | 170 | 2026-11-20 | Complete agent-create blocked feedback and consistency | `307f404fee685094ecc49569b4c0beb0f7127b42`, `d6be5c012724c1582ee8150676d54e175cfd76f5` | `codex/cross-workspace-collaboration` |
+| 169 | 2026-11-20 | Fresh core-first full E2E regression r2 | `51a113ae8`, `689fcb2d8` | `codex/cross-workspace-collaboration` |
+| 168 | 2026-11-20 | Multica fresh full E2E regression and repair | - | `codex/cross-workspace-collaboration` |
+| 167 | 2026-11-19 | Repair native pointer dismissal and correct prior verification | `fd9386170` | `codex/cross-workspace-collaboration` |
+| 166 | 2026-11-19 | Fix retained collaboration drawer dismissal | `3fc0cacbd` | `codex/cross-workspace-collaboration` |
 | 165 | 2026-11-19 | Core UI audit remediation committed | `b6b07c3067bccaf3a76de960872a41e0f687d276` | `codex/cross-workspace-collaboration` |
+| 164 | 2026-11-19 | PAY-241 S3 recovery accepted and archived | `81fc27ac8`, `f6703b7e4`, `2a46ff823` | `codex/cross-workspace-collaboration` |
+| 163 | 2026-11-19 | PAY-241 普通订阅与受控恢复验收 | `8b1f3dcf626a3da9ea4797ca92ed98284266620a`, `699d510b9478f05cc4160bb1dcfbd24b43527a08` | `codex/cross-workspace-collaboration` |
 | 162 | 2026-11-19 | 验收 E2E #37/#38 并保留隔离证据 | `22e0b202f60255f5dc9030139454ec87e4606270`, `da19f01ddc722396327cda94227cb9a6d7036cc7` | `codex/cross-workspace-collaboration` |
 | 161 | 2026-11-18 | PAY-241 S3 字段并发首增量与 TestMain 清理闭环 | `96a2bffe3` | `codex/cross-workspace-collaboration` |
 | 160 | 2026-11-18 | 协作空间 Impeccable 审计修复与回归 | `a8232f9bb` | `codex/cross-workspace-collaboration` |

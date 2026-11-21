@@ -356,3 +356,35 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 如需发布，继续验证真实后端、打包后的 Electron 和实体触屏设备。
+
+
+## Session 183: 简化 AI 小队页并迁移模板到能力市场
+<!-- trellis-session: v=2 fp=478bc43ac69160f6 -->
+
+**Date**: 2026-11-21
+**Task**: 简化 AI 小队页并迁移模板到能力市场
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+将小队模板并入能力市场，AI 小队页改为单一目录，保留旧模板书签重定向；定向测试及类型检查通过，浏览器 E2E 被本机 API 登录 403 阻塞。
+
+### Main Changes
+
+- AI 小队页移除工作空间/模板标签，补充集合页说明，并为旧 view=templates 书签保留查询和 hash 上下文重定向。
+- 能力市场新增 squad-templates 类型，复用模板目录与项目应用流程，按 active 状态控制数据请求和弹窗。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `3e1b08d4c` | feat(squads): make templates discoverable beside other capabilities |
+
+### Testing
+
+- [OK] 127 Views tests、76 Core path tests、Core/Views typecheck、定向 ESLint、diff check 均通过。
+- [OK] Playwright 7 项在页面断言前因本机 /auth/send-code 返回 403 失败；Impeccable detector 无发现。
+
+### Status
+
+[OK] **Completed**
