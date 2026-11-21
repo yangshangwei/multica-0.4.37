@@ -218,3 +218,37 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 本期范围已交付；原生移动端入口、批量/重复延后和生产发布属于后续范围。
+
+
+## Session 179: 运行时欢迎页完成与生产验收
+<!-- trellis-session: v=2 fp=ae90aa2c434b0efe -->
+
+**Date**: 2026-11-21
+**Task**: 运行时欢迎页完成与生产验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+两份清单成功确认空后显示运行时欢迎页。服务端确认已有机器后，页面自动切换到机器列表。
+
+### Main Changes
+
+- 沿用现有连接弹窗、部署配置的下载入口和工作区内连接指南。两个轮播箭头到达端点后保留键盘焦点。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `055ae1d768dea657a30544f6bc94b2a1965c6f45` | feat(runtimes): help workspace members connect their first computer |
+
+### Testing
+
+- [OK] 370 条运行时及语言测试、ESLint、Views 和 Desktop 类型检查，以及生产 Chromium 的 16 组布局和连接流程均通过。独立视觉复核 95/100。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 详细验收见 `.trellis/tasks/archive/2026-11/11-21-runtime-welcome/verification.md`。
