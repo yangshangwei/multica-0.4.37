@@ -288,3 +288,35 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Next Steps
 
 - 验收见 `.trellis/tasks/archive/2026-11/11-21-skills-welcome/evidence.md`。已记录既有 API 空数组回退和安装包、原生移动端验收边界。
+
+
+## Session 181: MCP 首次使用介绍页验收与归档
+<!-- trellis-session: v=2 fp=956af06ef9035ff1 -->
+
+**Date**: 2026-11-21
+**Task**: MCP 首次使用介绍页验收与归档
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+工作空间的共享 MCP 清单成功加载为空后展示介绍页。保存首条配置后切换到管理列表。
+
+### Main Changes
+
+- 用三个可手动切换的示例说明选择服务、填写连接配置和分配智能体。
+- 普通成员可浏览能力市场，所有者和管理员可打开现有自定义服务器弹窗。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `ef7419625f799798be09004991dfcc4d4cfef8ad` | feat(mcp): help members configure their first shared MCP server |
+
+### Testing
+
+- [OK] 315 个相关测试、Views 类型检查和改动文件的 ESLint 检查通过。
+- [OK] 生产 Web、Electron 窄窗和能力市场入口共 3 条端到端测试通过。验收覆盖中英文、浅深主题和窄屏滚动。
+
+### Status
+
+[OK] **Completed**
