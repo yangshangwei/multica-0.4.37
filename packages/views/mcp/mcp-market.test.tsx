@@ -11,6 +11,8 @@ import type {
 } from "@multica/core/types";
 import enSettings from "../locales/en/settings.json";
 import enAgents from "../locales/en/agents.json";
+import zhSettings from "../locales/zh-Hans/settings.json";
+import zhAgents from "../locales/zh-Hans/agents.json";
 import { ApiError } from "@multica/core/api";
 import { McpTemplateCatalog } from "./mcp-market";
 import { McpSetupDialog } from "./mcp-setup-dialog";
@@ -113,13 +115,16 @@ const documentationTemplates: McpServerTemplate[] = [
     requirements: ["Streamable HTTP support and network access", "Indexed public repositories only; private repositories are not supported"],
   },
 ];
-function Wrapper({ children }: { children: ReactNode }) {
+function Wrapper({ children, locale = "en" }: { children: ReactNode; locale?: "en" | "zh-Hans" }) {
   const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false } } }));
   return (
     <QueryClientProvider client={client}>
       <I18nProvider
-        locale="en"
-        resources={{ en: { settings: enSettings, agents: enAgents } }}
+        locale={locale}
+        resources={{
+          en: { settings: enSettings, agents: enAgents },
+          "zh-Hans": { settings: zhSettings, agents: zhAgents },
+        }}
       >
         {children}
       </I18nProvider>
@@ -128,6 +133,7 @@ function Wrapper({ children }: { children: ReactNode }) {
 }
 function renderCatalog(
   props: Partial<Parameters<typeof McpTemplateCatalog>[0]> = {},
+  locale: "en" | "zh-Hans" = "en",
 ) {
   return render(
     <McpTemplateCatalog
@@ -137,7 +143,7 @@ function renderCatalog(
       onCustom={mocks.custom}
       {...props}
     />,
-    { wrapper: Wrapper },
+    { wrapper: ({ children }) => <Wrapper locale={locale}>{children}</Wrapper> },
   );
 }
 function renderAssignment(
@@ -197,6 +203,53 @@ describe("MCP market", () => {
       transport: "stdio",
     });
     mocks.assign.mockResolvedValue({ succeeded: ["a", "b"], failed: [] });
+  });
+  it.each([
+    { locale: "en", source: "Template source", category: "Template category", url: "Service URL", token: "Access token", optional: "Account name", hint: "Prepare: Service URL and Access token", view: "View configuration: Playwright" },
+    { locale: "zh-Hans", source: "模板来源", category: "模板分类", url: "服务地址", token: "访问令牌", optional: "账号名称", hint: "需准备：服务地址和访问令牌", view: "查看配置：Playwright" },
+  ] as const)("labels filters and previews only declared required inputs in $locale", ({ locale, source, category, url, token, optional, hint, view }) => {
+    mocks.templates = [{
+      ...template,
+      inputs: [
+        { key: "service_url", label: url, description: "", required: true, secret: false },
+        { key: "token", label: token, description: "", required: true, secret: true },
+        { key: "account", label: optional, description: "", required: false, secret: false },
+      ],
+    }];
+    renderCatalog({}, locale);
+    expect(within(screen.getByRole("group", { name: source })).getByText(source)).toBeVisible();
+    expect(within(screen.getByRole("group", { name: category })).getByText(category)).toBeVisible();
+    const card = screen.getByRole("button", { name: view });
+    expect(within(card).getByText(hint)).toBeVisible();
+    expect(card).not.toHaveTextContent(optional);
+    expect(card).not.toHaveTextContent("service_url");
+    expect(card).not.toHaveTextContent("Node.js and npx");
+    expect(mocks.create).not.toHaveBeenCalled();
+    expect(mocks.assign).not.toHaveBeenCalled();
+  });
+  it.each([
+    { kind: "absent", inputs: undefined },
+    { kind: "optional", inputs: [{ key: "token", label: "Optional token", description: "", required: false, secret: true }] },
+  ])("previews a published prerequisite with $kind inputs and preserves every requirement in setup", async ({ inputs }) => {
+    const user = userEvent.setup();
+    mocks.templates = [{ ...template, inputs, requirements: ["Node.js and npx", "Network access to the service"] }];
+    renderCatalog();
+    const card = screen.getByRole("button", { name: "View configuration: Playwright" });
+    expect(within(card).getByText("Before use: Node.js and npx")).toBeVisible();
+    expect(card).not.toHaveTextContent("Optional token");
+    expect(card).not.toHaveTextContent("Network access to the service");
+    await user.click(card);
+    const dialog = screen.getByRole("dialog");
+    expect(within(dialog).getByText("Node.js and npx", { exact: true })).toBeVisible();
+    expect(within(dialog).getByText("Network access to the service", { exact: true })).toBeVisible();
+  });
+  it("does not infer preparation or readiness from a recipe identity, category or configuration", () => {
+    mocks.templates = [{ ...template, key: "dbhub", category: "database", config: { type: "http", url: "https://private-config.test" }, inputs: undefined, requirements: undefined }];
+    renderCatalog();
+    const card = screen.getByRole("button", { name: "View configuration: Playwright" });
+    expect(card).not.toHaveTextContent(/Prepare:|Before use:|credentials|ready|no setup/i);
+    expect(card).not.toHaveTextContent("private-config");
+    expect(card).toHaveTextContent("Streamable HTTP");
   });
   it("filters sources independently of search/category, refreshes deployment immediately, and keeps same-key instances separate", async () => {
     const user = userEvent.setup();

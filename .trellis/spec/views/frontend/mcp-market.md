@@ -274,6 +274,27 @@ route, while the component suite owns live Query transitions.
   for accessibility; counts exclude unusable templates, remain independent of
   filters, and are omitted while unknown. Show the filtered result count visibly
   in the existing live status region.
+- Catalog search and the visibly labelled source group share a toolbar at wide
+  container widths. The labelled category group and persistent result status
+  form the next row. Below `@3xl/mcp-market`, categories use a native horizontally
+  scrolling single row with focus-ring padding; wider containers restore wrapping.
+  Keep the count outside that scroll strip, native touch panning and sequential
+  keyboard focus intact. Reveal the complete chip on focus with native
+  `scrollIntoView({ block: "nearest", inline: "nearest" })`: Chromium can leave
+  a partly visible focused chip clipped when its center is already inside the
+  viewport, and scroll margins do not repair that behavior. Do not add custom
+  drag handlers or hide the scrollbar.
+- Card headers group title, category, source and transport beside the icon tile.
+  Preparation hints use only declared required public input labels, formatted
+  with the UI locale; if there are none, preview the first nonblank published
+  prerequisite. Keep every requirement in setup. Missing metadata proves neither
+  readiness nor the absence of credentials or installation requirements; never
+  infer hints from keys, categories or configuration values.
+- The standalone market briefly explains saving a shared configuration followed
+  by explicit agent assignment. Keep this copy in `McpMarketPanel` so contextual
+  agent discovery does not receive instructions to choose unrelated agents.
+  Marketplace type-tab 44px coarse-pointer targets are scoped to that page,
+  including the squad-template tab; do not enlarge the shared Tabs primitive.
 
 ## Evidence
 

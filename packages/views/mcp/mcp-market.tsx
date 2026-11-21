@@ -8,7 +8,7 @@ import type {
 } from "@multica/core/types";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
-import { useT } from "../i18n";
+import { useLocale, useT } from "../i18n";
 import { mcpTransportLabel } from "../common/mcp-transport";
 import { filterMcpTemplates, isUsableMcpTemplate, matchesMcpTemplate, mcpTemplateIdentity, mcpTemplateTransport, type McpCatalogSource } from "./mcp-catalog";
 import { McpTemplateIcon } from "../common/mcp-template-icon";
@@ -47,6 +47,7 @@ function McpTemplateCatalogContent({
   templates: ReturnType<typeof useMcpServerTemplates>;
 }) {
   const { t } = useT("settings");
+  const locale = useLocale();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [source, setSource] = useState<McpCatalogSource>("all");
@@ -84,68 +85,77 @@ function McpTemplateCatalogContent({
   );
   return (
     <div className="@container/mcp-market min-w-0 space-y-4 pointer-coarse:[&_[data-slot=button]]:min-h-11 pointer-coarse:[&_[data-slot=button]]:min-w-11 pointer-coarse:[&_[data-slot=input]]:min-h-11" data-testid="mcp-market">
-      <div className="relative max-w-xl">
-        <Search
-          className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-          aria-hidden="true"
-        />
-        <Input
-          ref={searchInput}
-          type="search"
-          className="pl-9"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          aria-label={t(($) => $.mcp.market.search)}
-          placeholder={t(($) => $.mcp.market.search)}
-        />
-      </div>
-      <div role="group" className="flex flex-wrap gap-2" aria-label={t(($) => $.mcp.market.source_filter)}>
-        {sources.map((item) => (
-          <Button
-            key={item.value}
-            size="sm"
-            variant={source === item.value ? "secondary" : "ghost"}
-            className={source === item.value ? "font-semibold" : "font-normal"}
-            aria-label={item.label}
-            aria-pressed={source === item.value}
-            onClick={() => {
-              setSource(item.value);
-              if (!filterMcpTemplates(usable, item.value, "all", "").some((template) => template.category === category)) setCategory("all");
-              if (item.value === "deployment") void templates.refetch();
-            }}
+      <div className="space-y-2">
+        <div className="flex min-w-0 flex-col gap-3 @5xl/mcp-market:flex-row @5xl/mcp-market:items-center @5xl/mcp-market:gap-4">
+          <div className="relative w-full min-w-0 @5xl/mcp-market:max-w-xl @5xl/mcp-market:flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              ref={searchInput}
+              type="search"
+              className="pl-9"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              aria-label={t(($) => $.mcp.market.search)}
+              placeholder={t(($) => $.mcp.market.search)}
+            />
+          </div>
+          <div role="group" className="flex min-w-0 flex-wrap items-center gap-1 @5xl/mcp-market:shrink-0" aria-label={t(($) => $.mcp.market.source_filter)}>
+            <span className="mr-2 text-caption text-muted-foreground">{t(($) => $.mcp.market.source_filter)}</span>
+            {sources.map((item) => (
+              <Button
+                key={item.value}
+                size="sm"
+                variant={source === item.value ? "secondary" : "ghost"}
+                className={source === item.value ? "font-semibold" : "font-normal"}
+                aria-label={item.label}
+                aria-pressed={source === item.value}
+                onClick={() => {
+                  setSource(item.value);
+                  if (!filterMcpTemplates(usable, item.value, "all", "").some((template) => template.category === category)) setCategory("all");
+                  if (item.value === "deployment") void templates.refetch();
+                }}
+              >
+                {item.label}
+                {templates.data !== undefined ? (
+                  <span className="text-caption tabular-nums text-muted-foreground">
+                    {filterMcpTemplates(usable, item.value, "all", "").length}
+                  </span>
+                ) : null}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2">
+          <div
+            role="group"
+            className="flex w-full min-w-0 flex-nowrap items-center gap-1 overflow-x-auto py-1 @3xl/mcp-market:w-auto @3xl/mcp-market:flex-1 @3xl/mcp-market:flex-wrap @3xl/mcp-market:overflow-visible @3xl/mcp-market:py-0"
+            aria-label={t(($) => $.mcp.market.category_filter)}
           >
-            {item.label}
-            {templates.data !== undefined ? (
-              <span className="text-caption tabular-nums text-muted-foreground">
-                {filterMcpTemplates(usable, item.value, "all", "").length}
-              </span>
-            ) : null}
-          </Button>
-        ))}
+            <span className="mr-2 shrink-0 whitespace-nowrap text-caption text-muted-foreground">{t(($) => $.mcp.market.category_filter)}</span>
+            {categories.map((item) => (
+              <Button
+                key={item.value}
+                size="sm"
+                variant={activeCategory === item.value ? "secondary" : "ghost"}
+                className={activeCategory === item.value ? "font-semibold" : "font-normal"}
+                aria-pressed={activeCategory === item.value}
+                onFocus={(event) => event.currentTarget.scrollIntoView({ block: "nearest", inline: "nearest" })}
+                onClick={() => setCategory(item.value)}
+              >
+                {item.label}
+              </Button>
+            ))}
+          </div>
+          <p role="status" aria-atomic="true" className="shrink-0 text-caption tabular-nums text-muted-foreground">
+            {templates.data !== undefined
+              ? t(($) => $.mcp.market.results_count, { count: matches.length })
+              : ""}
+          </p>
+        </div>
       </div>
-      <div
-        role="group"
-        className="flex flex-wrap gap-2"
-        aria-label={t(($) => $.mcp.market.all)}
-      >
-        {categories.map((item) => (
-          <Button
-            key={item.value}
-            size="sm"
-            variant={activeCategory === item.value ? "secondary" : "ghost"}
-            className={activeCategory === item.value ? "font-semibold" : "font-normal"}
-            aria-pressed={activeCategory === item.value}
-            onClick={() => setCategory(item.value)}
-          >
-            {item.label}
-          </Button>
-        ))}
-      </div>
-      <p role="status" aria-atomic="true" className="text-caption text-muted-foreground">
-        {templates.data !== undefined
-          ? t(($) => $.mcp.market.results_count, { count: matches.length })
-          : ""}
-      </p>
       {templates.isPending ? (
         <p
           role="status"
@@ -206,6 +216,15 @@ function McpTemplateCatalogContent({
           const categoryLabel = categories.find(
             (item) => item.value === template.category,
           )?.label;
+          const requiredInputs = (template.inputs ?? [])
+            .filter((input) => input.required === true)
+            .map((input) => input.label);
+          const requirement = template.requirements?.find((item) => item.trim())?.trim();
+          const preparation = requiredInputs.length > 0
+            ? t(($) => $.mcp.market.preparation_inputs, { inputs: new Intl.ListFormat(locale).format(requiredInputs) })
+            : requirement
+              ? t(($) => $.mcp.market.preparation_requirement, { requirement })
+              : undefined;
           return (
             <div
               key={mcpTemplateIdentity(template)}
@@ -223,21 +242,26 @@ function McpTemplateCatalogContent({
                   setSelected(template);
                 }}
               >
-                <div className="flex w-full min-w-0 items-center gap-3">
+                <div className="flex w-full min-w-0 items-start gap-3">
                   <McpTemplateIcon templateKey={template.key} source={template.source} category={template.category} />
-                  <h3 className="min-w-0 text-title-sm font-medium [overflow-wrap:anywhere]">
-                    {template.title || template.key}
-                  </h3>
+                  <div className="min-w-0 flex-1 space-y-1">
+                    <h3 className="text-title-sm font-medium [overflow-wrap:anywhere]">
+                      {template.title || template.key}
+                    </h3>
+                    <p className="text-caption text-muted-foreground [overflow-wrap:anywhere]">
+                      {categoryLabel ? <>{categoryLabel}{" · "}</> : null}
+                      {template.source === "deployment" ? t(($) => $.mcp.market.source_deployment) : t(($) => $.mcp.market.source_builtin)}
+                      {" · "}{mcpTransportLabel(mcpTemplateTransport(template))}
+                    </p>
+                  </div>
                 </div>
                 <p className="line-clamp-2 min-h-[2lh] text-body text-muted-foreground [overflow-wrap:anywhere]" title={template.description}>
                   {template.description}
                 </p>
-                <p className="text-caption text-muted-foreground">
-                  {template.source === "deployment" ? t(($) => $.mcp.market.source_deployment) : t(($) => $.mcp.market.source_builtin)}
-                  {" · "}{mcpTransportLabel(mcpTemplateTransport(template))}
-                </p>
-                {categoryLabel ? (
-                  <p className="text-caption text-muted-foreground">{categoryLabel}</p>
+                {preparation ? (
+                  <p className="line-clamp-2 text-caption text-muted-foreground [overflow-wrap:anywhere]" title={preparation}>
+                    {preparation}
+                  </p>
                 ) : null}
                 {related.length > 0 ? (
                   <p className="break-all text-caption text-muted-foreground">

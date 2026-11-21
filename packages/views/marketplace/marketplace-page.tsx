@@ -38,7 +38,7 @@ function WorkspaceMarketplace({ workspaceId }: { workspaceId: string }) {
       </PageHeader>
       <Tabs value={type} onValueChange={selectType} className="min-h-0 min-w-0 flex-1 gap-0">
         <div className={cn("shrink-0 border-b py-2", PAGE_GUTTER)}>
-          <TabsList variant="line" activateOnFocus={false} aria-label={t(($) => $.marketplace.type_label)}>
+          <TabsList variant="line" activateOnFocus={false} aria-label={t(($) => $.marketplace.type_label)} className="pointer-coarse:data-[orientation=horizontal]:h-auto pointer-coarse:[&_[data-slot=tabs-trigger]]:min-h-11 pointer-coarse:[&_[data-slot=tabs-trigger]]:min-w-11">
             <TabsTrigger value="mcp">{t(($) => $.marketplace.mcp)}</TabsTrigger>
             <TabsTrigger value="skills">{t(($) => $.marketplace.skills)}</TabsTrigger>
           </TabsList>

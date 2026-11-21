@@ -56,6 +56,9 @@ function WorkspaceMcpMarket({ workspaceId, active }: {
 
   return (
     <div className="min-w-0 space-y-4">
+      <p className="max-w-[75ch] text-body text-muted-foreground [overflow-wrap:anywhere]">
+        {t(($) => $.mcp.market.introduction)}
+      </p>
       <SettingsQueryFeedback
         query={members}
         loadingMessage={t(($) => $.query_feedback.permissions_loading)}
