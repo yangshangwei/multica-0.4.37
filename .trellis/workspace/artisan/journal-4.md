@@ -388,3 +388,26 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Status
 
 [OK] **Completed**
+
+
+## Session 184: 智能体模板纳入能力市场
+<!-- trellis-session: v=2 fp=a2de84b28caa3fb1 -->
+
+**Date**: 2026-11-21
+**Task**: 智能体模板纳入能力市场
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成智能体模板市场分类、共享角色卡片与来源返回，保留原创建和小队上下文。119项定向单测与9项生产Web/原生Desktop测试通过，修复触摸高度、选中标签可见性及标签挤压；验收截图与源码哈希已归档。通过补充提交隔离并行市场欢迎页改版，工作区内容和其他暂存项均保留。全仓knip既有问题单独记录。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `828df41865f067ee4328f38e123682f73cf2beb1` | feat(agents): make role discovery available alongside team capabilities |
+| `09281851723cdabdf20ed1e6a55f6354cebec926` | fix(agents): keep verified delivery separate from overlapping market work |
+
+### Status
+
+[OK] **Completed**
