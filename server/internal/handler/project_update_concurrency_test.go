@@ -131,7 +131,21 @@ func TestProjectUpdateNotificationConcurrentWorkersAndCorrection(t *testing.T) {
 	}
 	newRecipient := dbfx.User(t, "New mention", "progress-new-"+uuid.NewString()+"@example.invalid")
 	dbfx.Member(t, testWorkspaceID, newRecipient, "member")
-	dbfx.Cleanup(t, "DELETE FROM inbox_item WHERE workspace_id=$1 AND recipient_id=$2", testWorkspaceID, newRecipient)
+	t.Cleanup(func() {
+		cleanupCtx := context.Background()
+		for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+			if _, err := testPool.Exec(cleanupCtx, "DELETE FROM "+table+` s USING project_update_notification n
+				WHERE n.workspace_id=$1 AND n.project_id=$2 AND n.recipient_user_id=$3
+				AND s.workspace_id=n.workspace_id AND s.recipient_type='member'
+				AND s.recipient_id=n.recipient_user_id AND s.group_kind='item' AND s.group_id=n.id`,
+				testWorkspaceID, p, newRecipient); err != nil {
+				t.Errorf("clean up corrected project recipient %s: %v", table, err)
+			}
+		}
+		if _, err := testPool.Exec(cleanupCtx, "DELETE FROM inbox_item WHERE workspace_id=$1 AND recipient_id=$2", testWorkspaceID, newRecipient); err != nil {
+			t.Errorf("clean up corrected project recipient inbox: %v", err)
+		}
+	})
 	d := progressDraft("[@Old](mention://member/" + recipient + ") [@New](mention://member/" + newRecipient + ")")
 	d["operation"] = "correct"
 	d["update_id"] = uuidToString(row.UpdateID)

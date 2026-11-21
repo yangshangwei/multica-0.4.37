@@ -214,6 +214,10 @@ func (h *Handler) revokeAndRemoveMember(ctx context.Context, workspaceID, userID
 		return empty, err
 	}
 
+	if err := qtx.DeleteMemberInboxSnoozes(ctx, db.DeleteMemberInboxSnoozesParams{WorkspaceID: workspaceID, RecipientID: userID}); err != nil {
+		return empty, err
+	}
+
 	if err := qtx.DeleteIterationNotificationsForMember(ctx, db.DeleteIterationNotificationsForMemberParams{WorkspaceID: workspaceID, UserID: userID}); err != nil {
 		return empty, err
 	}

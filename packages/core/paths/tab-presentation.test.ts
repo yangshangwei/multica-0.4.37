@@ -186,6 +186,18 @@ describe("resolveTabPresentation — containers keep their icon, title tracks se
     });
   });
 
+  it("uses the existing Inbox localization key for an unselected Snoozed tab", () => {
+    expect(present("/acme/inbox?view=snoozed")).toEqual({
+      visual: { kind: "icon", icon: "Inbox" },
+      title: { kind: "inbox", inboxKey: "snoozed_title" },
+    });
+    expect(present("/acme/inbox?view=archived").title).toEqual({ kind: "nav", navKey: "inbox" });
+    expect(present("/acme/inbox").title).toEqual({ kind: "nav", navKey: "inbox" });
+    expect(present("/acme/inbox?view=snoozed&issue=MUL-9", {
+      inboxSelection: { kind: "issue", identifier: "MUL-9", title: "Saved task" },
+    }).title).toEqual({ kind: "text", text: "MUL-9: Saved task" });
+  });
+
   it("chat: icon is always MessageSquare; title is the session or Chat", () => {
     expect(present("/acme/chat")).toEqual({
       visual: { kind: "icon", icon: "MessageSquare" },

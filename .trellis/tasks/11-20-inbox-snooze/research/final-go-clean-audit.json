@@ -1,0 +1,68 @@
+[
+  {
+    "package": "./cmd/server",
+    "mode": "normal",
+    "named_passes": 108,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  },
+  {
+    "package": "./internal/handler",
+    "mode": "normal",
+    "named_passes": 49,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  },
+  {
+    "package": "./internal/service",
+    "mode": "normal",
+    "named_passes": 18,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  },
+  {
+    "package": "./cmd/server",
+    "mode": "race",
+    "named_passes": 108,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  },
+  {
+    "package": "./internal/handler",
+    "mode": "race",
+    "named_passes": 49,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  },
+  {
+    "package": "./internal/service",
+    "mode": "race",
+    "named_passes": 18,
+    "cleanup": {
+      "inbox_items": 0,
+      "snooze_plans": 0,
+      "source_receipts": 0,
+      "other_connections": 0
+    }
+  }
+]

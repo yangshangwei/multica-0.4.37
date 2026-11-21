@@ -1,0 +1,50 @@
+[
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "build",
+      "./..."
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-go-static-1.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": [
+      "go",
+      "-C",
+      "server",
+      "vet",
+      "./internal/inboxstate",
+      "./internal/handler",
+      "./internal/service",
+      "./cmd/server",
+      "./cmd/migrate",
+      "./pkg/protocol"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-go-static-2.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "command": [
+      "bash",
+      "scripts/go-test-with-agent-cli-guard.sh",
+      "--",
+      "go",
+      "-C",
+      "server",
+      "test",
+      "./internal/migrations",
+      "-run",
+      "^(TestMigrationFilesHaveMatchingDirections|TestMigrationNumericPrefixesStayUniqueAfterLegacySet)$",
+      "-count=1",
+      "-json"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/final-go-static-3.log",
+    "sha256": "fe4211ffd2c7879dc2d7fc1cbc5a5917a86dc2598c69a3e32db88b2ef1aeb5b9"
+  }
+]

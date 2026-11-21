@@ -61,6 +61,8 @@ export type TabTitleSpec =
   | { kind: "text"; text: string }
   /** A page name — localize via `layout.nav.<navKey>`. */
   | { kind: "nav"; navKey: NavLabelKey }
+  /** A personal Inbox view label — localize via `inbox.list.<inboxKey>`. */
+  | { kind: "inbox"; inboxKey: "snoozed_title" }
   /** A type label (loading / flow / unknown) — localize via `layout.tab.<tabKey>`. */
   | { kind: "tab"; tabKey: TabLabelKey };
 
@@ -214,14 +216,17 @@ export function resolveTabPresentation(
     case "inbox": {
       // The container icon never changes; only the title tracks the selection.
       const sel = subject.selectedKey ? data.inboxSelection : undefined;
+      const viewTitle: TabTitleSpec = subject.snoozed
+        ? { kind: "inbox", inboxKey: "snoozed_title" }
+        : { kind: "nav", navKey: "inbox" };
       let title: TabTitleSpec;
       if (!sel) {
-        title = { kind: "nav", navKey: "inbox" };
+        title = viewTitle;
       } else if (sel.kind === "issue") {
         title = { kind: "text", text: `${sel.identifier}: ${sel.title}` };
       } else {
         const text = sel.title.trim();
-        title = text ? { kind: "text", text } : { kind: "nav", navKey: "inbox" };
+        title = text ? { kind: "text", text } : viewTitle;
       }
       return { visual: { kind: "icon", icon: "Inbox" }, title };
     }

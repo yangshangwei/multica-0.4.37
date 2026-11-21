@@ -37,6 +37,13 @@ func lifecycleFixture(t *testing.T) (*testutil.Fixture, *IterationService) {
 	for _, table := range []string{"iteration_snapshot", "iteration_notification", "iteration", "iteration_participation", "iteration_event", "iteration_operation"} {
 		fx.Cleanup(t, "DELETE FROM "+table+" WHERE workspace_id=$1", fx.WorkspaceID)
 	}
+	t.Cleanup(func() {
+		for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+			if _, err := pool.Exec(context.Background(), "DELETE FROM "+table+" WHERE workspace_id=$1", fx.WorkspaceID); err != nil {
+				t.Errorf("clean up iteration fixture %s: %v", table, err)
+			}
+		}
+	})
 	return fx, &IterationService{TxStarter: pool, AuthorizeIssues: func(context.Context, pgx.Tx, []db.Issue) error { return nil }}
 }
 func lifecycleAuth(context.Context, pgx.Tx) error { return nil }

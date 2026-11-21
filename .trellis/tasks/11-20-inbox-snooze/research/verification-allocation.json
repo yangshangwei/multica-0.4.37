@@ -1,0 +1,42 @@
+{
+  "run_id": "20261121-000941",
+  "private_root": "/private/tmp/multica-inbox-snooze-n9cwnxds",
+  "container": "multica-inbox-snooze-20261121-000941",
+  "container_id": "ebc69086093b146f940d7f3d44895b5347194007c423c5779915770d5329e6f9",
+  "port": 49279,
+  "databases": {
+    "cmd_red": "multica_inbox_snooze_cmd_red",
+    "handler_iter": "multica_inbox_snooze_handler_iter",
+    "state_iter": "multica_inbox_snooze_state_iter",
+    "api": "multica_inbox_snooze_api",
+    "cmd_delivery_iter": "multica_inbox_snooze_cmd_delivery_iter",
+    "service_delivery_iter": "multica_inbox_snooze_service_delivery_iter",
+    "handler_delivery_iter": "multica_inbox_snooze_handler_delivery_iter",
+    "cmd_final_normal": "multica_inbox_snooze_final_cmd_normal",
+    "cmd_final_race": "multica_inbox_snooze_final_cmd_race",
+    "handler_final_normal": "multica_inbox_snooze_final_handler_normal",
+    "handler_final_race": "multica_inbox_snooze_final_handler_race",
+    "state_final_normal": "multica_inbox_snooze_final_state_normal",
+    "state_final_race": "multica_inbox_snooze_final_state_race",
+    "service_final_normal": "multica_inbox_snooze_final_service_normal",
+    "service_final_race": "multica_inbox_snooze_final_service_race",
+    "migrate_final_normal": "multica_inbox_snooze_final_migrate_normal",
+    "migrate_final_race": "multica_inbox_snooze_final_migrate_race",
+    "cmd_final_r2_normal": "multica_inbox_snooze_final_r2_cmd_normal",
+    "cmd_final_r2_race": "multica_inbox_snooze_final_r2_cmd_race",
+    "handler_final_r2_normal": "multica_inbox_snooze_final_r2_handler_normal",
+    "handler_final_r2_race": "multica_inbox_snooze_final_r2_handler_race",
+    "service_final_r2_normal": "multica_inbox_snooze_final_r2_service_normal",
+    "service_final_r2_race": "multica_inbox_snooze_final_r2_service_race"
+  },
+  "private_environment_file": "/private/tmp/multica-inbox-snooze-n9cwnxds/environment.json",
+  "image": "sha256:cd4ccfdaf62cbfeb5c6ee19ef0dd663406d4ed740c320b324d016a90e85385b3",
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "api_env_file": "/private/tmp/multica-inbox-snooze-n9cwnxds/api.env",
+  "runtime_ports": {
+    "api": 61718,
+    "web": 61719,
+    "renderer": 61720
+  },
+  "runtime_auth_mode": "password"
+}

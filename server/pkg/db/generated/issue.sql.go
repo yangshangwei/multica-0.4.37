@@ -386,6 +386,12 @@ const deleteIssue = `-- name: DeleteIssue :exec
 WITH target AS (
     SELECT issue.id FROM issue WHERE issue.id = $1 AND issue.workspace_id = $2
 ),
+cleared_inbox_snoozes AS (
+ DELETE FROM inbox_snooze WHERE inbox_snooze.workspace_id=$2 AND inbox_snooze.group_kind='issue' AND inbox_snooze.group_id IN (SELECT target.id FROM target)
+),
+cleared_inbox_critical_sources AS (
+ DELETE FROM inbox_critical_source WHERE inbox_critical_source.workspace_id=$2 AND inbox_critical_source.group_kind='issue' AND inbox_critical_source.group_id IN (SELECT target.id FROM target)
+),
 cleared_report_snapshots AS (
     DELETE FROM report_snapshot WHERE workspace_id=$2 AND report_issue_id IN (SELECT target.id FROM target)
 ),

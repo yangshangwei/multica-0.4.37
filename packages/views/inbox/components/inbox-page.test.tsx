@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { isValidElement } from "react";
 import { describe, expect, it, onTestFinished, vi } from "vitest";
 import { toast } from "sonner";
@@ -18,17 +18,17 @@ vi.mock("react-resizable-panels", () => ({
 // The page runs two queries — the active list and the archived one. They are
 // told apart by the queryKey their options carry, so each test can stock the
 // two lists independently.
-const listData: { active: InboxItem[]; archived: InboxItem[] } = {
+const listData: { active: InboxItem[]; archived: InboxItem[]; snoozed: InboxItem[] } = {
   active: [],
   archived: [],
+  snoozed: [],
 };
 
 vi.mock("@tanstack/react-query", () => ({
-  useQuery: (options: { queryKey: readonly unknown[] }) => ({
-    data: options.queryKey.includes("archived") ? listData.archived : listData.active,
-    isLoading: false,
-    isError: false,
-  }),
+  useQuery: (options: { queryKey: readonly unknown[] }) => {
+    const read = () => options.queryKey.includes("archived") ? listData.archived : options.queryKey.includes("snoozed") ? listData.snoozed : listData.active;
+    return { data: read(), isLoading: false, isError: false, isFetching: false, refetch: async () => ({ data: read(), isError: false }) };
+  },
 }));
 
 vi.mock("@multica/core/hooks", () => ({
@@ -58,8 +58,10 @@ vi.mock("@multica/core/issues/stores/draft-store", () => ({
 vi.mock("@multica/core/inbox/queries", () => ({
   inboxListOptions: () => ({ queryKey: ["inbox", "workspace-1", "list"] }),
   archivedInboxListOptions: () => ({ queryKey: ["inbox", "workspace-1", "archived"] }),
+  snoozedInboxListOptions: () => ({ queryKey: ["inbox", "workspace-1", "snoozed"] }),
   deduplicateInboxItems: (items: InboxItem[]) => items.filter((i) => !i.archived),
   deduplicateArchivedInboxItems: (items: InboxItem[]) => items.filter((i) => i.archived),
+  deduplicateSnoozedInboxItems: (items: InboxItem[]) => items.filter((i) => !i.archived),
   useInboxUnreadCount: () => 2,
 }));
 
@@ -70,6 +72,9 @@ const markUnreadMutate = vi.fn();
 const archiveMutate = vi.fn();
 const unarchiveMutate = vi.fn();
 const retrySourceContextMutateAsync = vi.fn();
+const snoozeMutateAsync = vi.fn();
+const unsnoozeMutateAsync = vi.fn();
+const undoSnoozeMutateAsync = vi.fn();
 const showIssueLimitUpgradePrompt = vi.hoisted(() => vi.fn());
 
 vi.mock("../../modals/use-issue-limit-upgrade-prompt", () => ({
@@ -91,6 +96,9 @@ vi.mock("@multica/core/inbox/mutations", () => {
       mutateAsync: retrySourceContextMutateAsync,
       isPending: false,
     }),
+    useSnoozeInboxItem: () => ({ mutateAsync: snoozeMutateAsync, isPending: false }),
+    useUnsnoozeInboxItem: () => ({ mutateAsync: unsnoozeMutateAsync, isPending: false }),
+    useUndoInboxSnooze: () => ({ mutateAsync: undoSnoozeMutateAsync, isPending: false }),
   };
 });
 
@@ -179,6 +187,8 @@ let rowActions: {
   onMarkRead: (id: string) => void;
   onMarkUnread: (id: string) => void;
   onAction: (id: string) => void;
+  onSnooze?: (id: string, anchor?: HTMLElement) => void;
+  onUnsnooze?: (id: string) => void;
 } | null = null;
 vi.mock("./inbox-context-menu", () => ({
   InboxContextMenuProvider: ({
@@ -193,9 +203,15 @@ vi.mock("./inbox-context-menu", () => ({
   },
 }));
 vi.mock("./inbox-detail-label", () => ({ useTypeLabels: () => ({}) }));
-// Every key renders as "Inbox". A test that needs to know WHICH message was
-// chosen reads the key path back with `keyOf` instead.
-vi.mock("../../i18n", () => ({ useT: () => ({ t: () => "Inbox" }) }));
+// Existing page copy stays compact; snooze tests observe the selected key so
+// they distinguish undo conflict feedback from a generic request failure.
+vi.mock("../../i18n", () => ({ useT: () => ({
+  t: (selector: unknown) => {
+    const key = keyOf(selector);
+    return key.startsWith("snooze.") ? key : "Inbox";
+  },
+  i18n: { language: "en" },
+}) }));
 const keyOf = (selector: unknown): string => {
   const path: string[] = [];
   const proxy: object = new Proxy({}, { get: (_target, key) => { path.push(String(key)); return proxy; } });
@@ -229,6 +245,7 @@ function item(overrides: Partial<InboxItem> = {}): InboxItem {
 function reset() {
   listData.active = [];
   listData.archived = [];
+  listData.snoozed = [];
   searchParams = new URLSearchParams();
   replace.mockClear();
   markReadMutate.mockClear();
@@ -237,6 +254,10 @@ function reset() {
   unarchiveMutate.mockClear();
   retrySourceContextMutateAsync.mockReset();
   retrySourceContextMutateAsync.mockResolvedValue({});
+  const receipt = { workspace_id: "workspace-1", group_kind: "issue", group_id: "issue-1", revision: 1, snoozed_until: "2030-06-16T09:00:00Z", reminded_at: null, undo_token: "undo-1" };
+  snoozeMutateAsync.mockReset().mockResolvedValue(receipt);
+  unsnoozeMutateAsync.mockReset().mockResolvedValue({ ...receipt, snoozed_until: null });
+  undoSnoozeMutateAsync.mockReset().mockResolvedValue({ ...receipt, snoozed_until: null, undo_token: null });
   showIssueLimitUpgradePrompt.mockClear();
   modalState.modal = null;
   vi.mocked(toast.success).mockClear();
@@ -248,6 +269,177 @@ function reset() {
 }
 
 describe("InboxPage", () => {
+  it("restores a snoozed URL and keeps its successful empty view available", () => {
+    reset();
+    searchParams = new URLSearchParams("view=snoozed");
+
+    render(<InboxPage />);
+
+    expect(screen.getByTestId("list").dataset.view).toBe("snoozed");
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it("waits for a successful snooze before advancing the selected group", async () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item(), item({ id: "inbox-2", issue_id: "issue-2" })];
+    searchParams = new URLSearchParams("issue=issue-1");
+    let finish: (value: unknown) => void = () => {};
+    snoozeMutateAsync.mockReturnValue(new Promise((resolve) => { finish = resolve; }));
+    render(<InboxPage />);
+    expect(rowActions?.onSnooze).toBeTypeOf("function");
+
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    const picker = await screen.findByRole("dialog");
+    fireEvent.click(picker.querySelector<HTMLButtonElement>('[data-snooze-preset="one_hour"]')!);
+
+    expect(snoozeMutateAsync).toHaveBeenCalledWith({ id: "inbox-1", snoozedUntil: expect.any(String), expectedRevision: 0 });
+    expect(replace).not.toHaveBeenCalled();
+    await act(async () => { finish({ workspace_id: "workspace-1", group_kind: "issue", group_id: "issue-1", revision: 1, snoozed_until: "2030-06-16T09:00:00Z", reminded_at: null, undo_token: "undo-1" }); });
+
+    expect(replace).toHaveBeenLastCalledWith("/acme/inbox?issue=issue-2");
+    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(vi.mocked(toast.success).mock.calls.at(-1)?.[0]).toBe("snooze.saved");
+  });
+
+  it("keeps the picker and selection when a snooze cannot be saved", async () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item()];
+    searchParams = new URLSearchParams("issue=issue-1");
+    snoozeMutateAsync.mockRejectedValueOnce(new Error("Temporary inbox error"));
+    render(<InboxPage />);
+    expect(rowActions?.onSnooze).toBeTypeOf("function");
+
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    const picker = await screen.findByRole("dialog");
+    fireEvent.click(picker.querySelector<HTMLButtonElement>('[data-snooze-preset="one_hour"]')!);
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("snooze.failed");
+    expect(screen.getByRole("dialog")).toBe(picker);
+    expect(replace).not.toHaveBeenCalled();
+    expect(toast.success).not.toHaveBeenCalled();
+  });
+
+  it("closes a picker when its group is authoritatively removed", async () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item()];
+    searchParams = new URLSearchParams("issue=issue-1");
+    const view = render(<InboxPage />);
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    expect(await screen.findByRole("dialog")).toBeInTheDocument();
+
+    listData.active = [];
+    view.rerender(<InboxPage />);
+
+    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    expect(replace).toHaveBeenLastCalledWith("/acme/inbox");
+    expect(snoozeMutateAsync).not.toHaveBeenCalled();
+  });
+
+  it("uses the committed undo token and retains newer state on undo conflict", async () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item()];
+    undoSnoozeMutateAsync.mockRejectedValueOnce(new ApiError("changed", 409, "Conflict"));
+    render(<InboxPage />);
+    expect(rowActions?.onSnooze).toBeTypeOf("function");
+
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    const picker = await screen.findByRole("dialog");
+    fireEvent.click(picker.querySelector<HTMLButtonElement>('[data-snooze-preset="one_hour"]')!);
+    await waitFor(() => expect(toast.success).toHaveBeenCalled());
+    const options = vi.mocked(toast.success).mock.calls.at(-1)?.[1];
+    expect(options?.action).toBeTruthy();
+    const action = options?.action;
+    if (action && typeof action === "object" && !isValidElement(action) && "onClick" in action) {
+      render(<button type="button" onClick={action.onClick}>Undo reminder</button>);
+      await act(async () => { fireEvent.click(screen.getByRole("button", { name: "Undo reminder" })); });
+    }
+
+    expect(undoSnoozeMutateAsync).toHaveBeenCalledWith({ id: "inbox-1", undoToken: "undo-1" });
+    expect(vi.mocked(toast.error).mock.calls.at(-1)?.[0]).toBe("snooze.undo_changed");
+  });
+
+  it("changes a snoozed time with its observed revision without moving selection", async () => {
+    reset();
+    layout.width = DESKTOP;
+    searchParams = new URLSearchParams("view=snoozed&issue=issue-1");
+    listData.snoozed = [item({ snoozed_until: "2030-06-16T09:00:00Z", snooze_revision: 7 })];
+    snoozeMutateAsync.mockImplementation(({ snoozedUntil }) => Promise.resolve({ workspace_id: "workspace-1", group_kind: "issue", group_id: "issue-1", revision: 8, snoozed_until: snoozedUntil, reminded_at: null, undo_token: "undo-edit" }));
+    render(<InboxPage />);
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    const picker = await screen.findByRole("dialog");
+    fireEvent.click(picker.querySelector<HTMLButtonElement>('[data-snooze-preset="one_hour"]')!);
+
+    await waitFor(() => expect(toast.success).toHaveBeenCalled());
+    expect(snoozeMutateAsync).toHaveBeenCalledWith({ id: "inbox-1", snoozedUntil: expect.any(String), expectedRevision: 7 });
+    expect(replace).not.toHaveBeenCalled();
+  });
+
+  it("keeps a pending manual reminder selected until the server succeeds", async () => {
+    reset();
+    layout.width = DESKTOP;
+    searchParams = new URLSearchParams("view=snoozed&issue=issue-1");
+    listData.snoozed = [item({ snoozed_until: "2030-06-16T09:00:00Z", snooze_revision: 7 })];
+    let finish: (value: unknown) => void = () => {};
+    unsnoozeMutateAsync.mockReturnValue(new Promise((resolve) => { finish = resolve; }));
+    const view = render(<InboxPage />);
+    act(() => rowActions?.onUnsnooze?.("inbox-1"));
+    expect(unsnoozeMutateAsync).toHaveBeenCalledWith({ id: "inbox-1", expectedRevision: 7 });
+    listData.snoozed = [];
+    listData.active = [item({ read: false, reminded_at: new Date().toISOString(), snooze_revision: 8 })];
+    view.rerender(<InboxPage />);
+
+    expect(replace).not.toHaveBeenCalled();
+    await act(async () => { finish({ workspace_id: "workspace-1", group_kind: "issue", group_id: "issue-1", revision: 8, snoozed_until: null, reminded_at: new Date().toISOString(), undo_token: "undo-now" }); });
+    expect(replace).toHaveBeenLastCalledWith("/acme/inbox?view=snoozed");
+    expect(markReadMutate).not.toHaveBeenCalled();
+  });
+
+  it("keeps custom input while refreshing a conflict to the latest revision", async () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item()];
+    snoozeMutateAsync.mockRejectedValueOnce(new ApiError("changed", 409, "Conflict"))
+      .mockImplementationOnce(({ snoozedUntil }) => Promise.resolve({ workspace_id: "workspace-1", group_kind: "issue", group_id: "issue-1", revision: 3, snoozed_until: snoozedUntil, reminded_at: null, undo_token: "undo-refresh" }));
+    render(<InboxPage />);
+    act(() => rowActions?.onSnooze?.("inbox-1"));
+    await screen.findByRole("dialog");
+    fireEvent.click(screen.getByRole("button", { name: "snooze.custom" }));
+    const input = screen.getByLabelText("snooze.custom_time");
+    const value = "2030-11-22T12:30";
+    fireEvent.change(input, { target: { value } });
+    fireEvent.click(screen.getByRole("button", { name: "snooze.confirm" }));
+    expect(await screen.findByRole("alert")).toHaveTextContent("snooze.changed");
+    listData.active = [];
+    listData.snoozed = [item({ snoozed_until: "2031-06-16T09:00:00Z", snooze_revision: 2 })];
+    fireEvent.click(screen.getByRole("button", { name: "snooze.refresh" }));
+    await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+
+    expect(screen.getByLabelText("snooze.custom_time")).toBe(input);
+    expect(input).toHaveValue(value);
+    fireEvent.click(screen.getByRole("button", { name: "snooze.save_time" }));
+    await waitFor(() => expect(snoozeMutateAsync).toHaveBeenCalledTimes(2));
+    expect(snoozeMutateAsync).toHaveBeenNthCalledWith(2, { id: "inbox-1", snoozedUntil: new Date(value).toISOString(), expectedRevision: 2 });
+  });
+
+  it("does not immediately read a reminder arriving in the already open group", () => {
+    reset();
+    layout.width = DESKTOP;
+    listData.active = [item({ read: true })];
+    searchParams = new URLSearchParams("issue=issue-1");
+    const rendered = render(<InboxPage />);
+
+    listData.active = [item({ read: false, reminded_at: "2030-06-15T10:00:00Z" })];
+    rendered.rerender(<InboxPage />);
+
+    expect(markReadMutate).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByTestId("row"));
+    expect(markReadMutate).toHaveBeenCalledWith("inbox-1", expect.anything());
+  });
+
   it("keeps the title unread count static", () => {
     reset();
     const { container } = render(<InboxPage />);
@@ -665,9 +857,13 @@ describe("InboxPage", () => {
 
       expect(screen.getByTestId("list")).toBeInTheDocument();
       expect(issueDetailProps.at(-1)).toMatchObject({
-        leadingAction: false,
         highlightCommentId: "comment-1",
       });
+      const leading = issueDetailProps.at(-1)?.leadingAction;
+      if (!isValidElement(leading)) throw new Error("Missing detail reminder control");
+      const controls = render(leading);
+      expect(controls.getByRole("button", { name: "snooze.action" })).toBeInTheDocument();
+      expect(within(controls.container).getAllByRole("button")).toHaveLength(1);
     },
   );
 
@@ -688,7 +884,7 @@ describe("InboxPage", () => {
       expect(isValidElement(backAction)).toBe(true);
       if (!isValidElement(backAction)) throw new Error("Missing compact back action");
       const back = render(backAction);
-      fireEvent.click(back.getByRole("button"));
+      fireEvent.click(back.getByRole("button", { name: "Inbox" }));
 
       expect(screen.getByTestId("list")).toBeInTheDocument();
       expect(replace).toHaveBeenLastCalledWith("/acme/inbox");

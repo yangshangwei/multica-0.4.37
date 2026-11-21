@@ -2755,6 +2755,7 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				// Separate from "/" so the main list keeps its contract and
 				// never carries the unbounded archive.
 				r.Get("/archived", h.ListArchivedInbox)
+				r.Get("/snoozed", h.ListSnoozedInbox)
 				r.Get("/unread-count", h.CountUnreadInbox)
 				// Cross-workspace unread summary: account-level, keyed on the
 				// user. Backs the workspace-switcher dot for OTHER workspaces.
@@ -2767,6 +2768,9 @@ func NewRouterWithOptions(pool *pgxpool.Pool, hub *realtime.Hub, bus *events.Bus
 				r.Post("/{id}/unread", h.MarkInboxUnread)
 				r.Post("/{id}/archive", h.ArchiveInboxItem)
 				r.Post("/{id}/unarchive", h.UnarchiveInboxItem)
+				r.Post("/{id}/snooze", h.SnoozeInboxItem)
+				r.Post("/{id}/unsnooze", h.UnsnoozeInboxItem)
+				r.Post("/{id}/snooze/undo", h.UndoInboxSnooze)
 			})
 
 			// Notification preferences

@@ -52,6 +52,7 @@
 | [Squad delegation receipts](./squad-delegation-receipts.md) | Immediate CLI/leader receipt consumption, uncertainty and partial admission | Implemented; durable receipts separate |
 | [Durable delegation receipts](./durable-delegation-receipts.md) | Opt-in idempotent comment creation, original identity and retained uncertainty | Verified opt-in explicit-target increment |
 | [Ordinary comment notification replay](./ordinary-notification-replay.md) | Persisted comment/member delivery IDs, legacy row/state preservation and scoped bus replay | Listener normal/race verified; client/runtime acceptance separate |
+| [Personal Inbox snooze](./inbox-snooze.md) | Group transactions, critical-source claims, overdue acknowledgment, writer semantics and shared recovery | Evidence tracked in task |
 | [Built-in Template Registries](./builtin-templates.md) | Role/squad/autopilot provenance, security routing, status ownership and server-decided content | Active |
 | [Project execution squads](./project-execution-squad.md) | Project setup, authority, atomic materialization and UI recovery contracts | Active |
 | [Local directory snapshots](./local-directory-snapshots.md) | Git index timestamps, private-index fallback and user-work preservation | Active |

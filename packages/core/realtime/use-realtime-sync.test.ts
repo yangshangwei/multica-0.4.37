@@ -899,6 +899,18 @@ describe("handleInboxNew", () => {
     expect(showNotification).not.toHaveBeenCalled();
   });
 
+  it("refreshes caches without a system banner for an authoritatively snoozed item", async () => {
+    const qc = createQueryClient();
+    qc.setQueryData<Workspace[]>(workspaceKeys.list(), [workspace()]);
+    qc.setQueryData(notificationPreferenceKeys.all("ws-a"), { preferences: { system_notifications: "all" } });
+    const showNotification = stubDesktopAPI();
+    const invalidate = vi.spyOn(qc, "invalidateQueries");
+    await handleInboxNew(qc, inboxItem({ snoozed_until: "2040-01-01T09:00:00Z" }));
+    expect(showNotification).not.toHaveBeenCalled();
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: inboxKeys.all("ws-a") });
+    expect(invalidate).toHaveBeenCalledWith({ queryKey: inboxKeys.unreadSummary() });
+  });
+
   // The tests below exercise the COLD-cache mute path (source preference not
   // yet cached), where the request — not just the query key — must be scoped
   // to the source workspace (#3766 follow-up). They install a fake API so the

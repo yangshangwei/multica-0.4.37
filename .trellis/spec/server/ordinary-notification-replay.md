@@ -49,7 +49,7 @@ Good: replay the same saved comment event through a newly registered listener an
 
 ## 6. Required tests
 
-`cmd/server/notification_comment_replay_test.go` is the canonical listener/storage suite. Its seven tops and 22 leaves cover sequential/concurrent replay, retained state, legacy rows, distinct tuples, recipient controls and the explicitly scoped legacy fallback. Use real `testutil` rows and forwarded SQL, not replaced query results. Both concurrent publishers must reach the real insertion boundary and be released/joined on failure. Observe database errors/listener panics as well as row and broadcast counts.
+`cmd/server/notification_comment_replay_test.go` is the canonical listener/storage suite. Its seven tops and 22 leaves cover sequential/concurrent replay, retained state, legacy rows, distinct tuples, recipient controls and the explicitly scoped legacy fallback. Use real `testutil` rows and forwarded SQL, not replaced query results. Both publishers must enter the real transaction path and be released/joined on failure. The shared Inbox group fence serializes inserts: synchronize launch through wrapped `TxStarter.Begin` before that fence, rather than parking both writers simultaneously in `CreateCommentInboxItem`. Still record every actual canonical insert attempt with its original tuple/destinations, retained rows, database errors/listener panics and broadcasts.
 
 Run the selected notification/subscriber suite on separate fresh normal/race databases and compare the full name sets. Current verified scope is 35 tops/57 names per mode, including the new 7 tops/29 names. Include archived/read rows in independent audits. Preserve fixture-produced configuration invalidation history and the original failed rounds.
 

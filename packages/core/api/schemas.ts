@@ -2891,6 +2891,10 @@ export const InboxItemListSchema = z.array(
       body: z.string().nullish(),
       issue_status: z.string().nullish(),
       issue_priority: z.string().nullish(),
+      snoozed_until: z.string().datetime({ offset: true }).nullish(),
+      snooze_revision: z.number().int().nonnegative().optional(),
+      reminded_at: z.string().datetime({ offset: true }).nullish(),
+      reminder_reason: z.string().nullish(),
       read: z.boolean(),
       archived: z.boolean(),
       created_at: z.string(),
@@ -2899,6 +2903,17 @@ export const InboxItemListSchema = z.array(
 );
 
 export const EMPTY_INBOX_ITEMS: InboxItem[] = [];
+
+export const InboxSnoozeReceiptSchema = z.object({
+  workspace_id: z.string().uuid(),
+  group_kind: z.enum(["issue", "item"]),
+  group_id: z.string().uuid(),
+  revision: z.number().int().nonnegative(),
+  snoozed_until: z.string().datetime({ offset: true }).nullable(),
+  reminded_at: z.string().datetime({ offset: true }).nullable(),
+  reminder_reason: z.string().nullish(),
+  undo_token: z.string().min(1).nullish(),
+}).loose();
 
 // ---------------------------------------------------------------------------
 // Billing schemas (cloud-billing proxy surface)

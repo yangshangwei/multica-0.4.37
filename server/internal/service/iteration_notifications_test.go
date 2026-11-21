@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -23,7 +24,8 @@ func TestIterationNotificationDeliveryAndRevocation(t *testing.T) {
 	}
 	published := 0
 	for range 2 {
-		if err := s.DeliverIterationNotifications(t.Context(), func(item db.InboxItem) {
+		if err := s.DeliverIterationNotifications(t.Context(), func(delivery inboxstate.Delivery) {
+			item := delivery.Item
 			published++
 			var status string
 			if err := fx.Pool.QueryRow(t.Context(), "SELECT status FROM iteration_notification WHERE id=$1", item.ID).Scan(&status); err != nil || status != "delivered" {
@@ -120,7 +122,7 @@ func TestIterationNotificationDeliveryCrashRetry(t *testing.T) {
 	if err = EnqueueIterationNotifications(t.Context(), q, ws, util.MustParseUUID(iid), util.MustParseUUID(uuid.NewString()), "end", []string{fx.UserID}); err != nil {
 		t.Fatal(err)
 	}
-	if err = s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { t.Error("rollback callback fired") }); err != nil {
+	if err = s.DeliverIterationNotifications(t.Context(), func(inboxstate.Delivery) { t.Error("rollback callback fired") }); err != nil {
 		t.Fatal(err)
 	}
 	var count, attempts int
@@ -165,7 +167,7 @@ func TestIterationOverdueSuppressedAfterDateExtension(t *testing.T) {
 	if _, err := fx.Pool.Exec(t.Context(), "UPDATE iteration SET end_date='2099-01-01' WHERE id=$1", iid); err != nil {
 		t.Fatal(err)
 	}
-	if err := s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { t.Fatal("suppressed callback fired") }); err != nil {
+	if err := s.DeliverIterationNotifications(t.Context(), func(inboxstate.Delivery) { t.Fatal("suppressed callback fired") }); err != nil {
 		t.Fatal(err)
 	}
 	var status string
@@ -286,7 +288,7 @@ func TestIterationOverdueRejoinRetainsSuppression(t *testing.T) {
 	if err = s.EnqueueIterationOverdueReminders(t.Context(), now); err != nil {
 		t.Fatal(err)
 	}
-	if err = s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { t.Fatal("rejoin reconstructed protected inbox") }); err != nil {
+	if err = s.DeliverIterationNotifications(t.Context(), func(inboxstate.Delivery) { t.Fatal("rejoin reconstructed protected inbox") }); err != nil {
 		t.Fatal(err)
 	}
 	var count int
@@ -364,7 +366,7 @@ func TestIterationNotificationRetryDeadLetter(t *testing.T) {
 	if err != nil || counts.Pending != 0 || counts.DeadLetter != 1 {
 		t.Fatalf("queue health: %+v %v", counts, err)
 	}
-	if err = s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { t.Fatal("dead letter delivered automatically") }); err != nil {
+	if err = s.DeliverIterationNotifications(t.Context(), func(inboxstate.Delivery) { t.Fatal("dead letter delivered automatically") }); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -417,7 +419,8 @@ func TestIterationNotificationWorkerResumesPersistedDelivery(t *testing.T) {
 			ctx, cancel := context.WithTimeout(t.Context(), 2*time.Second)
 			defer cancel()
 			published := 0
-			s.RunIterationNotifications(ctx, func(item db.InboxItem) {
+			s.RunIterationNotifications(ctx, func(delivery inboxstate.Delivery) {
+				item := delivery.Item
 				published++
 				if n := fx.Count(t, "SELECT count(*) FROM iteration_notification WHERE id=$1 AND status='delivered'", item.ID); n != 1 {
 					t.Fatal("worker published before delivery committed")
@@ -427,7 +430,7 @@ func TestIterationNotificationWorkerResumesPersistedDelivery(t *testing.T) {
 			if published != 1 {
 				t.Fatalf("worker did not resume persisted delivery: %d", published)
 			}
-			if err := s.DeliverIterationNotifications(t.Context(), func(db.InboxItem) { published++ }); err != nil {
+			if err := s.DeliverIterationNotifications(t.Context(), func(inboxstate.Delivery) { published++ }); err != nil {
 				t.Fatal(err)
 			}
 			if published != 1 || fx.Count(t, "SELECT count(*) FROM inbox_item WHERE workspace_id=$1", ws) != 1 {

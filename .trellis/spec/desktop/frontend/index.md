@@ -26,6 +26,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Renderer File Access](./renderer-file-access.md) | Native local-file denial for untrusted HTML and real Electron verification | Active |
 | [Connection Recovery](./connection-recovery.md) | Bounded boot requests, truthful retry state, persistent server editing and child-window handoff | Active |
 | [Account Navigation](./account-navigation.md) | Persistent account tabs, independent bootstrap, scoped popouts and native validation | Active |
+| [Personal Inbox snooze](../../server/inbox-snooze.md) | Native resource-key view identity, localized Snoozed title and shared notification recovery | Shared contract; evidence in task |
 | [Daemon Diagnostics](./daemon-diagnostics.md) | Independent CLI/reconnect failures, safe IPC diagnostics and localized initial recovery steps | Active |
 | [Desktop Core Interaction](../../views/frontend/desktop-core-accessibility.md) | Tab reorder alternatives/current destination, interrupted reduced-motion springs and native acceptance | Active |
 | [Settings Recovery](../../views/frontend/settings-recovery.md) | Named desktop preference controls, stable update announcements and shared settings verification | Active |

@@ -12,9 +12,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
-	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 // RunProjectUpdateNotifications recovers persisted notifications immediately
@@ -66,7 +66,7 @@ func (h *Handler) deliverProjectUpdateNotifications(ctx context.Context) error {
 // RC and strict lock order are deliberate. In particular, never acquire a
 // recipient fence or project lock after locking an outbox row: deletion and
 // revocation acquire those parents before removing inbox/outbox children.
-func (h *Handler) projectNotificationTransaction(ctx context.Context, candidate db.ProjectUpdateNotification, fn func(*db.Queries, db.ProjectUpdateNotification, db.Project, bool) error) error {
+func (h *Handler) projectNotificationTransaction(ctx context.Context, candidate db.ProjectUpdateNotification, fn func(pgx.Tx, *db.Queries, db.ProjectUpdateNotification, db.Project, bool) error) error {
 	tx, e := h.TxStarter.Begin(ctx)
 	if e != nil {
 		return e
@@ -108,14 +108,14 @@ func (h *Handler) projectNotificationTransaction(ctx context.Context, candidate 
 	if row.RecipientUserID != candidate.RecipientUserID || row.UpdateID != candidate.UpdateID {
 		return nil
 	}
-	if e = fn(q, row, p, valid); e != nil {
+	if e = fn(tx, q, row, p, valid); e != nil {
 		return e
 	}
 	return tx.Commit(ctx)
 }
 func (h *Handler) deliverProjectUpdateNotification(ctx context.Context, candidate db.ProjectUpdateNotification) error {
-	var inbox *db.InboxItem
-	e := h.projectNotificationTransaction(ctx, candidate, func(q *db.Queries, row db.ProjectUpdateNotification, p db.Project, valid bool) error {
+	var inbox *inboxstate.Delivery
+	e := h.projectNotificationTransaction(ctx, candidate, func(tx pgx.Tx, q *db.Queries, row db.ProjectUpdateNotification, p db.Project, valid bool) error {
 		cancelReason := "recipient_unavailable"
 		var revision db.ProjectUpdateRevision
 		if valid {
@@ -150,12 +150,12 @@ func (h *Handler) deliverProjectUpdateNotification(ctx context.Context, candidat
 		if e != nil {
 			return e
 		}
-		item, e := q.CreateProjectUpdateInbox(ctx, db.CreateProjectUpdateInboxParams{ID: row.ID, WorkspaceID: row.WorkspaceID, RecipientID: row.RecipientUserID, Title: "Project update — " + p.Title, ActorID: revision.EditorUserID, Details: details})
-		if e != nil && !errors.Is(e, pgx.ErrNoRows) {
+		delivery, e := inboxstate.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, WorkspaceID: row.WorkspaceID, RecipientType: "member", RecipientID: row.RecipientUserID, Type: "project_update", Severity: "info", Title: "Project update — " + p.Title, ActorType: pgtype.Text{String: "member", Valid: true}, ActorID: revision.EditorUserID, Details: details})
+		if e != nil {
 			return e
 		}
-		if e == nil {
-			inbox = &item
+		if delivery.Created {
+			inbox = &delivery
 		}
 		return q.CompleteProjectUpdateNotification(ctx, db.CompleteProjectUpdateNotificationParams{ID: row.ID, WorkspaceID: row.WorkspaceID, Status: "delivered"})
 	})
@@ -165,15 +165,7 @@ func (h *Handler) deliverProjectUpdateNotification(ctx context.Context, candidat
 	// Publish only after the inbox and outbox have committed together. This is
 	// the existing inbox event, never a comment/issue/task execution event.
 	if inbox != nil {
-		raw, e := json.Marshal(inboxToResponse(*inbox))
-		if e != nil {
-			return e
-		}
-		var data map[string]any
-		if e = json.Unmarshal(raw, &data); e != nil {
-			return e
-		}
-		h.publish(protocol.EventInboxNew, uuidToString(inbox.WorkspaceID), "member", uuidToString(inbox.ActorID), map[string]any{"item": data})
+		h.publishInboxDelivery(*inbox, "member", uuidToString(inbox.Item.ActorID))
 	}
 	return nil
 }
@@ -204,7 +196,7 @@ func projectNotificationErrorCode(e error) string {
 	return "delivery_failed"
 }
 func (h *Handler) retryProjectUpdateNotification(ctx context.Context, candidate db.ProjectUpdateNotification, code string) error {
-	return h.projectNotificationTransaction(ctx, candidate, func(q *db.Queries, row db.ProjectUpdateNotification, _ db.Project, valid bool) error {
+	return h.projectNotificationTransaction(ctx, candidate, func(_ pgx.Tx, q *db.Queries, row db.ProjectUpdateNotification, _ db.Project, valid bool) error {
 		if !valid {
 			return q.CompleteProjectUpdateNotification(ctx, db.CompleteProjectUpdateNotificationParams{ID: row.ID, WorkspaceID: row.WorkspaceID, Status: "cancelled", LastErrorCode: pgtype.Text{String: "recipient_unavailable", Valid: true}})
 		}

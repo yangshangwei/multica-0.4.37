@@ -61,6 +61,19 @@ describe("resourceKeyForUrl", () => {
     expect(resourceKeyForUrl("/acme/issues#anchor")).toBe("/acme/issues");
     expect(resourceKeyForUrl("/acme/issues?filter=a#x")).toBe("/acme/issues");
   });
+
+  it("retains only the Inbox sub-view as resource identity", () => {
+    expect(resourceKeyForUrl("/acme/inbox?issue=MUL-9#comment-1")).toBe("/acme/inbox");
+    expect(resourceKeyForUrl("/acme/inbox?issue=MUL-9&view=snoozed&filter=unread#x"))
+      .toBe("/acme/inbox?view=snoozed");
+    expect(resourceKeyForUrl("/acme/inbox?view=archived&issue=notification-2"))
+      .toBe("/acme/inbox?view=archived");
+    expect(resourceKeyForUrl("/acme/inbox?view=unknown")).toBe("/acme/inbox");
+    expect(resourceKeyForUrl("/acme/issues/MUL-9?view=snoozed"))
+      .toBe("/acme/issues/MUL-9");
+    expect(resourceKeyForUrl("/acme/issues/7a0ecb8d-5047-4513-a9da-961fa30496cc?view=archived"))
+      .toBe("/acme/issues/7a0ecb8d-5047-4513-a9da-961fa30496cc");
+  });
 });
 
 describe("migrateV1ToV2", () => {
@@ -192,6 +205,25 @@ describe("useTabStore actions", () => {
     // The existing tab's own view state (url) wins; the incoming filter does
     // not overwrite it.
     expect(s.byWorkspace.acme.tabs[0].url).toBe("/acme/issues");
+  });
+
+  it("opens each Inbox view separately while same-view selection still reuses its native tab", () => {
+    const store = useTabStore.getState();
+    store.switchWorkspace("acme");
+    const snoozedId = store.openTab("/acme/inbox?view=snoozed&issue=MUL-9", "Snoozed", { activate: true });
+    const inboxId = store.openTab("/acme/inbox", "Inbox", { activate: true });
+    const archivedId = store.openTab("/acme/inbox?view=archived", "Inbox", { activate: true });
+
+    expect(new Set([snoozedId, inboxId, archivedId]).size).toBe(3);
+    expect(useTabStore.getState().byWorkspace.acme.tabs).toHaveLength(4);
+    expect(useTabStore.getState().byWorkspace.acme.activeTabId).toBe(archivedId);
+
+    const sameViewId = store.openTab("/acme/inbox?filter=read&issue=MUL-20&view=snoozed", "Snoozed", { activate: true });
+    expect(sameViewId).toBe(snoozedId);
+    const group = useTabStore.getState().byWorkspace.acme;
+    expect(group.tabs).toHaveLength(4);
+    expect(group.activeTabId).toBe(snoozedId);
+    expect(group.tabs.find((tab) => tab.id === snoozedId)?.url).toBe("/acme/inbox?view=snoozed&issue=MUL-9");
   });
 
   describe("openTab insertion position (MUL-5860)", () => {

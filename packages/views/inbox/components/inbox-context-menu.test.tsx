@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { WorkspaceSlugProvider } from "@multica/core/paths";
 import type { InboxItem } from "@multica/core/types";
@@ -85,13 +85,15 @@ function renderRow({
   actions = {},
 }: {
   entry?: InboxItem;
-  view?: "inbox" | "archived";
+  view?: "inbox" | "snoozed" | "archived";
   actions?: Partial<InboxRowActions>;
 } = {}) {
   const rowActions: InboxRowActions = {
     onMarkRead: vi.fn(),
     onMarkUnread: vi.fn(),
     onAction: vi.fn(),
+    onSnooze: vi.fn(),
+    onUnsnooze: vi.fn(),
     ...actions,
   };
   render(
@@ -112,6 +114,27 @@ function renderRow({
 }
 
 describe("inbox row context menu", () => {
+  it("offers snooze for the notification group without selecting its row", async () => {
+    const onSnooze = vi.fn();
+    const { row } = renderRow({ entry: item({ id: "snooze-1" }), actions: { onSnooze } });
+
+    fireEvent.contextMenu(row);
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Snooze..." }));
+
+    expect(onSnooze).toHaveBeenCalledWith("snooze-1");
+  });
+
+  it("offers change time and remind now in the snoozed view", async () => {
+    const onUnsnooze = vi.fn();
+    const { row } = renderRow({ entry: item({ id: "snooze-2" }), view: "snoozed", actions: { onUnsnooze } });
+
+    fireEvent.contextMenu(row);
+    expect(await screen.findByRole("menuitem", { name: "Change time..." })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("menuitem", { name: "Remind now" }));
+
+    expect(onUnsnooze).toHaveBeenCalledWith("snooze-2");
+  });
+
   it("offers mark-as-unread on a read row and reports the item id", async () => {
     const onMarkUnread = vi.fn();
     const { row } = renderRow({
@@ -165,7 +188,7 @@ describe("inbox row context menu", () => {
     const { row } = renderRow();
 
     const event = new MouseEvent("contextmenu", { bubbles: true, cancelable: true });
-    row.dispatchEvent(event);
+    await act(async () => { row.dispatchEvent(event); });
 
     expect(event.defaultPrevented).toBe(true);
   });
@@ -198,6 +221,27 @@ describe("inbox row context menu", () => {
 describe("inbox row compact menu", () => {
   const openMenu = () =>
     fireEvent.click(screen.getByRole("button", { name: "Notification actions" }));
+
+  it("offers the same snooze operation as the right-click menu", async () => {
+    const onSnooze = vi.fn();
+    renderRow({ entry: item({ id: "touch-snooze" }), actions: { onSnooze } });
+
+    openMenu();
+    fireEvent.click(await screen.findByRole("menuitem", { name: "Snooze..." }));
+
+    expect(onSnooze).toHaveBeenCalledWith("touch-snooze");
+  });
+
+  it("opens snooze from the row clock without selecting the notification", () => {
+    const onSnooze = vi.fn();
+    renderRow({ entry: item({ id: "clock-snooze" }), actions: { onSnooze } });
+
+    const clock = screen.getByRole("button", { name: "Snooze" });
+    fireEvent.click(clock);
+
+    expect(onSnooze).toHaveBeenCalledWith("clock-snooze", clock);
+    expect(clock.closest('[role="listitem"]')?.querySelector("[aria-current]" )).toBeNull();
+  });
 
   it("archives from the menu in the main view", async () => {
     const onAction = vi.fn();

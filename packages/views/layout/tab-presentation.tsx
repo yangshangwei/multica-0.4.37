@@ -28,6 +28,7 @@ import { chatSessionsOptions } from "@multica/core/chat/queries";
 import {
   inboxListOptions,
   archivedInboxListOptions,
+  snoozedInboxListOptions,
 } from "@multica/core/inbox/queries";
 import { cn } from "@multica/ui/lib/utils";
 import { StatusIcon } from "../issues/components";
@@ -79,16 +80,17 @@ function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
   const { t: chatT } = useT("chat");
   const presentSkill = useSkillPresentation();
 
-  // Read both inbox lists cache-only; the archived view keeps its own list, so
-  // an archived selection has to resolve against the archived cache — the same
-  // list the InboxPage populates when `?view=archived` is active.
+  // Each inbox view owns its cache; selection titles must read the same list
+  // InboxPage populated, while remaining cache-only in the tab strip.
   const inboxList = useQuery({ ...inboxListOptions(wsId), enabled: false }).data;
   const archivedInboxList = useQuery({
     ...archivedInboxListOptions(wsId),
     enabled: false,
   }).data;
+  const snoozedInboxList = useQuery({ ...snoozedInboxListOptions(wsId), enabled: false }).data;
   const activeInboxList =
-    subject.kind === "inbox" && subject.archived ? archivedInboxList : inboxList;
+    subject.kind === "inbox" && subject.snoozed ? snoozedInboxList
+      : subject.kind === "inbox" && subject.archived ? archivedInboxList : inboxList;
   const inboxItem =
     subject.kind === "inbox" && subject.selectedKey
       ? (activeInboxList?.find(
@@ -215,11 +217,14 @@ function useTabEntityData(subject: TabSubject, wsId: string): TabEntityData {
 /** Localize a title spec, preferring a persisted fallback while pending. */
 function useTabTitle(spec: TabTitleSpec, fallbackTitle?: string): string {
   const { t: layoutT } = useT("layout");
+  const { t: inboxT } = useT("inbox");
   switch (spec.kind) {
     case "text":
       return spec.text;
     case "nav":
       return layoutT(($) => $.nav[spec.navKey]);
+    case "inbox":
+      return inboxT(($) => $.list[spec.inboxKey]);
     case "tab": {
       if (PENDING_RESOURCE_KEYS.has(spec.tabKey)) {
         const clean = fallbackTitle?.trim();

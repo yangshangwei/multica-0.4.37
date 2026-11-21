@@ -1949,6 +1949,21 @@ type GithubPullRequestCheckSuite struct {
 	UpdatedAt  pgtype.Timestamptz `json:"updated_at"`
 }
 
+type InboxCriticalSource struct {
+	ID               pgtype.UUID        `json:"id"`
+	WorkspaceID      pgtype.UUID        `json:"workspace_id"`
+	RecipientType    string             `json:"recipient_type"`
+	RecipientID      pgtype.UUID        `json:"recipient_id"`
+	GroupKind        string             `json:"group_kind"`
+	GroupID          pgtype.UUID        `json:"group_id"`
+	NotificationType string             `json:"notification_type"`
+	SourceKind       string             `json:"source_kind"`
+	SourceID         pgtype.UUID        `json:"source_id"`
+	SourceRevision   int64              `json:"source_revision"`
+	InboxItemID      pgtype.UUID        `json:"inbox_item_id"`
+	CreatedAt        pgtype.Timestamptz `json:"created_at"`
+}
+
 type InboxItem struct {
 	ID            pgtype.UUID        `json:"id"`
 	WorkspaceID   pgtype.UUID        `json:"workspace_id"`
@@ -1965,6 +1980,24 @@ type InboxItem struct {
 	ActorType     pgtype.Text        `json:"actor_type"`
 	ActorID       pgtype.UUID        `json:"actor_id"`
 	Details       []byte             `json:"details"`
+}
+
+type InboxSnooze struct {
+	ID                     pgtype.UUID        `json:"id"`
+	WorkspaceID            pgtype.UUID        `json:"workspace_id"`
+	RecipientType          string             `json:"recipient_type"`
+	RecipientID            pgtype.UUID        `json:"recipient_id"`
+	GroupKind              string             `json:"group_kind"`
+	GroupID                pgtype.UUID        `json:"group_id"`
+	Revision               int64              `json:"revision"`
+	SnoozedUntil           pgtype.Timestamptz `json:"snoozed_until"`
+	SnoozedAt              pgtype.Timestamptz `json:"snoozed_at"`
+	IssueRevisionWatermark pgtype.Int8        `json:"issue_revision_watermark"`
+	RemindedAt             pgtype.Timestamptz `json:"reminded_at"`
+	ReminderReason         pgtype.Text        `json:"reminder_reason"`
+	UndoToken              pgtype.UUID        `json:"undo_token"`
+	UndoSnapshot           []byte             `json:"undo_snapshot"`
+	CreatedAt              pgtype.Timestamptz `json:"created_at"`
 }
 
 type InstallationChallenge struct {

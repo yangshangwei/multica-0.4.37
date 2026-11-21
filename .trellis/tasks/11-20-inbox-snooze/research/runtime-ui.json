@@ -1,0 +1,43 @@
+{
+  "processes": {
+    "web": {
+      "pid": 50347,
+      "pgid": 50347,
+      "command": [
+        "pnpm",
+        "--filter",
+        "@multica/web",
+        "exec",
+        "next",
+        "start",
+        "--hostname",
+        "127.0.0.1",
+        "--port",
+        "61719"
+      ],
+      "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/runtime-web.log"
+    },
+    "renderer": {
+      "pid": 50348,
+      "pgid": 50348,
+      "command": [
+        "node",
+        "scripts/check-desktop-renderer.mjs",
+        "apps/desktop/out/renderer",
+        "61720",
+        "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/renderer-provenance.json"
+      ],
+      "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/runtime-renderer.log"
+    }
+  },
+  "web_origin": "http://127.0.0.1:61719",
+  "renderer_origin": "http://127.0.0.1:61720",
+  "renderer_provenance": {
+    "pid": 50348,
+    "renderer": "/Volumes/artisan/code/2026/multica-0.4.37/apps/desktop/out/renderer",
+    "origin": "http://127.0.0.1:61720",
+    "index_sha256": "e74e5a52f5ff2bff314dfdebd7ae1bc49dde0501b32e9d0f43daf18c6c2bab7b"
+  },
+  "e2e_web_origin": "http://localhost:61719",
+  "e2e_renderer_origin": "http://localhost:61720"
+}

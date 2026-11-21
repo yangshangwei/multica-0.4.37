@@ -35,6 +35,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Persistent shell switch, restored collaboration state and direct-link focus | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Batch issue outcomes](../../core/frontend/issue-batch-outcomes.md) | Shared batch adapters and truthful partial/zero-result feedback | Client contract implemented; backend acceptance separate |
+| [Personal Inbox snooze](../../server/inbox-snooze.md) | Shared picker/views, authoritative selection, exact time, safe errors and touch controls | Shared contract; evidence in task |
 | [Desktop Core Interaction](./desktop-core-accessibility.md) | Hidden-chat focus/portals, collection recovery/selection, detail tabs, shell motion and bounded Gantt | Active |
 | [Core UI State Contracts](./core-ui-state-contracts.md) | Retained sidebar portals, picker/editor semantics, squad drafts and protected recovery | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |

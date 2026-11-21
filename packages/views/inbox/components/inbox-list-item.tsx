@@ -7,17 +7,18 @@ import {
   IssueAgentActivityIndicator,
 } from "../../issues/components/issue-agent-activity-indicator";
 import { ActorAvatar } from "../../common/actor-avatar";
-import { Archive, ArchiveRestore } from "lucide-react";
+import { Archive, ArchiveRestore, Clock } from "lucide-react";
 import type { InboxItem } from "@multica/core/types";
 import type { InboxView } from "./inbox-view";
 import { InboxDetailLabel } from "./inbox-detail-label";
 import { getInboxDisplayTitle, getInboxDestination } from "./inbox-display";
-import { useInboxContextMenu } from "./inbox-context-menu";
+import { useInboxContextMenu, useInboxRowActions } from "./inbox-context-menu";
 import { useStatusLabel } from "../../issues/utils/status-label";
 import { InboxRowMenu } from "./inbox-row-menu";
 import { useT } from "../../i18n";
 import { paths, useWorkspaceSlug } from "@multica/core/paths";
 import { resolveClickIntent, useIntentNavigate } from "../../navigation";
+import { formatInboxReminderTime } from "./inbox-reminder-time";
 
 // Hook returning a localized relative-time formatter — the i18n equivalent
 // of the previous static `timeAgo` function. Returning a function (rather
@@ -57,7 +58,7 @@ export function InboxListItem({
   totalCount?: number;
   onSelectionMount?: (id: string, button: HTMLButtonElement | null) => void;
 }) {
-  const { t } = useT("inbox");
+  const { t, i18n } = useT("inbox");
   const timeAgo = useTimeAgo();
   // Inbox is a cross-workspace surface, so the catalog is read against the
   // item's OWN workspace rather than the route's. (MUL-6243)
@@ -65,6 +66,7 @@ export function InboxListItem({
     useIssueStatuses(item.workspace_id);
   const statusLabelOf = useStatusLabel(item.workspace_id);
   const openContextMenu = useInboxContextMenu();
+  const rowActions = useInboxRowActions();
   // Null-safe slug (not useWorkspacePaths, which throws): the row renders in
   // tests and could render outside a workspace route; without a slug the
   // modifier-click affordance simply stays off.
@@ -96,6 +98,9 @@ export function InboxListItem({
   // as the status-changed detail label already renders it. `colorOf` returns
   // null for a built-in, which keeps it on its semantic token.
   const statusColor = item.issue_status ? statusColorOf(item.issue_status) : null;
+  const reminderTime = item.snoozed_until
+    ? formatInboxReminderTime(item.snoozed_until, i18n?.language ?? "en")
+    : "";
 
   return (
     // The title selects this notification. Other row controls remain siblings
@@ -163,6 +168,22 @@ export function InboxListItem({
             </button>
           </div>
           <div className="flex shrink-0 items-center gap-1">
+            {!isArchivedView && rowActions?.onSnooze && (
+              <button
+                type="button"
+                title={view === "snoozed" ? t(($) => $.snooze.change_time) : t(($) => $.snooze.action)}
+                aria-label={view === "snoozed" ? t(($) => $.snooze.change_time) : t(($) => $.snooze.action)}
+                aria-haspopup="dialog"
+                aria-expanded="false"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  rowActions.onSnooze?.(item.id, event.currentTarget);
+                }}
+                className="hidden rounded p-0.5 text-muted-foreground outline-none hover:bg-accent hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring [@media(hover:hover)]:group-hover:inline-flex [@media(hover:hover)]:group-focus-within:inline-flex [@media(hover:hover)]:group-data-[snooze-open]:inline-flex"
+              >
+                <Clock className="h-3.5 w-3.5" />
+              </button>
+            )}
             {/* Pointer-only affordance: revealed on hover, and on keyboard
                 focus anywhere in the row so it is reachable by Tab. Touch has
                 neither, so it stays hidden on a pointer that cannot hover and
@@ -201,7 +222,9 @@ export function InboxListItem({
         </div>
         <div className="mt-0.5 flex items-center justify-between gap-2">
           <p id={detailId} className="min-w-0 overflow-hidden text-ellipsis whitespace-nowrap text-caption text-muted-foreground">
-            <InboxDetailLabel item={item} />
+            {view === "snoozed" && reminderTime
+              ? t(($) => $.snooze.remind_at, { time: reminderTime })
+              : <>{item.reminded_at && showUnread && <span>{t(($) => $.snooze.reminder)} · </span>}<InboxDetailLabel item={item} /></>}
           </p>
           <div className="flex shrink-0 items-center gap-1.5">
             {/* Badge only, no hover card (MUL-5189). "An agent is on this"

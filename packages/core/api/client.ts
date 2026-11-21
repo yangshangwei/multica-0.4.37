@@ -159,6 +159,7 @@ import type {
   CreateRuntimeProfileRequest,
   UpdateRuntimeProfileRequest,
   InboxItem,
+  InboxSnoozeReceipt,
   InboxWorkspaceUnread,
   IssueSubscriber,
   Comment,
@@ -548,6 +549,7 @@ import {
   InboxUnreadSummarySchema,
   EMPTY_INBOX_UNREAD_SUMMARY,
   InboxItemListSchema,
+  InboxSnoozeReceiptSchema,
   EMPTY_INBOX_ITEMS,
   NotificationPreferenceResponseSchema,
   EMPTY_NOTIFICATION_PREFERENCE_RESPONSE,
@@ -5038,8 +5040,8 @@ export class ApiClient {
   }
 
   // Inbox
-  async listInbox(): Promise<InboxItem[]> {
-    const raw = await this.fetch<unknown>("/api/inbox");
+  async listInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox", workspaceRequestInit(options));
     return parseWithFallback(raw, InboxItemListSchema, EMPTY_INBOX_ITEMS, {
       endpoint: "GET /api/inbox",
     });
@@ -5060,8 +5062,8 @@ export class ApiClient {
   // Archived notifications, backing the inbox's "Archived" sub-view. Capped
   // server-side (no pagination in v1). Schema-guarded so a contract drift
   // renders an empty archive instead of taking the inbox down with it.
-  async listArchivedInbox(): Promise<InboxItem[]> {
-    const raw = await this.fetch<unknown>("/api/inbox/archived");
+  async listArchivedInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox/archived", workspaceRequestInit(options));
     return parseWithFallback(raw, InboxItemListSchema, EMPTY_INBOX_ITEMS, {
       endpoint: "GET /api/inbox/archived",
     });
@@ -5069,6 +5071,81 @@ export class ApiClient {
 
   async unarchiveInbox(id: string): Promise<InboxItem> {
     return this.fetch(`/api/inbox/${id}/unarchive`, { method: "POST" });
+  }
+
+  async listSnoozedInbox(options?: { workspaceId?: string }): Promise<InboxItem[]> {
+    const raw = await this.fetch<unknown>("/api/inbox/snoozed", workspaceRequestInit(options));
+    const items = parseWithFallback<InboxItem[] | null>(raw, InboxItemListSchema, null, {
+      endpoint: "GET /api/inbox/snoozed",
+      redact: true,
+    });
+    if (!items) throw new Error("Invalid snoozed inbox response");
+    return items;
+  }
+
+  async snoozeInboxItem(
+    id: string,
+    data: { snoozed_until: string; expected_revision: number },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "snooze", data, options);
+  }
+
+  async unsnoozeInboxItem(
+    id: string,
+    data: { expected_revision: number },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "unsnooze", data, options);
+  }
+
+  async undoInboxSnooze(
+    id: string,
+    data: { undo_token: string },
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    return this.writeInboxSnooze(id, "snooze/undo", data, options);
+  }
+
+  private async writeInboxSnooze(
+    id: string,
+    action: "snooze" | "unsnooze" | "snooze/undo",
+    data: Record<string, string | number>,
+    options?: { workspaceId?: string },
+  ): Promise<InboxSnoozeReceipt> {
+    const raw = await this.fetch<unknown>(`/api/inbox/${encodeURIComponent(id)}/${action}`, {
+      ...workspaceRequestInit(options),
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    const receipt = parseWithFallback<InboxSnoozeReceipt | null>(raw, InboxSnoozeReceiptSchema, null, {
+      endpoint: `POST /api/inbox/:id/${action}`,
+      redact: true,
+    });
+    if (!receipt || receipt.revision <= 0 || (options?.workspaceId !== undefined && receipt.workspace_id !== options.workspaceId)) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    if (action !== "snooze/undo" && (
+      typeof data.expected_revision !== "number" || !(receipt.revision > data.expected_revision)
+    )) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    if (action === "snooze") {
+      const requestedUntil = data.snoozed_until;
+      const returnedUntil = receipt.snoozed_until;
+      // Date keeps milliseconds; normalized fractions also preserve the
+      // exact RFC3339 instant when a response contains finer precision.
+      const fraction = (value: string) => value.match(/\.(\d+)(?:Z|[+-]\d{2}:\d{2})$/)?.[1]?.replace(/0+$/, "") ?? "";
+      if (typeof requestedUntil !== "string" || returnedUntil === null ||
+        Date.parse(returnedUntil) !== Date.parse(requestedUntil) || fraction(returnedUntil) !== fraction(requestedUntil)) {
+        throw new Error("Invalid inbox snooze response");
+      }
+    } else if (action === "unsnooze" && (
+      receipt.snoozed_until !== null || receipt.reminded_at === null || !Number.isFinite(Date.parse(receipt.reminded_at))
+    )) {
+      throw new Error("Invalid inbox snooze response");
+    }
+    return receipt;
   }
 
   async getUnreadInboxCount(): Promise<{ count: number }> {

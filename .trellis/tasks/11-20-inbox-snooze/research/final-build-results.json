@@ -1,0 +1,26 @@
+[
+  {
+    "package": "@multica/web",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/web",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/build-final-web.log",
+    "sha256": "c895efd5c558a1fec0d1c60c12fd2425343f2969a10dd6e8032d5fa031e59b8b"
+  },
+  {
+    "package": "@multica/desktop",
+    "command": [
+      "pnpm",
+      "--filter",
+      "@multica/desktop",
+      "build"
+    ],
+    "exit_code": 0,
+    "log": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/build-final-desktop.log",
+    "sha256": "ad4bda65eb4a3e97f3b1fa6543715c278ed01881a321875a999aec2befcb119d"
+  }
+]

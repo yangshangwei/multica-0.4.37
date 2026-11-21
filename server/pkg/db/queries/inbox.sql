@@ -1,11 +1,22 @@
 -- name: ListInboxItems :many
 SELECT i.*,
        iss.status AS issue_status,
-       iss.priority AS issue_priority
+       iss.priority AS issue_priority,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN false ELSE i.read END::boolean AS effective_read,
+       CASE WHEN i.archived THEN NULL::timestamptz ELSE s.snoozed_until END::timestamptz AS snoozed_until,
+       COALESCE(s.revision,0)::bigint AS snooze_revision,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN s.snoozed_until ELSE s.reminded_at END::timestamptz AS reminded_at,
+       COALESCE(CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN 'due'::text ELSE s.reminder_reason END,'')::text AS reminder_reason
 FROM inbox_item i
 LEFT JOIN issue iss ON iss.id = i.issue_id
+LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id
+  AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+  AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END
+  AND s.group_id=COALESCE(i.issue_id,i.id)
 WHERE i.workspace_id = $1 AND i.recipient_type = $2 AND i.recipient_id = $3 AND i.archived = false
-ORDER BY i.created_at DESC;
+  AND (s.snoozed_until IS NULL OR s.snoozed_until<=now())
+  AND (i.issue_id IS NULL OR iss.id IS NOT NULL)
+ORDER BY GREATEST(COALESCE(s.reminded_at,s.snoozed_until,i.created_at),i.created_at) DESC, i.created_at DESC, i.id DESC;
 
 -- name: ListArchivedInboxItems :many
 -- Archived counterpart of ListInboxItems, backing the inbox's "Archived"
@@ -75,11 +86,39 @@ WITH eligible_archived AS MATERIALIZED (
 )
 SELECT i.*,
        iss.status AS issue_status,
-       iss.priority AS issue_priority
+       iss.priority AS issue_priority,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN false ELSE i.read END::boolean AS effective_read,
+       CASE WHEN i.archived THEN NULL::timestamptz ELSE s.snoozed_until END::timestamptz AS snoozed_until,
+       COALESCE(s.revision,0)::bigint AS snooze_revision,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN s.snoozed_until ELSE s.reminded_at END::timestamptz AS reminded_at,
+       COALESCE(CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN 'due'::text ELSE s.reminder_reason END,'')::text AS reminder_reason
 FROM inbox_item i
 JOIN selected_ids selected ON selected.id = i.id
 LEFT JOIN issue iss ON iss.id = i.issue_id
+LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id
+  AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+  AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END
+  AND s.group_id=COALESCE(i.issue_id,i.id)
 ORDER BY i.created_at DESC, i.id DESC;
+
+-- name: ListSnoozedInboxItems :many
+SELECT i.*,
+       iss.status AS issue_status,
+       iss.priority AS issue_priority,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN false ELSE i.read END::boolean AS effective_read,
+       CASE WHEN i.archived THEN NULL::timestamptz ELSE s.snoozed_until END::timestamptz AS snoozed_until,
+       COALESCE(s.revision,0)::bigint AS snooze_revision,
+       CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN s.snoozed_until ELSE s.reminded_at END::timestamptz AS reminded_at,
+       COALESCE(CASE WHEN NOT i.archived AND s.snoozed_until<=now() THEN 'due'::text ELSE s.reminder_reason END,'')::text AS reminder_reason
+FROM inbox_item i
+LEFT JOIN issue iss ON iss.id=i.issue_id
+LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id
+  AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+  AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END
+  AND s.group_id=COALESCE(i.issue_id,i.id)
+WHERE i.workspace_id=$1 AND i.recipient_type=$2 AND i.recipient_id=$3 AND i.archived=false
+  AND s.snoozed_until>now() AND (i.issue_id IS NULL OR iss.id IS NOT NULL)
+ORDER BY s.snoozed_until, i.created_at DESC, i.id DESC;
 
 -- name: GetInboxItem :one
 SELECT * FROM inbox_item
@@ -130,9 +169,8 @@ RETURNING *;
 -- Exact inverse of MarkInboxRead, and item-level for the same reason it is:
 -- the inbox renders one row per issue carrying that group's NEWEST item, and
 -- the group's read state is that item's read state. Flipping the whole group
--- unread would resurrect older siblings the user already dealt with and
--- inflate CountUnreadInbox (which counts raw rows), while changing nothing the
--- UI shows.
+-- unread would overwrite older siblings' retained read decisions without
+-- changing what the grouped UI or unread count shows.
 UPDATE inbox_item SET read = false
 WHERE id = $1
 RETURNING *;
@@ -167,76 +205,91 @@ WHERE workspace_id = $1 AND issue_id = $2 AND type = $3 AND archived = false
 RETURNING recipient_type, recipient_id;
 
 -- name: CountUnreadInbox :one
-SELECT count(*) FROM inbox_item
-WHERE workspace_id = $1 AND recipient_type = $2 AND recipient_id = $3 AND read = false AND archived = false;
+SELECT count(*) FROM (
+ SELECT DISTINCT ON (CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+  CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read
+ FROM inbox_item i
+ LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ LEFT JOIN issue iss ON iss.id=i.issue_id AND iss.workspace_id=i.workspace_id
+ WHERE i.workspace_id=$1 AND i.recipient_type=$2 AND i.recipient_id=$3 AND i.archived=false
+ AND (s.snoozed_until IS NULL OR s.snoozed_until<=now()) AND (i.issue_id IS NULL OR iss.id IS NOT NULL)
+ ORDER BY CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC
+) newest WHERE newest.effective_read=false;
 
 -- name: CountUnreadInboxByWorkspace :many
--- Per-workspace unread inbox counts for a recipient member, matching the
--- inbox UI's deduplicated view: notifications are grouped per issue
--- (Linear-style, one row per issue) and an issue counts as unread only when
--- its NEWEST non-archived item is unread. Opening an issue marks just that
--- newest item read, so counting raw unread rows would keep older siblings
--- alive and light the switcher dot for a workspace whose inbox the user sees
--- as empty (MUL-3695). Items without an issue group on their own id. The
--- member join keeps counts scoped to workspaces the user still belongs to,
--- so a stale item left behind in a workspace the user has since left cannot
--- light the dot.
-SELECT newest.workspace_id, count(*) AS count
-FROM (
-    SELECT DISTINCT ON (i.workspace_id, COALESCE(i.issue_id, i.id))
-        i.workspace_id, i.read
-    FROM inbox_item i
-    JOIN member m ON m.workspace_id = i.workspace_id AND m.user_id = i.recipient_id
-    WHERE i.recipient_type = 'member'
-      AND i.recipient_id = $1
-      AND i.archived = false
-    ORDER BY i.workspace_id, COALESCE(i.issue_id, i.id), i.created_at DESC
-) newest
-WHERE newest.read = false
-GROUP BY newest.workspace_id;
+-- Count the rendered newest group with the same effective overdue state as lists.
+SELECT newest.workspace_id,count(*) AS count FROM (
+ SELECT DISTINCT ON (i.workspace_id,CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+  i.workspace_id,CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read
+ FROM inbox_item i
+ JOIN member m ON m.workspace_id=i.workspace_id AND m.user_id=i.recipient_id
+ LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ LEFT JOIN issue iss ON iss.id=i.issue_id AND iss.workspace_id=i.workspace_id
+ WHERE i.recipient_type='member' AND i.recipient_id=$1 AND i.archived=false
+ AND (s.snoozed_until IS NULL OR s.snoozed_until<=now()) AND (i.issue_id IS NULL OR iss.id IS NOT NULL)
+ ORDER BY i.workspace_id,CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC
+) newest WHERE newest.effective_read=false GROUP BY newest.workspace_id;
 
 -- name: MarkAllInboxRead :execrows
-UPDATE inbox_item SET read = true
-WHERE workspace_id = $1 AND recipient_type = 'member' AND recipient_id = $2 AND archived = false AND read = false;
+WITH active_groups AS (SELECT DISTINCT ON (CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+ CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AS group_kind,COALESCE(i.issue_id,i.id) AS group_id,
+ CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read,
+ (s.snoozed_until IS NOT NULL AND s.snoozed_until<=now()) AS overdue
+ FROM inbox_item i LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false AND (s.snoozed_until IS NULL OR s.snoozed_until<=now())
+ ORDER BY CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC), selected_groups AS (
+ SELECT * FROM active_groups WHERE effective_read=false
+), changed_state AS (UPDATE inbox_snooze s SET revision=s.revision+1,reminded_at=CASE WHEN s.snoozed_until<=now() THEN s.snoozed_until ELSE s.reminded_at END,reminder_reason=CASE WHEN s.snoozed_until<=now() THEN 'due' ELSE s.reminder_reason END,snoozed_until=NULL,undo_token=NULL,undo_snapshot=NULL
+ FROM selected_groups g WHERE s.workspace_id=$1 AND s.recipient_type='member' AND s.recipient_id=$2 AND s.group_kind=g.group_kind AND s.group_id=g.group_id)
+UPDATE inbox_item i SET read=true FROM selected_groups g
+WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false
+ AND CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END=g.group_kind AND COALESCE(i.issue_id,i.id)=g.group_id
+ AND (i.read=false OR g.overdue);
 
 -- name: ArchiveAllInbox :execrows
-UPDATE inbox_item SET archived = true
-WHERE workspace_id = $1 AND recipient_type = 'member' AND recipient_id = $2 AND archived = false;
+WITH selected_groups AS (SELECT DISTINCT ON (CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+ CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AS group_kind,COALESCE(i.issue_id,i.id) AS group_id,
+ CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read,
+ (s.snoozed_until IS NOT NULL AND s.snoozed_until<=now()) AS overdue
+ FROM inbox_item i LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false AND (s.snoozed_until IS NULL OR s.snoozed_until<=now())
+ ORDER BY CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC), changed_state AS (UPDATE inbox_snooze s SET revision=s.revision+1,snoozed_until=NULL,undo_token=NULL,undo_snapshot=NULL,reminded_at=NULL,reminder_reason=NULL
+ FROM selected_groups g WHERE s.workspace_id=$1 AND s.recipient_type='member' AND s.recipient_id=$2 AND s.group_kind=g.group_kind AND s.group_id=g.group_id)
+UPDATE inbox_item i SET archived=true FROM selected_groups g
+WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false
+ AND CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END=g.group_kind AND COALESCE(i.issue_id,i.id)=g.group_id;
 
 -- name: ArchiveAllReadInbox :execrows
--- "Read" is the state of the one issue row the inbox renders: the newest
--- active notification in that issue group. Archive every row in groups whose
--- newest row is read, and leave an unread group wholly untouched. Updating raw
--- read rows instead makes an older unread sibling reappear after the newest
--- row is archived (and can archive an older read sibling under an unread row).
-WITH newest_groups AS (
-    SELECT DISTINCT ON (COALESCE(i.issue_id, i.id))
-           COALESCE(i.issue_id, i.id) AS group_id,
-           i.read
-    FROM inbox_item i
-    WHERE i.workspace_id = $1
-      AND i.recipient_type = 'member'
-      AND i.recipient_id = $2
-      AND i.archived = false
-    ORDER BY COALESCE(i.issue_id, i.id), i.created_at DESC, i.id DESC
-), read_groups AS (
-    SELECT group_id
-    FROM newest_groups
-    WHERE read = true
-)
-UPDATE inbox_item i SET archived = true
-FROM read_groups selected
-WHERE i.workspace_id = $1
-  AND i.recipient_type = 'member'
-  AND i.recipient_id = $2
-  AND i.archived = false
-  AND COALESCE(i.issue_id, i.id) = selected.group_id;
+-- An unmaterialized expired read row is effectively unread and must stay visible.
+WITH active_groups AS (SELECT DISTINCT ON (CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+ CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AS group_kind,COALESCE(i.issue_id,i.id) AS group_id,
+ CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read,
+ (s.snoozed_until IS NOT NULL AND s.snoozed_until<=now()) AS overdue
+ FROM inbox_item i LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false AND (s.snoozed_until IS NULL OR s.snoozed_until<=now())
+ ORDER BY CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC),selected_groups AS (
+ SELECT * FROM active_groups WHERE effective_read=true
+),changed_state AS (UPDATE inbox_snooze s SET revision=s.revision+1,snoozed_until=NULL,undo_token=NULL,undo_snapshot=NULL,reminded_at=NULL,reminder_reason=NULL
+ FROM selected_groups g WHERE s.workspace_id=$1 AND s.recipient_type='member' AND s.recipient_id=$2 AND s.group_kind=g.group_kind AND s.group_id=g.group_id)
+UPDATE inbox_item i SET archived=true FROM selected_groups g
+WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false
+ AND CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END=g.group_kind AND COALESCE(i.issue_id,i.id)=g.group_id;
 
 -- name: ArchiveCompletedInbox :execrows
-UPDATE inbox_item i SET archived = true
-WHERE i.workspace_id = $1 AND i.recipient_type = 'member' AND i.recipient_id = $2 AND i.archived = false
-  AND i.issue_id IN (
-    SELECT id FROM issue
-    WHERE workspace_id = $1
-      AND status = ANY(sqlc.arg('terminal_status_keys')::text[])
-  );
+WITH selected_groups AS (SELECT DISTINCT ON (CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id))
+ CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AS group_kind,COALESCE(i.issue_id,i.id) AS group_id,
+ CASE WHEN s.snoozed_until<=now() THEN false ELSE i.read END AS effective_read,
+ (s.snoozed_until IS NOT NULL AND s.snoozed_until<=now()) AS overdue
+ FROM inbox_item i LEFT JOIN inbox_snooze s ON s.workspace_id=i.workspace_id AND s.recipient_type=i.recipient_type AND s.recipient_id=i.recipient_id
+ AND s.group_kind=CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END AND s.group_id=COALESCE(i.issue_id,i.id)
+ WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false AND i.issue_id IN (SELECT iss.id FROM issue iss WHERE iss.workspace_id=$1 AND iss.status=ANY(sqlc.arg('terminal_status_keys')::text[])) AND (s.snoozed_until IS NULL OR s.snoozed_until<=now())
+ ORDER BY CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END,COALESCE(i.issue_id,i.id),i.created_at DESC,i.id DESC),changed_state AS (UPDATE inbox_snooze s SET revision=s.revision+1,snoozed_until=NULL,undo_token=NULL,undo_snapshot=NULL,reminded_at=NULL,reminder_reason=NULL
+ FROM selected_groups g WHERE s.workspace_id=$1 AND s.recipient_type='member' AND s.recipient_id=$2 AND s.group_kind=g.group_kind AND s.group_id=g.group_id)
+UPDATE inbox_item i SET archived=true FROM selected_groups g
+WHERE i.workspace_id=$1 AND i.recipient_type='member' AND i.recipient_id=$2 AND i.archived=false
+ AND CASE WHEN i.issue_id IS NULL THEN 'item' ELSE 'issue' END=g.group_kind AND COALESCE(i.issue_id,i.id)=g.group_id;

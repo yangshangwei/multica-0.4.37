@@ -25,6 +25,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/entitlement"
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/featureflags"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/issuestatus"
 	obsmetrics "github.com/multica-ai/multica/server/internal/metrics"
 	"github.com/multica-ai/multica/server/internal/realtime"
@@ -6227,10 +6228,32 @@ func delegatedFailureRecoveryAttribution(target *delegatedFailureRecoveryTarget)
 // by the first and does not report another exhaustion.
 func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, target *delegatedFailureRecoveryTarget) (bool, error) {
 	var exhaustedComment db.Comment
-	var exhaustedInbox db.InboxItem
+	var exhaustedInbox inboxstate.Delivery
 	created := false
-	inboxCreated := false
-	if err := s.runInTx(ctx, func(qtx *db.Queries) error {
+	if s.TxStarter == nil {
+		return false, errors.New("delegated failure exhaustion requires a transaction")
+	}
+	tx, err := s.TxStarter.Begin(ctx)
+	if err != nil {
+		return false, err
+	}
+	defer tx.Rollback(ctx)
+	qtx := s.Queries.WithTx(tx)
+	if err = lockManagedTaskSource(ctx, qtx); err != nil {
+		return false, err
+	}
+	_, recipient := delegatedFailureRecoveryAttribution(target)
+	recipientAvailable := false
+	if recipient.Valid {
+		_, err = inboxstate.Lock(ctx, tx, inboxstate.Group{WorkspaceID: target.issue.WorkspaceID, RecipientType: "member", RecipientID: recipient, Kind: "issue", ID: target.issue.ID})
+		recipientAvailable = err == nil
+		if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			return false, err
+		}
+	} else if _, err = qtx.LockWorkspaceForChatSessionCreate(ctx, target.issue.WorkspaceID); err != nil {
+		return false, err
+	}
+	if err = func() error {
 		if _, err := qtx.AcknowledgeExhaustedDelegatedFailureRecovery(ctx, db.AcknowledgeExhaustedDelegatedFailureRecoveryParams{
 			CommentID:    target.comment.ID,
 			FailedTaskID: target.failed.ID,
@@ -6273,8 +6296,7 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 		// so would enqueue a fourth recovery run and defeat the attempt bound.
 		// Instead, create one durable action-required inbox item for the human
 		// who originated (or is accountable for) the delegated work.
-		_, recipient := delegatedFailureRecoveryAttribution(target)
-		if recipient.Valid {
+		if recipientAvailable {
 			_, err = qtx.GetMemberByUserAndWorkspace(ctx, db.GetMemberByUserAndWorkspaceParams{
 				UserID:      recipient,
 				WorkspaceID: target.issue.WorkspaceID,
@@ -6287,15 +6309,16 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 			}
 
 			details, err := json.Marshal(map[string]any{
-				"failed_task_id":       util.UUIDToString(target.failed.ID),
-				"source_task_id":       util.UUIDToString(target.source.ID),
-				"coordinator_agent_id": util.UUIDToString(target.agent.ID),
-				"max_attempts":         delegatedFailureRecoveryMaxTaskAttempts,
+				"failed_task_id":        util.UUIDToString(target.failed.ID),
+				"exhaustion_comment_id": util.UUIDToString(exhaustedComment.ID),
+				"source_task_id":        util.UUIDToString(target.source.ID),
+				"coordinator_agent_id":  util.UUIDToString(target.agent.ID),
+				"max_attempts":          delegatedFailureRecoveryMaxTaskAttempts,
 			})
 			if err != nil {
 				return fmt.Errorf("encode delegated failure exhaustion details: %w", err)
 			}
-			exhaustedInbox, err = qtx.CreateInboxItem(ctx, db.CreateInboxItemParams{
+			exhaustedInbox, err = inboxstate.DeliverTx(ctx, tx, db.CreateInboxItemParams{
 				ID:            dbid.NewV7(),
 				WorkspaceID:   target.issue.WorkspaceID,
 				RecipientType: "member",
@@ -6312,10 +6335,12 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 			if err != nil {
 				return fmt.Errorf("create delegated failure exhaustion inbox item: %w", err)
 			}
-			inboxCreated = true
 		}
 		return nil
-	}); err != nil {
+	}(); err != nil {
+		return false, err
+	}
+	if err = tx.Commit(ctx); err != nil {
 		return false, err
 	}
 
@@ -6333,32 +6358,7 @@ func (s *TaskService) exhaustDelegatedFailureRecovery(ctx context.Context, targe
 			},
 		})
 	}
-	if inboxCreated && s.Bus != nil {
-		s.Bus.Publish(events.Event{
-			Type:        protocol.EventInboxNew,
-			WorkspaceID: util.UUIDToString(target.issue.WorkspaceID),
-			ActorType:   "system",
-			ActorID:     "",
-			Payload: map[string]any{"item": map[string]any{
-				"id":             util.UUIDToString(exhaustedInbox.ID),
-				"workspace_id":   util.UUIDToString(exhaustedInbox.WorkspaceID),
-				"recipient_type": exhaustedInbox.RecipientType,
-				"recipient_id":   util.UUIDToString(exhaustedInbox.RecipientID),
-				"type":           exhaustedInbox.Type,
-				"severity":       exhaustedInbox.Severity,
-				"issue_id":       util.UUIDToPtr(exhaustedInbox.IssueID),
-				"title":          exhaustedInbox.Title,
-				"body":           util.TextToPtr(exhaustedInbox.Body),
-				"read":           exhaustedInbox.Read,
-				"archived":       exhaustedInbox.Archived,
-				"created_at":     util.TimestampToString(exhaustedInbox.CreatedAt),
-				"actor_type":     util.TextToPtr(exhaustedInbox.ActorType),
-				"actor_id":       util.UUIDToPtr(exhaustedInbox.ActorID),
-				"details":        json.RawMessage(exhaustedInbox.Details),
-				"issue_status":   target.issue.Status,
-			}},
-		})
-	}
+	publishInboxDelivery(s.Bus, exhaustedInbox, "system", "", target.issue.Status)
 	return created, nil
 }
 
@@ -7687,7 +7687,7 @@ func (s *TaskService) notifyQuickCreateCompleted(ctx context.Context, task db.Ag
 		"identifier":      identifier,
 		"original_prompt": qc.Prompt,
 	})
-	item, err := s.Queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
+	delivery, err := inboxstate.Deliver(ctx, s.TxStarter, db.CreateInboxItemParams{
 		ID:            dbid.NewV7(),
 		WorkspaceID:   workspaceID,
 		RecipientType: "member",
@@ -7705,7 +7705,7 @@ func (s *TaskService) notifyQuickCreateCompleted(ctx context.Context, task db.Ag
 		slog.Error("quick-create completion: inbox write failed", "task_id", util.UUIDToString(task.ID), "error", err)
 		return
 	}
-	s.publishQuickCreateInbox(item, qc.WorkspaceID, util.UUIDToString(task.AgentID), issue.Status)
+	publishInboxDelivery(s.Bus, delivery, "agent", util.UUIDToString(task.AgentID), issue.Status)
 }
 
 // Inbox types for the two non-success quick-create outcomes. They are distinct
@@ -7788,7 +7788,7 @@ func (s *TaskService) writeQuickCreateOutcomeInbox(ctx context.Context, task db.
 		"error":             redact.Text(errMsg),
 		"source_context_id": qc.SourceContextID,
 	})
-	item, err := s.Queries.CreateInboxItem(ctx, db.CreateInboxItemParams{
+	delivery, err := inboxstate.Deliver(ctx, s.TxStarter, db.CreateInboxItemParams{
 		ID:            dbid.NewV7(),
 		WorkspaceID:   workspaceID,
 		RecipientType: "member",
@@ -7806,36 +7806,47 @@ func (s *TaskService) writeQuickCreateOutcomeInbox(ctx context.Context, task db.
 		slog.Error("quick-create failure: inbox write failed", "task_id", util.UUIDToString(task.ID), "error", err)
 		return
 	}
-	s.publishQuickCreateInbox(item, qc.WorkspaceID, util.UUIDToString(task.AgentID), "")
+	publishInboxDelivery(s.Bus, delivery, "agent", util.UUIDToString(task.AgentID), "")
 }
 
-// publishQuickCreateInbox emits the WS event so the requester's inbox list
-// updates immediately. Mirrors the payload shape used by the other inbox
-// listeners (notification_listeners.go).
-func (s *TaskService) publishQuickCreateInbox(item db.InboxItem, workspaceID, agentID, issueStatus string) {
-	resp := map[string]any{
-		"id":             util.UUIDToString(item.ID),
-		"workspace_id":   util.UUIDToString(item.WorkspaceID),
-		"recipient_type": item.RecipientType,
-		"recipient_id":   util.UUIDToString(item.RecipientID),
-		"type":           item.Type,
-		"severity":       item.Severity,
-		"issue_id":       util.UUIDToPtr(item.IssueID),
-		"title":          item.Title,
-		"body":           util.TextToPtr(item.Body),
-		"read":           item.Read,
-		"archived":       item.Archived,
-		"created_at":     util.TimestampToString(item.CreatedAt),
-		"actor_type":     util.TextToPtr(item.ActorType),
-		"actor_id":       util.UUIDToPtr(item.ActorID),
-		"details":        json.RawMessage(item.Details),
-		"issue_status":   issueStatus,
+// publishInboxDelivery consumes the already committed transaction result. It
+// never re-reads snooze state or emits a banner for a suppressed/deduped source.
+func publishInboxDelivery(bus *events.Bus, delivery inboxstate.Delivery, actorType, actorID, issueStatus string) {
+	if bus == nil || !delivery.Created {
+		return
 	}
-	s.Bus.Publish(events.Event{
+	if delivery.Suppressed {
+		bus.Publish(events.Event{Type: protocol.EventInboxUpdated, WorkspaceID: util.UUIDToString(delivery.State.WorkspaceID), ActorType: actorType, ActorID: actorID, Payload: inboxstate.Payload(delivery.State)})
+		return
+	}
+	item := delivery.Item
+	resp := map[string]any{
+		"id":              util.UUIDToString(item.ID),
+		"workspace_id":    util.UUIDToString(item.WorkspaceID),
+		"recipient_type":  item.RecipientType,
+		"recipient_id":    util.UUIDToString(item.RecipientID),
+		"type":            item.Type,
+		"severity":        item.Severity,
+		"issue_id":        util.UUIDToPtr(item.IssueID),
+		"title":           item.Title,
+		"body":            util.TextToPtr(item.Body),
+		"read":            item.Read,
+		"archived":        item.Archived,
+		"created_at":      util.TimestampToString(item.CreatedAt),
+		"actor_type":      util.TextToPtr(item.ActorType),
+		"actor_id":        util.UUIDToPtr(item.ActorID),
+		"details":         json.RawMessage(item.Details),
+		"issue_status":    issueStatus,
+		"snooze_revision": delivery.State.Revision,
+		"snoozed_until":   util.TimestampToPtr(delivery.State.SnoozedUntil),
+		"reminded_at":     util.TimestampToPtr(delivery.State.RemindedAt),
+		"reminder_reason": util.TextToPtr(delivery.State.ReminderReason),
+	}
+	bus.Publish(events.Event{
 		Type:        protocol.EventInboxNew,
-		WorkspaceID: workspaceID,
-		ActorType:   "agent",
-		ActorID:     agentID,
+		WorkspaceID: util.UUIDToString(item.WorkspaceID),
+		ActorType:   actorType,
+		ActorID:     actorID,
 		Payload:     map[string]any{"item": resp},
 	})
 }

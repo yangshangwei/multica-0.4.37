@@ -8,29 +8,34 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/logger"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 )
 
 type InboxItemResponse struct {
-	ID            string          `json:"id"`
-	WorkspaceID   string          `json:"workspace_id"`
-	RecipientType string          `json:"recipient_type"`
-	RecipientID   string          `json:"recipient_id"`
-	Type          string          `json:"type"`
-	Severity      string          `json:"severity"`
-	IssueID       *string         `json:"issue_id"`
-	Title         string          `json:"title"`
-	Body          *string         `json:"body"`
-	Read          bool            `json:"read"`
-	Archived      bool            `json:"archived"`
-	CreatedAt     string          `json:"created_at"`
-	IssueStatus   *string         `json:"issue_status"`
-	IssuePriority *string         `json:"issue_priority"`
-	ActorType     *string         `json:"actor_type"`
-	ActorID       *string         `json:"actor_id"`
-	Details       json.RawMessage `json:"details"`
+	ID             string          `json:"id"`
+	WorkspaceID    string          `json:"workspace_id"`
+	RecipientType  string          `json:"recipient_type"`
+	RecipientID    string          `json:"recipient_id"`
+	Type           string          `json:"type"`
+	Severity       string          `json:"severity"`
+	IssueID        *string         `json:"issue_id"`
+	Title          string          `json:"title"`
+	Body           *string         `json:"body"`
+	Read           bool            `json:"read"`
+	Archived       bool            `json:"archived"`
+	CreatedAt      string          `json:"created_at"`
+	IssueStatus    *string         `json:"issue_status"`
+	IssuePriority  *string         `json:"issue_priority"`
+	ActorType      *string         `json:"actor_type"`
+	ActorID        *string         `json:"actor_id"`
+	Details        json.RawMessage `json:"details"`
+	SnoozedUntil   *string         `json:"snoozed_until"`
+	SnoozeRevision int64           `json:"snooze_revision"`
+	RemindedAt     *string         `json:"reminded_at"`
+	ReminderReason *string         `json:"reminder_reason"`
 }
 
 func inboxToResponse(i db.InboxItem) InboxItemResponse {
@@ -111,23 +116,27 @@ func inboxListBody(notifType string, issueID pgtype.UUID, body pgtype.Text) *str
 // through inboxToResponse and keep the full body.
 func inboxRowToResponse(r db.ListInboxItemsRow) InboxItemResponse {
 	return InboxItemResponse{
-		ID:            uuidToString(r.ID),
-		WorkspaceID:   uuidToString(r.WorkspaceID),
-		RecipientType: r.RecipientType,
-		RecipientID:   uuidToString(r.RecipientID),
-		Type:          r.Type,
-		Severity:      r.Severity,
-		IssueID:       uuidToPtr(r.IssueID),
-		Title:         r.Title,
-		Body:          inboxListBody(r.Type, r.IssueID, r.Body),
-		Read:          r.Read,
-		Archived:      r.Archived,
-		CreatedAt:     timestampToString(r.CreatedAt),
-		IssueStatus:   textToPtr(r.IssueStatus),
-		IssuePriority: textToPtr(r.IssuePriority),
-		ActorType:     textToPtr(r.ActorType),
-		ActorID:       uuidToPtr(r.ActorID),
-		Details:       json.RawMessage(r.Details),
+		ID:             uuidToString(r.ID),
+		WorkspaceID:    uuidToString(r.WorkspaceID),
+		RecipientType:  r.RecipientType,
+		RecipientID:    uuidToString(r.RecipientID),
+		Type:           r.Type,
+		Severity:       r.Severity,
+		IssueID:        uuidToPtr(r.IssueID),
+		Title:          r.Title,
+		Body:           inboxListBody(r.Type, r.IssueID, r.Body),
+		Read:           r.EffectiveRead,
+		Archived:       r.Archived,
+		CreatedAt:      timestampToString(r.CreatedAt),
+		IssueStatus:    textToPtr(r.IssueStatus),
+		IssuePriority:  textToPtr(r.IssuePriority),
+		ActorType:      textToPtr(r.ActorType),
+		ActorID:        uuidToPtr(r.ActorID),
+		Details:        json.RawMessage(r.Details),
+		SnoozedUntil:   inboxTimePtr(r.SnoozedUntil),
+		SnoozeRevision: r.SnoozeRevision,
+		RemindedAt:     inboxTimePtr(r.RemindedAt),
+		ReminderReason: inboxReasonPtr(r.ReminderReason),
 	}
 }
 
@@ -140,6 +149,17 @@ func archivedInboxRowToResponse(r db.ListArchivedInboxItemsRow) InboxItemRespons
 }
 
 func (h *Handler) enrichInboxResponse(ctx context.Context, resp InboxItemResponse, issueID pgtype.UUID) InboxItemResponse {
+	group := inboxstate.Group{WorkspaceID: parseUUID(resp.WorkspaceID), RecipientType: resp.RecipientType, RecipientID: parseUUID(resp.RecipientID), Kind: "item", ID: parseUUID(resp.ID)}
+	if issueID.Valid {
+		group.Kind, group.ID = "issue", issueID
+	}
+	state, stateErr := h.Queries.GetInboxSnooze(ctx, db.GetInboxSnoozeParams{WorkspaceID: group.WorkspaceID, RecipientType: group.RecipientType, RecipientID: group.RecipientID, GroupKind: group.Kind, GroupID: group.ID})
+	if stateErr == nil {
+		resp.SnoozedUntil = inboxTimePtr(state.SnoozedUntil)
+		resp.SnoozeRevision = state.Revision
+		resp.RemindedAt = inboxTimePtr(state.RemindedAt)
+		resp.ReminderReason = textToPtr(state.ReminderReason)
+	}
 	if !issueID.Valid {
 		return resp
 	}
@@ -226,7 +246,7 @@ func (h *Handler) MarkInboxRead(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	item, err := h.Queries.MarkInboxRead(r.Context(), prev.ID)
+	item, state, err := h.changeInboxItemState(r.Context(), prev, "read")
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to mark read")
 		return
@@ -237,8 +257,12 @@ func (h *Handler) MarkInboxRead(w http.ResponseWriter, r *http.Request) {
 	h.publish(protocol.EventInboxRead, workspaceID, "member", userID, map[string]any{
 		"item_id":      uuidToString(item.ID),
 		"recipient_id": uuidToString(item.RecipientID),
+		"workspace_id": workspaceID,
 	})
 
+	if state.Revision > 0 {
+		h.publishInboxState(state)
+	}
 	resp := h.enrichInboxResponse(r.Context(), inboxToResponse(item), item.IssueID)
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -255,7 +279,7 @@ func (h *Handler) MarkInboxUnread(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	item, err := h.Queries.MarkInboxUnread(r.Context(), prev.ID)
+	item, state, err := h.changeInboxItemState(r.Context(), prev, "unread")
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to mark unread")
 		return
@@ -266,8 +290,12 @@ func (h *Handler) MarkInboxUnread(w http.ResponseWriter, r *http.Request) {
 	h.publish(protocol.EventInboxUnread, workspaceID, "member", userID, map[string]any{
 		"item_id":      uuidToString(item.ID),
 		"recipient_id": uuidToString(item.RecipientID),
+		"workspace_id": workspaceID,
 	})
 
+	if state.Revision > 0 {
+		h.publishInboxState(state)
+	}
 	resp := h.enrichInboxResponse(r.Context(), inboxToResponse(item), item.IssueID)
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -278,20 +306,10 @@ func (h *Handler) ArchiveInboxItem(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	item, err := h.Queries.ArchiveInboxItem(r.Context(), prev.ID)
+	item, state, err := h.changeInboxItemState(r.Context(), prev, "archive")
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to archive")
 		return
-	}
-
-	// Archive all sibling inbox items for the same issue (issue-level archive)
-	if item.IssueID.Valid {
-		h.Queries.ArchiveInboxByIssue(r.Context(), db.ArchiveInboxByIssueParams{
-			WorkspaceID:   item.WorkspaceID,
-			RecipientType: item.RecipientType,
-			RecipientID:   item.RecipientID,
-			IssueID:       item.IssueID,
-		})
 	}
 
 	userID := requestUserID(r)
@@ -300,8 +318,12 @@ func (h *Handler) ArchiveInboxItem(w http.ResponseWriter, r *http.Request) {
 		"item_id":      uuidToString(item.ID),
 		"issue_id":     uuidToPtr(item.IssueID),
 		"recipient_id": uuidToString(item.RecipientID),
+		"workspace_id": workspaceID,
 	})
 
+	if state.Revision > 0 {
+		h.publishInboxState(state)
+	}
 	resp := h.enrichInboxResponse(r.Context(), inboxToResponse(item), item.IssueID)
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -320,20 +342,10 @@ func (h *Handler) UnarchiveInboxItem(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		return
 	}
-	item, err := h.Queries.UnarchiveInboxItem(r.Context(), prev.ID)
+	item, state, err := h.changeInboxItemState(r.Context(), prev, "unarchive")
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to unarchive")
 		return
-	}
-
-	// Restore all sibling inbox items for the same issue (issue-level restore).
-	if item.IssueID.Valid {
-		h.Queries.UnarchiveInboxByIssue(r.Context(), db.UnarchiveInboxByIssueParams{
-			WorkspaceID:   item.WorkspaceID,
-			RecipientType: item.RecipientType,
-			RecipientID:   item.RecipientID,
-			IssueID:       item.IssueID,
-		})
 	}
 
 	userID := requestUserID(r)
@@ -342,8 +354,12 @@ func (h *Handler) UnarchiveInboxItem(w http.ResponseWriter, r *http.Request) {
 		"item_id":      uuidToString(item.ID),
 		"issue_id":     uuidToPtr(item.IssueID),
 		"recipient_id": uuidToString(item.RecipientID),
+		"workspace_id": workspaceID,
 	})
 
+	if state.Revision > 0 {
+		h.publishInboxState(state)
+	}
 	resp := h.enrichInboxResponse(r.Context(), inboxToResponse(item), item.IssueID)
 	writeJSON(w, http.StatusOK, resp)
 }
@@ -419,9 +435,11 @@ func (h *Handler) MarkAllInboxRead(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	count, err := h.Queries.MarkAllInboxRead(r.Context(), db.MarkAllInboxReadParams{
-		WorkspaceID: wsUUID,
-		RecipientID: parseUUID(userID),
+	count, err := h.runInboxBulk(r.Context(), wsUUID, parseUUID(userID), func(q *db.Queries) (int64, error) {
+		return q.MarkAllInboxRead(r.Context(), db.MarkAllInboxReadParams{
+			WorkspaceID: wsUUID,
+			RecipientID: parseUUID(userID),
+		})
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to mark all inbox read")
@@ -431,6 +449,7 @@ func (h *Handler) MarkAllInboxRead(w http.ResponseWriter, r *http.Request) {
 	slog.Info("inbox: mark all read", append(logger.RequestAttrs(r), "user_id", userID, "count", count)...)
 	h.publish(protocol.EventInboxBatchRead, workspaceID, "member", userID, map[string]any{
 		"recipient_id": userID,
+		"workspace_id": workspaceID,
 		"count":        count,
 	})
 
@@ -448,9 +467,11 @@ func (h *Handler) ArchiveAllInbox(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	count, err := h.Queries.ArchiveAllInbox(r.Context(), db.ArchiveAllInboxParams{
-		WorkspaceID: wsUUID,
-		RecipientID: parseUUID(userID),
+	count, err := h.runInboxBulk(r.Context(), wsUUID, parseUUID(userID), func(q *db.Queries) (int64, error) {
+		return q.ArchiveAllInbox(r.Context(), db.ArchiveAllInboxParams{
+			WorkspaceID: wsUUID,
+			RecipientID: parseUUID(userID),
+		})
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to archive all inbox")
@@ -460,6 +481,7 @@ func (h *Handler) ArchiveAllInbox(w http.ResponseWriter, r *http.Request) {
 	slog.Info("inbox: archive all", append(logger.RequestAttrs(r), "user_id", userID, "count", count)...)
 	h.publish(protocol.EventInboxBatchArchived, workspaceID, "member", userID, map[string]any{
 		"recipient_id": userID,
+		"workspace_id": workspaceID,
 		"count":        count,
 	})
 
@@ -477,9 +499,11 @@ func (h *Handler) ArchiveAllReadInbox(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	count, err := h.Queries.ArchiveAllReadInbox(r.Context(), db.ArchiveAllReadInboxParams{
-		WorkspaceID: wsUUID,
-		RecipientID: parseUUID(userID),
+	count, err := h.runInboxBulk(r.Context(), wsUUID, parseUUID(userID), func(q *db.Queries) (int64, error) {
+		return q.ArchiveAllReadInbox(r.Context(), db.ArchiveAllReadInboxParams{
+			WorkspaceID: wsUUID,
+			RecipientID: parseUUID(userID),
+		})
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to archive all read inbox")
@@ -489,6 +513,7 @@ func (h *Handler) ArchiveAllReadInbox(w http.ResponseWriter, r *http.Request) {
 	slog.Info("inbox: archive all read", append(logger.RequestAttrs(r), "user_id", userID, "count", count)...)
 	h.publish(protocol.EventInboxBatchArchived, workspaceID, "member", userID, map[string]any{
 		"recipient_id": userID,
+		"workspace_id": workspaceID,
 		"count":        count,
 	})
 
@@ -511,10 +536,12 @@ func (h *Handler) ArchiveCompletedInbox(w http.ResponseWriter, r *http.Request) 
 		writeError(w, http.StatusInternalServerError, "failed to resolve status categories")
 		return
 	}
-	count, err := h.Queries.ArchiveCompletedInbox(r.Context(), db.ArchiveCompletedInboxParams{
-		WorkspaceID:        wsUUID,
-		RecipientID:        parseUUID(userID),
-		TerminalStatusKeys: terminalStatusKeys,
+	count, err := h.runInboxBulk(r.Context(), wsUUID, parseUUID(userID), func(q *db.Queries) (int64, error) {
+		return q.ArchiveCompletedInbox(r.Context(), db.ArchiveCompletedInboxParams{
+			WorkspaceID:        wsUUID,
+			RecipientID:        parseUUID(userID),
+			TerminalStatusKeys: terminalStatusKeys,
+		})
 	})
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "failed to archive completed inbox")
@@ -524,6 +551,7 @@ func (h *Handler) ArchiveCompletedInbox(w http.ResponseWriter, r *http.Request) 
 	slog.Info("inbox: archive completed", append(logger.RequestAttrs(r), "user_id", userID, "count", count)...)
 	h.publish(protocol.EventInboxBatchArchived, workspaceID, "member", userID, map[string]any{
 		"recipient_id": userID,
+		"workspace_id": workspaceID,
 		"count":        count,
 	})
 

@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -36,7 +37,7 @@ func EnqueueIterationNotifications(ctx context.Context, q *db.Queries, workspace
 
 // RunIterationNotifications recovers persisted work after restart. It never
 // invokes agents or sends external messages, and never changes lifecycle state.
-func (s *IterationService) RunIterationNotifications(ctx context.Context, onDelivered func(db.InboxItem)) {
+func (s *IterationService) RunIterationNotifications(ctx context.Context, onDelivered func(inboxstate.Delivery)) {
 	ticker := time.NewTicker(5 * time.Second)
 	defer ticker.Stop()
 	nextReminderScan := time.Time{}
@@ -64,7 +65,7 @@ func (s *IterationService) RunIterationNotifications(ctx context.Context, onDeli
 	}
 }
 
-func (s *IterationService) notificationTransaction(ctx context.Context, ws, recipient, iid pgtype.UUID, fn func(*db.Queries, db.Iteration, bool) error) error {
+func (s *IterationService) notificationTransaction(ctx context.Context, ws, recipient, iid pgtype.UUID, fn func(pgx.Tx, *db.Queries, db.Iteration, bool) error) error {
 	tx, err := s.TxStarter.Begin(ctx)
 	if err != nil {
 		return err
@@ -95,13 +96,13 @@ func (s *IterationService) notificationTransaction(ctx context.Context, ws, reci
 	if len(rows) == 1 {
 		row = rows[0]
 	}
-	if err = fn(q, row, valid); err != nil {
+	if err = fn(tx, q, row, valid); err != nil {
 		return err
 	}
 	return tx.Commit(ctx)
 }
 
-func (s *IterationService) DeliverIterationNotifications(ctx context.Context, onDelivered func(db.InboxItem)) error {
+func (s *IterationService) DeliverIterationNotifications(ctx context.Context, onDelivered func(inboxstate.Delivery)) error {
 	tx, err := s.TxStarter.Begin(ctx)
 	if err != nil {
 		return err
@@ -112,9 +113,9 @@ func (s *IterationService) DeliverIterationNotifications(ctx context.Context, on
 		return err
 	}
 	for _, candidate := range candidates {
-		var inbox *db.InboxItem
+		var inbox *inboxstate.Delivery
 		single, cancel := context.WithTimeout(ctx, 5*time.Second)
-		err = s.notificationTransaction(single, candidate.WorkspaceID, candidate.RecipientUserID, candidate.IterationID, func(q *db.Queries, i db.Iteration, valid bool) error {
+		err = s.notificationTransaction(single, candidate.WorkspaceID, candidate.RecipientUserID, candidate.IterationID, func(tx pgx.Tx, q *db.Queries, i db.Iteration, valid bool) error {
 			row, err := q.LockIterationNotification(single, db.LockIterationNotificationParams{WorkspaceID: candidate.WorkspaceID, ID: candidate.ID})
 			if errors.Is(err, pgx.ErrNoRows) {
 				return nil
@@ -154,12 +155,12 @@ func (s *IterationService) DeliverIterationNotifications(ctx context.Context, on
 			if err != nil {
 				return err
 			}
-			item, err := q.CreateIterationInbox(single, db.CreateIterationInboxParams{ID: row.ID, WorkspaceID: row.WorkspaceID, RecipientID: row.RecipientUserID, Title: title, Details: details})
-			if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+			delivery, err := inboxstate.DeliverTx(single, tx, db.CreateInboxItemParams{ID: row.ID, WorkspaceID: row.WorkspaceID, RecipientType: "member", RecipientID: row.RecipientUserID, Type: "iteration", Severity: "info", Title: title, ActorType: pgtype.Text{String: "system", Valid: true}, Details: details})
+			if err != nil {
 				return err
 			}
-			if err == nil {
-				inbox = &item
+			if delivery.Created {
+				inbox = &delivery
 			}
 			return q.CompleteIterationNotification(single, db.CompleteIterationNotificationParams{WorkspaceID: row.WorkspaceID, ID: row.ID, Status: "delivered"})
 		})
@@ -169,7 +170,7 @@ func (s *IterationService) DeliverIterationNotifications(ctx context.Context, on
 		}
 		if err != nil {
 			retryCtx, retryCancel := context.WithTimeout(ctx, 5*time.Second)
-			retryErr := s.notificationTransaction(retryCtx, candidate.WorkspaceID, candidate.RecipientUserID, candidate.IterationID, func(q *db.Queries, _ db.Iteration, valid bool) error {
+			retryErr := s.notificationTransaction(retryCtx, candidate.WorkspaceID, candidate.RecipientUserID, candidate.IterationID, func(_ pgx.Tx, q *db.Queries, _ db.Iteration, valid bool) error {
 				if !valid {
 					return q.DeleteIterationNotificationsForMember(retryCtx, db.DeleteIterationNotificationsForMemberParams{WorkspaceID: candidate.WorkspaceID, UserID: candidate.RecipientUserID})
 				}
@@ -206,7 +207,7 @@ func (s *IterationService) EnqueueIterationOverdueReminders(ctx context.Context,
 		if !recipient.Valid {
 			continue
 		}
-		err = s.notificationTransaction(ctx, candidate.WorkspaceID, recipient, candidate.ID, func(q *db.Queries, i db.Iteration, valid bool) error {
+		err = s.notificationTransaction(ctx, candidate.WorkspaceID, recipient, candidate.ID, func(_ pgx.Tx, q *db.Queries, i db.Iteration, valid bool) error {
 			if !valid || i.Status != "active" || reminderRecipient(i) != recipient {
 				return nil
 			}

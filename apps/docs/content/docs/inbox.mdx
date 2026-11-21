@@ -56,6 +56,18 @@ From the inbox menu you can also:
 - archive notifications for issues in `done` or `cancelled`;
 - open Archived and restore a notification.
 
+## Snooze a notification
+
+On Web and Desktop, use the clock on a notification row, **Snooze...** in its actions menu, or the detail action to choose when to return to it. Quick choices are **In 1 hour**, **In 3 hours**, **Tomorrow**, **In 3 days**, and **In 1 week**. Day choices use 09:00 in your local timezone; each choice shows its actual reminder time. You can also choose a future date and time.
+
+Snooze applies to your whole notification group for that issue. It moves to **Snoozed**, before **Archived** at the bottom of the list, and temporarily leaves the active unread count. Other members' notifications, the issue's status and dates, subscriptions, and agent runs keep their usual behavior. Notifications without an issue are snoozed individually.
+
+Ordinary comments, reactions, and status updates continue to join the snoozed issue group. A new direct @-mention, assignment to you, or agent-run failure can bring it back early when that notification is otherwise eligible for delivery. A group mention such as `@all` alone does not end the snooze.
+
+Open **Snoozed** to view details, change the time, **Remind now**, or archive the group. Viewing details keeps its reminder time. At the reminder time the group returns near the top of the inbox as unread, retaining the original notification and comment context. Archiving cancels its reminder. Server processing and reconnect recovery keep the saved reminder available across devices and restarts.
+
+Successful snooze changes offer **Undo**. If another device has since changed the group, undo refreshes its current state rather than overwriting the newer action. A failed save keeps your input available to retry. The active inbox's **Mark all as read** and bulk archive actions leave future snoozed groups alone.
+
 ## Tune notification types
 
 Open **Settings → Notifications** to toggle each group separately:

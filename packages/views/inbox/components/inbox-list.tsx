@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { Virtuoso, type VirtuosoHandle } from "react-virtuoso";
-import { Archive, ChevronRight, Inbox } from "lucide-react";
+import { Archive, ChevronRight, Clock, Inbox } from "lucide-react";
 import { isEditableShortcutTarget } from "@multica/core/shortcuts";
 import { isImeComposing } from "@multica/core/utils";
 import type { InboxItem } from "@multica/core/types";
@@ -51,9 +51,11 @@ export function InboxList({
   view,
   selectedKey,
   archivedCount,
+  snoozedCount,
   onSelect,
   onAction,
   onOpenArchived,
+  onOpenSnoozed,
   emptyLabel,
   emptyAction,
 }: {
@@ -63,9 +65,11 @@ export function InboxList({
   // Deduplicated archived-issue count. Only read in the main view, to label the
   // entry into the archive; the entry hides at zero.
   archivedCount: number;
+  snoozedCount?: number;
   onSelect: (item: InboxItem) => void;
   onAction: (id: string) => void;
   onOpenArchived: () => void;
+  onOpenSnoozed?: () => void;
   emptyLabel?: string;
   emptyAction?: ReactNode;
 }) {
@@ -93,6 +97,13 @@ export function InboxList({
   );
   const virtuosoRef = useRef<VirtuosoHandle>(null);
   const isArchivedView = view === "archived";
+  const isSnoozedView = view === "snoozed";
+  const isInboxView = view === "inbox";
+  const viewTitle = isArchivedView
+    ? t(($) => $.list.archived_title)
+    : isSnoozedView
+      ? t(($) => $.list.snoozed_title)
+      : t(($) => $.page.title);
 
   // Real row buttons own focus. Park it on the named list only while a virtual
   // destination is absent or the focused row scrolls out of the mounted range.
@@ -169,11 +180,12 @@ export function InboxList({
   // remounts on every parent render and drops hover/focus mid-click.
   const archivedEntry = useMemo(
     () =>
-      !isArchivedView && archivedCount > 0 ? (
+      isInboxView && archivedCount > 0 ? (
         <button
           type="button"
           onClick={onOpenArchived}
-          className="mt-1 flex h-10 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring"
+          aria-label={`${t(($) => $.list.archived_title)} ${archivedCount}`}
+          className="mt-1 flex h-10 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring [@media(pointer:coarse)]:h-11"
         >
           <span className="flex size-7 shrink-0 items-center justify-center">
             <Archive className="size-4" />
@@ -182,32 +194,56 @@ export function InboxList({
             {t(($) => $.list.archived_title)}
           </span>
           <span className="shrink-0 tabular-nums text-muted-foreground">
-            {archivedCount}
+            {" "}{archivedCount}
           </span>
           <ChevronRight className="size-4 shrink-0 text-faint-foreground" />
         </button>
       ) : null,
-    [isArchivedView, archivedCount, onOpenArchived, t],
+    [isInboxView, archivedCount, onOpenArchived, t],
   );
 
-  const Footer = useCallback(() => archivedEntry, [archivedEntry]);
+  const snoozedEntry = useMemo(
+    () => isInboxView && onOpenSnoozed ? (
+      <button
+        type="button"
+        data-inbox-snoozed-entry=""
+        onClick={onOpenSnoozed}
+        aria-label={`${t(($) => $.list.snoozed_title)}${snoozedCount === undefined ? "" : ` ${snoozedCount}`}`}
+        className="mt-1 flex h-10 w-full items-center gap-2 rounded-md px-2 text-left text-caption text-muted-foreground outline-none transition-colors hover:bg-accent/50 hover:text-foreground focus-visible:ring-1 focus-visible:ring-ring [@media(pointer:coarse)]:h-11"
+      >
+        <span className="flex size-7 shrink-0 items-center justify-center">
+          <Clock className="size-4" />
+        </span>
+        <span className="min-w-0 flex-1 truncate font-medium">
+          {t(($) => $.list.snoozed_title)}
+        </span>
+        {snoozedCount !== undefined && (
+          <span className="shrink-0 tabular-nums text-muted-foreground">{" "}{snoozedCount}</span>
+        )}
+        <ChevronRight className="size-4 shrink-0 text-faint-foreground" />
+      </button>
+    ) : null,
+    [isInboxView, onOpenSnoozed, snoozedCount, t],
+  );
+  const Footer = useCallback(() => <>{snoozedEntry}{archivedEntry}</>, [snoozedEntry, archivedEntry]);
+  const EmptyIcon = isSnoozedView ? Clock : Inbox;
 
   if (items.length === 0) {
     return (
       <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="flex flex-col items-center justify-center py-16 text-muted-foreground">
-          <Inbox className="mb-3 h-8 w-8 text-faint-foreground" />
+          <EmptyIcon className="mb-3 h-8 w-8 text-faint-foreground" />
           <p className="text-body">
             {emptyLabel ??
               (isArchivedView
                 ? t(($) => $.list.archived_empty)
-                : t(($) => $.list.empty))}
+                : isSnoozedView ? t(($) => $.list.snoozed_empty) : t(($) => $.list.empty))}
           </p>
           {emptyAction && <div className="mt-3">{emptyAction}</div>}
         </div>
         {/* Still offer the archive when the main list is empty — that is
             exactly when a user goes looking for what they filed away. */}
-        {archivedEntry && <div className="px-2">{archivedEntry}</div>}
+        {(snoozedEntry || archivedEntry) && <div className="px-2">{snoozedEntry}{archivedEntry}</div>}
       </div>
     );
   }
@@ -235,7 +271,7 @@ export function InboxList({
       ref={attachScrollEl}
       data-tab-scroll-root="list"
       role="list"
-      aria-label={isArchivedView ? t(($) => $.list.archived_title) : t(($) => $.page.title)}
+      aria-label={viewTitle}
       // Programmatically focusable only: the rows already carry their own tab
       // stops, so a tabbable container would just add a redundant one.
       tabIndex={-1}
@@ -273,7 +309,7 @@ export function InboxList({
             {/* The seed frame renders a bounded slice, so the entry would be
                 mid-list rather than after the last row — only show it once the
                 seed IS the whole list. */}
-            {items.length <= VIRTUOSO_SEED_COUNT && archivedEntry}
+            {items.length <= VIRTUOSO_SEED_COUNT && <>{snoozedEntry}{archivedEntry}</>}
           </>
         )}
       </div>

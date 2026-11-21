@@ -28,6 +28,47 @@
     "unarchive": "取消归档",
     "open_in_new_tab": "在新标签页打开"
   },
+  "snooze": {
+    "action": "延后",
+    "menu": "延后...",
+    "title": "延后通知",
+    "change_time": "更改时间",
+    "change_time_menu": "更改时间...",
+    "remind_now": "现在提醒",
+    "custom": "选择日期和时间...",
+    "custom_time": "提醒日期和时间",
+    "next_month": "下个月",
+    "previous_month": "上个月",
+    "timezone": "当前时区：{{zone}}",
+    "confirm": "延后",
+    "save_time": "保存时间",
+    "saving": "保存中...",
+    "cancel": "取消",
+    "back": "返回快捷时间",
+    "hint": "到时回到收件箱。被直接 @、任务分配给你或智能体执行失败时，会提前提醒。",
+    "remind_at": "将在 {{time}} 提醒",
+    "reminder": "延后提醒",
+    "presets": {
+      "one_hour": "1 小时后",
+      "three_hours": "3 小时后",
+      "tomorrow": "明天",
+      "three_days": "3 天后",
+      "one_week": "1 周后"
+    },
+    "invalid_time": "请选择有效的未来日期和时间。",
+    "failed": "无法延后这条通知，请重试。",
+    "remind_failed": "无法恢复这条提醒，请重试。",
+    "changed": "另一台设备已修改这条提醒，请刷新状态后重试。",
+    "refresh": "使用最新状态",
+    "refresh_failed": "无法刷新这条提醒，请重试。",
+    "unavailable": "这条通知已不可用。",
+    "undo": "撤销",
+    "undone": "已撤销提醒修改",
+    "undo_failed": "无法撤销这次提醒修改。",
+    "undo_changed": "这条提醒已有后续修改，已保留最新状态。",
+    "saved": "已延后至 {{time}}",
+    "restored": "通知已回到收件箱"
+  },
   "list": {
     "empty": "暂无通知",
     "mark_done_tooltip": "标为已完成",
@@ -40,6 +81,8 @@
     },
     "archived_title": "已归档",
     "archived_empty": "暂无已归档通知",
+    "snoozed_title": "已延后",
+    "snoozed_empty": "暂无已延后通知",
     "unarchive_tooltip": "取消归档",
     "actions_aria": "通知操作"
   },
@@ -47,6 +90,7 @@
     "open_triage": "查看分拣结果",
     "select_prompt": "选择一条通知查看详情",
     "empty": "收件箱为空",
+    "snoozed_empty": "可在收件箱中延后通知。",
     "original_input": "原始输入",
     "retry_with_context": "保留上下文重试",
     "edit_advanced": "在完整表单中编辑",
@@ -113,6 +157,7 @@
     "archive_completed_failed": "归档已完成失败",
     "unarchive_failed": "取消归档失败",
     "archived_load_failed": "无法加载已归档通知",
+    "snoozed_load_failed": "无法加载已延后通知",
     "source_context_retry_autonomy": "重试也会失败：该智能体的自治等级不允许它创建任务。请点击\"在完整表单中编辑\"手动创建任务，并分配给该智能体。"
   }
 }

@@ -120,6 +120,9 @@ var commentContentBigramIndex = usableIndexRequirement{
 // they are still pending: a fresh self-hosted install, which is exactly where an
 // interrupted build would otherwise leave a permanently unusable index.
 var concurrentIndexCleanups = map[string]string{
+	"887_inbox_snooze_identity":                             "idx_inbox_snooze_identity",
+	"888_inbox_snooze_due":                                  "idx_inbox_snooze_due",
+	"889_inbox_critical_source_identity":                    "idx_inbox_critical_source_identity",
 	"845_project_knowledge_automation_policy_id":            "project_knowledge_policy_id_idx",
 	"846_project_knowledge_automation_policy_workspace":     "project_knowledge_policy_workspace_idx",
 	"847_project_knowledge_automation_job_id":               "collaboration_knowledge_job_id_idx",
@@ -630,6 +633,11 @@ var preRollbackHooks = func() map[string]preMigrationHook {
 	for _, version := range sourceContextMigrationVersions {
 		hooks[version] = ensureSourceContextRollbackSafe
 	}
+	// Refuse at the first index step, before dropping live group/source
+	// uniqueness, rather than waiting until the table's down migration.
+	for _, version := range []string{"886_inbox_snooze", "887_inbox_snooze_identity", "888_inbox_snooze_due", "889_inbox_critical_source_identity"} {
+		hooks[version] = ensureInboxSnoozeRollbackSafe
+	}
 	hooks["430_channel_outbound_message_binding_index"] = refuseChannelChatRouteHistoryRollback
 	return hooks
 }()
@@ -709,6 +717,17 @@ func ensureSourceContextRollbackSafe(ctx context.Context, pool *pgxpool.Pool) er
 	}
 	if dataExists {
 		return errors.New("cannot roll back issue source context while captured data or stored objects still exist; remove source-context captures and their stored objects through application cleanup, then retry")
+	}
+	return nil
+}
+
+func ensureInboxSnoozeRollbackSafe(ctx context.Context, pool *pgxpool.Pool) error {
+	var retained bool
+	if err := pool.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM inbox_snooze WHERE snoozed_until IS NOT NULL)`).Scan(&retained); err != nil {
+		return fmt.Errorf("inspect inbox snooze rollback state: %w", err)
+	}
+	if retained {
+		return errors.New("restore retained inbox snoozes before rollback")
 	}
 	return nil
 }

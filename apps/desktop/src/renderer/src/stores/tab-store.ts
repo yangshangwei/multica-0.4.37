@@ -82,8 +82,8 @@ export interface TabSession {
    */
   url: string;
   /**
-   * Dedup identity: the pathname alone. Search/hash (filters, anchors) are
-   * view state and live in `url`/`memento`, NOT in the identity — opening
+   * Dedup identity: the pathname, plus the Inbox sub-view where applicable.
+   * Other search/hash values (filters, anchors) are view state — opening
    * `/slug/issues?filter=a` while `/slug/issues?filter=b` exists focuses
    * the existing tab (RFC §8.2; deliberate semantic change from the old
    * exact-path dedupe).
@@ -327,9 +327,15 @@ export function splitTabUrl(url: string): { pathname: string; suffix: string } {
   return { pathname: url.slice(0, cut), suffix: url.slice(cut) };
 }
 
-/** Dedup identity of a tab URL: its pathname (search/hash are view state). */
+/** Inbox sub-views are distinct resources; other query/hash values are view state. */
 export function resourceKeyForUrl(url: string): string {
-  return splitTabUrl(url).pathname;
+  const { pathname, suffix } = splitTabUrl(url);
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length === 2 && segments[1] === "inbox") {
+    const view = new URLSearchParams(suffix.split("#")[0]).get("view");
+    if (view === "snoozed" || view === "archived") return `${pathname}?view=${view}`;
+  }
+  return pathname;
 }
 
 /**

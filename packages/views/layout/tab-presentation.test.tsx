@@ -11,6 +11,7 @@ import { chatSessionsOptions } from "@multica/core/chat/queries";
 import {
   inboxListOptions,
   archivedInboxListOptions,
+  snoozedInboxListOptions,
 } from "@multica/core/inbox/queries";
 import { agentListOptions, skillDetailOptions } from "@multica/core/workspace/queries";
 import { runtimeListOptions } from "@multica/core/runtimes/queries";
@@ -19,10 +20,12 @@ import enLayout from "../locales/en/layout.json";
 import enChat from "../locales/en/chat.json";
 import enSkills from "../locales/en/skills.json";
 import zhSkills from "../locales/zh-Hans/skills.json";
+import enInbox from "../locales/en/inbox.json";
+import zhInbox from "../locales/zh-Hans/inbox.json";
 
 const TEST_RESOURCES = {
-  en: { layout: enLayout, chat: enChat, skills: enSkills },
-  "zh-Hans": { skills: zhSkills },
+  en: { layout: enLayout, chat: enChat, skills: enSkills, inbox: enInbox },
+  "zh-Hans": { skills: zhSkills, inbox: zhInbox },
 };
 
 // Mutable workspace stub so a test can simulate "workspace not resolved yet".
@@ -60,6 +63,9 @@ function seed(qc: QueryClient) {
     title: "Crash",
     status: "todo",
   } as never);
+  qc.setQueryData(issueDetailOptions("ws1", "i8").queryKey, {
+    id: "i8", identifier: "MUL-8", title: "Deferred cleanup", status: "todo",
+  } as never);
   qc.setQueryData(projectDetailOptions("ws1", "p1").queryKey, {
     id: "p1",
     icon: "🚀",
@@ -77,6 +83,10 @@ function seed(qc: QueryClient) {
   qc.setQueryData(archivedInboxListOptions("ws1").queryKey, [
     { id: "a1", issue_id: "i1", title: "Old assignment", type: "issue_assigned" },
     { id: "a2", issue_id: null, title: "Archived note", type: "quick_create_failed" },
+  ] as never);
+  qc.setQueryData(snoozedInboxListOptions("ws1").queryKey, [
+    { id: "sn1", issue_id: "i8", title: "Later assignment", type: "issue_assigned" },
+    { id: "sn2", issue_id: null, title: "Later reminder", type: "quick_create_failed" },
   ] as never);
   qc.setQueryData(agentListOptions("ws1").queryKey, [
     { id: "ag1", name: "Robby", avatar_url: null },
@@ -227,6 +237,45 @@ describe("useTabPresentation — live from cache", () => {
       visual: { kind: "icon", icon: "Inbox" },
       title: "Archived note",
     });
+  });
+
+  it("snoozed inbox: selected issue resolves only against the snoozed cache", () => {
+    expect(presentationOf("/acme/inbox?issue=i8").title).toBe("Inbox");
+    expect(presentationOf("/acme/inbox?view=archived&issue=i8").title).toBe("Inbox");
+    expect(presentationOf("/acme/inbox?view=snoozed&issue=i8")).toEqual({
+      visual: { kind: "icon", icon: "Inbox" },
+      title: "MUL-8: Deferred cleanup",
+    });
+  });
+
+  it("snoozed inbox: selected notification resolves without additional fetching", () => {
+    expect(presentationOf("/acme/inbox?view=snoozed&issue=sn2")).toEqual({
+      visual: { kind: "icon", icon: "Inbox" }, title: "Later reminder",
+    });
+  });
+
+  it("snoozed inbox: its default title follows the locale without fetching", () => {
+    const qc = makeClient();
+    seed(qc);
+    let locale: SupportedLocale = "en";
+    const wrapper = ({ children }: { children: ReactNode }) => (
+      <I18nProvider locale={locale} resources={TEST_RESOURCES}>
+        <QueryClientProvider client={qc}>{children}</QueryClientProvider>
+      </I18nProvider>
+    );
+    const view = renderHook(() => useTabPresentation("/acme/inbox?view=snoozed"), { wrapper });
+
+    expect(view.result.current.title).toBe("Snoozed");
+    locale = "zh-Hans";
+    view.rerender();
+    expect(view.result.current.title).toBe("已延后");
+    expect(qc.getQueryCache().getAll().every((query) => query.state.fetchStatus === "idle")).toBe(true);
+  });
+
+  it("snoozed inbox: an unresolved selection keeps its view title", () => {
+    expect(presentationOf("/acme/inbox?view=snoozed&issue=unloaded").title).toBe("Snoozed");
+    expect(presentationOf("/acme/inbox").title).toBe("Inbox");
+    expect(presentationOf("/acme/inbox?view=archived").title).toBe("Inbox");
   });
 
   it("attachment: filename from ?name= drives the title and file icon", () => {

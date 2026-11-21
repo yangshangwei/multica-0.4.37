@@ -30,6 +30,47 @@
     "unarchive": "Unarchive",
     "open_in_new_tab": "Open in new tab"
   },
+  "snooze": {
+    "action": "Snooze",
+    "menu": "Snooze...",
+    "title": "Snooze notification",
+    "change_time": "Change time",
+    "change_time_menu": "Change time...",
+    "remind_now": "Remind now",
+    "custom": "Choose date and time...",
+    "custom_time": "Reminder date and time",
+    "next_month": "Next month",
+    "previous_month": "Previous month",
+    "timezone": "Current time zone: {{zone}}",
+    "confirm": "Snooze",
+    "save_time": "Save time",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "back": "Back to times",
+    "hint": "Returns to your inbox at this time. A direct mention, assignment to you, or agent failure can remind you sooner.",
+    "remind_at": "Reminds at {{time}}",
+    "reminder": "Snoozed reminder",
+    "presets": {
+      "one_hour": "In 1 hour",
+      "three_hours": "In 3 hours",
+      "tomorrow": "Tomorrow",
+      "three_days": "In 3 days",
+      "one_week": "In 1 week"
+    },
+    "invalid_time": "Choose a valid future date and time.",
+    "failed": "Could not snooze this notification. Try again.",
+    "remind_failed": "Could not restore this reminder. Try again.",
+    "changed": "This reminder changed on another device. Refresh its state and try again.",
+    "refresh": "Use latest state",
+    "refresh_failed": "Could not refresh this reminder. Try again.",
+    "unavailable": "This notification is no longer available.",
+    "undo": "Undo",
+    "undone": "Reminder change undone",
+    "undo_failed": "Could not undo this reminder change.",
+    "undo_changed": "This reminder changed after your action. Its latest state was kept.",
+    "saved": "Snoozed until {{time}}",
+    "restored": "Notification returned to your inbox"
+  },
   "list": {
     "empty": "No notifications",
     "mark_done_tooltip": "Mark as done",
@@ -42,6 +83,8 @@
     },
     "archived_title": "Archived",
     "archived_empty": "No archived notifications",
+    "snoozed_title": "Snoozed",
+    "snoozed_empty": "No snoozed notifications",
     "unarchive_tooltip": "Unarchive",
     "actions_aria": "Notification actions"
   },
@@ -49,6 +92,7 @@
     "open_triage": "Open in triage",
     "select_prompt": "Select a notification to view details",
     "empty": "Your inbox is empty",
+    "snoozed_empty": "You can snooze notifications from your inbox.",
     "original_input": "Original input",
     "retry_with_context": "Retry with context",
     "edit_advanced": "Edit as advanced form",
@@ -115,6 +159,7 @@
     "archive_completed_failed": "Failed to archive completed",
     "unarchive_failed": "Failed to unarchive",
     "archived_load_failed": "Failed to load archived notifications",
+    "snoozed_load_failed": "Could not load snoozed notifications",
     "source_context_retry_autonomy": "Retrying will not help: this agent's autonomy level does not allow it to create issues. Use \"Edit as advanced form\" to create the issue yourself and assign it to the agent."
   }
 }

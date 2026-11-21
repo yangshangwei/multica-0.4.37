@@ -605,7 +605,7 @@ func main() {
 	// so subscribers must be written first within the same synchronous event dispatch.
 	registerSubscriberListeners(bus, pool)
 	registerActivityListeners(bus, queries)
-	registerNotificationListeners(bus, queries)
+	registerNotificationListeners(bus, queries, pool)
 
 	metricsConfig := obsmetrics.ConfigFromEnv()
 	var metricsServer *http.Server
@@ -682,6 +682,7 @@ func main() {
 	// Start background workers.
 	sweepCtx, sweepCancel := context.WithCancel(context.Background())
 	go h.RunTriageNotifications(sweepCtx)
+	go h.RunInboxSnoozes(sweepCtx)
 	go h.RunProjectUpdateNotifications(sweepCtx)
 	iterationNotifications := &service.IterationService{
 		TxStarter: pool,
@@ -776,7 +777,7 @@ func main() {
 	// instead of a slot in the runtime sweep tick.
 	go runSourceContextSweeper(sweepCtx, taskSvc)
 	go heartbeatScheduler.Run(sweepCtx)
-	go runAutopilotFailureMonitor(autopilotCtx, queries, bus, envFailureMonitorConfig())
+	go runAutopilotFailureMonitor(autopilotCtx, queries, pool, bus, envFailureMonitorConfig())
 	if autopilotSvc.QuotaEnabled() {
 		go runAutopilotQuotaReconciler(autopilotCtx, autopilotSvc)
 	}

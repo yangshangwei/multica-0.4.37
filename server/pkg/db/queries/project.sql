@@ -127,8 +127,14 @@ WHERE project_id=$1 AND workspace_id=$2;
 DELETE FROM project_resource WHERE project_id=$1 AND workspace_id=$2;
 
 -- name: DeleteProjectProgressInbox :exec
-DELETE FROM inbox_item i WHERE i.workspace_id=$2
-AND i.id IN (SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2);
+WITH target AS (
+ SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2
+),cleared_snoozes AS (
+ DELETE FROM inbox_snooze s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+),cleared_sources AS (
+ DELETE FROM inbox_critical_source s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+)
+DELETE FROM inbox_item i WHERE i.workspace_id=$2 AND i.id IN (SELECT target.id FROM target);
 
 -- name: DeleteProjectProgress :exec
 WITH notifications AS (DELETE FROM project_update_notification WHERE project_update_notification.project_id=$1 AND project_update_notification.workspace_id=$2),

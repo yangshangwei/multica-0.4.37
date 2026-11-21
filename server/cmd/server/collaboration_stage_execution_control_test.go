@@ -327,7 +327,7 @@ func stageExecutionRouter(t *testing.T, background bool) (*httptest.Server, *han
 	registerListeners(bus, hub)
 	registerSubscriberListeners(bus, testPool)
 	registerActivityListeners(bus, queries)
-	registerNotificationListeners(bus, queries)
+	registerNotificationListeners(bus, queries, testPool)
 	router, h := NewRouterWithOptions(testPool, hub, bus, analytics.NoopClient{}, nil, RouterOptions{})
 	source, err := newStageControlledSource(testPool)
 	if err != nil {

@@ -1,0 +1,41 @@
+[
+  {
+    "package": "./cmd/server",
+    "identical_normal_race_names": true,
+    "names_per_mode": 108
+  },
+  {
+    "package": "./internal/handler",
+    "identical_normal_race_names": true,
+    "names_per_mode": 49
+  },
+  {
+    "package": "./internal/service",
+    "identical_normal_race_names": true,
+    "names_per_mode": 18
+  },
+  {
+    "package": "./cmd/migrate",
+    "mode": "normal",
+    "names": [
+      "TestInboxSnoozeRollbackGuardsEveryIndexStep",
+      "TestInboxSnoozeRollbackRefusesPendingPlans",
+      "TestEveryConcurrentDownBuildHasCleanup",
+      "TestEveryConcurrentUpBuildHasCleanup"
+    ],
+    "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/backend-migrate-final-normal.stdout.jsonl",
+    "sha256": "108237c33ec67e904fc93d4f668165a8ef9c9db1316462a3bf5e8269d40fbf94"
+  },
+  {
+    "package": "./cmd/migrate",
+    "mode": "race",
+    "names": [
+      "TestInboxSnoozeRollbackGuardsEveryIndexStep",
+      "TestInboxSnoozeRollbackRefusesPendingPlans",
+      "TestEveryConcurrentDownBuildHasCleanup",
+      "TestEveryConcurrentUpBuildHasCleanup"
+    ],
+    "stdout": "/private/tmp/multica-inbox-snooze-n9cwnxds/logs/backend-migrate-final-race.stdout.jsonl",
+    "sha256": "2197e21247ac0ada450779c7c4304f35d6b58a982a44958e20c6602d5f76f36e"
+  }
+]

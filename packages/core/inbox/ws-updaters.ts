@@ -10,10 +10,8 @@ export function onInboxNew(
   // Use invalidateQueries instead of setQueryData — triggers a refetch that
   // reliably notifies all observers. The inbox list is small so this is cheap.
   //
-  // Both lists: a new notification on an ARCHIVED issue puts that issue back in
-  // the main inbox, which means it must also leave the archived list. The
-  // server owns that split (ListArchivedInboxItems excludes issues with an
-  // active row), so refetching both is what keeps them mutually exclusive.
+  // Delivery can revive an archived group or end a snooze. The server owns
+  // that split, so all three views refresh together to remain exclusive.
   qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) });
 }
 
@@ -47,6 +45,7 @@ export function patchInboxIssueProjection(
   qc.setQueryData<InboxItem[]>(inboxKeys.list(wsId), project);
   // Archived rows expose the same issue fields and filter controls.
   qc.setQueryData<InboxItem[]>(inboxKeys.archived(wsId), project);
+  qc.setQueryData<InboxItem[]>(inboxKeys.snoozed(wsId), project);
 }
 
 export function patchInboxIssueStatus(
@@ -67,10 +66,8 @@ export function onInboxIssueStatusChanged(
   patchInboxIssueStatus(qc, wsId, issueId, status);
 }
 
-// Mirrors the DB-level ON DELETE CASCADE on inbox_item.issue_id: when an issue
-// is deleted, all inbox items that referenced it are gone server-side, so drop
-// them from the cache too — from the archived list as well, which holds rows
-// for the same issues.
+// Issue deletion removes its notifications server-side. Drop the same rows
+// from every cached view, including postponed groups that can no longer open.
 export function onInboxIssueDeleted(
   qc: QueryClient,
   wsId: string,
@@ -80,12 +77,10 @@ export function onInboxIssueDeleted(
     old?.filter((i) => i.issue_id !== issueId);
   qc.setQueryData<InboxItem[]>(inboxKeys.list(wsId), drop);
   qc.setQueryData<InboxItem[]>(inboxKeys.archived(wsId), drop);
+  qc.setQueryData<InboxItem[]>(inboxKeys.snoozed(wsId), drop);
 }
 
-// Refresh both the main and archived lists. Every inbox event can move an item
-// across that boundary (archive, unarchive, or a new notification reviving an
-// archived issue), and the split is decided server-side, so the two are always
-// invalidated together.
+// Each state event can move a group across the three server-owned views.
 export function onInboxInvalidate(qc: QueryClient, wsId: string) {
   qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) });
 }
@@ -97,4 +92,22 @@ export function onInboxInvalidate(qc: QueryClient, wsId: string) {
 // scoped list invalidation cannot reach.
 export function onInboxSummaryInvalidate(qc: QueryClient) {
   qc.invalidateQueries({ queryKey: inboxKeys.unreadSummary() });
+}
+
+export function inboxEventWorkspaceId(payload: unknown): string | undefined {
+  if (
+    payload !== null && typeof payload === "object" &&
+    "workspace_id" in payload && typeof payload.workspace_id === "string" &&
+    payload.workspace_id.length > 0
+  ) return payload.workspace_id;
+  return undefined;
+}
+
+export function onInboxUpdated(qc: QueryClient, payload: unknown) {
+  const sourceWsId = inboxEventWorkspaceId(payload);
+  if (sourceWsId) onInboxInvalidate(qc, sourceWsId);
+  // Older personal events omit their workspace; recover every cached Inbox
+  // instead of guessing from whichever route this device currently displays.
+  else qc.invalidateQueries({ queryKey: ["inbox"] });
+  onInboxSummaryInvalidate(qc);
 }

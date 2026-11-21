@@ -165,8 +165,14 @@ func (q *Queries) DeleteProjectProgress(ctx context.Context, arg DeleteProjectPr
 }
 
 const deleteProjectProgressInbox = `-- name: DeleteProjectProgressInbox :exec
-DELETE FROM inbox_item i WHERE i.workspace_id=$2
-AND i.id IN (SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2)
+WITH target AS (
+ SELECT n.id FROM project_update_notification n WHERE n.project_id=$1 AND n.workspace_id=$2
+),cleared_snoozes AS (
+ DELETE FROM inbox_snooze s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+),cleared_sources AS (
+ DELETE FROM inbox_critical_source s WHERE s.workspace_id=$2 AND s.group_kind='item' AND s.group_id IN (SELECT target.id FROM target)
+)
+DELETE FROM inbox_item i WHERE i.workspace_id=$2 AND i.id IN (SELECT target.id FROM target)
 `
 
 type DeleteProjectProgressInboxParams struct {

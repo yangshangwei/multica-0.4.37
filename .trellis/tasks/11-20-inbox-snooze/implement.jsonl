@@ -1,0 +1,12 @@
+{"file":".trellis/spec/server/index.md","reason":"Backend module conventions and notification/state ownership"}
+{"file":".trellis/spec/server/database-test-isolation.md","reason":"Owned PostgreSQL test databases, exact execution environment and cleanup evidence"}
+{"file":".trellis/spec/server/ordinary-notification-replay.md","reason":"Preserve stable comment delivery identity and avoid replay-based wake-up"}
+{"file":".trellis/spec/core/frontend/index.md","reason":"Shared headless logic and API/Query module boundaries"}
+{"file":".trellis/spec/core/frontend/type-safety.md","reason":"Runtime schema parsing, optional API projection fields and strict essential identity"}
+{"file":".trellis/spec/views/frontend/component-guidelines.md","reason":"Shared UI component patterns and accessible interaction boundaries"}
+{"file":".trellis/spec/views/frontend/quality-guidelines.md","reason":"Native Inbox button selectors and correct test mocks"}
+{"file":".trellis/spec/views/frontend/core-ui-state-contracts.md","reason":"Picker, portal, focus and state-recovery interaction contracts"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"Storage/API/Query/Views/realtime data contract review"}
+{"file":".trellis/tasks/11-20-inbox-snooze/research/inbox-evidence.md","reason":"Approved design, actual group/read semantics, producer coverage and routing gaps"}
+{"file":".trellis/tasks/11-20-inbox-snooze/research/implementation-contract.md","reason":"Frozen backend/Core/Views interfaces, explicit ownership and verification permits"}
+{"file":".trellis/spec/server/inbox-snooze.md","reason":"Current executable cross-layer snooze, source/fence, recovery and interaction contracts"}

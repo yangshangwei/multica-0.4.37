@@ -17,6 +17,7 @@ import (
 
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/handler"
+	"github.com/multica-ai/multica/server/internal/inboxstate"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
@@ -58,6 +59,8 @@ func (f *commentReplayFixture) issue(t *testing.T, title string, over ...testuti
 	// Generated notifications belong to this test's exact source issue. Register
 	// their cleanup after the issue and before any comments/subscribers.
 	f.fx.Cleanup(t, `DELETE FROM inbox_item WHERE workspace_id=$1 AND issue_id=$2`, f.fx.WorkspaceID, id)
+	f.fx.Cleanup(t, `DELETE FROM inbox_snooze WHERE workspace_id=$1 AND group_kind='issue' AND group_id=$2`, f.fx.WorkspaceID, id)
+	f.fx.Cleanup(t, `DELETE FROM inbox_critical_source WHERE workspace_id=$1 AND group_kind='issue' AND group_id=$2`, f.fx.WorkspaceID, id)
 	return id
 }
 
@@ -144,8 +147,12 @@ type commentReplayCollector struct {
 }
 
 func (c *commentReplayCollector) bus(queries *db.Queries) *events.Bus {
+	return c.busWithStarter(queries, testPool)
+}
+
+func (c *commentReplayCollector) busWithStarter(queries *db.Queries, starter inboxstate.TxStarter) *events.Bus {
 	bus := events.New()
-	registerNotificationListeners(bus, queries)
+	registerNotificationListeners(bus, queries, starter)
 	bus.Subscribe(protocol.EventInboxNew, func(e events.Event) {
 		c.mu.Lock()
 		defer c.mu.Unlock()
@@ -269,30 +276,53 @@ func TestNotificationCommentReplaySequential(t *testing.T) {
 	}
 }
 
-// Pause only the first two real inbox inserts, without replacing their SQL or
-// results. Both publishers reach the database write boundary before release.
+// Pause the first two opened transactions before the shared group fence. Both
+// publishers compete for it, then their actual canonical insert attempts and
+// returned rows are forwarded and counted without replacing SQL or results.
 type commentReplayInsertGate struct {
 	db.DBTX
+	starter  inboxstate.TxStarter
 	mu       sync.Mutex
 	arrivals int
+	inserts  int
 	ready    chan struct{}
 	release  chan struct{}
 	once     sync.Once
 }
 
-func (g *commentReplayInsertGate) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
-	block := false
-	if strings.Contains(sql, "INSERT INTO inbox_item") {
-		g.mu.Lock()
-		g.arrivals++
-		block = g.arrivals <= 2
-		g.mu.Unlock()
+func (g *commentReplayInsertGate) Begin(ctx context.Context) (pgx.Tx, error) {
+	tx, err := g.starter.Begin(ctx)
+	if err != nil {
+		return nil, err
 	}
+	g.mu.Lock()
+	g.arrivals++
+	block := g.arrivals <= 2
+	g.mu.Unlock()
 	if block {
 		g.ready <- struct{}{}
-		<-g.release
+		select {
+		case <-g.release:
+		case <-ctx.Done():
+			_ = tx.Rollback(ctx)
+			return nil, ctx.Err()
+		}
 	}
-	return g.DBTX.QueryRow(ctx, sql, args...)
+	return commentReplayForwardTx{Tx: tx, gate: g}, nil
+}
+
+type commentReplayForwardTx struct {
+	pgx.Tx
+	gate *commentReplayInsertGate
+}
+
+func (tx commentReplayForwardTx) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
+	if strings.Contains(sql, "INSERT INTO inbox_item") {
+		tx.gate.mu.Lock()
+		tx.gate.inserts++
+		tx.gate.mu.Unlock()
+	}
+	return tx.Tx.QueryRow(ctx, sql, args...)
 }
 
 func (g *commentReplayInsertGate) open() {
@@ -346,12 +376,12 @@ func TestNotificationCommentReplayConcurrent(t *testing.T) {
 			}
 			comment := f.fx.Comment(t, issue, "Immutable concurrent event")
 			event := f.event(t, comment)
-			gate := &commentReplayInsertGate{DBTX: testPool, ready: make(chan struct{}, 2), release: make(chan struct{})}
+			gate := &commentReplayInsertGate{DBTX: testPool, starter: testPool, ready: make(chan struct{}, 2), release: make(chan struct{})}
 			collector := &commentReplayCollector{}
-			first := collector.bus(db.New(gate))
+			first := collector.busWithStarter(db.New(gate), gate)
 			second := first
 			if name == "independent_buses" {
-				second = collector.bus(db.New(gate))
+				second = collector.busWithStarter(db.New(gate), gate)
 			}
 			observed := &commentReplayErrors{}
 			previous := slog.Default()
@@ -389,11 +419,17 @@ func TestNotificationCommentReplayConcurrent(t *testing.T) {
 				case <-timer.C:
 					gate.open()
 					publishers.Wait()
-					t.Fatalf("only %d publishers reached the real inbox insert boundary", arrived)
+					t.Fatalf("only %d publishers opened a transaction before the shared group fence", arrived)
 				}
 			}
 			gate.open()
 			publishers.Wait()
+			gate.mu.Lock()
+			insertAttempts := gate.inserts
+			gate.mu.Unlock()
+			if insertAttempts != 4 {
+				t.Errorf("two publishers/two recipients reached %d canonical insert attempts, want 4", insertAttempts)
+			}
 			observed.mu.Lock()
 			loggedErrors := append([]string(nil), observed.messages...)
 			observed.mu.Unlock()

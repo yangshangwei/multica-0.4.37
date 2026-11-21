@@ -9,6 +9,7 @@ import (
 	"github.com/multica-ai/multica/server/internal/events"
 	"github.com/multica-ai/multica/server/internal/featureflags"
 	"github.com/multica-ai/multica/server/internal/testutil"
+	db "github.com/multica-ai/multica/server/pkg/db/generated"
 	"github.com/multica-ai/multica/server/pkg/protocol"
 	"net/http"
 	"os"
@@ -39,6 +40,15 @@ func progressProject(t *testing.T) string {
 	for _, table := range []string{"project_update", "project_update_revision", "project_update_request", "project_update_notification"} {
 		dbfx.Cleanup(t, "DELETE FROM "+table+" WHERE project_id=$1", id)
 	}
+	t.Cleanup(func() {
+		// This query removes both group-state tables while the original
+		// notification source IDs still exist, then removes their inbox rows.
+		if err := testHandler.Queries.DeleteProjectProgressInbox(context.Background(), db.DeleteProjectProgressInboxParams{
+			ProjectID: parseUUID(id), WorkspaceID: parseUUID(testWorkspaceID),
+		}); err != nil {
+			t.Errorf("clean up project progress inbox groups: %v", err)
+		}
+	})
 	return id
 }
 func progressDraft(body string) map[string]any {

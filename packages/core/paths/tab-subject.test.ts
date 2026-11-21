@@ -91,6 +91,13 @@ describe("parseTabSubject", () => {
       id: "bug-1",
     });
   });
+
+  it("gives snoozed Inbox a distinct identity while retaining active/archive keys", () => {
+    const snoozed = parseTabSubject("/acme/inbox?view=snoozed&issue=MUL-9");
+    expect(tabSubjectKey(snoozed)).toBe("inbox:snoozed:MUL-9");
+    expect(tabSubjectKey(parseTabSubject("/acme/inbox?issue=MUL-9"))).toBe("inbox:inbox:MUL-9");
+    expect(tabSubjectKey(parseTabSubject("/acme/inbox?view=archived&issue=MUL-9"))).toBe("inbox:archived:MUL-9");
+  });
 });
 
 describe("tabSubjectKey", () => {

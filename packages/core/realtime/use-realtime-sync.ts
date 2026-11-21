@@ -51,8 +51,8 @@ import {
   invalidateLastActivitySortedIssueLists,
   invalidateUpdatedAtSortedIssueLists,
 } from "../issues/cache-coordinator";
-import { onInboxNew, onInboxInvalidate, onInboxIssueStatusChanged, onInboxIssueDeleted, onInboxSummaryInvalidate } from "../inbox/ws-updaters";
-import { inboxKeys } from "../inbox/queries";
+import { onInboxNew, onInboxUpdated, inboxEventWorkspaceId, onInboxIssueStatusChanged, onInboxIssueDeleted, onInboxSummaryInvalidate } from "../inbox/ws-updaters";
+import { isInboxItemSnoozed } from "../inbox/queries";
 import {
   notificationPreferenceOptions,
   notificationPreferenceKeys,
@@ -600,6 +600,7 @@ export async function handleInboxNew(
   // A new item in ANY workspace can light the workspace-switcher dot, so
   // refresh the cross-workspace summary regardless of the active workspace.
   onInboxSummaryInvalidate(qc);
+  if (isInboxItemSnoozed(item)) return;
   // Fire a native OS notification only when the app isn't focused. When
   // the user is already looking at Multica, the inbox sidebar's unread
   // styling is enough — no need to interrupt with a banner. `desktopAPI`
@@ -677,7 +678,6 @@ function invalidateWorkspaceScopedQueries(qc: QueryClient): void {
     qc.invalidateQueries({ queryKey: ["iterations", wsId] });
     qc.invalidateQueries({ queryKey: triageKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: issueKeys.all(wsId) });
-    qc.invalidateQueries({ queryKey: inboxKeys.all(wsId) });
     qc.invalidateQueries({ queryKey: workspaceKeys.agents(wsId) });
     qc.invalidateQueries({ queryKey: workspaceKeys.members(wsId) });
     qc.invalidateQueries({ queryKey: workspaceKeys.squads(wsId) });
@@ -700,6 +700,7 @@ function invalidateWorkspaceScopedQueries(qc: QueryClient): void {
   }
   // Cross-workspace, so outside the wsId guard: a reconnect may have missed
   // inbox events from any workspace, so re-pull the switcher-dot summary.
+  qc.invalidateQueries({ queryKey: ["inbox"] });
   onInboxSummaryInvalidate(qc);
   // Per-issue caches are keyed without wsId, so the issueKeys.all(wsId)
   // prefix above does not reach them. They rely entirely on WS events for
@@ -784,17 +785,6 @@ export function useRealtimeSync(
     if (!ws) return;
 
     const refreshMap: Record<string, () => void> = {
-      inbox: () => {
-        const wsId = getCurrentWsId();
-        if (wsId) onInboxInvalidate(qc, wsId);
-        // inbox:read / inbox:archived / inbox:unarchived / batch events arrive
-        // here. They can originate from a workspace other than the active one
-        // (personal events fan out to all the user's connections), so always
-        // refresh the cross-workspace summary — its dot must clear when another
-        // workspace's items are read/archived, and light again when an unread
-        // item is restored from the archive.
-        onInboxSummaryInvalidate(qc);
-      },
       agent: () => {
         const wsId = getCurrentWsId();
         if (wsId) {
@@ -1019,6 +1009,13 @@ export function useRealtimeSync(
     ]);
 
     const unsubAny = ws.onAny((msg) => {
+      if (msg.type.startsWith("inbox:") && msg.type !== "inbox:new") {
+        const sourceWsId = inboxEventWorkspaceId(msg.payload);
+        // A shared prefix timer would discard workspace A when B arrives in
+        // the same window. Each personal source keeps its own invalidation.
+        debouncedRefresh(`inbox:${sourceWsId ?? "all"}`, () => onInboxUpdated(qc, msg.payload));
+        return;
+      }
       if (msg.type === "collaboration:workbench_changed") {
         const workspaceId = getCurrentWsId();
         if (workspaceId && isCollaborationInvalidation(msg.payload)) {

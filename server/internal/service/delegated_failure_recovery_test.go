@@ -32,6 +32,13 @@ func seedDelegatedFailureFixture(t *testing.T) (*delegatedFailureFixture, *TaskS
 	pool := newResolveOriginatorPool(t)
 	ctx := context.Background()
 	workspaceID, userID, coordinatorID, issueID := seedAttributionFixture(t, pool)
+	t.Cleanup(func() {
+		for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+			if _, err := pool.Exec(context.Background(), "DELETE FROM "+table+" WHERE workspace_id=$1", workspaceID); err != nil {
+				t.Errorf("clean up delegated failure fixture %s: %v", table, err)
+			}
+		}
+	})
 	if _, err := pool.Exec(ctx, `UPDATE issue SET status = 'in_progress' WHERE id = $1`, issueID); err != nil {
 		t.Fatalf("activate source issue: %v", err)
 	}

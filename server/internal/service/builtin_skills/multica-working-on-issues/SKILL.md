@@ -67,6 +67,8 @@ triage does not erase review history or request identities. Deleted intake/actio
 results cannot be recreated by replaying their request IDs; a consumed CSV row
 likewise retains its original result identity.
 
+Personal Inbox snooze postpones the member's reminder group while updates remain recorded; eligible direct mentions, assignments or execution failures can remind them sooner. It does not admit an issue, change status or pause execution.
+
 ## Iteration fields require a confirmed operation
 
 Ordinary issue update and batch-update, including the public Plugin PATCH,

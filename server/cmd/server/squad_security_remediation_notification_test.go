@@ -33,7 +33,7 @@ func securityRemediationNotificationRouter(t *testing.T) (http.HandlerFunc, *db.
 	// notification listener reads the subscriber table to pick recipients.
 	registerSubscriberListeners(bus, testPool)
 	registerActivityListeners(bus, queries)
-	registerNotificationListeners(bus, queries)
+	registerNotificationListeners(bus, queries, testPool)
 	router, _ := NewRouterWithOptions(testPool, hub, bus, analytics.NoopClient{}, nil, RouterOptions{})
 	return router.ServeHTTP, queries
 }

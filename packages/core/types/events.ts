@@ -43,6 +43,7 @@ export type WSEventType =
   | "task:message"
   | "task:cancelled"
   | "inbox:new"
+  | "inbox:updated"
   | "inbox:read"
   | "inbox:unread"
   | "inbox:archived"
@@ -194,6 +195,16 @@ export interface AgentRestoredPayload {
 
 export interface InboxNewPayload {
   item: InboxItem;
+}
+
+export interface InboxUpdatedPayload {
+  workspace_id: string;
+  recipient_type: "member" | "agent";
+  recipient_id: string;
+  group_kind: "issue" | "item";
+  group_id: string;
+  revision: number;
+  reason?: string;
 }
 
 export interface InboxReadPayload {
@@ -594,6 +605,7 @@ export interface WSEventPayloadMap {
   "task:cancelled": TaskCancelledPayload;
   "task:progress": unknown;
   "inbox:new": InboxNewPayload;
+  "inbox:updated": InboxUpdatedPayload;
   "inbox:read": InboxReadPayload;
   "inbox:unread": InboxUnreadPayload;
   "inbox:archived": InboxArchivedPayload;

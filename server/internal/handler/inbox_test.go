@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -59,6 +60,27 @@ func TestListInboxProjectsCurrentIssueStatusAndPriority(t *testing.T) {
 	}
 	if items[0].IssuePriority == nil || *items[0].IssuePriority != "high" {
 		t.Errorf("issue_priority = %v, want high", items[0].IssuePriority)
+	}
+}
+
+func TestUnreadInboxCountUsesNewestGroupProjection(t *testing.T) {
+	workspaceID := dbfx.Workspace(t, "Unread inbox group count", "unread-groups-"+uuid.NewString())
+	dbfx.Member(t, workspaceID, testUserID, "owner")
+	issueID := dbfx.Issue(t, "Already read newest notification", testutil.Cols{"workspace_id": workspaceID})
+	for index, read := range []bool{false, false, true} {
+		dbfx.Insert(t, "inbox_item", testutil.Cols{
+			"workspace_id": workspaceID, "recipient_type": "member", "recipient_id": testUserID,
+			"issue_id": issueID, "type": "new_comment", "severity": "info", "title": "Grouped count",
+			"read": read, "created_at": time.Now().Add(time.Duration(index-3) * time.Minute),
+		})
+	}
+	var count struct {
+		Count int64 `json:"count"`
+	}
+	testutil.Call(t, inboxWorkspaceHandler(testHandler.CountUnreadInbox),
+		inboxRequest(http.MethodGet, "/api/inbox/unread-count", workspaceID)).Want(http.StatusOK).JSON(&count)
+	if count.Count != 0 {
+		t.Fatalf("unread count = %d, want 0 for the rendered read group", count.Count)
 	}
 }
 
@@ -398,6 +420,15 @@ func TestInboxStateChangesReturnFullCommentBody(t *testing.T) {
 				"type": "new_comment", "severity": "info", "issue_id": issueID,
 				"title": "New comment", "body": fullComment,
 				"details": testutil.Raw(fmt.Sprintf(`'{"comment_id":%q}'::jsonb`, commentID)),
+			})
+			t.Cleanup(func() {
+				for _, table := range []string{"inbox_critical_source", "inbox_snooze"} {
+					if _, err := testPool.Exec(context.Background(), "DELETE FROM "+table+`
+						WHERE workspace_id=$1 AND recipient_type='member' AND recipient_id=$2
+						AND group_kind='issue' AND group_id=$3`, workspaceID, testUserID, issueID); err != nil {
+						t.Errorf("clean up full-comment %s: %v", table, err)
+					}
+				}
 			})
 			req := withURLParam(inboxRequest(http.MethodPost, "/api/inbox/"+itemID+"/"+tc.name, workspaceID), "id", itemID)
 			var item InboxItemResponse

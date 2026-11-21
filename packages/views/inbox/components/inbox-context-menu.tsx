@@ -19,7 +19,7 @@ import {
   ContextMenuSeparator,
 } from "@multica/ui/components/ui/context-menu";
 import type { InboxView } from "./inbox-view";
-import { useInboxItemActions, type InboxRowActions } from "./inbox-item-actions";
+import { INBOX_MENU_CONTENT_CLASS, useInboxItemActions, type InboxRowActions } from "./inbox-item-actions";
 
 /**
  * Right-click actions for inbox rows.
@@ -154,7 +154,7 @@ function InboxContextMenuSingleton({
 
   return (
     <ContextMenu open={open} onOpenChange={onOpenChange}>
-      <ContextMenuContent anchor={anchor}>
+      <ContextMenuContent anchor={anchor} className={INBOX_MENU_CONTENT_CLASS}>
         {groups.map((group, index) => (
           <Fragment key={group[0]?.key ?? index}>
             {index > 0 && <ContextMenuSeparator />}
