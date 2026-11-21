@@ -4,8 +4,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
+import { WorkspaceSlugProvider } from "@multica/core/paths";
 import enLayout from "../locales/en/layout.json";
 import zhLayout from "../locales/zh-Hans/layout.json";
+import { NavigationProvider } from "../navigation";
 import { MarketplacePage } from "./marketplace-page";
 
 const state = vi.hoisted(() => ({
@@ -17,10 +19,6 @@ const state = vi.hoisted(() => ({
 }));
 
 vi.mock("@multica/core/hooks", () => ({ useWorkspaceId: () => state.workspaceId }));
-vi.mock("../navigation", async (original) => ({
-  ...await original<typeof import("../navigation")>(),
-  useNavigation: () => state,
-}));
 vi.mock("../mcp", () => ({
   McpMarketPanel: ({ workspaceId, active }: { workspaceId: string; active: boolean }) => (
     <div data-testid="mcp-panel" data-workspace={workspaceId} data-active={active}>
@@ -42,9 +40,14 @@ vi.mock("./squad-templates-market-panel", () => ({
 }));
 
 function Page({ locale = "en" }: { locale?: "en" | "zh-Hans" }) {
+  const slug = state.pathname.split("/")[1]!;
   return (
     <I18nProvider locale={locale} resources={{ en: { layout: enLayout }, "zh-Hans": { layout: zhLayout } }}>
-      <MarketplacePage />
+      <WorkspaceSlugProvider slug={slug}>
+        <NavigationProvider value={{ ...state, replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => path }}>
+          <MarketplacePage />
+        </NavigationProvider>
+      </WorkspaceSlugProvider>
     </I18nProvider>
   );
 }

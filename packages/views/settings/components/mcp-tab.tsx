@@ -16,6 +16,7 @@ import {
 } from "@multica/ui/components/ui/alert-dialog";
 import { Badge } from "@multica/ui/components/ui/badge";
 import { Button } from "@multica/ui/components/ui/button";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useCurrentWorkspace, useWorkspacePaths } from "@multica/core/paths";
 import { cn } from "@multica/ui/lib/utils";
 import { useAuthStore } from "@multica/core/auth";
@@ -70,6 +71,7 @@ function McpWorkspaceLayout({ presentation, action, children }: {
   children: ReactNode;
 }) {
   const { t } = useT("settings");
+  const paths = useWorkspacePaths();
   if (presentation === "settings") {
     return (
       <SettingsTab title={t(($) => $.mcp.title)} description={t(($) => $.mcp.description)}>
@@ -83,6 +85,10 @@ function McpWorkspaceLayout({ presentation, action, children }: {
         icon={Server}
         title={t(($) => $.mcp.title)}
         description={t(($) => $.mcp.description)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.mcp),
+          label: t(($) => $.mcp.learn_more),
+        }}
         actions={action}
       />
       {children}

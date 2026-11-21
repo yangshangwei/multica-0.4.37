@@ -186,7 +186,7 @@ describe("SquadsPage discovery and management", () => {
     renderPage();
 
     expect(screen.getByText("Give work to a squad and let the leader coordinate each role.")).toBeVisible();
-    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute("href", "/acme/docs/squads");
+    expect(screen.getByRole("link", { name: "Learn more →" })).toHaveAttribute("href", "/acme/docs/squads");
   });
 
   it("provides a native squad link and only navigates once for keyboard and pointer activation", async () => {

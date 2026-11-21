@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import {
   projectListOptions,
   useProjectAccessStore,
@@ -960,6 +961,11 @@ export function ProjectsPage() {
         icon={FolderKanban}
         title={t(($) => $.page.title)}
         count={projects.length}
+        description={t(($) => $.page.tagline)}
+        learnMore={{
+          href: wsPaths.docsPage(DOCS_SLUGS.projects),
+          label: t(($) => $.page.learn_more),
+        }}
         actions={
           <CollectionPageHeaderAction
             icon={Plus}

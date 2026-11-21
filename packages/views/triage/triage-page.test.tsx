@@ -37,6 +37,7 @@ vi.mock("@multica/core/paths", () => ({
     triage: () => "/acme/triage",
     settings: () => "/acme/settings",
     issueDetail: (id: string) => `/acme/issues/${id}`,
+    docsPage: (slug: string) => `/acme/docs/${slug}`,
   }),
 }));
 vi.mock("@multica/core/permissions", () => ({
@@ -210,6 +211,18 @@ beforeEach(() => {
   state.historyTotal = 0;
   state.params = new URLSearchParams("issue=a");
   state.replace.mockClear();
+});
+it("describes triage and links to its guide", () => {
+  render(<TriagePage />);
+  expect(
+    screen.getByText(
+      "Collect and review incoming requests and bug reports before they join your task list.",
+    ),
+  ).toBeVisible();
+  expect(screen.getByRole("link", { name: "Learn more →" })).toHaveAttribute(
+    "href",
+    "/acme/docs/triage",
+  );
 });
 it("keeps history available but hides intake controls when disabled", () => {
   state.enabled = false;

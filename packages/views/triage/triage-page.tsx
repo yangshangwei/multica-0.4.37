@@ -48,7 +48,8 @@ import {
   ResizableHandle,
 } from "@multica/ui/components/ui/resizable";
 import { AppLink, useNavigation } from "../navigation";
-import { PageHeader, PAGE_GUTTER } from "../layout/page-header";
+import { CollectionPageHeader } from "../layout/collection-page";
+import { PAGE_GUTTER } from "../layout/page-header";
 import { PriorityIcon } from "../issues/components/priority-icon";
 import { IssueDetail } from "../issues/components/issue-detail";
 import { useT } from "../i18n";
@@ -814,11 +815,15 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
   );
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <PageHeader>
-        <h1 className="min-w-0 flex-1 text-body font-semibold">
-          {t(($) => $.title)}
-        </h1>
-        {enabled && !accessLost && !showWelcome && (
+      <CollectionPageHeader
+        icon={Inbox}
+        title={t(($) => $.title)}
+        description={t(($) => $.tagline)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.triage),
+          label: t(($) => $.learn_more),
+        }}
+        actions={enabled && !accessLost && !showWelcome ? (
           <>
             <Button
               variant="ghost"
@@ -843,8 +848,8 @@ function TriageWorkspacePage({ wsId }: { wsId: string }) {
               <span className="sr-only sm:hidden">{t(($) => $.create)}</span>
             </Button>
           </>
-        )}
-      </PageHeader>
+        ) : undefined}
+      />
       {settings.isPending && !settingsFailed ? (
         <p role="status" className="p-6">
           {t(($) => $.loading)}

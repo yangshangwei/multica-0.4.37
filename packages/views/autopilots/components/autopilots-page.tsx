@@ -671,6 +671,11 @@ export function AutopilotsPage() {
         icon={Zap}
         title={t(($) => $.page.title)}
         count={totalCount}
+        description={t(($) => $.page.tagline)}
+        learnMore={{
+          href: wsPaths.docsPage(DOCS_SLUGS.autopilots),
+          label: t(($) => $.page.learn_more),
+        }}
         actions={
           !showEmpty && <CollectionPageHeaderAction
             icon={Plus}

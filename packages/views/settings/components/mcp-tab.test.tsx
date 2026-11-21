@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { I18nProvider } from "@multica/core/i18n/react";
 import { ApiError } from "@multica/core/api/client";
@@ -10,6 +10,7 @@ import enCommon from "../../locales/en/common.json";
 import enSettings from "../../locales/en/settings.json";
 import enAgents from "../../locales/en/agents.json";
 import enLayout from "../../locales/en/layout.json";
+import { NavigationProvider } from "../../navigation";
 
 const mockCreate = vi.hoisted(() => vi.fn());
 const mockUpdate = vi.hoisted(() => vi.fn());
@@ -76,10 +77,11 @@ vi.mock("@multica/core/workspace/mutations", () => ({
 
 vi.mock("@multica/core/paths", () => ({
   useCurrentWorkspace: () => ({ id: data.wsId, name: "Acme", slug: "acme" }),
-  useWorkspacePaths: () => ({ marketplaceTab: (type: string) => `/acme/marketplace?type=${type}` }),
+  useWorkspacePaths: () => ({
+    docsPage: (slug: string) => `/acme/docs/${slug}`,
+    marketplaceTab: (type: string) => `/acme/marketplace?type=${type}`,
+  }),
 }));
-
-vi.mock("../../navigation", () => ({ useNavigation: () => ({ push: data.push }) }));
 
 vi.mock("@multica/core/auth", () => {
   const state = { user: { id: "user-1" } };
@@ -101,7 +103,17 @@ const TEST_RESOURCES = {
 function Wrapper({ children }: { children: ReactNode }) {
   return (
     <I18nProvider locale="en" resources={TEST_RESOURCES}>
-      {children}
+      <NavigationProvider value={{
+        push: data.push,
+        replace: vi.fn(),
+        back: vi.fn(),
+        pathname: "/acme/mcp",
+        searchParams: new URLSearchParams(),
+        hash: "",
+        getShareableUrl: (path) => path,
+      }}>
+        {children}
+      </NavigationProvider>
     </I18nProvider>
   );
 }
@@ -133,6 +145,10 @@ describe("McpTab", () => {
 
     expect(screen.getAllByRole("heading", { name: "MCP" })).toHaveLength(1);
     const header = screen.getByRole("heading", { level: 1, name: "MCP" }).closest("header")!;
+    const guide = within(header).getByRole("link", { name: "Learn more →" });
+    expect(guide).toHaveAttribute("href", "/acme/docs/mcp");
+    await user.click(guide);
+    expect(data.push).toHaveBeenCalledExactlyOnceWith("/acme/docs/mcp");
     const add = screen.getByRole("button", { name: enSettings.mcp.add_server });
     expect(header).toContainElement(add);
     await user.click(add);

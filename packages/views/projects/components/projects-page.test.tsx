@@ -101,6 +101,7 @@ vi.mock("@multica/core/paths", () => ({
     projectDetail: (id: string) => `/test-workspace/projects/${id}`,
     memberDetail: (id: string) => `/test-workspace/members/${id}`,
     agentDetail: (id: string) => `/test-workspace/agents/${id}`,
+    docsPage: (slug: string) => `/test-workspace/docs/${slug}`,
   }),
 }));
 

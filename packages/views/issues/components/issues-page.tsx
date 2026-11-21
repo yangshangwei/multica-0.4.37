@@ -1,7 +1,9 @@
 "use client";
 
 import { ListTodo } from "lucide-react";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useWorkspacePaths } from "@multica/core/paths";
 import { SourceCollaborationCreation } from "../../collaboration/source-bridge";
 import type {
   Issue,
@@ -11,7 +13,7 @@ import type {
 } from "@multica/core/types";
 import { useIssuesScope } from "@multica/core/issues/stores/issues-scope-store";
 import { useViewStore } from "@multica/core/issues/stores/view-store-context";
-import { PageHeader } from "../../layout/page-header";
+import { CollectionPageHeader } from "../../layout/collection-page";
 import { useT } from "../../i18n";
 import { IssueSurface } from "../surface/issue-surface";
 import { IssuesHeader } from "./issues-header";
@@ -51,15 +53,21 @@ function IssuesSurfaceHeader({
 export function IssuesPage() {
   const { t } = useT("issues");
   const wsId = useWorkspaceId();
+  const paths = useWorkspacePaths();
   const scope = useIssuesScope("issues");
 
   return (
     <div className="flex flex-1 min-h-0 flex-col">
-      <PageHeader>
-        <ListTodo className="h-4 w-4 text-muted-foreground" />
-        <h1 className="text-body font-medium">{t(($) => $.page.breadcrumb_title)}</h1>
-        <div className="ml-auto"><SourceCollaborationCreation workspaceId={wsId} /></div>
-      </PageHeader>
+      <CollectionPageHeader
+        icon={ListTodo}
+        title={t(($) => $.page.breadcrumb_title)}
+        description={t(($) => $.page.tagline)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.issues),
+          label: t(($) => $.page.learn_more),
+        }}
+        actions={<SourceCollaborationCreation workspaceId={wsId} />}
+      />
 
       <IssueSurface
         scope={{ type: "workspace", actorKind: scope }}

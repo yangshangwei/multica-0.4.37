@@ -24,10 +24,15 @@ export const DOCS_SLUGS = {
   cli: "cli",
   daemonRuntimes: "daemon-runtimes",
   installAgentRuntime: "install-agent-runtime",
+  issues: "issues",
+  iterations: "iterations",
+  mcp: "mcp",
+  projects: "projects",
   selfHostQuickstart: "self-host-quickstart",
   skills: "skills",
   squads: "squads",
   triage: "triage",
+  usage: "usage",
 } as const;
 
 /**

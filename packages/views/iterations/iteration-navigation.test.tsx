@@ -48,6 +48,7 @@ vi.mock("@multica/core/paths", () => ({
     root: () => "/acme/issues",
     iterations: () => "/acme/iterations",
     settings: () => "/acme/settings",
+    docsPage: (slug: string) => `/acme/docs/${slug}`,
     iterationDetail: (id: string) => `/acme/iterations/${id}`,
     issueDetail: (id: string) => `/acme/issues/${id}`,
   }),

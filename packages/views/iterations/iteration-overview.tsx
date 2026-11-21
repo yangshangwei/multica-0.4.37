@@ -3,6 +3,7 @@
 import { Fragment, useId, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, CalendarRange, Check, ListFilter, PauseCircle, Play, Plus, Settings2 } from "lucide-react";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { iterationCatalogueOptions, iterationDetailOptions, iterationTimeline, type Iteration } from "@multica/core/iterations";
 import { useWorkspacePaths } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -14,6 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@multica/ui/co
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@multica/ui/components/ui/tabs";
 import { AppLink } from "../navigation";
 import { useT, useLocale } from "../i18n";
+import { CollectionPageHeader, CollectionPageHeaderAction } from "../layout/collection-page";
 import { IterationError, isDefinitiveReadError } from "./iteration-error";
 import { IterationForm } from "./iteration-form";
 import { IterationChartTable, IterationProgressChart } from "./iteration-progress";
@@ -44,19 +46,50 @@ export function IterationOverview({ wsId, enabled, planningTimezone }: { wsId: s
   const filtered = !!(search || from || to || status);
   const hasCurrent = catalogue.data?.some((item) => item.status === "active" && item.mode === "manual");
   const settingsHref = `${paths.settings()}?tab=iterations`;
+  const settingsLabel = t(($) => $.iterations.settings);
   const firstUseWelcome = enabled && activeTab === "open" && !filtered && catalogue.isSuccess && !catalogue.error && catalogue.data?.length === 0;
   const statusItems = [{ value: "", label: t(($) => $.iterations.all) }, ...["planned", "active", "completed", "cancelled"].map((value) => ({ value, label: labels.status(value) }))];
   const openCreateDialog = () => { setCreateVisited(true); setCreateOpen(true); };
   const reset = () => { setSearch(""); setFrom(""); setTo(""); setStatus(""); setVisible(50); };
   return <div className="@container flex h-full min-h-0 flex-col">
-    <header className="flex flex-wrap items-center justify-between gap-3 border-b px-5 py-3 sm:px-7">
-      <h1 className="flex items-center gap-2 text-title-sm font-semibold"><CalendarRange className="size-4 text-muted-foreground" />{t(($) => $.iterations.title)}</h1>
-      <div className="flex flex-wrap items-center gap-2">
-        {!firstUseWelcome && <AppLink href={settingsHref} className="inline-flex min-h-8 items-center gap-1.5 rounded-md px-2 text-caption text-muted-foreground hover:text-foreground pointer-coarse:min-h-11"><Settings2 className="size-3.5" />{t(($) => $.iterations.settings)}</AppLink>}
-        <Button variant="ghost" size="sm" className="pointer-coarse:min-h-11" aria-expanded={filtersOpen} onClick={() => setFiltersOpen(!filtersOpen)}><ListFilter />{t(($) => $.iterations.pages.filters)}</Button>
-        {enabled && !firstUseWelcome && <Button size="sm" className="pointer-coarse:min-h-11" onClick={openCreateDialog}><Plus />{t(($) => $.iterations.create)}</Button>}
-      </div>
-    </header>
+    <CollectionPageHeader
+      icon={CalendarRange}
+      title={t(($) => $.iterations.title)}
+      description={t(($) => $.iterations.tagline)}
+      learnMore={{
+        href: paths.docsPage(DOCS_SLUGS.iterations),
+        label: t(($) => $.page.learn_more),
+      }}
+      actions={
+        <>
+          {!firstUseWelcome && (
+            <AppLink
+              href={settingsHref}
+              aria-label={settingsLabel}
+              className="inline-flex h-8 w-8 shrink-0 items-center justify-center gap-1.5 rounded-md text-caption text-muted-foreground hover:text-foreground max-md:min-h-11 max-md:min-w-11 lg:w-auto lg:px-2 pointer-coarse:min-h-11 pointer-coarse:min-w-11"
+            >
+              <Settings2 aria-hidden="true" className="size-3.5" />
+              <span className="hidden lg:inline">{settingsLabel}</span>
+            </AppLink>
+          )}
+          <CollectionPageHeaderAction
+            icon={ListFilter}
+            label={t(($) => $.iterations.pages.filters)}
+            variant="ghost"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen(!filtersOpen)}
+          />
+          {enabled && !firstUseWelcome && (
+            <CollectionPageHeaderAction
+              icon={Plus}
+              label={t(($) => $.iterations.create)}
+              variant="default"
+              onClick={openCreateDialog}
+            />
+          )}
+        </>
+      }
+    />
     <div className="min-h-0 flex-1 overflow-auto">
       <Tabs value={activeTab} onValueChange={(value) => { setTab(String(value)); setVisible(value === "open" ? 5 : 50); }} className="gap-0">
         <div className="border-b px-5 sm:px-7"><TabsList variant="line" className="data-[orientation=horizontal]:h-12 gap-5" aria-label={t(($) => $.iterations.title)}>

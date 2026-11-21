@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { Store } from "lucide-react";
+import { DOCS_SLUGS } from "@multica/core/docs";
 import { useWorkspaceId } from "@multica/core/hooks";
+import { useWorkspacePaths } from "@multica/core/paths";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@multica/ui/components/ui/tabs";
 import { cn } from "@multica/ui/lib/utils";
 import { useT } from "../i18n";
-import { PageHeader, PAGE_GUTTER } from "../layout/page-header";
+import { CollectionPageHeader } from "../layout/collection-page";
+import { PAGE_GUTTER } from "../layout/page-header";
 import { McpMarketPanel } from "../mcp";
 import { currentPath, useNavigation } from "../navigation";
 import { SkillMarketPanel } from "../skills";
@@ -18,6 +22,7 @@ export function MarketplacePage() {
 
 function WorkspaceMarketplace({ workspaceId }: { workspaceId: string }) {
   const { t } = useT("layout");
+  const paths = useWorkspacePaths();
   const navigation = useNavigation();
   const selectedType = navigation.searchParams.get("type");
   const type = selectedType === "skills" || selectedType === "squad-templates" ? selectedType : "mcp";
@@ -39,9 +44,15 @@ function WorkspaceMarketplace({ workspaceId }: { workspaceId: string }) {
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col">
-      <PageHeader>
-        <h1 className="truncate text-body font-medium">{t(($) => $.nav.marketplace)}</h1>
-      </PageHeader>
+      <CollectionPageHeader
+        icon={Store}
+        title={t(($) => $.nav.marketplace)}
+        description={t(($) => $.marketplace.tagline)}
+        learnMore={{
+          href: paths.docsPage(DOCS_SLUGS.mcp),
+          label: t(($) => $.marketplace.learn_more),
+        }}
+      />
       <Tabs value={type} onValueChange={selectType} className="min-h-0 min-w-0 flex-1 gap-0">
         <div className={cn("shrink-0 overflow-x-auto border-b py-2", PAGE_GUTTER)}>
           <TabsList variant="line" activateOnFocus={false} aria-label={t(($) => $.marketplace.type_label)} className="pointer-coarse:data-[orientation=horizontal]:h-auto pointer-coarse:[&_[data-slot=tabs-trigger]]:min-h-11 pointer-coarse:[&_[data-slot=tabs-trigger]]:min-w-11">
