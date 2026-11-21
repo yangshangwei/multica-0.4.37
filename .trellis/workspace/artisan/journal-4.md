@@ -320,3 +320,39 @@ Approved continuation of the existing AI squad first-use task; no new task or sc
 ### Status
 
 [OK] **Completed**
+
+
+## Session 182: MCP 市场浏览与配置引导优化
+<!-- trellis-session: v=2 fp=624969469adb35f7 -->
+
+**Date**: 2026-11-21
+**Task**: MCP 市场浏览与配置引导优化
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+按 impeccable 审计优化筛选密度、模板准备条件与手动分配说明；补齐触屏尺寸和横向分类键盘焦点显示。
+
+### Main Changes
+
+- 紧凑工具栏和卡片元信息；从公开输入定义展示准备条件，复用现有配置与分配流程。
+- 窄屏原生横向分类和 44px 类型标签；保留当前工作区的 AI 小队模板改动。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `9e5dfbe5c` | feat(mcp): make template selection easier to scan and prepare |
+
+### Testing
+
+- [OK] 140 项相关 Vitest 测试、Views 类型检查、改动文件 ESLint 与 Impeccable 扫描通过。
+- [OK] 9 个编译后布局场景、7 项浏览器交互通过；无页面错误或横向溢出，视觉检查 92 分。
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 如需发布，继续验证真实后端、打包后的 Electron 和实体触屏设备。
