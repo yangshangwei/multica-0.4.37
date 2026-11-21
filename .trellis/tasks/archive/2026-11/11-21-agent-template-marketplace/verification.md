@@ -68,8 +68,12 @@ Mobile, packaged installers/updaters and real model/agent execution are outside 
 
 ## Ownership and cleanup
 
-Only the current task's 18 code/spec paths and task artifacts enter the work commit. During final ownership validation, the pre-existing market collection header, provider test wiring and help-link copy landed independently in parent `a1d791dcb`. The guarded index preparation detected that HEAD changed and stopped before committing; its index was then refreshed from that parent. The original working files are retained, and unrelated staged entries remain unchanged.
+The final delivery tree is verified against all18 accepted code/spec hashes. The initial work commit was followed by a scoped correction that removes a concurrent market welcome rewrite from the committed tree while preserving its working files. During final ownership validation, the pre-existing market collection header, provider test wiring and help-link copy landed independently in parent `a1d791dcb`. The guarded index preparation detected that HEAD changed and stopped before committing; its index was then refreshed from that parent. The original working files are retained, and unrelated staged entries remain unchanged.
 
 Shared collection-header and creation-shell implementations are byte-identical to the tested snapshot. The newer docs slug map adds only an unrelated `usage` entry. No feature-source rebase or product edit was required by the parent commit.
 
 Stop only this task's API/Web/renderer processes after acceptance; retain the isolated source and database record for review/TTL cleanup. Archive only this task after committing, then record the session without sweeping other journal edits.
+
+## Final committed-source check
+
+The shared market files changed concurrently after source acceptance and before the initial scoped commit. Follow-up commit `09281851723cdabdf20ed1e6a55f6354cebec926` restores the exact accepted source in five shared files without changing the parallel working tree or unrelated staged entries. All18 committed code/spec blobs match `final-candidate-files.json`. The parallel welcome components and working edits remain outside this task’s final delivery tree. No history was amended.

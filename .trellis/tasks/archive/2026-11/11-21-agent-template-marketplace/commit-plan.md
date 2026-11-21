@@ -20,3 +20,7 @@ Intent: `feat(agents): make role discovery available alongside team capabilities
 ## Unrelated work
 
 The checkout has extensive pre-existing changes outside this task. None belongs to this commit plan. The four shared files are now compared to their separately committed header/provider/help-link baseline. Do not bulk stage, amend, reset, clean, or push.
+
+## Concurrent overlap correction
+
+The final commit audit found a parallel welcome rewrite in five shared working files. An append-only correction restores their accepted source hashes in the committed tree, leaves the parallel working files intact, and excludes untracked welcome modules. Both work hashes are recorded in `task.json`. The final committed blobs were checked against all18 accepted hashes.
