@@ -14,7 +14,7 @@
 - [x] Shared Inbox UI, localization and meaningful component regressions.
 - [x] Owning-layer normal/race/static verification and production Web/Desktop acceptance.
 - [x] Independent quality review and spec update.
-- [ ] Scoped Lore commit and task finish.
+- [x] Scoped Lore feature commit `9e54271fd`; task archival and journal bookkeeping follow.
 
 ## Verification
 
@@ -33,3 +33,10 @@ The final criterion map and verification limits are in `research/acceptance.md`.
 - Final E2E r10 ran all six Web/native journeys together and passed without failure, skip, retry or flaky results. Three actual Desktop view identities, original notification/context, custom-time/undo, source-workspace/two-device events, actual expiry and failures/409 were checked on one candidate.
 - The same owned API binary/database survived an actual process restart before the saved deadline, retaining a single original notification and restoring it unread after expiry.
 - Visual verdict r02=94/pass; real theme controls produce readable dark input and distinct native Snoozed tabs. The Impeccable detector returned an empty finding list.
+
+## Delivered commit
+
+`9e54271fd` contains the task-owned feature, tests, docs/specs and evidence
+records. All 117 code/test/doc/spec files match their verified source hashes.
+Owned API/Web/renderer process groups and PostgreSQL verification container were
+stopped, with profiles, databases and raw evidence retained privately.
