@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { test, expect } from "@playwright/test";
 import { TestApiClient } from "./fixtures";
+import enSkills from "../packages/views/locales/en/skills.json" with { type: "json" };
 
 test("capability market restores type and draft through history while resource management stays separate", async ({ page }, info) => {
   test.setTimeout(120_000);
@@ -22,7 +23,7 @@ test("capability market restores type and draft through history while resource m
     }, api.getToken());
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.goto(`/${slug}/skills`);
-    await expect(page.getByText("No skills yet", { exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: enSkills.welcome.title, exact: true })).toBeVisible();
     for (const [label, path] of [["Skills", "skills"], ["MCP", "mcp"], ["Runtimes", "runtimes"], ["Capability market", "marketplace"]]) {
       await expect(page.getByRole("link", { name: label, exact: true })).toHaveAttribute("href", `/${slug}/${path}`);
     }
@@ -32,6 +33,7 @@ test("capability market restores type and draft through history while resource m
     const mcp = types.getByRole("tab", { name: "MCP", exact: true });
     const skills = types.getByRole("tab", { name: "Skills", exact: true });
     const squadTemplates = types.getByRole("tab", { name: "Squad templates", exact: true });
+    const agentTemplates = types.getByRole("tab", { name: "Agent templates", exact: true });
     await expect(mcp).toHaveAttribute("aria-selected", "true");
     await expect(page.getByTestId("mcp-market")).toBeVisible();
     const navigationScreenshot = info.outputPath("capability-market-navigation.png");
@@ -59,6 +61,17 @@ test("capability market restores type and draft through history while resource m
     await expect(skills).toHaveAttribute("aria-selected", "true");
     await page.goForward();
     await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+
+    await squadTemplates.focus();
+    await page.keyboard.press("ArrowRight");
+    await expect(agentTemplates).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(`/${slug}/marketplace?type=agent-templates`);
+    await expect(page.getByRole("region", { name: "Agent templates", exact: true })).toBeVisible();
+    await page.goBack();
+    await expect(squadTemplates).toHaveAttribute("aria-selected", "true");
+    await page.goForward();
+    await expect(agentTemplates).toHaveAttribute("aria-selected", "true");
 
     await page.goto(`/${slug}/marketplace?type=invalid&context=keep#catalog`);
     await expect(mcp).toHaveAttribute("aria-selected", "true");
@@ -90,7 +103,8 @@ test("capability market restores type and draft through history while resource m
 
     await page.getByRole("link", { name: "Skills", exact: true }).click();
     await expect(page).toHaveURL(`/${slug}/skills`);
-    await expect(page.getByRole("link", { name: "From template", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { name: enSkills.welcome.title, exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: enSkills.page.new_skill, exact: true })).toBeVisible();
     await expect(page.getByRole("textbox", { name: "Search templates", exact: true })).toHaveCount(0);
     await page.getByRole("link", { name: "MCP", exact: true }).click();
     await expect(page).toHaveURL(`/${slug}/mcp`);

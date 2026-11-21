@@ -1,0 +1,78 @@
+[
+  {
+    "path": "packages/core/paths/paths.ts",
+    "sha256": "bf01416f1c825ce566f2f316359e21ac7402193250dc6a14ada7645566805526"
+  },
+  {
+    "path": "packages/core/paths/paths.test.ts",
+    "sha256": "6f4dbee79d1f7e052c70075ba6bf6206eedcf5d1b2f86a385a7116437fc5cfdf"
+  },
+  {
+    "path": "packages/views/agents/create/template-create-agent-page.tsx",
+    "sha256": "6a918529da3c07b9b3db042e0faa8e16a15a1146323a7908deaf337ac909aa3e"
+  },
+  {
+    "path": "packages/views/agents/create/template-create-agent-page.test.tsx",
+    "sha256": "6ecf51c64505a7c44a6c189a813d33b6ca9c85b27ca4f413c9eb30b18f546d1d"
+  },
+  {
+    "path": "packages/views/agents/create/role-template-card.tsx",
+    "sha256": "ed6f19954fe0d962605a6f76011d6742343a994890e774f1054efc221de683d4"
+  },
+  {
+    "path": "packages/views/marketplace/marketplace-page.tsx",
+    "sha256": "a42344c58f797a3697cf7c4822418476618a195a81c2c9aeaa2ed23d915071e0"
+  },
+  {
+    "path": "packages/views/marketplace/marketplace-page.test.tsx",
+    "sha256": "3071545dde6f7aaf9f67c2f19a9374b7c7547918193ebe5e0a8cabb6aaee15d4"
+  },
+  {
+    "path": "packages/views/marketplace/agent-templates-market-panel.tsx",
+    "sha256": "532ae86bace5e6a455e380049df53ab1aac615465cc92d8125946aaab689403c"
+  },
+  {
+    "path": "packages/views/marketplace/agent-templates-market-panel.test.tsx",
+    "sha256": "6b79880354d3ab527f0ce3df72b3b6606bf03a79e97ea9047979c69b61471cef"
+  },
+  {
+    "path": "packages/views/locales/en/agents.json",
+    "sha256": "352b387dbba6b0a8cabe155ac76b24a5cd734e21cc7190c4fd1a0e991df38b57",
+    "testedSha256": "edf836cb213d44840bacc03c1a731073c92c22c24503d2229dffb4fb5d67ce62",
+    "scopeParity": "role_templates identical; snapshot has unrelated approvals.learn_more key"
+  },
+  {
+    "path": "packages/views/locales/en/layout.json",
+    "sha256": "bf68a5058143cbddf73a9f2b2736a232358c9bd64b9ece67faec3b7557143ea4"
+  },
+  {
+    "path": "packages/views/locales/zh-Hans/agents.json",
+    "sha256": "17c5d4148fac51d367998b485f616126ada24c94408347c5646e4cda5b6720c8",
+    "testedSha256": "96c495a6419782b97b7454bde33e8cfa1bb0580f4918dd75b9e8ca79641a6816",
+    "scopeParity": "role_templates identical; snapshot has unrelated approvals.learn_more key"
+  },
+  {
+    "path": "packages/views/locales/zh-Hans/layout.json",
+    "sha256": "1a1964ae01976b0f9096efc9250aae98703294b4094df090e8eb48ee4b64be02"
+  },
+  {
+    "path": "e2e/agent-role-template.spec.ts",
+    "sha256": "6276d5db725fdb48927c6733ef27c94edc1edb8743c80bb698512da19cd1f03c"
+  },
+  {
+    "path": "e2e/capability-market.spec.ts",
+    "sha256": "d8c54c5da96401e26cc4290736b30f5c620e5e4cc8303b1f6c01ad85ccb6c7c5"
+  },
+  {
+    "path": "e2e/agent-template-marketplace-desktop.spec.ts",
+    "sha256": "8bb7c3da02b0754d7fdc838647b148011c45ecd9779c392c542c544bedfa64c6"
+  },
+  {
+    "path": ".trellis/spec/views/frontend/capability-market.md",
+    "sha256": "e221651d770d42de7926cb7d7f4266b029d17bf25cfda4697f533f7fc473690f"
+  },
+  {
+    "path": ".trellis/spec/views/frontend/agent-discovery.md",
+    "sha256": "bdec78909b6e919c41ee2c84a253f5a3b34d445b56fdfe0008d3a759e3c53dfe"
+  }
+]

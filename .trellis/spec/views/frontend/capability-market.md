@@ -4,18 +4,24 @@
 
 The workspace sidebar exposes one Capability market destination while Skills and
 MCP remain management pages. Web and Desktop mount the same `MarketplacePage`.
-The market has MCP, Skills, and built-in AI squad template tabs; neither an
-external registry nor a combined resource/permission model is introduced.
+The market has MCP, Skills, built-in AI squad templates, and agent role template
+tabs. Agent templates are a discovery catalog; the existing agent creation flow
+remains a direct entrance to the same role cards. Neither an external registry
+nor a combined resource/permission model is introduced.
 
 ## Signatures and routes
 
 - `paths.workspace(slug).marketplace()` → `/{slug}/marketplace`.
-- `paths.workspace(slug).marketplaceTab(type: "mcp" | "skills" | "squad-templates")` adds `?type=…`.
+- `paths.workspace(slug).marketplaceTab(type: "mcp" | "skills" | "squad-templates" | "agent-templates")` adds `?type=…`.
 - `McpMarketPanel({ workspaceId, active? })` and
   `SkillMarketPanel({ workspaceId, active? })` own their domain catalogs/dialogs.
 - `SquadTemplatesMarketPanel({ workspaceId, active })` adapts the shared squad
   template catalog to the market, loading the saved squad inventory only while
   active so template cards can link existing instances accurately.
+- `AgentTemplatesMarketPanel({ workspaceId, active })` uses the locale-scoped
+  role-template query with `enabled: active` and shared role cards. It does not
+  load agents or show existing-instance counts/links. A broken agent-list API
+  cannot block this catalog.
 - Missing or unrecognized `type` selects MCP. Navigation uses the shared
   adapter, retaining unrelated query parameters and the fragment.
 - The old `/{slug}/squads?view=templates` bookmark replaces its location with
@@ -48,6 +54,35 @@ Market copy creation and ordinary skill creation keep their different success
 navigation. MCP save and assignment remain separate. Domain permission,
 provenance, input and retry contracts live in the corresponding market specs.
 
+## Agent-template creation handoff
+
+- Keep the existing category order and default; append agent templates.
+- Keep the selected type fully visible in the horizontal strip on direct entry,
+  history/type changes and container resize. Scrolling the strip must not cause
+  document-level horizontal overflow. Type buttons retain their intrinsic label
+  width (`flex-none`): coarse-pointer minimum widths must not allow labels to
+  shrink and overlap. Disconnect the width observer on type change/unmount.
+- Market cards link to the existing agent template configuration route with a
+  selected `template` and exact `source=marketplace`. Selection itself does not
+  create an agent, materialize skills, or add a squad member.
+- The source is a navigation hint, not a return URL or API field. For a market
+  source without `squad`, the creation page uses `useBackOrReplace` with the
+  fixed `marketplaceTab("agent-templates")` fallback. An application-proven
+  history entry takes precedence; a cold/new tab or unsupported adapter uses
+  the fallback. Unknown sources use the original creation flow.
+- An explicit `squad` retains the original picker/configuration/back and submit
+  semantics even if a URL also contains the market marker. The market never
+  infers squad membership from its own query parameters.
+- Ordinary successful creation still lands on the new agent; squad creation
+  still attempts membership and lands on the squad. Never retry an already
+  committed agent merely because joining a squad failed.
+- Keep the market panel's single content scroll root separate from the original
+  picker's same-path scroll memento. Retain visited category DOM; restore through
+  the existing platform adapter only after template content can hold the saved
+  offset. Do not add storage or promise configuration drafts across routes.
+- Do not render the complete creation page inside the market. Its creation
+  shell, agent-list query and existing-member controls belong to its own flow.
+
 ## Validation and errors
 
 | State | Required outcome |
@@ -58,6 +93,10 @@ provenance, input and retry contracts live in the corresponding market specs.
 | Workspace changes | Fresh scoped controller; no old assignment/draft shown |
 | One catalog fails | Other type remains reachable; error is not an empty catalog |
 | Squad inventory fails | Show retry feedback; do not imply no saved instances |
+| Agent inventory fails | Agent-template catalog remains usable; no instance request is needed |
+| Agent template load fails / succeeds empty | Error with retry / explicit empty catalog; never conflate them |
+| Market configuration opened cold | Source-aware Back replaces with the agent-template category |
+| Market marker plus explicit squad | Preserve the squad creation/back semantics |
 | Legacy squad template URL | Replace with the market squad-template type and preserve other URL context |
 | Empty resource library | Keep management page and offer explicit market link |
 
@@ -76,6 +115,12 @@ command search, desktop tab presentation and editor workspace prefixes. Market
 page tests cover lazy first mount, retained visited panels and workspace reset.
 Domain suites own real creation, dirty state, portal hiding and permission tests.
 Production Web and native Desktop verify the routed user journeys.
+Agent-template suites additionally cover no instance Query, template loading and
+retry, known/unknown policy display, exact source-marker handoff, safe-history
+versus cold fallback, squad priority, original picker links and scroll recovery.
+Production coarse-pointer checks measure role actions at least 44px high at
+tablet and phone widths; retain fine-pointer desktop geometry. Narrow captures
+must show the entire selected tab, not merely a clipped active underline.
 
 ## Wrong vs correct
 

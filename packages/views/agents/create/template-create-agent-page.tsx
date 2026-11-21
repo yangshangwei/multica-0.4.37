@@ -10,7 +10,6 @@ import { runtimeDisplayLabel } from "@multica/core/runtimes";
 import { isKnownAutonomyLevel } from "@multica/core/types";
 import type { AgentRoleTemplate } from "@multica/core/types";
 import { agentListOptions } from "@multica/core/workspace/queries";
-import { cn } from "@multica/ui/lib/utils";
 import { Button } from "@multica/ui/components/ui/button";
 import { Skeleton } from "@multica/ui/components/ui/skeleton";
 import { AppLink, useBackOrReplace, useNavigation } from "../../navigation";
@@ -23,6 +22,9 @@ import { useCreateAgentForm } from "./use-create-agent-form";
 import { useCreateTemplateAgentSubmit } from "./use-create-template-agent-submit";
 import { findRoleTemplate, useRoleTemplates } from "./use-role-templates";
 import { createPathWithParams, withSquadParam } from "./squad-param";
+import { AutonomyBadge, RoleTemplateCard } from "./role-template-card";
+
+export { AutonomyBadge } from "./role-template-card";
 
 /**
  * Creating an agent from a built-in role template.
@@ -41,6 +43,7 @@ export function TemplateCreateAgentPage() {
   const backOrReplace = useBackOrReplace();
   const squadId = navigation.searchParams.get("squad");
   const templateKey = navigation.searchParams.get("template");
+  const fromMarket = !squadId && navigation.searchParams.get("source") === "marketplace";
 
   const { data: templates, isPending, isError, refetch } = useRoleTemplates();
   const template = findRoleTemplate(templates, templateKey);
@@ -57,13 +60,13 @@ export function TemplateCreateAgentPage() {
           ? t(($) => $.creation_studio.step_configure)
           : t(($) => $.role_templates.step_pick)
       }
-      // Back from the configure step returns to the role list, not out of the
-      // flow: picking the wrong role is the likely reason someone goes back.
-      onBack={() =>
-        template
-          ? navigation.replace(withSquadParam(paths.newAgentTemplate(), squadId))
-          : backOrReplace(paths.newAgent())
-      }
+      // The market returns to discovery; the original flow keeps role selection
+      // and its squad context when backing out of configuration.
+      onBack={() => {
+        if (fromMarket) backOrReplace(paths.marketplaceTab("agent-templates"));
+        else if (template) navigation.replace(withSquadParam(paths.newAgentTemplate(), squadId));
+        else backOrReplace(paths.newAgent());
+      }}
       chips={
         <AgentCreateChip>
           {t(($) => $.creation_studio.modes.template.title)}
@@ -178,20 +181,18 @@ function RoleTemplatePicker({
             ) : null}
             <ul className="mt-6 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-3">
               {templates.map((template) => {
-                const title = template.title || template.name;
                 const instances = instancesReady
                   ? agents.filter((agent) => !agent.archived_at && agent.template_key === template.key)
                   : [];
                 return (
-                  <li key={template.key} aria-label={title} className="flex min-w-0 flex-col items-start gap-3 border-t border-border py-5">
-                    <div className="flex w-full flex-wrap items-start justify-between gap-2">
-                      <h3 className="min-w-0 break-words text-body font-semibold">
-                        <ActorAvatar name={template.title} initials="" avatarUrl={`emoji:${template.avatar_emoji}`} isAgent size="md" className="mr-2" />
-                        {title}
-                      </h3>
-                      <AutonomyBadge level={template.autonomy_level} />
-                    </div>
-                    <p className="break-words text-caption leading-5 text-muted-foreground">{template.description}</p>
+                  <RoleTemplateCard
+                    key={template.key}
+                    template={template}
+                    createHref={createPathWithParams(paths.newAgentTemplate(), { squad: squadId, template: template.key })}
+                    createLabel={instances.length > 0 ? t(($) => $.role_templates.create_another) : t(($) => $.role_templates.create_agent)}
+                    secondaryAction={instances.length > 0}
+                    onNavigate={rememberScroll}
+                  >
                     {instancesReady && (
                       <div className="w-full min-w-0 text-caption">
                         <p className="text-muted-foreground">
@@ -213,22 +214,7 @@ function RoleTemplatePicker({
                         ))}
                       </div>
                     )}
-                    <AppLink
-                      href={createPathWithParams(paths.newAgentTemplate(), { squad: squadId, template: template.key })}
-                      onClick={rememberScroll}
-                      onAuxClick={rememberScroll}
-                      className={cn(
-                        "mt-auto flex min-h-11 items-center rounded-md px-3 py-2 text-caption font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:min-h-9",
-                        instances.length > 0
-                          ? "text-muted-foreground hover:bg-surface-hover hover:text-foreground"
-                          : "border border-border hover:bg-surface-hover",
-                      )}
-                    >
-                      {instances.length > 0
-                        ? t(($) => $.role_templates.create_another)
-                        : t(($) => $.role_templates.create_agent)}
-                    </AppLink>
-                  </li>
+                  </RoleTemplateCard>
                 );
               })}
             </ul>
@@ -236,36 +222,6 @@ function RoleTemplatePicker({
         )}
       </div>
     </main>
-  );
-}
-
-/**
- * The autonomy level as a badge.
- *
- * An unrecognised value renders as nothing rather than as raw text: the label
- * would be untranslated, and claiming a limit this client cannot describe is
- * worse than saying nothing. `isKnownAutonomyLevel` also treats an ABSENT level
- * as unknown, which is correct — it means the backend declared no policy.
- */
-export function AutonomyBadge({
-  level,
-  className,
-}: {
-  level: string | undefined;
-  className?: string;
-}) {
-  const { t } = useT("agents");
-  if (!isKnownAutonomyLevel(level)) return null;
-  return (
-    <span
-      className={cn(
-        "rounded-full border px-2 py-0.5 text-micro font-medium text-muted-foreground",
-        className,
-      )}
-      title={t(($) => $.role_templates.autonomy_hint[level])}
-    >
-      {t(($) => $.role_templates.autonomy[level])}
-    </span>
   );
 }
 

@@ -1,0 +1,31 @@
+{
+  "iteration": 3,
+  "threshold": 90,
+  "threshold_pass": true,
+  "previous_verdict": {
+    "score": 88,
+    "verdict": "revise",
+    "category_match": true,
+    "differences": [
+      "At 768px coarse-pointer mode, Squad templates and Agent templates labels overlap because the type buttons shrink below their text width."
+    ],
+    "suggestions": [
+      "Prevent market type buttons from flex-shrinking; retain horizontal strip scrolling and the existing touch minimum."
+    ],
+    "reasoning": "The prior touch-height and selected-tab visibility fixes pass real browser checks. The coarse-pointer capture exposed one remaining label collision requiring a local flex sizing repair."
+  },
+  "generated_screenshots": [
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-21-agent-template-marketplace/evidence/market-phone-320.png",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-21-agent-template-marketplace/evidence/market-touch-768.png",
+    "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-21-agent-template-marketplace/evidence/market-desktop-zh.png"
+  ],
+  "visual_verdict": {
+    "score": 95,
+    "verdict": "pass",
+    "category_match": true,
+    "differences": [],
+    "suggestions": [],
+    "reasoning": "The approved market catalog preserves role-card hierarchy and separates existing members. Final screenshots show readable nonoverlapping type labels, a fully visible selected type at320px, and44px coarse-pointer actions; the native Chinese catalog and real create-and-open flow pass."
+  },
+  "next_actions": []
+}

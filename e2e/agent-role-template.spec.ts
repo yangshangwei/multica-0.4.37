@@ -297,6 +297,83 @@ test.describe("agent role templates", () => {
     await expect(page).toHaveURL(new RegExp(`/${slug}/agents/${CREATED_AGENT_ID}`));
   });
 
+  test("discovers roles in the market and returns to discovery before creating", async ({ page }, info) => {
+    const slug = await login(page);
+    const createdBody = await mockTemplateApis(page);
+    const pageErrors: string[] = [];
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    await page.goto(`/${slug}/marketplace?type=agent-templates&context=keep#catalog`);
+    const catalog = page.getByRole("region", { name: "Agent templates", exact: true });
+    const card = catalog.getByRole("listitem", { name: "Code Reviewer", exact: true });
+    await expect(page.getByRole("tab", { name: "Agent templates", exact: true })).toHaveAttribute("aria-selected", "true");
+    await expect(card.getByRole("link", { name: "Use template", exact: true })).toHaveAttribute(
+      "href", `/${slug}/agents/new/template?template=code-reviewer&source=marketplace`,
+    );
+    await expect(catalog.getByText("No agents created from this template.", { exact: true })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Create agent", exact: true })).toHaveCount(0);
+
+    for (const width of [1440, 768, 390, 320]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await expect(page.getByRole("tab", { name: "Agent templates", exact: true })).toBeInViewport({ ratio: 1 });
+      await page.screenshot({ path: info.outputPath(`market-agent-templates-${width}.png`), animations: "disabled" });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      expect(await catalog.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
+    }
+
+    for (const nativeBack of [true, false]) {
+      const previousURL = page.url();
+      await card.getByRole("link", { name: "Use template", exact: true }).click();
+      await waitForPageText(page, "Role instructions");
+      await expect(page).toHaveURL(new RegExp(`/agents/new/template\\?template=code-reviewer&source=marketplace$`));
+      if (nativeBack) {
+        await page.goBack();
+        await expect(page).toHaveURL(previousURL);
+      } else {
+        await page.getByRole("button", { name: "Go back", exact: true }).click();
+      }
+      await expect(page.getByRole("tab", { name: "Agent templates", exact: true })).toHaveAttribute("aria-selected", "true");
+      await expect(card).toBeVisible();
+    }
+    expect(createdBody()).toBeUndefined();
+    await card.getByRole("link", { name: "Use template", exact: true }).click();
+    await waitForPageText(page, "Role instructions");
+    await page.getByRole("button", { name: /Create & open agent/ }).click();
+    await expect.poll(() => createdBody()).toMatchObject({ template_key: "code-reviewer", runtime_id: RUNTIME_ID });
+    expect(createdBody()).not.toHaveProperty("source");
+    await expect(page).toHaveURL(new RegExp(`/${slug}/agents/${CREATED_AGENT_ID}`));
+    expect(pageErrors).toEqual([]);
+  });
+
+  test.describe("touch layouts", () => {
+    test.use({ hasTouch: true });
+
+    test("keeps template actions reachable at tablet and phone widths", async ({ page }, info) => {
+      const slug = await login(page);
+      await mockTemplateApis(page);
+      await page.setViewportSize({ width: 768, height: 1000 });
+      await page.goto(`/${slug}/marketplace?type=agent-templates`);
+      const catalog = page.getByRole("region", { name: "Agent templates", exact: true });
+      const action = catalog.getByRole("link", { name: "Use template", exact: true }).first();
+      await expect(action).toBeVisible();
+      expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
+      for (const width of [768, 390, 320]) {
+        await page.setViewportSize({ width, height: 1000 });
+        await expect(page.getByRole("tab", { name: "Agent templates", exact: true })).toBeInViewport({ ratio: 1 });
+        const box = await action.boundingBox();
+        expect(box?.height).toBeGreaterThanOrEqual(44);
+        const labels = await page.getByRole("tablist", { name: "Capability type", exact: true })
+          .getByRole("tab").evaluateAll((tabs) => tabs.map((tab) => ({
+            label: tab.textContent, scrollWidth: tab.scrollWidth, clientWidth: tab.clientWidth,
+          })));
+        for (const label of labels) {
+          expect(label.scrollWidth, `${label.label} fits within its tab`).toBeLessThanOrEqual(label.clientWidth + 1);
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        await page.screenshot({ path: info.outputPath(`market-agent-touch-${width}.png`), animations: "disabled" });
+      }
+    });
+  });
+
   test("shows the diagnostician evidence contract and server-owned defaults", async ({
     page,
   }) => {

@@ -2,8 +2,10 @@
 
 Directory identification, role grouping, squad membership, and template/member
 separation for the agents page. Saved agents are the default directory; the
-role-template catalog lives only in the New agent → Use template flow. Do not
-reintroduce a template inventory into the directory.
+role-template catalog is discoverable in Capability market → Agent templates
+and directly in New agent → Use template. These entrances share role-card
+presentation and the locale-scoped template query, not an agent inventory.
+Do not reintroduce templates into the saved-agent directory.
 
 ## Agent first-use welcome
 
@@ -112,6 +114,15 @@ Mika-specific helper text still requires an active agent with `system_key ===
 attribute its capabilities to every general-purpose agent.
 
 ## Template picker instances — navigate, never mutate
+
+The market catalog contains template metadata and a Use template link, without
+agent-list requests, instance lists/counts or empty-instance messages. Existing
+instance discovery remains specific to the creation picker below. Market
+selection links to the original template configuration route with the exact
+`source=marketplace` marker; the source-aware Back fallback and explicit-squad
+priority are specified in `capability-market.md`. The marker never enters the
+creation request or changes post-create navigation.
+
 Match active instances by `template_key` + `!archived_at`; show all renamed
 instances, omit archived. Cards are non-interactive containers; existing members
 and "create another" are real `<AppLink>`s. Opening a member NEVER creates an
