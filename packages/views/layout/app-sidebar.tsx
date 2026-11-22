@@ -541,7 +541,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
       <SidebarFooter className="p-2">
         {workspace && <SidebarMenu className="gap-0.5">{bottomNav.map((item) => {
           const href = paths.workspace(workspace.slug)[item.key]();
-          return <NavRow key={item.key} href={href} label={item.key === "settings" ? t(($) => $.sidebar.workspace_settings) : t(($) => $.nav[item.labelKey])} isActive={isNavActive(navigation.pathname, href)} />;
+          return <NavRow key={item.key} href={href} label={t(($) => $.nav[item.labelKey])} isActive={isNavActive(navigation.pathname, href)} />;
         })}</SidebarMenu>}
         <div data-testid="sidebar-footer-row" className="flex min-w-0 items-center gap-2">
           <HelpLauncher versionSlot={versionSlot} />
