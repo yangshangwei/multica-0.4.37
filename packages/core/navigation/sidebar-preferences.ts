@@ -6,8 +6,8 @@ import { createPersistStorage } from "../platform/persist-storage";
 import { defaultStorage } from "../platform/storage";
 import type { StorageAdapter } from "../types/storage";
 
-export type SidebarGroup = "work" | "ai" | "resources";
-const defaults: Record<SidebarGroup, boolean> = { work: true, ai: false, resources: false };
+export type SidebarGroup = "work" | "ai" | "resources" | "collaboration";
+const defaults: Record<SidebarGroup, boolean> = { work: true, ai: false, resources: false, collaboration: false };
 
 interface SidebarPreferences {
   groups: Record<SidebarGroup, boolean>;

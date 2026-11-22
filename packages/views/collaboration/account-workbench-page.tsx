@@ -52,6 +52,7 @@ function CollaborationWorkbenchPage({ destination, administrationHref, navigatio
         {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
         {!navigationInSidebar && <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />}
       </div>
+      <p className="w-full text-caption text-muted-foreground">{t(($) => $.beta.description)}</p>
     </header>
     <WorkbenchBody key={`${scope.apiScope}:${scope.userId}:${accountRouteKey(accountPath(destination))}`} scope={scope} destination={destination} />
   </main>;

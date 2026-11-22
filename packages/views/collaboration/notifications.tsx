@@ -1,6 +1,7 @@
 import { useRef, useState, type ReactElement } from "react";
 import { Bell } from "lucide-react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient, type InfiniteData, type UseInfiniteQueryResult } from "@tanstack/react-query";
+import type { ApiClient } from "@multica/core/api";
 import { collaborationNotificationsOptions, useUpdateCollaborationNotification, type CollaborationScope } from "@multica/core/collaboration";
 import { accountPath, type AccountView } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
@@ -10,14 +11,23 @@ import { useT } from "../i18n";
 import { CollaborationQueryState } from "./query-state";
 import { recoverFocus } from "./focus";
 
-export function CollaborationNotifications({ scope, view, renderTrigger }: { scope: CollaborationScope; view: AccountView;
+type NotificationPage = NonNullable<Awaited<ReturnType<ApiClient["getCollaborationNotifications"]>>>;
+type NotificationsQuery = UseInfiniteQueryResult<InfiniteData<NotificationPage>>;
+interface NotificationProps { scope: CollaborationScope; view: AccountView;
   renderTrigger?: (label: string, unreadCount: number | undefined) => ReactElement;
-}) {
-  const { t } = useT("collaboration");
+}
+
+export function CollaborationNotifications(props: NotificationProps) {
   const client = useQueryClient();
+  const query = useInfiniteQuery({ ...collaborationNotificationsOptions(client, props.scope), enabled: props.scope.userId !== "" });
+  return <CollaborationNotificationsPopover {...props} query={query} />;
+}
+
+/** The sidebar owns the live query while this popover unmounts with its disclosure. */
+export function CollaborationNotificationsPopover({ scope, view, renderTrigger, query }: NotificationProps & { query: NotificationsQuery }) {
+  const { t } = useT("collaboration");
   const [open, setOpen] = useState(false);
   const navigating = useRef(false);
-  const query = useInfiniteQuery({ ...collaborationNotificationsOptions(client, scope), enabled: scope.userId !== "" });
   const update = useUpdateCollaborationNotification(scope);
   const list = useRef<HTMLUListElement>(null);
   // Mark read and Archive remove their own button or row once the list refetches.

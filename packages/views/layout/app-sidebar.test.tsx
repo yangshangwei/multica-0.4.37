@@ -1,10 +1,13 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { cloneElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
+import { useSidebarPreferences } from "@multica/core/navigation";
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
-const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, navigationPush, notificationUnread, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
   eventCallbacks: new Map<string, () => void>(),
   invalidateQueries: vi.fn(),
   logout: vi.fn(),
@@ -19,6 +22,8 @@ const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability
   deletePin: vi.fn(),
   inboxItems: { current: [] as { id: string; read: boolean }[] },
   navigation: { current: { pathname: "/acme/issues", search: "" } as { pathname: string; search?: string } },
+  navigationPush: vi.fn(),
+  notificationUnread: { current: undefined as number | undefined },
   summary: { current: [] as { workspace_id: string; count: number }[] },
   workspaces: {
     current: [] as { id: string; name: string; slug: string; avatar_url: string | null }[],
@@ -41,6 +46,7 @@ const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability
 vi.mock("@multica/core/collaboration", () => ({
   useCollaborationScope: () => ({ apiScope: "test", server: "http://127.0.0.1:8080", userId: "user-1" }),
   collaborationKeys: { notifications: () => ["collaboration", "notifications"] },
+  collaborationNotificationsOptions: () => ({ queryKey: ["collaboration", "notifications"] }),
   isCollaborationScopeCurrent: () => true,
 }));
 vi.mock("@multica/core/realtime", () => ({
@@ -52,6 +58,7 @@ vi.mock("../collaboration/creation-form", () => ({
 }));
 vi.mock("../collaboration/notifications", () => ({
   CollaborationNotifications: ({ renderTrigger }: { renderTrigger: (label: string, count: number) => React.ReactElement }) => renderTrigger("Collaboration notifications", 0),
+  CollaborationNotificationsPopover: ({ query, renderTrigger }: { query: { data?: { pages: { unread_count: number }[] } }; renderTrigger: (label: string, count: number | undefined) => React.ReactElement }) => renderTrigger("Collaboration notifications", query.data?.pages[0]?.unread_count),
 }));
 
 vi.mock("@dnd-kit/core", () => ({
@@ -73,7 +80,10 @@ vi.mock("@multica/ui/components/ui/sidebar", () => ({
   SidebarFooter: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarGroupContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  SidebarGroupLabel: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  SidebarGroupLabel: ({ children, render, ...props }: React.ComponentProps<"div"> & { render?: React.ReactElement<React.ComponentProps<"div">> }) => {
+    if (render) return cloneElement(render, props, children);
+    return <div {...props}>{children}</div>;
+  },
   SidebarHeader: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarMenuButton: ({
@@ -99,20 +109,27 @@ vi.mock("@multica/ui/components/ui/dropdown-menu", () => ({
   DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  DropdownMenuItem: ({ children, onClick, disabled }: React.ComponentProps<"button">) => <button type="button" onClick={onClick} disabled={disabled}>{children}</button>,
+  DropdownMenuItem: ({ children, onClick, disabled, "aria-description": ariaDescription }: React.ComponentProps<"button">) => <button type="button" onClick={onClick} disabled={disabled} aria-description={ariaDescription}>{children}</button>,
   DropdownMenuLabel: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuSeparator: () => null,
   DropdownMenuTrigger: ({ render, children, ...props }: React.ComponentProps<"button"> & { render?: React.ReactNode }) => render ? <>{render}</> : <button type="button" {...props}>{children}</button>,
 }));
-vi.mock("@multica/ui/components/ui/collapsible", () => ({
-  Collapsible: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  CollapsibleContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  CollapsibleTrigger: () => <button type="button" />,
-}));
+vi.mock("@multica/ui/components/ui/collapsible", async () => {
+  const { createContext, useContext } = await import("react");
+  const Context = createContext<{ open: boolean; onOpenChange: (open: boolean) => void }>({ open: false, onOpenChange: (_open: boolean) => undefined });
+  return {
+    Collapsible: ({ children, open = false, onOpenChange = () => undefined }: { children: React.ReactNode; open?: boolean; onOpenChange?: (open: boolean) => void }) => <Context.Provider value={{ open, onOpenChange }}>{children}</Context.Provider>,
+    CollapsibleContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    CollapsibleTrigger: ({ children, ...props }: React.ComponentProps<"button">) => {
+      const { open, onOpenChange } = useContext(Context);
+      return <button type="button" {...props} aria-expanded={open} onClick={() => onOpenChange(!open)}>{children}</button>;
+    },
+  };
+});
 vi.mock("@multica/ui/components/ui/tooltip", () => ({
   Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   TooltipContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  TooltipTrigger: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
+  TooltipTrigger: ({ children, render, ...props }: React.ComponentProps<"button"> & { render?: React.ReactElement<React.ComponentProps<"button">> }) => render ? cloneElement(render, props, children) : <button type="button" {...props}>{children}</button>,
 }));
 vi.mock("../common/use-app-foreground", () => ({
   useAppForeground: () => appForeground.current,
@@ -132,7 +149,7 @@ vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> 
 vi.mock("../navigation", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../navigation")>()),
   AppLink: ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>,
-  useNavigation: () => ({ pathname: navigation.current.pathname, push: vi.fn(), searchParams: new URLSearchParams(navigation.current.search ?? ""), hash: "" }),
+  useNavigation: () => ({ pathname: navigation.current.pathname, push: navigationPush, searchParams: new URLSearchParams(navigation.current.search ?? ""), hash: "" }),
 }));
 vi.mock("../projects/components/project-icon", () => ({ ProjectIcon: () => <span /> }));
 vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span /> }));
@@ -215,6 +232,7 @@ vi.mock("@multica/core/workspace/queries", () => ({
 vi.mock("@tanstack/react-query", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@tanstack/react-query")>()),
   useMutation: () => ({ isPending: false, mutate: vi.fn() }),
+  useInfiniteQuery: () => ({ data: notificationUnread.current === undefined ? undefined : { pages: [{ unread_count: notificationUnread.current }] } }),
   useQuery: ({ queryKey }: { queryKey: readonly unknown[] }) => {
     queryLog.push(String(queryKey[0]));
     if (queryKey[0] === "iterations") return { data: iterationCapability.current };
@@ -230,8 +248,73 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
   useQueryClient: () => ({ fetchQuery: vi.fn(), invalidateQueries }),
 }));
 
+beforeEach(() => {
+  useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false, collaboration: false } });
+  navigationPush.mockClear();
+  notificationUnread.current = undefined;
+});
+
+it("keeps fresh collaboration navigation collapsed while preserving its resume action", () => {
+  const resume = vi.fn();
+  const { container } = renderWithI18n(<AppSidebar onCollaborationResume={resume} />);
+  expect(container.querySelector('[data-href="/account?view=current"]')).not.toBeInTheDocument();
+  expect(container.querySelector('[data-href="/account?view=participating"]')).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
+  fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
+  expect(resume).toHaveBeenCalledOnce();
+  expect(navigationPush).not.toHaveBeenCalled();
+});
+
+it("describes Beta maturity on collaboration entry points without changing their accessible names", () => {
+  renderWithI18n(<AppSidebar />);
+  const description = "For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.";
+  for (const name of ["Collaboration", "New collaboration issue"]) {
+    expect(screen.getByRole("button", { name })).toHaveAccessibleDescription(description);
+  }
+});
+
+it("discloses collaboration without navigation and remembers the manual choice", async () => {
+  const resume = vi.fn();
+  const view = renderWithI18n(<AppSidebar onCollaborationResume={resume} />);
+  screen.getByRole("button", { name: "Expand collaboration navigation" }).focus();
+  await userEvent.keyboard("{Enter}");
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+  expect(resume).not.toHaveBeenCalled();
+  expect(navigationPush).not.toHaveBeenCalled();
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(true);
+  view.unmount();
+  renderWithI18n(<AppSidebar />);
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+});
+
+it("reveals collaboration on account routes and resets manual collapse on a new list", async () => {
+  navigation.current = { pathname: "/account", search: "view=current&issue=00000000-0000-4000-8000-000000000001" };
+  const view = renderWithI18n(<AppSidebar />);
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(false);
+  await userEvent.click(screen.getByRole("button", { name: "Collapse collaboration navigation" }));
+  expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
+  navigation.current = { pathname: "/account", search: "view=participating&issue=00000000-0000-4000-8000-000000000001" };
+  view.rerender(<AppSidebar />);
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(false);
+  navigation.current = { pathname: "/acme/issues" };
+});
+
+it("keeps collapsed unread feedback live without displaying unknown or zero as unread", () => {
+  const view = renderWithI18n(<AppSidebar />);
+  expect(screen.queryByLabelText("Collaboration notifications 3 unread")).not.toBeInTheDocument();
+  notificationUnread.current = 3;
+  view.rerender(<AppSidebar />);
+  expect(screen.getByRole("status", { name: "Collaboration notifications 3 unread" })).toHaveTextContent("3");
+  notificationUnread.current = 0;
+  view.rerender(<AppSidebar />);
+  expect(screen.queryByLabelText("Collaboration notifications 0 unread")).not.toBeInTheDocument();
+});
+
 it("exposes explicit collaboration views before workspace navigation", () => {
   const { container } = renderWithI18n(<AppSidebar />);
+  fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
   const links = Array.from(container.querySelectorAll("button[data-href]"), (button) => button.getAttribute("data-href"));
   expect(links.slice(0, 2)).toEqual(["/account?view=current", "/account?view=participating"]);
   expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
@@ -552,6 +635,7 @@ describe("nav structure", () => {
 
   it("renders every section in order", () => {
     const { container } = render(<AppSidebar />);
+    fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
     expect(navHrefs(container)).toEqual([
       // account collaboration
       "/account?view=current",

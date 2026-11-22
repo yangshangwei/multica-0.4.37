@@ -60,6 +60,21 @@ async function seed() {
   return { api, first, second, source, issues, key, passwordUsername: passwordAuth ? passwordUsername : null };
 }
 
+async function removeCollaborationFixtureRows(issueIds: string[]) {
+  const db = new pg.Client(databaseUrl);
+  await db.connect();
+  try {
+    await db.query("BEGIN");
+    await db.query("DELETE FROM issue_participant WHERE issue_id = ANY($1::uuid[])", [issueIds]);
+    await db.query("DELETE FROM collaboration_session WHERE issue_id = ANY($1::uuid[])", [issueIds]);
+    await db.query("DELETE FROM issue_collaboration WHERE issue_id = ANY($1::uuid[])", [issueIds]);
+    await db.query("COMMIT");
+  } catch (error) {
+    await db.query("ROLLBACK");
+    throw error;
+  } finally { await db.end(); }
+}
+
 const globalNav = (page: Page) => page.getByRole("navigation", { name: "Application navigation", exact: true });
 
 async function openNavigation(page: Page, locale: "en" | "zh-Hans" = "en") {
@@ -114,14 +129,50 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await expect(globalNav(page)).toHaveCount(1);
       await expect(page.locator('[data-slot="global-scope-bar"]')).toHaveCount(0);
+      const collaborationDirectory = globalNav(page).locator('[data-sidebar-scope="collaboration"]');
+      const betaDescription = "For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.";
+      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "false");
+      await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveCount(0);
+      await expect(collaborationDirectory.getByText("Beta", { exact: true })).toBeVisible();
+
+      // Keyboard disclosure keeps the workspace destination and closes any
+      // notification portal when the directory is collapsed again.
+      await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
+      await page.keyboard.press("Enter");
+      await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
+      await expect(collaborationDirectory.getByRole("link", { name: "Current handling", exact: true })).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: /^Notifications/ }).click();
+      await expect(page.getByRole("heading", { name: "Notifications", exact: true })).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
+      await expect(page.getByRole("heading", { name: "Notifications", exact: true })).toHaveCount(0);
+      await expect(collaborationDirectory.getByRole("link", { name: "Current handling", exact: true })).toHaveCount(0);
+      await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
+      await page.keyboard.press("Shift+Tab");
+      await expect(collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true })).toBeFocused();
+      const betaTooltip = page.locator('[data-slot="tooltip-content"]').filter({ hasText: betaDescription });
+      await expect(betaTooltip).toBeVisible();
+      await expect(betaTooltip).toHaveText(betaDescription);
+      await expect(collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true })).toHaveAccessibleDescription(betaDescription);
       await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
       await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeEnabled();
       await expect(page.getByRole("menuitem", { name: "New collaboration issue", exact: true })).toBeEnabled();
+      await expect(page.getByRole("menuitem", { name: "New collaboration issue", exact: true }).getByText("Beta", { exact: true })).toBeVisible();
       await page.keyboard.press("Escape");
       const originalBounds = await globalNav(page).boundingBox();
       await capture(`${platform.toLowerCase()}-scope-workspace.png`);
       await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
       await globalNav(page).getByRole("link", { name: "Participating", exact: true }).click();
+      await expect(page.locator("main > header").getByText(betaDescription, { exact: true })).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
+      await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveCount(0);
+      await expect(page.getByRole("heading", { name: "Participating", exact: true })).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true }).click();
+      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "false");
+      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
+      await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true }).click();
+      await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveAttribute("aria-current", "page");
       await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
       await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeDisabled();
       await page.getByRole("menuitem", { name: "New collaboration issue", exact: true }).click();
@@ -311,19 +362,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       // These read-only protocol rows were seeded directly for this fixture.
       // Remove only those exact rows before normal workspace cleanup; the API
       // intentionally refuses deleting any workspace with retained collaboration.
-      const db = new pg.Client(databaseUrl);
-      await db.connect();
-      try {
-        await db.query("BEGIN");
-        const ids = fixture.issues.map((issue) => issue.id);
-        await db.query("DELETE FROM issue_participant WHERE issue_id = ANY($1::uuid[])", [ids]);
-        await db.query("DELETE FROM collaboration_session WHERE issue_id = ANY($1::uuid[])", [ids]);
-        await db.query("DELETE FROM issue_collaboration WHERE issue_id = ANY($1::uuid[])", [ids]);
-        await db.query("COMMIT");
-      } catch (error) {
-        await db.query("ROLLBACK");
-        throw error;
-      } finally { await db.end(); }
+      await removeCollaborationFixtureRows(fixture.issues.map((issue) => issue.id));
       for (const workspace of [fixture.second, fixture.first]) {
         fixture.api.setWorkspaceId(workspace.id);
         fixture.api.setWorkspaceSlug(workspace.slug);

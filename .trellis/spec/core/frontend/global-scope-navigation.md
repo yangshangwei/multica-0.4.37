@@ -16,9 +16,11 @@ must remain available with zero, pending or unavailable workspaces.
   topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
   member or null as its navigation preview. Omitted `navigationWorkspace`
   uses the actual route workspace. Selection callbacks receive its slug.
-- Core `useSidebarPreferences` persists only `groups.work`, `groups.ai` and
-  `groups.resources` booleans through `StorageAdapter`; `NavigationGroup`
-  owns active-route reveal and manual collapse for the current full path.
+- Core `useSidebarPreferences` persists only `groups.work`, `groups.ai`,
+  `groups.resources` and `groups.collaboration` booleans through
+  `StorageAdapter`. `useNavigationGroupDisclosure(group, active)` shares
+  active-route reveal and path-local manual collapse between `NavigationGroup`
+  and the collaboration directory; it returns `{ open, onOpenChange }`.
 - Core `navigationScope(path)`, `resolveScopePath(state, owner, scope, workspaceSlugs?)`
   and `useScopeHistoryStore` own Web's session-lifetime last destinations.
 - Desktop `resumeDesktopScope(scope, workspaceSlugs?)` restores via no-argument
@@ -36,11 +38,30 @@ Only global switching consults remembered destinations. Notifications and task
 links keep explicit path/query/fragment semantics. Activating the current scope
 is a no-op. Do not send a default issue/list path to a global resume operation.
 
-Collaboration appears above Workspace in the shared left directory. Current
-handling and Participating are explicit list links, with the selected list
-remaining highlighted when its detail is open. The Collaboration heading
-resumes the exact account destination. The workspace name resumes the displayed
+Collaboration appears above Workspace in the shared left directory. Its fresh
+preference is collapsed, presenting a single quiet heading with a neutral Beta
+marker. The heading resumes the exact account destination; a separate arrow
+discloses its directory without navigating. Never nest these controls. Entering
+a collaboration destination reveals Current handling and Participating, with
+the selected list remaining highlighted when its detail is open. Manual collapse
+is still allowed on that full path. The workspace name resumes the displayed
 workspace's destination; its adjacent selector chooses a directory member.
+
+`CollaborationNavigation` owns one protected notification Query observer so
+collapsing the directory retains authoritative unread feedback. Its collapsed
+heading shows a named count only when known and positive; unavailable counts
+are not zero. `CollaborationNotificationsPopover` receives that query and mounts
+only inside the open directory, so collapse removes hidden controls and portals.
+The standalone `CollaborationNotifications` wrapper keeps its own query for
+other callers. Do not mirror counts into local state or keep an open popover
+mounted under a hidden disclosure.
+
+The title's hover/focus tooltip and shared workbench header explain cross-workspace
+scope and Beta maturity in both supported locales. New collaboration creation
+also has a neutral Beta marker. These markers preserve existing exact control
+names; the title and creation entry provide the same localized `aria-description`
+independently of the floating content. Disclosure controls have localized
+expand/collapse names and retain coarse-pointer and keyboard targets.
 
 Select the navigation workspace from the actual route, otherwise the remembered
 available workspace, otherwise the first authoritative directory member. A
@@ -59,8 +80,9 @@ dialog returns focus to New. Shared notifications keep the protected account
 Query and original exact links/read/archive flow. Workspace-side realtime owns
 notification invalidation only; the account workbench owns issue subscriptions.
 
-Work defaults open; AI Team and Resources & connections default closed. Persist
-only manual boolean preferences, not server data or automatic active-route
+Work defaults open; AI Team, Resources & connections and Collaboration default
+closed. Legacy persisted groups acquire the missing collaboration default through
+the existing boolean merge. Persist only manual boolean preferences, not server data or automatic active-route
 reveal. Entering a different child route reveals its group; manual collapse on
 the current route remains possible. Clear a path-local manual override when the
 path changes: `/agents` collapse → `/squads` → Back to `/agents` must reveal the
@@ -130,6 +152,9 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | Account previews a remembered workspace | Render explicit workspace links without installing its identity or fetching workspace resources |
 | Account page reload on Web | Use the first authoritative workspace if session history no longer exists |
 | Group entered through a child route | Reveal it without persisting an automatic preference |
+| Fresh workspace sidebar or legacy preferences without collaboration | Show one collapsed Collaboration/Beta heading |
+| Collaboration manually collapsed on its current full path | Keep it collapsed; resume of the current scope remains a no-op |
+| Collaboration collapsed with a notification popover open | Remove the popover and child controls; retain the Query and positive unread feedback |
 | Compact account query changes | Dismiss the sidebar sheet after destination commit |
 | Account Help opens Feedback | Render one feedback host; keep workspace-only modals unmounted |
 
@@ -147,6 +172,15 @@ read as an empty account; using window.location as Desktop route authority.
 ## 6. Tests Required
 
 Core scope-history tests own valid paths, ownership and membership fallback.
+Core `sidebar-preferences.test.ts` covers legacy group hydration and manual
+collaboration choices. Shared `app-sidebar.test.tsx` owns collaboration's
+disclosure/resume separation, route reveal, collapsed unread feedback and portal
+removal; other groups retain their canonical disclosure regressions.
+The Beta browser assertion uses real Tab/Shift+Tab focus and checks the actual
+`data-slot="tooltip-content"` floating element's visibility/text plus the title's
+accessible description. Base UI 1.3 does not assign a default `tooltip` role;
+programmatic focus after pointer input also need not be `:focus-visible`. Do not
+change the shared primitive or assume a role merely to satisfy a selector.
 Desktop account-tab tests own pointer migration/persistence/pruning and exact
 tab/history/memento roundtrips. Platform tests cover workspace mirror clearing,
 resume/direct opens, current-scope no-op and delayed Next route commits. Shared

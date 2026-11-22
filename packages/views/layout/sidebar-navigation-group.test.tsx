@@ -7,7 +7,7 @@ import { renderWithI18n } from "../test/i18n";
 import { NavigationGroup } from "./sidebar-navigation-group";
 
 beforeEach(() => {
-  useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false } });
+  useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false, collaboration: false } });
 });
 
 function content(pathname: string, active = false) {
@@ -41,5 +41,5 @@ it("reveals a newly entered active child without persisting an automatic prefere
   view.rerender(content("/acme/agents", true));
   expect(toggle).toHaveAttribute("aria-expanded", "true");
   expect(useSidebarPreferences.getState().groups.ai).toBe(false);
-  act(() => useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false } }));
+  act(() => useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false, collaboration: false } }));
 });

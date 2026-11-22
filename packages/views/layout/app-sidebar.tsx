@@ -9,7 +9,7 @@ import { cn } from "@multica/ui/lib/utils";
 import { useScrollFade } from "@multica/ui/hooks/use-scroll-fade";
 import { AppLink, useNavigation, currentPath } from "../navigation";
 import { HelpLauncher } from "./help-launcher";
-import { NavigationGroup } from "./sidebar-navigation-group";
+import { NavigationGroup, useNavigationGroupDisclosure } from "./sidebar-navigation-group";
 import {
   DndContext,
   PointerSensor,
@@ -74,7 +74,7 @@ import {
 import { useCurrentWorkspace, useWorkspacePaths, paths, accountPath, parseAccountPath } from "@multica/core/paths";
 import { workspaceListOptions, myInvitationListOptions, workspaceKeys } from "@multica/core/workspace/queries";
 import { resolvePublicFileUrl } from "@multica/core/workspace/avatar-url";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from "@tanstack/react-query";
 import { inboxKeys, deduplicateInboxItems, inboxUnreadSummaryOptions, hasOtherWorkspaceUnread, unreadWorkspaceIds } from "@multica/core/inbox/queries";
 import { chatSessionsOptions } from "@multica/core/chat/queries";
 import { countUnreadChatMessages } from "@multica/core/chat/unread";
@@ -95,11 +95,11 @@ import {
 } from "@multica/core/shortcuts";
 import { ShortcutKeycaps } from "../common/shortcut-keycaps";
 import { useAppForeground } from "../common/use-app-foreground";
-import { collaborationKeys, isCollaborationScopeCurrent, useCollaborationScope, type CollaborationScope } from "@multica/core/collaboration";
+import { collaborationKeys, collaborationNotificationsOptions, isCollaborationScopeCurrent, useCollaborationScope, type CollaborationScope } from "@multica/core/collaboration";
 import { useWSEvent, useWSReconnect } from "@multica/core/realtime";
 import { useSidebarPreferences } from "@multica/core/navigation";
 import { CollaborationCreationEntry } from "../collaboration/creation-form";
-import { CollaborationNotifications } from "../collaboration/notifications";
+import { CollaborationNotificationsPopover } from "../collaboration/notifications";
 
 // Top-level nav items stay active when the user is on a child route
 // (e.g. "Projects" stays lit on /:slug/projects/:id). Pinned items keep
@@ -596,7 +596,7 @@ function SidebarCreation({ workspace }: { workspace: Workspace | null }) {
           <SquarePen aria-hidden /><span className="relative flex-1">{t(($) => $.sidebar.new_issue)}{workspace && <DraftDot />}</span>
           {shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setCollaborationOpen(true)}><UsersRound aria-hidden />{collaboration(($) => $.creation.entry)}</DropdownMenuItem>
+        <DropdownMenuItem aria-description={collaboration(($) => $.beta.description)} onClick={() => setCollaborationOpen(true)}><UsersRound aria-hidden /><span className="min-w-0 flex-1">{collaboration(($) => $.creation.entry)}</span><span aria-hidden="true" className="shrink-0 rounded bg-muted px-1 py-0.5 text-micro font-normal text-muted-foreground">{collaboration(($) => $.beta.label)}</span></DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu></SidebarMenuItem></SidebarMenu>
     <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={newTrigger} />
@@ -619,12 +619,26 @@ function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () 
   const navigation = useNavigation();
   const scope = useCollaborationScope();
   const destination = parseAccountPath(currentPath(navigation));
+  const disclosure = useNavigationGroupDisclosure("collaboration", destination !== null && !destination.administration);
+  const client = useQueryClient();
+  const notifications = useInfiniteQuery({ ...collaborationNotificationsOptions(client, scope), enabled: scope.userId !== "" });
+  const unread = notifications.data?.pages[0]?.unread_count;
   return <SidebarGroup data-sidebar-scope="collaboration">
     {workspaceActive && <WorkspaceNotificationRealtime scope={scope} />}
-    <SidebarGroupLabel aria-label={collaboration(($) => $.page.title)} render={<button type="button" onClick={() => onResume ? onResume() : navigation.push(accountPath())} />} className="h-auto min-h-8 justify-between gap-2 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
-      <span>{collaboration(($) => $.page.title)}</span><span className="text-micro font-normal">{t(($) => $.sidebar.cross_workspace)}</span>
-    </SidebarGroupLabel>
-    <SidebarGroupContent><SidebarMenu className="gap-0.5">
+    <Collapsible {...disclosure}>
+      <div className="flex min-w-0 items-center gap-1">
+        <Tooltip>
+          <SidebarGroupLabel aria-label={collaboration(($) => $.page.title)} aria-description={collaboration(($) => $.beta.description)} render={<TooltipTrigger render={<button type="button" onClick={() => onResume ? onResume() : navigation.push(accountPath())} />} />} className="h-auto min-h-8 min-w-0 flex-1 justify-start gap-2 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
+            <span className="min-w-0 truncate">{collaboration(($) => $.page.title)}</span><span aria-hidden="true" className="shrink-0 rounded bg-sidebar-accent/50 px-1 py-0.5 text-micro font-normal">{collaboration(($) => $.beta.label)}</span>
+          </SidebarGroupLabel>
+          <TooltipContent side="right">{collaboration(($) => $.beta.description)}</TooltipContent>
+        </Tooltip>
+        {!disclosure.open && unread !== undefined && unread > 0 && <output aria-label={`${t(($) => $.sidebar.collaboration_notifications)} ${collaboration(($) => $.page.unread, { count: unread })}`} className="shrink-0 text-caption text-muted-foreground"><CappedNumberFlow value={unread} animated={false} /></output>}
+        <CollapsibleTrigger aria-label={disclosure.open ? collaboration(($) => $.page.collapseNavigation) : collaboration(($) => $.page.expandNavigation)} className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:min-h-11 pointer-coarse:min-w-11">
+          <ChevronRight aria-hidden className={cn("size-3 transition-transform duration-150 motion-reduce:transition-none", disclosure.open && "rotate-90")} />
+        </CollapsibleTrigger>
+      </div>
+      {disclosure.open && <CollapsibleContent><SidebarGroupContent><SidebarMenu className="gap-0.5">
       {(["current", "participating"] as const).map((view) => {
         const Icon = view === "current" ? Inbox : UsersRound;
         const selected = destination !== null && !destination.administration && destination.view === view;
@@ -633,10 +647,11 @@ function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () 
           <Icon aria-hidden /><span>{view === "current" ? collaboration(($) => $.page.current) : collaboration(($) => $.page.participating)}</span>
         </SidebarMenuButton></SidebarMenuItem>;
       })}
-      <SidebarMenuItem><CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination?.view ?? "participating"} renderTrigger={(label, unread) => <SidebarMenuButton aria-label={label} title={label} className="text-muted-foreground">
+      <SidebarMenuItem><CollaborationNotificationsPopover key={`${scope.apiScope}:${scope.userId}`} query={notifications} scope={scope} view={destination?.view ?? "participating"} renderTrigger={(label, unread) => <SidebarMenuButton aria-label={label} title={label} className="text-muted-foreground">
         <Bell aria-hidden /><span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.collaboration_notifications)}</span>{unread !== undefined && unread > 0 && <CappedNumberFlow value={unread} animated={false} className="ml-auto text-caption" />}
       </SidebarMenuButton>} /></SidebarMenuItem>
-    </SidebarMenu></SidebarGroupContent>
+      </SidebarMenu></SidebarGroupContent></CollapsibleContent>}
+    </Collapsible>
   </SidebarGroup>;
 }
 

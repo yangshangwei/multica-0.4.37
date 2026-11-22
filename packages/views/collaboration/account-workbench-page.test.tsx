@@ -42,6 +42,7 @@ it("lets the full sidebar own account navigation and creation without duplicatin
   vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ items: [], total: 0, next_cursor: null }))));
   mount("participating", "en", null, { get: () => undefined }, true);
   expect(await screen.findByRole("heading", { name: "Participating" })).toBeInTheDocument();
+  expect(screen.getByText("For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.")).toBeVisible();
   expect(screen.queryByRole("navigation", { name: "Collaboration" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: "New collaboration issue" })).not.toBeInTheDocument();
   expect(screen.queryByRole("button", { name: /^Notifications/ })).not.toBeInTheDocument();
