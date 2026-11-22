@@ -546,3 +546,36 @@ Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 189: 侧栏直接提供任务、协作与 AI 对话入口
+<!-- trellis-session: v=2 fp=0dcd121b7d999ec3 -->
+
+**Date**: 2026-11-22
+**Task**: 侧栏直接提供任务、协作与 AI 对话入口
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成顶部开始工作菜单和账号到工作空间的创建交接，保留未读、焦点与空间隔离，修复验收发现的旧锚点历史返回遗漏。生产 Web 与实际 Electron 六项浏览器验收通过，中英文浅深色及窄屏截图通过；只提交本任务文件。
+
+### Main Changes
+
+- 将新建任务、发起协作和 AI 对话设为顶部常驻入口并显示空间归属。
+- 复用瞬态弹窗状态，在真实空间与身份就绪后只打开一次普通任务表单。
+- 保留聊天未读及协作焦点返回，历史返回恢复保存位置而不重放旧锚点。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `fe4f311dd` | feat(navigation): make starting work visible across workspace scopes |
+
+### Testing
+
+- [OK] 相关 Core/Views 回归、跨 Web/Desktop lint/typecheck、UI 静态检测通过。
+- [OK] 独立生产构建：六项 Playwright 验收通过，零失败、零跳过、零重试；实际 Electron、中英文、浅深色与窄屏验证通过。
+
+### Status
+
+[OK] **Completed**
