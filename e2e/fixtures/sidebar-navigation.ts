@@ -7,7 +7,7 @@ interface SidebarOptions {
 const navigationName = /^(Application navigation|应用导航)$/;
 
 export function sidebarNewButton(page: Page) {
-  return page.getByRole("navigation", { name: navigationName }).getByRole("button", { name: /^(New|新建)$/ });
+  return page.getByRole("navigation", { name: navigationName }).getByRole("button", { name: /^(New Issue|新建任务)$/ });
 }
 
 export async function openSidebarNavigation(page: Page, { timeout = 15_000 }: SidebarOptions = {}) {
@@ -44,13 +44,11 @@ export async function openSidebarNavigation(page: Page, { timeout = 15_000 }: Si
 export async function openNewIssue(page: Page, options: SidebarOptions = {}) {
   await openSidebarNavigation(page, options);
   await sidebarNewButton(page).click(options);
-  await page.getByRole("menuitem", { name: /^(New Issue|新建任务)/ }).click(options);
 }
 
 export async function openNewCollaborationIssue(page: Page, options: SidebarOptions = {}) {
-  await openSidebarNavigation(page, options);
-  await sidebarNewButton(page).click(options);
-  await page.getByRole("menuitem", { name: /^(New collaboration issue|新建协作任务)$/ }).click(options);
+  const navigation = await openSidebarNavigation(page, options);
+  await navigation.getByRole("button", { name: /^(Start collaboration|发起协作)$/ }).click(options);
 }
 
 export async function openAccountMenu(page: Page) {

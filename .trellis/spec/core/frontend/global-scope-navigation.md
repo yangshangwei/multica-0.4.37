@@ -8,14 +8,24 @@ must remain available with zero, pending or unavailable workspaces.
 
 ## 2. Signatures
 
-- The shared `AppSidebar` owns the accessible Collaboration and Workspace
-  headings. Platform shells provide workspace-selection callbacks;
+- The shared `AppSidebar` owns the accessible Start work, Collaboration and
+  Workspace groups. Platform shells provide workspace-selection callbacks;
   they do not render a separate fixed scope-switch row.
 - `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?,
   workspaceListUnavailable?, onRetryWorkspaces?,
   topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
   member or null as its navigation preview. Omitted `navigationWorkspace`
   uses the actual route workspace. Selection callbacks receive its slug.
+- Core `useModalStore.workspaceIssueCreation` is a nonpersisted
+  `WorkspaceIssueCreationIntent | null` with `api`, `sessionScope`, `userId`,
+  `workspaceId`, `workspaceSlug`, `originPath` and `targetPath`.
+  `queueWorkspaceIssueCreation(intent)` replaces the waiting action;
+  `cancelWorkspaceIssueCreation()` retires it. The atomic
+  `reconcileWorkspaceIssueCreation(intent, context): boolean` ignores an obsolete
+  intent reference, clears an invalid owner/path, and returns true only when
+  the current target context consumes the same slot. Context supplies `api`,
+  `sessionScope`, nullable authenticated `userId`, full `path`, and optional
+  workspace UUID/slug admitted by the real provider and API mirror.
 - Core `useSidebarPreferences` persists only `groups.work`, `groups.ai`,
   `groups.resources` and `groups.collaboration` booleans through
   `StorageAdapter`. `useNavigationGroupDisclosure(group, active)` shares
@@ -69,24 +79,58 @@ localized `aria-description` independently of the floating content. The heading
 has a localized expand/collapse name, one keyboard stop and a coarse-pointer
 target; Enter and Space each toggle it once. Child links own account navigation.
 
+Start work is fixed in the sidebar header above both scope directories. Its
+three directly visible controls are New issue, Start collaboration and AI Chat,
+in that order. New issue receives primary emphasis; collaboration remains a
+secondary action with a neutral Beta marker. Ordinary creation and AI Chat show
+the displayed workspace name; collaboration shows cross-workspace scope. Keep
+supporting captions accessible without changing the controls' stable action
+names. Long workspace names may truncate visually only with the full name
+available. Coarse controls are at least 44px tall.
+
 Select the navigation workspace from the actual route, otherwise the remembered
 available workspace, otherwise the first authoritative directory member. A
 preview must never populate `WorkspaceSlugProvider`, the API workspace header
 or the route singleton. Workspace hooks, pins, search, shortcuts and ordinary
-creation mount only under the real workspace route. Cache-only capability
+forms mount only under the real workspace route. Cache-only capability
 queries in the preview use `enabled: false`. Web scope history is session-only:
 an account document reload can fall back to the first workspace; Desktop keeps
 its existing persisted `lastWorkspaceSlug`.
 
-New is one menu backed by the existing ordinary and collaboration forms. In
-account scope ordinary creation is disabled. Collaboration creation preselects
-the workspace displayed in the sidebar in both account and workspace scope;
-users can switch its source in the dialog. Pass this source separately from the
-real workspace-route context used by ordinary creation. Without a sidebar
-workspace, retain the creation panel's existing source selection and recovery.
-Pending creation/upload recovery still owns and locks its original source.
-The ordinary shortcut remains workspace-scoped. The controlled collaboration
-dialog returns focus to New. Shared notifications keep the protected account
+New issue opens the existing preference-backed form directly in an actual
+workspace. From account scope, its explicit action records a nonpersisted,
+target-bound intent in the existing Core modal store and navigates through the
+adapter to that workspace's issue list. Only its real `ModalRegistry` consumes
+the intent: target path, real provider UUID/slug, live platform workspace mirror,
+API instance/session epochs and authenticated viewer must match. Consume the
+slot atomically before opening the form, so remounts and StrictMode cannot
+replay it. A different committed destination, identity/session teardown, another
+modal action or a superseding explicit navigation retires the old request.
+Remaining on the original account path during a delayed transition preserves
+the request; sidebar unmount alone must not cancel it. Never await `push`, use
+a timer/microtask as admission, or install the preview as API workspace identity.
+
+AI Chat is one native header link to the displayed workspace's existing chat
+route; remove its duplicate personal-directory entry. Its unread observer stays
+under actual workspace authority and retains the shared unread-message count,
+foreground/current-session and floating-window exclusions. Account previews
+must not fetch chat sessions. The link's stable accessible name stays AI Chat;
+its description includes the full workspace name and a known positive unread
+**message** count. Use `sidebar.chat_unread` (English one/other, Chinese other),
+not the floating-launcher's unread-chat translation. Zero/unknown retains the
+workspace-only description. A numeric child badge cannot substitute for this
+description once `aria-label` overrides name-from-content.
+Without a displayed workspace, both local actions
+remain visibly explained and unavailable; collaboration access remains usable.
+
+Collaboration creation preselects the workspace displayed in the sidebar in
+both account and workspace scope; users can switch its source in the dialog.
+Pass this source separately from the real workspace-route context used by
+ordinary creation. Without a sidebar workspace, retain the creation panel's
+existing source selection and recovery. Pending creation/upload recovery still
+owns and locks its original source. The ordinary shortcut remains
+workspace-scoped. The controlled collaboration dialog returns focus to the
+visible Start collaboration button. Shared notifications keep the protected account
 Query and original exact links/read/archive flow. Workspace-side realtime owns
 notification invalidation only; the account workbench owns issue subscriptions.
 
@@ -121,6 +165,13 @@ still advance the focus key. Shared detail
 restores after data readiness on resume, including URLs with run/comment or
 section anchors; explicit opens retain anchor focus. Shared-context version URLs
 retain their exact meaning; a global resume must not reopen a dismissed dialog.
+Back/Forward is a restoration intent too: both adapters set
+`isHistoryTraversal: true` while `isScopeResume` stays false. Workbench detail
+restoration and anchor-dependent comment/run/submission/memory wiring must use
+their combined return condition; replaying the old URL anchor would replace the
+saved offset. Fresh explicit links still advance `navigationKey` and reveal
+their target. Notification details keep their separate matching
+`returnRestorationKey` contract.
 
 The account detail container owns its numeric scroll memento, so opt that
 container out of browser scroll anchoring with `overflow-anchor: none`. A cached
@@ -161,6 +212,7 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | Auth/admin/one-shot/external or malformed path | Do not record as a resumable workspace |
 | Explicit account target while already in account | Open target; never replace it with history |
 | Resume with old anchor after user scrolls | Restore latest offset without refocusing old anchor |
+| Back/Forward returns to a workbench URL with an old anchor | Restore its latest offset using history-traversal intent; do not refocus the old anchor |
 | Explicit same-anchor link repeated | Refocus through a new navigation key |
 | Resolved UUID becomes its canonical issue identifier | Preserve mounted controls, query and fragment; replace history entry |
 | Navigation to another resource | Use ordinary routing; never retain the outgoing view with `preserveView` |
@@ -174,6 +226,13 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | New query commits before the old browser hash clears | Publish its exact target fragment, including an empty one |
 | Compact account query changes | Dismiss the sidebar sheet after destination commit |
 | Account Help opens Feedback | Render one feedback host; keep workspace-only modals unmounted |
+| New issue clicked from account with a displayed workspace | Retain one target-bound intent; navigate before opening the actual workspace form |
+| Target navigation is still showing the original account path | Keep waiting; do not open a workspace form or issue workspace reads |
+| Target route/provider/mirror and owner all match | Consume once before opening the preference-backed form |
+| Different destination, owner/session, modal action or explicit navigation | Retire the waiting intent; a later target visit cannot resurrect it |
+| No authoritative displayed workspace | Explain disabled New issue/AI Chat; keep account collaboration available |
+| AI Chat entered from account | Navigate to the displayed workspace's native chat route without preview requests |
+| Named AI Chat link has positive unread messages | Keep its action name stable; announce the workspace and message count in its description |
 
 ## 5. Good / Base / Bad Cases
 
@@ -204,11 +263,20 @@ tab/history/memento roundtrips. Platform tests cover workspace mirror clearing,
 resume/direct opens, current-scope no-op and delayed Next route commits. Shared
 tests own sidebar keyboard/current state, group preferences and anchor/scroll
 behavior. `layout/app-sidebar.test.tsx` covers preview query gating, pins and
-unread counts; `modals/feedback-host.test.tsx` and platform shell tests cover
+unread counts, including stable chat names with positive message-count
+descriptions and workspace-only descriptions for zero/unknown. Core modal-store tests own one-shot request/ownership/cancellation
+matrices, and the shared registry test owns real-provider/mirror admission and
+preference-backed form wiring. The session-cleanup regression must prove a
+finished login cannot retain a pending creation request.
+`modals/feedback-host.test.tsx` and platform shell tests cover
 account modal ownership. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
+That journey also verifies the direct Start work controls and their scope
+captions, account-to-workspace ordinary creation and AI Chat, native
+collaboration focus return, and compact sheet dismissal. Preserve its original
+account/workspace restoration assertions when adding these interactions.
 `e2e/collaboration-notifications-page.spec.ts` adds complete filtered pages,
 exact targets, processing and same-issue list/detail return offsets. Assert real
 Base UI active-attribute presence and NumberFlow's accessible numeric label;
@@ -266,3 +334,13 @@ application trees mounted or adding a second scroll state store.
 Wrong: canonical UUID-to-identifier normalization through Web `router.replace`,
 which changes Next's dynamic segment identity and closes an in-use picker.
 Correct: use the explicit same-resource `preserveView` option after resolution.
+
+Wrong: opening the ordinary creation modal from an account workspace preview,
+or clearing its pending intent on the sidebar's Web route-layout unmount.
+Correct: record the owned transient request, use the existing navigation
+adapter, then consume only after the actual target workspace provider and API
+mirror agree. Session teardown and superseding destinations cancel the request.
+
+Wrong: setting a stable `aria-label="AI Chat"` while leaving its unread count
+only in name-from-content children. Correct: retain that action name and include
+the localized positive unread-message count in the link's accessible description.

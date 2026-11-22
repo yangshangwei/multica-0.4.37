@@ -5,10 +5,13 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { useSidebarPreferences } from "@multica/core/navigation";
 import type { Workspace } from "@multica/core/types";
+import { useModalStore } from "@multica/core/modals";
+import { openCreateIssueWithPreference } from "@multica/core/issues/stores/create-mode-store";
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
-const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, navigationPush, notificationUnread, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { authState, eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, navigationPush, notificationUnread, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+  authState: { user: { id: "user-1", name: "Alex", email: "alex@example.test" }, status: "authenticated" },
   eventCallbacks: new Map<string, () => void>(),
   invalidateQueries: vi.fn(),
   logout: vi.fn(),
@@ -133,11 +136,6 @@ vi.mock("./help-launcher", () => ({
   ),
 }));
 vi.mock("../auth", () => ({ useLogout: () => logout }));
-vi.mock("../collaboration/source-bridge", () => ({
-  SourceCollaborationCreation: ({ workspaceId, renderTrigger }: {
-    workspaceId: string; renderTrigger: (label: string) => React.ReactElement;
-  }) => <div data-testid="collaboration-creation" data-workspace-id={workspaceId}>{renderTrigger("New collaboration issue")}</div>,
-}));
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
 vi.mock("../navigation", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../navigation")>()),
@@ -149,7 +147,10 @@ vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span /
 vi.mock("@multica/ui/components/common/actor-avatar", () => ({ ActorAvatar: () => <span /> }));
 
 vi.mock("@multica/core/auth", () => ({
-  useAuthStore: (selector: (state: { user: { id: string; name: string; email: string } }) => unknown) => selector({ user: { id: "user-1", name: "Alex", email: "alex@example.test" } }),
+  useAuthStore: Object.assign(
+    (selector: (state: typeof authState) => unknown) => selector(authState),
+    { getState: () => authState },
+  ),
 }));
 // Callable-store shape (selectorFn + getState) per the repo testing rules.
 vi.mock("@multica/core/chat", () => ({
@@ -188,12 +189,11 @@ vi.mock("@multica/core/paths", async (importOriginal) => ({
 }));
 vi.mock("@multica/core/api", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@multica/core/api")>();
+  const client = new actual.ApiClient("http://127.0.0.1:8080");
   return {
     ...actual,
-    api: {
-      ...actual.api,
-      getBaseUrl: () => "http://127.0.0.1:8080",
-    },
+    api: client,
+    getApi: () => client,
   };
 });
 vi.mock("@multica/core/inbox/queries", () => ({
@@ -213,7 +213,6 @@ vi.mock("@multica/core/issues/stores/create-mode-store", () => ({
   openCreateIssueWithPreference: vi.fn(),
 }));
 vi.mock("@multica/core/issues/stores/draft-store", () => ({ useIssueDraftStore: () => false }));
-vi.mock("@multica/core/modals", () => ({ useModalStore: { getState: () => ({ modal: null, open: vi.fn() }) } }));
 vi.mock("@multica/core/pins/mutations", () => ({ useDeletePin: () => ({ mutate: deletePin }), useReorderPins: () => ({ mutate: vi.fn() }) }));
 vi.mock("@multica/core/pins/queries", () => ({ pinListOptions: () => ({ queryKey: ["pins"] }) }));
 vi.mock("@multica/core/projects/queries", () => ({ projectDetailOptions: () => ({ queryKey: ["project"] }) }));
@@ -242,10 +241,35 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
 }));
 
 beforeEach(() => {
+  useModalStore.getState().close();
+  vi.mocked(openCreateIssueWithPreference).mockClear();
   useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false, collaboration: false } });
   navigation.current = { pathname: "/acme/issues" };
   navigationPush.mockClear();
   notificationUnread.current = undefined;
+});
+
+it("offers all three start-work entries directly before the existing directories", () => {
+  renderWithI18n(<AppSidebar />);
+  const group = screen.getByRole("group", { name: "Start work" });
+  const create = within(group).getByRole("button", { name: "New Issue" });
+  const collaborate = within(group).getByRole("button", { name: "Start collaboration" });
+  const chat = within(group).getByRole("link", { name: "AI Chat" });
+  expect(create).toBeEnabled();
+  expect(collaborate).toBeEnabled();
+  expect(chat).toHaveAttribute("href", "/acme/chat");
+  expect(create).toHaveTextContent("Acme");
+  expect(chat).toHaveTextContent("Acme");
+  expect(collaborate).toHaveTextContent("Cross-workspace");
+  expect(screen.queryByRole("button", { name: "New" })).not.toBeInTheDocument();
+  expect(screen.getAllByRole("link", { name: "AI Chat" })).toHaveLength(1);
+});
+
+it("opens ordinary creation immediately in the actual workspace", () => {
+  renderWithI18n(<AppSidebar />);
+  fireEvent.click(within(screen.getByRole("group", { name: "Start work" })).getByRole("button", { name: "New Issue" }));
+  expect(openCreateIssueWithPreference).toHaveBeenCalledOnce();
+  expect(navigationPush).not.toHaveBeenCalled();
 });
 
 it("toggles collaboration from its title, Beta marker and arrow without navigating", () => {
@@ -282,7 +306,7 @@ it("expands collaboration when clicking the collapsed unread count", () => {
 it("describes Beta maturity on collaboration disclosure and creation", () => {
   renderWithI18n(<AppSidebar />);
   const description = "For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.";
-  for (const name of ["Expand collaboration navigation", "New collaboration issue"]) {
+  for (const name of ["Expand collaboration navigation", "Start collaboration"]) {
     expect(screen.getByRole("button", { name })).toHaveAccessibleDescription(description);
   }
 });
@@ -360,7 +384,7 @@ it("exposes explicit collaboration views before workspace navigation", () => {
   const { container } = renderWithI18n(<AppSidebar />);
   fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
   const links = Array.from(container.querySelectorAll("[data-href]"), (link) => link.getAttribute("data-href"));
-  expect(links.slice(0, 3)).toEqual(["/account?view=current", "/account?view=participating", "/account?view=notifications&filter=unread"]);
+  expect(links.slice(1, 4)).toEqual(["/account?view=current", "/account?view=participating", "/account?view=notifications&filter=unread"]);
   expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
 });
 
@@ -373,6 +397,12 @@ it("keeps account navigation usable without a workspace or workspace providers",
   expect(container.querySelector('[data-href="/account?view=participating"]')).toHaveAttribute("data-active", "true");
   expect(container.querySelector('[data-href="/acme/issues"]')).not.toBeInTheDocument();
   expect(screen.getByText("Choose a workspace to access its issues and resources.")).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "New Issue" })).toHaveTextContent("Open a workspace to create an issue");
+  expect(screen.getByRole("button", { name: "AI Chat" })).toBeDisabled();
+  expect(screen.getByRole("button", { name: "AI Chat" })).toHaveTextContent("Choose a workspace to start AI Chat");
+  expect(screen.getByRole("button", { name: "AI Chat" })).toHaveAccessibleDescription("Choose a workspace to start AI Chat");
+  expect(screen.queryByRole("link", { name: "AI Chat" })).not.toBeInTheDocument();
   expect(queryLog.every((key) => key === "workspaces" || key === "invitations")).toBe(true);
   expect(eventCallbacks.size).toBe(0);
   expect(screen.getByRole("button", { name: "Alex" })).toBeInTheDocument();
@@ -402,8 +432,8 @@ describe("collaboration creation workspace", () => {
     navigation.current = { pathname: "/account", search: "view=participating" };
     renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
 
-    expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
-    fireEvent.click(screen.getByRole("button", { name: "New collaboration issue" }));
+    expect(screen.getByRole("button", { name: "New Issue" })).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
     expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", workspace.id);
   });
 
@@ -413,9 +443,44 @@ describe("collaboration creation workspace", () => {
     const selected = { ...workspace, id: "ws-3", name: "Selected workspace", slug: "selected" };
     view.rerender(<AppSidebar navigationWorkspace={selected} />);
 
-    fireEvent.click(screen.getByRole("button", { name: "New collaboration issue" }));
+    fireEvent.click(screen.getByRole("button", { name: "Start collaboration" }));
     expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", selected.id);
-    expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "New Issue" })).toBeEnabled();
+  });
+
+  it("queues ordinary creation for the displayed workspace before navigation without preview chat reads", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    queryLog.length = 0;
+    renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
+    fireEvent.click(screen.getByRole("button", { name: "New Issue" }));
+    expect(navigationPush).toHaveBeenCalledExactlyOnceWith("/other/issues");
+    expect(openCreateIssueWithPreference).not.toHaveBeenCalled();
+    expect(useModalStore.getState().workspaceIssueCreation).toMatchObject({
+      workspaceId: workspace.id, workspaceSlug: workspace.slug,
+      originPath: "/account?view=participating", targetPath: "/other/issues", userId: "user-1",
+    });
+    expect(queryLog).not.toContain("chat");
+    expect(screen.getByRole("link", { name: "AI Chat" })).toHaveAttribute("href", "/other/chat");
+  });
+
+  it("cancels a waiting create request when the committed account destination changes", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    const view = renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
+    fireEvent.click(screen.getByRole("button", { name: "New Issue" }));
+    expect(useModalStore.getState().workspaceIssueCreation).not.toBeNull();
+    navigation.current = { pathname: "/account", search: "view=current" };
+    view.rerender(<AppSidebar navigationWorkspace={workspace} />);
+    expect(useModalStore.getState().workspaceIssueCreation).toBeNull();
+  });
+
+  it("supersedes a waiting create request with an explicit AI Chat action", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
+    fireEvent.click(screen.getByRole("button", { name: "New Issue" }));
+    const chat = screen.getByRole("link", { name: "AI Chat" });
+    chat.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    fireEvent.click(chat);
+    expect(useModalStore.getState().workspaceIssueCreation).toBeNull();
   });
 });
 
@@ -585,7 +650,7 @@ describe("workspace-switcher dropdown per-workspace dot", () => {
   });
 });
 
-describe("personal nav — Chat", () => {
+describe("start-work navigation — AI Chat", () => {
   beforeEach(() => {
     chatSessions.current = [];
     inboxItems.current = [];
@@ -621,14 +686,29 @@ describe("personal nav — Chat", () => {
 
   it("badges the Chat nav with the summed unread_count of chat sessions", () => {
     chatSessions.current = [{ id: "a", unread_count: 3 }, { id: "b", unread_count: 2 }, { id: "c", unread_count: 0 }];
-    const { container } = render(<AppSidebar />);
+    const { container } = renderWithI18n(<AppSidebar />);
     expect(chatBadge(container)).toHaveAttribute("aria-label", "5");
+    expect(chatNav(container)).toHaveAccessibleName("AI Chat");
+    expect(chatNav(container)).toHaveAccessibleDescription("Acme · 5 unread messages");
+  });
+
+  it("announces a singular unread message while retaining the AI Chat action name", () => {
+    chatSessions.current = [{ id: "a", unread_count: 1 }];
+    renderWithI18n(<AppSidebar />);
+    expect(screen.getByRole("link", { name: "AI Chat" })).toHaveAccessibleDescription("Acme · 1 unread message");
+  });
+
+  it("announces unread messages in Chinese without changing the action name", () => {
+    chatSessions.current = [{ id: "a", unread_count: 5 }];
+    renderWithI18n(<AppSidebar />, { locale: "zh-Hans" });
+    expect(screen.getByRole("link", { name: "AI 对话" })).toHaveAccessibleDescription("Acme · 5 条未读消息");
   });
 
   it("shows no Chat unread badge when every session is read", () => {
     chatSessions.current = [{ id: "a", unread_count: 0 }, { id: "b" }];
-    const { container } = render(<AppSidebar />);
+    const { container } = renderWithI18n(<AppSidebar />);
     expect(chatBadge(container)).toBeNull();
+    expect(chatNav(container)).toHaveAccessibleDescription("Acme");
   });
 
   it("excludes the session being viewed on the chat page from the badge", () => {
@@ -722,6 +802,8 @@ describe("nav structure", () => {
     const { container } = render(<AppSidebar />);
     fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
     expect(navHrefs(container)).toEqual([
+      // Start work
+      "/acme/chat",
       // account collaboration
       "/account?view=current",
       "/account?view=participating",
@@ -729,7 +811,6 @@ describe("nav structure", () => {
       // personal
       "/acme/inbox",
       "/acme/my-issues",
-      "/acme/chat",
       // Work
       "/acme/issues",
       "/acme/projects",

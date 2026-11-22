@@ -30,6 +30,8 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
   const { t } = useT("collaboration");
   const { t: tIssues } = useT("issues");
   const navigation = useNavigation();
+  // Scope resumes and Back/Forward restore position instead of replaying anchors.
+  const restoringPosition = navigation.isScopeResume || navigation.isHistoryTraversal;
   const labels = useCollaborationLabels();
   const client = useQueryClient();
   const issueId = destination.issueId!;
@@ -68,7 +70,7 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
       return;
     }
     if (restored.current) return;
-    if (!navigation.isScopeResume && (destination.commentId || destination.runId || destination.submissionId || destination.anchor)) {
+    if (!restoringPosition && (destination.commentId || destination.runId || destination.submissionId || destination.anchor)) {
       // An initial notification anchor intentionally skips its offset. It
       // must not apply another route's offset on a later ordinary row click.
       if (destination.view === "notifications") restored.current = true;
@@ -76,10 +78,10 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
     }
     restoreScroll(root.current?.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]') ?? null);
     restored.current = true;
-  }, [query.data, comments.data, linkedComment.data, linkedComment.error, restoreScroll, restoration, returning, returnRestorationKey, destination.view, destination.commentId, destination.runId, destination.submissionId, destination.anchor, navigation.isScopeResume]);
+  }, [query.data, comments.data, linkedComment.data, linkedComment.error, restoreScroll, restoration, returning, returnRestorationKey, destination.view, destination.commentId, destination.runId, destination.submissionId, destination.anchor, restoringPosition]);
   useEffect(() => {
     const anchor = destination.runId ? `run-${destination.runId}` : destination.commentId ? `comment-${destination.commentId}` : destination.anchor;
-    if (!anchor || navigation.isScopeResume || returning) { consumedAnchor.current = null; return; }
+    if (!anchor || restoringPosition || returning) { consumedAnchor.current = null; return; }
     const intent = `${navigation.navigationKey ?? 0}:${anchor}`;
     if (consumedAnchor.current === intent) return;
     const element = root.current?.querySelector<HTMLElement>(`[id="${anchor}"]`);
@@ -96,7 +98,7 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
     };
     if (auxiliary.current) auxiliary.current.closeForNavigation(focusTarget);
     else focusTarget();
-  }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, returning, navigation.isScopeResume, navigation.navigationKey]);
+  }, [destination.commentId, destination.runId, destination.anchor, query.data, comments.data, linkedComment.data, returning, restoringPosition, navigation.navigationKey]);
   const pages = comments.data?.pages;
   const linked = linkedComment.data;
   const rows = useMemo(() => [...new Map([...(linked ? [linked] : []), ...(pages?.flatMap((page) => page.items) ?? [])].map((comment) => [comment.id, comment])).values()]
@@ -150,7 +152,7 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
         }} />
       <CollaborationDetailAuxiliary key={`auxiliary:${identity}`} ref={auxiliary} scope={scope} issue={issue}
         destination={returning && (destination.anchor === "memory" || destination.memoryVersion) ? { ...destination, anchor: undefined, memoryVersion: null } : destination}
-        isScopeResume={navigation.isScopeResume} navigationKey={navigation.navigationKey} />
+        isScopeResume={restoringPosition} navigationKey={navigation.navigationKey} />
     </header>
     <div className="min-w-0 space-y-8">
     <section id="description" tabIndex={-1} className="min-w-0 space-y-3"><h3 className="text-title-sm font-semibold">{t(($) => $.detail.description)}</h3>
@@ -159,9 +161,9 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
     </section>
     <CollaborationStagePanel key={`stage:${identity}`} scope={scope} issue={issue} readUnavailable={query.isError} />
     <CollaborationDeliveryPanel key={`delivery:${identity}`} scope={scope} issue={issue} submissionId={returning ? null : destination.submissionId}
-      navigationKey={navigation.navigationKey} isScopeResume={navigation.isScopeResume}
+      navigationKey={navigation.navigationKey} isScopeResume={restoringPosition}
       onOpenKnowledge={(opener) => auxiliary.current?.open("knowledge", opener)} onSubmissionReady={(element) => {
-        if (latestReturn.current !== undefined) return;
+        if (restoringPosition || latestReturn.current !== undefined) return;
         const focus = () => {
           const container = element.closest<HTMLElement>('[data-tab-scroll-root="account-detail"]');
           if (container) container.scrollTop += element.getBoundingClientRect().top - container.getBoundingClientRect().top;
@@ -186,7 +188,7 @@ export function CollaborationDetail({ scope, destination, returnRestorationKey }
       {comments.isSuccess && rows.length === 0 && <p className="text-body text-muted-foreground">{t(($) => $.detail.noComments)}</p>}
       {comments.isSuccess && total === undefined && <p className="text-caption text-muted-foreground">{t(($) => $.recall.coverageUnknown)}</p>}
       <CollaborationCommentList key={`comments:${identity}`} scope={scope} issue={issue} comments={rows} threads={threads} allLoaded={allLoaded}
-        revealCommentId={navigation.isScopeResume || returning ? null : destination.commentId} revealKey={navigation.navigationKey} onReply={(comment) => setReplyTo({ identity, comment })}
+        revealCommentId={restoringPosition || returning ? null : destination.commentId} revealKey={navigation.navigationKey} onReply={(comment) => setReplyTo({ identity, comment })}
         onPrepareResult={canPrepareResult ? (comment) => setResultComment({ identity, comment }) : undefined} />
       {comments.hasNextPage && <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
         <Button variant="outline" className="pointer-coarse:min-h-11" disabled={comments.isFetchingNextPage} onClick={() => void comments.fetchNextPage()}>{t(($) => $.page.more)}</Button>

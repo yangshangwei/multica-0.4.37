@@ -116,7 +116,7 @@ describe("ChatWindow visibility and focus", () => {
     expect(composer?.closest("[inert]")).not.toBeNull();
     expect(composer?.closest('[aria-hidden="true"]')).not.toBeNull();
     expect(screen.queryByRole("textbox", { name: "Chat message" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("dialog", { name: "Chat" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "AI Chat" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ask Multica" })).toBeEnabled();
   });
 
@@ -124,12 +124,12 @@ describe("ChatWindow visibility and focus", () => {
     const user = userEvent.setup();
     renderChat();
     await user.click(screen.getByRole("button", { name: "Ask Multica" }));
-    const dialog = screen.getByRole("dialog", { name: "Chat" });
+    const dialog = screen.getByRole("dialog", { name: "AI Chat" });
     const composer = within(dialog).getByRole("textbox", { name: "Chat message" });
     expect(composer).toHaveFocus();
     await user.type(composer, "Unsent chat draft");
     await user.click(within(dialog).getByRole("button", { name: "Minimize" }));
-    expect(screen.queryByRole("dialog", { name: "Chat" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "AI Chat" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Ask Multica" })).toHaveFocus();
     await user.click(screen.getByRole("button", { name: "Ask Multica" }));
     expect(screen.getByRole("textbox", { name: "Chat message" })).toBe(composer);
@@ -150,7 +150,7 @@ describe("ChatWindow visibility and focus", () => {
     act(() => { useChatStore.getState().setOpen(false); });
     await waitFor(() => expect(screen.queryByText("No previous chats")).not.toBeInTheDocument());
     expect(screen.getByRole("button", { name: "Ask Multica" })).toHaveFocus();
-    expect(screen.queryByRole("dialog", { name: "Chat" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "AI Chat" })).not.toBeInTheDocument();
   });
 
   it("closes the composer add menu without unmounting the editor or restoring a hidden trigger", async () => {

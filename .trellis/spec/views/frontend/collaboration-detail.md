@@ -168,8 +168,15 @@ Standalone panel disclosures retain their own ancestor-reveal effects.
 
 File reference links open the drawer and become its return-focus target. Memory
 and memoryVersion destinations route explicitly into the portaled drawer; its DOM
-is outside the detail root. Repeated navigation keys re-open the requested view;
-scope resume does not. Comment/run/description navigation closes the drawer and
+is outside the detail root. Repeated explicit navigation keys re-open the
+requested view; scope resume and Back/Forward history traversal do not.
+`CollaborationDetail` combines `navigation.isScopeResume` and
+`navigation.isHistoryTraversal` for its normal scroll restoration, anchor
+focus guards and the existing comment/run/submission/memory child props.
+Both platform adapters deliberately mark history traversal separately from
+scope resume; checking only the latter would replay an old URL anchor and
+overwrite the saved memento. Notification returns retain their distinct
+`returnRestorationKey` owner. Comment/run/description navigation closes the drawer and
 nested previews before focusing the main target. Await modal close completion,
 replace any queued callback with the latest navigation, and do not focus inert
 background content. Panels with nested portals receive `active`; hidden panels
@@ -185,8 +192,8 @@ unavailable history read remains a discoverable factual error, not empty success
 Comment rows deduplicate by exact ID; the main progress stream must not repeat
 the same comment. Repeated comment/run/memory navigation uses the navigation
 intent key, opens enclosing disclosures, scrolls the real account-detail root and
-focuses the target. Scope resume restores tab scroll without consuming a fresh
-anchor; Server/viewer/issue changes remount scoped forms. Navigation goes through
+focuses the target. Scope resume and history traversal restore tab scroll
+without consuming a fresh anchor; Server/viewer/issue changes remount scoped forms. Navigation goes through
 the shared adapter in both clients.
 
 ### Recovery visibility and intentional form focus
@@ -254,7 +261,7 @@ snapshot/revision and permission guards when resizing the form.
 | Main anchor with nested preview open | Close all auxiliary overlays, then focus main target |
 | Empty manual current state with retained history/error | Keep AI entry/history/Stop/recovery accessible |
 | Protected Query denial | Remove private content and use existing scoped recovery |
-| Repeated explicit anchor versus scope resume | Fresh target focus versus saved scroll, respectively |
+| Repeated explicit anchor versus scope resume/history traversal | Fresh target focus versus saved scroll, respectively |
 | Thread already resolved when first shown | One fold row; expanding shows every member and Reopen |
 | Thread resolved on this page | Stays open; feedback and Reopen remain visible |
 | Retained comment/discussion request inside a resolved thread | Thread open, fold button disabled, recovery controls visible |
@@ -274,6 +281,16 @@ snapshot/revision and permission guards when resizing the form.
   or infer acceptance from done status.
 
 ## 6. Tests Required
+
+`collaboration-detail.test.tsx` owns the workbench anchored-history regression:
+with `isHistoryTraversal: true` and `isScopeResume: false`, call the existing
+scroll restoration with the actual detail container and do not focus the old
+description anchor. Keep the repeated fresh-anchor navigation regression too.
+`e2e/global-scope-navigation.spec.ts` proves a saved 800px anchored workbench
+returns at 800px on production Web and actual Electron, alongside unanchored
+620px and query-error recovery. A trace that proves departure at 800px and a new
+returning detail explicitly focuses the description at 325px diagnoses guard
+replay; do not weaken the expected position or add a delay to hide it.
 
 Views tests own actual happy-path wiring, accessible names/keyboard actions,
 captured-preflight edits, distinct AI confirmation, result/basis/decision/history

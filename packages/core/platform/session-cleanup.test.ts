@@ -13,6 +13,8 @@ import {
 import type { StorageAdapter, Workspace } from "../types";
 import { workspaceKeys } from "../workspace/queries";
 import { clearClientSessionData } from "./session-cleanup";
+import { ApiClient } from "../api/client";
+import { useModalStore } from "../modals";
 import { configureAdminControlStorage, saveAdminControlDraft, readAdminControlDraft } from "../admin/operation-draft";
 import {
   createIterationParticipationStore,
@@ -42,6 +44,17 @@ beforeEach(() => {
 });
 
 describe("clearClientSessionData", () => {
+  it("clears the pending workspace creation handoff on session teardown", () => {
+    const api = new ApiClient("https://api.example.test");
+    useModalStore.getState().queueWorkspaceIssueCreation({
+      api, sessionScope: api.getSessionScope(), userId: "viewer-1",
+      workspaceId: "ws-acme", workspaceSlug: "acme",
+      originPath: "/account?view=current", targetPath: "/acme/issues",
+    });
+    clearClientSessionData(new QueryClient(), makeStorage());
+    expect(useModalStore.getState().workspaceIssueCreation).toBeNull();
+  });
+
   it("clears live routed iteration disclosure intent and rejects the old session's toggle", () => {
     const pathname = "/acme/issues/ACME-1";
     const store = createIterationParticipationStore(pathname);

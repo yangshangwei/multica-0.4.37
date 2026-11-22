@@ -47,7 +47,7 @@ const test = base.extend<{ preferences: PreferencesFixture }>({
 test.use({ viewport: { width: 1440, height: 1000 }, trace: "retain-on-failure" });
 
 async function openPreferences(page: Page, slug: string) {
-  await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
+  await page.getByRole("link", { name: "Settings", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/settings`);
   await expect(page.getByRole("tab", { name: "Profile", exact: true })).toHaveAttribute("aria-selected", "true");
   await page.getByRole("tab", { name: "Preferences", exact: true }).click();
@@ -58,7 +58,7 @@ async function openPreferences(page: Page, slug: string) {
 
 test("grouped settings remain reachable from the sidebar and floating chat survives navigation and reload", async ({ page, preferences }) => {
   const { slug } = preferences;
-  await page.getByRole("link", { name: "Workspace settings", exact: true }).click();
+  await page.getByRole("link", { name: "Settings", exact: true }).click();
   await expect(page.getByRole("tab", { name: "Profile", exact: true })).toHaveAttribute("aria-selected", "true");
   const navigation = page.getByRole("tablist");
   for (const group of ["Personal", "Workspace", "Issues", "Connections"]) {
@@ -97,10 +97,10 @@ test("grouped settings remain reachable from the sidebar and floating chat survi
   await expect(page.getByText("Chat with your agents", { exact: true })).toBeVisible();
 
   // The dedicated Chat route must remain usable and own the sole chat surface.
-  await page.getByRole("link", { name: "Chat", exact: true }).click();
+  await page.getByRole("link", { name: "AI Chat", exact: true }).click();
   await expect(page).toHaveURL(`/${slug}/chat`);
   await expect(launcher).toHaveCount(0);
-  await expect(page.getByRole("heading", { name: "Chat", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "AI Chat", exact: true })).toBeVisible();
   await expect(page.getByText("Pick a conversation, or start a new one with +", { exact: true })).toBeVisible();
   await expect(page.getByText("Chat with your agents", { exact: true })).toHaveCount(0);
 });

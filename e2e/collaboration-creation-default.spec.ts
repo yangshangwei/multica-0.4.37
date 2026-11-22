@@ -6,7 +6,7 @@ import { legacyLaneMissing, loginLegacyOwner, openLegacySession, rawRequest, rea
 
 // Migration 744 makes a fresh installation open collaboration creation while
 // AI execution and host admission stay closed. The entry point is the
-// "New collaboration issue" action in the workspace sidebar's New menu
+// visible "Start collaboration" action in the sidebar's Start work group
 // (packages/views/collaboration/creation-form.tsx). Both tests change the
 // deployment-wide gate and restore its original booleans in `finally`.
 // Copy: packages/views/locales/en/collaboration.json creation.*.

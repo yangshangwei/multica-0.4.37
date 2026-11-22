@@ -28,6 +28,7 @@ import { Layers,
   Plus,
   Check,
   SquarePen,
+  MessageSquare,
   UsersRound,
   Bell,
   Inbox,
@@ -79,7 +80,8 @@ import { inboxKeys, deduplicateInboxItems, inboxUnreadSummaryOptions, hasOtherWo
 import { chatSessionsOptions } from "@multica/core/chat/queries";
 import { countUnreadChatMessages } from "@multica/core/chat/unread";
 import { useChatStore } from "@multica/core/chat";
-import { api, ApiError } from "@multica/core/api";
+import { api, ApiError, getApi } from "@multica/core/api";
+import { useModalStore } from "@multica/core/modals";
 import { useConfigStore } from "@multica/core/config";
 import { pinListOptions } from "@multica/core/pins/queries";
 import { useDeletePin, useReorderPins } from "@multica/core/pins/mutations";
@@ -127,7 +129,6 @@ type NavKey =
   | "iterations"
   | "triage"
   | "inbox"
-  | "chat"
   | "myIssues"
   | "issues"
   | "projects"
@@ -147,7 +148,6 @@ type NavLabelKey =
   | "iterations"
   | "triage"
   | "inbox"
-  | "chat"
   | "my_issues"
   | "issues"
   | "projects"
@@ -169,7 +169,6 @@ type NavItem = { key: NavKey; labelKey: NavLabelKey };
 const personalNav: NavItem[] = [
   { key: "inbox", labelKey: "inbox" },
   { key: "myIssues", labelKey: "my_issues" },
-  { key: "chat", labelKey: "chat" },
 ];
 
 const workNav: NavItem[] = [
@@ -217,12 +216,18 @@ function NavRow({
   label,
   isActive,
   trailing,
+  scopeCaption,
+  description,
 }: {
   href: string;
   label: string;
   isActive: boolean;
   /** Right-aligned adornment, e.g. an unread count. */
   trailing?: React.ReactNode;
+  /** Supporting scope text stays out of the action's stable accessible name. */
+  scopeCaption?: string;
+  /** Additional accessible detail, such as a positive unread-message count. */
+  description?: string;
 }) {
   const { pathname } = useNavigation();
   const Icon = routeIconForPath(href);
@@ -231,12 +236,18 @@ function NavRow({
       <SidebarMenuButton
         isActive={isActive}
         aria-current={isActive ? (pathname === href ? "page" : "location") : undefined}
-        title={label}
+        aria-label={scopeCaption ? label : undefined}
+        aria-description={description ?? scopeCaption}
+        title={scopeCaption ?? label}
         render={<AppLink href={href} />}
-        className="text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
+        className={cn("text-muted-foreground hover:not-data-active:bg-sidebar-accent/70 data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground",
+          scopeCaption && "h-auto min-h-10 py-1.5 pointer-coarse:min-h-11 data-active:font-medium")}
       >
         <Icon />
-        <span className="min-w-0 flex-1 truncate">{label}</span>
+        {scopeCaption ? <span className="flex min-w-0 flex-1 flex-col items-start">
+          <span className="max-w-full truncate">{label}</span>
+          <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{scopeCaption}</span>
+        </span> : <span className="min-w-0 flex-1 truncate">{label}</span>}
         {trailing && <span className="shrink-0">{trailing}</span>}
       </SidebarMenuButton>
     </SidebarMenuItem>
@@ -508,7 +519,11 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
   const { data: workspaces = EMPTY_WORKSPACES } = useQuery(workspaceListOptions());
   const { data: invitations = EMPTY_INVITATIONS } = useQuery(myInvitationListOptions());
   const creationDisabled = useConfigStore((state) => state.workspaceCreationDisabled);
-  const selectWorkspace = (slug: string) => onWorkspaceSelect ? onWorkspaceSelect(slug) : navigation.push(paths.workspace(slug).issues());
+  const selectWorkspace = (slug: string) => {
+    useModalStore.getState().cancelWorkspaceIssueCreation();
+    if (onWorkspaceSelect) onWorkspaceSelect(slug);
+    else navigation.push(paths.workspace(slug).issues());
+  };
   const pickerProps = { workspace, workspaces, invitations, creationDisabled, selectWorkspace };
   const { setOpenMobile } = useSidebar();
   const fullPath = currentPath(navigation);
@@ -518,11 +533,15 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
   const fade = useScrollFade(scroll, 24);
   return <Sidebar variant="inset">
     {topSlot}
-    <nav aria-label={t(($) => $.global_navigation.label)} className="flex min-h-0 flex-1 flex-col">
+    <nav aria-label={t(($) => $.global_navigation.label)} className="flex min-h-0 flex-1 flex-col" onClickCapture={(event) => {
+      if (event.target instanceof Element && event.target.closest("a[href]")) {
+        useModalStore.getState().cancelWorkspaceIssueCreation();
+      }
+    }}>
       <SidebarHeader className={cn("py-3", headerClassName)} style={headerStyle}>
         <div className="flex h-8 items-center px-2 text-body font-semibold">{PRODUCT_NAME}</div>
         {activeWorkspace && searchSlot && <SidebarMenu><SidebarMenuItem>{searchSlot}</SidebarMenuItem></SidebarMenu>}
-        <SidebarCreation workspace={activeWorkspace ? workspace : null} collaborationWorkspaceId={workspace?.id} />
+        <SidebarStartWork workspace={workspace} workspaceActive={activeWorkspace} />
       </SidebarHeader>
       <SidebarContent ref={scroll} style={fade}>
         <CollaborationNavigation workspaceActive={activeWorkspace} />
@@ -579,26 +598,117 @@ function SidebarAccountMenu() {
   </DropdownMenu>;
 }
 
-function SidebarCreation({ workspace, collaborationWorkspaceId }: { workspace: Workspace | null; collaborationWorkspaceId?: string }) {
+function SidebarStartWork({ workspace, workspaceActive }: { workspace: Workspace | null; workspaceActive: boolean }) {
   const { t } = useT("layout");
   const { t: collaboration } = useT("collaboration");
+  const navigation = useNavigation();
+  const fullPath = currentPath(navigation);
   const scope = useCollaborationScope();
   const [collaborationOpen, setCollaborationOpen] = useState(false);
-  const newTrigger = useRef<HTMLButtonElement>(null);
+  const collaborationTrigger = useRef<HTMLButtonElement>(null);
   const shortcut = useShortcut("createIssue");
+  const pendingCreation = useModalStore((state) => state.workspaceIssueCreation);
+  const userId = useAuthStore((state) => state.user?.id);
+  const authStatus = useAuthStore((state) => state.status);
+  const workspaceCaption = workspace?.name ?? t(($) => $.sidebar.open_workspace_to_create);
+  const chatCaption = workspace?.name ?? t(($) => $.sidebar.open_workspace_to_chat);
+
+  useEffect(() => {
+    if (!pendingCreation) return;
+    const client = getApi();
+    const viewer = useAuthStore.getState();
+    // A preview may retain the handoff, but only ModalRegistry can consume it.
+    useModalStore.getState().reconcileWorkspaceIssueCreation(pendingCreation, {
+      api: client, sessionScope: client.getSessionScope(),
+      userId: viewer.status === "authenticated" ? viewer.user?.id ?? null : null,
+      path: fullPath,
+    });
+  }, [pendingCreation, fullPath, userId, authStatus]);
+
+  const createIssue = () => {
+    if (!workspace) return;
+    if (workspaceActive) {
+      openCreateIssueWithPreference();
+      return;
+    }
+    const viewer = useAuthStore.getState();
+    if (viewer.status !== "authenticated" || !viewer.user) return;
+    const client = getApi();
+    const targetPath = paths.workspace(workspace.slug).issues();
+    useModalStore.getState().queueWorkspaceIssueCreation({
+      api: client, sessionScope: client.getSessionScope(), userId: viewer.user.id,
+      workspaceId: workspace.id, workspaceSlug: workspace.slug,
+      originPath: fullPath, targetPath,
+    });
+    navigation.push(targetPath);
+  };
+
   return <>
-    <SidebarMenu><SidebarMenuItem><DropdownMenu>
-      <DropdownMenuTrigger render={<SidebarMenuButton ref={newTrigger} className="text-muted-foreground"><Plus aria-hidden /><span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.new)}</span><ChevronDown aria-hidden className="size-3" /></SidebarMenuButton>} />
-      <DropdownMenuContent align="start" className="min-w-56">
-        <DropdownMenuItem disabled={!workspace} onClick={() => openCreateIssueWithPreference()} title={!workspace ? t(($) => $.sidebar.open_workspace_to_create) : undefined}>
-          <SquarePen aria-hidden /><span className="relative flex-1">{t(($) => $.sidebar.new_issue)}{workspace && <DraftDot />}</span>
-          {shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
-        </DropdownMenuItem>
-        <DropdownMenuItem aria-description={collaboration(($) => $.beta.description)} onClick={() => setCollaborationOpen(true)}><UsersRound aria-hidden /><span className="min-w-0 flex-1">{collaboration(($) => $.creation.entry)}</span><span aria-hidden="true" className="shrink-0 rounded bg-muted px-1 py-0.5 text-micro font-normal text-muted-foreground">{collaboration(($) => $.beta.label)}</span></DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu></SidebarMenuItem></SidebarMenu>
-    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${collaborationWorkspaceId ?? "account"}`} scope={scope} sourceWorkspaceId={collaborationWorkspaceId} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={newTrigger} />
+    <div role="group" aria-label={t(($) => $.sidebar.start_work)} className="min-w-0">
+      <SidebarGroupLabel>{t(($) => $.sidebar.start_work)}</SidebarGroupLabel>
+      <SidebarMenu className="gap-1">
+        <SidebarMenuItem><SidebarMenuButton disabled={!workspace} onClick={createIssue}
+          aria-label={t(($) => $.sidebar.new_issue)}
+          aria-description={workspace ? workspace.name : t(($) => $.sidebar.open_workspace_to_create)}
+          title={workspaceCaption}
+          className="h-auto min-h-10 bg-primary py-1.5 text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground pointer-coarse:min-h-11">
+          <SquarePen aria-hidden />
+          <span className="flex min-w-0 flex-1 flex-col items-start">
+            <span className="relative w-full truncate pr-2">{t(($) => $.sidebar.new_issue)}{workspaceActive && <DraftDot />}</span>
+            <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{workspaceCaption}</span>
+          </span>
+          {workspaceActive && shortcut && <ShortcutKeycaps shortcut={shortcut} decorative className="pointer-events-none ms-auto shrink-0" />}
+        </SidebarMenuButton></SidebarMenuItem>
+        <SidebarMenuItem><SidebarMenuButton ref={collaborationTrigger}
+          aria-label={t(($) => $.sidebar.start_collaboration)} aria-description={collaboration(($) => $.beta.description)}
+          className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11"
+          onClick={() => { useModalStore.getState().cancelWorkspaceIssueCreation(); setCollaborationOpen(true); }}>
+          <UsersRound aria-hidden />
+          <span className="flex min-w-0 flex-1 flex-col items-start">
+            <span className="max-w-full truncate">{t(($) => $.sidebar.start_collaboration)}</span>
+            <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{t(($) => $.sidebar.cross_workspace)}</span>
+          </span>
+          <span aria-hidden="true" className="shrink-0 rounded bg-muted px-1 py-0.5 text-micro font-normal text-muted-foreground">{collaboration(($) => $.beta.label)}</span>
+        </SidebarMenuButton></SidebarMenuItem>
+        {workspace ? workspaceActive ? <ActiveWorkspaceChatLink workspace={workspace} /> : <WorkspaceChatLink workspace={workspace} />
+          : <SidebarMenuItem><SidebarMenuButton disabled aria-label={t(($) => $.nav.chat)}
+            aria-description={t(($) => $.sidebar.open_workspace_to_chat)} className="h-auto min-h-10 py-1.5 text-muted-foreground pointer-coarse:min-h-11">
+            <MessageSquare aria-hidden />
+            <span className="flex min-w-0 flex-1 flex-col items-start"><span>{t(($) => $.nav.chat)}</span>
+              <span aria-hidden="true" className="max-w-full truncate text-caption font-normal">{chatCaption}</span></span>
+          </SidebarMenuButton></SidebarMenuItem>}
+      </SidebarMenu>
+    </div>
+    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={collaborationTrigger} />
   </>;
+}
+
+function WorkspaceChatLink({ workspace, unread }: { workspace: Workspace; unread?: number }) {
+  const { t } = useT("layout");
+  const { pathname } = useNavigation();
+  const href = paths.workspace(workspace.slug).chat();
+  const hasUnread = unread !== undefined && unread > 0;
+  const description = hasUnread
+    ? `${workspace.name} · ${t(($) => $.sidebar.chat_unread, { count: unread })}`
+    : workspace.name;
+  return <NavRow href={href} label={t(($) => $.nav.chat)} scopeCaption={workspace.name} isActive={isNavActive(pathname, href)}
+    description={description}
+    trailing={hasUnread ? <CappedNumberFlow value={unread} animated={false} className="ml-auto text-caption" /> : undefined} />;
+}
+
+/** Only a real workspace route observes its unread messages and live selection. */
+function ActiveWorkspaceChatLink({ workspace }: { workspace: Workspace }) {
+  const { pathname } = useNavigation();
+  const { data: chatSessions } = useQuery(chatSessionsOptions(workspace.id));
+  const activeSessionId = useChatStore((state) => state.activeSessionId);
+  const floatingChatOpen = useChatStore((state) => state.isOpen);
+  const appForeground = useAppForeground();
+  const href = paths.workspace(workspace.slug).chat();
+  // Foreground reading excludes the current thread; background replies stay unread.
+  const viewedSessionId = appForeground && (floatingChatOpen || isNavActive(pathname, href)) ? activeSessionId : null;
+  const unread = React.useMemo(() => chatSessions ? countUnreadChatMessages(chatSessions, viewedSessionId) : undefined,
+    [chatSessions, viewedSessionId]);
+  return <WorkspaceChatLink workspace={workspace} unread={unread} />;
 }
 
 function WorkspaceNotificationRealtime({ scope }: { scope: CollaborationScope }) {
@@ -706,7 +816,7 @@ function WorkspacePicker({ workspace, workspaces, invitations, creationDisabled,
 }
 
 function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute = false, iterationEnabled = false, triageEnabled = false, triageCount }: {
-  workspace: Workspace; personalCounts?: { inbox: number; chat: number }; pinned?: React.ReactNode; isActivePinnedRoute?: boolean;
+  workspace: Workspace; personalCounts?: { inbox: number }; pinned?: React.ReactNode; isActivePinnedRoute?: boolean;
   iterationEnabled?: boolean; triageEnabled?: boolean; triageCount?: number;
 }) {
   const { t } = useT("layout");
@@ -714,7 +824,7 @@ function WorkspaceLinks({ workspace, personalCounts, pinned, isActivePinnedRoute
   const p = paths.workspace(workspace.slug);
   const renderRows = (items: NavItem[]) => <SidebarMenu className="gap-0.5">{items.map((item) => {
     const href = p[item.key]();
-    const count = item.key === "inbox" ? personalCounts?.inbox : item.key === "chat" ? personalCounts?.chat : item.key === "triage" ? triageCount : undefined;
+    const count = item.key === "inbox" ? personalCounts?.inbox : item.key === "triage" ? triageCount : undefined;
     return <NavRow key={item.key} href={href} label={item.key === "issues" ? t(($) => $.sidebar.workspace_issues) : t(($) => $.nav[item.labelKey])}
       isActive={!(isActivePinnedRoute && (item.key === "issues" || item.key === "projects")) && isNavActive(pathname, href)}
       trailing={count !== undefined && (count > 0 || item.key === "triage") ? <CappedNumberFlow value={count} animated={false} className="ml-auto text-caption" /> : undefined} />;
@@ -757,35 +867,6 @@ function WorkspaceNavigation({ workspace, pickerProps }: { workspace: Workspace;
   const unreadCount = React.useMemo(
     () => deduplicateInboxItems(inboxItems).filter((i) => !i.read).length,
     [inboxItems],
-  );
-  // Chat tab unread badge: IM-style total of unread *messages* across chat
-  // threads (countUnreadChatMessages is the shared definition — mobile's tab
-  // badge derives from the same function, keeping the platforms in agreement).
-  const { data: chatSessions = [] } = useQuery({
-    ...chatSessionsOptions(wsId ?? ""),
-    enabled: !!wsId,
-  });
-  // The session the user is reading right now must not count: the thread list
-  // renders its row badge as 0 (auto mark-read is about to clear it), and a
-  // reply landing in the open conversation would otherwise flash a sidebar
-  // count with no matching row. "Reading right now" = a session is active, a
-  // chat surface is actually showing it (chat page route or the floating
-  // window), AND the app is in the foreground. When the app is backgrounded,
-  // auto mark-read is suppressed (MUL-4485) so the reply stays unread — the
-  // badge must count it, or the notification is silently eaten while the user
-  // is away. A remembered selection while both surfaces are closed also still
-  // counts, for the same reason.
-  const activeChatSessionId = useChatStore((s) => s.activeSessionId);
-  const floatingChatOpen = useChatStore((s) => s.isOpen);
-  const appForeground = useAppForeground();
-  const chatHref = p.chat();
-  const viewedChatSessionId =
-    appForeground && (floatingChatOpen || isNavActive(pathname, chatHref))
-      ? activeChatSessionId
-      : null;
-  const chatUnreadCount = React.useMemo(
-    () => countUnreadChatMessages(chatSessions, viewedChatSessionId),
-    [chatSessions, viewedChatSessionId],
   );
   // Cross-workspace unread summary backs the workspace-switcher dot. One
   // shared cache entry across workspaces; gated on an active workspace since
@@ -898,7 +979,7 @@ function WorkspaceNavigation({ workspace, pickerProps }: { workspace: Workspace;
 </>;
   return <>
     <WorkspacePicker {...pickerProps} otherUnread={otherWorkspaceUnread} unreadIds={unreadWsIds} />
-    <WorkspaceLinks workspace={workspace} personalCounts={{ inbox: unreadCount, chat: chatUnreadCount }} pinned={pinned} isActivePinnedRoute={isActivePinnedRoute}
+    <WorkspaceLinks workspace={workspace} personalCounts={{ inbox: unreadCount }} pinned={pinned} isActivePinnedRoute={isActivePinnedRoute}
       iterationEnabled={iterationCapability?.supported === true && iterationCapability.manual === true && iterationCapability.enabled === true}
       triageEnabled={triageSettings?.enabled === true} triageCount={triageCounts?.ready} />
   </>;

@@ -200,10 +200,10 @@ describe("useTabPresentation — live from cache", () => {
     expect(presentationOf("/acme/chat?session=s2").title).toBe("New chat");
   });
 
-  it("chat container: no session stays Chat", () => {
+  it("chat container: no session uses AI Chat", () => {
     expect(presentationOf("/acme/chat")).toEqual({
       visual: { kind: "icon", icon: "MessageSquare" },
-      title: "Chat",
+      title: "AI Chat",
     });
   });
 

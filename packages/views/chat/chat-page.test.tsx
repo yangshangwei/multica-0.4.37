@@ -372,7 +372,7 @@ describe("ChatPage responsive layout", () => {
       screen.queryByRole("button", { name: "select-thread" }),
     ).not.toBeInTheDocument();
     expect(screen.getByText("chat-input")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Chat" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "AI Chat" })).toBeInTheDocument();
   });
 
   it("keeps both panes at the compact breakpoint", () => {

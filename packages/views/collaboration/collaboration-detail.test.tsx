@@ -10,7 +10,7 @@ import { renderWithI18n } from "../test/i18n";
 import { CollaborationDetail } from "./collaboration-detail";
 
 const state = vi.hoisted(() => ({ comments: [] as { id: string; created_at: string }[], total: undefined as number | undefined, pending: true, hasNextPage: false, available: true, children: undefined as CollaborationIssue["ordinary_children"] }));
-const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
+const navigation = vi.hoisted(() => ({ push: vi.fn(), prefetch: vi.fn(), isScopeResume: false, isHistoryTraversal: false, navigationKey: 0, getShareableUrl: (path: string) => `https://detail.example${path}` }));
 const restoreScroll = vi.hoisted(() => vi.fn());
 const client = new QueryClient();
 const issue = parseCollaborationIssue(collaborationIssueFixture)!;
@@ -45,7 +45,7 @@ vi.mock("./comment-composer", () => ({ CollaborationCommentComposer: function Co
   const [value, setValue] = useState("");
   return <form data-testid="comment-composer"><textarea aria-label="Composer draft" value={value} onChange={(event) => setValue(event.target.value)} /></form>;
 } }));
-afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.hasNextPage = false; state.available = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
+afterEach(() => { client.clear(); state.comments = []; state.total = undefined; state.pending = true; state.hasNextPage = false; state.available = true; state.children = undefined; navigation.push.mockClear(); navigation.prefetch.mockClear(); navigation.isScopeResume = false; navigation.isHistoryTraversal = false; navigation.navigationKey = 0; restoreScroll.mockReset(); vi.restoreAllMocks(); });
 
 it.each(["en", "zh-Hans"] as const)("keeps the main journey visible and task metadata in its resource drawer in %s", async (locale) => {
   setApiInstance(new ApiClient("https://detail.example"));
@@ -192,6 +192,22 @@ it("restores an anchored detail on scope resume and refocuses repeated explicit 
   navigation.navigationKey += 1;
   mounted.rerender(view());
   expect(screen.getByTestId("linked-run")).toHaveFocus();
+});
+
+it("restores an anchored detail on history traversal without replaying its anchor", () => {
+  setApiInstance(new ApiClient("https://detail.example"));
+  state.pending = false;
+  navigation.isHistoryTraversal = true;
+  navigation.isScopeResume = false;
+  restoreScroll.mockImplementation((element: HTMLElement | null) => {
+    if (element) element.scrollTop = 800;
+  });
+  renderWithI18n(<section data-tab-scroll-root="account-detail"><CollaborationDetail scope={collaborationScope(issue.creator.user_id)}
+    destination={{ view: "participating", issueId: issue.id, commentId: null, anchor: "description" }} /></section>);
+  const scrollRoot = document.querySelector<HTMLElement>('[data-tab-scroll-root="account-detail"]')!;
+  expect(restoreScroll).toHaveBeenCalledWith(scrollRoot);
+  expect(scrollRoot.scrollTop).toBe(800);
+  expect(document.getElementById("description")).not.toHaveFocus();
 });
 
 // Wire/privacy matrices belong to core's child schema tests. This verifies the

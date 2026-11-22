@@ -1,0 +1,47 @@
+{
+  "accepted": true,
+  "tests": {
+    "startTime": "2026-11-22T15:52:52.696Z",
+    "duration": 44753.121,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "environment": {
+    "name": "check-20261122150539-63813",
+    "api": "http://localhost:18491",
+    "web": "http://localhost:13411",
+    "desktop_renderer": "http://127.0.0.1:5585",
+    "snapshot": "/Users/artisan/.multica/dev-tmp/sidebar-acceptance-20261122-h2w62amo",
+    "base_commit": "62d73b0c7cab115e9d5fa97374d9c3d3249dfdc8"
+  },
+  "web_build_id": "yDsy2OimYexBymfvk_xJD",
+  "runtime_hashes": {
+    "packages/core/modals/index.ts": "1d53a0d6c61005fb6589936f9729438ebbbad1dd2913e0277da0472dd29922c7",
+    "packages/core/modals/store.ts": "cdd3330f0e45cab6466286d5dd8ec24f6192f5111bb8d4740ee3d470098c8060",
+    "packages/core/platform/session-cleanup.ts": "8ccd21f52ed64b022ca20949fba35fc993f9ed28ebeff539aea1482d46159bc1",
+    "packages/views/collaboration/notifications-page.tsx": "f4f97787c94d3c2da610e31ed14ae4862af69f49459f537cdbd65b19f24c4b49",
+    "packages/views/layout/app-sidebar.tsx": "91f2a45e2ae575ece04bb502f3a8f2100467bdb5eac56a7564e7e23cef9409bb",
+    "packages/views/locales/en/chat.json": "a3984de12ac65fa7c20d8c5001c9e9ae8a2c5f14d7faf3d65adb2ed690558bf3",
+    "packages/views/locales/en/layout.json": "dc91da03acef66946c96652b0bca42b9fc900a5c5af1af0e278e50ec81983e47",
+    "packages/views/locales/zh-Hans/chat.json": "2dab719b03cb098303894041372a943bc589e3b3870342051cfb8b3e226ccb59",
+    "packages/views/locales/zh-Hans/layout.json": "e2b4e88471a1f9a1f32940485a1a73566808f4edaf2b6d71dbffbd52176fd88f",
+    "packages/views/modals/registry.tsx": "b3b468e216488c0fb902138f1fbdb9b611f6550824476656100e8531100d56f3",
+    "packages/views/collaboration/collaboration-detail.tsx": "b7f2e297d77eebd9473fe0d1677cdffcbb09c44facdc7d984c45380d83e07f4b"
+  },
+  "report": "artifacts/qa/sidebar-start-work-20261122/accepted/report.json",
+  "services_cleanup": "All task-owned API, Web and desktop-renderer processes stopped cleanly after exit0; retained isolated DB is TTL-managed.",
+  "impeccable_detector": {
+    "targets": [
+      "packages/views/layout/app-sidebar.tsx",
+      "packages/views/modals/registry.tsx"
+    ],
+    "findings": []
+  },
+  "visual_verdict": {
+    "score": 95,
+    "threshold": 90,
+    "verdict": "pass"
+  }
+}

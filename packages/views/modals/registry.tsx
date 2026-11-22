@@ -1,7 +1,13 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useModalStore } from "@multica/core/modals";
+import { useEffect, useSyncExternalStore, type ReactNode } from "react";
+import { useModalStore, type WorkspaceIssueCreationIntent } from "@multica/core/modals";
+import { getApi } from "@multica/core/api";
+import { useAuthStore } from "@multica/core/auth";
+import { useCurrentWorkspace } from "@multica/core/paths";
+import { getCurrentSlug, getCurrentWsId, subscribeToCurrentSlug } from "@multica/core/platform";
+import { openCreateIssueWithPreference } from "@multica/core/issues/stores/create-mode-store";
+import { currentPath, useNavigation } from "../navigation";
 import { CreateIssueDialog } from "./create-issue-dialog";
 import { CreateProjectModal } from "./create-project";
 import { FeedbackModal } from "./feedback";
@@ -17,6 +23,7 @@ export function ModalRegistry() {
   const modal = useModalStore((s) => s.modal);
   const data = useModalStore((s) => s.data);
   const close = useModalStore((s) => s.close);
+  const workspaceIssueCreation = useModalStore((s) => s.workspaceIssueCreation);
 
   let activeModal: ReactNode = null;
   switch (modal) {
@@ -68,10 +75,38 @@ export function ModalRegistry() {
 
   return (
     <>
+      {workspaceIssueCreation && <WorkspaceIssueCreationHandoff intent={workspaceIssueCreation} />}
       {activeModal}
       <IssueLimitUpgradeDialog />
     </>
   );
+}
+
+/** Only this real workspace host may admit an account-side creation intent. */
+function WorkspaceIssueCreationHandoff({ intent }: { intent: WorkspaceIssueCreationIntent }) {
+  const workspace = useCurrentWorkspace();
+  const navigation = useNavigation();
+  const path = currentPath(navigation);
+  const userId = useAuthStore((state) => state.user?.id);
+  const status = useAuthStore((state) => state.status);
+  const currentSlug = useSyncExternalStore(subscribeToCurrentSlug, getCurrentSlug, () => null);
+
+  useEffect(() => {
+    const client = getApi();
+    const viewer = useAuthStore.getState();
+    const ready = workspace?.id === getCurrentWsId() && workspace?.slug === currentSlug;
+    const consumed = useModalStore.getState().reconcileWorkspaceIssueCreation(intent, {
+      api: client,
+      sessionScope: client.getSessionScope(),
+      userId: viewer.status === "authenticated" ? viewer.user?.id ?? null : null,
+      path,
+      workspaceId: ready ? workspace?.id : null,
+      workspaceSlug: ready ? workspace?.slug : null,
+    });
+    if (consumed) openCreateIssueWithPreference();
+  }, [intent, path, workspace?.id, workspace?.slug, currentSlug, userId, status]);
+
+  return null;
 }
 
 /** Account shells can offer feedback without mounting workspace-only modals. */
