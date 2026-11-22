@@ -1,15 +1,71 @@
 package service
 
 import (
+	"context"
 	"encoding/json"
+	"errors"
 	"strings"
 	"testing"
 
 	"github.com/google/uuid"
+	"github.com/jackc/pgx/v5"
 	"github.com/multica-ai/multica/server/internal/auth"
 	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 )
+
+type notificationQueryTransactions struct{ begins int }
+
+func (tx *notificationQueryTransactions) Begin(context.Context) (pgx.Tx, error) {
+	tx.begins++
+	return nil, errors.New("unexpected notification transaction")
+}
+
+func TestCollaborationNotificationsRejectInvalidQueryBeforeTransaction(t *testing.T) {
+	for _, query := range []CollaborationNotificationsQuery{
+		{Limit: 0}, {Limit: 101}, {Limit: 50, View: "future"}, {Limit: 50, View: "unread", IncludeArchived: true},
+	} {
+		t.Run(query.View, func(t *testing.T) {
+			transactions := &notificationQueryTransactions{}
+			svc := &CollaborationService{TxStarter: transactions}
+			if _, err := svc.ListNotifications(context.Background(), query); !collaborationErrorCode(err, "invalid_notification_query") {
+				t.Fatalf("invalid query reached notification transport: %+v %v", query, err)
+			}
+			if transactions.begins != 0 {
+				t.Fatal("invalid notification query began a transaction")
+			}
+		})
+	}
+}
+
+func TestCollaborationNotificationArchiveIsIdempotentWithoutMarkingRead(t *testing.T) {
+	f := newCollaborationFixture(t)
+	if _, err := f.svc.Create(f.ctx, f.params(t)); err != nil {
+		t.Fatal(err)
+	}
+	ctx := collaborationContext(f.handler)
+	before, err := f.svc.ListNotifications(ctx, CollaborationNotificationsQuery{Limit: 50})
+	if err != nil || len(before.Items) != 1 || before.UnreadCount != 1 {
+		t.Fatalf("missing unread notification fixture: %+v %v", before, err)
+	}
+	id := before.Items[0].ID
+	first, err := f.svc.SetNotificationState(ctx, id, "archive")
+	if err != nil || first.ReadAt != nil || first.ArchivedAt == nil {
+		t.Fatalf("archive marked the notification read: %+v %v", first, err)
+	}
+	replay, err := f.svc.SetNotificationState(ctx, id, "archive")
+	if err != nil || replay.ReadAt != nil || replay.ArchivedAt == nil || !replay.ArchivedAt.Equal(*first.ArchivedAt) {
+		t.Fatalf("archive retry changed durable recipient state: %+v %v", replay, err)
+	}
+	after, err := f.svc.ListNotifications(ctx, CollaborationNotificationsQuery{Limit: 50})
+	if err != nil || len(after.Items) != 0 || after.UnreadCount != 0 {
+		t.Fatalf("archived unread notification remains active or counted: %+v %v", after, err)
+	}
+	retained, err := f.svc.ListNotifications(ctx, CollaborationNotificationsQuery{Limit: 50, IncludeArchived: true})
+	if err != nil || len(retained.Items) != 1 || retained.Items[0].ReadAt != nil || retained.Items[0].ArchivedAt == nil {
+		t.Fatalf("legacy mixed history lost archived unread state: %+v %v", retained, err)
+	}
+}
 
 func TestCollaborationBodyEditNotifiesOnlyAddedHumanMentions(t *testing.T) {
 	f := newCollaborationFixture(t)

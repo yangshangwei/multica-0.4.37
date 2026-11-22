@@ -1,43 +1,29 @@
-import { useRef, useState, type ReactElement } from "react";
 import { Bell } from "lucide-react";
-import { useInfiniteQuery, useQueryClient, type InfiniteData, type UseInfiniteQueryResult } from "@tanstack/react-query";
-import type { ApiClient } from "@multica/core/api";
-import { collaborationNotificationsOptions, useUpdateCollaborationNotification, type CollaborationScope } from "@multica/core/collaboration";
-import { accountPath, type AccountView } from "@multica/core/paths";
-import { Button } from "@multica/ui/components/ui/button";
-import { Popover, PopoverContent, PopoverTrigger, PopoverTitle } from "@multica/ui/components/ui/popover";
-import { AppLink, resolveClickIntent } from "../navigation";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import { collaborationNotificationsOptions, type CollaborationScope } from "@multica/core/collaboration";
+import { accountPath } from "@multica/core/paths";
+import { AppLink } from "../navigation";
 import { useT } from "../i18n";
-import { CollaborationQueryState } from "./query-state";
-import { recoverFocus } from "./focus";
 
-type NotificationPage = NonNullable<Awaited<ReturnType<ApiClient["getCollaborationNotifications"]>>>;
-type NotificationsQuery = UseInfiniteQueryResult<InfiniteData<NotificationPage>>;
-interface NotificationProps { scope: CollaborationScope; view: AccountView;
-  renderTrigger?: (label: string, unreadCount: number | undefined) => ReactElement;
-}
-
-export function CollaborationNotifications(props: NotificationProps) {
-  const client = useQueryClient();
-  const query = useInfiniteQuery({ ...collaborationNotificationsOptions(client, props.scope), enabled: props.scope.userId !== "" });
-  return <CollaborationNotificationsPopover {...props} query={query} />;
-}
-
-/** The sidebar owns the live query while this popover unmounts with its disclosure. */
-export function CollaborationNotificationsPopover({ scope, view, renderTrigger, query }: NotificationProps & { query: NotificationsQuery }) {
+/** Standalone workbench entry; the sidebar owns its own protected count observer. */
+export function CollaborationNotifications({ scope }: { scope: CollaborationScope }) {
   const { t } = useT("collaboration");
-  const [open, setOpen] = useState(false);
-  const navigating = useRef(false);
-  const update = useUpdateCollaborationNotification(scope);
-  const list = useRef<HTMLUListElement>(null);
-  // Mark read and Archive remove their own button or row once the list refetches.
-  const change = (id: string, action: "read" | "archive") => void update.mutateAsync({ id, action }).catch(() => undefined)
-    .then(() => query.refetch({ cancelRefetch: false })).then(() => recoverFocus(() => list.current));
-  const items = [...new Map((query.data?.pages.flatMap((page) => page.items) ?? []).map((item) => [item.id, item])).values()];
-  const unreadCount = query.data?.pages[0]?.unread_count;
-  const triggerLabel = unreadCount === undefined ? t(($) => $.page.notifications)
-    : `${t(($) => $.page.notifications)} ${t(($) => $.page.unread, { count: unreadCount })}`;
-  const notificationLabel = (kind: string) => {
+  const client = useQueryClient();
+  const query = useInfiniteQuery({ ...collaborationNotificationsOptions(client, scope), enabled: scope.userId !== "" });
+  const unread = query.data?.pages[0]?.unread_count;
+  const label = unread !== undefined && unread > 0
+    ? `${t(($) => $.notifications.title)} ${t(($) => $.page.unread, { count: unread })}` : t(($) => $.notifications.title);
+  return <AppLink href={accountPath({ view: "notifications", notificationView: "unread" })} aria-label={label} title={label}
+    className="inline-flex min-h-8 min-w-0 items-center gap-2 rounded-md px-2 text-body text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring pointer-coarse:min-h-11">
+    <Bell aria-hidden="true" className="size-4 shrink-0" /><span>{t(($) => $.page.notifications)}</span>
+    {unread !== undefined && unread > 0 && <span aria-hidden="true" className="text-caption tabular-nums">{unread}</span>}
+  </AppLink>;
+}
+
+/** Keep event labels factual and forward-compatible, including system results. */
+export function useCollaborationNotificationLabel() {
+  const { t } = useT("collaboration");
+  return (kind: string) => {
     switch (kind) {
       case "ai_completed": return t(($) => $.notifications.aiCompleted);
       case "ai_failed": return t(($) => $.notifications.aiFailed);
@@ -55,28 +41,4 @@ export function CollaborationNotificationsPopover({ scope, view, renderTrigger, 
       default: return t(($) => $.activity.kinds.other);
     }
   };
-  return <div className={renderTrigger ? "min-w-0" : "ml-auto min-w-0"}><Popover open={open} onOpenChange={(next) => { if (next) navigating.current = false; setOpen(next); }}>
-    {renderTrigger ? <PopoverTrigger render={renderTrigger(triggerLabel, unreadCount)} /> : <PopoverTrigger render={<Button variant="ghost" aria-label={triggerLabel} title={triggerLabel} className="min-w-11 pointer-coarse:min-h-11" />}>
-      <Bell aria-hidden="true" className="size-4 md:hidden" /><span className="hidden md:inline">{t(($) => $.page.notifications)}</span>
-      {unreadCount !== undefined && <><span aria-hidden="true" className="tabular-nums md:hidden">{unreadCount}</span>
-        <span className="hidden tabular-nums md:inline">{t(($) => $.page.unread, { count: unreadCount })}</span></>}
-    </PopoverTrigger>}
-    <PopoverContent align="end" finalFocus={() => !navigating.current} className="max-h-[70vh] w-96 max-w-[calc(100vw-2rem)] min-w-0 overflow-y-auto p-4">
-      <PopoverTitle>{t(($) => $.page.notifications)}</PopoverTitle>
-      {query.isPending && <p role="status">{t(($) => $.page.loading)}</p>}
-      {(query.error || update.error) && <CollaborationQueryState error={query.error ?? update.error} retry={() => void query.refetch()} />}
-      {query.isSuccess && items.length === 0 && <p className="py-6 text-body text-muted-foreground">{t(($) => $.page.emptyNotifications)}</p>}
-      <ul ref={list} tabIndex={-1} className="space-y-4 outline-none">{items.map((item) => <li key={item.id} className="space-y-2 [overflow-wrap:anywhere]">
-        {item.kind === "removed" ? <p className="text-body text-muted-foreground">{notificationLabel(item.kind)}</p> : item.can_open === true ? <>
-          <AppLink href={accountPath({ view: item.run_id ? "participating" : view, issueId: item.issue_id, runId: item.run_id, commentId: item.source_kind === "comment" ? item.source_id : null, anchor: item.source_kind === "body" ? "description" : undefined })}
-            className="block text-body font-medium underline-offset-4 hover:underline pointer-coarse:py-3" onClick={(event) => { navigating.current = resolveClickIntent(event) === "push" && !event.shiftKey; setOpen(false); }}>{item.issue_title}</AppLink>
-          <p className="text-caption text-muted-foreground">{item.is_mention ? t(($) => $.notifications.mention) : notificationLabel(item.kind)}</p>
-        </> : <p className="text-body text-muted-foreground">{t(($) => $.page.notificationUnavailable)}</p>}
-        <div className="flex flex-wrap gap-2">{item.read_at === null && <Button size="sm" variant="outline" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => change(item.id, "read")}>{t(($) => $.page.read)}</Button>}
-          <Button size="sm" variant="ghost" disabled={update.isPending} className="pointer-coarse:min-h-11" onClick={() => change(item.id, "archive")}>{t(($) => $.page.archive)}</Button>
-        </div>
-      </li>)}</ul>
-      {query.hasNextPage && <Button variant="ghost" disabled={query.isFetchingNextPage} className="mt-4 pointer-coarse:min-h-11" onClick={() => void query.fetchNextPage()}>{t(($) => $.page.more)}</Button>}
-    </PopoverContent></Popover>
-  </div>;
 }

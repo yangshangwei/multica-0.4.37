@@ -19,7 +19,13 @@ SELECT sqlc.embed(n), COALESCE(i.title, '')::text AS issue_title,
 FROM collaboration_notification n
 LEFT JOIN issue i ON i.id = n.issue_id
 WHERE n.recipient_user_id = sqlc.arg(recipient_id)::uuid
-  AND (sqlc.arg(include_archived)::boolean OR n.archived_at IS NULL)
+  AND CASE sqlc.arg(view)::text
+      WHEN '' THEN sqlc.arg(include_archived)::boolean OR n.archived_at IS NULL
+      WHEN 'all' THEN n.archived_at IS NULL
+      WHEN 'unread' THEN n.archived_at IS NULL AND n.read_at IS NULL
+      WHEN 'archived' THEN n.archived_at IS NOT NULL
+      ELSE false
+  END
   AND (sqlc.narg(before_at)::timestamptz IS NULL
        OR (n.created_at, n.id) < (sqlc.narg(before_at)::timestamptz, sqlc.narg(before_id)::uuid))
 ORDER BY n.created_at DESC, n.id DESC

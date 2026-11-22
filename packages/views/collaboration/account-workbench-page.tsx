@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { collaborationWorkbenchOptions, useCollaborationScope } from "@multica/core/collaboration";
 import { useCollaborationRealtime } from "@multica/core/realtime";
-import { accountPath, accountRouteKey, type AccountDestination } from "@multica/core/paths";
+import { accountPath, accountRouteKey, type AccountDestination, type AccountWorkbenchDestination } from "@multica/core/paths";
 import { Button } from "@multica/ui/components/ui/button";
 import { Input } from "@multica/ui/components/ui/input";
 import { AppLink } from "../navigation";
@@ -13,6 +13,7 @@ import { useCollaborationLabels } from "./labels";
 import { CollaborationQueryState } from "./query-state";
 import { CollaborationDetail } from "./collaboration-detail";
 import { CollaborationNotifications } from "./notifications";
+import { CollaborationNotificationsPage } from "./notifications-page";
 import { CollaborationCreationEntry } from "./creation-form";
 import { useRestoredScrollRef, useRestoredViewState, useViewStateWriter } from "../platform";
 import { AdminCollaborationPage, AdminCollaborationEntry } from "../admin/collaboration/collaboration-page";
@@ -20,7 +21,8 @@ import adminStyles from "../admin/admin-visual.module.css";
 
 /** Account identity owns every query; selected detail is independent of list membership. */
 export function AccountWorkbenchPage({ destination, administrationHref, navigationInSidebar = false }: { destination: AccountDestination; administrationHref?: string; navigationInSidebar?: boolean }) {
-  return destination.administration ? <AccountAdministrationPage issueId={destination.issueId} />
+  return destination.view === "notifications" ? <CollaborationNotificationsPage destination={destination} />
+    : destination.administration ? <AccountAdministrationPage issueId={destination.issueId} />
     : <CollaborationWorkbenchPage destination={destination} administrationHref={administrationHref} navigationInSidebar={navigationInSidebar} />;
 }
 
@@ -33,7 +35,7 @@ function AccountAdministrationPage({ issueId }: { issueId: string | null }) {
   </main>;
 }
 
-function CollaborationWorkbenchPage({ destination, administrationHref, navigationInSidebar }: { destination: AccountDestination; administrationHref?: string; navigationInSidebar: boolean }) {
+function CollaborationWorkbenchPage({ destination, administrationHref, navigationInSidebar }: { destination: AccountWorkbenchDestination; administrationHref?: string; navigationInSidebar: boolean }) {
   const { t } = useT("collaboration");
   const scope = useCollaborationScope();
   useCollaborationRealtime(scope, destination.issueId);
@@ -50,7 +52,7 @@ function CollaborationWorkbenchPage({ destination, administrationHref, navigatio
       <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-3 gap-y-2 md:gap-x-8 [&>button]:h-auto [&>button]:min-h-8 [&>button]:whitespace-normal pointer-coarse:[&>button]:min-h-11">
         {!navigationInSidebar && <CollaborationCreationEntry key={`create:${scope.apiScope}:${scope.userId}`} scope={scope} />}
         {administrationHref && <AdminCollaborationEntry href={administrationHref} />}
-        {!navigationInSidebar && <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} view={destination.view} />}
+        {!navigationInSidebar && <CollaborationNotifications key={`${scope.apiScope}:${scope.userId}`} scope={scope} />}
       </div>
       <p className="w-full text-caption text-muted-foreground">{t(($) => $.beta.description)}</p>
     </header>
@@ -58,7 +60,7 @@ function CollaborationWorkbenchPage({ destination, administrationHref, navigatio
   </main>;
 }
 
-function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCollaborationScope>; destination: AccountDestination }) {
+function WorkbenchBody({ scope, destination }: { scope: ReturnType<typeof useCollaborationScope>; destination: AccountWorkbenchDestination }) {
   const { t } = useT("collaboration");
   const labels = useCollaborationLabels();
   const client = useQueryClient();

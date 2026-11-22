@@ -3,6 +3,7 @@ import { authenticateCollaborationEditor } from "./fixtures/collaboration-editin
 import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
 import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, recordedAccountPath,
   removeRecordViewer, seedCollaborationRecordJourney, showRecordedUsage } from "./fixtures/collaboration-records";
+import { openCollaborationNotifications, notificationList, notificationPath } from "./fixtures/collaboration-notifications";
 
 test("Web shares ordinary child references and retained run records through account notification links", async ({ page, browser }, testInfo) => {
   test.setTimeout(180_000);
@@ -89,22 +90,37 @@ test("Web shares ordinary child references and retained run records through acco
     await expect(outsideChildren.getByText(fixture.child.title, { exact: true })).toBeVisible();
     await outside.keyboard.press("Escape");
     await expect(outside.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
-    await outside.getByRole("button", { name: /Notifications/ }).click();
-    const notification = outside.getByRole("listitem").filter({ has: outside.getByText("AI execution failed", { exact: true }) });
-    await notification.getByRole("link", { name: fixture.issue.title, exact: true }).click();
-    await expect(outside).toHaveURL(new RegExp(`#run-${fixture.runId}$`));
+    const notificationsList = await openCollaborationNotifications(outside, "all");
+    const notification = notificationsList.locator("[data-notification-id]").filter({ has: outside.getByText("AI execution failed", { exact: true }) });
+    await expect(notification).toHaveCount(1);
+    const notificationId = await notification.getAttribute("data-notification-id");
+    const notificationLink = notification.getByRole("link", { name: fixture.issue.title, exact: true });
+    const href = await notificationLink.getAttribute("href");
+    if (!notificationId || !href) throw new Error("The recorded result notification has no exact destination");
+    const selectedUrl = new URL(href, outside.url());
+    expect(selectedUrl.pathname + selectedUrl.search + selectedUrl.hash).toBe(notificationPath("all", notificationId, fixture.issue.id, `#run-${fixture.runId}`));
+    await notificationLink.click();
+    await expect(outside).toHaveURL(selectedUrl.href);
+    await expect(notification).toHaveAttribute("data-selected", "true");
+    await expect(notificationsList).toBeVisible();
+    await expect(outside.locator('[data-slot="popover-content"]').filter({ has: outside.getByText("Notifications", { exact: true }) })).toHaveCount(0);
     const run = outside.locator(`[id="run-${fixture.runId}"]`);
     await expect(run).toBeFocused();
     await exerciseRecordedPages(outside, fixture);
     await run.getByRole("button", { name: `Hide records for ${fixture.runId}`, exact: true }).click();
-    await expect(outside).toHaveURL(new URL(recordedAccountPath(fixture), outside.url()).href);
-    await outside.getByRole("button", { name: /Notifications/ }).click();
-    await outside.getByRole("listitem").filter({ has: outside.getByText("AI execution failed", { exact: true }) }).getByRole("link", { name: fixture.issue.title, exact: true }).click();
+    const closedUrl = new URL(selectedUrl);
+    closedUrl.hash = "";
+    await expect(outside).toHaveURL(closedUrl.href);
+    await expect(outside.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+    await notificationLink.click();
+    await expect(outside).toHaveURL(selectedUrl.href);
     await expect(run.getByText(fixture.input, { exact: true })).toBeVisible();
     await expect(run).toBeFocused();
     await run.getByRole("button", { name: `Hide records for ${fixture.runId}`, exact: true }).evaluate((element) => element.scrollIntoView({ block: "start" }));
     await outside.screenshot({ path: testInfo.outputPath("web-records-wide.png"), animations: "disabled" });
     await outside.setViewportSize({ width: 390, height: 844 });
+    await expect(notificationList(outside)).toBeHidden();
+    await expect(outside.getByRole("link", { name: "Back to notifications", exact: true })).toBeVisible();
     await showRecordedUsage(outside, fixture.runId);
     expect(await outside.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     await outside.screenshot({ path: testInfo.outputPath("web-records-narrow.png"), animations: "disabled", fullPage: false });
@@ -122,9 +138,11 @@ test("Web shares ordinary child references and retained run records through acco
     expect(await outside.evaluate((input) => Object.values(localStorage).some((value) => value.includes(input)), fixture.input)).toBe(false);
 
     await removeRecordViewer(fixture);
-    await expect(outside.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+    await expect(outside.locator('[data-tab-scroll-root="account-detail"]').getByText("Issue unavailable", { exact: true })).toBeVisible();
     await expect(outside.getByText(fixture.input, { exact: true })).toHaveCount(0);
     await expect(outside.getByRole("region", { name: "Run records", exact: true })).toHaveCount(0);
+    await outside.goto(sharedLink);
+    await expect(outside.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
     await outside.reload();
     await expect(outside.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
     const denied = await fetch(`${apiUrl}/api/collaboration/issues/${fixture.issue.id}/runs/${fixture.runId}/records`, { headers: { Authorization: `Bearer ${fixture.viewer.getToken()!}` } });
@@ -135,6 +153,7 @@ test("Web shares ordinary child references and retained run records through acco
     expect(oldResult?.run_id).toBeUndefined();
     await testInfo.attach("record-journey-evidence", { contentType: "application/json", body: JSON.stringify({ issueId: fixture.issue.id,
       childId: fixture.child.id, groupId: fixture.groupId, representativeRunId: fixture.runId, sharedLink, childrenHints: hints,
+      notificationHref: selectedUrl.href,
       catalogRequests, recordSource: "seeded retained source history; runtime ingestion verified separately", pageErrors: errors }, null, 2) });
   } finally { await outsideContext.close(); }
   expect(errors).toEqual([]);

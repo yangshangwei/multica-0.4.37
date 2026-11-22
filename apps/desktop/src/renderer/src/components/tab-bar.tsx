@@ -226,8 +226,9 @@ function SortableTabItem({
   const presentation = useTabPresentation(tab.url, tab.title);
   const { t: collaborationT } = useT("collaboration");
   const account = parseAccountPath(tab.url);
-  const title = account ? collaborationT(($) => $.page.title) : presentation.title;
-  const visual = account ? { kind: "icon", icon: "ListTodo" } as const : presentation.visual;
+  const notifications = account?.view === "notifications";
+  const title = account ? notifications ? collaborationT(($) => $.notifications.title) : collaborationT(($) => $.page.title) : presentation.title;
+  const visual = account ? { kind: "icon", icon: notifications ? "Bell" : "ListTodo" } as const : presentation.visual;
 
   // Persist the active tab's resolved title so it survives as the next
   // session's first-frame fallback. The tab strip itself always renders the

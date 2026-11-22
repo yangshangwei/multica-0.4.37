@@ -221,6 +221,32 @@
     "memoryUnsupported": "运行时不支持协作上下文"
   },
   "notifications": {
+    "title": "协作通知",
+    "description": "查看跨工作空间的协作通知。",
+    "views": "通知视图",
+    "list": "通知列表",
+    "loading": "正在加载通知...",
+    "filters": {
+      "unread": "未读",
+      "all": "全部",
+      "archived": "已归档"
+    },
+    "empty": {
+      "unread": "暂无未读通知。",
+      "all": "暂无待查看的通知。",
+      "archived": "暂无已归档通知。"
+    },
+    "select": "选择通知，查看对应的协作任务。",
+    "back": "返回通知列表",
+    "filteredOut": "此通知不在当前视图中，你仍可在这里查看对应任务。",
+    "refresh": "刷新通知",
+    "unread": "未读",
+    "reading": "正在标为已读...",
+    "archiving": "正在归档...",
+    "readError": "无法将此通知标为已读，请重试。",
+    "archiveError": "无法归档此通知，请重试。",
+    "retryRead": "重试标为已读",
+    "retryArchive": "重试归档",
     "assigned": "任务已分配给你",
     "removed": "你已被移出此协作任务。",
     "aiCompleted": "AI 执行已完成",

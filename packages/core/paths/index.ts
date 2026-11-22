@@ -5,7 +5,7 @@ export {
 } from "./paths";
 export type { WorkspacePaths } from "./paths";
 export { accountPath, parseAccountPath, accountRouteKey } from "./account";
-export type { AccountDestination, AccountView } from "./account";
+export type { AccountDestination, AccountView, AccountTarget, AccountWorkbenchDestination, AccountNotificationsDestination } from "./account";
 export { RESERVED_SLUGS, isReservedSlug } from "./reserved-slugs";
 export {
   WORKSPACE_PAGES,

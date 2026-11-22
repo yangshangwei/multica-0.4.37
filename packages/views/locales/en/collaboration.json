@@ -221,6 +221,32 @@
     "memoryUnsupported": "This runtime does not support shared context"
   },
   "notifications": {
+    "title": "Collaboration notifications",
+    "description": "Notifications from your cross-workspace collaboration.",
+    "views": "Notification views",
+    "list": "Notifications",
+    "loading": "Loading notifications...",
+    "filters": {
+      "unread": "Unread",
+      "all": "All",
+      "archived": "Archived"
+    },
+    "empty": {
+      "unread": "No unread notifications.",
+      "all": "No notifications to review.",
+      "archived": "No archived notifications."
+    },
+    "select": "Select a notification to view its collaboration issue.",
+    "back": "Back to notifications",
+    "filteredOut": "This notification is outside the current view. You can continue viewing its issue here.",
+    "refresh": "Refresh notifications",
+    "unread": "Unread",
+    "reading": "Marking read...",
+    "archiving": "Archiving...",
+    "readError": "Could not mark this notification as read. Try again.",
+    "archiveError": "Could not archive this notification. Try again.",
+    "retryRead": "Retry marking read",
+    "retryArchive": "Retry archiving",
     "assigned": "Assigned to you",
     "removed": "You were removed from this collaboration issue.",
     "aiCompleted": "AI execution completed",

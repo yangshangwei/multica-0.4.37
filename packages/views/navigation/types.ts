@@ -1,6 +1,8 @@
 export interface NavigationAdapter {
   /** A global scope switch restores scroll instead of replaying a URL anchor. */
   isScopeResume?: boolean;
+  /** Transient committed Back/Forward intent; explicit navigation clears it. */
+  isHistoryTraversal?: boolean;
   /** Changes for explicit opens even when the destination URL is unchanged. */
   navigationKey?: number;
   push(path: string): void;

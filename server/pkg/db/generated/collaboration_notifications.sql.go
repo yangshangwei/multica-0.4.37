@@ -114,15 +114,22 @@ SELECT n.id, n.recipient_user_id, n.issue_id, n.event_seq, n.kind, n.is_mention,
 FROM collaboration_notification n
 LEFT JOIN issue i ON i.id = n.issue_id
 WHERE n.recipient_user_id = $1::uuid
-  AND ($2::boolean OR n.archived_at IS NULL)
-  AND ($3::timestamptz IS NULL
-       OR (n.created_at, n.id) < ($3::timestamptz, $4::uuid))
+  AND CASE $2::text
+      WHEN '' THEN $3::boolean OR n.archived_at IS NULL
+      WHEN 'all' THEN n.archived_at IS NULL
+      WHEN 'unread' THEN n.archived_at IS NULL AND n.read_at IS NULL
+      WHEN 'archived' THEN n.archived_at IS NOT NULL
+      ELSE false
+  END
+  AND ($4::timestamptz IS NULL
+       OR (n.created_at, n.id) < ($4::timestamptz, $5::uuid))
 ORDER BY n.created_at DESC, n.id DESC
-LIMIT $5::int
+LIMIT $6::int
 `
 
 type ListCollaborationNotificationsParams struct {
 	RecipientID     pgtype.UUID        `json:"recipient_id"`
+	View            string             `json:"view"`
 	IncludeArchived bool               `json:"include_archived"`
 	BeforeAt        pgtype.Timestamptz `json:"before_at"`
 	BeforeID        pgtype.UUID        `json:"before_id"`
@@ -138,6 +145,7 @@ type ListCollaborationNotificationsRow struct {
 func (q *Queries) ListCollaborationNotifications(ctx context.Context, arg ListCollaborationNotificationsParams) ([]ListCollaborationNotificationsRow, error) {
 	rows, err := q.db.Query(ctx, listCollaborationNotifications,
 		arg.RecipientID,
+		arg.View,
 		arg.IncludeArchived,
 		arg.BeforeAt,
 		arg.BeforeID,

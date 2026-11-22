@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { accountPath } from "@multica/core/paths";
+import { accountPath, accountRouteKey } from "@multica/core/paths";
 import { getActiveTab, mergePersistedTabs, useTabStore } from "./tab-store";
 
 const a = accountPath({ issueId: "11111111-1111-4111-8111-111111111111" });
@@ -7,6 +7,58 @@ const b = accountPath({ view: "participating", issueId: "22222222-2222-4222-8222
 beforeEach(() => useTabStore.getState().reset());
 
 describe("persistent account tab", () => {
+  it("keeps history traversal transient through persistence, rehydration and owner reset", () => {
+    const store = useTabStore.getState();
+    store.setSessionOwner("server:viewer");
+    store.switchAccount(a);
+    store.switchAccount(b);
+    store.goBack();
+    expect(useTabStore.getState().isHistoryTraversal).toBe(true);
+    const serialized = JSON.parse(localStorage.getItem("multica_tabs")!).state;
+    expect(serialized.isHistoryTraversal).toBeUndefined();
+    expect(mergePersistedTabs(serialized, useTabStore.getState()).isHistoryTraversal).toBe(false);
+    store.setSessionOwner("server:other-viewer");
+    expect(useTabStore.getState().isHistoryTraversal).toBe(false);
+    store.switchAccount(a);
+    store.switchAccount(b);
+    store.goBack();
+    store.reset();
+    expect(useTabStore.getState().isHistoryTraversal).toBe(false);
+  });
+  it("restores notification filters, exact selections and separate list/detail mementos through history and scope resume", () => {
+    const store = useTabStore.getState();
+    store.setSessionOwner("server:viewer");
+    store.switchWorkspace("acme", "/acme/projects/project-a");
+    const first = "/account?view=notifications&filter=unread&notification=33333333-3333-4333-8333-333333333333&issue=11111111-1111-4111-8111-111111111111#description";
+    const second = "/account?view=notifications&filter=unread&notification=44444444-4444-4444-8444-444444444444&issue=11111111-1111-4111-8111-111111111111#comment-55555555-5555-4555-8555-555555555555";
+    const archived = "/account?view=notifications&filter=archived";
+    store.switchAccount(first);
+    const id = getActiveTab(useTabStore.getState())!.id;
+    store.commitScrollMemento(id, accountRouteKey(first)!, { "account-notifications-list": { top: 240, height: 1800 }, "account-detail": { top: 620, height: 2400 } });
+    store.switchAccount(second);
+    store.commitScrollMemento(id, accountRouteKey(second)!, { "account-notifications-list": { top: 240, height: 1800 }, "account-detail": { top: 920, height: 2400 } });
+    store.switchAccount(archived);
+    expect(useTabStore.getState().accountGroup?.tabs).toHaveLength(1);
+    store.goBack();
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(second);
+    store.goBack();
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(first);
+    store.goForward();
+    expect(getActiveTab(useTabStore.getState())?.url).toBe(second);
+    store.switchWorkspace("acme");
+    expect(getActiveTab(useTabStore.getState())?.url).toBe("/acme/projects/project-a");
+    store.switchAccount();
+    expect(getActiveTab(useTabStore.getState())).toMatchObject({ id, url: second, history: { stack: [first, second, archived], index: 1 } });
+    expect(useTabStore.getState().isScopeResume).toBe(true);
+    const persisted = JSON.parse(localStorage.getItem("multica_tabs")!).state;
+    const restored = mergePersistedTabs(persisted, useTabStore.getState());
+    expect(getActiveTab(restored)).toMatchObject({ id, url: second, history: { stack: [first, second, archived], index: 1 } });
+    const scroll = getActiveTab(restored)!.memento.scroll;
+    expect(scroll[`${accountRouteKey(first)}::account-detail`]?.top).toBe(620);
+    expect(scroll[`${accountRouteKey(second)}::account-detail`]?.top).toBe(920);
+    expect(scroll[`${accountRouteKey(second)}::account-notifications-list`]?.top).toBe(240);
+  });
+
   it("resumes the most recent workspace and account details without replacing their state", () => {
     const store = useTabStore.getState();
     store.setSessionOwner("server:viewer");

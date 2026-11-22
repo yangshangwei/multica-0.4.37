@@ -5,10 +5,12 @@ import { useRestoredScrollOffset, useRestoredViewState, useViewStateWriter } fro
 import { WebScrollRestorationProvider } from "./scroll-restoration";
 
 const route = vi.hoisted(() => ({ pathname: "/", query: "", owner: "viewer" }));
+const registerCapture = vi.hoisted(() => vi.fn<(capture: (expectedPath?: string) => void) => () => void>());
 vi.mock("next/navigation", () => ({ usePathname: () => route.pathname, useSearchParams: () => new URLSearchParams(route.query) }));
 vi.mock("./navigation-owner", () => ({ useWebNavigationOwner: () => route.owner }));
+vi.mock("./navigation", () => ({ useWebScrollCaptureRegistration: () => registerCapture }));
 let testIdentity = 0;
-beforeEach(() => { route.pathname = window.location.pathname; route.query = ""; route.owner = `viewer-${++testIdentity}`; });
+beforeEach(() => { route.pathname = window.location.pathname; route.query = ""; route.owner = `viewer-${++testIdentity}`; registerCapture.mockReset(); registerCapture.mockReturnValue(vi.fn()); });
 
 function ScrollProbe({ containerKey }: { containerKey: string }) {
   const restored = useRestoredScrollOffset(containerKey);
@@ -26,6 +28,41 @@ function scrollContainer(el: HTMLElement, top: number) {
 }
 
 describe("WebScrollRestorationProvider", () => {
+  it("captures a retained account list before departure without another scroll event", () => {
+    route.pathname = "/account";
+    const first = "view=notifications&filter=all&notification=00000000-0000-4000-8000-000000000001&issue=00000000-0000-4000-8000-000000000003";
+    const second = first.replace("notification=00000000-0000-4000-8000-000000000001", "notification=00000000-0000-4000-8000-000000000002");
+    route.query = first;
+    const page = () => <WebScrollRestorationProvider>
+      {route.query.startsWith("view=notifications") && <div data-tab-scroll-root="account-notifications-list" data-testid="container" />}
+      <ScrollProbe containerKey="account-notifications-list" />
+    </WebScrollRestorationProvider>;
+    const view = render(page());
+    const list = screen.getByTestId("container");
+    scrollContainer(list, 137);
+    route.query = second;
+    view.rerender(page());
+    expect(screen.getByTestId("container")).toBe(list);
+    expect(list.scrollTop).toBe(137);
+    window.history.replaceState(null, "", `/account?${second}`);
+    registerCapture.mock.lastCall?.[0](`/account?${second}`);
+    route.query = "view=participating";
+    view.rerender(page());
+    route.query = second;
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("137");
+
+    // An explicit, settled departure records zero despite a recently served
+    // memento. No synthetic scroll event stands in for the departure snapshot.
+    screen.getByTestId("container").scrollTop = 0;
+    registerCapture.mock.lastCall?.[0](`/account?${second}`);
+    route.query = "view=participating";
+    view.rerender(page());
+    route.query = second;
+    view.rerender(page());
+    expect(screen.getByTestId("restored")).toHaveTextContent("none");
+  });
+
   it("keeps account view and selected issue offsets separate", () => {
     route.pathname = "/account";
     const first = "view=current&issue=00000000-0000-4000-8000-000000000001";

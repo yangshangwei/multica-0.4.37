@@ -27,6 +27,7 @@
 | [Run-bound Agent outputs](./collaboration-runtime-output.md) | Original comment/file identity, encrypted Agent provenance, current attempt fences and frozen outcome references | Owning-layer and controlled Web/Desktop R03 accepted; full S3 separate |
 | [Collaboration realtime](./collaboration-realtime.md) | Account/issue scopes, final-send authority, retained outbox and Query recovery | Account transport implemented; full product pending |
 | [Collaboration records and children](./collaboration-records.md) | Ordinary-child references, retained run telemetry, proven group notifications and shared run links | R51/R52 increment verified; full product pending |
+| [Collaboration notification reads](../core/frontend/collaboration-notifications.md) | Recipient filters before pagination, compatible view markers, privacy and global unread count | Active |
 | [Collaboration preview and parent wakeup](./collaboration-preview-wakeup.md) | Read-only eligible batch/continuation facts and committed child-to-ordinary-parent stage wake | Focused increment; full product pending |
 | [Collaboration source and editing](./collaboration-source-editing.md) | Mixed source projections, source field/iteration transactions, comment recovery and content-free list invalidation | Current source/editing increment; full product pending |
 | [Collaboration command history](./collaboration-command-history.md) | Nullable reason, immutable input/cancellation identity and complete cross-client execution evidence | Focused current Web/Electron and DB race evidence |

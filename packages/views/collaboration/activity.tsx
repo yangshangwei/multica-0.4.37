@@ -51,7 +51,7 @@ export function CollaborationActivity({ scope, destination, issue, active = true
         <p>{t(($) => $.activity.handoff, { from: item.handoff.from?.name ?? t(($) => $.detail.unknownAuthor), to: item.handoff.to?.name ?? t(($) => $.detail.unknownAuthor) })}</p>
         {item.handoff.note && <RichContent resourcePolicy="restricted" content={item.handoff.note} />}
       </div> : item.target && <p className="text-body [overflow-wrap:anywhere]">{item.target.name}</p>}
-      {item.comment_id && <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={accountPath({ view: destination.view, issueId: destination.issueId, commentId: item.comment_id })}>{t(($) => $.activity.openComment)}</AppLink>}
+      {item.comment_id && <AppLink className="inline-flex min-h-11 items-center text-body underline underline-offset-4" href={accountPath({ ...destination, runId: null, submissionId: null, anchor: undefined, memoryVersion: null, commentId: item.comment_id })}>{t(($) => $.activity.openComment)}</AppLink>}
       <dl className="space-y-4">{item.changes.map((change) => <div key={change.field} className="min-w-0 space-y-2">
         <dt className="text-caption font-medium">{t(($) => $.activity.fields[change.field])}</dt>
         <dd className="grid min-w-0 gap-4 text-body sm:grid-cols-2">

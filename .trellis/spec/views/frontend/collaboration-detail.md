@@ -13,6 +13,10 @@ or a second workflow model.
 
 - `CollaborationDetail({scope, destination})` composes the current authorized
   issue, workflow, result, discussion and auxiliary panels.
+- Its optional `returnRestorationKey?: string | null` consumes matching
+  notification history/scope mementos without remounting a same-issue draft;
+  undefined preserves normal fresh-link behavior. The complete page contract is
+  [account notifications](../../core/frontend/collaboration-notifications.md).
 - `deriveCollaborationDetailState(issue, viewerId)` supplies stage,
   primary/secondary actions, current/latest submission, `canAccept` and
   `canSelfComplete`. Every rendered action also requires current capabilities.

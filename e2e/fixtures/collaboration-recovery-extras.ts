@@ -19,6 +19,7 @@ import {
   HeldRequest, RecoveryEvidence, authenticatedSocket, disconnectObserver,
   recoveryEnvironmentReady, withSessions, type RecoveryActor, type RecoveryPlatform, type RecoverySession, type RecoverySurface,
 } from "./collaboration-recovery";
+import { openCollaborationNotifications, notificationPath, notificationRow } from "./collaboration-notifications";
 
 const object = z.record(z.string(), z.unknown());
 const sha = (bytes: string | Buffer) => createHash("sha256").update(bytes).digest("hex");
@@ -267,12 +268,16 @@ export async function exerciseRecoveryNotifications(browser: Browser, platform: 
       const recipients = eventRecipients(after.notifications, original.receipt);
       expect(recipients.map((item) => [item.actor_id, item.is_mention]).sort()).toEqual([[fixture.actors.handler.id, true], [fixture.actors.owner.id, false]].sort());
       for (const item of recipients) expect(item).toMatchObject({ kind: "comment_created", source_kind: "comment", source_id: original.receipt.comment_id });
-      await human.page.getByRole("button", { name: /^Notifications/ }).click();
-      const popup = human.page.locator('[data-slot="popover-content"]').filter({ has: human.page.getByText("Notifications", { exact: true }) });
-      const row = popup.getByRole("listitem").filter({ has: human.page.locator(`a[href$="#comment-${original.receipt.comment_id}"]`) });
-      await expect(row).toHaveCount(1); await expect(row.getByText("Mentioned you", { exact: true })).toBeVisible();
       const notification = after.notifications[fixture.actors.handler.id]!.find((item) => item.event_seq === original.receipt.event_seq);
       if (!notification) throw new Error("The original human mention has no exact current notification identity");
+      await openCollaborationNotifications(human.page, "all");
+      const row = notificationRow(human.page, notification.id);
+      await expect(row).toHaveCount(1); await expect(row.getByText("Mentioned you", { exact: true })).toBeVisible();
+      const link = row.getByRole("link", { name: fixture.surface.title, exact: true });
+      const href = await link.getAttribute("href");
+      if (!href) throw new Error("The original human mention has no notification page link");
+      const destination = new URL(href, fixture.surface.apiUrl);
+      expect(destination.pathname + destination.search + destination.hash).toBe(notificationPath("all", notification.id, fixture.issueId, `#comment-${original.receipt.comment_id}`));
       expect(notification.read_at).toBeNull();
       const readResponse = await clickResponse(human, `/api/me/collaboration-notifications/${notification.id}/read`, "POST",
         () => row.getByRole("button", { name: "Mark read", exact: true }).click());
@@ -286,8 +291,12 @@ export async function exerciseRecoveryNotifications(browser: Browser, platform: 
       await expect.poll(async () => (await notificationPages(fixture, actors))[fixture.actors.handler.id]!
         .find((item) => item.id === notification.id)?.read_at).toBe(readReceipt.read_at);
       await expect(row.getByRole("button", { name: "Mark read", exact: true })).toHaveCount(0);
-      await expect(row).toHaveCount(1); await row.getByRole("link").click();
-      await expect(human.page.locator(`[id="comment-${original.receipt.comment_id}"]`)).toBeVisible();
+      await expect(row).toHaveCount(1); await link.click();
+      await expect(row).toHaveAttribute("data-selected", "true");
+      await expect(human.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+      await expect(human.page.locator('[data-slot="popover-content"]').filter({ has: human.page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
+      const comment = human.page.locator(`[id="comment-${original.receipt.comment_id}"]`);
+      await expect(comment).toBeVisible(); await expect(comment).toBeFocused();
       const frozen = await state(fixture, actors); await replayComment(fixture, original, evidence); expect(await state(fixture, actors)).toEqual(frozen);
       await Promise.allSettled([...author.pendingReads]); const beforeUIWrites = author.writes.length;
       const socket = await authenticatedSocket(author, String(evidence.value.started_at));

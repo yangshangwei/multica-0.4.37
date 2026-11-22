@@ -28,6 +28,8 @@ must remain available with zero, pending or unavailable workspaces.
   independently of `activeWorkspaceSlug`, which stays null in account scope.
 - `NavigationAdapter.isScopeResume?` suppresses a consumed URL anchor on resume;
   `navigationKey?` distinguishes repeated explicit opens of the same URL.
+- `NavigationAdapter.isHistoryTraversal?` identifies committed Back/Forward
+  returns. It is transient and separate from scope resume.
 - `NavigationAdapter.replace(path, { preserveView?: boolean })` allows a caller
   to normalize an alias of the already-resolved resource without replacing its
   mounted view. Only canonical issue URLs currently request this option.
@@ -42,7 +44,8 @@ Collaboration appears above Workspace in the shared left directory. Its fresh
 preference is collapsed, presenting a single quiet heading with a neutral Beta
 marker. The heading resumes the exact account destination; a separate arrow
 discloses its directory without navigating. Never nest these controls. Entering
-a collaboration destination reveals Current handling and Participating, with
+a collaboration destination reveals Current handling, Participating and
+Collaboration notifications, with
 the selected list remaining highlighted when its detail is open. Manual collapse
 is still allowed on that full path. The workspace name resumes the displayed
 workspace's destination; its adjacent selector chooses a directory member.
@@ -50,11 +53,12 @@ workspace's destination; its adjacent selector chooses a directory member.
 `CollaborationNavigation` owns one protected notification Query observer so
 collapsing the directory retains authoritative unread feedback. Its collapsed
 heading shows a named count only when known and positive; unavailable counts
-are not zero. `CollaborationNotificationsPopover` receives that query and mounts
-only inside the open directory, so collapse removes hidden controls and portals.
-The standalone `CollaborationNotifications` wrapper keeps its own query for
-other callers. Do not mirror counts into local state or keep an open popover
-mounted under a hidden disclosure.
+are not zero. The notification item is an active native link to
+`/account?view=notifications&filter=unread`; collapse removes the child links
+while the protected count observer and main notification page remain available.
+The standalone `CollaborationNotifications` link keeps its own query for other
+callers. Filtering, exact targets and mounted return restoration follow
+[the notification contract](./collaboration-notifications.md).
 
 The title's hover/focus tooltip and shared workbench header explain cross-workspace
 scope and Beta maturity in both supported locales. New collaboration creation
@@ -95,14 +99,19 @@ behalf of a preview.
 Web's route history and scroll/view-state maps are Server/viewer/session-owned.
 Changing ownership clears the former identity, including if that identity later
 returns. An obsolete callback cannot write into the new owner's state. Account
-mementos use `accountRouteKey(fullPath)` to distinguish list/view/selected issue;
+mementos use `accountRouteKey(fullPath)` to distinguish list/view/filter,
+notification and selected issue, removing the fragment;
 workspace mementos keep their existing pathname semantics. No server data is
 copied into these client stores.
 
 Next may keep the outgoing route mounted after accepting a push. Publish the
 new focus intent only with the rendered destination. Otherwise changing a key
 on the outgoing anchored detail can refocus it and overwrite its saved scroll.
-Same-destination explicit opens must still advance the focus key. Shared detail
+Next may also commit a query before browser history updates its fragment, or
+update the browser fragment while an outgoing query is still rendered. Publish
+one matching complete destination; issue-less notification links cannot inherit
+an outgoing comment/run/body fragment. Same-destination explicit opens must
+still advance the focus key. Shared detail
 restores after data readiness on resume, including URLs with run/comment or
 section anchors; explicit opens retain anchor focus. Shared-context version URLs
 retain their exact meaning; a global resume must not reopen a dismissed dialog.
@@ -154,7 +163,9 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | Group entered through a child route | Reveal it without persisting an automatic preference |
 | Fresh workspace sidebar or legacy preferences without collaboration | Show one collapsed Collaboration/Beta heading |
 | Collaboration manually collapsed on its current full path | Keep it collapsed; resume of the current scope remains a no-op |
-| Collaboration collapsed with a notification popover open | Remove the popover and child controls; retain the Query and positive unread feedback |
+| Collaboration collapsed on the notification page | Remove directory child links; retain the Query, positive unread feedback and main page |
+| Same-filter/same-issue notification Back/Forward | Retain list/detail/draft nodes and restore the destination's offsets |
+| New query commits before the old browser hash clears | Publish its exact target fragment, including an empty one |
 | Compact account query changes | Dismiss the sidebar sheet after destination commit |
 | Account Help opens Feedback | Render one feedback host; keep workspace-only modals unmounted |
 
@@ -174,8 +185,8 @@ read as an empty account; using window.location as Desktop route authority.
 Core scope-history tests own valid paths, ownership and membership fallback.
 Core `sidebar-preferences.test.ts` covers legacy group hydration and manual
 collaboration choices. Shared `app-sidebar.test.tsx` owns collaboration's
-disclosure/resume separation, route reveal, collapsed unread feedback and portal
-removal; other groups retain their canonical disclosure regressions.
+disclosure/resume separation, route reveal, collapsed unread feedback and page
+navigation; other groups retain their canonical disclosure regressions.
 The Beta browser assertion uses real Tab/Shift+Tab focus and checks the actual
 `data-slot="tooltip-content"` floating element's visibility/text plus the title's
 accessible description. Base UI 1.3 does not assign a default `tooltip` role;
@@ -191,6 +202,10 @@ account modal ownership. Production
 Web and actual Electron navigation journeys live in
 `e2e/global-scope-navigation.spec.ts`; record build identity and exact native
 harness scope. Class assertions or JSDOM offsets are not visual/native proof.
+`e2e/collaboration-notifications-page.spec.ts` adds complete filtered pages,
+exact targets, processing and same-issue list/detail return offsets. Assert real
+Base UI active-attribute presence and NumberFlow's accessible numeric label;
+unit mocks do not define those primitives' rendered DOM.
 
 The browser journey targets the workspace-name heading, never the removed
 Workspaces scope button. In compact layouts open the actual sidebar trigger

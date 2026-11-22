@@ -65,7 +65,7 @@ export function parseIssueWindowPath(
 
   const account = parseAccountPath(value);
   if (account) {
-    return account.issueId
+    return account.view !== "notifications" && account.issueId
       ? { scope: "account", path: accountPath(account), issueId: account.issueId }
       : null;
   }

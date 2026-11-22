@@ -99,7 +99,6 @@ import { collaborationKeys, collaborationNotificationsOptions, isCollaborationSc
 import { useWSEvent, useWSReconnect } from "@multica/core/realtime";
 import { useSidebarPreferences } from "@multica/core/navigation";
 import { CollaborationCreationEntry } from "../collaboration/creation-form";
-import { CollaborationNotificationsPopover } from "../collaboration/notifications";
 
 // Top-level nav items stay active when the user is on a child route
 // (e.g. "Projects" stays lit on /:slug/projects/:id). Pinned items keep
@@ -623,6 +622,8 @@ function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () 
   const client = useQueryClient();
   const notifications = useInfiniteQuery({ ...collaborationNotificationsOptions(client, scope), enabled: scope.userId !== "" });
   const unread = notifications.data?.pages[0]?.unread_count;
+  const notificationsSelected = destination?.view === "notifications";
+  const notificationsLabel = collaboration(($) => $.notifications.title);
   return <SidebarGroup data-sidebar-scope="collaboration">
     {workspaceActive && <WorkspaceNotificationRealtime scope={scope} />}
     <Collapsible {...disclosure}>
@@ -647,9 +648,10 @@ function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () 
           <Icon aria-hidden /><span>{view === "current" ? collaboration(($) => $.page.current) : collaboration(($) => $.page.participating)}</span>
         </SidebarMenuButton></SidebarMenuItem>;
       })}
-      <SidebarMenuItem><CollaborationNotificationsPopover key={`${scope.apiScope}:${scope.userId}`} query={notifications} scope={scope} view={destination?.view ?? "participating"} renderTrigger={(label, unread) => <SidebarMenuButton aria-label={label} title={label} className="text-muted-foreground">
+      <SidebarMenuItem><SidebarMenuButton render={<AppLink href={accountPath({ view: "notifications" })} />} isActive={notificationsSelected} aria-current={notificationsSelected ? destination.notificationId ? "location" : "page" : undefined}
+        aria-label={notificationsLabel} title={notificationsLabel} className="text-muted-foreground data-active:bg-sidebar-accent data-active:font-medium data-active:text-sidebar-accent-foreground data-active:hover:bg-sidebar-accent">
         <Bell aria-hidden /><span className="min-w-0 flex-1 truncate">{t(($) => $.sidebar.collaboration_notifications)}</span>{unread !== undefined && unread > 0 && <CappedNumberFlow value={unread} animated={false} className="ml-auto text-caption" />}
-      </SidebarMenuButton>} /></SidebarMenuItem>
+      </SidebarMenuButton></SidebarMenuItem>
       </SidebarMenu></SidebarGroupContent></CollapsibleContent>}
     </Collapsible>
   </SidebarGroup>;

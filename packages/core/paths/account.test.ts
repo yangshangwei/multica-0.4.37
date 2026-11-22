@@ -5,8 +5,75 @@ import { accountPath, parseAccountPath, accountRouteKey } from "./account";
 const issueId = "00000000-0000-4000-8000-000000000001";
 const commentId = "00000000-0000-4000-8000-000000000002";
 const runId = "00000000-0000-4000-8000-0000000000ab";
+const notificationId = "00000000-0000-4000-8000-0000000000cd";
 
 describe("account destinations", () => {
+  it("defaults a notifications destination to the unread list without changing the workbench default", () => {
+    expect(parseAccountPath("/account?view=notifications")).toEqual({
+      view: "notifications", notificationView: "unread", notificationId: null, issueId: null, commentId: null,
+    });
+    expect(accountPath({ view: "notifications" })).toBe("/account?view=notifications&filter=unread");
+    expect(accountPath()).toBe("/account?view=current");
+  });
+
+  it.each(["unread", "all", "archived"] as const)("round-trips the %s notification view and a content-free selection", (notificationView) => {
+    const path = accountPath({ view: "notifications", notificationView, notificationId });
+    expect(path).toBe(`/account?view=notifications&filter=${notificationView}&notification=${notificationId}`);
+    const destination = parseAccountPath(path);
+    expect(destination).toEqual({ view: "notifications", notificationView, notificationId, issueId: null, commentId: null });
+    expect(accountPath(destination!)).toBe(path);
+  });
+
+  it.each([
+    [{ commentId }, `#comment-${commentId}`],
+    [{ runId }, `#run-${runId}`],
+    [{ submissionId: runId }, `#delivery-${runId}`],
+    [{ anchor: "description" as const }, "#description"],
+    [{ anchor: "memory" as const }, "#memory"],
+    [{ memoryVersion: "9007199254740993" }, "#memory-v9007199254740993"],
+  ] as const)("preserves an exact notification content target %j", (target, hash) => {
+    const path = accountPath({ view: "notifications", notificationView: "all", notificationId, issueId, ...target });
+    expect(path).toBe(`/account?view=notifications&filter=all&notification=${notificationId}&issue=${issueId}${hash}`);
+    const destination = parseAccountPath(path);
+    expect(destination).toEqual({ view: "notifications", notificationView: "all", notificationId, issueId, commentId: null, ...target });
+    expect(accountPath(destination!)).toBe(path);
+    expect(accountRouteKey(path)).toBe(`/account?view=notifications&filter=all&notification=${notificationId}&issue=${issueId}`);
+    // Copy/open content leaves the page deliberately, preserving its exact target.
+    expect(accountPath({ ...destination!, view: "participating" })).toBe(`/account?view=participating&issue=${issueId}${hash}`);
+  });
+
+  it("normalizes notification UUIDs and retains separate filter/selection/issue mementos", () => {
+    const path = `/account?view=notifications&filter=archived&notification=${notificationId.toUpperCase()}&issue=${issueId}#run-${runId.toUpperCase()}`;
+    const canonical = `/account?view=notifications&filter=archived&notification=${notificationId}&issue=${issueId}#run-${runId}`;
+    expect(accountPath(parseAccountPath(path)!)).toBe(canonical);
+    const key = accountRouteKey(canonical);
+    expect(key).not.toBe(accountRouteKey(canonical.replace("archived", "all")));
+    expect(key).not.toBe(accountRouteKey(canonical.replace(notificationId, commentId)));
+    expect(key).not.toBe(accountRouteKey(canonical.replace(issueId, commentId)));
+    expect(key).toBe(accountRouteKey(canonical.replace(`#run-${runId}`, `#comment-${commentId}`)));
+  });
+
+  it.each([
+    "view=notifications&filter=unknown", "view=notifications&filter=",
+    "view=notifications&filter=unread&filter=all", "view=notifications&view=notifications",
+    `view=notifications&notification=${notificationId}&notification=${notificationId}`,
+    "view=notifications&notification=SRC-1", "view=notifications&notification=",
+    `view=notifications&issue=${issueId}&issue=${issueId}`, "view=notifications&issue=SRC-1",
+    "view=notifications&administration=collaboration", "view=notifications&other=unread",
+    "view=current&filter=unread", `view=participating&notification=${notificationId}`,
+    "filter=unread", `notification=${notificationId}`,
+    `view=notifications#comment-${commentId}`, `view=notifications&issue=${issueId}#run-invalid`,
+    `view=notifications&issue=${issueId}#run-${runId}#comment-${commentId}`,
+  ])("rejects malformed or misplaced notification parameters: %s", (query) => {
+    expect(parseAccountPath(`/account?${query}`)).toBeNull();
+  });
+
+  it("rejects malformed or ambiguous notification targets when building links", () => {
+    expect(() => accountPath({ view: "notifications", notificationId: "SRC-1" })).toThrow(TypeError);
+    expect(() => accountPath({ view: "notifications", notificationId, runId })).toThrow(TypeError);
+    expect(() => accountPath({ view: "notifications", notificationId, issueId, runId, commentId })).toThrow(TypeError);
+  });
+
   it("round-trips an exact delivery submission in the existing account route", () => {
     const path = accountPath({ view: "participating", issueId, submissionId: runId });
     expect(path).toBe(`/account?view=participating&issue=${issueId}#delivery-${runId}`);

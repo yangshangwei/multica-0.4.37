@@ -11,6 +11,7 @@ import { CollaborationRunRecordsSchema } from "../../packages/core/collaboration
 import { assertProviderInput, seedCrossClientExecution, startCrossClientDaemons } from "./collaboration-cross-client-execution";
 import { lifecycleComment, lifecycleControl, refreshLifecyclePage } from "./collaboration-lifecycle-controls";
 import { seedOfflineHandoff, type HandoffClients } from "./collaboration-offline-handoff";
+import { openCollaborationNotifications, notificationPath, notificationRow } from "./collaboration-notifications";
 
 const rootFor = (id: string) => `/api/collaboration/issues/${id}`;
 const requiredKinds = ["information_requested", "information_returned", "acceptance_submitted", "ai_completed", "ai_failed", "ai_stopped"] as const;
@@ -251,13 +252,6 @@ export async function publishOfflineRunResults(state: OfflineResultFixture, crea
   } finally { if (!closed) await daemons.close(); }
 }
 
-async function popupFor(page: Page) {
-  await page.getByRole("button", { name: /^Notifications/ }).click();
-  const popup = page.locator('[data-slot="popover-content"]').filter({ has: page.getByText("Notifications", { exact: true }) });
-  await expect(popup).toBeVisible();
-  return popup;
-}
-
 export async function readOfflineResults(state: OfflineResultFixture, clients: HandoffClients) {
   const { fixture, recipient } = state;
   const session = await clients.open(recipient, "/account?view=participating");
@@ -273,17 +267,20 @@ export async function readOfflineResults(state: OfflineResultFixture, clients: H
   const archived: { kind: string; id: string; href: string; run_id?: string }[] = [];
   for (const kind of requiredKinds) {
     const notice = received.find((item) => item.kind === kind)!;
-    let popup = await popupFor(page);
-    let row = popup.getByRole("listitem").filter({ has: page.getByText(labels[kind], { exact: true }) });
+    const list = await openCollaborationNotifications(page, "all");
+    const row = notificationRow(page, notice.id);
     await expect(row).toHaveCount(1);
+    await expect(row.getByText(labels[kind], { exact: true })).toBeVisible();
     const link = row.getByRole("link", { name: fixture.title, exact: true });
     const href = await link.getAttribute("href");
     if (!href) throw new Error("The actual offline notification did not provide an issue destination");
     const url = new URL(href, fixture.apiUrl);
-    expect(url.searchParams.get("issue")).toBe(fixture.issueId);
-    if (notice.run_id) expect(url.hash).toBe(`#run-${notice.run_id}`);
+    expect(url.pathname + url.search + url.hash).toBe(notificationPath("all", notice.id, fixture.issueId, notice.run_id ? `#run-${notice.run_id}` : ""));
     await link.click();
-    await expect(popup).toBeHidden();
+    await expect(row).toHaveAttribute("data-selected", "true");
+    await expect(list).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+    await expect(page.locator('[data-slot="popover-content"]').filter({ has: page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
     if (notice.run_id) {
       const run = page.locator(`[id="run-${notice.run_id}"]`);
@@ -300,8 +297,6 @@ export async function readOfflineResults(state: OfflineResultFixture, clients: H
         await expect(records).toContainText("Partial recording");
       }
     }
-    popup = await popupFor(page);
-    row = popup.getByRole("listitem").filter({ has: page.getByText(labels[kind], { exact: true }) });
     const before = await readIssue(fixture.webActor.client, fixture.issueId);
     for (const [action, label] of [["read", "Mark read"], ["archive", "Archive"]] as const) {
       const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/me/collaboration-notifications/${notice.id}/${action}` && response.request().method() === "POST");
@@ -314,8 +309,8 @@ export async function readOfflineResults(state: OfflineResultFixture, clients: H
       expect(CollaborationWorkbenchSchema.parse(await recipient.client.requestJSON("/api/me/workbench?view=current"))).toEqual(current);
     }
     await expect(row).toHaveCount(0);
-    await page.getByRole("button", { name: /^Notifications/ }).click();
-    await expect(popup).toBeHidden();
+    await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+    await expect(page.getByRole("status").filter({ hasText: "This notification is outside the current view. You can continue viewing its issue here." })).toBeVisible();
     archived.push({ kind, id: notice.id, href, ...(notice.run_id ? { run_id: notice.run_id } : {}) });
   }
   return { session, archived, recipient_notices: await notifications(recipient.client, fixture.issueId), source_isolation: await sourceIsolation(state) };

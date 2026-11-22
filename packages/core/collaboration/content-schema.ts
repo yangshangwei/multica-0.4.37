@@ -6,6 +6,7 @@ import { positiveVersion } from "./version";
 import { collaborationAttachmentIds } from "./attachment-schema";
 import { collaborationTextByteLength } from "./text-limits";
 import { CollaborationTestSubjectSchema } from "./stage-test-subject-schema";
+import { COLLABORATION_NOTIFICATION_VIEWS, type CollaborationNotificationView } from "./notification-view";
 
 const uuid = z.uuid().transform((value) => value.toLowerCase());
 const timestamp = z.iso.datetime({ offset: true });
@@ -156,12 +157,22 @@ export const CollaborationNotificationSchema = z.object({
   // Additive so installed clients can keep opening the issue without run support.
   run_id: uuid.optional(),
   can_open: z.boolean(), created_at: timestamp, read_at: timestamp.nullable(), archived_at: timestamp.nullable(),
-}).refine((value) => value.can_open ? value.issue_title !== null && (value.source_kind !== "comment" || value.source_id !== null) : value.issue_title === null && value.source_kind === "issue" && value.source_id === null)
+}).refine((value) => value.kind !== "removed" || value.can_open === false)
+  .refine((value) => value.can_open ? value.issue_title !== null && (value.source_kind !== "comment" || value.source_id !== null) : value.issue_title === null && value.source_kind === "issue" && value.source_id === null)
   .refine((value) => value.run_id === undefined || (value.can_open && !value.is_mention &&
     value.source_kind === "issue" && value.source_id === null && ["ai_completed", "ai_failed", "ai_stopped"].includes(value.kind)));
+function notificationMatchesView(item: { read_at: string | null; archived_at: string | null }, view: CollaborationNotificationView | undefined): boolean {
+  switch (view) {
+    case "unread": return item.archived_at === null && item.read_at === null;
+    case "all": return item.archived_at === null;
+    case "archived": return item.archived_at !== null;
+    default: return true;
+  }
+}
 export const CollaborationNotificationsSchema = z.object({
   items: z.array(CollaborationNotificationSchema), unread_count: z.number().int().nonnegative().safe(), next_cursor: z.string().max(512).nullable(),
-});
+  view: z.enum(COLLABORATION_NOTIFICATION_VIEWS).optional(),
+}).refine((value) => value.items.every((item) => notificationMatchesView(item, value.view)));
 export const CollaborationNotificationReceiptSchema = z.object({ id: uuid, read_at: timestamp.nullable(), archived_at: timestamp.nullable() });
 
 function parse<T>(data: unknown, schema: z.ZodType<T>, endpoint: string): T | null {
@@ -173,7 +184,14 @@ export const parseCollaborationCommentHistory = (data: unknown) => parse(data, C
 export const parseCollaborationMentionTargets = (data: unknown) => parse(data, CollaborationMentionTargetsSchema, "collaboration mention targets");
 export const parseCollaborationTriggerPreview = (data: unknown) => parse(data, CollaborationTriggerPreviewSchema, "collaboration trigger preview");
 export const parseCollaborationCommentReceipt = (data: unknown) => parse(data, CollaborationCommentReceiptSchema, "collaboration comment receipt");
-export const parseCollaborationNotifications = (data: unknown) => parse(data, CollaborationNotificationsSchema, "collaboration notifications");
+export function parseCollaborationNotifications(data: unknown, requestedView?: CollaborationNotificationView) {
+  // Old servers ignore new filters, including when returning an empty page.
+  // Only All shares the legacy unarchived selection and can omit its marker.
+  const schema = requestedView === undefined ? CollaborationNotificationsSchema : CollaborationNotificationsSchema.refine((value) =>
+    (value.view === requestedView || requestedView === "all" && value.view === undefined) &&
+    value.items.every((item) => notificationMatchesView(item, requestedView)));
+  return parse(data, schema, "collaboration notifications");
+}
 export const parseCollaborationNotificationReceipt = (data: unknown) => parse(data, CollaborationNotificationReceiptSchema, "collaboration notification receipt");
 export type CollaborationComment = z.infer<typeof CollaborationCommentSchema>;
 export type CollaborationComments = z.infer<typeof CollaborationCommentsSchema>;

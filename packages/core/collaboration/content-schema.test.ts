@@ -221,3 +221,43 @@ describe("private collaboration content boundaries", () => {
     expect(JSON.stringify(warn.mock.calls)).not.toContain("received");
   });
 });
+
+describe("notification view envelopes", () => {
+  const item = { id: id(1), issue_id: id(3), event_seq: "1", kind: "future_event", is_mention: false,
+    source_kind: "issue", source_id: null, issue_title: "Shared issue", can_open: true,
+    created_at: timestamp, read_at: null, archived_at: null };
+  const envelope = { items: [item], unread_count: 7, next_cursor: null };
+
+  it.each(["unread", "all", "archived"] as const)("retains the additive %s view and the global unread count", (view) => {
+    const wire = { ...envelope, view, items: [{ ...item, archived_at: view === "archived" ? timestamp : null }] };
+    expect(parseCollaborationNotifications(wire)).toEqual(wire);
+  });
+
+  it("continues accepting legacy mixed history without a view marker", () => {
+    const legacy = { ...envelope, items: [item, { ...item, id: id(4), read_at: timestamp, archived_at: timestamp }] };
+    expect(parseCollaborationNotifications(legacy)).toEqual(legacy);
+  });
+
+  it.each([null, "", "future_view", 42, {}])("refuses a malformed view marker: %j", (view) => {
+    expect(parseCollaborationNotifications({ ...envelope, items: [], view })).toBeNull();
+  });
+
+  it.each([
+    { view: "unread", read_at: timestamp, archived_at: null },
+    { view: "unread", read_at: null, archived_at: timestamp },
+    { view: "all", read_at: null, archived_at: timestamp },
+    { view: "archived", read_at: null, archived_at: null },
+  ])("rejects a row outside its marked view: %j", ({ view, ...state }) => {
+    expect(parseCollaborationNotifications({ ...envelope, view, items: [{ ...item, ...state }] })).toBeNull();
+  });
+
+  it("allows archived unread rows without marking them read or making the global count a page count", () => {
+    const wire = { ...envelope, view: "archived", items: [{ ...item, archived_at: timestamp }] };
+    expect(parseCollaborationNotifications(wire)).toEqual(wire);
+  });
+
+  it("requires removed notifications to stay content-free even when can_open contradicts removal", () => {
+    expect(parseCollaborationNotifications({ ...envelope, items: [{ ...item, kind: "removed" }] })).toBeNull();
+    expect(parseCollaborationNotifications({ ...envelope, items: [{ ...item, kind: "removed", can_open: false, issue_title: null }] })).not.toBeNull();
+  });
+});

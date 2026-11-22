@@ -3,6 +3,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 import type { CollaborationIssue, CollaborationWorkbench, CollaborationOperation } from "@multica/core/collaboration";
 import { TestApiClient } from "../fixtures";
 import { revealCollaborationDisclosure } from "./collaboration-disclosures";
+import { openCollaborationNotifications, notificationPath, notificationRow } from "./collaboration-notifications";
 
 interface Notification {
   id: string; issue_id: string; event_seq: string; kind: string; issue_title: string | null;
@@ -168,20 +169,17 @@ export async function uiWorkflow(session: HandoffSession, fixture: OfflineHandof
   return { request_id: key, body, receipt, original_key_replay: replay, current_issue: beforeReplay };
 }
 
-async function popupFor(page: Page) {
-  await page.getByRole("button", { name: /^Notifications/ }).click();
-  const popup = page.locator('[data-slot="popover-content"]').filter({ has: page.getByText("Notifications", { exact: true }) });
-  await expect(popup).toBeVisible();
-  return popup;
-}
 async function archiveTransfer(session: HandoffSession, fixture: OfflineHandoffFixture, notification: Notification) {
   const page = session.page;
-  const popup = await popupFor(page);
-  const row = popup.getByRole("listitem").filter({ has: page.getByText("Transferred", { exact: true }) });
+  await openCollaborationNotifications(page, "all");
+  const row = notificationRow(page, notification.id);
   await expect(row).toHaveCount(1);
+  await expect(row.getByText("Transferred", { exact: true })).toBeVisible();
   const link = row.getByRole("link", { name: fixture.title, exact: true });
-  const href = (await link.getAttribute("href"))!;
-  expect(new URL(href, fixture.apiUrl).searchParams.get("issue")).toBe(fixture.issueId);
+  const href = await link.getAttribute("href");
+  if (!href) throw new Error("The transfer notification has no page destination");
+  const destination = new URL(href, fixture.apiUrl);
+  expect(destination.pathname + destination.search + destination.hash).toBe(notificationPath("all", notification.id, fixture.issueId));
   const before = await issueFor(fixture);
   for (const [action, label] of [["read", "Mark read"], ["archive", "Archive"]] as const) {
     const pending = page.waitForResponse((response) => new URL(response.url()).pathname === `/api/me/collaboration-notifications/${notification.id}/${action}` && response.request().method() === "POST");
@@ -193,8 +191,9 @@ async function archiveTransfer(session: HandoffSession, fixture: OfflineHandoffF
     await assertLists(fixture.recipient, fixture, false, true);
   }
   await expect(row).toHaveCount(0);
-  await page.getByRole("button", { name: /^Notifications/ }).click();
-  await expect(popup).toBeHidden();
+  await session.navigate(fixture.accountPath);
+  await expect(page.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toHaveCount(0);
   return { notification_id: notification.id, old_href: href, state: (await handoffNotifications(fixture.recipient, fixture.issueId)).find((item) => item.id === notification.id) };
 }
 
@@ -269,12 +268,18 @@ export async function exerciseOfflineHandoff(fixture: OfflineHandoffFixture, cli
   await checkVisibleLists(fresh, fixture, fixture.recipient, false);
   const reopenedRecipientLists = await assertLists(fixture.recipient, fixture, false, true);
   await expect(fresh.page.locator(`[id="comment-${comment.comment_id}"]`)).toContainText("Retained discussion available after offline assignment");
-  const popup = await popupFor(fresh.page);
-  const commentRow = popup.getByRole("listitem").filter({ has: fresh.page.locator(`a[href$="#comment-${comment.comment_id}"]`) });
+  const notificationsList = await openCollaborationNotifications(fresh.page, "all");
+  const commentRow = notificationsList.locator("[data-notification-id]").filter({ has: fresh.page.locator(`a[href$="#comment-${comment.comment_id}"]`) });
   await expect(commentRow).toHaveCount(1);
-  const commentHref = (await commentRow.getByRole("link").getAttribute("href"))!;
+  const commentHref = await commentRow.getByRole("link").getAttribute("href");
+  const commentNotificationId = await commentRow.getAttribute("data-notification-id");
+  if (!commentHref || !commentNotificationId) throw new Error("The retained comment notification has no exact destination");
+  const commentDestination = new URL(commentHref, fixture.apiUrl);
+  expect(commentDestination.pathname + commentDestination.search + commentDestination.hash).toBe(notificationPath("all", commentNotificationId, fixture.issueId, `#comment-${comment.comment_id}`));
   await commentRow.getByRole("link").click();
-  await expect(popup).toBeHidden();
+  await expect(commentRow).toHaveAttribute("data-selected", "true");
+  await expect(fresh.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+  await expect(fresh.page.locator('[data-slot="popover-content"]').filter({ has: fresh.page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
   await expect(fresh.page.locator(`[id="comment-${comment.comment_id}"]`)).toBeFocused();
   expect((await handoffNotifications(fixture.recipient, fixture.issueId)).find((item) => item.id === transferNotification.id)).toMatchObject({ read_at: expect.any(String), archived_at: expect.any(String), can_open: true });
 
@@ -283,9 +288,11 @@ export async function exerciseOfflineHandoff(fixture: OfflineHandoffFixture, cli
   });
   expect(removal.code).toBe("participant_removed");
   await fresh.page.reload();
-  await expect(fresh.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
+  await expect(fresh.page.locator('[data-tab-scroll-root="account-detail"]').getByText("Issue unavailable", { exact: true })).toBeVisible();
   await expect(fresh.page.getByRole("heading", { name: fixture.title, exact: true })).toHaveCount(0);
   await expect(fresh.page.getByText("Retained discussion available after offline assignment and notification archive.", { exact: true })).toHaveCount(0);
+  await fresh.navigate(fixture.accountPath);
+  await expect(fresh.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
   const removedRecipientLists = await assertLists(fixture.recipient, fixture, false, false);
   const denied = await fetch(`${fixture.apiUrl}${issuePath(fixture)}`, { headers: { Authorization: `Bearer ${fixture.recipient.client.getToken()!}` } });
   expect(denied.status).toBe(404);
@@ -294,11 +301,11 @@ export async function exerciseOfflineHandoff(fixture: OfflineHandoffFixture, cli
   expect(redacted.every((item) => item.can_open === false && item.issue_title === null && item.source_id === null)).toBe(true);
   await fresh.navigate("/account?view=participating");
   await expect(fresh.page.getByRole("region", { name: "Collaboration issues", exact: true }).getByText("0 issues", { exact: true })).toBeVisible();
-  const deniedPopup = await popupFor(fresh.page);
-  await expect(deniedPopup.getByText("You were removed from this collaboration issue.", { exact: true })).toBeVisible();
-  await expect(deniedPopup.getByRole("link", { name: fixture.title, exact: true })).toHaveCount(0);
-  await fresh.page.getByRole("button", { name: /^Notifications/ }).click();
-  await fresh.navigate(new URL(archived.old_href, fixture.apiUrl).pathname + new URL(archived.old_href, fixture.apiUrl).search);
+  const deniedList = await openCollaborationNotifications(fresh.page, "all");
+  await expect(deniedList.getByText("You were removed from this collaboration issue.", { exact: true })).toBeVisible();
+  await expect(deniedList.getByRole("link", { name: fixture.title, exact: true })).toHaveCount(0);
+  const archivedDestination = new URL(archived.old_href, fixture.apiUrl);
+  await fresh.navigate(archivedDestination.pathname + archivedDestination.search + archivedDestination.hash);
   await expect(fresh.page.getByText("You no longer have access to this issue.", { exact: true })).toBeVisible();
   expect(await fixture.recipient.client.getWorkspaces()).toEqual([]);
   const final = await issueFor(fixture);

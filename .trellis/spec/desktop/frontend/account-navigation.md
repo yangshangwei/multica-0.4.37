@@ -17,6 +17,10 @@ bundled into Main/preload rather than externalized as raw core TypeScript.
 ## 3. Contracts
 
 One account tab holds account view/issue selection and its navigation history.
+It also holds notification filter/UUID selection; notification destinations
+receive Bell/title presentation and remain in this main tab even with an issue
+target. Native issue-window admission rejects notification routes. Their
+shared contract is [account notifications](../../core/frontend/collaboration-notifications.md).
 Persist the actual history index, scroll, Server/viewer identity and existing
 workspace pins/MRU. Canonicalization must not select the last occurrence of a
 repeated URL. Identity changes discard prior account state and close its popouts.
@@ -59,6 +63,8 @@ instead of the workspace modal registry.
 | Server/viewer changes | Discard previous account state and close popouts |
 | Invalid/foreign native context | Reject; no guessed account/workspace scope |
 | Raw core require in sandboxed preload | Build defect; bundle the pure validators |
+| Notification destination with a selected issue | Use the main account tab; reject issue-window admission |
+| Same-issue notification Back/Forward | Restore distinct offsets, including zero, without remounting the draft/list |
 
 ## 5. Good / Base / Bad Cases
 
@@ -112,8 +118,9 @@ Source/account links preserve validated `#run-<UUID>` through the navigation
 adapter, including native MemoryRouter and popouts; `window.location.hash` is
 not the route authority. Hiding the currently linked run clears only its own
 validated fragment so the same notification can reopen and refocus it.
-Popover final-focus handoff must permit navigation while Escape still returns
-focus to its trigger.
+Notification-page links retain filter/selection when clearing the fragment.
+Transient history intent restores saved offsets; explicit repeated links advance
+the existing navigation key and focus their exact target.
 
 Native copy tests wait for the exact absolute link from the existing configured
 share policy; a completed click is not proof that asynchronous clipboard writes

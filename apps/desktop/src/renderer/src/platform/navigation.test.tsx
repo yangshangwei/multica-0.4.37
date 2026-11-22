@@ -343,6 +343,35 @@ describe("routeContentLinkPath (links inside content — MUL-5208)", () => {
 describe("account destinations", () => {
   const a = "/account?view=current&issue=11111111-1111-4111-8111-111111111111";
   const b = "/account?view=participating&issue=22222222-2222-4222-8222-222222222222";
+  it("distinguishes committed notification history from explicit navigation and scope resume", () => {
+    const nav = renderProvider();
+    const first = "/account?view=notifications&filter=all&notification=33333333-3333-4333-8333-333333333333&issue=11111111-1111-4111-8111-111111111111#description";
+    const second = first.replace("notification=33333333-3333-4333-8333-333333333333", "notification=44444444-4444-4444-8444-444444444444");
+    act(() => nav().push(first));
+    expect(nav().isHistoryTraversal).toBe(false);
+    act(() => nav().push(second));
+    const explicitKey = nav().navigationKey;
+    act(() => nav().back());
+    expect(currentPath(nav())).toBe(first);
+    expect(nav().isHistoryTraversal).toBe(true);
+    expect(nav().isScopeResume).toBe(false);
+    expect(nav().navigationKey).not.toBe(explicitKey);
+    act(() => nav().forward?.());
+    expect(currentPath(nav())).toBe(second);
+    expect(nav().isHistoryTraversal).toBe(true);
+    act(() => nav().push(second));
+    expect(nav().isHistoryTraversal).toBe(false);
+    act(() => nav().back());
+    act(() => nav().replace(first));
+    expect(nav().isHistoryTraversal).toBe(false);
+    act(() => nav().push(second));
+    act(() => nav().back());
+    act(() => nav().push("/acme/issues"));
+    expect(nav().isHistoryTraversal).toBe(false);
+    act(() => resumeDesktopScope("account"));
+    expect(nav().isHistoryTraversal).toBe(false);
+    expect(nav().isScopeResume).toBe(true);
+  });
   it("resumes both scopes in one action while explicit same-anchor links request fresh focus", () => {
     const nav = renderProvider();
     const linked = `${b}#description`;

@@ -136,6 +136,7 @@ interface TabStore {
   lastWorkspaceSlug: string | null;
   /** Transient focus intent; explicit same-URL opens still get a new key. */
   isScopeResume: boolean;
+  isHistoryTraversal: boolean;
   navigationKey: number;
   accountGroup: WorkspaceTabGroup | null;
   /** Server/viewer owner of persisted client state; never a credential. */
@@ -520,6 +521,7 @@ export const useTabStore = create<TabStore>()(
       activeWorkspaceSlug: null,
       lastWorkspaceSlug: null,
       isScopeResume: false,
+      isHistoryTraversal: false,
       navigationKey: 0,
       activeScope: "none",
       accountGroup: null,
@@ -531,11 +533,11 @@ export const useTabStore = create<TabStore>()(
         const previous = get().sessionOwner;
         if (previous === owner) return;
         if (previous !== null) {
-          set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, navigationKey: 0, activeScope: "none", byWorkspace: {}, accountGroup: null, mountGeneration: 0, sessionOwner: owner });
+          set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, isHistoryTraversal: false, navigationKey: 0, activeScope: "none", byWorkspace: {}, accountGroup: null, mountGeneration: 0, sessionOwner: owner });
         } else {
           // One-time migration adopts existing workspace-only tabs. Account
           // tabs are never accepted without their persisted owner.
-          set({ sessionOwner: owner, accountGroup: null });
+          set({ sessionOwner: owner, accountGroup: null, isHistoryTraversal: false });
         }
       },
 
@@ -553,6 +555,7 @@ export const useTabStore = create<TabStore>()(
           activeWorkspaceSlug: null,
           lastWorkspaceSlug: state.activeWorkspaceSlug ?? state.lastWorkspaceSlug,
           isScopeResume: path === undefined && previous !== undefined,
+          isHistoryTraversal: false,
           navigationKey: state.navigationKey + 1,
           accountGroup: reconcileGroup(state.accountGroup, [tab], tab.id),
         });
@@ -572,6 +575,7 @@ export const useTabStore = create<TabStore>()(
           lastWorkspaceSlug: slug,
           activeScope: "workspace" as const,
           isScopeResume: openPath === undefined && existing !== undefined,
+          isHistoryTraversal: false,
           navigationKey: state.navigationKey + 1,
         };
 
@@ -777,6 +781,7 @@ export const useTabStore = create<TabStore>()(
           lastWorkspaceSlug: slug,
           activeScope: "workspace",
           isScopeResume: true,
+          isHistoryTraversal: false,
           navigationKey: get().navigationKey + 1,
           byWorkspace: {
             ...byWorkspace,
@@ -810,10 +815,14 @@ export const useTabStore = create<TabStore>()(
         const current = getActiveTab(state);
         const clean = sanitizeTabPath(url);
         if (!group || !current || !clean || extractWorkspaceSlug(clean) !== state.activeWorkspaceSlug) return;
-        if (current.url === clean) return;
+        if (current.url === clean) {
+          if (state.isHistoryTraversal) set({ isHistoryTraversal: false });
+          return;
+        }
         set({
           ...groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: group.tabs.map((tab) => tab.id === current.id ? navigateSession(current, clean, opts?.replace === true) : tab) }),
           isScopeResume: false,
+          isHistoryTraversal: false,
           navigationKey: state.navigationKey + 1,
         });
       },
@@ -1027,7 +1036,7 @@ export const useTabStore = create<TabStore>()(
       },
 
       reset() {
-        set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, navigationKey: 0, activeScope: "none", accountGroup: null, sessionOwner: null, byWorkspace: {}, mountGeneration: 0 });
+        set({ activeWorkspaceSlug: null, lastWorkspaceSlug: null, isScopeResume: false, isHistoryTraversal: false, navigationKey: 0, activeScope: "none", accountGroup: null, sessionOwner: null, byWorkspace: {}, mountGeneration: 0 });
       },
     }),
     {
@@ -1231,7 +1240,7 @@ export function mergePersistedTabs<T extends PersistedTabState>(
     accountGroup = reconcileGroup(null, [tab], tab.id);
   }
   const accountActive = persisted.activeScope === "account" && accountGroup !== null;
-  return { ...currentState, byWorkspace, lastWorkspaceSlug, isScopeResume: true, navigationKey: 0, activeWorkspaceSlug: accountActive ? null : activeWorkspaceSlug, activeScope: accountActive ? "account" : activeWorkspaceSlug ? "workspace" : "none", accountGroup, sessionOwner: owner };
+  return { ...currentState, byWorkspace, lastWorkspaceSlug, isScopeResume: true, isHistoryTraversal: false, navigationKey: 0, activeWorkspaceSlug: accountActive ? null : activeWorkspaceSlug, activeScope: accountActive ? "account" : activeWorkspaceSlug ? "workspace" : "none", accountGroup, sessionOwner: owner };
 }
 
 function stepHistory(
@@ -1259,6 +1268,7 @@ function stepHistory(
   set({
     ...groupPatch(state, state.activeWorkspaceSlug, { ...group, tabs: nextTabs }),
     isScopeResume: false,
+    isHistoryTraversal: true,
     navigationKey: state.navigationKey + 1,
   });
 }

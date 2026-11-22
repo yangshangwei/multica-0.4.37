@@ -49,6 +49,21 @@ it("lets the full sidebar own account navigation and creation without duplicatin
   expect(await screen.findByText("No participating issues yet.")).toBeInTheDocument();
 });
 
+it("dispatches notifications before ordinary workbench reads", async () => {
+  const fetch = vi.fn(async (_input: string) => new Response(JSON.stringify({ items: [], unread_count: 0, next_cursor: null, view: "unread" })));
+  vi.stubGlobal("fetch", fetch);
+  setApiInstance(new ApiClient("https://server.example"));
+  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
+  clients.push(client);
+  renderWithI18n(<QueryClientProvider client={client}><NavigationProvider value={{ pathname: "/account", searchParams: new URLSearchParams("view=notifications&filter=unread"), hash: "", push: vi.fn(), replace: vi.fn(), back: vi.fn(), getShareableUrl: (path) => path }}>
+    <AccountWorkbenchPage destination={{ view: "notifications", notificationView: "unread", notificationId: null, issueId: null, commentId: null }} navigationInSidebar />
+  </NavigationProvider></QueryClientProvider>);
+  expect(await screen.findByRole("heading", { name: "Collaboration notifications" })).toBeInTheDocument();
+  expect(await screen.findByText("No unread notifications.")).toBeInTheDocument();
+  expect(fetch.mock.calls.every(([url]) => String(url).includes("/api/me/collaboration-notifications"))).toBe(true);
+  expect(screen.queryByRole("region", { name: "Collaboration issues" })).not.toBeInTheDocument();
+});
+
 it("opens selected detail independently of an empty current list without workspace requests", async () => {
   const fetch = vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(
     url.includes("/api/me/workbench") ? { items: [], total: 0, next_cursor: null }

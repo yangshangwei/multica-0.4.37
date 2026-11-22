@@ -145,7 +145,7 @@ export function routeContentLinkPath(
   }
   if (disposition === "push") {
     const active = getActiveTab(store);
-    if (active && active.url === path) return;
+    if (active && active.url === path) { store.navigateActiveSession(path); return; }
     if (tryRouteToPinnedNewTab(path)) return;
     store.navigateActiveSession(path);
     return;
@@ -206,6 +206,7 @@ export function DesktopNavigationProvider({
   // only re-renders when the active url actually changes.
   const activeUrl = useActiveTabUrl();
   const isScopeResume = useTabStore((state) => state.isScopeResume);
+  const isHistoryTraversal = useTabStore((state) => state.isHistoryTraversal);
   const navigationKey = useTabStore((state) => state.navigationKey);
   const location = useMemo(() => {
     const url = activeUrl ?? "/";
@@ -231,7 +232,7 @@ export function DesktopNavigationProvider({
         }
         const store = useTabStore.getState();
         const active = getActiveTab(store);
-        if (active && active.url === path) return;
+        if (active && active.url === path) { store.navigateActiveSession(path); return; }
         if (tryRouteToOtherWorkspace(path)) return;
         if (tryRouteToPinnedNewTab(path)) return;
         store.navigateActiveSession(path);
@@ -265,6 +266,7 @@ export function DesktopNavigationProvider({
       // renderer's own `window.location` is the packaged file:// page.
       hash: location.hash,
       isScopeResume,
+      isHistoryTraversal,
       navigationKey,
       openInNewTab: (
         path: string,
@@ -297,7 +299,7 @@ export function DesktopNavigationProvider({
       },
       getShareableUrl: (path: string) => `${appUrl}${path}`,
     }),
-    [appUrl, location, isScopeResume, navigationKey],
+    [appUrl, location, isScopeResume, isHistoryTraversal, navigationKey],
   );
 
   return <NavigationProvider value={adapter}>{children}</NavigationProvider>;

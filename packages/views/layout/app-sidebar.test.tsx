@@ -56,11 +56,6 @@ vi.mock("@multica/core/realtime", () => ({
 vi.mock("../collaboration/creation-form", () => ({
   CollaborationCreationEntry: ({ sourceWorkspaceId, open }: { sourceWorkspaceId?: string; open?: boolean }) => open ? <div data-testid="collaboration-creation" data-workspace-id={sourceWorkspaceId} /> : null,
 }));
-vi.mock("../collaboration/notifications", () => ({
-  CollaborationNotifications: ({ renderTrigger }: { renderTrigger: (label: string, count: number) => React.ReactElement }) => renderTrigger("Collaboration notifications", 0),
-  CollaborationNotificationsPopover: ({ query, renderTrigger }: { query: { data?: { pages: { unread_count: number }[] } }; renderTrigger: (label: string, count: number | undefined) => React.ReactElement }) => renderTrigger("Collaboration notifications", query.data?.pages[0]?.unread_count),
-}));
-
 vi.mock("@dnd-kit/core", () => ({
   DndContext: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   PointerSensor: vi.fn(),
@@ -90,17 +85,14 @@ vi.mock("@multica/ui/components/ui/sidebar", () => ({
     children,
     isActive,
     render,
-    "aria-current": ariaCurrent,
-  }: {
-    children: React.ReactNode;
+    ...props
+  }: React.HTMLAttributes<HTMLElement> & {
     isActive?: boolean;
-    "aria-current"?: React.AriaAttributes["aria-current"];
-    render?: React.ReactElement<{ href?: string }>;
-  }) => (
-    <button type="button" aria-current={ariaCurrent} data-active={isActive ? "true" : undefined} data-href={render?.props.href}>
-      {children}
-    </button>
-  ),
+    render?: React.ReactElement<React.HTMLAttributes<HTMLElement> & { href?: string }>;
+  }) => {
+    const attributes = { ...props, "data-active": isActive ? "true" : undefined, "data-href": render?.props.href };
+    return render ? cloneElement(render, attributes, children) : <button type="button" {...attributes}>{children}</button>;
+  },
   SidebarMenuItem: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   SidebarRail: () => null,
   useSidebar: () => ({ setOpenMobile: sidebarState.setOpenMobile }),
@@ -148,7 +140,7 @@ vi.mock("../collaboration/source-bridge", () => ({
 vi.mock("../issues/components/status-icon", () => ({ StatusIcon: () => <span /> }));
 vi.mock("../navigation", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../navigation")>()),
-  AppLink: ({ children, href }: { children: React.ReactNode; href: string }) => <a href={href}>{children}</a>,
+  AppLink: ({ children, href, newTabTitle: _newTabTitle, ...props }: React.ComponentProps<"a"> & { newTabTitle?: string }) => <a href={href} {...props}>{children}</a>,
   useNavigation: () => ({ pathname: navigation.current.pathname, push: navigationPush, searchParams: new URLSearchParams(navigation.current.search ?? ""), hash: "" }),
 }));
 vi.mock("../projects/components/project-icon", () => ({ ProjectIcon: () => <span /> }));
@@ -250,6 +242,7 @@ vi.mock("@tanstack/react-query", async (importOriginal) => ({
 
 beforeEach(() => {
   useSidebarPreferences.setState({ groups: { work: true, ai: false, resources: false, collaboration: false } });
+  navigation.current = { pathname: "/acme/issues" };
   navigationPush.mockClear();
   notificationUnread.current = undefined;
 });
@@ -312,11 +305,39 @@ it("keeps collapsed unread feedback live without displaying unknown or zero as u
   expect(screen.queryByLabelText("Collaboration notifications 0 unread")).not.toBeInTheDocument();
 });
 
+it("offers a native notification page link with truthful unread feedback and no popover trigger", async () => {
+  const view = renderWithI18n(<AppSidebar />);
+  await userEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
+  const link = screen.getByRole("link", { name: "Collaboration notifications" });
+  expect(link).toHaveAttribute("href", "/account?view=notifications&filter=unread");
+  expect(link).not.toHaveAttribute("aria-haspopup");
+  expect(link).not.toHaveTextContent("0");
+  expect(screen.queryByRole("button", { name: "Collaboration notifications" })).not.toBeInTheDocument();
+  notificationUnread.current = 3;
+  view.rerender(<AppSidebar />);
+  expect(link).toHaveTextContent("3");
+});
+
+it("keeps Notifications selected for an archived notification detail without selecting either workbench list", () => {
+  notificationUnread.current = 3;
+  navigation.current = { pathname: "/account", search: "view=notifications&filter=archived&notification=00000000-0000-4000-8000-000000000002&issue=00000000-0000-4000-8000-000000000001" };
+  const { container } = renderWithI18n(<AppSidebar navigationWorkspace={null} />);
+  const link = screen.getByRole("link", { name: "Collaboration notifications" });
+  expect(link).toHaveAttribute("data-active", "true");
+  expect(link).toHaveAttribute("aria-current", "location");
+  expect(link).toHaveAttribute("href", "/account?view=notifications&filter=unread");
+  expect(container.querySelector('[data-href="/account?view=current"]')).not.toHaveAttribute("data-active");
+  expect(container.querySelector('[data-href="/account?view=participating"]')).not.toHaveAttribute("data-active");
+  fireEvent.click(screen.getByRole("button", { name: "Collapse collaboration navigation" }));
+  expect(screen.queryByRole("link", { name: "Collaboration notifications" })).not.toBeInTheDocument();
+  expect(screen.getByRole("status", { name: "Collaboration notifications 3 unread" })).toHaveTextContent("3");
+});
+
 it("exposes explicit collaboration views before workspace navigation", () => {
   const { container } = renderWithI18n(<AppSidebar />);
   fireEvent.click(screen.getByRole("button", { name: "Expand collaboration navigation" }));
-  const links = Array.from(container.querySelectorAll("button[data-href]"), (button) => button.getAttribute("data-href"));
-  expect(links.slice(0, 2)).toEqual(["/account?view=current", "/account?view=participating"]);
+  const links = Array.from(container.querySelectorAll("[data-href]"), (link) => link.getAttribute("data-href"));
+  expect(links.slice(0, 3)).toEqual(["/account?view=current", "/account?view=participating", "/account?view=notifications&filter=unread"]);
   expect(screen.getByRole("navigation", { name: "Application navigation" })).toBeInTheDocument();
 });
 
@@ -386,11 +407,11 @@ describe("PinRow", () => {
 
     const { container } = render(<AppSidebar />);
 
-    expect((await screen.findByText("Keep this pin")).closest("button")).toHaveAttribute(
+    expect((await screen.findByText("Keep this pin")).closest("a")).toHaveAttribute(
       "data-active",
       "true",
     );
-    expect(container.querySelector('button[data-href="/acme/issues"]')).not.toHaveAttribute("data-active");
+    expect(container.querySelector('[data-href="/acme/issues"]')).not.toHaveAttribute("data-active");
   });
 });
 
@@ -419,6 +440,19 @@ describe("mobile sheet dismissal", () => {
     navigation.current = { pathname: "/account", search: "view=participating" };
     rerender(<AppSidebar navigationWorkspace={null} />);
     expect(sidebarState.setOpenMobile).toHaveBeenCalledWith(false);
+  });
+
+  it("dismisses on notification filter and selection changes", () => {
+    navigation.current = { pathname: "/account", search: "view=notifications&filter=unread" };
+    const { rerender } = render(<AppSidebar navigationWorkspace={null} />);
+    sidebarState.setOpenMobile.mockClear();
+    navigation.current = { pathname: "/account", search: "view=notifications&filter=all" };
+    rerender(<AppSidebar navigationWorkspace={null} />);
+    expect(sidebarState.setOpenMobile).toHaveBeenCalledExactlyOnceWith(false);
+    sidebarState.setOpenMobile.mockClear();
+    navigation.current.search += "&notification=00000000-0000-4000-8000-000000000002";
+    rerender(<AppSidebar navigationWorkspace={null} />);
+    expect(sidebarState.setOpenMobile).toHaveBeenCalledExactlyOnceWith(false);
   });
 
   // Closing on `pathname` rather than per-link keeps every route out of the
@@ -512,7 +546,7 @@ describe("personal nav — Chat", () => {
   // The mocked SidebarMenuButton exposes the AppLink target as `data-href`
   // and renders the label + badge as its children.
   const chatNav = (container: HTMLElement) =>
-    container.querySelector<HTMLElement>('button[data-href="/acme/chat"]');
+    container.querySelector<HTMLElement>('[data-href="/acme/chat"]');
   const chatBadge = (container: HTMLElement) =>
     chatNav(container)?.querySelector("number-flow-react") ?? null;
 
@@ -521,7 +555,7 @@ describe("personal nav — Chat", () => {
     chatSessions.current = [{ id: "chat-1", unread_count: 2 }];
     const { container } = render(<AppSidebar />);
     const inboxBadge = container
-      .querySelector<HTMLElement>('button[data-href="/acme/inbox"]')
+      .querySelector<HTMLElement>('[data-href="/acme/inbox"]')
       ?.querySelector("number-flow-react") as (HTMLElement & { animated?: boolean }) | null;
     const currentChatBadge = chatBadge(container) as (HTMLElement & { animated?: boolean }) | null;
 
@@ -606,7 +640,7 @@ describe("personal nav — Chat", () => {
 // covers the other three bundles — this suite never initialises i18next.
 describe("nav structure", () => {
   function navHrefs(container: HTMLElement) {
-    return Array.from(container.querySelectorAll("button[data-href]")).map((el) =>
+    return Array.from(container.querySelectorAll("[data-href]")).map((el) =>
       el.getAttribute("data-href"),
     );
   }
@@ -640,6 +674,7 @@ describe("nav structure", () => {
       // account collaboration
       "/account?view=current",
       "/account?view=participating",
+      "/account?view=notifications&filter=unread",
       // personal
       "/acme/inbox",
       "/acme/my-issues",
@@ -672,7 +707,7 @@ describe("nav structure", () => {
     expect(footerRow).not.toBeNull();
 
     for (const href of ["/acme/usage", "/acme/settings"]) {
-      const row = container.querySelector(`button[data-href="${href}"]`);
+      const row = container.querySelector(`[data-href="${href}"]`);
       expect(row, href).not.toBeNull();
       expect(
         row!.compareDocumentPosition(footerRow!) & Node.DOCUMENT_POSITION_FOLLOWING,
@@ -688,7 +723,7 @@ describe("nav structure", () => {
   ])("highlights only the current navigation entry for %s", (pathname, href) => {
     navigation.current = { pathname };
     const { container } = render(<AppSidebar />);
-    const activeItems = container.querySelectorAll('button[data-href][data-active="true"]');
+    const activeItems = container.querySelectorAll('[data-href][data-active="true"]');
     expect(activeItems).toHaveLength(1);
     expect(activeItems[0]).toHaveAttribute("data-href", href);
   });
@@ -717,7 +752,7 @@ it.each([
 ])("shows daily iteration navigation only when confirmed usable: %j", ({ visible, ...capability }) => {
   iterationCapability.current = capability;
   const { container } = render(<AppSidebar />);
-  expect(!!container.querySelector('button[data-href="/acme/iterations"]')).toBe(visible);
+  expect(!!container.querySelector('[data-href="/acme/iterations"]')).toBe(visible);
 });
 
 // Triage is a low-frequency destination, so it closes the Work group after the
@@ -727,6 +762,6 @@ it("lists triage last in the work group", () => {
   triageSettings.current = { enabled: true };
   const workHrefs = ["/acme/issues", "/acme/projects", "/acme/iterations", "/acme/triage"];
   const { container } = render(<AppSidebar />);
-  const rendered = Array.from(container.querySelectorAll("button[data-href]"), (button) => button.getAttribute("data-href"));
+  const rendered = Array.from(container.querySelectorAll("[data-href]"), (link) => link.getAttribute("data-href"));
   expect(rendered.filter((href) => workHrefs.includes(href ?? ""))).toEqual(workHrefs);
 });

@@ -82,6 +82,7 @@ func notifyAddedCollaborationMentions(ctx context.Context, q *db.Queries, access
 
 type CollaborationNotificationsQuery struct {
 	Limit           int
+	View            string
 	IncludeArchived bool
 	BeforeAt        pgtype.Timestamptz
 	BeforeID        pgtype.UUID
@@ -146,7 +147,12 @@ func collaborationNotificationViewer(ctx context.Context, q *db.Queries) (pgtype
 
 func (s *CollaborationService) ListNotifications(ctx context.Context, p CollaborationNotificationsQuery) (CollaborationNotificationsPage, error) {
 	var out CollaborationNotificationsPage
-	if p.Limit < 1 || p.Limit > 100 || p.BeforeAt.Valid != p.BeforeID.Valid {
+	switch p.View {
+	case "", "all", "unread", "archived":
+	default:
+		return out, collaborationError(http.StatusBadRequest, "invalid_notification_query")
+	}
+	if p.Limit < 1 || p.Limit > 100 || p.BeforeAt.Valid != p.BeforeID.Valid || p.View != "" && p.IncludeArchived {
 		return out, collaborationError(http.StatusBadRequest, "invalid_notification_query")
 	}
 	tx, err := s.TxStarter.Begin(ctx)
@@ -163,7 +169,7 @@ func (s *CollaborationService) ListNotifications(ctx context.Context, p Collabor
 		return out, err
 	}
 	rows, err := q.ListCollaborationNotifications(ctx, db.ListCollaborationNotificationsParams{
-		RecipientID: viewer, IncludeArchived: p.IncludeArchived, BeforeAt: p.BeforeAt, BeforeID: p.BeforeID, RowLimit: int32(p.Limit + 1)})
+		RecipientID: viewer, View: p.View, IncludeArchived: p.IncludeArchived, BeforeAt: p.BeforeAt, BeforeID: p.BeforeID, RowLimit: int32(p.Limit + 1)})
 	if err != nil {
 		return out, err
 	}

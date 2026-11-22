@@ -14,8 +14,18 @@ func (h *Handler) ListCollaborationNotifications(w http.ResponseWriter, r *http.
 	if !ok {
 		return
 	}
+	query := r.URL.Query()
+	if len(query["view"]) > 1 || len(query["include_archived"]) > 1 || query.Has("view") && query.Has("include_archived") {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_notification_query", "error": "Invalid notification filters"})
+		return
+	}
+	view := query.Get("view")
+	if query.Has("view") && view != "all" && view != "unread" && view != "archived" {
+		writeJSON(w, http.StatusBadRequest, map[string]string{"code": "invalid_notification_query", "error": "Invalid notification view"})
+		return
+	}
 	includeArchived := false
-	if value := r.URL.Query().Get("include_archived"); value != "" {
+	if value := query.Get("include_archived"); value != "" {
 		var err error
 		includeArchived, err = strconv.ParseBool(value)
 		if err != nil {
@@ -25,7 +35,7 @@ func (h *Handler) ListCollaborationNotifications(w http.ResponseWriter, r *http.
 	}
 	svc := service.NewCollaborationService(h.Queries, h.TxStarter, h.IssueService)
 	page, err := svc.ListNotifications(r.Context(), service.CollaborationNotificationsQuery{
-		Limit: limit, IncludeArchived: includeArchived, BeforeAt: before, BeforeID: beforeID})
+		Limit: limit, View: view, IncludeArchived: includeArchived, BeforeAt: before, BeforeID: beforeID})
 	if err != nil {
 		writeCollaborationError(w, err)
 		return
@@ -39,7 +49,11 @@ func (h *Handler) ListCollaborationNotifications(w http.ResponseWriter, r *http.
 			return
 		}
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"items": page.Items, "unread_count": page.UnreadCount, "next_cursor": next})
+	response := map[string]any{"items": page.Items, "unread_count": page.UnreadCount, "next_cursor": next}
+	if view != "" {
+		response["view"] = view
+	}
+	writeJSON(w, http.StatusOK, response)
 }
 
 func (h *Handler) ReadCollaborationNotification(w http.ResponseWriter, r *http.Request) {

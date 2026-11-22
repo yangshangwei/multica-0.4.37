@@ -19,6 +19,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Hook Guidelines](./hook-guidelines.md) | Custom hooks, data fetching patterns | To fill |
 | [State Management](./state-management.md) | Local state, global state, server state | To fill |
 | [Global scope navigation](../../core/frontend/global-scope-navigation.md) | Full-path session history, account mementos and committed navigation intent | Active |
+| [Collaboration notifications](../../core/frontend/collaboration-notifications.md) | Account page, matching query/fragment commits and real browser return proof | Active |
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |
 | [Agent critical-path CI](./agent-critical-path-ci.md) | Four production-Web paths, exact inventory and isolated launch contract | Active |

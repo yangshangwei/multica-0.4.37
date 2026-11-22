@@ -53,6 +53,7 @@ import {
   matchesCollaborationCommentAttachments,
   parseCollaborationNotificationReceipt, type CollaborationCommentInput, type CollaborationPreviewInput,
 } from "../collaboration/content-schema";
+import { isCollaborationNotificationView, type CollaborationNotificationView } from "../collaboration/notification-view";
 import { CollaborationControlInputSchema, parseCollaborationControlReceipt, matchesCollaborationControlReceipt, type CollaborationControlInput } from "../collaboration/control-schema";
 import {
   CollaborationSwitchInputSchema, collaborationSwitchRequest, matchesCollaborationSwitchReceipt,
@@ -1656,11 +1657,16 @@ export class ApiClient {
     return result && sameResourceIdentity(result.issue_id, id) && result.request_id === requestId && result.action === action ? result : null;
   }
 
-  async getCollaborationNotifications(params: { cursor?: string; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
+  async getCollaborationNotifications(params: { cursor?: string; view?: CollaborationNotificationView; includeArchived?: boolean } = {}, options?: { signal?: AbortSignal }) {
+    if (params.view !== undefined && (!isCollaborationNotificationView(params.view) || params.includeArchived !== undefined)) {
+      throw new TypeError("Invalid collaboration notification view");
+    }
     const query = new URLSearchParams({ limit: "50" });
     if (params.cursor) query.set("cursor", params.cursor);
+    if (params.view !== undefined) query.set("view", params.view);
     if (params.includeArchived === true) query.set("include_archived", "true");
-    return parseCollaborationNotifications(await this.fetchCollaboration(`/api/me/collaboration-notifications?${query}`, { signal: options?.signal }));
+    const view = params.view ?? (params.includeArchived === true ? undefined : "all");
+    return parseCollaborationNotifications(await this.fetchCollaboration(`/api/me/collaboration-notifications?${query}`, { signal: options?.signal }), view);
   }
 
   async updateCollaborationNotification(id: string, action: "read" | "archive", options?: { signal?: AbortSignal }) {

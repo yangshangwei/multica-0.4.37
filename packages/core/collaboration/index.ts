@@ -105,6 +105,8 @@ export * from "./discussion-schema";
 export { parseCollaborationDiscussionDraft, prepareCollaborationDiscussion, executeCollaborationDiscussion } from "./discussion";
 export { collaborationIssueReactionsOptions } from "./content-queries";
 export { collaborationCommentsOptions, collaborationCommentOptions, collaborationCommentHistoryOptions, collaborationMentionTargetsOptions, collaborationNotificationsOptions, collaborationActivityOptions, useCollaborationCommentPreview, useUpdateCollaborationNotification } from "./content-queries";
+export { COLLABORATION_NOTIFICATION_VIEWS, isCollaborationNotificationView } from "./notification-view";
+export type { CollaborationNotificationView } from "./notification-view";
 // PAY-241 S2 stage gates (contract `collaboration-stage-v1`).
 export * from "./stage-schema";
 export * from "./stage-presentation";

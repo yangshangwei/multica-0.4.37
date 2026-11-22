@@ -13,7 +13,7 @@ export function AccountWorkbenchRoute() {
   const path = currentPath(navigation);
   const destination = parseAccountPath(path);
   const valid = destination !== null;
-  const title = formatDocumentTitle(t(($) => $.page.title));
+  const title = formatDocumentTitle(destination?.view === "notifications" ? t(($) => $.notifications.title) : t(($) => $.page.title));
   useEffect(() => {
     document.title = title;
     return () => { if (document.title === title) document.title = SITE_TITLE; };

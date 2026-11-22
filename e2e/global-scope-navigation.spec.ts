@@ -135,17 +135,26 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveCount(0);
       await expect(collaborationDirectory.getByText("Beta", { exact: true })).toBeVisible();
 
-      // Keyboard disclosure keeps the workspace destination and closes any
-      // notification portal when the directory is collapsed again.
+      // Disclosure leaves the current page in place. The explicit notification
+      // entry opens its account page, which survives a directory collapse.
       await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
       await page.keyboard.press("Enter");
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await expect(collaborationDirectory.getByRole("link", { name: "Current handling", exact: true })).toBeVisible();
-      await collaborationDirectory.getByRole("button", { name: /^Notifications/ }).click();
-      await expect(page.getByRole("heading", { name: "Notifications", exact: true })).toBeVisible();
+      const notificationsLink = collaborationDirectory.getByRole("link", { name: "Collaboration notifications", exact: true });
+      await expect(notificationsLink).toHaveAttribute("href", /\/account\?view=notifications&filter=unread$/);
+      await notificationsLink.click();
+      const notificationsHeading = page.getByRole("heading", { name: "Collaboration notifications", exact: true });
+      await expect(notificationsHeading).toBeVisible();
+      await expect(notificationsLink).toHaveAttribute("aria-current", "page");
+      await expect(notificationsLink).toHaveAttribute("data-active");
+      await expect(page.locator('[data-slot="popover-content"]')).toHaveCount(0);
+      await capture(`${platform.toLowerCase()}-scope-notifications.png`);
       await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
-      await expect(page.getByRole("heading", { name: "Notifications", exact: true })).toHaveCount(0);
+      await expect(notificationsHeading).toBeVisible();
+      await expect(notificationsLink).toHaveCount(0);
       await expect(collaborationDirectory.getByRole("link", { name: "Current handling", exact: true })).toHaveCount(0);
+      await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
       await page.keyboard.press("Shift+Tab");

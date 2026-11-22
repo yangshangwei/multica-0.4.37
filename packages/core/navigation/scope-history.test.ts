@@ -9,6 +9,19 @@ const issue = "00000000-0000-4000-8000-000000000001";
 beforeEach(() => useScopeHistoryStore.getState().setOwner(null));
 
 describe("scope history", () => {
+  it.each(["unread", "all", "archived"])("resumes the exact %s notification selection after workspace navigation", (filter) => {
+    const store = useScopeHistoryStore.getState();
+    store.setOwner(owner);
+    const notification = "00000000-0000-4000-8000-000000000002";
+    const comment = "00000000-0000-4000-8000-000000000003";
+    const path = `/account?view=notifications&filter=${filter}&notification=${notification}&issue=${issue}#comment-${comment}`;
+    expect(navigationScope(path)).toEqual({ scope: "account" });
+    store.record(owner, path);
+    store.record(owner, "/second/projects/p1");
+    expect(resolveScopePath(useScopeHistoryStore.getState(), owner, "account")).toBe(path);
+    expect(resolveScopePath(useScopeHistoryStore.getState(), owner, "workspace", ["second"])).toBe("/second/projects/p1");
+  });
+
   it("retains the full independent workspace and account locations", () => {
     const store = useScopeHistoryStore.getState();
     store.setOwner(owner);

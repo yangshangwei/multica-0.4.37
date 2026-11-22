@@ -22,6 +22,7 @@ import {
   RecoveryEvidence, authenticatedSocket, disconnectObserver, recoveryEnvironmentReady, withSessions,
   type RecoveryActor, type RecoveryPlatform, type RecoverySession, type RecoverySurface,
 } from "./collaboration-recovery";
+import { openCollaborationNotifications, notificationPath } from "./collaboration-notifications";
 
 const object = z.record(z.string(), z.unknown());
 const sha = (bytes: string | Buffer) => createHash("sha256").update(bytes).digest("hex");
@@ -685,16 +686,18 @@ async function reconnect(session: RecoverySession, previousId: string, evidence:
 
 async function showResultNotification(session: RecoverySession, issue: HostIssue, runId: string, kind: "ai_completed" | "ai_failed" | "ai_stopped") {
   const labels = { ai_completed: "AI execution completed", ai_failed: "AI execution failed", ai_stopped: "AI stop confirmed" };
-  await session.page.getByRole("button", { name: /^Notifications/ }).click();
-  const popup = session.page.locator('[data-slot="popover-content"]').filter({ has: session.page.getByText("Notifications", { exact: true }) });
-  await expect(popup).toBeVisible();
-  const row = popup.getByRole("listitem").filter({ has: session.page.getByText(labels[kind], { exact: true }) });
+  const list = await openCollaborationNotifications(session.page, "all");
+  const row = list.locator("[data-notification-id]").filter({ has: session.page.getByText(labels[kind], { exact: true }) });
   await expect(row).toHaveCount(1);
   const link = row.getByRole("link", { name: issue.title, exact: true });
-  const href = await link.getAttribute("href"); if (!href) throw new Error("The proven result notification has no real destination");
+  const href = await link.getAttribute("href"), notificationId = await row.getAttribute("data-notification-id");
+  if (!href || !notificationId) throw new Error("The proven result notification has no exact destination");
   const destination = new URL(href, session.fixture.apiUrl);
-  expect(destination.searchParams.get("issue")).toBe(issue.id); expect(destination.hash).toBe(`#run-${runId}`);
-  await link.click(); await expect(popup).toBeHidden();
+  expect(destination.pathname + destination.search + destination.hash).toBe(notificationPath("all", notificationId, issue.id, `#run-${runId}`));
+  await link.click();
+  await expect(row).toHaveAttribute("data-selected", "true");
+  await expect(session.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+  await expect(session.page.locator('[data-slot="popover-content"]').filter({ has: session.page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
   const disclosure = session.page.locator(`[id="run-${runId}"]`);
   await expect(disclosure).toBeFocused();
   await expect(disclosure).toContainText(kind === "ai_stopped" ? "Managed execution stopped" : "Managed execution ended");

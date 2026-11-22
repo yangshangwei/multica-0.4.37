@@ -16,6 +16,7 @@ import { attachRecordedChild, detachRecordedChild, exerciseRecordedPages, record
 import { exerciseCollaborationResourceOffers, resourceOfferAccountPath, seedCollaborationResourceOfferJourney } from "./fixtures/collaboration-resource-offers";
 import { exerciseCollaborationCommandHistory } from "./fixtures/collaboration-command-history";
 import { revealCollaborationDisclosure } from "./fixtures/collaboration-disclosures";
+import { openCollaborationNotifications, notificationList, notificationPath, notificationViews } from "./fixtures/collaboration-notifications";
 
 // Existing-record tests use a DB seed; the named creation/attachment test below
 // uses the actual gated creation API and an explicitly enabled isolated server.
@@ -498,26 +499,38 @@ test("Desktop child links, recorded pages and result notifications survive popou
     await expect(outsideChildren.getByRole("link")).toHaveCount(0);
     await viewer.page.keyboard.press("Escape");
     await expect(viewer.page.getByRole("dialog", { name: "Sub-issues", exact: true })).toBeHidden();
-    await viewer.page.getByRole("button", { name: /Notifications/ }).click();
-    const notification = viewer.page.getByRole("listitem").filter({ has: viewer.page.getByText("AI execution failed", { exact: true }) });
-    await notification.getByRole("link", { name: records.issue.title, exact: true }).click();
-    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    const notificationsList = await openCollaborationNotifications(viewer.page, "all");
+    const notification = notificationsList.locator("[data-notification-id]").filter({ has: viewer.page.getByText("AI execution failed", { exact: true }) });
+    await expect(notification).toHaveCount(1);
+    const notificationId = await notification.getAttribute("data-notification-id");
+    const notificationLink = notification.getByRole("link", { name: records.issue.title, exact: true });
+    const notificationHref = await notificationLink.getAttribute("href");
+    if (!notificationId || !notificationHref) throw new Error("The native recorded result notification has no exact destination");
+    const notificationUrl = new URL(notificationHref);
+    const selectedNotificationPath = notificationUrl.pathname + notificationUrl.search + notificationUrl.hash;
+    expect(selectedNotificationPath).toBe(notificationPath("all", notificationId, records.issue.id, `#run-${records.runId}`));
+    await notificationLink.click();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(selectedNotificationPath);
+    await expect(notification).toHaveAttribute("data-selected", "true");
     const selectedRun = viewer.page.locator(`[id="run-${records.runId}"]`);
     await expect(selectedRun).toBeFocused();
     await exerciseRecordedPages(viewer.page, records);
     await selectedRun.getByRole("button", { name: `Hide records for ${records.runId}`, exact: true }).click();
-    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records));
-    await viewer.page.getByRole("button", { name: /Notifications/ }).click();
-    await notification.getByRole("link", { name: records.issue.title, exact: true }).click();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(notificationUrl.pathname + notificationUrl.search);
+    await expect(notificationViews(viewer.page).getByRole("link", { name: "All", exact: true })).toHaveAttribute("aria-current", "page");
+    await notificationLink.click();
     await expect(selectedRun.getByText(records.input, { exact: true })).toBeVisible();
     await expect(selectedRun).toBeFocused();
-    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
-    await expect(viewer.page.locator('[data-slot="popover-content"]').filter({ has: viewer.page.getByText("Notifications", { exact: true }) })).toBeHidden();
+    await expect.poll(async () => (await snapshot(viewer.page)).accountGroup!.tabs[0].url).toBe(selectedNotificationPath);
+    await expect(notificationsList).toBeVisible();
+    await expect(viewer.page.locator('[data-slot="popover-content"]').filter({ has: viewer.page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
     await scrollForNativeRecordCapture(viewer.page, selectedRun.getByRole("button", { name: `Hide records for ${records.runId}`, exact: true }));
     await nativeScreenshot(app, viewer.page, testInfo.outputPath("desktop-records-wide.png"));
     const window = await app.browserWindow(viewer.page);
     await window.evaluate((target) => { target.setContentSize(1100, 1000); target.webContents.setZoomFactor(2); });
     await expect.poll(() => viewer.page.evaluate(() => innerWidth)).toBe(550);
+    await expect(notificationList(viewer.page)).toBeHidden();
+    await expect(viewer.page.getByRole("link", { name: "Back to notifications", exact: true })).toBeVisible();
     const usageGeometry = await scrollForNativeRecordCapture(viewer.page, selectedRun.getByRole("region", { name: "Recorded usage", exact: true }));
     expect(await viewer.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
     const usageCapture = testInfo.outputPath("desktop-records-zoom200.png");
@@ -543,8 +556,23 @@ test("Desktop child links, recorded pages and result notifications survive popou
     app = restarted.app;
     await restarted.start();
     await expect(restarted.page.getByText(records.input, { exact: true })).toBeVisible();
-    expect((await snapshot(restarted.page)).accountGroup!.tabs[0].id).toBe(beforeRestart.accountGroup!.tabs[0].id);
-    expect((await snapshot(restarted.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    await expect(restarted.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+    await expect(notificationViews(restarted.page).getByRole("link", { name: "All", exact: true })).toHaveAttribute("aria-current", "page");
+    const restoredAccount = (await snapshot(restarted.page)).accountGroup!.tabs[0];
+    expect(restoredAccount.id).toBe(beforeRestart.accountGroup!.tabs[0].id);
+    expect(restoredAccount.url).toBe(selectedNotificationPath);
+    expect(restoredAccount.history).toEqual(beforeRestart.accountGroup!.tabs[0].history);
+    // Copy link opens canonical content explicitly; notification lists stay in the main tab.
+    const participatingRun = new URL(await copyNativeAccountLink(app, restarted.page, recordedAccountPath(records, true), testInfo, "outside-notification-run"));
+    await deepLink(app, participatingRun.pathname + participatingRun.search + participatingRun.hash);
+    await expect.poll(async () => (await snapshot(restarted.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
+    await expect(restarted.page.getByText(records.input, { exact: true })).toBeVisible();
+    await restarted.page.getByRole("button", { name: "Go back", exact: true }).click();
+    await expect.poll(async () => (await snapshot(restarted.page)).accountGroup!.tabs[0].url).toBe(selectedNotificationPath);
+    await expect(restarted.page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+    await expect(restarted.page.getByText(records.input, { exact: true })).toBeVisible();
+    await restarted.page.getByRole("button", { name: "Go forward", exact: true }).click();
+    await expect.poll(async () => (await snapshot(restarted.page)).accountGroup!.tabs[0].url).toBe(recordedAccountPath(records, true));
     const accountTabId = (await snapshot(restarted.page)).accountGroup!.tabs[0].id;
     await restarted.page.locator(`[data-tab-id="${accountTabId}"]`).click({ button: "right" });
     const popupReady = app.waitForEvent("window");
@@ -568,6 +596,7 @@ test("Desktop child links, recorded pages and result notifications survive popou
     expect(restarted.errors).toEqual([]);
     await testInfo.attach("native-record-journey", { contentType: "application/json", body: JSON.stringify({ issueId: records.issue.id, childId: records.child.id,
       representativeRunId: records.runId, groupId: records.groupId, copied, accountTabId, restoredAnchor: true, repeatedNotification: true, zoom: 2,
+      notificationHref, notificationHistoryRestored: true,
       recordSource: "seeded retained source history; runtime ingestion verified separately", nativePageErrors: restarted.errors }, null, 2) });
   } catch (error) {
     await attachFailure(app, testInfo);

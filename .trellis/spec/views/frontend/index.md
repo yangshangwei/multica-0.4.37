@@ -21,6 +21,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Collaboration trigger previews](../../server/collaboration-preview-wakeup.md) | Shared localized grouping display, suppression and live-draft correlation | Focused preview increment |
 | [Collaboration Workbench](../../core/frontend/collaboration-workbench.md) | Shared account views, scoped creation/files, resource forms and original-intent recovery | Gated workflow; full product pending |
 | [Collaboration Detail](./collaboration-detail.md) | Facts-first result/decision, role action, one-action comments, auxiliary recovery and anchors | Shared production Web/Electron human journey verified |
+| [Collaboration Notifications](../../core/frontend/collaboration-notifications.md) | Shared account page, exact notification targets, processing/focus and retained history mementos | Active |
 | [Collaboration Source Picker](./collaboration-source-picker.md) | Click-open recent parents, visible search/retry, selected UUID and protected Query recovery | Active |
 | [Collaboration Creation Interaction](./collaboration-creation.md) | Scoped completion, recipient identity/ARIA, painted focus, visible feedback/actions and debounced parents | Active |
 | [Collaboration knowledge](./collaboration-knowledge.md) | Shared automatic status/policy, human/system audit, exact review, target panels and outcome recovery | Shared Web/Desktop contract; scoped evidence separate |

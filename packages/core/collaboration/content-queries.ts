@@ -2,6 +2,7 @@ import { infiniteQueryOptions, queryOptions, useMutation, useQueryClient, type Q
 import { getApi } from "../api";
 import { collaborationKeys, protectCollaborationRead, type CollaborationScope } from "./access";
 import type { CollaborationPreviewInput } from "./content-schema";
+import type { CollaborationNotificationView } from "./notification-view";
 import { withQueryAccessBoundary } from "../query-access";
 
 const freshness = { staleTime: 0, retry: false, refetchOnMount: "always" as const, refetchOnWindowFocus: "always" as const, refetchOnReconnect: "always" as const, refetchInterval: 15_000 };
@@ -47,11 +48,11 @@ export function collaborationMentionTargetsOptions(client: QueryClient, scope: C
     queryFn: ({ signal }) => protectCollaborationRead(client, scope, issueId, () => getApi().getCollaborationMentionTargets(issueId, { signal })),
   });
 }
-export function collaborationNotificationsOptions(client: QueryClient, scope: CollaborationScope, includeArchived = false) {
+export function collaborationNotificationsOptions(client: QueryClient, scope: CollaborationScope, view: CollaborationNotificationView = "all") {
   return infiniteQueryOptions({
-    queryKey: [...collaborationKeys.notifications(scope), { includeArchived }], ...freshness,
+    queryKey: [...collaborationKeys.notifications(scope), { view }], ...freshness,
     initialPageParam: undefined as string | undefined,
-    queryFn: (context) => withQueryAccessBoundary(() => protectCollaborationRead(client, scope, null, () => getApi().getCollaborationNotifications({ cursor: context.pageParam, includeArchived }, { signal: context.signal })))(context),
+    queryFn: (context) => withQueryAccessBoundary(() => protectCollaborationRead(client, scope, null, () => getApi().getCollaborationNotifications({ cursor: context.pageParam, view }, { signal: context.signal })))(context),
     getNextPageParam: (page) => page.next_cursor ?? undefined,
   });
 }

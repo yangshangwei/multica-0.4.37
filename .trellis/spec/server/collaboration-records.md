@@ -35,6 +35,11 @@ separate work.
   `run_id`; old installed clients can still open the issue.
 - `accountPath({view: "participating", issueId, runId})` produces
   `/account?view=participating&issue=<UUID>#run-<UUID>`.
+- Notification-row links use `accountPath({view: "notifications",
+  notificationView, notificationId, issueId, runId})`, retaining notification
+  identity separately from the issue and exact run fragment. Filtered read,
+  marker and global count semantics follow
+  [account notifications](../core/frontend/collaboration-notifications.md).
 
 ## 3. Contracts
 
@@ -213,8 +218,9 @@ member supplied the last proof. The view displays group state beside run outcome
 Source/native routes consume NavigationAdapter.hash, including MemoryRouter;
 window.location.hash is not the native route authority. Hiding a currently linked
 run clears only its matching validated fragment, allowing the same notification
-to reopen and refocus it. Popover focus handoff must allow that navigation while
-Escape still returns focus to the trigger. Known human/result events have clear
+to reopen and refocus it. On the notification page, retain its filter,
+notification and issue when clearing that fragment. Native row links select the
+notification, and repeated explicit opens retain fresh anchor focus. Known human/result events have clear
 labels; removed notifications remain content-free and unknown kinds stay generic.
 
 ## 4. Validation & Error Matrix
@@ -259,7 +265,8 @@ host skips do not count as Linux evidence.
 Core owns malformed/private wire, exact decimals, notification compatibility,
 page-chain integrity, optional-resource versus issue denial and stale epochs.
 Shared views own source/outside rendering, safe old actions, run/group facts,
-controlled content, and composed repeat-notification/Popover focus behavior.
+controlled content, and composed repeat-notification/anchor focus behavior plus
+retained same-issue notification list/detail/draft restoration.
 Isolated component tests must include NavigationProvider when rendering run
 disclosures. Web/native tests own real routing, clipboard, issue-scope hints,
 cross-account notification/paging, revocation and narrow/200% layout. Seeded

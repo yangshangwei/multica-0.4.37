@@ -11,6 +11,9 @@ General AI execution and full product acceptance retain their separate gates.
 Formal results, exact initiator decisions and manual policy follow
 [the delivery contract](../../server/collaboration-delivery.md); shared layout and
 disclosure behavior follow [the detail contract](../../views/frontend/collaboration-detail.md).
+The independent account notification page, recipient filters, view markers and
+retained notification return state follow
+[the notification contract](./collaboration-notifications.md).
 
 ## 2. Signatures
 

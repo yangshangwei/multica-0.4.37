@@ -11,6 +11,7 @@ import type {
 import { TestApiClient } from "../fixtures";
 import { seedCollaborationResourceOfferJourney } from "./collaboration-resource-offers";
 import { revealCollaborationEditingAction } from "./collaboration-editing";
+import { openCollaborationNotifications, notificationPath } from "./collaboration-notifications";
 
 interface ResourceReceipt {
   issue_id: string; status: number; code: string; request_id: string;
@@ -323,26 +324,25 @@ async function assertOneComment(fixture: CollaborationMentionJourney, before: Jo
   return after;
 }
 
-async function notificationRow(page: Page, hash: string) {
-  await page.getByRole("button", { name: /^Notifications/ }).click();
-  const popup = page.locator('[data-slot="popover-content"]').filter({ has: page.getByText("Notifications", { exact: true }) });
-  await expect(popup).toBeVisible();
-  const row = popup.getByRole("listitem").filter({ has: page.locator(`a[href$="${hash}"]`) });
+async function locatedNotificationRow(page: Page, hash: string) {
+  const list = await openCollaborationNotifications(page, "all");
+  const row = list.locator("[data-notification-id]").filter({ has: page.locator(`a[href$="${hash}"]`) });
   await expect(row).toHaveCount(1);
   await expect(row.getByText("Mentioned you", { exact: true })).toBeVisible();
-  return { row, popup };
+  return row;
 }
 async function openLocatedNotification(page: Page, fixture: CollaborationMentionJourney, hash: string) {
-  const { row, popup } = await notificationRow(page, hash);
+  const row = await locatedNotificationRow(page, hash);
   const link = row.getByRole("link", { name: fixture.title, exact: true });
   const href = await link.getAttribute("href");
-  if (!href) throw new Error("The located notification has no navigation link");
+  const notificationId = await row.getAttribute("data-notification-id");
+  if (!href || !notificationId) throw new Error("The located notification has no exact navigation identity");
   const destination = new URL(href, page.url());
-  expect(destination.pathname).toBe("/account");
-  expect(destination.searchParams.get("issue")).toBe(fixture.issueId);
-  expect(destination.hash).toBe(hash);
+  expect(destination.pathname + destination.search + destination.hash).toBe(notificationPath("all", notificationId, fixture.issueId, hash));
   await link.click();
-  await expect(popup).toBeHidden();
+  await expect(row).toHaveAttribute("data-selected", "true");
+  await expect(page.getByRole("heading", { name: "Collaboration notifications", exact: true })).toBeVisible();
+  await expect(page.locator('[data-slot="popover-content"]').filter({ has: page.getByText("Notifications", { exact: true }) })).toHaveCount(0);
   const anchor = page.locator(`[id="${hash.slice(1)}"]`);
   await expect(anchor).toBeFocused();
   await expect(anchor).toBeVisible();
@@ -559,7 +559,7 @@ export async function exerciseDurableMentionNotifications(page: Page, humanPage:
   await expect(comment).toContainText("Durable offline comment.");
   await adapter.capture?.("durable-mention-comment", humanPage, comment);
   const notification = addedNotifications(offline.before.notifications, offline.after.notifications, fixture.handlerId)[0]!;
-  const { row, popup } = await notificationRow(humanPage, hash);
+  const row = await locatedNotificationRow(humanPage, hash);
   for (const [action, label] of [["read", "Mark read"], ["archive", "Archive"]] as const) {
     const responsePending = humanPage.waitForResponse((response) => new URL(response.url()).pathname === `/api/me/collaboration-notifications/${notification.id}/${action}`
       && response.request().method() === "POST");
@@ -573,8 +573,9 @@ export async function exerciseDurableMentionNotifications(page: Page, humanPage:
     if (action === "read") await expect(row.getByRole("button", { name: "Mark read", exact: true })).toHaveCount(0);
   }
   await expect(row).toHaveCount(0);
-  await humanPage.getByRole("button", { name: /^Notifications/ }).click();
-  await expect(popup).toBeHidden();
+  await adapter.navigate(humanPage, mentionAccountPath(fixture));
+  await expect(humanPage.getByRole("heading", { name: fixture.title, exact: true })).toBeVisible();
+  await expect(humanPage.getByRole("heading", { name: "Collaboration notifications", exact: true })).toHaveCount(0);
 
   let before = await readJourneyState(fixture);
   const firstEdit = `${offline.sent.body.content} Added owner D. ${personMention(fixture.ownerId, "Owner D")} ${editOnlyMentions(fixture)}`;

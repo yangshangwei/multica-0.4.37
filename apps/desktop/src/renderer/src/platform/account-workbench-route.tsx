@@ -9,12 +9,12 @@ import { useT } from "@multica/views/i18n";
 /** Authenticated account scope never synthesizes workspace membership. */
 export function DesktopAccountWorkbenchRoute() {
   const location = useLocation();
+  const destination = parseAccountPath(`${location.pathname}${location.search}${location.hash}`);
   const user = useAuthStore((state) => state.user);
   const { t } = useT("collaboration");
-  const title = t(($) => $.page.title);
+  const title = destination?.view === "notifications" ? t(($) => $.notifications.title) : t(($) => $.page.title);
   useEffect(() => { document.title = title; }, [title]);
   setCurrentWorkspace(null, null);
-  const destination = parseAccountPath(`${location.pathname}${location.search}${location.hash}`);
   if (!user || user.requires_account_setup || user.requires_password_change || !destination) return null;
   return <AccountWorkbenchPage destination={destination} administrationHref={accountPath({ administration: true })} navigationInSidebar />;
 }

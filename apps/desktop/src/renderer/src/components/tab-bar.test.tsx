@@ -237,6 +237,20 @@ describe("TabBar hover action buttons", () => {
 });
 
 describe("TabBar active-tab title persistence", () => {
+  it("presents and persists a notification tab with its localized title and Bell", () => {
+    state.activeWorkspaceSlug = null;
+    pres.title = "Unknown page";
+    const path = "/account?view=notifications&filter=archived&notification=22222222-2222-4222-8222-222222222222&issue=11111111-1111-4111-8111-111111111111";
+    state.accountGroup = {
+      activeTabId: "account",
+      tabs: [{ id: "account", url: path, title: "Collaboration", pinned: false }],
+    };
+    const { getByRole } = render(<TabBarWithI18n />);
+    const tab = getByRole("button", { name: "Collaboration notifications" });
+    expect(within(tab).getByTestId("tab-leading")).toHaveAttribute("data-icon", "Bell");
+    expect(state.updateTab).toHaveBeenCalledExactlyOnceWith("account", { title: "Collaboration notifications" });
+  });
+
   it("persists the resolved title only for the active tab", () => {
     pres.title = "MUL-1: Fixed";
     state.byWorkspace.acme.tabs = [
@@ -541,6 +555,19 @@ describe("TabBar overflow", () => {
 });
 
 describe("TabBar context menu", () => {
+  it("keeps notification selections in the main account tab without a popout action", async () => {
+    state.activeWorkspaceSlug = null;
+    state.accountGroup = {
+      activeTabId: "account",
+      tabs: [{ id: "account", url: "/account?view=notifications&filter=unread&notification=22222222-2222-4222-8222-222222222222&issue=11111111-1111-4111-8111-111111111111", title: "Collaboration notifications", pinned: false }],
+    };
+    const { getByRole, findByText, queryByText } = render(<TabBarWithI18n />);
+    fireEvent.contextMenu(getByRole("button", { name: "Collaboration notifications" }));
+    await findByText("Pin tab");
+    expect(queryByText("Open as new window")).not.toBeInTheDocument();
+    expect(state.openIssueWindow).not.toHaveBeenCalled();
+  });
+
   it("offers the existing popout action for an account issue tab", async () => {
     state.activeWorkspaceSlug = null;
     pres.title = "Unknown page";
