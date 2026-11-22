@@ -133,7 +133,14 @@ function WindowToolbar() {
 }
 
 function SidebarTopSpacer() {
-  return <div className={cn("shrink-0", TOP_BAR_HEIGHT_CLASS)} style={{ WebkitAppRegion: "drag" } as React.CSSProperties} />;
+  // Native drag hit testing ignores the toolbar's z-index. Keep this region
+  // beyond its controls so the sidebar toggle and history buttons receive clicks.
+  return (
+    <div
+      className={cn("shrink-0", TOP_BAR_HEIGHT_CLASS)}
+      style={{ WebkitAppRegion: "drag", marginLeft: WINDOW_TOOLBAR_CLEARANCE } as React.CSSProperties}
+    />
+  );
 }
 
 function useNativeNavigationGestures() {

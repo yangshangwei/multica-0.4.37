@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, fireEvent, render } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { I18nProvider } from "@multica/core/i18n/react";
-import { useSidebar } from "@multica/ui/components/ui/sidebar";
+import { Sidebar, useSidebar } from "@multica/ui/components/ui/sidebar";
 import { RESOURCES } from "@multica/views/locales";
 
 // The shell resolves the mocked `getCurrentSlug()` against the workspace list
@@ -83,7 +83,9 @@ vi.mock("@multica/views/platform", () => ({
 }));
 
 vi.mock("@multica/views/layout", () => ({
-  AppSidebar: () => null,
+  AppSidebar: ({ topSlot }: { topSlot?: ReactNode }) => (
+    <Sidebar variant="inset">{topSlot}</Sidebar>
+  ),
   GlobalShortcuts: () => null,
   NavigationProgress: () => null,
 }));
@@ -147,6 +149,29 @@ describe("DesktopShell sidebar trigger", () => {
       "data-external-trigger",
       "true",
     );
+  });
+
+  it("keeps the sidebar titlebar drag region clear of the window controls", () => {
+    const { container } = renderShell();
+    const spacer = container.querySelector("[data-slot='sidebar-inner'] > :first-child")!;
+
+    // Native drag hit testing ignores the toolbar's visual z-index. JSDOM
+    // guards the exclusion geometry; actual mouse input is verified in Electron.
+    expect(spacer).toHaveStyle({ marginLeft: "200px" });
+  });
+
+  it("collapses and reopens the sidebar from the window toolbar", () => {
+    const { container } = renderShell();
+    const sidebar = container.querySelector("[data-slot='sidebar']")!;
+    const trigger = container.querySelector("[data-slot='window-toolbar'] [data-slot='sidebar-trigger']")!;
+
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
+    fireEvent.click(trigger);
+    expect(sidebar).toHaveAttribute("data-state", "collapsed");
+    expect(sidebar).toHaveAttribute("data-collapsible", "offcanvas");
+    expect(trigger).toBeInTheDocument();
+    fireEvent.click(trigger);
+    expect(sidebar).toHaveAttribute("data-state", "expanded");
   });
 
   it.each(["at launch", "while running"])("applies final geometry when reduced motion is enabled %s", async (when) => {
