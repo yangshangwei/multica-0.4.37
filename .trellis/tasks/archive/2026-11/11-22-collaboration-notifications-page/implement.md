@@ -81,7 +81,7 @@
 - [x] Use a task-owned production Web environment (`make up C=api,web ARGS="--web-mode production"` with isolated configuration) and actual Electron harness. Do not use Next dev for E2E. Record ports/database identity, commands and stop method; clean up owned processes after proof while retaining evidence/database.
 - [x] Record visual verdict before any post-capture UI fix; allow one batched defect fix plus one confirmation capture.
 - [x] Dispatch native Trellis check for independent spec/quality review; resolve substantive findings, rerun only checks affected by new changes.
-- [ ] Update navigation/workbench/server notification contracts, task verification evidence and journal; commit only this task's files using conventional intent + Lore trailers; archive/finish after the quality gate passes.
+- [x] Update navigation/workbench/server notification contracts, task verification evidence and journal; commit only this task's files using conventional intent + Lore trailers; archive/finish after the quality gate passes.
 
 ## Focused commands
 
