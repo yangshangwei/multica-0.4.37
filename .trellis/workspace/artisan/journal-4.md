@@ -477,3 +477,36 @@ Added a bilingual capability-market welcome and responsive case directory, prese
 ### Status
 
 [OK] **Completed**
+
+
+## Session 187: 协作空间侧栏默认折叠与 Beta 轻提示
+<!-- trellis-session: v=2 fp=bcca4b42d3840d33 -->
+
+**Date**: 2026-11-22
+**Task**: 协作空间侧栏默认折叠与 Beta 轻提示
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+协作空间默认收起为一行，保留精确恢复入口和未读反馈，用轻量 Beta 标识与可访问文案说明功能状态。共享 Web/Desktop 验收通过并归档。
+
+### Main Changes
+
+- 复用现有折叠偏好与路径恢复行为；标题、展开按钮分离，通知 Query 保持单一观察者。
+- 同步中英文提示与无障碍描述，保存规范和完整验收记录到 .trellis/tasks/archive/2026-11/11-22-collaboration-sidebar-beta/verification.md。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `14617b496` | fix(navigation): keep beta collaboration from crowding daily work |
+
+### Testing
+
+- [OK] 132 项相关单元测试、四包 typecheck、修改文件 lint 与视觉静态检查通过；最终标题描述回归 45/45。
+- [OK] 生产 Web/实际 Electron 两条导航流程零重试通过（22.4s）；中英文宽/窄屏和原生 200% 缩放截图检查通过，视觉评分 97。
+- [OK] 独立验证副本已清理，原有环境和用户改动保留。
+
+### Status
+
+[OK] **Completed**
