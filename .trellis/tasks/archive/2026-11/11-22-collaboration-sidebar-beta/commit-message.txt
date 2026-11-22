@@ -1,0 +1,13 @@
+fix(navigation): keep beta collaboration from crowding daily work
+
+The unfinished collaboration feature occupied four permanent sidebar rows.
+Use the existing persisted disclosure behavior to give it one quiet heading,
+retain exact account resume and live unread feedback, and explain Beta maturity
+through neutral markers and accessible descriptions in both supported locales.
+
+Constraint: Collaboration remains reachable independently of workspace availability
+Rejected: Add only a Beta badge to the expanded directory | it would still crowd daily navigation
+Confidence: high
+Scope-risk: narrow
+Directive: Persist manual choices only and unmount notification portals when the directory collapses
+Tested: 132 focused TS tests; four-package typecheck; affected-file lint; production Web/Desktop builds; two Web/Electron navigation journeys; EN/ZH compact and native 200% screenshots
