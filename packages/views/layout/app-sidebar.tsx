@@ -523,7 +523,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
       <SidebarHeader className={cn("py-3", headerClassName)} style={headerStyle}>
         <div className="flex h-8 items-center px-2 text-body font-semibold">{PRODUCT_NAME}</div>
         {activeWorkspace && searchSlot && <SidebarMenu><SidebarMenuItem>{searchSlot}</SidebarMenuItem></SidebarMenu>}
-        <SidebarCreation workspace={activeWorkspace ? workspace : null} />
+        <SidebarCreation workspace={activeWorkspace ? workspace : null} collaborationWorkspaceId={workspace?.id} />
       </SidebarHeader>
       <SidebarContent ref={scroll} style={fade}>
         <CollaborationNavigation onResume={onCollaborationResume} workspaceActive={activeWorkspace} />
@@ -580,7 +580,7 @@ function SidebarAccountMenu() {
   </DropdownMenu>;
 }
 
-function SidebarCreation({ workspace }: { workspace: Workspace | null }) {
+function SidebarCreation({ workspace, collaborationWorkspaceId }: { workspace: Workspace | null; collaborationWorkspaceId?: string }) {
   const { t } = useT("layout");
   const { t: collaboration } = useT("collaboration");
   const scope = useCollaborationScope();
@@ -598,7 +598,7 @@ function SidebarCreation({ workspace }: { workspace: Workspace | null }) {
         <DropdownMenuItem aria-description={collaboration(($) => $.beta.description)} onClick={() => setCollaborationOpen(true)}><UsersRound aria-hidden /><span className="min-w-0 flex-1">{collaboration(($) => $.creation.entry)}</span><span aria-hidden="true" className="shrink-0 rounded bg-muted px-1 py-0.5 text-micro font-normal text-muted-foreground">{collaboration(($) => $.beta.label)}</span></DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu></SidebarMenuItem></SidebarMenu>
-    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${workspace?.id ?? "account"}`} scope={scope} sourceWorkspaceId={workspace?.id} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={newTrigger} />
+    <CollaborationCreationEntry key={`${scope.apiScope}:${scope.userId}:${collaborationWorkspaceId ?? "account"}`} scope={scope} sourceWorkspaceId={collaborationWorkspaceId} open={collaborationOpen} onOpenChange={setCollaborationOpen} hideTrigger returnFocus={newTrigger} />
   </>;
 }
 

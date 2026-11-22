@@ -187,7 +187,12 @@ for (const platform of ["Web", "Desktop"] as const) {
       await page.getByRole("menuitem", { name: "New collaboration issue", exact: true }).click();
       const creation = page.getByRole("dialog", { name: "New collaboration issue", exact: true });
       await expect(creation).toBeVisible();
-      await expect(creation.getByRole("combobox", { name: "Source workspace", exact: true })).toHaveValue("");
+      const creationWorkspace = creation.getByRole("combobox", { name: "Source workspace", exact: true });
+      await expect(creationWorkspace).toHaveValue(fixture.second.id);
+      await expect(creation.getByRole("textbox", { name: "Title", exact: true })).toBeVisible();
+      await creationWorkspace.selectOption(fixture.first.id);
+      await expect(creationWorkspace).toHaveValue(fixture.first.id);
+      await expect(creation.getByRole("textbox", { name: "Title", exact: true })).toBeVisible();
       await creation.getByRole("button", { name: "Close", exact: true }).click();
       await expect(creation).toBeHidden();
       await expect(globalNav(page).getByRole("button", { name: "New", exact: true })).toBeFocused();

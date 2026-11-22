@@ -4,6 +4,7 @@ import { cloneElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { useSidebarPreferences } from "@multica/core/navigation";
+import type { Workspace } from "@multica/core/types";
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
@@ -366,6 +367,34 @@ it("refreshes only collaboration notifications from the workspace sidebar withou
   expect([...eventCallbacks.keys()]).toEqual(["collaboration:workbench_changed", "reconnect"]);
   eventCallbacks.get("collaboration:workbench_changed")!();
   expect(invalidateQueries).toHaveBeenCalledExactlyOnceWith({ queryKey: ["collaboration", "notifications"] }, { cancelRefetch: false });
+});
+
+describe("collaboration creation workspace", () => {
+  const workspace: Workspace = {
+    id: "ws-2", name: "Other workspace", slug: "other", description: null, context: null,
+    settings: {}, repos: [], issue_prefix: "OTHER", avatar_url: null,
+    created_at: "2026-11-22T00:00:00Z", updated_at: "2026-11-22T00:00:00Z",
+  };
+
+  it("defaults to the selected sidebar workspace from account scope", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
+
+    expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
+    fireEvent.click(screen.getByRole("button", { name: "New collaboration issue" }));
+    expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", workspace.id);
+  });
+
+  it("follows a changed sidebar workspace while staying in account scope", () => {
+    navigation.current = { pathname: "/account", search: "view=participating" };
+    const view = renderWithI18n(<AppSidebar navigationWorkspace={workspace} />);
+    const selected = { ...workspace, id: "ws-3", name: "Selected workspace", slug: "selected" };
+    view.rerender(<AppSidebar navigationWorkspace={selected} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "New collaboration issue" }));
+    expect(screen.getByTestId("collaboration-creation")).toHaveAttribute("data-workspace-id", selected.id);
+    expect(screen.getByRole("button", { name: "New Issue" })).toBeDisabled();
+  });
 });
 
 describe("PinRow", () => {

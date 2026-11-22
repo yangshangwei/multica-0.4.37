@@ -77,8 +77,12 @@ an account document reload can fall back to the first workspace; Desktop keeps
 its existing persisted `lastWorkspaceSlug`.
 
 New is one menu backed by the existing ordinary and collaboration forms. In
-account scope ordinary creation is disabled and collaboration creation requires
-an explicit source. Workspace-origin collaboration preselects the actual source.
+account scope ordinary creation is disabled. Collaboration creation preselects
+the workspace displayed in the sidebar in both account and workspace scope;
+users can switch its source in the dialog. Pass this source separately from the
+real workspace-route context used by ordinary creation. Without a sidebar
+workspace, retain the creation panel's existing source selection and recovery.
+Pending creation/upload recovery still owns and locks its original source.
 The ordinary shortcut remains workspace-scoped. The controlled collaboration
 dialog returns focus to New. Shared notifications keep the protected account
 Query and original exact links/read/archive flow. Workspace-side realtime owns
