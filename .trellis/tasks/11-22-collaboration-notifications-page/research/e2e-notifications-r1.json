@@ -1,0 +1,198 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-notifications-r1",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-notifications-page.spec.ts",
+      "file": "collaboration-notifications-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web collaboration notifications: complete filters, exact targets, processing and restored list/detail",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 6613,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\u001b[22m\n\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts:117:94",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                      "column": 94,
+                      "line": 117
+                    },
+                    "snippet": "  115 |       } else await page.goto(workspacePath);\n  116 |       await resize(false);\n> 117 |       await expect(page.getByRole(\"heading\", { name: fixture.ordinary.title, exact: true })).toBeVisible();\n      |                                                                                              ^\n  118 |       const unreadBefore = fixture.rows.filter((row) => row.read_at === null && row.archived_at === null).length;\n  119 |       await test.step(\"The sidebar opens the default Unread page with authoritative feedback\", async () => {\n  120 |         const sidebar = await openSidebarNavigation(page);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                        "column": 94,
+                        "line": 117
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace f5177383', exact: true })\u001b[22m\n\n\n  115 |       } else await page.goto(workspacePath);\n  116 |       await resize(false);\n> 117 |       await expect(page.getByRole(\"heading\", { name: fixture.ordinary.title, exact: true })).toBeVisible();\n      |                                                                                              ^\n  118 |       const unreadBefore = fixture.rows.filter((row) => row.read_at === null && row.archived_at === null).length;\n  119 |       await test.step(\"The sidebar opens the default Unread page with authoritative feedback\", async () => {\n  120 |         const sidebar = await openSidebarNavigation(page);\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts:117:94"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-22T07:50:29.771Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-notifications-r1/collaboration-notification-c3f23-ng-and-restored-list-detail-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                    "column": 94,
+                    "line": 117
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "870c3436829a9cb25b04-28a0b4d430ca315035ba",
+          "file": "collaboration-notifications-page.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "Desktop collaboration notifications: complete filters, exact targets, processing and restored list/detail",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7915,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\u001b[22m\n\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts:117:94",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                      "column": 94,
+                      "line": 117
+                    },
+                    "snippet": "  115 |       } else await page.goto(workspacePath);\n  116 |       await resize(false);\n> 117 |       await expect(page.getByRole(\"heading\", { name: fixture.ordinary.title, exact: true })).toBeVisible();\n      |                                                                                              ^\n  118 |       const unreadBefore = fixture.rows.filter((row) => row.read_at === null && row.archived_at === null).length;\n  119 |       await test.step(\"The sidebar opens the default Unread page with authoritative feedback\", async () => {\n  120 |         const sidebar = await openSidebarNavigation(page);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                        "column": 94,
+                        "line": 117
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Return to workspace c460de61', exact: true })\u001b[22m\n\n\n  115 |       } else await page.goto(workspacePath);\n  116 |       await resize(false);\n> 117 |       await expect(page.getByRole(\"heading\", { name: fixture.ordinary.title, exact: true })).toBeVisible();\n      |                                                                                              ^\n  118 |       const unreadBefore = fixture.rows.filter((row) => row.read_at === null && row.archived_at === null).length;\n  119 |       await test.step(\"The sidebar opens the default Unread page with authoritative feedback\", async () => {\n  120 |         const sidebar = await openSidebarNavigation(page);\n    at /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts:117:94"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-22T07:50:37.722Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/e2e/collaboration-notifications-page.spec.ts",
+                    "column": 94,
+                    "line": 117
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "870c3436829a9cb25b04-dfdd3af18f19f27a5fa6",
+          "file": "collaboration-notifications-page.spec.ts",
+          "line": 24,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-22T07:50:28.946Z",
+    "duration": 17118.394,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

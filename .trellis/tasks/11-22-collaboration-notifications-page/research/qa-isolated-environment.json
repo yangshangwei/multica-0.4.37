@@ -1,0 +1,26 @@
+{
+  "name": "check-20261122074342-12482",
+  "api_environment": "/Users/artisan/.multica/dev/envs/check-20261122074342-12482/check.env",
+  "api_database": "multica_check_20261122074342_12482_api",
+  "handler_environment": "/Users/artisan/.multica/dev/envs/check-20261122074342-12482/notifications-handler.env",
+  "service_environment": "/Users/artisan/.multica/dev/envs/check-20261122074342-12482/notifications-service.env",
+  "stop_command": "bash .trellis/tasks/11-22-collaboration-notifications-page/research/stop-qa.sh",
+  "components_started": [
+    "api",
+    "desktop-renderer",
+    "web"
+  ],
+  "api_url": "http://localhost:18417",
+  "web_url": "http://localhost:13337",
+  "renderer_url": "http://127.0.0.1:5511",
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src",
+  "test_harness_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "test_harness_changes": "Real primitive roles/attributes/count labels, committed-filter list capture and explicit keyboard archive focus.",
+  "components_stopped": [
+    "desktop-renderer",
+    "web",
+    "api"
+  ],
+  "stopped_at": "2026-11-22T11:21:25.596Z",
+  "ports_free": true
+}

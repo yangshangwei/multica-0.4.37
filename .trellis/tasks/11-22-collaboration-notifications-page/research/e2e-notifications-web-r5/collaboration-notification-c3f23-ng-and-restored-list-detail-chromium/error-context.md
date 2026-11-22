@@ -1,0 +1,1246 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e7]:
+      - navigation "Application navigation" [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]: Multica
+          - list [ref=e11]:
+            - listitem [ref=e12]:
+              - button "New" [ref=e13]:
+                - img [ref=e14]
+                - generic [ref=e15]: New
+                - img [ref=e16]
+        - generic [ref=e18]:
+          - generic [ref=e20]:
+            - generic [ref=e21]:
+              - button "Collaboration" [ref=e22]:
+                - generic [ref=e23]: Collaboration
+                - generic [ref=e24]: Beta
+              - button "Collapse collaboration navigation" [expanded] [ref=e25]:
+                - img [ref=e26]
+            - list [ref=e30]:
+              - listitem [ref=e31]:
+                - link "Current handling" [ref=e32] [cursor=pointer]:
+                  - /url: /account?view=current
+                  - img [ref=e33]
+                  - generic [ref=e36]: Current handling
+              - listitem [ref=e37]:
+                - link "Participating" [ref=e38] [cursor=pointer]:
+                  - /url: /account?view=participating
+                  - img [ref=e39]
+                  - generic [ref=e43]: Participating
+              - listitem [ref=e44]:
+                - link "Collaboration notifications" [ref=e45] [cursor=pointer]:
+                  - /url: /account?view=notifications&filter=unread
+                  - img [ref=e46]
+                  - generic [ref=e49]: Collaboration notifications
+                  - generic "60" [ref=e50]:
+                    - generic [ref=e53]:
+                      - generic [ref=e55]: "6"
+                      - generic [ref=e57]: "0"
+          - generic [ref=e58]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: Workspaces
+              - generic [ref=e61]:
+                - button "Notification return workspace" [ref=e62]:
+                  - generic [ref=e64]: "N"
+                  - generic [ref=e65]: Notification return workspace
+                - button "Switch workspace" [ref=e66]:
+                  - img [ref=e67]
+            - list [ref=e71]:
+              - listitem [ref=e72]:
+                - link "Inbox" [ref=e73] [cursor=pointer]:
+                  - /url: /notification-return-44f434f5/inbox
+                  - img [ref=e74]
+                  - generic [ref=e77]: Inbox
+              - listitem [ref=e78]:
+                - link "My Issues" [ref=e79] [cursor=pointer]:
+                  - /url: /notification-return-44f434f5/my-issues
+                  - img [ref=e80]
+                  - generic [ref=e84]: My Issues
+              - listitem [ref=e85]:
+                - link "Chat" [ref=e86] [cursor=pointer]:
+                  - /url: /notification-return-44f434f5/chat
+                  - img [ref=e87]
+                  - generic [ref=e89]: Chat
+            - generic [ref=e91]:
+              - button "Work" [expanded] [ref=e92] [cursor=pointer]:
+                - generic [ref=e93]: Work
+                - img [ref=e94]
+              - list [ref=e98]:
+                - listitem [ref=e99]:
+                  - link "Workspace issues" [ref=e100] [cursor=pointer]:
+                    - /url: /notification-return-44f434f5/issues
+                    - img [ref=e101]
+                    - generic [ref=e104]: Workspace issues
+                - listitem [ref=e105]:
+                  - link "Projects" [ref=e106] [cursor=pointer]:
+                    - /url: /notification-return-44f434f5/projects
+                    - img [ref=e107]
+                    - generic [ref=e109]: Projects
+                - listitem [ref=e110]:
+                  - link "Iterations" [ref=e111] [cursor=pointer]:
+                    - /url: /notification-return-44f434f5/iterations
+                    - img [ref=e112]
+                    - generic [ref=e114]: Iterations
+                - listitem [ref=e115]:
+                  - link "Triage" [ref=e116] [cursor=pointer]:
+                    - /url: /notification-return-44f434f5/triage
+                    - img [ref=e117]
+                    - generic [ref=e120]: Triage
+            - button "AI Team" [ref=e123] [cursor=pointer]:
+              - generic [ref=e124]: AI Team
+              - img [ref=e125]
+            - button "Resources & connections" [ref=e129] [cursor=pointer]:
+              - generic [ref=e130]: Resources & connections
+              - img [ref=e131]
+        - generic [ref=e133]:
+          - list [ref=e134]:
+            - listitem [ref=e135]:
+              - link "Analytics" [ref=e136] [cursor=pointer]:
+                - /url: /notification-return-44f434f5/usage
+                - img [ref=e137]
+                - generic [ref=e139]: Analytics
+            - listitem [ref=e140]:
+              - link "Workspace settings" [ref=e141] [cursor=pointer]:
+                - /url: /notification-return-44f434f5/settings
+                - img [ref=e142]
+                - generic [ref=e145]: Workspace settings
+          - generic [ref=e146]:
+            - button "Help" [ref=e147] [cursor=pointer]:
+              - img [ref=e148]
+            - button "Outside record viewer" [ref=e151]:
+              - generic [ref=e153]: O
+              - generic [ref=e154]: Outside record viewer
+              - img [ref=e155]
+      - button "Toggle left sidebar" [ref=e157]
+    - main [ref=e158]:
+      - main [ref=e160]:
+        - generic [ref=e161]:
+          - img [ref=e162]
+          - heading "Collaboration notifications" [level=1] [ref=e165]
+          - generic [ref=e166]: 60 unread
+          - button "Refresh notifications" [ref=e167]:
+            - img
+        - generic [ref=e168]:
+          - paragraph [ref=e169]: Notifications from your cross-workspace collaboration.
+          - navigation "Notification views" [ref=e170]:
+            - link "Unread" [ref=e171] [cursor=pointer]:
+              - /url: /account?view=notifications&filter=unread
+            - link "All" [ref=e172] [cursor=pointer]:
+              - /url: /account?view=notifications&filter=all
+            - link "Archived" [ref=e173] [cursor=pointer]:
+              - /url: /account?view=notifications&filter=archived
+        - generic [ref=e174]:
+          - region "Notifications" [ref=e175]:
+            - list [ref=e176]:
+              - listitem [ref=e177]:
+                - generic [ref=e178]:
+                  - generic [ref=e180]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e181] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=d535c7cd-a3c0-4b36-b1fc-5d354a5e6684&issue=01a2025a-34df-7d88-aec8-2770d933f7e7#comment-4ce4b9e8-2e64-4920-bdfb-8fe0c2c692e5
+                - paragraph [ref=e182]: Comment added
+                - generic [ref=e183]:
+                  - time [ref=e184]: just now
+                  - generic [ref=e185]:
+                    - button "Mark read" [ref=e186]
+                    - button "Archive" [ref=e187]
+              - listitem [ref=e188]:
+                - generic [ref=e189]:
+                  - generic [ref=e191]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e192] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=1150a742-a55e-46bc-9e9b-81ca79e2f452&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e193]: Assigned to you
+                - generic [ref=e194]:
+                  - time [ref=e195]: just now
+                  - generic [ref=e196]:
+                    - button "Mark read" [ref=e197]
+                    - button "Archive" [ref=e198]
+              - listitem [ref=e199]:
+                - generic [ref=e200]:
+                  - generic [ref=e202]: Unread
+                  - link "Recorded collaboration 8ac4153e-7" [ref=e203] [cursor=pointer]:
+                    - /url: /account?view=notifications&filter=all&notification=c883558d-42c1-428f-8526-968d505b0975&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-24ac33d2-faf8-4d66-922f-bb14c8aaebf8
+                - paragraph [ref=e204]: AI execution failed
+                - generic [ref=e205]:
+                  - time [ref=e206]: just now
+                  - generic [ref=e207]:
+                    - button "Mark read" [ref=e208]
+                    - button "Archive" [ref=e209]
+              - listitem [ref=e210]:
+                - generic [ref=e211]:
+                  - generic [ref=e213]: Unread
+                  - link "Recorded collaboration 8ac4153e-7" [ref=e214] [cursor=pointer]:
+                    - /url: /account?view=notifications&filter=all&notification=d4cc7e1b-d02a-4d38-bfb7-eeae6d9111f3&issue=01a2025a-340c-7226-b71a-9c8e01399636
+                - paragraph [ref=e215]: Assigned to you
+                - generic [ref=e216]:
+                  - time [ref=e217]: just now
+                  - generic [ref=e218]:
+                    - button "Mark read" [ref=e219]
+                    - button "Archive" [ref=e220]
+              - listitem [ref=e221]:
+                - generic [ref=e222]:
+                  - generic [ref=e224]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e225] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=eb669eca-180d-4b0e-8fc3-186d5d1478bc&issue=01a2025a-34df-7d88-aec8-2770d933f7e7#description
+                - paragraph [ref=e226]: Issue edited
+                - generic [ref=e227]:
+                  - time [ref=e228]: 10m ago
+                  - generic [ref=e229]:
+                    - button "Mark read" [ref=e230]
+                    - button "Archive" [ref=e231]
+              - listitem [ref=e232]:
+                - generic [ref=e233]:
+                  - generic [ref=e235]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e236] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=a69f32b8-d454-4fb1-b7db-4a5ba432379c&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e237]: Information requested
+                - generic [ref=e238]:
+                  - time [ref=e239]: 10m ago
+                  - generic [ref=e240]:
+                    - button "Mark read" [ref=e241]
+                    - button "Archive" [ref=e242]
+              - listitem [ref=e243]:
+                - generic [ref=e244]:
+                  - generic [ref=e246]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e247] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=9cd4451e-0ff3-41cd-8dd4-e0cbeb7e8361&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e248]: Information requested
+                - generic [ref=e249]:
+                  - time [ref=e250]: 10m ago
+                  - generic [ref=e251]:
+                    - button "Mark read" [ref=e252]
+                    - button "Archive" [ref=e253]
+              - listitem [ref=e254]:
+                - generic [ref=e255]:
+                  - generic [ref=e257]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e258] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=17218641-b1fd-4c9b-b082-3ffa6b14b1a9&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e259]: Information requested
+                - generic [ref=e260]:
+                  - time [ref=e261]: 10m ago
+                  - generic [ref=e262]:
+                    - button "Mark read" [ref=e263]
+                    - button "Archive" [ref=e264]
+              - listitem [ref=e265]:
+                - generic [ref=e266]:
+                  - generic [ref=e268]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e269] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=3ed8429b-4416-4039-b934-b3529df1ca9c&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e270]: Information requested
+                - generic [ref=e271]:
+                  - time [ref=e272]: 10m ago
+                  - generic [ref=e273]:
+                    - button "Mark read" [ref=e274]
+                    - button "Archive" [ref=e275]
+              - listitem [ref=e276]:
+                - generic [ref=e277]:
+                  - generic [ref=e279]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e280] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=373ffb2f-49b9-4617-95c4-505caa092a40&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e281]: Information requested
+                - generic [ref=e282]:
+                  - time [ref=e283]: 10m ago
+                  - generic [ref=e284]:
+                    - button "Mark read" [ref=e285]
+                    - button "Archive" [ref=e286]
+              - listitem [ref=e287]:
+                - generic [ref=e288]:
+                  - generic [ref=e290]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e291] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=4ca1a793-ff3a-4c2e-a872-1b48b89509d0&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e292]: Information requested
+                - generic [ref=e293]:
+                  - time [ref=e294]: 10m ago
+                  - generic [ref=e295]:
+                    - button "Mark read" [ref=e296]
+                    - button "Archive" [ref=e297]
+              - listitem [ref=e298]:
+                - generic [ref=e299]:
+                  - generic [ref=e301]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e302] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=294b3f2c-b321-473a-a3d0-3cd4eceeab3b&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e303]: Information requested
+                - generic [ref=e304]:
+                  - time [ref=e305]: 10m ago
+                  - generic [ref=e306]:
+                    - button "Mark read" [ref=e307]
+                    - button "Archive" [ref=e308]
+              - listitem [ref=e309]:
+                - generic [ref=e310]:
+                  - generic [ref=e312]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e313] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=5993a042-9357-4161-b370-936fe3c01946&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e314]: Information requested
+                - generic [ref=e315]:
+                  - time [ref=e316]: 10m ago
+                  - generic [ref=e317]:
+                    - button "Mark read" [ref=e318]
+                    - button "Archive" [ref=e319]
+              - listitem [ref=e320]:
+                - generic [ref=e321]:
+                  - generic [ref=e323]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e324] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=056907f4-0132-431c-82a4-2a97cb36212c&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e325]: Information requested
+                - generic [ref=e326]:
+                  - time [ref=e327]: 10m ago
+                  - generic [ref=e328]:
+                    - button "Mark read" [ref=e329]
+                    - button "Archive" [ref=e330]
+              - listitem [ref=e331]:
+                - generic [ref=e332]:
+                  - generic [ref=e334]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e335] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=9ac7be87-bf7f-4608-a943-fc7bd7c09d16&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e336]: Information requested
+                - generic [ref=e337]:
+                  - time [ref=e338]: 10m ago
+                  - generic [ref=e339]:
+                    - button "Mark read" [ref=e340]
+                    - button "Archive" [ref=e341]
+              - listitem [ref=e342]:
+                - generic [ref=e343]:
+                  - generic [ref=e345]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e346] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=30e3068e-264c-4fa2-bed4-c4db1fb84bbe&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e347]: Information requested
+                - generic [ref=e348]:
+                  - time [ref=e349]: 10m ago
+                  - generic [ref=e350]:
+                    - button "Mark read" [ref=e351]
+                    - button "Archive" [ref=e352]
+              - listitem [ref=e353]:
+                - generic [ref=e354]:
+                  - generic [ref=e356]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e357] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=fea1792b-53f7-41e9-84d0-0282d18f730e&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e358]: Information requested
+                - generic [ref=e359]:
+                  - time [ref=e360]: 10m ago
+                  - generic [ref=e361]:
+                    - button "Mark read" [ref=e362]
+                    - button "Archive" [ref=e363]
+              - listitem [ref=e364]:
+                - generic [ref=e365]:
+                  - generic [ref=e367]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e368] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=0dc8a535-7cc8-4ae0-a9a3-c8ca66cffbac&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e369]: Information requested
+                - generic [ref=e370]:
+                  - time [ref=e371]: 10m ago
+                  - generic [ref=e372]:
+                    - button "Mark read" [ref=e373]
+                    - button "Archive" [ref=e374]
+              - listitem [ref=e375]:
+                - generic [ref=e376]:
+                  - generic [ref=e378]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e379] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=a50bda06-1bbb-4823-8971-73f996cb32f2&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e380]: Information requested
+                - generic [ref=e381]:
+                  - time [ref=e382]: 10m ago
+                  - generic [ref=e383]:
+                    - button "Mark read" [ref=e384]
+                    - button "Archive" [ref=e385]
+              - listitem [ref=e386]:
+                - generic [ref=e387]:
+                  - generic [ref=e389]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e390] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=76bd8e50-5b35-4fce-b930-5f3b5d07d813&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e391]: Information requested
+                - generic [ref=e392]:
+                  - time [ref=e393]: 10m ago
+                  - generic [ref=e394]:
+                    - button "Mark read" [ref=e395]
+                    - button "Archive" [ref=e396]
+              - listitem [ref=e397]:
+                - generic [ref=e398]:
+                  - generic [ref=e400]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e401] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=20c5454c-9a47-4e18-932c-f9f852a25dc9&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e402]: Information requested
+                - generic [ref=e403]:
+                  - time [ref=e404]: 10m ago
+                  - generic [ref=e405]:
+                    - button "Mark read" [ref=e406]
+                    - button "Archive" [ref=e407]
+              - listitem [ref=e408]:
+                - generic [ref=e409]:
+                  - generic [ref=e411]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e412] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=097a0b5a-3889-4d48-b259-4f14db99faba&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e413]: Information requested
+                - generic [ref=e414]:
+                  - time [ref=e415]: 10m ago
+                  - generic [ref=e416]:
+                    - button "Mark read" [ref=e417]
+                    - button "Archive" [ref=e418]
+              - listitem [ref=e419]:
+                - generic [ref=e420]:
+                  - generic [ref=e422]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e423] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=9e615f94-c5ef-4655-b45c-b3764a857ac7&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e424]: Information requested
+                - generic [ref=e425]:
+                  - time [ref=e426]: 10m ago
+                  - generic [ref=e427]:
+                    - button "Mark read" [ref=e428]
+                    - button "Archive" [ref=e429]
+              - listitem [ref=e430]:
+                - generic [ref=e431]:
+                  - generic [ref=e433]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e434] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=9633f373-3ff6-48bd-9c5a-66f5c15aaf54&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e435]: Information requested
+                - generic [ref=e436]:
+                  - time [ref=e437]: 10m ago
+                  - generic [ref=e438]:
+                    - button "Mark read" [ref=e439]
+                    - button "Archive" [ref=e440]
+              - listitem [ref=e441]:
+                - generic [ref=e442]:
+                  - generic [ref=e444]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e445] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=f5a9456e-463f-4485-866e-b422c304e23b&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e446]: Information requested
+                - generic [ref=e447]:
+                  - time [ref=e448]: 10m ago
+                  - generic [ref=e449]:
+                    - button "Mark read" [ref=e450]
+                    - button "Archive" [ref=e451]
+              - listitem [ref=e452]:
+                - generic [ref=e453]:
+                  - generic [ref=e455]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e456] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=778170c3-ab8d-4d1b-88a9-2cf8c801851b&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e457]: Information requested
+                - generic [ref=e458]:
+                  - time [ref=e459]: 10m ago
+                  - generic [ref=e460]:
+                    - button "Mark read" [ref=e461]
+                    - button "Archive" [ref=e462]
+              - listitem [ref=e463]:
+                - generic [ref=e464]:
+                  - generic [ref=e466]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e467] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=d519c3ff-2fbb-4af7-bda2-fcd72b2750de&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e468]: Information requested
+                - generic [ref=e469]:
+                  - time [ref=e470]: 10m ago
+                  - generic [ref=e471]:
+                    - button "Mark read" [ref=e472]
+                    - button "Archive" [ref=e473]
+              - listitem [ref=e474]:
+                - generic [ref=e475]:
+                  - generic [ref=e477]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e478] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=22341b06-a5e3-4e7f-b7b8-8dcd75daf823&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e479]: Information requested
+                - generic [ref=e480]:
+                  - time [ref=e481]: 10m ago
+                  - generic [ref=e482]:
+                    - button "Mark read" [ref=e483]
+                    - button "Archive" [ref=e484]
+              - listitem [ref=e485]:
+                - generic [ref=e486]:
+                  - generic [ref=e488]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e489] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=ab76c7f8-2050-4f8d-9674-00a78a4a6ff1&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e490]: Information requested
+                - generic [ref=e491]:
+                  - time [ref=e492]: 10m ago
+                  - generic [ref=e493]:
+                    - button "Mark read" [ref=e494]
+                    - button "Archive" [ref=e495]
+              - listitem [ref=e496]:
+                - generic [ref=e497]:
+                  - generic [ref=e499]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e500] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=9ea801f2-a96b-48dc-af3a-2e07ff4967f7&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e501]: Information requested
+                - generic [ref=e502]:
+                  - time [ref=e503]: 10m ago
+                  - generic [ref=e504]:
+                    - button "Mark read" [ref=e505]
+                    - button "Archive" [ref=e506]
+              - listitem [ref=e507]:
+                - generic [ref=e508]:
+                  - generic [ref=e510]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e511] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=c7ffc680-91ba-4f39-a838-be5786166b0d&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e512]: Information requested
+                - generic [ref=e513]:
+                  - time [ref=e514]: 10m ago
+                  - generic [ref=e515]:
+                    - button "Mark read" [ref=e516]
+                    - button "Archive" [ref=e517]
+              - listitem [ref=e518]:
+                - generic [ref=e519]:
+                  - generic [ref=e521]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e522] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=38aaa09c-3b6f-43ad-b14c-45e80eb99ab9&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e523]: Information requested
+                - generic [ref=e524]:
+                  - time [ref=e525]: 10m ago
+                  - generic [ref=e526]:
+                    - button "Mark read" [ref=e527]
+                    - button "Archive" [ref=e528]
+              - listitem [ref=e529]:
+                - generic [ref=e530]:
+                  - generic [ref=e532]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e533] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=4a61d0e2-0cae-4816-8ef5-cb8f03f4ab7a&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e534]: Information requested
+                - generic [ref=e535]:
+                  - time [ref=e536]: 10m ago
+                  - generic [ref=e537]:
+                    - button "Mark read" [ref=e538]
+                    - button "Archive" [ref=e539]
+              - listitem [ref=e540]:
+                - generic [ref=e541]:
+                  - generic [ref=e543]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e544] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=095ab70f-7b1c-4545-b21f-9d86a0ef96ea&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e545]: Information requested
+                - generic [ref=e546]:
+                  - time [ref=e547]: 10m ago
+                  - generic [ref=e548]:
+                    - button "Mark read" [ref=e549]
+                    - button "Archive" [ref=e550]
+              - listitem [ref=e551]:
+                - generic [ref=e552]:
+                  - generic [ref=e554]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e555] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=da3602af-19ab-47e5-adfc-17c979bdb909&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e556]: Information requested
+                - generic [ref=e557]:
+                  - time [ref=e558]: 10m ago
+                  - generic [ref=e559]:
+                    - button "Mark read" [ref=e560]
+                    - button "Archive" [ref=e561]
+              - listitem [ref=e562]:
+                - generic [ref=e563]:
+                  - generic [ref=e565]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e566] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=49302c61-9297-4653-9807-b4bfb81639db&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e567]: Information requested
+                - generic [ref=e568]:
+                  - time [ref=e569]: 10m ago
+                  - generic [ref=e570]:
+                    - button "Mark read" [ref=e571]
+                    - button "Archive" [ref=e572]
+              - listitem [ref=e573]:
+                - generic [ref=e574]:
+                  - generic [ref=e576]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e577] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=dcd2387b-21c6-42f0-b145-14681ed21725&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e578]: Information requested
+                - generic [ref=e579]:
+                  - time [ref=e580]: 10m ago
+                  - generic [ref=e581]:
+                    - button "Mark read" [ref=e582]
+                    - button "Archive" [ref=e583]
+              - listitem [ref=e584]:
+                - generic [ref=e585]:
+                  - generic [ref=e587]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e588] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=a9076946-5d2f-4295-8ae0-8be57c0e2bdf&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e589]: Information requested
+                - generic [ref=e590]:
+                  - time [ref=e591]: 10m ago
+                  - generic [ref=e592]:
+                    - button "Mark read" [ref=e593]
+                    - button "Archive" [ref=e594]
+              - listitem [ref=e595]:
+                - generic [ref=e596]:
+                  - generic [ref=e598]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e599] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=8ffbc26f-3121-408f-b557-725508e26027&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e600]: Information requested
+                - generic [ref=e601]:
+                  - time [ref=e602]: 10m ago
+                  - generic [ref=e603]:
+                    - button "Mark read" [ref=e604]
+                    - button "Archive" [ref=e605]
+              - listitem [ref=e606]:
+                - generic [ref=e607]:
+                  - generic [ref=e609]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e610] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=608aca02-57f2-4317-824f-6a30162be18e&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e611]: Information requested
+                - generic [ref=e612]:
+                  - time [ref=e613]: 10m ago
+                  - generic [ref=e614]:
+                    - button "Mark read" [ref=e615]
+                    - button "Archive" [ref=e616]
+              - listitem [ref=e617]:
+                - generic [ref=e618]:
+                  - generic [ref=e620]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e621] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=b8127f26-b33e-4e49-bea9-992e2d588b9e&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e622]: Information requested
+                - generic [ref=e623]:
+                  - time [ref=e624]: 10m ago
+                  - generic [ref=e625]:
+                    - button "Mark read" [ref=e626]
+                    - button "Archive" [ref=e627]
+              - listitem [ref=e628]:
+                - generic [ref=e629]:
+                  - generic [ref=e631]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e632] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=62028fa4-a9ac-49f2-b8cc-428ec426cf89&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e633]: Information requested
+                - generic [ref=e634]:
+                  - time [ref=e635]: 10m ago
+                  - generic [ref=e636]:
+                    - button "Mark read" [ref=e637]
+                    - button "Archive" [ref=e638]
+              - listitem [ref=e639]:
+                - generic [ref=e640]:
+                  - generic [ref=e642]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e643] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=836ddcbc-ca3a-4ee4-b800-23958fbbf9fb&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e644]: Information requested
+                - generic [ref=e645]:
+                  - time [ref=e646]: 10m ago
+                  - generic [ref=e647]:
+                    - button "Mark read" [ref=e648]
+                    - button "Archive" [ref=e649]
+              - listitem [ref=e650]:
+                - generic [ref=e651]:
+                  - generic [ref=e653]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e654] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=1c273b32-4e05-4e7b-8a66-80665d0d9aa2&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e655]: Information requested
+                - generic [ref=e656]:
+                  - time [ref=e657]: 10m ago
+                  - generic [ref=e658]:
+                    - button "Mark read" [ref=e659]
+                    - button "Archive" [ref=e660]
+              - listitem [ref=e661]:
+                - generic [ref=e662]:
+                  - generic [ref=e664]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e665] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=5472cdcb-c330-4786-91c5-b54c7230082f&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e666]: Information requested
+                - generic [ref=e667]:
+                  - time [ref=e668]: 10m ago
+                  - generic [ref=e669]:
+                    - button "Mark read" [ref=e670]
+                    - button "Archive" [ref=e671]
+              - listitem [ref=e672]:
+                - generic [ref=e673]:
+                  - generic [ref=e675]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e676] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=076837a1-deef-4fca-be43-74590fceb1e7&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e677]: Information requested
+                - generic [ref=e678]:
+                  - time [ref=e679]: 10m ago
+                  - generic [ref=e680]:
+                    - button "Mark read" [ref=e681]
+                    - button "Archive" [ref=e682]
+              - listitem [ref=e683]:
+                - generic [ref=e684]:
+                  - generic [ref=e686]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e687] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=7a22e710-62c7-4e22-afff-a0352ebb36b8&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e688]: Information requested
+                - generic [ref=e689]:
+                  - time [ref=e690]: 10m ago
+                  - generic [ref=e691]:
+                    - button "Mark read" [ref=e692]
+                    - button "Archive" [ref=e693]
+              - listitem [ref=e694]:
+                - generic [ref=e695]:
+                  - generic [ref=e697]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e698] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=4883be6b-611d-430f-9484-d5144444509c&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e699]: Information requested
+                - generic [ref=e700]:
+                  - time [ref=e701]: 10m ago
+                  - generic [ref=e702]:
+                    - button "Mark read" [ref=e703]
+                    - button "Archive" [ref=e704]
+              - listitem [ref=e705]:
+                - generic [ref=e706]:
+                  - generic [ref=e708]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e709] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=d71c059b-3642-49df-95ce-89793203c2a8&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e710]: Information requested
+                - generic [ref=e711]:
+                  - time [ref=e712]: 10m ago
+                  - generic [ref=e713]:
+                    - button "Mark read" [ref=e714]
+                    - button "Archive" [ref=e715]
+              - listitem [ref=e716]:
+                - generic [ref=e717]:
+                  - generic [ref=e719]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e720] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=7dc5eaa5-0446-4895-86d7-5cacfb0d2f2b&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e721]: Information requested
+                - generic [ref=e722]:
+                  - time [ref=e723]: 10m ago
+                  - generic [ref=e724]:
+                    - button "Mark read" [ref=e725]
+                    - button "Archive" [ref=e726]
+              - listitem [ref=e727]:
+                - generic [ref=e728]:
+                  - generic [ref=e730]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e731] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=e0b12fa5-e1a4-416a-9605-b892ad9880b4&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e732]: Information requested
+                - generic [ref=e733]:
+                  - time [ref=e734]: 10m ago
+                  - generic [ref=e735]:
+                    - button "Mark read" [ref=e736]
+                    - button "Archive" [ref=e737]
+              - listitem [ref=e738]:
+                - generic [ref=e739]:
+                  - generic [ref=e741]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e742] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=80ccd452-149a-44bc-bdf7-687d28143554&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e743]: Information requested
+                - generic [ref=e744]:
+                  - time [ref=e745]: 10m ago
+                  - generic [ref=e746]:
+                    - button "Mark read" [ref=e747]
+                    - button "Archive" [ref=e748]
+              - listitem [ref=e749]:
+                - generic [ref=e750]:
+                  - generic [ref=e752]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e753] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=7f3143cf-7afb-4799-954f-d552bf03faef&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e754]: Information requested
+                - generic [ref=e755]:
+                  - time [ref=e756]: 10m ago
+                  - generic [ref=e757]:
+                    - button "Mark read" [ref=e758]
+                    - button "Archive" [ref=e759]
+              - listitem [ref=e760]:
+                - generic [ref=e761]:
+                  - generic [ref=e763]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e764] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=50c6bada-883e-4b57-ae64-c7648a86a598&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e765]: Information requested
+                - generic [ref=e766]:
+                  - time [ref=e767]: 10m ago
+                  - generic [ref=e768]:
+                    - button "Mark read" [ref=e769]
+                    - button "Archive" [ref=e770]
+              - listitem [ref=e771]:
+                - generic [ref=e772]:
+                  - generic [ref=e774]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e775] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=5fe51911-16f8-4694-bd46-cb5a88b5330f&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e776]: Information requested
+                - generic [ref=e777]:
+                  - time [ref=e778]: 10m ago
+                  - generic [ref=e779]:
+                    - button "Mark read" [ref=e780]
+                    - button "Archive" [ref=e781]
+              - listitem [ref=e782]:
+                - generic [ref=e783]:
+                  - generic [ref=e785]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e786] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=2593864f-49d3-4f73-8dc9-176db2471ec5&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e787]: Information requested
+                - generic [ref=e788]:
+                  - time [ref=e789]: 10m ago
+                  - generic [ref=e790]:
+                    - button "Mark read" [ref=e791]
+                    - button "Archive" [ref=e792]
+              - listitem [ref=e793]:
+                - generic [ref=e794]:
+                  - generic [ref=e796]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e797] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=f395df9e-3d7d-4ddf-98e7-325980e6904b&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e798]: Information requested
+                - generic [ref=e799]:
+                  - time [ref=e800]: 10m ago
+                  - generic [ref=e801]:
+                    - button "Mark read" [ref=e802]
+                    - button "Archive" [ref=e803]
+              - listitem [ref=e804]:
+                - generic [ref=e805]:
+                  - generic [ref=e807]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e808] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=7c21fdc2-95b4-4301-b063-32ad8f8f657d&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e809]: Information requested
+                - generic [ref=e810]:
+                  - time [ref=e811]: 10m ago
+                  - generic [ref=e812]:
+                    - button "Mark read" [ref=e813]
+                    - button "Archive" [ref=e814]
+              - listitem [ref=e815]:
+                - generic [ref=e816]:
+                  - generic [ref=e818]: Unread
+                  - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e819] [cursor=pointer]':
+                    - /url: /account?view=notifications&filter=all&notification=b3b5b828-7c32-4f1c-9bd2-4b1f581c4540&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e820]: Information requested
+                - generic [ref=e821]:
+                  - time [ref=e822]: 10m ago
+                  - generic [ref=e823]:
+                    - button "Mark read" [ref=e824]
+                    - button "Archive" [ref=e825]
+              - listitem [ref=e826]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e828] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=21a71bb2-fd6d-49ec-9c84-9705ecda2b53&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e829]: Information requested
+                - generic [ref=e830]:
+                  - time [ref=e831]: 10m ago
+                  - button "Archive" [ref=e833]
+              - listitem [ref=e834]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e836] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=c01afcdb-a61b-4552-bd81-2a929aabcc9f&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e837]: Information requested
+                - generic [ref=e838]:
+                  - time [ref=e839]: 10m ago
+                  - button "Archive" [ref=e841]
+              - listitem [ref=e842]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e844] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=3bb34f27-bcdf-4844-a0a0-b6bce42dcad2&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e845]: Information requested
+                - generic [ref=e846]:
+                  - time [ref=e847]: 10m ago
+                  - button "Archive" [ref=e849]
+              - listitem [ref=e850]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e852] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=a0384aac-f891-45fe-a441-c61bd9bf5b38&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e853]: Information requested
+                - generic [ref=e854]:
+                  - time [ref=e855]: 10m ago
+                  - button "Archive" [ref=e857]
+              - listitem [ref=e858]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e860] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=9ca86150-9b5f-4c20-a252-a50ebd6a29f2&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e861]: Information requested
+                - generic [ref=e862]:
+                  - time [ref=e863]: 10m ago
+                  - button "Archive" [ref=e865]
+              - listitem [ref=e866]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e868] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=50118f33-c715-43fd-907f-c85d8dadd8a9&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e869]: Information requested
+                - generic [ref=e870]:
+                  - time [ref=e871]: 10m ago
+                  - button "Archive" [ref=e873]
+              - listitem [ref=e874]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e876] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=0d3ad149-ab5b-4d9a-8575-fe33fdc5c21f&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e877]: Information requested
+                - generic [ref=e878]:
+                  - time [ref=e879]: 10m ago
+                  - button "Archive" [ref=e881]
+              - listitem [ref=e882]:
+                - 'link "Notification review 44f434f5: preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets preserve exact discussion and recorded execution targets long_notification_identifier_long_notification_identifier_long_notification_identifier_long_notification_identifier_" [ref=e884] [cursor=pointer]':
+                  - /url: /account?view=notifications&filter=all&notification=f764b0c8-b6f1-4720-979b-bdaef07d08a8&issue=01a2025a-34df-7d88-aec8-2770d933f7e7
+                - paragraph [ref=e885]: Information requested
+                - generic [ref=e886]:
+                  - time [ref=e887]: 10m ago
+                  - button "Archive" [ref=e889]
+              - listitem [ref=e890]:
+                - generic [ref=e891]:
+                  - generic [ref=e893]: Unread
+                  - link "Issue unavailable" [ref=e894] [cursor=pointer]:
+                    - /url: /account?view=notifications&filter=all&notification=8edf4374-d064-4d90-b7c3-100a235456ec
+                - paragraph [ref=e895]: You were removed from this collaboration issue.
+                - generic [ref=e896]:
+                  - time [ref=e897]: 11m ago
+                  - generic [ref=e898]:
+                    - button "Mark read" [ref=e899]
+                    - button "Archive" [ref=e900]
+          - region "Issue detail" [ref=e901]:
+            - generic [ref=e902]:
+              - generic [ref=e903]:
+                - generic [ref=e904]:
+                  - heading "Recorded collaboration 8ac4153e-7" [level=2] [ref=e905]
+                  - button "Copy link" [ref=e906]:
+                    - img
+                    - text: Copy link
+                - generic [ref=e907]:
+                  - generic [ref=e908]:
+                    - term [ref=e909]: Status
+                    - definition [ref=e910]: Todo
+                  - generic [ref=e911]:
+                    - term [ref=e912]: Handler
+                    - definition [ref=e913]: Outside record viewerExternal collaborator
+                - region "Issue actions" [ref=e914]:
+                  - generic [ref=e915]:
+                    - button "Start work" [ref=e916]
+                    - button "Submit result" [ref=e917]
+                    - button "Request information" [ref=e918]
+                    - button "More actions" [ref=e919]
+                  - generic [ref=e921]:
+                    - button "Participants" [ref=e922]
+                    - generic [ref=e923]: Current handler
+                - group "Issue resources" [ref=e924]:
+                  - generic [ref=e925]:
+                    - button "Issue details" [ref=e926]:
+                      - img
+                      - generic [ref=e927]: Issue details
+                    - button "Attachments 1" [ref=e928]:
+                      - img
+                      - generic [ref=e929]: Attachments
+                      - generic [ref=e930]: "1"
+                    - button "Shared context" [ref=e931]:
+                      - img
+                      - generic [ref=e932]: Shared context
+                    - button "Knowledge candidates" [ref=e933]:
+                      - img
+                      - generic [ref=e934]: Knowledge candidates
+                    - button "Sub-issues 1" [ref=e935]:
+                      - img
+                      - generic [ref=e936]: Sub-issues
+                      - generic [ref=e937]: "1"
+                    - button "Activity" [ref=e938]:
+                      - img
+                      - generic [ref=e939]: Activity
+              - generic [ref=e940]:
+                - generic [ref=e941]:
+                  - heading "Requirements" [level=3] [ref=e942]
+                  - paragraph [ref=e945]: Shared description with independently authorized sub-issues and retained execution history.
+                  - button "Files and reference material" [ref=e946]
+                - region "Stage gates" [ref=e947]:
+                  - heading "Stage gates" [level=3] [ref=e948]
+                  - paragraph [ref=e949]: This issue has no project, so stage gates do not apply.
+                - region "Delivered result" [ref=e950]:
+                  - heading "Delivered result" [level=3] [ref=e951]
+                  - paragraph [ref=e952]: No result has been submitted yet.
+                - region "Issue reactions" [ref=e953]:
+                  - group "Thread and reactions" [ref=e955]:
+                    - button "Choose a reaction" [ref=e956]:
+                      - img [ref=e957]
+                - generic [ref=e961]:
+                  - generic [ref=e962]:
+                    - heading "Comments" [level=3] [ref=e963]
+                    - generic [ref=e964]: "0"
+                    - generic [ref=e965]: 0 comments
+                  - paragraph [ref=e966]: No comments yet.
+                  - list
+                  - form "Comments" [ref=e967]:
+                    - generic [ref=e968]: Add comment
+                    - textbox "Add comment" [ref=e969]:
+                      - /placeholder: Write a comment...
+                    - generic [ref=e970]:
+                      - generic [ref=e971]:
+                        - button "Mention" [ref=e972]:
+                          - img
+                          - text: Mention
+                        - button "Attachments" [ref=e973]:
+                          - img
+                          - text: Attachments
+                      - generic [ref=e974]:
+                        - button "Preview delivery" [disabled]
+                        - button "Send comment" [disabled]
+                - group [ref=e975]:
+                  - generic "AI execution" [ref=e976] [cursor=pointer]
+                  - region "AI execution" [ref=e977]:
+                    - heading "AI execution" [level=3] [ref=e978]
+                    - paragraph [ref=e979]: New AI execution is disabled.
+                    - paragraph [ref=e980]: Stopping or resuming a target affects every target in its execution lane.
+                    - paragraph [ref=e981]: Paused
+                    - generic [ref=e982]:
+                      - button "Stop all" [ref=e983]
+                      - button "Resume all" [ref=e984]
+                    - button "Manage AI resources" [ref=e986]
+                    - generic [ref=e987]:
+                      - generic [ref=e988]:
+                        - heading "Execution lane 1" [level=4] [ref=e989]
+                        - generic [ref=e990]: Paused
+                      - list [ref=e991]:
+                        - listitem [ref=e992]:
+                          - generic [ref=e993]:
+                            - generic [ref=e994]: Squad
+                            - generic [ref=e995]: 32938d52-1d32-4e03-ad40-f6d34f1149e0
+                          - paragraph [ref=e996]: Awaiting initial authorization
+                          - generic [ref=e997]:
+                            - button "Stop target" [ref=e998]
+                            - button "Resume target" [ref=e999]
+                          - button "Switch proposals" [ref=e1001]
+                      - list [ref=e1002]:
+                        - listitem [ref=e1003]:
+                          - paragraph [ref=e1004]: Execution group · Failed
+                          - list [ref=e1005]:
+                            - listitem [ref=e1006]: Consumed input 1
+                          - list [ref=e1007]:
+                            - listitem [active] [ref=e1008]:
+                              - generic [ref=e1009]:
+                                - generic [ref=e1010]: Continuation
+                                - generic [ref=e1011]: 5f6b4341-6525-48ac-9abe-5de90e92e07b
+                                - generic [ref=e1012]: Ended
+                                - generic [ref=e1013]: Termination confirmed
+                                - button "Hide records for 24ac33d2-faf8-4d66-922f-bb14c8aaebf8" [expanded] [ref=e1014]: Hide records
+                              - region "Run records" [ref=e1015]:
+                                - generic [ref=e1016]:
+                                  - generic [ref=e1017]:
+                                    - term [ref=e1018]: Group status
+                                    - definition [ref=e1019]: Failed
+                                  - generic [ref=e1020]:
+                                    - term [ref=e1021]: Run outcome
+                                    - definition [ref=e1022]: Failed
+                                  - generic [ref=e1023]:
+                                    - term [ref=e1024]: Process recording
+                                    - definition [ref=e1025]: Complete recording
+                                  - generic [ref=e1026]:
+                                    - term [ref=e1027]: Termination proof
+                                    - definition [ref=e1028]: Termination confirmed
+                                - paragraph [ref=e1029]: "Direct launches: 1"
+                                - paragraph [ref=e1030]: Recording range was not recorded.
+                                - link "Link to this run" [ref=e1031] [cursor=pointer]:
+                                  - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-24ac33d2-faf8-4d66-922f-bb14c8aaebf8
+                                - group [ref=e1032]:
+                                  - generic "Recorded resource" [ref=e1033] [cursor=pointer]
+                                - region "Run preparation" [ref=e1034]:
+                                  - heading "Run preparation" [level=5] [ref=e1035]
+                                  - paragraph [ref=e1036]: Not recorded
+                                - region "Handoff context" [ref=e1037]:
+                                  - heading "Handoff context" [level=4] [ref=e1038]
+                                  - paragraph [ref=e1039]: Current source context.
+                                  - generic [ref=e1040]:
+                                    - generic [ref=e1041]:
+                                      - term [ref=e1042]: Handler
+                                      - definition [ref=e1043]:
+                                        - text: Outside record viewer
+                                        - generic [ref=e1044]: e50eb5c4-f52d-4766-a369-fb2e61fa0077
+                                    - generic [ref=e1045]:
+                                      - term [ref=e1046]: Run role
+                                      - definition [ref=e1047]: Continuation
+                                    - generic [ref=e1048]:
+                                      - term [ref=e1049]: Prior results
+                                      - definition [ref=e1050]: 3 of 3
+                                    - generic [ref=e1051]:
+                                      - term [ref=e1052]: Continuation reasons
+                                      - definition [ref=e1053]: Earlier reasons were not recorded.
+                                  - paragraph [ref=e1054]:
+                                    - link "87b6fea1-7cce-4847-84d5-0568229c1387" [ref=e1055] [cursor=pointer]:
+                                      - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-87b6fea1-7cce-4847-84d5-0568229c1387
+                                    - text: No result recorded
+                                  - paragraph [ref=e1056]:
+                                    - link "7944eecc-b927-43f0-be9d-43f921ab0fd3" [ref=e1057] [cursor=pointer]:
+                                      - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-7944eecc-b927-43f0-be9d-43f921ab0fd3
+                                  - paragraph [ref=e1058]:
+                                    - link "24ac33d2-faf8-4d66-922f-bb14c8aaebf8" [ref=e1059] [cursor=pointer]:
+                                      - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-24ac33d2-faf8-4d66-922f-bb14c8aaebf8
+                                  - list [ref=e1060]:
+                                    - listitem [ref=e1061]:
+                                      - paragraph [ref=e1062]: Source evidence
+                                      - paragraph [ref=e1064]: Legacy leader result; the later group failed.
+                                      - link "Open source run" [ref=e1065] [cursor=pointer]:
+                                        - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-7944eecc-b927-43f0-be9d-43f921ab0fd3
+                                    - listitem [ref=e1066]:
+                                      - paragraph [ref=e1067]: Source evidence
+                                      - paragraph [ref=e1069]: "Recorded final result: review found an unresolved issue."
+                                      - link "Open source run" [ref=e1070] [cursor=pointer]:
+                                        - /url: /account?view=participating&issue=01a2025a-340c-7226-b71a-9c8e01399636#run-24ac33d2-faf8-4d66-922f-bb14c8aaebf8
+                                - region "Recorded usage" [ref=e1071]:
+                                  - heading "Recorded usage" [level=5] [ref=e1072]
+                                  - generic [ref=e1073]:
+                                    - generic [ref=e1074]:
+                                      - term [ref=e1075]: Input tokens
+                                      - definition [ref=e1076]: "9007199254740993"
+                                    - generic [ref=e1077]:
+                                      - term [ref=e1078]: Output tokens
+                                      - definition [ref=e1079]: "0"
+                                    - generic [ref=e1080]:
+                                      - term [ref=e1081]: Cache read tokens
+                                      - definition [ref=e1082]: Not recorded
+                                    - generic [ref=e1083]:
+                                      - term [ref=e1084]: Cache write tokens
+                                      - definition [ref=e1085]: Not recorded
+                                    - generic [ref=e1086]:
+                                      - term [ref=e1087]: Total tokens
+                                      - definition [ref=e1088]: Not recorded
+                                    - generic [ref=e1089]:
+                                      - term [ref=e1090]: Cost (USD)
+                                      - definition [ref=e1091]: USD 0.0010203040
+                                - list [ref=e1092]:
+                                  - listitem [ref=e1093]:
+                                    - heading "Recorded input" [level=5] [ref=e1095]
+                                    - paragraph [ref=e1096]: "Author: You"
+                                    - paragraph [ref=e1097]: "Input ID: ef76a44e-9e30-4856-ae50-ba8b395190d3"
+                                    - paragraph [ref=e1099]: Frozen input read by this run before later issue edits.
+                                    - generic [ref=e1100]:
+                                      - paragraph [ref=e1101]: Recorded attachment references
+                                      - list [ref=e1102]:
+                                        - listitem [ref=e1103]: e72794a6-55d6-4a3c-b5b2-995505c3807f
+                                      - region "Attachments" [ref=e1104]:
+                                        - list [ref=e1105]:
+                                          - listitem [ref=e1106]:
+                                            - generic [ref=e1107]:
+                                              - paragraph [ref=e1108]: recorded-input.txt
+                                              - paragraph [ref=e1109]: 41 bytes
+                                            - generic [ref=e1110]:
+                                              - button "Preview recorded-input.txt" [ref=e1111]: Preview
+                                              - button "Download recorded-input.txt" [ref=e1112]: Download
+                                  - listitem [ref=e1113]:
+                                    - heading "Assistant message" [level=5] [ref=e1115]
+                                    - paragraph [ref=e1117]: Recorded step 1. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1118]:
+                                    - heading "Assistant message" [level=5] [ref=e1120]
+                                    - paragraph [ref=e1122]: Recorded step 2. long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_long_recorded_identifier_
+                                  - listitem [ref=e1123]:
+                                    - heading "Assistant message" [level=5] [ref=e1125]
+                                    - paragraph [ref=e1127]: Recorded step 3. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1128]:
+                                    - heading "Assistant message" [level=5] [ref=e1130]
+                                    - paragraph [ref=e1132]: Recorded step 4. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1133]:
+                                    - heading "Assistant message" [level=5] [ref=e1135]
+                                    - paragraph [ref=e1137]: Recorded step 5. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1138]:
+                                    - heading "Assistant message" [level=5] [ref=e1140]
+                                    - paragraph [ref=e1142]: Recorded step 6. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1143]:
+                                    - heading "Assistant message" [level=5] [ref=e1145]
+                                    - paragraph [ref=e1147]: Recorded step 7. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1148]:
+                                    - heading "Assistant message" [level=5] [ref=e1150]
+                                    - paragraph [ref=e1152]: Recorded step 8. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1153]:
+                                    - heading "Assistant message" [level=5] [ref=e1155]
+                                    - paragraph [ref=e1157]: Recorded step 9. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1158]:
+                                    - heading "Assistant message" [level=5] [ref=e1160]
+                                    - paragraph [ref=e1162]: Recorded step 10. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1163]:
+                                    - heading "Assistant message" [level=5] [ref=e1165]
+                                    - paragraph [ref=e1167]: Recorded step 11. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1168]:
+                                    - heading "Assistant message" [level=5] [ref=e1170]
+                                    - paragraph [ref=e1172]: Recorded step 12. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1173]:
+                                    - heading "Assistant message" [level=5] [ref=e1175]
+                                    - paragraph [ref=e1177]: Recorded step 13. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1178]:
+                                    - heading "Assistant message" [level=5] [ref=e1180]
+                                    - paragraph [ref=e1182]: Recorded step 14. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1183]:
+                                    - heading "Assistant message" [level=5] [ref=e1185]
+                                    - paragraph [ref=e1187]: Recorded step 15. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1188]:
+                                    - heading "Assistant message" [level=5] [ref=e1190]
+                                    - paragraph [ref=e1192]: Recorded step 16. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1193]:
+                                    - heading "Assistant message" [level=5] [ref=e1195]
+                                    - paragraph [ref=e1197]: Recorded step 17. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1198]:
+                                    - heading "Assistant message" [level=5] [ref=e1200]
+                                    - paragraph [ref=e1202]: Recorded step 18. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1203]:
+                                    - heading "Assistant message" [level=5] [ref=e1205]
+                                    - paragraph [ref=e1207]: Recorded step 19. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1208]:
+                                    - heading "Assistant message" [level=5] [ref=e1210]
+                                    - paragraph [ref=e1212]: Recorded step 20. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1213]:
+                                    - heading "Assistant message" [level=5] [ref=e1215]
+                                    - paragraph [ref=e1217]: Recorded step 21. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1218]:
+                                    - heading "Assistant message" [level=5] [ref=e1220]
+                                    - paragraph [ref=e1222]: Recorded step 22. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1223]:
+                                    - heading "Assistant message" [level=5] [ref=e1225]
+                                    - paragraph [ref=e1227]: Recorded step 23. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1228]:
+                                    - heading "Assistant message" [level=5] [ref=e1230]
+                                    - paragraph [ref=e1232]: Recorded step 24. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1233]:
+                                    - heading "Assistant message" [level=5] [ref=e1235]
+                                    - paragraph [ref=e1237]: Recorded step 25. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1238]:
+                                    - heading "Assistant message" [level=5] [ref=e1240]
+                                    - paragraph [ref=e1242]: Recorded step 26. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1243]:
+                                    - heading "Assistant message" [level=5] [ref=e1245]
+                                    - paragraph [ref=e1247]: Recorded step 27. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1248]:
+                                    - heading "Assistant message" [level=5] [ref=e1250]
+                                    - paragraph [ref=e1252]: Recorded step 28. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1253]:
+                                    - heading "Assistant message" [level=5] [ref=e1255]
+                                    - paragraph [ref=e1257]: Recorded step 29. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1258]:
+                                    - heading "Assistant message" [level=5] [ref=e1260]
+                                    - paragraph [ref=e1262]: Recorded step 30. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1263]:
+                                    - heading "Assistant message" [level=5] [ref=e1265]
+                                    - paragraph [ref=e1267]: Recorded step 31. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1268]:
+                                    - heading "Assistant message" [level=5] [ref=e1270]
+                                    - paragraph [ref=e1272]: Recorded step 32. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1273]:
+                                    - heading "Assistant message" [level=5] [ref=e1275]
+                                    - paragraph [ref=e1277]: Recorded step 33. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1278]:
+                                    - heading "Assistant message" [level=5] [ref=e1280]
+                                    - paragraph [ref=e1282]: Recorded step 34. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1283]:
+                                    - heading "Assistant message" [level=5] [ref=e1285]
+                                    - paragraph [ref=e1287]: Recorded step 35. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1288]:
+                                    - heading "Assistant message" [level=5] [ref=e1290]
+                                    - paragraph [ref=e1292]: Recorded step 36. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1293]:
+                                    - heading "Assistant message" [level=5] [ref=e1295]
+                                    - paragraph [ref=e1297]: Recorded step 37. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1298]:
+                                    - heading "Assistant message" [level=5] [ref=e1300]
+                                    - paragraph [ref=e1302]: Recorded step 38. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1303]:
+                                    - heading "Assistant message" [level=5] [ref=e1305]
+                                    - paragraph [ref=e1307]: Recorded step 39. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1308]:
+                                    - heading "Assistant message" [level=5] [ref=e1310]
+                                    - paragraph [ref=e1312]: Recorded step 40. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1313]:
+                                    - heading "Assistant message" [level=5] [ref=e1315]
+                                    - paragraph [ref=e1317]: Recorded step 41. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1318]:
+                                    - heading "Assistant message" [level=5] [ref=e1320]
+                                    - paragraph [ref=e1322]: Recorded step 42. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1323]:
+                                    - heading "Assistant message" [level=5] [ref=e1325]
+                                    - paragraph [ref=e1327]: Recorded step 43. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1328]:
+                                    - heading "Assistant message" [level=5] [ref=e1330]
+                                    - paragraph [ref=e1332]: Recorded step 44. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1333]:
+                                    - heading "Assistant message" [level=5] [ref=e1335]
+                                    - paragraph [ref=e1337]: Recorded step 45. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1338]:
+                                    - heading "Assistant message" [level=5] [ref=e1340]
+                                    - paragraph [ref=e1342]: Recorded step 46. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1343]:
+                                    - heading "Assistant message" [level=5] [ref=e1345]
+                                    - paragraph [ref=e1347]: Recorded step 47. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1348]:
+                                    - heading "Assistant message" [level=5] [ref=e1350]
+                                    - paragraph [ref=e1352]: Recorded step 48. Source-owned process content from a synthetic UI fixture.
+                                  - listitem [ref=e1353]:
+                                    - heading "Assistant message" [level=5] [ref=e1355]
+                                    - paragraph [ref=e1357]: Recorded step 49. Source-owned process content from a synthetic UI fixture.
+                                - button "Load more records" [ref=e1358]
+                            - listitem [ref=e1359]:
+                              - generic [ref=e1360]:
+                                - generic [ref=e1361]: Leader
+                                - generic [ref=e1362]: 5f6b4341-6525-48ac-9abe-5de90e92e07b
+                                - generic [ref=e1363]: Ended
+                                - generic [ref=e1364]: Termination confirmed
+                                - button "View records for 7944eecc-b927-43f0-be9d-43f921ab0fd3" [ref=e1365]: View records
+                            - listitem [ref=e1366]:
+                              - generic [ref=e1367]:
+                                - generic [ref=e1368]: Member
+                                - generic [ref=e1369]: 8ac8f59f-117e-4a48-a390-83777f2af93f
+                                - generic [ref=e1370]: Ended
+                                - generic [ref=e1371]: Termination confirmed
+                                - button "View records for 87b6fea1-7cce-4847-84d5-0568229c1387" [ref=e1372]: View records
+                      - list
+                    - heading "Command history" [level=4] [ref=e1374]:
+                      - button "Command history" [ref=e1375]
+  - region "Notifications alt+T"
+  - alert [ref=e1376]: Collaboration notifications | Multica
+```

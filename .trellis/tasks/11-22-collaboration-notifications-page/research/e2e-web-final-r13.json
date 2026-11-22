@@ -1,0 +1,269 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-web-final-r13",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-notifications-page.spec.ts",
+      "file": "collaboration-notifications-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web collaboration notifications: complete filters, exact targets, processing and restored list/detail",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 9061,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"detail\": 0,\u001b[39m\n\u001b[31m+   \"detail\": 565,\u001b[39m\n\u001b[2m    \"list\": 0,\u001b[22m\n\u001b[2m  }\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"detail\": 0,\u001b[39m\n\u001b[31m+   \"detail\": 565,\u001b[39m\n\u001b[2m    \"list\": 0,\u001b[22m\n\u001b[2m  }\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:275:13\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:226:7",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                      "column": 13,
+                      "line": 275
+                    },
+                    "snippet": "  273 |             await expectPath(path);\n  274 |             await expect(notificationRow(page, id)).toHaveAttribute(\"data-selected\", \"true\");\n> 275 |             await expect.poll(offsets).toEqual(saved);\n      |             ^\n  276 |             await painted(page);\n  277 |             const actual = await offsets();\n  278 |             expect(actual).toEqual(saved);"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                        "column": 13,
+                        "line": 275
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"detail\": 0,\u001b[39m\n\u001b[31m+   \"detail\": 565,\u001b[39m\n\u001b[2m    \"list\": 0,\u001b[22m\n\u001b[2m  }\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n\n  273 |             await expectPath(path);\n  274 |             await expect(notificationRow(page, id)).toHaveAttribute(\"data-selected\", \"true\");\n> 275 |             await expect.poll(offsets).toEqual(saved);\n      |             ^\n  276 |             await painted(page);\n  277 |             const actual = await offsets();\n  278 |             expect(actual).toEqual(saved);\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:275:13\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:226:7"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "The sidebar opens the default Unread page with authoritative feedback",
+                      "duration": 274
+                    },
+                    {
+                      "title": "Unread, All and Archived each load their complete second server page",
+                      "duration": 479
+                    },
+                    {
+                      "title": "Distinct notification IDs preserve exact run, comment, body and issue targets",
+                      "duration": 1093
+                    },
+                    {
+                      "title": "Same-issue Back/Forward restores distinct notification offsets without remounting the draft",
+                      "duration": 5184,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"detail\": 0,\u001b[39m\n\u001b[31m+   \"detail\": 565,\u001b[39m\n\u001b[2m    \"list\": 0,\u001b[22m\n\u001b[2m  }\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Object {\u001b[22m\n\u001b[32m-   \"detail\": 0,\u001b[39m\n\u001b[31m+   \"detail\": 565,\u001b[39m\n\u001b[2m    \"list\": 0,\u001b[22m\n\u001b[2m  }\u001b[22m\n\nCall Log:\n- Timeout 5000ms exceeded while waiting on the predicate\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:275:13\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:226:7",
+                        "location": {
+                          "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                          "column": 13,
+                          "line": 275
+                        },
+                        "snippet": "  273 |             await expectPath(path);\n  274 |             await expect(notificationRow(page, id)).toHaveAttribute(\"data-selected\", \"true\");\n> 275 |             await expect.poll(offsets).toEqual(saved);\n      |             ^\n  276 |             await painted(page);\n  277 |             const actual = await offsets();\n  278 |             expect(actual).toEqual(saved);"
+                      }
+                    }
+                  ],
+                  "startTime": "2026-11-22T09:54:11.027Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-web-final-r13/collaboration-notification-c3f23-ng-and-restored-list-detail-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                    "column": 13,
+                    "line": 275
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "870c3436829a9cb25b04-28a0b4d430ca315035ba",
+          "file": "collaboration-notifications-page.spec.ts",
+          "line": 24,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "title": "collaboration-records-web.spec.ts",
+      "file": "collaboration-records-web.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web shares ordinary child references and retained run records through account notification links",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10600,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-22T09:54:21.728Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "record-pagination-api",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZV9pZCI6ICIwMWEyMDJhZC05ZWVjLTc3MDAtOTFlOS1jODFkMmEwNzM0ZjIiLAogICJydW5faWQiOiAiMjMzNTViODYtMzUxMS00YjNkLWIxOTUtMWZmZTJiOTI4NWM5IiwKICAiZmlyc3RfcGFnZSI6IHsKICAgICJpdGVtX2lkcyI6IFsKICAgICAgImlucHV0OjJkNTJmM2RkLTZjZjEtNGU5Yy1iZTFjLWJlOWQyOTRhY2FlOSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MyIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NyIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6OCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6OSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MTAiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjExIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoxMiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MTMiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjE0IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoxNSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MTYiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjE3IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoxOCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MTkiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjIwIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoyMSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MjIiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjIzIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoyNCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MjUiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjI2IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDoyNyIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MjgiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjI5IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDozMCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MzEiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjMyIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDozMyIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MzQiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjM1IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDozNiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6MzciLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjM4IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDozOSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NDAiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjQxIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo0MiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NDMiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjQ0IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo0NSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NDYiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjQ3IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo0OCIKICAgIF0sCiAgICAibmV4dF9jdXJzb3IiOiAiZXlKcGMzTjFaVjlwWkNJNklqQXhZVEl3TW1Ga0xUbGxaV010Tnpjd01DMDVNV1U1TFdNNE1XUXlZVEEzTXpSbU1pSXNJbkoxYmw5cFpDSTZJakl6TXpVMVlqZzJMVE0xTVRFdE5HSXpaQzFpTVRrMUxURm1abVV5WWpreU9EVmpPU0lzSW5CeWIyMXdkRjlvWVhOb0lqb2lOMkV5WXpKa05UZzRZakF5TldZek56UXpPVGRoWVRreFlXUTFaamM1T1dZMU5URTBOMkU1T1ROak5tUXdZakV3TTJSa016ZzRZemszTmpFNU1XVm1ZeUlzSW1sdWNIVjBYMjltWm5ObGRDSTZNU3dpZEdoeWIzVm5hRjl6WlhFaU9pSXlJaXdpWlhabGJuUmZjMlZ4SWpvaU1pSXNJbWwwWlcxZmIyWm1jMlYwSWpvME9YMCIKICB9LAogICJuZXh0X3BhZ2UiOiB7CiAgICAicmVxdWVzdGVkX2N1cnNvciI6ICJleUpwYzNOMVpWOXBaQ0k2SWpBeFlUSXdNbUZrTFRsbFpXTXROemN3TUMwNU1XVTVMV000TVdReVlUQTNNelJtTWlJc0luSjFibDlwWkNJNklqSXpNelUxWWpnMkxUTTFNVEV0TkdJelpDMWlNVGsxTFRGbVptVXlZamt5T0RWak9TSXNJbkJ5YjIxd2RGOW9ZWE5vSWpvaU4yRXlZekprTlRnNFlqQXlOV1l6TnpRek9UZGhZVGt4WVdRMVpqYzVPV1kxTlRFME4yRTVPVE5qTm1Rd1lqRXdNMlJrTXpnNFl6azNOakU1TVdWbVl5SXNJbWx1Y0hWMFgyOW1abk5sZENJNk1Td2lkR2h5YjNWbmFGOXpaWEVpT2lJeUlpd2laWFpsYm5SZmMyVnhJam9pTWlJc0ltbDBaVzFmYjJabWMyVjBJam8wT1gwIiwKICAgICJpdGVtX2lkcyI6IFsKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo0OSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NTAiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjUxIiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo1MiIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NTMiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjU0IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo1NSIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NTYiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjU3IiwKICAgICAgImV2ZW50OjM4MDk5Y2JlLWJjNmEtNDM3OS1hNGFkLTgyNDI5MjFiNWQ1ZDo1OCIsCiAgICAgICJldmVudDozODA5OWNiZS1iYzZhLTQzNzktYTRhZC04MjQyOTIxYjVkNWQ6NTkiLAogICAgICAiZXZlbnQ6MzgwOTljYmUtYmM2YS00Mzc5LWE0YWQtODI0MjkyMWI1ZDVkOjYwIgogICAgXSwKICAgICJuZXh0X2N1cnNvciI6IG51bGwKICB9Cn0="
+                    },
+                    {
+                      "name": "record-journey-evidence",
+                      "contentType": "application/json",
+                      "body": "ewogICJpc3N1ZUlkIjogIjAxYTIwMmFkLTllZWMtNzcwMC05MWU5LWM4MWQyYTA3MzRmMiIsCiAgImNoaWxkSWQiOiAiMDFhMjAyYWQtOWYyOS03YjA4LTk5YTUtZmI1MWU1OGQzYThkIiwKICAiZ3JvdXBJZCI6ICI1YzY3MzgyNi1hZTIyLTQwZDUtYjVmZS1lNTk2ZjFmMjkxNDAiLAogICJyZXByZXNlbnRhdGl2ZVJ1bklkIjogIjIzMzU1Yjg2LTM1MTEtNGIzZC1iMTk1LTFmZmUyYjkyODVjOSIsCiAgInNoYXJlZExpbmsiOiAiaHR0cDovL2xvY2FsaG9zdDoxMzMzNy9hY2NvdW50P3ZpZXc9cGFydGljaXBhdGluZyZpc3N1ZT0wMWEyMDJhZC05ZWVjLTc3MDAtOTFlOS1jODFkMmEwNzM0ZjIiLAogICJjaGlsZHJlbkhpbnRzIjogWwogICAgewogICAgICAicGF5bG9hZCI6IHsKICAgICAgICAiaXNzdWVfaWQiOiAiMDFhMjAyYWQtOWVlYy03NzAwLTkxZTktYzgxZDJhMDczNGYyIgogICAgICB9LAogICAgICAidHlwZSI6ICJjb2xsYWJvcmF0aW9uOmNoaWxkcmVuX2NoYW5nZWQiCiAgICB9LAogICAgewogICAgICAicGF5bG9hZCI6IHsKICAgICAgICAiaXNzdWVfaWQiOiAiMDFhMjAyYWQtOWVlYy03NzAwLTkxZTktYzgxZDJhMDczNGYyIgogICAgICB9LAogICAgICAidHlwZSI6ICJjb2xsYWJvcmF0aW9uOmNoaWxkcmVuX2NoYW5nZWQiCiAgICB9CiAgXSwKICAibm90aWZpY2F0aW9uSHJlZiI6ICJodHRwOi8vbG9jYWxob3N0OjEzMzM3L2FjY291bnQ/dmlldz1ub3RpZmljYXRpb25zJmZpbHRlcj1hbGwmbm90aWZpY2F0aW9uPWZjMmExNjY3LTk4YWQtNGZiZS04YmZhLTFjZTY3ODk1MDAxOCZpc3N1ZT0wMWEyMDJhZC05ZWVjLTc3MDAtOTFlOS1jODFkMmEwNzM0ZjIjcnVuLTIzMzU1Yjg2LTM1MTEtNGIzZC1iMTk1LTFmZmUyYjkyODVjOSIsCiAgImNhdGFsb2dSZXF1ZXN0cyI6IFtdLAogICJyZWNvcmRTb3VyY2UiOiAic2VlZGVkIHJldGFpbmVkIHNvdXJjZSBoaXN0b3J5OyBydW50aW1lIGluZ2VzdGlvbiB2ZXJpZmllZCBzZXBhcmF0ZWx5IiwKICAicGFnZUVycm9ycyI6IFtdCn0="
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0bfd230843f79e727b28-dc35d5e24b961c6b892f",
+          "file": "collaboration-records-web.spec.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "global-scope-navigation.spec.ts",
+      "file": "global-scope-navigation.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web global switching resumes the task, collaboration filters and both scroll positions",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 180000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 9408,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-22T09:54:32.725Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "scope-restoration.json",
+                      "contentType": "application/json",
+                      "body": "eyJwbGF0Zm9ybSI6IldlYiIsInNvdXJjZSI6IjAxYTIwMmFkLWM3NjYtNzM2My1hODQzLWFiMmNhNTg5NTU5YyIsInNlbGVjdGVkIjoiMDFhMjAyYWQtYzc3NS03Mjg4LThlOTctYjk0MzRkMDM2MzMzIiwic2F2ZWQiOnsibGlzdCI6MTgwLCJkZXRhaWwiOjYyMH0sIm9yaWdpbmFsQm91bmRzIjp7IngiOjgsInkiOjgsIndpZHRoIjoyNDAsImhlaWdodCI6OTQ0fSwicmVzdW1lZEJvdW5kcyI6eyJ4Ijo4LCJ5Ijo4LCJ3aWR0aCI6MjQwLCJoZWlnaHQiOjk0NH19"
+                    }
+                  ]
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "b31073548e8c74c3e45a-f71dbf1b9e5d6d84e0ec",
+          "file": "global-scope-navigation.spec.ts",
+          "line": 87,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-22T09:54:10.329Z",
+    "duration": 31835.416,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  }
+}

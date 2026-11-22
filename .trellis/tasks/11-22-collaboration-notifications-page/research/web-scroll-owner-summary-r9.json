@@ -1,0 +1,738 @@
+{
+  "observations": [
+    "After popstate shared detail anchor focus ran before matching return restoration, changing620 to565.",
+    "Next default notification push calls MAIN.scrollIntoView and MAIN.focus; page chrome scrolls despite inner detail ownership."
+  ],
+  "events": [
+    {
+      "kind": "focus",
+      "ms": 1523,
+      "path": "/account?view=notifications&filter=unread",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidMount (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146660)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102964)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 1687,
+      "path": "/account?view=notifications&filter=unread",
+      "target": {
+        "tag": "BUTTON",
+        "id": "",
+        "scrollRoot": "account-notifications-list"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+        "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+        "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+        "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+        "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 1758,
+      "path": "/account?view=notifications&filter=all",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 1872,
+      "path": "/account?view=notifications&filter=all",
+      "target": {
+        "tag": "BUTTON",
+        "id": "",
+        "scrollRoot": "account-notifications-list"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+        "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+        "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+        "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+        "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 1955,
+      "path": "/account?view=notifications&filter=archived",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2088,
+      "path": "/account?view=notifications&filter=archived",
+      "target": {
+        "tag": "BUTTON",
+        "id": "",
+        "scrollRoot": "account-notifications-list"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at sE (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:145067)",
+        "    at http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143608",
+        "    at sk (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:143624)",
+        "    at sl (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:126770)",
+        "    at sr (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:125006)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2159,
+      "path": "/account?view=notifications&filter=all",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 2289,
+      "path": "/account?view=notifications&filter=all&notification=1094759c-d9f1-4473-82e8-3bf888c657a9&issue=01a2028e-e45a-7094-a3e5-4720036f85ba#run-13d9aedd-e617-4e43-9468-e074ff57096c",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147464)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2289,
+      "path": "/account?view=notifications&filter=all&notification=1094759c-d9f1-4473-82e8-3bf888c657a9&issue=01a2028e-e45a-7094-a3e5-4720036f85ba#run-13d9aedd-e617-4e43-9468-e074ff57096c",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 2354,
+      "path": "/account?view=notifications&filter=all&notification=1094759c-d9f1-4473-82e8-3bf888c657a9&issue=01a2028e-e45a-7094-a3e5-4720036f85ba#run-13d9aedd-e617-4e43-9468-e074ff57096c",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2354,
+      "path": "/account?view=notifications&filter=all&notification=1094759c-d9f1-4473-82e8-3bf888c657a9&issue=01a2028e-e45a-7094-a3e5-4720036f85ba#run-13d9aedd-e617-4e43-9468-e074ff57096c",
+      "target": {
+        "tag": "LI",
+        "id": "run-13d9aedd-e617-4e43-9468-e074ff57096c",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 963,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 2565,
+      "path": "/account?view=notifications&filter=all&notification=5b2deb1c-21c8-4cb1-b3d8-24d13117f946&issue=01a2028e-e510-7203-89c5-439de12bc6c2#comment-71095ffd-3022-4409-8101-a8cfe57a993a",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147464)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2565,
+      "path": "/account?view=notifications&filter=all&notification=5b2deb1c-21c8-4cb1-b3d8-24d13117f946&issue=01a2028e-e510-7203-89c5-439de12bc6c2#comment-71095ffd-3022-4409-8101-a8cfe57a993a",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 2926,
+      "path": "/account?view=notifications&filter=all&notification=5b2deb1c-21c8-4cb1-b3d8-24d13117f946&issue=01a2028e-e510-7203-89c5-439de12bc6c2#comment-71095ffd-3022-4409-8101-a8cfe57a993a",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 2927,
+      "path": "/account?view=notifications&filter=all&notification=5b2deb1c-21c8-4cb1-b3d8-24d13117f946&issue=01a2028e-e510-7203-89c5-439de12bc6c2#comment-71095ffd-3022-4409-8101-a8cfe57a993a",
+      "target": {
+        "tag": "LI",
+        "id": "comment-71095ffd-3022-4409-8101-a8cfe57a993a",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 4134,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3070,
+      "path": "/account?view=notifications&filter=all&notification=91f03f8c-575b-4885-b2e7-883d534862d4",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 3255,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147464)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3255,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 3262,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3262,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 3419,
+      "path": "/account?view=notifications&filter=all&notification=2f8d4943-05c8-4c7d-aae1-7a1d5ee1257c&issue=01a2028e-e510-7203-89c5-439de12bc6c2",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147563)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3419,
+      "path": "/account?view=notifications&filter=all&notification=2f8d4943-05c8-4c7d-aae1-7a1d5ee1257c&issue=01a2028e-e510-7203-89c5-439de12bc6c2",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 3536,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147464)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3536,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 3537,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3537,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 3636,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at eval (eval at evaluate (:290:30), <anonymous>:2:29)",
+        "    at UtilityScript.evaluate (<anonymous>:292:16)",
+        "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 3799,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 4134,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+        "    at UtilityScript.evaluate (<anonymous>:292:16)",
+        "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3844,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "A",
+        "id": "",
+        "scrollRoot": "account-notifications-list"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at eval (eval at evaluate (:290:30), <anonymous>:1:20)",
+        "    at UtilityScript.evaluate (<anonymous>:292:16)",
+        "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ]
+    },
+    {
+      "kind": "scrollIntoView",
+      "ms": 3869,
+      "path": "/account?view=notifications&filter=all&notification=2f8d4943-05c8-4c7d-aae1-7a1d5ee1257c&issue=01a2028e-e510-7203-89c5-439de12bc6c2",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at Element.scrollIntoView (<anonymous>:26:11)",
+        "    at dontForceLayout (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147563)",
+        "    at n (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:133586)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147439)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 3869,
+      "path": "/account?view=notifications&filter=all&notification=2f8d4943-05c8-4c7d-aae1-7a1d5ee1257c&issue=01a2028e-e510-7203-89c5-439de12bc6c2",
+      "target": {
+        "tag": "MAIN",
+        "id": ""
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at S.handlePotentialScroll (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:147678)",
+        "    at S.componentDidUpdate (http://localhost:13337/_next/static/chunks/54610-10e3b714124b22e6.js:1:146710)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:103072)",
+        "    at ud (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:115827)",
+        "    at i5 (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:102883)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 3971,
+      "path": "/account?view=notifications&filter=all&notification=2f8d4943-05c8-4c7d-aae1-7a1d5ee1257c&issue=01a2028e-e510-7203-89c5-439de12bc6c2",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 0,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at eval (eval at evaluate (:290:30), <anonymous>:2:31)",
+        "    at UtilityScript.evaluate (<anonymous>:292:16)",
+        "    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+      ]
+    },
+    {
+      "kind": "popstate-capture",
+      "ms": 4017,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": null,
+      "detailTop": 620,
+      "windowTop": 0
+    },
+    {
+      "kind": "popstate-bubble",
+      "ms": 4017,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": null,
+      "detailTop": 620,
+      "windowTop": 0
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 4026,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 620,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208778)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "focus",
+      "ms": 4026,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "description",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.focus (<anonymous>:31:11)",
+        "    at n (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208842)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:208890",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    },
+    {
+      "kind": "scrollTop",
+      "ms": 4034,
+      "path": "/account?view=notifications&filter=all&notification=eb9585ec-8c4e-4372-8fbd-6fdbea080981&issue=01a2028e-e510-7203-89c5-439de12bc6c2#description",
+      "target": {
+        "tag": "SECTION",
+        "id": "",
+        "scrollRoot": "account-detail"
+      },
+      "detailTop": 565,
+      "windowTop": 0,
+      "stack": [
+        "    at emit (<anonymous>:20:94)",
+        "    at HTMLElement.set [as scrollTop] (<anonymous>:39:74)",
+        "    at r (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207835)",
+        "    at Object.closeForNavigation (http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:131934)",
+        "    at http://localhost:13337/_next/static/chunks/57487-2add819af8b5589d.js:6:207916",
+        "    at ik (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:92680)",
+        "    at ug (http://localhost:13337/_next/static/chunks/5b33faa3-c4c43491dd01e846.js:1:116719)"
+      ]
+    }
+  ]
+}

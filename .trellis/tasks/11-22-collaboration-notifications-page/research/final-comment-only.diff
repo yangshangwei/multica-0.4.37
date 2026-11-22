@@ -1,0 +1,25 @@
+--- built/apps/web/platform/scroll-restoration.tsx
++++ final/apps/web/platform/scroll-restoration.tsx
+@@ -12,17 +12,16 @@
+ 
+ /**
+  * Web half of the MUL-4741 scroll-restoration protocol (desktop's half lives
+- * in the tab coordinator). The browser only restores the window's own scroll
+- * position on back/forward — the app's scrollable containers
+- * (`data-tab-scroll-root`) are inner divs and virtualized lists it knows
+- * nothing about, so without this, navigating back lands every list at the
+- * top.
++ * in the tab coordinator). App-owned containers need route-specific offsets;
++ * native history restoration can also move inner scrollers to old fragments.
++ * The notification navigation owner temporarily disables that competing
++ * browser behavior while this provider supplies the authoritative mementos.
+  *
+  * A capture-phase scroll listener continuously records marked containers.
+  * Account navigation also snapshots the departing committed route, since
+  * retained containers can carry an offset without firing another scroll event.
+  * Both write the same `routeKey::containerKey` map. Serving uses desktop's
+- * uses — views read the offset at mount through `useRestoredScrollOffset` /
++ * protocol — views read the offset at mount through `useRestoredScrollOffset` /
+  * `useRestoredScrollRef`.
+  *
+  * Workspace pathname/accountRouteKey (not history entry) matches desktop's memento

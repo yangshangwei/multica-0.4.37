@@ -1,0 +1,33 @@
+{
+  "environment": "check-20261122074342-12482",
+  "source_root": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src",
+  "test_harness_root": "/Volumes/artisan/code/2026/multica-0.4.37",
+  "components": {
+    "api": {
+      "mode": "development",
+      "build_id": "",
+      "command": "go run -ldflags '-X main.commit=f789a86af' ./cmd/server (cwd: /Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/notifications-20261122/src/server)",
+      "source_id": "6cbf6e607c510a17e7ebd1d7c1b3732e5ec466177993fb169cca5036deb98292",
+      "configuration_id": "02e1b136802575fa960bcd8654c2f73f17fbad27f493b852a36c15ed59c31d4d",
+      "commit": "f789a86af",
+      "launcher_pid": 59459,
+      "started_at": "2026-11-22T09:30:22Z",
+      "listener_pid": 59484
+    },
+    "web": {
+      "mode": "production",
+      "build_id": "bHNxu5A1zr-DiF0mGyyLp",
+      "command": "pnpm --filter @multica/web exec next start --port 13337",
+      "source_id": "6cbf6e607c510a17e7ebd1d7c1b3732e5ec466177993fb169cca5036deb98292",
+      "configuration_id": "c165ba230fb154ce7e4a60478d4863f44d4b2597707947941bbf9bbe740222ed",
+      "commit": "f789a86af",
+      "launcher_pid": 60005,
+      "started_at": "2026-11-22T09:31:37Z",
+      "listener_pid": 60030
+    },
+    "desktop-renderer": {
+      "pid": 59569,
+      "index_sha256": "2b053e3a872f649896efaba1eb4f4de0d107c11fb8f6b94c8b4edc06cdf3d466"
+    }
+  }
+}

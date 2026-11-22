@@ -1,0 +1,230 @@
+{
+  "config": {
+    "configFile": "/Volumes/artisan/code/2026/multica-0.4.37/playwright.config.ts",
+    "rootDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-notifications-r3",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Volumes/artisan/code/2026/multica-0.4.37/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "line"
+      ],
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "collaboration-notifications-page.spec.ts",
+      "file": "collaboration-notifications-page.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Web collaboration notifications: complete filters, exact targets, processing and restored list/detail",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 7499,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] gr…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] gr…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                      "column": 101,
+                      "line": 87
+                    },
+                    "snippet": "  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                        "column": 101,
+                        "line": 87
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] gr…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n\n  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "The sidebar opens the default Unread page with authoritative feedback",
+                      "duration": 5266,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] gr…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[width,height,padding] gr…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7",
+                        "location": {
+                          "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                          "column": 101,
+                          "line": 87
+                        },
+                        "snippet": "  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();"
+                      }
+                    }
+                  ],
+                  "startTime": "2026-11-22T08:05:16.383Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Volumes/artisan/code/2026/multica-0.4.37/.trellis/tasks/11-22-collaboration-notifications-page/research/e2e-notifications-r3/collaboration-notification-c3f23-ng-and-restored-list-detail-chromium/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                    "column": 101,
+                    "line": 87
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "870c3436829a9cb25b04-28a0b4d430ca315035ba",
+          "file": "collaboration-notifications-page.spec.ts",
+          "line": 24,
+          "column": 3
+        },
+        {
+          "title": "Desktop collaboration notifications: complete filters, exact targets, processing and restored list/detail",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 240000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 8156,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"http://localhost:18417/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[wi…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"http://localhost:18417/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[wi…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7",
+                    "location": {
+                      "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                      "column": 101,
+                      "line": 87
+                    },
+                    "snippet": "  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                        "column": 101,
+                        "line": 87
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"http://localhost:18417/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[wi…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n\n  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "steps": [
+                    {
+                      "title": "The sidebar opens the default Unread page with authoritative feedback",
+                      "duration": 5226,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"http://localhost:18417/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[wi…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\nExpected substring: \u001b[32m\"60\"\u001b[39m\nReceived string:    \u001b[31m\"Collaboration notifications01234567890123456789\"\u001b[39m\nTimeout: 5000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('navigation', { name: /^(Application navigation|应用导航)$/ }).getByRole('link', { name: 'Collaboration notifications', exact: true })\u001b[22m\n\u001b[2m    9 × locator resolved to <a data-active=\"\" data-size=\"default\" aria-current=\"page\" data-sidebar=\"menu-button\" data-slot=\"sidebar-menu-button\" title=\"Collaboration notifications\" aria-label=\"Collaboration notifications\" href=\"http://localhost:18417/account?view=notifications&filter=unread\" class=\"peer/menu-button group/menu-button max-lg:min-h-11 max-lg:text-title-sm [@media(any-pointer:coarse)]:min-h-11 flex w-full items-center gap-2 overflow-hidden rounded-md p-2 text-left ring-sidebar-ring outline-hidden transition-[wi…>…</a>\u001b[22m\n\u001b[2m      - unexpected value \"Collaboration notifications01234567890123456789\"\u001b[22m\n\n    at count (/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:87:101)\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:130:9\n    at /Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts:119:7",
+                        "location": {
+                          "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                          "column": 101,
+                          "line": 87
+                        },
+                        "snippet": "  85 |       await expect(page.locator(\"main > header\").getByText(`${value} unread`, { exact: true })).toBeVisible();\n  86 |       const sidebar = await openSidebarNavigation(page);\n> 87 |       await expect(sidebar.getByRole(\"link\", { name: \"Collaboration notifications\", exact: true })).toContainText(String(value));\n     |                                                                                                     ^\n  88 |     };\n  89 |     const history = async (direction: \"back\" | \"forward\") => {\n  90 |       if (native) await page.locator('[data-slot=\"window-toolbar\"]').getByRole(\"button\", { name: direction === \"back\" ? \"Go back\" : \"Go forward\", exact: true }).click();"
+                      }
+                    }
+                  ],
+                  "startTime": "2026-11-22T08:05:25.221Z",
+                  "annotations": [],
+                  "attachments": [],
+                  "errorLocation": {
+                    "file": "/Volumes/artisan/code/2026/multica-0.4.37/e2e/collaboration-notifications-page.spec.ts",
+                    "column": 101,
+                    "line": 87
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "870c3436829a9cb25b04-dfdd3af18f19f27a5fa6",
+          "file": "collaboration-notifications-page.spec.ts",
+          "line": 24,
+          "column": 3
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-22T08:05:15.669Z",
+    "duration": 18140.454999999998,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 2,
+    "flaky": 0
+  }
+}

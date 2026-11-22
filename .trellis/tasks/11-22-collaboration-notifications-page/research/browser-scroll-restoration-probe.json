@@ -1,0 +1,39 @@
+[
+  {
+    "mode": "auto",
+    "path": "/notification-scroll-probe?notification=A#description",
+    "top": 565,
+    "samples": [
+      {
+        "kind": "popstate",
+        "top": 0
+      },
+      {
+        "kind": "scroll",
+        "id": "detail",
+        "top": 565
+      },
+      {
+        "kind": "scroll",
+        "id": "detail",
+        "top": 565
+      }
+    ]
+  },
+  {
+    "mode": "manual",
+    "path": "/notification-scroll-probe?notification=A#description",
+    "top": 0,
+    "samples": [
+      {
+        "kind": "popstate",
+        "top": 0
+      },
+      {
+        "kind": "scroll",
+        "id": "detail",
+        "top": 0
+      }
+    ]
+  }
+]
