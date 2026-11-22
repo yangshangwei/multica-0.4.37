@@ -725,11 +725,12 @@ test("Desktop account links retain one tab across workspaces, popouts and restar
     app = native.app;
     const page = native.page;
     await native.start();
-    // A fresh sign-in with workspaces opens a workspace; account stays one click away.
+    // A fresh sign-in with workspaces opens a workspace; its collaboration
+    // directory discloses before an explicit account destination is chosen.
     // The workspace sidebar renders only once a workspace resolves; locator assertions
     // retry across the boot navigation, while page.evaluate would throw mid-navigation.
     await expect(page.locator('[data-sidebar="menu-button"]').first()).toBeVisible();
-    await expect(page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Collaboration", exact: true })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Expand collaboration navigation", exact: true })).toBeVisible();
     await expect.poll(async () => (await snapshot(page).catch(() => null))?.activeScope).toBe("workspace");
     await selectDesktopWorkspace(page, fixture.workspaceA);
     await expect.poll(async () => (await snapshot(page)).activeWorkspaceSlug).toBe(fixture.workspaceA.slug);
@@ -738,7 +739,9 @@ test("Desktop account links retain one tab across workspaces, popouts and restar
     await page.getByText("Pin tab", { exact: true }).click();
     await page.getByRole("button", { name: "New tab", exact: true }).click();
     await page.screenshot({ path: testInfo.outputPath("desktop-workspace-a.png"), animations: "disabled" });
-    await page.getByRole("navigation", { name: "Application navigation", exact: true }).getByRole("button", { name: "Collaboration", exact: true }).click();
+    const navigation = page.getByRole("navigation", { name: "Application navigation", exact: true });
+    await navigation.getByRole("button", { name: "Expand collaboration navigation", exact: true }).click();
+    await navigation.getByRole("link", { name: "Current handling", exact: true }).click();
     await page.getByRole("region", { name: "Collaboration issues" }).getByRole("link", { name: new RegExp(fixture.issues[0].title) }).click();
     await expect(page.getByRole("heading", { name: fixture.issues[0].title, exact: true })).toBeVisible();
     const accountTabId = (await snapshot(page)).accountGroup!.tabs[0].id;

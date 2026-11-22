@@ -9,10 +9,10 @@ must remain available with zero, pending or unavailable workspaces.
 ## 2. Signatures
 
 - The shared `AppSidebar` owns the accessible Collaboration and Workspace
-  headings. Platform shells provide resume and workspace-selection callbacks;
+  headings. Platform shells provide workspace-selection callbacks;
   they do not render a separate fixed scope-switch row.
 - `AppSidebar({ navigationWorkspace?, onWorkspaceSelect?,
-  onCollaborationResume?, workspaceListUnavailable?, onRetryWorkspaces?,
+  workspaceListUnavailable?, onRetryWorkspaces?,
   topSlot?, searchSlot?, versionSlot? })` accepts an authoritative directory
   member or null as its navigation preview. Omitted `navigationWorkspace`
   uses the actual route workspace. Selection callbacks receive its slug.
@@ -36,14 +36,16 @@ must remain available with zero, pending or unavailable workspaces.
 
 ## 3. Contracts
 
-Only global switching consults remembered destinations. Notifications and task
-links keep explicit path/query/fragment semantics. Activating the current scope
-is a no-op. Do not send a default issue/list path to a global resume operation.
+Platform restoration operations consult remembered destinations. Notifications
+and task links keep explicit path/query/fragment semantics. Group disclosure
+only changes its open state; it never navigates. Do not send a default issue/list
+path to a global resume operation.
 
 Collaboration appears above Workspace in the shared left directory. Its fresh
 preference is collapsed, presenting a single quiet heading with a neutral Beta
-marker. The heading resumes the exact account destination; a separate arrow
-discloses its directory without navigating. Never nest these controls. Entering
+marker. The whole heading is one native disclosure button: clicking its title,
+Beta marker, unread count, arrow or remaining row space toggles the directory
+without navigating, matching the other first-level groups. Entering
 a collaboration destination reveals Current handling, Participating and
 Collaboration notifications, with
 the selected list remaining highlighted when its detail is open. Manual collapse
@@ -62,10 +64,10 @@ callers. Filtering, exact targets and mounted return restoration follow
 
 The title's hover/focus tooltip and shared workbench header explain cross-workspace
 scope and Beta maturity in both supported locales. New collaboration creation
-also has a neutral Beta marker. These markers preserve existing exact control
-names; the title and creation entry provide the same localized `aria-description`
-independently of the floating content. Disclosure controls have localized
-expand/collapse names and retain coarse-pointer and keyboard targets.
+also has a neutral Beta marker. The heading and creation entry provide the same
+localized `aria-description` independently of the floating content. The heading
+has a localized expand/collapse name, one keyboard stop and a coarse-pointer
+target; Enter and Space each toggle it once. Child links own account navigation.
 
 Select the navigation workspace from the actual route, otherwise the remembered
 available workspace, otherwise the first authoritative directory member. A
@@ -166,7 +168,7 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 | Account page reload on Web | Use the first authoritative workspace if session history no longer exists |
 | Group entered through a child route | Reveal it without persisting an automatic preference |
 | Fresh workspace sidebar or legacy preferences without collaboration | Show one collapsed Collaboration/Beta heading |
-| Collaboration manually collapsed on its current full path | Keep it collapsed; resume of the current scope remains a no-op |
+| Collaboration manually collapsed on its current full path | Keep it collapsed until the heading is activated or the path changes |
 | Collaboration collapsed on the notification page | Remove directory child links; retain the Query, positive unread feedback and main page |
 | Same-filter/same-issue notification Back/Forward | Retain list/detail/draft nodes and restore the destination's offsets |
 | New query commits before the old browser hash clears | Publish its exact target fragment, including an empty one |
@@ -175,9 +177,10 @@ a fixed scope-switch row, footer switch, or content-level workspace selector.
 
 ## 5. Good / Base / Bad Cases
 
-Good: non-first workspace project → participating collaboration detail → one
-Workspace click returns to that project; one Collaboration click restores the
-detail, search, sort and both scroll roots.
+Good: the whole Collaboration heading toggles its directory in place; an
+explicit child link opens its named account view. From a participating detail,
+the Workspace heading resumes the displayed workspace. Navigation history
+retains the account detail, search, sort and both scroll roots when returning.
 
 Base: first use enters the existing default list, then remembers later visits.
 
@@ -189,7 +192,7 @@ read as an empty account; using window.location as Desktop route authority.
 Core scope-history tests own valid paths, ownership and membership fallback.
 Core `sidebar-preferences.test.ts` covers legacy group hydration and manual
 collaboration choices. Shared `app-sidebar.test.tsx` owns collaboration's
-disclosure/resume separation, route reveal, collapsed unread feedback and page
+full-row disclosure, keyboard activation, route reveal, collapsed unread feedback and page
 navigation; other groups retain their canonical disclosure regressions.
 The Beta browser assertion uses real Tab/Shift+Tab focus and checks the actual
 `data-slot="tooltip-content"` floating element's visibility/text plus the title's
@@ -252,12 +255,13 @@ fixed delay before clicking a visible control.
 
 ## 7. Wrong vs Correct
 
-Wrong: `nav.push(accountPath())` for the global Collaboration button and
+Wrong: `nav.push(accountPath())` for the Collaboration disclosure heading and
 `nav.push(paths.workspace(slug).issues())` for its Workspace counterpart.
 
-Correct: use the platform resume operations; keep explicit `push(path)` for
-notification/task links. Reuse existing restoration adapters rather than keeping
-both application trees mounted or adding a second scroll state store.
+Correct: compose the Collaboration heading with `CollapsibleTrigger`; use the
+platform resume operation for the Workspace heading and explicit account paths
+for child links. Reuse existing restoration adapters rather than keeping both
+application trees mounted or adding a second scroll state store.
 
 Wrong: canonical UUID-to-identifier normalization through Web `router.replace`,
 which changes Next's dynamic segment identity and closes an in-use picker.

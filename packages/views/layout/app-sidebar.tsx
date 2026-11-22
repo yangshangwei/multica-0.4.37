@@ -494,13 +494,12 @@ interface AppSidebarProps {
   /** A navigation preview only; never installs a workspace route/provider. */
   navigationWorkspace?: Workspace | null;
   onWorkspaceSelect?: (slug: string) => void;
-  onCollaborationResume?: () => void;
   workspaceListUnavailable?: boolean;
   onRetryWorkspaces?: () => void;
 }
 
 export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, headerStyle,
-  navigationWorkspace, onWorkspaceSelect, onCollaborationResume, workspaceListUnavailable = false, onRetryWorkspaces }: AppSidebarProps = {}) {
+  navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable = false, onRetryWorkspaces }: AppSidebarProps = {}) {
   const { t } = useT("layout");
   const navigation = useNavigation();
   const routeWorkspace = useCurrentWorkspace();
@@ -526,7 +525,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
         <SidebarCreation workspace={activeWorkspace ? workspace : null} collaborationWorkspaceId={workspace?.id} />
       </SidebarHeader>
       <SidebarContent ref={scroll} style={fade}>
-        <CollaborationNavigation onResume={onCollaborationResume} workspaceActive={activeWorkspace} />
+        <CollaborationNavigation workspaceActive={activeWorkspace} />
         <div data-sidebar-scope="workspace" className="min-w-0">
           {activeWorkspace && workspace ? <WorkspaceNavigation workspace={workspace} pickerProps={pickerProps} /> : <>
             <WorkspacePicker {...pickerProps} />
@@ -612,7 +611,7 @@ function WorkspaceNotificationRealtime({ scope }: { scope: CollaborationScope })
   return null;
 }
 
-function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () => void; workspaceActive: boolean }) {
+function CollaborationNavigation({ workspaceActive }: { workspaceActive: boolean }) {
   const { t } = useT("layout");
   const { t: collaboration } = useT("collaboration");
   const navigation = useNavigation();
@@ -627,18 +626,14 @@ function CollaborationNavigation({ onResume, workspaceActive }: { onResume?: () 
   return <SidebarGroup data-sidebar-scope="collaboration">
     {workspaceActive && <WorkspaceNotificationRealtime scope={scope} />}
     <Collapsible {...disclosure}>
-      <div className="flex min-w-0 items-center gap-1">
-        <Tooltip>
-          <SidebarGroupLabel aria-label={collaboration(($) => $.page.title)} aria-description={collaboration(($) => $.beta.description)} render={<TooltipTrigger render={<button type="button" onClick={() => onResume ? onResume() : navigation.push(accountPath())} />} />} className="h-auto min-h-8 min-w-0 flex-1 justify-start gap-2 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
-            <span className="min-w-0 truncate">{collaboration(($) => $.page.title)}</span><span aria-hidden="true" className="shrink-0 rounded bg-sidebar-accent/50 px-1 py-0.5 text-micro font-normal">{collaboration(($) => $.beta.label)}</span>
-          </SidebarGroupLabel>
-          <TooltipContent side="right">{collaboration(($) => $.beta.description)}</TooltipContent>
-        </Tooltip>
-        {!disclosure.open && unread !== undefined && unread > 0 && <output aria-label={`${t(($) => $.sidebar.collaboration_notifications)} ${collaboration(($) => $.page.unread, { count: unread })}`} className="shrink-0 text-caption text-muted-foreground"><CappedNumberFlow value={unread} animated={false} /></output>}
-        <CollapsibleTrigger aria-label={disclosure.open ? collaboration(($) => $.page.collapseNavigation) : collaboration(($) => $.page.expandNavigation)} className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:min-h-11 pointer-coarse:min-w-11">
+      <Tooltip>
+        <SidebarGroupLabel aria-label={disclosure.open ? collaboration(($) => $.page.collapseNavigation) : collaboration(($) => $.page.expandNavigation)} aria-description={collaboration(($) => $.beta.description)} render={<TooltipTrigger render={<CollapsibleTrigger />} />} className="h-auto min-h-8 w-full min-w-0 cursor-pointer gap-2 text-left hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
+          <span className="flex min-w-0 flex-1 items-center gap-2"><span className="min-w-0 truncate">{collaboration(($) => $.page.title)}</span><span aria-hidden="true" className="shrink-0 rounded bg-sidebar-accent/50 px-1 py-0.5 text-micro font-normal">{collaboration(($) => $.beta.label)}</span></span>
+          {!disclosure.open && unread !== undefined && unread > 0 && <output aria-label={`${t(($) => $.sidebar.collaboration_notifications)} ${collaboration(($) => $.page.unread, { count: unread })}`} className="shrink-0 text-caption text-muted-foreground"><CappedNumberFlow value={unread} animated={false} /></output>}
           <ChevronRight aria-hidden className={cn("size-3 transition-transform duration-150 motion-reduce:transition-none", disclosure.open && "rotate-90")} />
-        </CollapsibleTrigger>
-      </div>
+        </SidebarGroupLabel>
+        <TooltipContent side="right">{collaboration(($) => $.beta.description)}</TooltipContent>
+      </Tooltip>
       {disclosure.open && <CollapsibleContent><SidebarGroupContent><SidebarMenu className="gap-0.5">
       {(["current", "participating"] as const).map((view) => {
         const Icon = view === "current" ? Inbox : UsersRound;

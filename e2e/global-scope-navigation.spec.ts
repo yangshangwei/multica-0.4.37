@@ -84,7 +84,7 @@ async function openNavigation(page: Page, locale: "en" | "zh-Hans" = "en") {
 }
 
 for (const platform of ["Web", "Desktop"] as const) {
-  test(`${platform} global switching resumes the task, collaboration filters and both scroll positions`, async ({ page: webPage }, testInfo) => {
+  test(`${platform} sidebar disclosure and navigation history preserve collaboration filters and scroll positions`, async ({ page: webPage }, testInfo) => {
     test.setTimeout(180_000);
     test.skip(!apiUrl || !databaseUrl || (platform === "Desktop" && !process.env.COLLABORATION_ELECTRON_RENDERER_URL), "Requires the task-owned API/database and matching production clients");
     for (const value of [apiUrl!, databaseUrl!]) expect(["localhost", "127.0.0.1"]).toContain(new URL(value).hostname);
@@ -92,6 +92,15 @@ for (const platform of ["Web", "Desktop"] as const) {
     const profile = platform === "Desktop" ? mkdtempSync(join(tmpdir(), "multica-scope-navigation-")) : null;
     let native: Awaited<ReturnType<typeof openDesktop>> | undefined;
     let page = webPage;
+    const returnToAccount = async () => {
+      if (native) {
+        const navigation = globalNav(page);
+        const expand = navigation.getByRole("button", { name: "Expand collaboration navigation", exact: true });
+        if (await expand.count()) await expand.click();
+        await navigation.getByRole("link", { name: "Participating", exact: true }).click();
+        await page.locator('[data-slot="window-toolbar"]').getByRole("button", { name: "Go back", exact: true }).click();
+      } else await page.goBack();
+    };
     const capture = async (name: string) => {
       // Native capturePage does not apply Playwright screenshot's animation
       // handling. Wait for actual finite transitions in both clients instead.
@@ -131,7 +140,11 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(page.locator('[data-slot="global-scope-bar"]')).toHaveCount(0);
       const collaborationDirectory = globalNav(page).locator('[data-sidebar-scope="collaboration"]');
       const betaDescription = "For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.";
-      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "false");
+      const collaborationHeading = collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true });
+      await expect(collaborationHeading).toHaveAttribute("aria-expanded", "false");
+      await expect.poll(() => collaborationHeading.evaluate((element) =>
+        Math.abs(element.getBoundingClientRect().width - element.parentElement!.getBoundingClientRect().width)),
+      { message: "The collaboration heading must cover the complete menu row" }).toBeLessThan(1);
       await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveCount(0);
       await expect(collaborationDirectory.getByText("Beta", { exact: true })).toBeVisible();
 
@@ -158,11 +171,12 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true }).focus();
       await page.keyboard.press("Shift+Tab");
-      await expect(collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true })).toBeFocused();
+      await page.keyboard.press("Tab");
+      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toBeFocused();
       const betaTooltip = page.locator('[data-slot="tooltip-content"]').filter({ hasText: betaDescription });
       await expect(betaTooltip).toBeVisible();
       await expect(betaTooltip).toHaveText(betaDescription);
-      await expect(collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true })).toHaveAccessibleDescription(betaDescription);
+      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toHaveAccessibleDescription(betaDescription);
       await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
       await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeEnabled();
       await expect(page.getByRole("menuitem", { name: "New collaboration issue", exact: true })).toBeEnabled();
@@ -170,17 +184,21 @@ for (const platform of ["Web", "Desktop"] as const) {
       await page.keyboard.press("Escape");
       const originalBounds = await globalNav(page).boundingBox();
       await capture(`${platform.toLowerCase()}-scope-workspace.png`);
-      await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+      await collaborationDirectory.getByText("Collaboration", { exact: true }).click();
+      await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
       await globalNav(page).getByRole("link", { name: "Participating", exact: true }).click();
       await expect(page.locator("main > header").getByText(betaDescription, { exact: true })).toBeVisible();
       await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
       await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveCount(0);
       await expect(page.getByRole("heading", { name: "Participating", exact: true })).toBeVisible();
-      await collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true }).click();
-      await expect(collaborationDirectory.getByRole("button", { name: "Expand collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "false");
+      await collaborationDirectory.getByText("Collaboration", { exact: true }).click();
+      await expect(collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true })).toHaveAttribute("aria-expanded", "true");
+      await expect(page.getByRole("heading", { name: "Participating", exact: true })).toBeVisible();
+      await collaborationDirectory.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
       await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
-      await collaborationDirectory.getByRole("button", { name: "Collaboration", exact: true }).click();
+      await collaborationDirectory.getByText("Collaboration", { exact: true }).click();
+      await collaborationDirectory.getByRole("link", { name: "Participating", exact: true }).click();
       await expect(collaborationDirectory.getByRole("link", { name: "Participating", exact: true })).toHaveAttribute("aria-current", "page");
       await globalNav(page).getByRole("button", { name: "New", exact: true }).click();
       await expect(page.getByRole("menuitem", { name: /^New Issue/ })).toBeDisabled();
@@ -219,13 +237,13 @@ for (const platform of ["Web", "Desktop"] as const) {
       const saved = { list: await list.evaluate((element) => element.scrollTop), detail: await detail.evaluate((element) => element.scrollTop) };
       await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
-      await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+      await returnToAccount();
       await expect(page.getByRole("heading", { name: selected.title, exact: true })).toBeVisible();
       await expect(search).toHaveValue("Resume collaboration");
       await expect(page.getByRole("combobox", { name: "Sort" })).toHaveValue("title");
       await expect.poll(() => list.evaluate((element) => element.scrollTop)).toBe(saved.list);
       await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(saved.detail);
-      await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+      await collaborationDirectory.getByText("Collaboration", { exact: true }).click();
       expect(await detail.evaluate((element) => element.scrollTop)).toBe(saved.detail);
       const resumedBounds = await globalNav(page).boundingBox();
       expect(resumedBounds?.x).toBe(originalBounds?.x);
@@ -266,14 +284,14 @@ for (const platform of ["Web", "Desktop"] as const) {
       try {
         await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
-        await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+        await returnToAccount();
         await expect(banner).toBeVisible();
         await detail.evaluate((element) => { element.scrollTop = 620; });
         await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
         expect(await detail.evaluate((element) => element.scrollTop)).toBe(620);
         await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
         await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
-        await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+        await returnToAccount();
         await expect(banner).toBeVisible();
         await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(620);
         // Scope switching can cancel earlier reads. Finish those injected
@@ -319,7 +337,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await page.evaluate(() => new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
       await globalNav(page).getByRole("button", { name: fixture.second.name, exact: true }).click();
       await expect(page.getByText(fixture.source.title, { exact: true }).last()).toBeVisible();
-      await globalNav(page).getByRole("button", { name: "Collaboration", exact: true }).click();
+      await returnToAccount();
       await expect.poll(() => detail.evaluate((element) => element.scrollTop)).toBe(800);
 
       if (native) {
@@ -330,7 +348,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       await expect.poll(() => page.evaluate(() => innerWidth)).toBe(native ? 450 : 390);
       const compactNavigation = await openNavigation(page);
       await expect(compactNavigation.getByRole("button", { name: fixture.second.name, exact: true })).toBeVisible();
-      await expect(compactNavigation.getByRole("button", { name: "Collaboration", exact: true })).toBeVisible();
+      await expect(compactNavigation.getByRole("button", { name: /^(Expand|Collapse) collaboration navigation$/ })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact.png`);
       // The query-only view change must dismiss the compact navigation sheet.
@@ -353,7 +371,7 @@ for (const platform of ["Web", "Desktop"] as const) {
       // reload previews the first authoritative member. Desktop persists MRU.
       const reloadedWorkspace = native ? fixture.second : fixture.first;
       await expect(chineseNavigation.getByRole("button", { name: reloadedWorkspace.name, exact: true })).toBeVisible();
-      await expect(chineseNavigation.getByRole("button", { name: "协作空间", exact: true })).toBeVisible();
+      await expect(chineseNavigation.getByRole("button", { name: /^(展开|收起)协作空间导航$/ })).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await capture(`${platform.toLowerCase()}-scope-compact-zh.png`);
       await chineseNavigation.getByRole("link", { name: "当前处理", exact: true }).click();

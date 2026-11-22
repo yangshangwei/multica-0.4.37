@@ -26,12 +26,11 @@ function location(path: string) {
 // Shared sidebar tests own its links and controls. This probe owns only the
 // platform's selected workspace and restoration callbacks.
 function SidebarProbe() {
-  const { navigationWorkspace, onWorkspaceSelect, onCollaborationResume, workspaceListUnavailable, onRetryWorkspaces } = useWebSidebarNavigation();
+  const { navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable, onRetryWorkspaces } = useWebSidebarNavigation();
   return <>
     <output data-testid="workspace">{navigationWorkspace?.slug ?? "none"}</output>
     <button onClick={() => onWorkspaceSelect(navigationWorkspace?.slug)}>Workspaces</button>
     <button onClick={() => onWorkspaceSelect("first")}>Select first</button>
-    <button onClick={onCollaborationResume}>Collaboration</button>
     {workspaceListUnavailable && <button onClick={onRetryWorkspaces}>Refresh</button>}
   </>;
 }
@@ -47,25 +46,21 @@ beforeEach(() => {
 });
 
 describe("WebScopeShell", () => {
-  it("resumes both full locations and leaves the selected scope alone", () => {
+  it("resumes the full workspace location and leaves the selected workspace alone", () => {
     const workspace = "/second/projects/p1?tab=overview#description";
     const account = "/account?view=participating&issue=00000000-0000-4000-8000-000000000001#memory";
     const view = render(page());
     fireEvent.click(screen.getByRole("button", { name: "Workspaces" }));
     expect(state.resume).not.toHaveBeenCalled();
-    fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
-    expect(state.resume).toHaveBeenLastCalledWith("/account?view=current");
     location(account);
     view.rerender(page());
     expect(screen.getByTestId("workspace")).toHaveTextContent("second");
     fireEvent.click(screen.getByRole("button", { name: "Workspaces" }));
     expect(state.resume).toHaveBeenLastCalledWith(workspace);
-    fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
-    expect(state.resume).toHaveBeenCalledTimes(2);
     location(workspace);
     view.rerender(page());
-    fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
-    expect(state.resume).toHaveBeenLastCalledWith(account);
+    fireEvent.click(screen.getByRole("button", { name: "Workspaces" }));
+    expect(state.resume).toHaveBeenCalledOnce();
   });
 
   it("uses the active route before a remembered workspace and opens a different selection explicitly", () => {
@@ -166,7 +161,6 @@ describe("WebScopeShell", () => {
     state.owner = "another-viewer";
     location("/account");
     view.rerender(shell());
-    old.onCollaborationResume();
     old.onWorkspaceSelect("first");
     old.onRetryWorkspaces();
     expect(state.resume).not.toHaveBeenCalled();

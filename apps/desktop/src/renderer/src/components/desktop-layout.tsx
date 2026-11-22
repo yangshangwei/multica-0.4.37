@@ -31,7 +31,6 @@ import { getCurrentSlug, subscribeToCurrentSlug } from "@multica/core/platform";
 import { useDesktopUnreadBadge } from "@multica/views/platform";
 import {
   DesktopNavigationProvider,
-  resumeDesktopScope,
   routeContentLinkPath,
 } from "@/platform/navigation";
 import { useWindowOverlayStore } from "@/stores/window-overlay-store";
@@ -355,7 +354,6 @@ export function DesktopShell({ onRetryWorkspaceList = () => {} }: { onRetryWorks
                 if (overlay.overlay) overlay.close();
                 store.switchWorkspace(targetSlug);
               }}
-              onCollaborationResume={() => { resumeDesktopScope("account"); }}
               workspaceListUnavailable={workspaceList.data === undefined && workspaceList.isLoadingError}
               onRetryWorkspaces={onRetryWorkspaceList}
               topSlot={<SidebarTopSpacer />}

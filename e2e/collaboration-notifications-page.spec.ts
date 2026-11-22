@@ -335,9 +335,14 @@ for (const platform of ["Web", "Desktop"] as const) {
         await restored("account Forward then Back");
         await sidebar.getByRole("button", { name: fixture.workspace.name, exact: true }).click();
         await expect(page.getByRole("button", { name: fixture.ordinary.title, exact: true })).toBeVisible();
-        await sidebar.getByRole("button", { name: "Collaboration", exact: true }).click();
-        await restored("workspace to Collaboration scope resume");
-        await sidebar.getByRole("button", { name: "Collaboration", exact: true }).click();
+        if (native) {
+          const expand = sidebar.getByRole("button", { name: "Expand collaboration navigation", exact: true });
+          if (await expand.count()) await expand.click();
+          await sidebar.getByRole("link", { name: "Collaboration notifications", exact: true }).click();
+        }
+        await history("back");
+        await restored("workspace to notification history return");
+        await sidebar.getByRole("button", { name: "Collapse collaboration navigation", exact: true }).click();
         expect(await detail.evaluate((element) => element.scrollTop)).toBe(saved.detail);
       });
 

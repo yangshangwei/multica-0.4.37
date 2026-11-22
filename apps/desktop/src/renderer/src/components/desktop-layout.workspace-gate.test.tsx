@@ -28,7 +28,6 @@ const state = vi.hoisted(() => ({
   activeWorkspaceSlug: "acme" as string | null,
   lastWorkspaceSlug: "acme" as string | null,
   switchWorkspace: vi.fn(),
-  resumeScope: vi.fn(),
   retryWorkspaceList: vi.fn(),
   workspaceError: false,
   wsList: [] as { id: string; slug: string; name: string }[] | undefined,
@@ -56,7 +55,6 @@ vi.mock("@/platform/navigation", () => ({
     <>{children}</>
   ),
   routeContentLinkPath: vi.fn(),
-  resumeDesktopScope: state.resumeScope,
 }));
 
 vi.mock("@multica/core/paths", () => ({
@@ -93,14 +91,12 @@ vi.mock("@multica/views/platform", () => ({
 // Each workspace-scoped component gets a marker so the assertions can tell
 // which of them the shell decided to mount.
 vi.mock("@multica/views/layout", () => ({
-  AppSidebar: ({ navigationWorkspace, onWorkspaceSelect, onCollaborationResume, workspaceListUnavailable, onRetryWorkspaces }: {
+  AppSidebar: ({ navigationWorkspace, onWorkspaceSelect, workspaceListUnavailable, onRetryWorkspaces }: {
     navigationWorkspace?: { slug: string } | null;
     onWorkspaceSelect?: (slug: string) => void;
-    onCollaborationResume?: () => void;
     workspaceListUnavailable?: boolean;
     onRetryWorkspaces?: () => void;
   }) => <nav data-testid="app-sidebar" data-navigation-workspace={navigationWorkspace?.slug ?? "none"}>
-    <button type="button" onClick={onCollaborationResume}>Resume collaboration</button>
     <button type="button" onClick={() => onWorkspaceSelect?.("other")}>Resume other workspace</button>
     {workspaceListUnavailable && <button type="button" onClick={onRetryWorkspaces}>Retry workspaces</button>}
   </nav>,
@@ -171,7 +167,6 @@ beforeEach(() => {
   state.wsList = [{ id: "ws-1", slug: "acme", name: "Acme" }];
   state.workspaceError = false;
   state.switchWorkspace.mockClear();
-  state.resumeScope.mockClear();
   state.retryWorkspaceList.mockClear();
 });
 
@@ -257,8 +252,6 @@ describe("DesktopShell workspace gating", () => {
     expect(queryByTestId("modal-registry")).toBeNull();
     fireEvent.click(getByRole("button", { name: "Resume other workspace" }));
     expect(state.switchWorkspace).toHaveBeenCalledExactlyOnceWith("other");
-    fireEvent.click(getByRole("button", { name: "Resume collaboration" }));
-    expect(state.resumeScope).toHaveBeenCalledExactlyOnceWith("account");
   });
 
   it("uses an available workspace if the remembered one was removed", () => {

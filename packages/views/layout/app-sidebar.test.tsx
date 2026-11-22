@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { cloneElement } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -248,32 +248,54 @@ beforeEach(() => {
   notificationUnread.current = undefined;
 });
 
-it("keeps fresh collaboration navigation collapsed while preserving its resume action", () => {
-  const resume = vi.fn();
-  const { container } = renderWithI18n(<AppSidebar onCollaborationResume={resume} />);
+it("toggles collaboration from its title, Beta marker and arrow without navigating", () => {
+  const { container } = renderWithI18n(<AppSidebar />);
   expect(container.querySelector('[data-href="/account?view=current"]')).not.toBeInTheDocument();
   expect(container.querySelector('[data-href="/account?view=participating"]')).not.toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
-  fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
-  expect(resume).toHaveBeenCalledOnce();
+  fireEvent.click(screen.getByText("Collaboration", { exact: true }));
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+  expect(container.querySelector('[data-href="/account?view=current"]')).toBeInTheDocument();
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(true);
+  fireEvent.click(screen.getByText("Collaboration", { exact: true }));
+  expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
+  expect(container.querySelector('[data-href="/account?view=current"]')).not.toBeInTheDocument();
+  fireEvent.click(within(screen.getByRole("button", { name: "Expand collaboration navigation" })).getByText("Beta"));
+  const expanded = screen.getByRole("button", { name: "Collapse collaboration navigation" });
+  expect(expanded).toHaveAttribute("aria-expanded", "true");
+  const arrow = expanded.querySelector("svg");
+  expect(arrow).not.toBeNull();
+  fireEvent.click(arrow!);
+  expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
   expect(navigationPush).not.toHaveBeenCalled();
 });
 
-it("describes Beta maturity on collaboration entry points without changing their accessible names", () => {
+it("expands collaboration when clicking the collapsed unread count", () => {
+  notificationUnread.current = 3;
+  renderWithI18n(<AppSidebar />);
+  fireEvent.click(screen.getByRole("status", { name: "Collaboration notifications 3 unread" }));
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
+  expect(useSidebarPreferences.getState().groups.collaboration).toBe(true);
+  expect(navigationPush).not.toHaveBeenCalled();
+});
+
+it("describes Beta maturity on collaboration disclosure and creation", () => {
   renderWithI18n(<AppSidebar />);
   const description = "For cross-workspace collaboration. This feature is in Beta, and some functionality is still being developed.";
-  for (const name of ["Collaboration", "New collaboration issue"]) {
+  for (const name of ["Expand collaboration navigation", "New collaboration issue"]) {
     expect(screen.getByRole("button", { name })).toHaveAccessibleDescription(description);
   }
 });
 
 it("discloses collaboration without navigation and remembers the manual choice", async () => {
-  const resume = vi.fn();
-  const view = renderWithI18n(<AppSidebar onCollaborationResume={resume} />);
+  const view = renderWithI18n(<AppSidebar />);
   screen.getByRole("button", { name: "Expand collaboration navigation" }).focus();
   await userEvent.keyboard("{Enter}");
   expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
-  expect(resume).not.toHaveBeenCalled();
+  await userEvent.keyboard(" ");
+  expect(screen.getByRole("button", { name: "Expand collaboration navigation" })).toHaveAttribute("aria-expanded", "false");
+  await userEvent.keyboard("{Enter}");
+  expect(screen.getByRole("button", { name: "Collapse collaboration navigation" })).toHaveAttribute("aria-expanded", "true");
   expect(navigationPush).not.toHaveBeenCalled();
   expect(useSidebarPreferences.getState().groups.collaboration).toBe(true);
   view.unmount();

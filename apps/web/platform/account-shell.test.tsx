@@ -12,7 +12,7 @@ import AccountLayout from "../app/account/layout";
 const state = vi.hoisted(() => ({
   sidebar: {
     navigationWorkspace: { id: "preview-workspace", slug: "selected" } as Workspace | null,
-    onWorkspaceSelect: vi.fn(), onCollaborationResume: vi.fn(),
+    onWorkspaceSelect: vi.fn(),
     workspaceListUnavailable: false, onRetryWorkspaces: vi.fn(),
   },
   navigation: { pathname: "/account", searchParams: new URLSearchParams(), hash: "", replace: vi.fn() },
@@ -28,7 +28,6 @@ vi.mock("@multica/views/layout", () => ({
     expect(getCurrentWsId()).toBeNull();
     return <aside aria-label="Application navigation">
       <output data-testid="preview">{props.navigationWorkspace?.slug ?? "none"}</output>
-      <button onClick={props.onCollaborationResume}>Collaboration</button>
       {props.workspaceListUnavailable && <button onClick={props.onRetryWorkspaces}>Retry workspaces</button>}
     </aside>;
   },
@@ -62,8 +61,6 @@ describe("Web account sidebar layout", () => {
     expect(screen.getByRole("button", { name: "Toggle sidebar" })).toBeInTheDocument();
     expect(screen.getByTestId("feedback-modal-host")).toBeInTheDocument();
     expect(screen.getByText("Account content")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Collaboration" }));
-    expect(state.sidebar.onCollaborationResume).toHaveBeenCalledOnce();
   });
 
   it("keeps content and recovery reachable without a selected workspace", () => {
