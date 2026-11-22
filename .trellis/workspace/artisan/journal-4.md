@@ -510,3 +510,39 @@ Added a bilingual capability-market welcome and responsive case directory, prese
 ### Status
 
 [OK] **Completed**
+
+
+## Session 188: 协作通知独立页完成与双端返回验收
+<!-- trellis-session: v=2 fp=262358be2308b0c7 -->
+
+**Date**: 2026-11-22
+**Task**: 协作通知独立页完成与双端返回验收
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+完成跨工作空间独立通知页、服务端筛选与精确目标；修复真实Web历史/滚动与确认归档后的焦点恢复；565个TS测试、7个Go通知测试、6条Web/Electron旅程及静态检查通过。
+
+### Main Changes
+
+Completed the existing `11-22-collaboration-notifications-page` task and archived it under `.trellis/tasks/archive/2026-11/11-22-collaboration-notifications-page`.
+
+- Replaced the notification popover with one shared account page and complete server-side Unread/All/Archived reads. Kept global unread count, strict filtered view identity and legacy installed-client compatibility.
+- Preserved notification UUID independently from issue/run/comment/body target, content-free denied rows, truthful read/archive receipts, stable list/detail/draft nodes and keyboard focus after confirmed removal.
+- Real Web acceptance exposed query/hash commit races, Window listener registration order, UA inner-fragment history restoration and unchanged-offset departure capture. Fixed each in the existing Web navigation/memento owner, with regressions and retained differential evidence.
+- Final evidence: 565 distinct TypeScript cases, seven named Go notification cases, focused Go vet, full lint/typecheck and all six production Web/actual Electron notification/records/global-scope journeys passed. Lint retains 31 unrelated existing warnings. Final visual verdict95/pass; all three owned QA listener ports are free.
+- Built from an isolated task source because another environment owns the original checkout's Web build. Retained source/configuration/proof and failed-run diagnostics in the archived task. No real provider/daemon run, installed full Main or deployment claim.
+
+Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive commit `a7cd2e338`. The three unrelated baseline tracked changes and existing untracked artifacts were preserved.
+
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `00aaf3f5e` | feat(collaboration): keep notification review and return context reliable |
+| `9eced3cc1` | chore(task): retain reproducible notification acceptance evidence |
+
+### Status
+
+[OK] **Completed**
