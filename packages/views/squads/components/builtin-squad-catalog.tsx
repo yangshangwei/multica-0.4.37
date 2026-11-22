@@ -40,7 +40,7 @@ export function BuiltinSquadCatalog({ squads, active = true }: { squads: readonl
       <section
         aria-labelledby={headingId}
         aria-busy={catalog.isPending}
-        className="w-full max-w-6xl px-6 py-5 @container"
+        className="min-w-0 w-full @container"
       >
         <h2 id={headingId} className="text-title-sm font-semibold">{t(($) => $.catalog.title)}</h2>
         <p className="mt-1 max-w-[70ch] text-caption text-muted-foreground">{t(($) => $.catalog.description)}</p>

@@ -52,10 +52,10 @@ function AgentTemplatesMarketPanelContent({ workspaceId, active, leading }: Agen
       aria-label={t(($) => $.role_templates.market_title)}
       aria-busy={active && isPending}
       data-tab-scroll-root="agent-template-market"
-      className={cn("min-h-0 min-w-0 flex-1 overflow-y-auto py-6", PAGE_GUTTER)}
+      className={cn("min-h-0 min-w-0 flex-1 overflow-y-auto py-4", PAGE_GUTTER)}
     >
       {leading}
-      <div className="mx-auto w-full max-w-5xl">
+      <div className="w-full">
         <h2 className="text-balance text-title-lg font-semibold">{t(($) => $.role_templates.market_title)}</h2>
         <p className="mt-2 max-w-2xl text-pretty text-body text-muted-foreground">{t(($) => $.role_templates.market_description)}</p>
         {isError ? (
