@@ -16,7 +16,7 @@ export function NavigationGroup({ group, label, active, children }: { group: Sid
   if (manual !== null && manual.path !== path) setManual(null);
   const open = manual?.path === path ? manual.open : active || preferred;
   return <Collapsible open={open} onOpenChange={(next) => { setManual({ path, open: next }); setPreference(group, next); }}>
-    <SidebarGroup><SidebarGroupLabel render={<CollapsibleTrigger />} className="group/trigger cursor-pointer gap-2 hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
+    <SidebarGroup><SidebarGroupLabel render={<CollapsibleTrigger />} className="group/trigger cursor-pointer gap-2 text-left hover:bg-sidebar-accent/70 hover:text-sidebar-accent-foreground pointer-coarse:min-h-11">
       <span className="min-w-0 flex-1 truncate">{label}</span><ChevronRight aria-hidden className="size-3 transition-transform duration-150 motion-reduce:transition-none data-[panel-open]:rotate-90 group-data-[panel-open]/trigger:rotate-90" />
     </SidebarGroupLabel><CollapsibleContent><SidebarGroupContent>{children}</SidebarGroupContent></CollapsibleContent></SidebarGroup>
   </Collapsible>;
