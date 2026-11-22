@@ -1,12 +1,13 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ApiError } from "@multica/core/api";
 import { AppSidebar } from "./app-sidebar";
 import { renderWithI18n } from "../test/i18n";
 
-const { eventCallbacks, invalidateQueries, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
+const { eventCallbacks, invalidateQueries, logout, queryLog, iterationCapability, triageSettings, appForeground, chatSessions, chatStore, detail, deletePin, inboxItems, navigation, pins, sidebarState, summary, workspaces } = vi.hoisted(() => ({
   eventCallbacks: new Map<string, () => void>(),
   invalidateQueries: vi.fn(),
+  logout: vi.fn(),
   queryLog: [] as string[],
   appForeground: { current: true },
   iterationCapability: { current: { supported: true, manual: true, enabled: false } },
@@ -98,10 +99,10 @@ vi.mock("@multica/ui/components/ui/dropdown-menu", () => ({
   DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuGroup: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  DropdownMenuItem: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DropdownMenuItem: ({ children, onClick, disabled }: React.ComponentProps<"button">) => <button type="button" onClick={onClick} disabled={disabled}>{children}</button>,
   DropdownMenuLabel: ({ children }: { children: React.ReactNode }) => <>{children}</>,
   DropdownMenuSeparator: () => null,
-  DropdownMenuTrigger: ({ render }: { render: React.ReactNode }) => <>{render}</>,
+  DropdownMenuTrigger: ({ render, children, ...props }: React.ComponentProps<"button"> & { render?: React.ReactNode }) => render ? <>{render}</> : <button type="button" {...props}>{children}</button>,
 }));
 vi.mock("@multica/ui/components/ui/collapsible", () => ({
   Collapsible: ({ children }: { children: React.ReactNode }) => <>{children}</>,
@@ -121,7 +122,7 @@ vi.mock("./help-launcher", () => ({
     <div data-testid="help-launcher">{versionSlot}</div>
   ),
 }));
-vi.mock("../auth", () => ({ useLogout: () => vi.fn() }));
+vi.mock("../auth", () => ({ useLogout: () => logout }));
 vi.mock("../collaboration/source-bridge", () => ({
   SourceCollaborationCreation: ({ workspaceId, renderTrigger }: {
     workspaceId: string; renderTrigger: (label: string) => React.ReactElement;
@@ -138,7 +139,7 @@ vi.mock("../workspace/workspace-avatar", () => ({ WorkspaceAvatar: () => <span /
 vi.mock("@multica/ui/components/common/actor-avatar", () => ({ ActorAvatar: () => <span /> }));
 
 vi.mock("@multica/core/auth", () => ({
-  useAuthStore: (selector: (state: { user: { id: string } }) => unknown) => selector({ user: { id: "user-1" } }),
+  useAuthStore: (selector: (state: { user: { id: string; name: string; email: string } }) => unknown) => selector({ user: { id: "user-1", name: "Alex", email: "alex@example.test" } }),
 }));
 // Callable-store shape (selectorFn + getState) per the repo testing rules.
 vi.mock("@multica/core/chat", () => ({
@@ -240,12 +241,16 @@ it("keeps account navigation usable without a workspace or workspace providers",
   navigation.current = { pathname: "/account", search: "view=participating" };
   queryLog.length = 0;
   eventCallbacks.clear();
+  logout.mockClear();
   const { container } = renderWithI18n(<AppSidebar navigationWorkspace={null} />);
   expect(container.querySelector('[data-href="/account?view=participating"]')).toHaveAttribute("data-active", "true");
   expect(container.querySelector('[data-href="/acme/issues"]')).not.toBeInTheDocument();
   expect(screen.getByText("Choose a workspace to access its issues and resources.")).toBeInTheDocument();
   expect(queryLog.every((key) => key === "workspaces" || key === "invitations")).toBe(true);
   expect(eventCallbacks.size).toBe(0);
+  expect(screen.getByRole("button", { name: "Alex" })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Log out" }));
+  expect(logout).toHaveBeenCalledOnce();
   navigation.current = { pathname: "/acme/issues" };
 });
 
@@ -605,11 +610,9 @@ describe("nav structure", () => {
   });
 });
 
-// Build info used to sit at the left edge of this row, opposite a right-aligned
-// help button. It rides inside the help menu now (next to the server version),
-// so the row holds one left-aligned control and AppSidebar's only remaining job
-// is forwarding the slot — the rendering contract is HelpLauncher's, covered in
-// help-launcher.test.tsx.
+// Build info rides inside the left help menu, beside the server version; the
+// right footer control owns account actions. AppSidebar only forwards the
+// version slot — its rendering contract is covered in help-launcher.test.tsx.
 describe("version slot", () => {
   it("forwards the platform's build info to the help menu", () => {
     render(<AppSidebar versionSlot={<span>v0.4.40</span>} />);

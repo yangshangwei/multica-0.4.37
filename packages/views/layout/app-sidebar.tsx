@@ -23,6 +23,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { Layers,
   ChevronDown,
   ChevronRight,
+  ChevronUp,
   LogOut,
   Plus,
   Check,
@@ -521,7 +522,7 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
     {topSlot}
     <nav aria-label={t(($) => $.global_navigation.label)} className="flex min-h-0 flex-1 flex-col">
       <SidebarHeader className={cn("py-3", headerClassName)} style={headerStyle}>
-        <SidebarAccountMenu />
+        <div className="flex h-8 items-center px-2 text-body font-semibold">{PRODUCT_NAME}</div>
         {activeWorkspace && searchSlot && <SidebarMenu><SidebarMenuItem>{searchSlot}</SidebarMenuItem></SidebarMenu>}
         <SidebarCreation workspace={activeWorkspace ? workspace : null} />
       </SidebarHeader>
@@ -544,7 +545,10 @@ export function AppSidebar({ topSlot, searchSlot, versionSlot, headerClassName, 
           const href = paths.workspace(workspace.slug)[item.key]();
           return <NavRow key={item.key} href={href} label={item.key === "settings" ? t(($) => $.sidebar.workspace_settings) : t(($) => $.nav[item.labelKey])} isActive={isNavActive(navigation.pathname, href)} />;
         })}</SidebarMenu>}
-        <div data-testid="sidebar-footer-row" className="flex min-w-0 items-center"><HelpLauncher versionSlot={versionSlot} /></div>
+        <div data-testid="sidebar-footer-row" className="flex min-w-0 items-center gap-2">
+          <HelpLauncher versionSlot={versionSlot} />
+          <SidebarAccountMenu />
+        </div>
       </SidebarFooter>
     </nav>
     <SidebarRail />
@@ -555,15 +559,26 @@ function SidebarAccountMenu() {
   const { t } = useT("layout");
   const user = useAuthStore((state) => state.user);
   const logout = useLogout();
-  return <SidebarMenu><SidebarMenuItem><DropdownMenu>
-    <DropdownMenuTrigger render={<SidebarMenuButton className="font-semibold"><span className="min-w-0 flex-1 truncate">{PRODUCT_NAME}</span><ChevronDown aria-hidden className="size-3 text-muted-foreground" /></SidebarMenuButton>} />
-    <DropdownMenuContent align="start" className="w-64 max-w-[calc(100vw-2rem)]">
-      <div className="flex items-center gap-2.5 px-2 py-2"><ActorAvatar name={user?.name ?? ""} initials={(user?.name ?? "U").charAt(0).toUpperCase()} avatarUrl={resolvePublicFileUrl(user?.avatar_url)} size="lg" />
+  const name = user?.name || user?.email || PRODUCT_NAME;
+  const initials = (user?.name || user?.email || "U").charAt(0).toUpperCase();
+  const avatarUrl = resolvePublicFileUrl(user?.avatar_url);
+  return <DropdownMenu>
+    <DropdownMenuTrigger
+      aria-label={name}
+      title={name}
+      className="ml-auto inline-flex h-8 min-w-0 max-w-full items-center gap-2 rounded-md px-2 text-body font-medium text-sidebar-foreground outline-hidden transition-colors hover:bg-sidebar-accent data-popup-open:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:h-11 pointer-coarse:min-w-11"
+    >
+      <span aria-hidden="true"><ActorAvatar name={name} initials={initials} avatarUrl={avatarUrl} size="sm" /></span>
+      <span className="min-w-0 truncate">{name}</span>
+      <ChevronUp aria-hidden className="size-3 shrink-0 text-muted-foreground" />
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end" side="top" sideOffset={8} className="w-64 max-w-[calc(100vw-2rem)]">
+      <div className="flex items-center gap-2.5 px-2 py-2"><ActorAvatar name={name} initials={initials} avatarUrl={avatarUrl} size="lg" />
         <div className="min-w-0"><p className="truncate text-body font-medium">{user?.name}</p><p className="truncate text-caption text-muted-foreground">{user?.email}</p></div>
       </div>
       <DropdownMenuSeparator /><DropdownMenuItem variant="destructive" onClick={logout}><LogOut aria-hidden />{t(($) => $.sidebar.log_out)}</DropdownMenuItem>
     </DropdownMenuContent>
-  </DropdownMenu></SidebarMenuItem></SidebarMenu>;
+  </DropdownMenu>;
 }
 
 function SidebarCreation({ workspace }: { workspace: Workspace | null }) {

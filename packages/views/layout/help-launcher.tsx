@@ -34,12 +34,12 @@ export function HelpLauncher({ versionSlot }: { versionSlot?: ReactNode } = {}) 
       <DropdownMenuTrigger
         aria-label={t(($) => $.help.trigger)}
         title={t(($) => $.help.trigger)}
-        className="inline-flex size-7 items-center justify-center rounded-full text-muted-foreground transition-colors cursor-pointer hover:bg-accent hover:text-foreground data-popup-open:bg-accent data-popup-open:text-foreground"
+        className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground outline-hidden transition-colors cursor-pointer hover:bg-sidebar-accent hover:text-sidebar-foreground data-popup-open:bg-sidebar-accent data-popup-open:text-sidebar-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring pointer-coarse:size-11"
       >
         <CircleHelp className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        align="end"
+        align="start"
         side="top"
         sideOffset={8}
         className="min-w-40 max-w-56"
