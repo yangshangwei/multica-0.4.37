@@ -579,3 +579,37 @@ Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive 
 ### Status
 
 [OK] **Completed**
+
+
+## Session 190: 项目欢迎页：注册激活案例与智能体分配
+<!-- trellis-session: v=2 fp=e7ef168dde465f97 -->
+
+**Date**: 2026-11-23
+**Task**: 项目欢迎页：注册激活案例与智能体分配
+**Branch**: `codex/cross-workspace-collaboration`
+
+### Summary
+
+使用 impeccable 完成项目空目录欢迎页，采用介绍与注册激活静态案例布局，明确成员、单个智能体和 AI 小队的任务分配；复用创建弹窗与项目文档导航。已完成测试、类型检查、生产 Web 操作和中英文浅深色宽窄窗口验证，并归档任务。
+
+### Main Changes
+
+- 共享项目页增加真实成功空目录欢迎状态，保留加载、错误、权限及筛选恢复。
+- 加入注册激活示例与双语介绍，收敛重复创建入口并修复中文标题换行。
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `7d8a027e0` | feat(projects): make the first project understandable before creation |
+
+### Testing
+
+- [OK] 项目组件与文案校验 277 项通过；最终页面与 locale parity 90 项通过。
+- [OK] 相关 lint、views/Web/Desktop 类型检查、生产 Web 构建通过。
+- [OK] 键盘创建、项目文档导航与真实项目出现后恢复列表通过；八组双语主题尺寸截图无溢出，视觉评分 95。
+- [OK] 未进行原生 Electron 视觉验收；本次纯 UI 改动未重跑 Go 测试。
+
+### Status
+
+[OK] **Completed**
