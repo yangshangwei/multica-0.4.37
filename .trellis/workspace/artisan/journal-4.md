@@ -719,3 +719,44 @@ Source/spec commit `00aaf3f5e`; acceptance-evidence commit `9eced3cc1`; archive 
 ### Next Steps
 
 - 完成当前分支普通推送并核对远端；截图、日志与其他验收产物保留本地。
+
+
+## Session 194: Complete cross-workspace integration into main
+<!-- trellis-session: v=2 fp=e55a2421fa533af2 -->
+
+**Date**: 2026-11-24
+**Task**: Complete cross-workspace integration into main
+**Branch**: `main`
+
+### Summary
+
+Closed backend CI failures, passed all 19 PR checks, merged PR #6, synchronized local main and preserved source branch/evidence.
+
+### Main Changes
+
+- Canonicalized snooze microseconds; preserved stage execution outcomes across UTC round trips.
+- Kept complete preview no-write assertions with scoped setup counts; initialized masked CI signing keys.
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `904160af8` | fix(inbox): keep snooze receipts equal to persisted deadlines |
+| `ee38e36e8` | fix(collaboration): retain execution outcomes across UTC round trips |
+| `f878b88bf` | test(collaboration): preserve assertions across retained history and time encoding |
+| `46b045167` | fix(ci): provide private cursor keys before backend tests initialize |
+| `662d66943` | chore(task): retain backend failure closure for the main integration |
+| `0302e4cb9` | chore(merge): bring verified collaboration workflows into main |
+
+### Testing
+
+- [OK] 167 focused Go race results, 80 script contracts, lint/type/static checks and independent review passed.
+- [OK] Remote CI 45230509413 and Agent critical path 45230509837 succeeded; merged tree equals tested source.
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- No merge work remains; existing conditional browser/provider acceptance limits are recorded separately.
