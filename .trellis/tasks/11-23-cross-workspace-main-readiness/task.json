@@ -16,7 +16,7 @@
   "base_branch": "main",
   "worktree_path": "/Volumes/artisan/code/2026/multica-0.4.37/.omx/private/qa-work/main-readiness-20261123/src",
   "commit": "f0a3f71cf10cc33e18b81aa8d1633c8166fa971b",
-  "pr_url": null,
+  "pr_url": "https://github.com/yangshangwei/multica-0.4.37/pull/6",
   "subtasks": [],
   "children": [],
   "parent": null,
@@ -33,16 +33,16 @@
     "server/pkg/dbid/writes_test.go",
     "server/internal/docs/content/pages/collaboration.json"
   ],
-  "notes": "用户明确回复“执行”，按已确认清单完成5组工作提交；第6组保存本次交付记录。代码已提交且与验证字节一致，未推送、未合并。图片例外和最终远端CI仍待交付。",
+  "notes": "2026-11-24 用户要求继续将当前分支合并到 main。恢复已有 PR #6；修复 b073f5961 的后端 CI 失败，局部原始回归与 Linux race 通过，等待最新远端完整门禁后合并并同步本地 main。",
   "meta": {
     "authorization": "2026-11-23 用户授权创建任务并规划；另一个会话仍有提交，必须重新核查候选。",
     "implementation_approval": "2026-11-23 用户在完整规划摘要之后明确回复：开始",
     "concurrent_commits": "refresh_HEAD_and_origin_before_validation_and_final_verdict",
     "merge_policy": "no_merge_or_push_in_planning",
-    "latest_observed_head": "73a28ed90fdcfd9eda1ac5d2970df5af2c486f94",
+    "latest_observed_head": "b073f59616eb3db68ebf2e45c101c3ba8166d52b",
     "observed_base": "dd87e0b33c1d6a64d488f7ee9ecd0a65984a68ff",
     "concurrent_session_completion_confirmed": false,
-    "implementation_status": "verified_and_committed_locally",
+    "implementation_status": "remote_backend_failures_repaired_targeted_verified",
     "targeted_regressions": "All22initial +29ever-failed browser identities closed;464pass74skip final reconciled scope",
     "verification_progress": {
       "backend": "86/86 packages latest passing race executions;25564 namedPASS/24SKIP;currentGo1.26.11scan0",
@@ -61,6 +61,8 @@
       "f0a3f71cf10cc33e18b81aa8d1633c8166fa971b"
     ],
     "local_delivery_at": "2026-11-23T22:11:35.201064+08:00",
-    "remaining_delivery": "PR image-exemption decision and actual remote CI; no push/main merge performed"
+    "remaining_delivery": "Latest remote CI for corrected candidate; merge PR #6; synchronize local main",
+    "merge_authorization": "2026-11-24 用户明确要求：继续将当前分支合并到main分支；延续2026-11-23已发布PR #6的合并交付。",
+    "continuation_report": "research/merge-continuation-20261124.md"
   }
 }
