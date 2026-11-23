@@ -21,7 +21,36 @@
     "no_matches": "没有匹配的项目",
     "selected_other": "已选 {{count}} 项",
     "clear_selection": "清除选择",
-    "empty_hint": "添加仓库并选择执行AI小队，开始处理第一条任务。"
+    "empty_hint": "创建项目来组织相关任务，按需分配给成员、单个智能体或 AI 小队。"
+  },
+  "welcome": {
+    "title": "围绕一个目标，组织<term>任务</term>、<term>智能体</term>与 <term>AI 小队</term>",
+    "description": "把相关任务放在同一个项目中，统一上下文和进度。按任务需要选择成员、单个智能体或 AI 小队，也可以关联仓库，让执行者共享项目背景。",
+    "docs": "了解项目",
+    "steps": {
+      "goal": "统一目标与上下文",
+      "goal_description": "写下范围和要求，让每条任务从同一背景开始。",
+      "assign": "选择合适的执行者",
+      "assign_description": "明确的单项工作交给智能体，需要协作的任务交给 AI 小队。",
+      "track": "跟踪进度与交付",
+      "track_description": "从任务状态到交付结果，集中查看项目的推进情况。"
+    },
+    "example_label": "项目示例",
+    "example_title": "注册激活",
+    "example_goal": "让新用户完成注册、激活邮箱并登录使用。",
+    "progress": "任务进度",
+    "progress_value": "已完成 {{completed}} / {{total}} 项",
+    "tasks": {
+      "flow": "梳理注册与激活流程",
+      "implementation": "实现注册接口与激活邮件",
+      "validation": "验证链接过期与重复注册"
+    },
+    "assignees": {
+      "product_agent": "产品智能体",
+      "delivery_squad": "交付 AI 小队",
+      "qa_agent": "测试智能体"
+    },
+    "example_caption": "以上为任务与负责人示例，每条任务分别跟踪状态。"
   },
   "table": {
     "select_project": "选择 {{name}}",

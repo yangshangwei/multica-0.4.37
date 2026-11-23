@@ -42,6 +42,7 @@ This directory contains guidelines for frontend development. Fill in each file w
 | [Core UI State Contracts](./core-ui-state-contracts.md) | Retained sidebar portals, picker/editor semantics, squad drafts and protected recovery | Active |
 | [Triage History](./triage-history.md) | Date-grouped event identity, snapshot reuse, applied filters and truthful empty-page recovery | Active |
 | [Triage Welcome](./triage-welcome.md) | Confirmed first-use gate, invalidated history probes, intake entry and everyday empty-queue focus | Active |
+| [Project Welcome](./project-welcome.md) | Successful-empty directory, individual-agent/squad introduction, passive registration example and existing create/docs actions | Active |
 | [Pending-task Creation](./triage-create-form.md) | Candidate fields, accessible names, validation, upload/retry preservation and scoped form IDs | Active |
 | [Triage Duplicate Picker](./triage-duplicate-picker.md) | Focus-open formal task candidates, complete pagination, scoped references and keyboard/retry behavior | Active |
 | [Type Safety](./type-safety.md) | Type patterns, validation | To fill |

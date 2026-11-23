@@ -16,6 +16,8 @@ const mocks = vi.hoisted(() => ({
   realQueries: false,
   projects: [] as Project[] | undefined,
   projectError: null as Error | null,
+  projectLoading: false,
+  projectPlaceholder: false,
   projectFetching: false,
   refetchProjects: vi.fn(),
   members: [] as Array<{ user_id: string; name: string; role: string }>,
@@ -55,7 +57,9 @@ vi.mock("@tanstack/react-query", async (importOriginal) => {
     if (key === "projects") {
       return {
         data: mocks.projects,
-        isLoading: false,
+        isLoading: mocks.projectLoading,
+        isSuccess: mocks.projects !== undefined && !mocks.projectError && !mocks.projectLoading,
+        isPlaceholderData: mocks.projectPlaceholder,
         error: mocks.projectError,
         isError: !!mocks.projectError,
         isFetching: mocks.projectFetching,
@@ -267,6 +271,8 @@ beforeEach(() => {
   useProjectAccessStore.setState({ denied: {}, epochs: {}, deleted: {} });
   mocks.projects = [PROJECT];
   mocks.projectError = null;
+  mocks.projectLoading = false;
+  mocks.projectPlaceholder = false;
   mocks.projectFetching = false;
   mocks.refetchProjects.mockReset();
   mocks.members = [
@@ -315,16 +321,55 @@ function renderQueryProjects(listProjects: ReturnType<typeof vi.fn>, cached?: Pr
   return { ...view, client, adapter };
 }
 
-describe("ProjectsPage compact row navigation", () => {
-  it("guides a new workspace into its first project", async () => {
+describe("ProjectsPage welcome", () => {
+  it("offers one creation action and the project guide alongside a passive example", async () => {
     const user = userEvent.setup();
     mocks.projects = [];
-    renderProjects();
-    expect(screen.getByText("Choose a repository and an execution squad to get your first issue moving.")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Create your first project" }));
-    expect(mocks.openModal).toHaveBeenCalledWith("create-project");
+    const { adapter } = renderProjects();
+    const welcome = screen.getByRole("region", { name: "Bring issues, agents and AI squads together around a shared goal" });
+    const example = within(welcome).getByRole("figure", { name: "Example project" });
+    expect(within(example).getByRole("heading", { name: "Registration and activation" })).toBeInTheDocument();
+    expect(within(example).getAllByRole("listitem")).toHaveLength(3);
+    expect(within(example).queryByRole("button")).not.toBeInTheDocument();
+    expect(within(example).queryByRole("link")).not.toBeInTheDocument();
+    expect(mocks.openModal).not.toHaveBeenCalled();
+    expect(mocks.updateProject).not.toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: "New project" })).not.toBeInTheDocument();
+    const create = screen.getByRole("button", { name: "Create your first project" });
+    expect(screen.getAllByRole("button", { name: "Create your first project" })).toHaveLength(1);
+    create.focus();
+    await user.keyboard("{Enter}");
+    expect(mocks.openModal).toHaveBeenCalledExactlyOnceWith("create-project");
+    await user.tab();
+    const docs = within(welcome).getByRole("link", { name: "Learn about projects" });
+    expect(docs).toHaveFocus();
+    expect(docs).toHaveAttribute("href", "/test-workspace/docs/projects");
+    await user.keyboard("{Enter}");
+    expect(adapter.push).toHaveBeenCalledExactlyOnceWith("/test-workspace/docs/projects");
   });
 
+  it("returns to the ordinary project list when a project is discovered", () => {
+    mocks.projects = [];
+    const view = renderProjects();
+    expect(screen.getByRole("figure", { name: "Example project" })).toBeInTheDocument();
+    mocks.projects = [PROJECT];
+    view.rerender(<NavigationProvider value={view.adapter}><ProjectsPage /></NavigationProvider>);
+    expect(screen.queryByRole("figure", { name: "Example project" })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: PROJECT.title })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New project" })).toBeInTheDocument();
+  });
+
+  it.each(["loading", "placeholder"])("does not present %s data as a confirmed empty directory", (state) => {
+    mocks.projects = state === "loading" ? undefined : [];
+    mocks.projectLoading = state === "loading";
+    mocks.projectPlaceholder = state === "placeholder";
+    renderProjects();
+    expect(screen.queryByRole("figure", { name: "Example project" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New project" })).toBeInTheDocument();
+  });
+});
+
+describe("ProjectsPage compact row navigation", () => {
   it("provides a keyboard title link after the row selection control", async () => {
     const user = userEvent.setup();
     const { adapter } = renderProjects();
@@ -608,6 +653,23 @@ describe("ProjectsPage batch deletion", () => {
 });
 
 describe("ProjectsPage real query recovery", () => {
+  it("restores the welcome only after a failed refresh of an empty directory recovers", async () => {
+    const listProjects = vi.fn()
+      .mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error"))
+      .mockResolvedValue({ projects: [] });
+    const { client } = renderQueryProjects(listProjects, []);
+    expect(screen.getByRole("figure", { name: "Example project" })).toBeInTheDocument();
+    await act(async () => { await client.refetchQueries({ queryKey: projectKeys.list("workspace-1"), exact: true }); });
+    expect(await screen.findByRole("alert")).toHaveTextContent("Could not refresh projects");
+    expect(screen.queryByRole("figure", { name: "Example project" })).not.toBeInTheDocument();
+    expect(screen.getByText("No projects yet")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "New project" })).toBeInTheDocument();
+    await userEvent.setup().click(screen.getByRole("button", { name: "Retry" }));
+    expect(await screen.findByRole("figure", { name: "Example project" })).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(listProjects).toHaveBeenCalledTimes(2);
+  });
+
   it("recovers from a cold 500 through Retry and the production query projection", async () => {
     const listProjects = vi.fn()
       .mockRejectedValueOnce(new ApiError("Unavailable", 500, "Internal Server Error"))

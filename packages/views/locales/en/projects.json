@@ -22,7 +22,36 @@
     "selected_one": "{{count}} selected",
     "selected_other": "{{count}} selected",
     "clear_selection": "Clear selection",
-    "empty_hint": "Choose a repository and an execution squad to get your first issue moving."
+    "empty_hint": "Create a project to group related issues and assign them to members, individual agents or AI squads."
+  },
+  "welcome": {
+    "title": "Bring <term>issues</term>, <term>agents</term> and <term>AI squads</term> together around a shared goal",
+    "description": "Keep related issues, context and progress in one project. Assign each issue to a member, an individual agent or an AI squad, and link a repository when the work needs one.",
+    "docs": "Learn about projects",
+    "steps": {
+      "goal": "Share the goal and context",
+      "goal_description": "Define the scope and requirements so every issue starts with the same background.",
+      "assign": "Choose who takes each issue",
+      "assign_description": "Use an individual agent for focused work or an AI squad for collaborative delivery.",
+      "track": "Follow progress through delivery",
+      "track_description": "See issue status and delivery results together as the project moves forward."
+    },
+    "example_label": "Example project",
+    "example_title": "Registration and activation",
+    "example_goal": "Let new users register, activate their email and sign in.",
+    "progress": "Issue progress",
+    "progress_value": "{{completed}} of {{total}} completed",
+    "tasks": {
+      "flow": "Define the registration and activation flow",
+      "implementation": "Build the registration API and activation email",
+      "validation": "Test expired links and duplicate registrations"
+    },
+    "assignees": {
+      "product_agent": "Product agent",
+      "delivery_squad": "Delivery AI squad",
+      "qa_agent": "QA agent"
+    },
+    "example_caption": "Illustrative issues and assignees. Each issue has its own owner and status."
   },
   "table": {
     "select_project": "Select {{name}}",
