@@ -81,13 +81,15 @@ func TestV7QueriesBindAnIDWithADatabaseFallback(t *testing.T) {
 }
 
 const (
-	dbImportPath   = "github.com/multica-ai/multica/server/pkg/db/generated"
-	dbidImportPath = "github.com/multica-ai/multica/server/pkg/dbid"
+	dbImportPath         = "github.com/multica-ai/multica/server/pkg/db/generated"
+	dbidImportPath       = "github.com/multica-ai/multica/server/pkg/dbid"
+	inboxStateImportPath = "github.com/multica-ai/multica/server/internal/inboxstate"
 )
 
 // TestEveryV7ParamsLiteralSetsAnIDAndImportsDBID walks production Go sources
 // and fails if a converted params literal leaves its id unset or lives in a file
-// that does not import dbid. The AST-based check deliberately does not prescribe
+// that does not import dbid, except scheduled inbox replay carrying a persisted
+// notification ID through DeliverTx. The AST-based check deliberately does not prescribe
 // whether the value is an inline dbid.NewV7 call or a local variable, so routine
 // refactors do not weaken this guard by forcing one source spelling.
 func TestEveryV7ParamsLiteralSetsAnIDAndImportsDBID(t *testing.T) {
@@ -105,6 +107,7 @@ func TestEveryV7ParamsLiteralSetsAnIDAndImportsDBID(t *testing.T) {
 		}
 
 		dbAliases, importsDBID := relevantImports(t, path, file)
+		replayed := inboxReplayLiterals(file, dbAliases)
 		ast.Inspect(file, func(node ast.Node) bool {
 			literal, ok := node.(*ast.CompositeLit)
 			if !ok {
@@ -129,7 +132,7 @@ func TestEveryV7ParamsLiteralSetsAnIDAndImportsDBID(t *testing.T) {
 				t.Errorf("%s:%d: %s literal does not set %s; mint it with dbid.NewV7()",
 					path, position.Line, selector.Sel.Name, field)
 			}
-			if !importsDBID {
+			if !importsDBID && !replayed[literal] {
 				position := fset.Position(literal.Pos())
 				t.Errorf("%s:%d: %s literal is in a file that does not import %s; add the import and call dbid.NewV7()",
 					path, position.Line, selector.Sel.Name, dbidImportPath)
@@ -142,6 +145,148 @@ func TestEveryV7ParamsLiteralSetsAnIDAndImportsDBID(t *testing.T) {
 		if found[typ] == 0 {
 			t.Errorf("no production call site found for %s — was the query removed or renamed?", typ)
 		}
+	}
+}
+
+// Scheduled inbox delivery uses the locked outbox row's original identity.
+// Keep this allowance at that exact boundary: a fresh/direct insert, an unknown
+// row source, or an omitted ID still needs the ordinary minting contract.
+func inboxReplayLiterals(file *ast.File, dbAliases map[string]bool) map[*ast.CompositeLit]bool {
+	inboxAliases := map[string]bool{}
+	for _, spec := range file.Imports {
+		if path, _ := strconv.Unquote(spec.Path.Value); path == inboxStateImportPath {
+			name := "inboxstate"
+			if spec.Name != nil {
+				name = spec.Name.Name
+			}
+			inboxAliases[name] = true
+		}
+	}
+	replayed := map[*ast.CompositeLit]bool{}
+	ast.Inspect(file, func(node ast.Node) bool {
+		call, ok := node.(*ast.CallExpr)
+		if !ok || len(call.Args) != 3 {
+			return true
+		}
+		fun, ok := call.Fun.(*ast.SelectorExpr)
+		if !ok || fun.Sel.Name != "DeliverTx" {
+			return true
+		}
+		pkg, ok := fun.X.(*ast.Ident)
+		if !ok || !inboxAliases[pkg.Name] || pkg.Obj != nil {
+			return true
+		}
+		literal, ok := call.Args[2].(*ast.CompositeLit)
+		if !ok {
+			return true
+		}
+		typ, ok := literal.Type.(*ast.SelectorExpr)
+		if !ok || typ.Sel.Name != "CreateInboxItemParams" {
+			return true
+		}
+		pkg, ok = typ.X.(*ast.Ident)
+		if !ok || !dbAliases[pkg.Name] || pkg.Obj != nil {
+			return true
+		}
+		kind, ok := compositeLiteralField(literal, "Type").(*ast.BasicLit)
+		if !ok || kind.Kind != token.STRING {
+			return true
+		}
+		name, _ := strconv.Unquote(kind.Value)
+		rowType := map[string]string{"project_update": "ProjectUpdateNotification", "iteration": "IterationNotification"}[name]
+		id, ok := compositeLiteralField(literal, "ID").(*ast.SelectorExpr)
+		if !ok || id.Sel.Name != "ID" || rowType == "" {
+			return true
+		}
+		row, ok := id.X.(*ast.Ident)
+		if !ok || row.Obj == nil {
+			return true
+		}
+		switch decl := row.Obj.Decl.(type) {
+		case *ast.Field:
+			replayed[literal] = generatedType(decl.Type, rowType, dbAliases)
+		case *ast.AssignStmt:
+			if len(decl.Rhs) != 1 || len(decl.Lhs) != 2 {
+				return true
+			}
+			first, ok := decl.Lhs[0].(*ast.Ident)
+			if !ok || first.Obj != row.Obj {
+				return true
+			}
+			read, ok := decl.Rhs[0].(*ast.CallExpr)
+			if !ok {
+				return true
+			}
+			method, ok := read.Fun.(*ast.SelectorExpr)
+			if !ok || method.Sel.Name != "Lock"+rowType {
+				return true
+			}
+			q, ok := method.X.(*ast.Ident)
+			if !ok || q.Obj == nil {
+				return true
+			}
+			parameter, ok := q.Obj.Decl.(*ast.Field)
+			if !ok {
+				return true
+			}
+			pointer, ok := parameter.Type.(*ast.StarExpr)
+			replayed[literal] = ok && generatedType(pointer.X, "Queries", dbAliases)
+		}
+		return true
+	})
+	return replayed
+}
+
+func generatedType(expr ast.Expr, name string, aliases map[string]bool) bool {
+	typ, ok := expr.(*ast.SelectorExpr)
+	if !ok || typ.Sel.Name != name {
+		return false
+	}
+	pkg, ok := typ.X.(*ast.Ident)
+	return ok && aliases[pkg.Name] && pkg.Obj == nil
+}
+
+func TestInboxReplayAllowancePreservesMintingGuards(t *testing.T) {
+	for _, tc := range []struct {
+		name, source string
+		wantAllowed  bool
+	}{
+		{"persisted project row", `func f(row db.ProjectUpdateNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "project_update"}) }`, true},
+		{"locked iteration row", `func f(q *db.Queries) { row, err := q.LockIterationNotification(ctx, params); inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "iteration"}) }`, true},
+		{"missing ID", `func f(row db.ProjectUpdateNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{Type: "project_update"}) }`, false},
+		{"direct creation still requires mint", `func f(q *db.Queries, row db.ProjectUpdateNotification) { q.CreateInboxItem(ctx, db.CreateInboxItemParams{ID: row.ID, Type: "project_update"}) }`, false},
+		{"fresh ID still requires mint", `func f(row db.ProjectUpdateNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: newID(), Type: "project_update"}) }`, false},
+		{"unproven row", `func f(row Other) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "project_update"}) }`, false},
+		{"mismatched outbox type", `func f(row db.IterationNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "project_update"}) }`, false},
+		{"ordinary inbox type", `func f(row db.ProjectUpdateNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "issue"}) }`, false},
+		{"untrusted lock method", `func f(q *Other) { row, err := q.LockIterationNotification(ctx, params); inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "iteration"}) }`, false},
+		{"unrelated row read", `func f(q *db.Queries) { row, err := q.GetIssue(ctx, params); inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "iteration"}) }`, false},
+		{"shadowed delivery import", `func f(inbox Other, row db.ProjectUpdateNotification) { inbox.DeliverTx(ctx, tx, db.CreateInboxItemParams{ID: row.ID, Type: "project_update"}) }`, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			// Both imports are aliases, so the guard must use import identity.
+			src := fmt.Sprintf("package fixture\nimport (db %q; inbox %q)\n%s", dbImportPath, inboxStateImportPath, tc.source)
+			file, err := parser.ParseFile(token.NewFileSet(), "fixture.go", src, 0)
+			if err != nil {
+				t.Fatal(err)
+			}
+			aliases, importsDBID := relevantImports(t, "fixture.go", file)
+			replayed := inboxReplayLiterals(file, aliases)
+			var literal *ast.CompositeLit
+			ast.Inspect(file, func(node ast.Node) bool {
+				if candidate, ok := node.(*ast.CompositeLit); ok {
+					literal = candidate
+				}
+				return true
+			})
+			if literal == nil {
+				t.Fatal("fixture did not contain an inbox params literal")
+			}
+			allowed := compositeLiteralSetsField(literal, "ID") && (importsDBID || replayed[literal])
+			if allowed != tc.wantAllowed {
+				t.Fatalf("allowed = %v, want %v", allowed, tc.wantAllowed)
+			}
+		})
 	}
 }
 
@@ -170,6 +315,10 @@ func relevantImports(t *testing.T, path string, file *ast.File) (map[string]bool
 }
 
 func compositeLiteralSetsField(literal *ast.CompositeLit, field string) bool {
+	return compositeLiteralField(literal, field) != nil
+}
+
+func compositeLiteralField(literal *ast.CompositeLit, field string) ast.Expr {
 	for _, element := range literal.Elts {
 		pair, ok := element.(*ast.KeyValueExpr)
 		if !ok {
@@ -177,10 +326,10 @@ func compositeLiteralSetsField(literal *ast.CompositeLit, field string) bool {
 		}
 		name, ok := pair.Key.(*ast.Ident)
 		if ok && name.Name == field {
-			return true
+			return pair.Value
 		}
 	}
-	return false
+	return nil
 }
 
 // queryBlock returns the text of one named sqlc query, from its `-- name:`
