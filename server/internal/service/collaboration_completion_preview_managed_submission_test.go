@@ -10,8 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/multica-ai/multica/server/internal/auth"
+	"github.com/multica-ai/multica/server/internal/testutil"
 	"github.com/multica-ai/multica/server/internal/util"
 	db "github.com/multica-ai/multica/server/pkg/db/generated"
 )
@@ -112,6 +114,52 @@ func TestCollaborationCompletionPreviewManagedSubmission(t *testing.T) {
 	})
 }
 
+func TestCollaborationCompletionPreviewRetainedEvidenceIsolation(t *testing.T) {
+	retained := r29NewConsumedFixture(t)
+	requestKey := uuid.NewString()
+	retained.fx.InsertNoID(t, "delivery_evidence_evaluation", testutil.Cols{
+		"workspace_id": retained.workspace, "evaluator_user_id": retained.creator,
+		"request_key": requestKey, "evaluation_id": uuid.NewString(),
+		"issue_id": retained.stage.child, "project_id": retained.stage.project,
+		"policy_revision": int64(1), "request_digest": strings.Repeat("a", 64),
+		"request_json": []byte(`{}`), "observation": []byte(`{}`),
+	}, "workspace_id=$1 AND request_key=$2", retained.workspace, requestKey)
+	want := map[string]int{"delivery_completion_authorization": 1, "delivery_completion_terminal": 1, "delivery_evidence_evaluation": 1}
+	if got := completionPreviewDurableCounts(t, retained.stageExecutionFixture); !reflect.DeepEqual(got, want) {
+		t.Fatalf("fixture-owned durable evidence was not detected: got=%v want=%v", got, want)
+	}
+
+	// A different workspace's retained grant, terminal and evaluation are valid
+	// history. Preview setup must not require clearing them from the database.
+	t.Run("managed_submission", func(t *testing.T) {
+		f, request := completionPreviewSubmissionFixture(t, "enforce")
+		out, err := completionPreviewSubmissionRead(t, f, f.ctx, request)
+		if err != nil || out.Reason != "authorization_available" {
+			t.Fatalf("unrelated retained evidence prevented preview: reason=%s err=%v", out.Reason, err)
+		}
+		completionPreviewSubmissionEnvelope(t, f, request, out, "enforce")
+	})
+	t.Run("concurrent_read_fixture", func(t *testing.T) {
+		f := r28NewPreviewFixture(t)
+		r28NoWrites(t, f)
+		r28Baseline(t, f, f.ctx)
+	})
+	t.Run("admin_submission", TestCollaborationCompletionPreviewAdminCurrentSubmission)
+}
+
+func completionPreviewDurableCounts(t *testing.T, f *stageExecutionFixture) map[string]int {
+	t.Helper()
+	// Setup must create no evidence for its own workspace. Other tests retain
+	// immutable history; the later full snapshots still guard every row against
+	// writes by a preview, including those unrelated retained rows.
+	return map[string]int{
+		"delivery_completion_authorization": f.fx.Count(t, `SELECT count(*) FROM delivery_completion_authorization WHERE workspace_id=$1`, f.workspace),
+		"delivery_completion_terminal": f.fx.Count(t, `SELECT count(*) FROM delivery_completion_terminal t
+			JOIN delivery_completion_authorization a ON a.id=t.authorization_id WHERE a.workspace_id=$1`, f.workspace),
+		"delivery_evidence_evaluation": f.fx.Count(t, `SELECT count(*) FROM delivery_evidence_evaluation WHERE workspace_id=$1`, f.workspace),
+	}
+}
+
 func completionPreviewSubmissionFixture(t *testing.T, mode string) (*stageExecutionFixture, CollaborationCompletionPreviewRequest) {
 	t.Helper()
 	f := newStageCompletionFixture(t)
@@ -128,8 +176,8 @@ func completionPreviewSubmissionFixture(t *testing.T, mode string) (*stageExecut
 	if err != nil || request.Target.Validate() != nil || request.Target.Kind != "collaboration_submission" || request.Target.SubmissionID == nil || *request.Target.SubmissionID != util.UUIDToString(submission) || request.Target.ExpectedIssueRevision != access.Issue.Revision || access.Issue.Status != "in_review" || bound.SubmissionID != submission || bound.IssueID != access.Issue.ID || bound.WorkspaceID != access.Issue.WorkspaceID || bound.LifecycleEpoch != access.LifecycleEpoch || bound.CandidateID != f.candidate.CandidateID || bound.CandidateVersion != f.candidate.Version || !bound.OperationID.Valid || bound.ActorUserID != util.MustParseUUID(f.handler) {
 		t.Fatalf("setup did not retain the real current verification submission and exact target: bound=%+v target=%+v err=%v", bound, request.Target, err)
 	}
-	for _, table := range []string{"delivery_completion_authorization", "delivery_completion_terminal", "delivery_evidence_evaluation"} {
-		if count := f.fx.Count(t, `SELECT count(*) FROM "`+table+`"`); count != 0 {
+	for table, count := range completionPreviewDurableCounts(t, f) {
+		if count != 0 {
 			t.Fatalf("preview setup minted durable %s rows: count=%d", table, count)
 		}
 	}

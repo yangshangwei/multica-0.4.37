@@ -44,8 +44,8 @@ func r28NewPreviewFixture(t *testing.T) *r28PreviewFixture {
 	if err != nil || bound.SubmissionID != submission || bound.IssueID != f.issue.Issue.ID || bound.WorkspaceID != util.MustParseUUID(f.workspace) || bound.CandidateID != f.candidate.CandidateID || bound.CandidateVersion != f.candidate.Version || !bound.OperationID.Valid || bound.ActorUserID != util.MustParseUUID(f.handler) {
 		t.Fatalf("R28 setup lost the genuine immutable verification submission: bound=%+v err=%v", bound, err)
 	}
-	for _, table := range []string{"delivery_completion_authorization", "delivery_completion_terminal", "delivery_evidence_evaluation"} {
-		if count := f.fx.Count(t, `SELECT count(*) FROM "`+table+`"`); count != 0 {
+	for table, count := range completionPreviewDurableCounts(t, f) {
+		if count != 0 {
 			t.Fatalf("R28 fixture created durable %s rows before preview: count=%d", table, count)
 		}
 	}

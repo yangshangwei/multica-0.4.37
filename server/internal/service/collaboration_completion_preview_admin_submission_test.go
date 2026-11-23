@@ -32,8 +32,8 @@ func TestCollaborationCompletionPreviewAdminCurrentSubmission(t *testing.T) {
 		if credential.Principal.Kind != auth.CredentialJWT || credential.Principal.UserID != util.UUIDToString(admin.admin) || credential.PasswordSession == nil || credential.PasswordSession.UserID != credential.Principal.UserID || credential.PasswordSession.Kind != "jwt" {
 			t.Fatal("R38 control requires the actual administrator JWT/password session")
 		}
-		for _, table := range []string{"delivery_completion_authorization", "delivery_completion_terminal", "delivery_evidence_evaluation"} {
-			if count := f.fx.Count(t, `SELECT count(*) FROM "`+table+`"`); count != 0 {
+		for table, count := range completionPreviewDurableCounts(t, f) {
+			if count != 0 {
 				t.Fatalf("R38 preview setup created durable %s rows: count=%d", table, count)
 			}
 		}

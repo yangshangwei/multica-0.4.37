@@ -433,12 +433,19 @@ func TestAdminCollaborationMemoryPurgeRequiresDisabledCreatorAndAuditsRealActor(
 		f.fx.Count(t, `SELECT count(*) FROM admin_audit_event WHERE operation_id=$1 AND (before_state::text LIKE '%PRIVATE_%' OR after_state::text LIKE '%PRIVATE_%')`, result.Operation.ID) != 0 {
 		t.Fatal("administrator purge lost its real actor, original creator, ledgers or exposed text")
 	}
+	// JSON recovery retains the complete receipt, but not time.Local's identity.
+	wantReceipt, err := json.Marshal(result.MemoryResult)
+	if err != nil {
+		t.Fatal(err)
+	}
 	replay, err := f.actions.PurgeMemoryVersion(f.adminCtx, p)
-	if err != nil || !replay.Replayed || replay.MemoryResult == nil || *replay.MemoryResult != *result.MemoryResult {
+	replayedReceipt, marshalErr := json.Marshal(replay.MemoryResult)
+	if err != nil || !replay.Replayed || replay.MemoryResult == nil || marshalErr != nil || string(replayedReceipt) != string(wantReceipt) {
 		t.Fatalf("administrator purge replay: %+v %v", replay, err)
 	}
 	recovered, err := f.actions.GetOperation(f.adminCtx, f.org, p.IssueID, p.IdempotencyKey)
-	if err != nil || recovered.MemoryResult == nil || *recovered.MemoryResult != *result.MemoryResult {
+	recoveredReceipt, marshalErr := json.Marshal(recovered.MemoryResult)
+	if err != nil || recovered.MemoryResult == nil || marshalErr != nil || string(recoveredReceipt) != string(wantReceipt) {
 		t.Fatalf("administrator original-key recovery: %+v %v", recovered, err)
 	}
 	changed := p

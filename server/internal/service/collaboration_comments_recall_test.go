@@ -332,7 +332,10 @@ func TestCollaborationRuntimeCommentsCarryMemberDisplayNames(t *testing.T) {
 		t.Fatal(err)
 	}
 	decoded, err := protocol.DecodeCollaborationCommentsRecall(raw)
-	if found != len(want) || err != nil || !reflect.DeepEqual(decoded.Items, page.Items) {
+	// pgx may attach time.Local while JSON restores UTC; compare the full wire
+	// value so equal instants do not depend on the host's location pointer.
+	encoded, marshalErr := json.Marshal(decoded)
+	if found != len(want) || err != nil || marshalErr != nil || string(encoded) != string(raw) {
 		t.Fatalf("recall page lost names or the strict decoder refused them: found=%d err=%v", found, err)
 	}
 
