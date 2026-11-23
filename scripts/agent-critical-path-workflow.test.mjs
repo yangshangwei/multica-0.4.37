@@ -40,7 +40,7 @@ test("one isolated service plus locked browser dependencies precede the actual l
   assert.ok(install < contracts && contracts < allocation && allocation < run);
   assert.match(steps[install].run, /pnpm install --frozen-lockfile/);
   assert.match(steps[install].run, /playwright install --with-deps chromium/);
-  assert.match(steps[allocation].env.SMOKE_PG_PORT, /job\.services\.postgres\.ports\[5432\]/);
+  assert.equal(steps[allocation].env.SMOKE_PG_PORT, "${{ job.services.postgres.ports['5432'] }}");
   assert.equal(steps[run].run, 'node scripts/agent-critical-path.mjs --config "$SMOKE_CONFIG" --output "$SMOKE_RUN"');
   assert.equal(steps[run]["continue-on-error"], undefined);
 });

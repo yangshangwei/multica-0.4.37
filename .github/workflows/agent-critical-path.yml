@@ -91,7 +91,7 @@ jobs:
 
       - name: Record runner-owned allocation
         env:
-          SMOKE_PG_PORT: ${{ job.services.postgres.ports[5432] }}
+          SMOKE_PG_PORT: ${{ job.services.postgres.ports['5432'] }}
         run: |
           node --input-type=module <<'JS'
           import { writeFileSync } from 'node:fs';
